@@ -1,0 +1,42 @@
+$font-family-sans-serif: "Normal", "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
+	"Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+$font-family-base: $font-family-sans-serif !default;
+
+// palette
+$black: #333333;
+$black-dark: #000000;
+$red: #FF0000;
+$red-bg: rgba(255, 0, 0, 0.08);
+$gray: #858A8F;
+$gray-dark: #515154;
+$gray-light: #B9B9B9;
+$gray-bg: #F5F6FA;
+// Colors
+$primary: $red;
+$light: $gray;
+$light-bg: $gray-bg;
+$stroke: #E1E2EA;
+
+:root {
+  --black: #333333;
+  --black-dark: #000000;
+  --red: #FF0000;
+  --red-bg: rgba(255, 0, 0, 0.08);
+  --gray: #858A8F;
+  --gray-dark: #515154;
+  --gray-light: #B9B9B9;
+  --gray-bg: #F5F6FA;
+
+  --primary: var(--red);
+  --light: var(--gray);
+  --light-bg: var(--gray-bg);
+  --stroke: #E1E2EA;
+}
+// $primary:       $blue !default;
+// $secondary:     $gray-600 !default;
+// $success:       $green !default;
+// $info:          $cyan !default;
+// $warning:       $yellow !default;
+// $danger:        $red !default;
+// $dark:          $gray-900 !default;

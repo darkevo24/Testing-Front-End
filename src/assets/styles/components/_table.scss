@@ -1,0 +1,46 @@
+.sdp-table {
+  .table > :not(caption) > * > * {
+    border-bottom-width: 1px;
+    border-bottom-color: $stroke !important;
+  }
+  thead {
+    tr {
+      background-color: $light-bg;
+    }
+    th {
+      color: $black;
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 1rem;
+    }
+  }
+  tbody {
+    tr {
+      td {
+        font-size: 14px;
+        font-weight: 400;
+        color: $black;
+      }
+    }
+  }
+  .pagination {
+    align-items: center;
+    &-prev {
+      margin-right: 16px;
+      cursor: pointer;
+    }
+    &-next {
+      margin-left: 16px;
+      cursor: pointer;
+    }
+    &-page {
+      color: $gray-light;
+      font-size: 14px;
+      padding: 2px 4px;
+      cursor: pointer;
+      &.active {
+        color: $black-dark;
+      }
+    }
+  }
+}

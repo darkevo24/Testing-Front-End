@@ -1,0 +1,9 @@
+@import 'assets/styles/global';
+
+#root {
+  &> div,
+  .auth-container,
+  .app-container {
+    height: 100%
+  }
+}

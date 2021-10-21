@@ -1,0 +1,16 @@
+@import './variables';
+
+// All vender styles goes here
+@import './vendors/bootstrap';
+
+// All utility styles goes here
+@import './utilities/spacing';
+@import './utilities/text';
+
+// All component styles goers here
+@import './components/input';
+@import './components/table';
+@import './components/dropdown';
+
+// All pages styles goes here
+@import './pages/login';

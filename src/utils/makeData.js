@@ -44,7 +44,7 @@ const produsenData = [
   'Direktorat Jenderal Tanaman Pangan',
 ];
 
-const formatData = ['csv;xlsx;', 'xlsx;', 'text;plain;'];
+const formatData = ['csv;xlsx;', 'xlsx;', 'text;plain;', 'csv;xlsx;', 'csv;'];
 
 const getRandomIndex = () => Math.floor(Math.random() * instansiData.length);
 

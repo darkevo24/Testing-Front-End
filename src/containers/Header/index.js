@@ -1,8 +1,9 @@
 import React from 'react';
 import cx from 'classname';
-import Logo from 'assets/logo-satu.jpg';
+import Button from 'react-bootstrap/Button';
 import { useHistory, useLocation } from 'react-router-dom';
 
+import Logo from 'assets/logo-satu.jpg';
 import { Anchor } from 'components/Custom';
 import './header.scss';
 
@@ -36,6 +37,8 @@ export const Header = () => {
   const history = useHistory();
   const location = useLocation();
 
+  const goTo = (params) => () => history.push(params);
+
   return (
     <nav className="sdp-header navbar navbar-light">
       <div className="container-fluid">
@@ -63,9 +66,7 @@ export const Header = () => {
           </li>
           {getTabList(TAB_LIST_2, location.pathname, history)}
           <li>
-            <button type="button" className="btn btn-primary btn justify-content-end">
-              Sign In
-            </button>
+            <Button onClick={goTo('/auth/login')}>Sign In</Button>
           </li>
         </ul>
       </div>

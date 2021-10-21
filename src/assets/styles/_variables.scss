@@ -12,8 +12,11 @@ $gray: #858A8F;
 $gray-dark: #515154;
 $gray-light: #B9B9B9;
 $gray-bg: #F5F6FA;
+$blue: #007AFF;
+
 // Colors
 $primary: $red;
+$info: $blue;
 $light: $gray;
 $light-bg: $gray-bg;
 $stroke: #E1E2EA;
@@ -27,16 +30,17 @@ $stroke: #E1E2EA;
   --gray-dark: #515154;
   --gray-light: #B9B9B9;
   --gray-bg: #F5F6FA;
+  --blue: #007AFF;
 
   --primary: var(--red);
   --light: var(--gray);
   --light-bg: var(--gray-bg);
+  --info: var(--blue);
   --stroke: #E1E2EA;
 }
 // $primary:       $blue !default;
 // $secondary:     $gray-600 !default;
 // $success:       $green !default;
-// $info:          $cyan !default;
 // $warning:       $yellow !default;
 // $danger:        $red !default;
 // $dark:          $gray-900 !default;

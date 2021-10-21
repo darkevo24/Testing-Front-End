@@ -66,7 +66,9 @@ export const Header = () => {
           </li>
           {getTabList(TAB_LIST_2, location.pathname, history)}
           <li>
-            <Button onClick={goTo('/auth/login')}>Sign In</Button>
+            <Button variant="info" onClick={goTo('/auth/login')}>
+              Sign In
+            </Button>
           </li>
         </ul>
       </div>

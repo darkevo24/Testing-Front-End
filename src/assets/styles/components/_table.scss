@@ -23,6 +23,14 @@
       }
     }
   }
+  .action-icon-wrapper {
+    .icon-box {
+      margin-right: 4px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
   .pagination {
     align-items: center;
     &-prev {

@@ -2,6 +2,8 @@ import RBTable from 'react-bootstrap/Table';
 import cx from 'classnames';
 import { usePagination, useSortBy, useTable } from 'react-table';
 
+import { actionIcons } from 'components/Icons';
+
 const Table = ({ columns, data }) => {
   const {
     getTableProps,
@@ -85,6 +87,31 @@ const Table = ({ columns, data }) => {
           ))}
         </select> */}
       </div>
+    </div>
+  );
+};
+
+// Note: add the compounded components here.
+Table.Link = ({ cell }) => (
+  <a role="button" target="_blank" href={cell.value} rel="noreferrer">
+    {cell.value}
+  </a>
+);
+
+Table.Actions = ({ cell, ...rest }) => {
+  const { column: { actions = [] } = {}, row } = cell;
+  const id = row.id || row.index;
+  return (
+    <div className="d-flex action-icon-wrapper">
+      {actions.map(({ icon, type, variant, callback }) => {
+        const Icon = icon || actionIcons[type];
+        if (!Icon) return null;
+        return (
+          <div className="icon-box" onClick={callback}>
+            <Icon key={`${id}-${type}`} variant={variant || (type === 'trash' && 'danger')} />
+          </div>
+        );
+      })}
     </div>
   );
 };

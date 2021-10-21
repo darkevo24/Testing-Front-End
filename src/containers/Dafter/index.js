@@ -48,6 +48,25 @@ const Dafter = (props) => {
       {
         Header: 'Link Akses',
         accessor: 'link',
+        Cell: Table.Link,
+      },
+      {
+        id: 'actions',
+        actions: [
+          {
+            type: 'edit',
+            callback: () => {
+              // TODO: handle edit callback
+            },
+          },
+          {
+            type: 'trash',
+            callback: () => {
+              // TODO: handle delete callback
+            },
+          },
+        ],
+        Cell: Table.Actions,
       },
     ],
     [],

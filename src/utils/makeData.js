@@ -44,6 +44,8 @@ const produsenData = [
   'Direktorat Jenderal Tanaman Pangan',
 ];
 
+const indukData = ['PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL'];
+
 const formatData = ['csv;xlsx;', 'xlsx;', 'text;plain;', 'csv;xlsx;', 'csv;'];
 
 const getRandomIndex = () => Math.floor(Math.random() * instansiData.length);
@@ -64,6 +66,7 @@ const newRow = () => {
     dibuat: dibuatData[dataIndex],
     diper: diperData[dataIndex],
     produsen: produsenData[dataIndex],
+    induk: indukData[dataIndex],
     format: formatData[dataIndex],
     link: 'https://umkm.depkop.go.id',
   };

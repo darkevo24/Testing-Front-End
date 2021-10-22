@@ -42,6 +42,10 @@ const Dafter = (props) => {
         accessor: 'produsen',
       },
       {
+        Header: 'Data Induk',
+        accessor: 'induk',
+      },
+      {
         Header: 'Format',
         accessor: 'format',
       },

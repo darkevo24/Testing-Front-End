@@ -26,18 +26,21 @@
 }
 
 .form-control {
-  border: none;
-  border-radius: 0;
-  border-bottom: 1px solid $light;
-  font-size: 15px;
-  padding: 0.75rem 2px;
-  color: $black;
-  &:focus {
-    border-bottom: 1px solid $primary;
-    background-color: $red-bg;
-    box-shadow: none;
-  }
-  &::placeholder {
-    color: $light;
+
+  &[variant="floating"] {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid $light;
+    font-size: 15px;
+    padding: 0.75rem 2px;
+    color: $black;
+    &:focus {
+      border-bottom: 1px solid $primary;
+      background-color: $red-bg;
+      box-shadow: none;
+    }
+    &::placeholder {
+      color: $light;
+    }
   }
 }

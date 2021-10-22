@@ -38,14 +38,16 @@ const Login = () => {
               name="email"
               control={control}
               rules={{ required: true }}
-              render={({ field }) => <Form.Control placeholder="Email Address" type="email" {...field} />}
+              render={({ field }) => <Form.Control variant="floating" placeholder="Email Address" type="email" {...field} />}
             />
             <div className="sdp-error">{errors.email?.message}</div>
             <Controller
               name="password"
               control={control}
               rules={{ required: true }}
-              render={({ field }) => <Form.Control type="password" placeholder="Password" className="mt-4" {...field} />}
+              render={({ field }) => (
+                <Form.Control variant="floating" type="password" placeholder="Password" className="mt-4" {...field} />
+              )}
             />
             <div className="sdp-error">{errors.password?.message}</div>
 

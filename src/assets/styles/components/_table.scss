@@ -1,4 +1,10 @@
 .sdp-table {
+  width: 100%;
+  overflow-x: scroll;
+  &__header {
+    @extend .my-42;
+    @extend .sdp-heading;
+  }
   .table > :not(caption) > * > * {
     border-bottom-width: 1px;
     border-bottom-color: $stroke !important;
@@ -51,4 +57,9 @@
       }
     }
   }
+}
+
+.table-wrapper {
+  padding-left: 320px;
+  padding-right: 320px;
 }

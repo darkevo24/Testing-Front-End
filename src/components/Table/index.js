@@ -1,10 +1,16 @@
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 import RBTable from 'react-bootstrap/Table';
 import cx from 'classnames';
 import { usePagination, useSortBy, useTable } from 'react-table';
 
-import { actionIcons } from 'components/Icons';
+import { Search, actionIcons } from 'components/Icons';
+import bn from 'utils/bemNames';
 
-const Table = ({ columns, data }) => {
+const bem = bn('table');
+
+const Table = ({ columns, data, title, search, searchPlaceholder = 'Search', searchButtonText = 'Search', onSearch }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -29,7 +35,17 @@ const Table = ({ columns, data }) => {
     usePagination,
   );
   return (
-    <div className="sdp-table">
+    <div className={bem.b()}>
+      <div className={bem.e('header')}>{title}</div>
+      <div className="d-flex justify-content-between align-items-center mb-40">
+        <InputGroup>
+          <Form.Control variant="normal" type="text" placeholder={searchPlaceholder} />
+          <Search />
+        </InputGroup>
+        <Button variant="info" className="ml-16 text-nowrap" onClick={onSearch}>
+          {searchButtonText}
+        </Button>
+      </div>
       <RBTable bordered={false} {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (

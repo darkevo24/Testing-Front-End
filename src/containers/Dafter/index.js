@@ -1,4 +1,7 @@
 import { useMemo } from 'react';
+import Container from 'react-bootstrap/Container';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import Table from 'components/Table';
 import makeData from 'utils/makeData';
 
@@ -76,11 +79,25 @@ const Dafter = (props) => {
     [],
   );
   const data = useMemo(() => makeData(200), []);
-
+  const tableConfig = {
+    columns,
+    data,
+    title: 'Daftar Data',
+    search: true,
+    searchPlaceholder: 'Cari Data',
+    searchButtonText: 'Tambah Data',
+    onSearch: (searchText) => {
+      // Todo: handle Search
+    },
+  };
   return (
-    <div className="dafter-page h-100 w-100">
-      <Table columns={columns} data={data} />
-    </div>
+    <Container fluid className="dafter-page">
+      <Row>
+        <Col sm={{ span: 10, offset: 1 }} md={{ span: 8, offset: 2 }}>
+          <Table {...tableConfig} />
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

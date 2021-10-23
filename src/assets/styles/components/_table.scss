@@ -1,3 +1,11 @@
+.sdp-table-pagination-box {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .sdp-table {
   width: 100%;
   overflow-x: scroll;
@@ -39,18 +47,19 @@
   }
   .pagination {
     align-items: center;
-    &-prev {
-      margin-right: 16px;
-      cursor: pointer;
-    }
+    &-prev,
     &-next {
-      margin-left: 16px;
+      @extend .sdp-table-pagination-box;
       cursor: pointer;
+      &.disabled {
+        cursor: not-allowed;
+      }
     }
     &-page {
+      @extend .sdp-table-pagination-box;
       color: $gray-light;
       font-size: 14px;
-      padding: 2px 4px;
+      text-align: center;
       cursor: pointer;
       &.active {
         color: $black-dark;

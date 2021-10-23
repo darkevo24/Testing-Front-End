@@ -5,7 +5,7 @@ import RBTable from 'react-bootstrap/Table';
 import cx from 'classnames';
 import { usePagination, useSortBy, useTable } from 'react-table';
 
-import { Search, actionIcons } from 'components/Icons';
+import { LeftChevron, RightChevron, Search, actionIcons } from 'components/Icons';
 import bn from 'utils/bemNames';
 
 const bem = bn('table');
@@ -34,6 +34,27 @@ const Table = ({ columns, data, title, search, searchPlaceholder = 'Search', sea
     useSortBy,
     usePagination,
   );
+
+  const totalPages = pageOptions.length;
+  let startPage, endPage;
+  if (totalPages <= 10) {
+    // less than 10 total pages so show all
+    startPage = 0;
+    endPage = totalPages;
+  } else {
+    // more than 10 total pages so calculate start and end pages
+    if (pageIndex <= 6) {
+      startPage = 0;
+      endPage = 9;
+    } else if (pageIndex + 4 >= totalPages) {
+      startPage = totalPages - 9;
+      endPage = totalPages;
+    } else {
+      startPage = pageIndex - 5;
+      endPage = pageIndex + 4;
+    }
+  }
+
   return (
     <div className={bem.b()}>
       <div className={bem.e('header')}>{title}</div>
@@ -76,20 +97,22 @@ const Table = ({ columns, data, title, search, searchPlaceholder = 'Search', sea
         </tbody>
       </RBTable>
       <div className="pagination float-end">
-        <div className="pagination-prev" onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {'<'}
+        <div className={cx('pagination-prev', { disabled: !canPreviousPage })} onClick={() => previousPage()}>
+          <LeftChevron variant={canPreviousPage ? 'dim' : 'light'} />
         </div>
-        {Array.from({ length: pageOptions.length }).map((_, index) => (
-          <div
-            key={`page-${index}`}
-            className={cx('pagination-page', { active: index === pageIndex })}
-            onClick={() => gotoPage(index)}>
-            {index + 1}
-          </div>
-        ))}
-        {/* pageOptions.length */}
-        <div className="pagination-next" onClick={() => nextPage()} disabled={!canNextPage}>
-          {'>'}
+        {Array.from({ length: endPage - startPage }).map((_, index) => {
+          const currentPageIndex = startPage + index;
+          return (
+            <div
+              key={`page-${currentPageIndex}`}
+              className={cx('pagination-page', { active: currentPageIndex === pageIndex })}
+              onClick={() => gotoPage(currentPageIndex)}>
+              {currentPageIndex + 1}
+            </div>
+          );
+        })}
+        <div className={cx('pagination-next', { disabled: !canNextPage })} onClick={() => nextPage()}>
+          <RightChevron variant={canNextPage ? 'dim' : 'light'} />
         </div>
         {/* <select
           value={pageSize}

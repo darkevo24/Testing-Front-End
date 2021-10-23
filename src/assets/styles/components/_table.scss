@@ -8,10 +8,12 @@
 
 .sdp-table {
   width: 100%;
-  overflow-x: scroll;
   &__header {
     @extend .my-42;
     @extend .sdp-heading;
+  }
+  &__table-wrapper {
+    overflow-x: scroll;
   }
   .table > :not(caption) > * > * {
     border-bottom-width: 1px;

@@ -20,12 +20,12 @@ const Table = ({ columns, data, title, search, searchPlaceholder = 'Search', sea
     canPreviousPage,
     canNextPage,
     pageOptions,
-    pageCount,
+    // pageCount,
     gotoPage,
     nextPage,
     previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize },
+    // setPageSize,
+    state: { pageIndex /* pageSize */ },
   } = useTable(
     {
       columns,
@@ -67,35 +67,37 @@ const Table = ({ columns, data, title, search, searchPlaceholder = 'Search', sea
           {searchButtonText}
         </Button>
       </div>
-      <RBTable bordered={false} {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                // Add the sorting props to control sorting. For this example
-                // we can add them into the header props
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render('Header')}
-                  {/* Add a sort direction indicator */}
-                  <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {page.map((row, i) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
-                })}
+      <div className={bem.e('table-wrapper')}>
+        <RBTable bordered={false} {...getTableProps()}>
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  // Add the sorting props to control sorting. For this example
+                  // we can add them into the header props
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {column.render('Header')}
+                    {/* Add a sort direction indicator */}
+                    <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
+                  </th>
+                ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </RBTable>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((row, i) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </RBTable>
+      </div>
       <div className="pagination float-end">
         <div className={cx('pagination-prev', { disabled: !canPreviousPage })} onClick={() => previousPage()}>
           <LeftChevron variant={canPreviousPage ? 'dim' : 'light'} />

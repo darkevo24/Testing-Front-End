@@ -1,11 +1,30 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+
+import Modal from 'components/Modal';
 import Table from 'components/Table';
 import makeData from 'utils/makeData';
 
 const Dafter = (props) => {
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [recordToDelete, setRecordToDelete] = useState(null);
+
+  const showDeleteModal = (data) => {
+    setRecordToDelete(data);
+    setIsDeleteModalVisible(true);
+  };
+
+  const hideDeleteModal = () => {
+    setRecordToDelete(null);
+    setIsDeleteModalVisible(false);
+  };
+
+  const handleDelete = () => {
+    // TODO: handle actual delete of the data.
+  };
+
   const columns = useMemo(
     () => [
       {
@@ -68,9 +87,7 @@ const Dafter = (props) => {
           },
           {
             type: 'trash',
-            callback: () => {
-              // TODO: handle delete callback
-            },
+            callback: showDeleteModal,
           },
         ],
         Cell: Table.Actions,
@@ -97,6 +114,17 @@ const Dafter = (props) => {
           <Table {...tableConfig} />
         </Col>
       </Row>
+      <Modal
+        visible={isDeleteModalVisible}
+        onClose={hideDeleteModal}
+        icon="info"
+        title="Konfirmasi Hapus Data"
+        actions={[
+          { variant: 'secondary', text: 'Batal', onClick: hideDeleteModal },
+          { text: 'Hapus', onClick: handleDelete },
+        ]}>
+        Apakah anda yakin untuk menghapus <span className="fw-bold">Data UMKM?</span>
+      </Modal>
     </Container>
   );
 };

@@ -148,8 +148,8 @@ Table.Actions = ({ cell, ...rest }) => {
         const Icon = icon || actionIcons[type];
         if (!Icon) return null;
         return (
-          <div className="icon-box" onClick={callback}>
-            <Icon key={`${id}-${type}`} variant={variant || (type === 'trash' && 'danger')} />
+          <div key={`${id}-${type}`} className="icon-box" onClick={callback}>
+            <Icon variant={variant || (type === 'trash' && 'danger')} />
           </div>
         );
       })}

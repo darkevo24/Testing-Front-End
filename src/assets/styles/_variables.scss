@@ -4,6 +4,7 @@ $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mon
 $font-family-base: $font-family-sans-serif !default;
 
 // palette
+$white: #ffffff;
 $black: #333333;
 $black-dark: #000000;
 $red: #FF0000;
@@ -18,12 +19,14 @@ $blue-link: #2F80ED;
 // Colors
 $primary: $red;
 $info: $blue;
+$secondary: $gray-bg;
 $light: $gray;
 $light-bg: $gray-bg;
 $stroke: #E1E2EA;
 $scrollbar: #D9DADF;
 
 :root {
+  --white: #ffffff;
   --black: #333333;
   --black-dark: #000000;
   --red: #FF0000;
@@ -32,6 +35,7 @@ $scrollbar: #D9DADF;
   --gray-dark: #515154;
   --gray-light: #B9B9B9;
   --gray-bg: #F5F6FA;
+  --secondary: #F5F6FA;
   --blue: #007AFF;
   --blue-link: #2F80ED;
 

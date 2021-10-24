@@ -12,3 +12,11 @@
 .btn-rounded {
   border-radius: 40px;
 }
+
+.btn-secondary {
+  color: $gray;
+  &:hover,
+  &:focus {
+    color: $gray-dark;
+  }
+}

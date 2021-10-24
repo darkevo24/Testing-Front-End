@@ -10,10 +10,11 @@
 
 // All component styles goers here
 @import './components/button';
+@import './components/dropdown';
 @import './components/icon';
 @import './components/input';
+@import './components/modal';
 @import './components/table';
-@import './components/dropdown';
 
 // All pages styles goes here
 @import './pages/login';

@@ -1,11 +1,12 @@
 const types = {
   danger: 'red',
-  dim: 'gray-dark',
-  light: 'gray-light',
   dark: 'black-dark',
+  dim: 'gray-dark',
+  gray: 'gray',
+  light: 'gray-light',
 };
 
-const getColor = (details) => types[details.variant] || types.dim;
+const getColor = (details, defaultColor) => types[details.variant] || (defaultColor ?? types.dim);
 
 export const Edit = (props) => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -51,7 +52,43 @@ export const Search = (props) => (
   </svg>
 );
 
+export const Close = (props) => {
+  const color = `var(--${getColor(props, types.gray)})`;
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M13.7071 0.292893C14.0976 0.683417 14.0976 1.31658 13.7071 1.70711L1.70711 13.7071C1.31658 14.0976 0.683417 14.0976 0.292893 13.7071C-0.0976311 13.3166 -0.0976311 12.6834 0.292893 12.2929L12.2929 0.292893C12.6834 -0.0976311 13.3166 -0.0976311 13.7071 0.292893Z"
+        fill={color}
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M0.292893 0.292893C0.683417 -0.0976311 1.31658 -0.0976311 1.70711 0.292893L13.7071 12.2929C14.0976 12.6834 14.0976 13.3166 13.7071 13.7071C13.3166 14.0976 12.6834 14.0976 12.2929 13.7071L0.292893 1.70711C-0.0976311 1.31658 -0.0976311 0.683417 0.292893 0.292893Z"
+        fill={color}
+      />
+    </svg>
+  );
+};
+
+export const Info = (props) => {
+  const color = `var(--${getColor(props, types.danger)})`;
+  return (
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M16 0C12.8355 0 9.74207 0.938383 7.11088 2.69649C4.4797 4.45459 2.42894 6.95345 1.21793 9.87706C0.0069326 12.8007 -0.309921 16.0177 0.307443 19.1214C0.924806 22.2251 2.44866 25.0761 4.6863 27.3137C6.92394 29.5513 9.77487 31.0752 12.8786 31.6926C15.9823 32.3099 19.1993 31.9931 22.1229 30.7821C25.0466 29.5711 27.5454 27.5203 29.3035 24.8891C31.0616 22.2579 32 19.1645 32 16C31.995 11.7581 30.3077 7.69132 27.3082 4.69182C24.3087 1.69232 20.2419 0.00500432 16 0ZM16 29.0909C13.4109 29.0909 10.8799 28.3231 8.72709 26.8847C6.5743 25.4462 4.8964 23.4017 3.90558 21.0097C2.91476 18.6176 2.65552 15.9855 3.16064 13.4461C3.66575 10.9067 4.91254 8.57412 6.74334 6.74333C8.57413 4.91253 10.9067 3.66574 13.4461 3.16063C15.9855 2.65551 18.6176 2.91476 21.0097 3.90558C23.4017 4.8964 25.4463 6.57429 26.8847 8.72708C28.3231 10.8799 29.0909 13.4109 29.0909 16C29.0867 19.4706 27.7061 22.7979 25.252 25.252C22.7979 27.7061 19.4706 29.0867 16 29.0909ZM17.4545 24.7273H14.5455V21.8182H17.4545V24.7273ZM17.4545 18.9091H14.5455V7.27273H17.4545V18.9091Z"
+        fill={color}
+      />
+    </svg>
+  );
+};
+
 export const actionIcons = {
   edit: Edit,
   trash: Trash,
+};
+
+export const modalIcons = {
+  info: Info,
 };

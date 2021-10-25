@@ -1,0 +1,33 @@
+.sdp-notification {
+  position: absolute;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid $stroke;
+  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  overflow: hidden;
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    min-width: 320px;
+    svg {
+      margin-right: 12px;
+    }
+    .icon-close svg {
+      margin-left: 16px;
+      margin-right: 0;
+    }
+
+  }
+  &__warning {
+    background-color: $red-light;
+  }
+  &__message {
+    color: $black-dark;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+  }
+}

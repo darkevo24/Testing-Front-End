@@ -4,10 +4,11 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 import Modal from 'components/Modal';
+import Notification from 'components/Notification';
 import Table from 'components/Table';
 import makeData from 'utils/makeData';
 
-const Dafter = (props) => {
+const Dafter = () => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [recordToDelete, setRecordToDelete] = useState(null);
 
@@ -23,6 +24,15 @@ const Dafter = (props) => {
 
   const handleDelete = () => {
     // TODO: handle actual delete of the data.
+    setIsDeleteModalVisible(false);
+    Notification.show({
+      message: (
+        <div>
+          Daftar <span className="fw-bold">{recordToDelete.name}</span> Berhasil Ditambahkan
+        </div>
+      ),
+      icon: 'check',
+    });
   };
 
   const columns = useMemo(

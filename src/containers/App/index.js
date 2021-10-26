@@ -15,6 +15,8 @@ import GlobalStyle from 'global-styles';
 import { AppLayout } from 'layouts/AppLayout';
 import { AuthLayout } from 'layouts/AuthLayout';
 
+import Notify, { Notification } from 'components/Notification';
+
 const BerandaPage = lazy(() => import('containers/Beranda'));
 const LoginPage = lazy(() => import('containers/Login'));
 const DafterPage = lazy(() => import('containers/Dafter'));
@@ -43,6 +45,13 @@ function App(props) {
         </Route>
       </Switch>
       <GlobalStyle />
+      <Notification
+        ref={(ref) => {
+          if (ref && !Notify.notificationRef) {
+            Notify.setRef(ref);
+          }
+        }}
+      />
     </div>
   );
 }

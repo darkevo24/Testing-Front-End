@@ -84,11 +84,31 @@ export const Info = (props) => {
   );
 };
 
+export const Check = (props) => {
+  const color = `var(--${getColor(props, types.danger)})`;
+  return (
+    <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="7.00016" cy="7.49992" r="6.66667" fill={color} />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M10.2953 5.15691C10.5045 5.36612 10.5045 5.70531 10.2953 5.91452L6.36674 9.84309C6.15753 10.0523 5.81833 10.0523 5.60913 9.84309L3.82341 8.05738C3.6142 7.84817 3.6142 7.50897 3.82341 7.29976C4.03262 7.09055 4.37182 7.09055 4.58103 7.29976L5.98793 8.70667L9.5377 5.15691C9.74691 4.9477 10.0861 4.9477 10.2953 5.15691Z"
+        fill="white"
+      />
+    </svg>
+  );
+};
+
 export const actionIcons = {
   edit: Edit,
   trash: Trash,
 };
 
 export const modalIcons = {
+  info: Info,
+};
+
+export const alertIcons = {
+  check: Check,
   info: Info,
 };

@@ -25,6 +25,7 @@ $light: $gray;
 $light-bg: $gray-bg;
 $stroke: #E1E2EA;
 $scrollbar: #D9DADF;
+$border-color: $stroke;
 
 :root {
   --white: #ffffff;
@@ -46,6 +47,7 @@ $scrollbar: #D9DADF;
   --light-bg: var(--gray-bg);
   --info: var(--blue);
   --stroke: #E1E2EA;
+  --border-color: var(--stroke);
 }
 // $primary:       $blue !default;
 // $secondary:     $gray-600 !default;

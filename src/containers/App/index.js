@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import GlobalStyle from 'global-styles';
 
 import { AppLayout } from 'layouts/AppLayout';
-import { AuthLayout } from 'layouts/AuthLayout';
+import AdminLayout from 'layouts/AdminLayout';
 
 import Notify, { Notification } from 'components/Notification';
 
@@ -28,13 +28,13 @@ function App(props) {
         <meta name="description" content="Satu Data Portal" />
       </Helmet>
       <Switch>
-        <Route path="/dafter" component={DafterPage} />
-        <Route path="/auth">
-          <Switch>
-            <AuthLayout>
-              <Route path="/auth/login" component={LoginPage} />
-            </AuthLayout>
-          </Switch>
+        <Route path="/admin">
+          <AdminLayout>
+            <Switch>
+              <Route path="/admin/login" component={LoginPage} />
+              <Route path="/admin/dafter" component={DafterPage} />
+            </Switch>
+          </AdminLayout>
         </Route>
         <Route path="/">
           <AppLayout>

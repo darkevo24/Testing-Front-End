@@ -63,7 +63,7 @@ const Table = ({ columns, data, title, search, searchPlaceholder = 'Search', sea
           <Form.Control variant="normal" type="text" placeholder={searchPlaceholder} />
           <Search />
         </InputGroup>
-        <Button variant="info" className="ml-16 text-nowrap" onClick={onSearch}>
+        <Button variant="info" className="btn-rounded ml-16 text-nowrap" onClick={onSearch}>
           {searchButtonText}
         </Button>
       </div>

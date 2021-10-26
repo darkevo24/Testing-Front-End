@@ -51,3 +51,15 @@ $scrollbar: #D9DADF;
 // $warning:       $yellow !default;
 // $danger:        $red !default;
 // $dark:          $gray-900 !default;
+
+// Border
+//
+// Define border properties
+$border-color: $stroke !default;
+$border-radius: 0.25rem !default;
+$border-radius-lg: 0.3rem !default;
+$border-radius-sm: 0.25rem !default;
+$border-radius-xs: 0.125rem !default;
+$border-radius-circle: 50% !default;
+$border-radius-round: 50px !default;
+$border-width: 1px !default;

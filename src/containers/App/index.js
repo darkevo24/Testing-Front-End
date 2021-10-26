@@ -8,7 +8,7 @@
 
 import React, { lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import GlobalStyle from 'global-styles';
 
@@ -21,31 +21,29 @@ const DafterPage = lazy(() => import('containers/Dafter'));
 
 function App(props) {
   return (
-    <Router>
-      <div>
-        <Helmet titleTemplate="%s - Satu Data Portal" defaultTitle="Satu Data Portal">
-          <meta name="description" content="Satu Data Portal" />
-        </Helmet>
-        <Switch>
-          <Route path="/dafter" component={DafterPage} />
-          <Route path="/auth">
+    <div>
+      <Helmet titleTemplate="%s - Satu Data Portal" defaultTitle="Satu Data Portal">
+        <meta name="description" content="Satu Data Portal" />
+      </Helmet>
+      <Switch>
+        <Route path="/dafter" component={DafterPage} />
+        <Route path="/auth">
+          <Switch>
+            <AuthLayout>
+              <Route path="/auth/login" component={LoginPage} />
+            </AuthLayout>
+          </Switch>
+        </Route>
+        <Route path="/">
+          <AppLayout>
             <Switch>
-              <AuthLayout>
-                <Route path="/auth/login" component={LoginPage} />
-              </AuthLayout>
+              <Route exact path="/" component={BerandaPage} />
             </Switch>
-          </Route>
-          <Route path="/">
-            <AppLayout>
-              <Switch>
-                <Route exact path="/" component={BerandaPage} />
-              </Switch>
-            </AppLayout>
-          </Route>
-        </Switch>
-        <GlobalStyle />
-      </div>
-    </Router>
+          </AppLayout>
+        </Route>
+      </Switch>
+      <GlobalStyle />
+    </div>
   );
 }
 

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 const Box = styled.div`
   background: #ffffff;
   border-radius: 4px;
+  cursor: pointer;
 `;
 
 export const CardWithIconAndText = ({ icon, text, onClick }) => (

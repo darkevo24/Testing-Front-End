@@ -1,5 +1,5 @@
 import React from 'react';
-import cx from 'classname';
+import cx from 'classnames';
 import Button from 'react-bootstrap/Button';
 import { useHistory, useLocation } from 'react-router-dom';
 

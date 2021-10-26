@@ -1,12 +1,14 @@
 @import './variables';
 
-// All vender styles goes here
+// All vendor styles goes here
 @import './vendors/bootstrap';
 
 // All utility styles goes here
 @import './utilities/scrollbar';
 @import './utilities/spacing';
 @import './utilities/text';
+@import './utilities/background';
+@import './utilities/border';
 
 // All component styles goers here
 @import './components/button';

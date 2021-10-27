@@ -118,7 +118,7 @@ const Dafter = () => {
     },
   };
   return (
-    <Container fluid className="dafter-page">
+    <Container fluid className="dafter-page pb-100">
       <Row>
         <Col sm={{ span: 10, offset: 1 }} md={{ span: 8, offset: 2 }}>
           <Table {...tableConfig} />

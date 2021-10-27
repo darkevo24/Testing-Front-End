@@ -1,26 +1,21 @@
 import React, { lazy } from 'react';
-import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import AdminLayout from 'layouts/AdminLayout';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import AdminLayout, { PublicRoute, PrivateRoute } from 'layouts/AdminLayout';
+import lazily from 'utils/lazily';
 
-const LoginPage = lazy(() => import('containers/Login'));
+const { AdminLogin } = lazily(() => import('containers/Login'));
 const DafterPage = lazy(() => import('containers/Dafter'));
 
-function AdminRoutes(props) {
+function AdminRoutes() {
   return (
     <AdminLayout>
       <Switch>
-        <Route exact path="/admin/login" component={LoginPage} />
-        <Route exact path="/admin/dafter" component={DafterPage} />
+        <PublicRoute exact path="/admin/login" component={AdminLogin} />
+        <PrivateRoute exact path="/admin/dafter" component={DafterPage} />
         <Route exact path="/admin" render={() => <Redirect to="/admin/login" />} />
       </Switch>
     </AdminLayout>
   );
 }
 
-// eslint-disable-next-line no-empty-pattern
-const mapStateToProps = ({}) => {
-  return {};
-};
-
-export default withRouter(connect(mapStateToProps)(AdminRoutes));
+export default AdminRoutes;

@@ -10,7 +10,16 @@ import {
   PendukungSvg,
   PerlindungamSvg,
 } from 'assets/icons';
-import React from 'react';
+
+export const apiUrl = '/api';
+export const dataUrl = '/data';
+
+export const getApiEndpoint = (path) => `${apiUrl}/${path}`;
+export const getDataEndpoint = (path) => `${dataUrl}/${path}`;
+
+export const apiUrls = {
+  login: getApiEndpoint('login'),
+};
 
 export const TOPIC_LIST = [
   { title: 'Pertahanan dan Luar Negeri', items: ['Pertahanan', 'Luar Negeri'], icon: <EkonomiSvg /> },

@@ -18,6 +18,7 @@ export const loginUser = createAsyncThunk('login/login', async (credentials) => 
   const token = response.headers?.token;
   setCookie(cookieKeys.token, token);
   // TODO: make use of expiry details from decoded token.
+  // eslint-disable-next-line no-unused-vars
   const userDetails = jwtDecode(token);
   return { token };
 });

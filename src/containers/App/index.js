@@ -12,14 +12,10 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import GlobalStyle from 'global-styles';
 
-import { AppLayout } from 'layouts/AppLayout';
-import AdminLayout from 'layouts/AdminLayout';
-
 import Notify, { Notification } from 'components/Notification';
 
-const BerandaPage = lazy(() => import('containers/Beranda'));
-const LoginPage = lazy(() => import('containers/Login'));
-const DafterPage = lazy(() => import('containers/Dafter'));
+const AdminRoutes = lazy(() => import('./AdminRoutes'));
+const AppRoutes = lazy(() => import('./AppRoutes'));
 
 function App(props) {
   return (
@@ -28,21 +24,8 @@ function App(props) {
         <meta name="description" content="Satu Data Portal" />
       </Helmet>
       <Switch>
-        <Route path="/admin">
-          <AdminLayout>
-            <Switch>
-              <Route path="/admin/login" component={LoginPage} />
-              <Route path="/admin/dafter" component={DafterPage} />
-            </Switch>
-          </AdminLayout>
-        </Route>
-        <Route path="/">
-          <AppLayout>
-            <Switch>
-              <Route exact path="/" component={BerandaPage} />
-            </Switch>
-          </AppLayout>
-        </Route>
+        <Route path="/admin" component={AdminRoutes} />
+        <Route path="/" component={AppRoutes} />
       </Switch>
       <GlobalStyle />
       <Notification

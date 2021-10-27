@@ -8,7 +8,7 @@ import { Anchor } from 'components/Custom';
 import './header.scss';
 
 const TAB_LIST_1 = [
-  { title: 'Beranda', link: '/' },
+  { title: 'Beranda', link: '/home' },
   { title: 'Data Set', link: '/data-set' },
 ];
 const TAB_LIST_2 = [

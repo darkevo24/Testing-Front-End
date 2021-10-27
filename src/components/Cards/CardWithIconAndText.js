@@ -7,9 +7,10 @@ const Box = styled.div`
   cursor: pointer;
 `;
 
-export const CardWithIconAndText = ({ icon, text, onClick }) => (
+export const CardWithIconAndText = ({ item, onClick, id }) => (
   <Box
-    onClick={onClick}
+    key={id}
+    onClick={() => onClick(item)}
     style={{
       display: 'flex',
       flexDirection: 'column',
@@ -19,7 +20,7 @@ export const CardWithIconAndText = ({ icon, text, onClick }) => (
       width: '237px',
       height: '61px',
     }}>
-    <Box style={{ height: '16px', width: '16px', marginBottom: '5px' }}>{icon}</Box>
+    <Box style={{ height: '16px', width: '16px', marginBottom: '5px' }}>{item.icon}</Box>
     <Box
       style={{
         color: '#515154',
@@ -29,7 +30,7 @@ export const CardWithIconAndText = ({ icon, text, onClick }) => (
         lineHeight: '17px',
         margin: '10px 0px',
       }}>
-      {text}
+      {item.title}
     </Box>
   </Box>
 );

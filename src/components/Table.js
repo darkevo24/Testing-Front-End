@@ -10,7 +10,16 @@ import bn from 'utils/bemNames';
 
 const bem = bn('table');
 
-const Table = ({ columns, data, title, search, searchPlaceholder = 'Search', searchButtonText = 'Search', onSearch }) => {
+const Table = ({
+  columns,
+  data,
+  title,
+  search,
+  searchPlaceholder = 'Search',
+  searchButtonText = 'Search',
+  onSearch,
+  showHeader = true,
+}) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -57,7 +66,7 @@ const Table = ({ columns, data, title, search, searchPlaceholder = 'Search', sea
 
   return (
     <div className={bem.b()}>
-      <div className={bem.e('header')}>{title}</div>
+      {title ? <div className={bem.e('header')}>{title}</div> : null}
       <div className="d-flex justify-content-between align-items-center mb-40">
         <InputGroup>
           <Form.Control variant="normal" type="text" placeholder={searchPlaceholder} />
@@ -69,21 +78,23 @@ const Table = ({ columns, data, title, search, searchPlaceholder = 'Search', sea
       </div>
       <div className={bem.e('table-wrapper')}>
         <RBTable bordered={false} {...getTableProps()}>
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  // Add the sorting props to control sorting. For this example
-                  // we can add them into the header props
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    {column.render('Header')}
-                    {/* Add a sort direction indicator */}
-                    <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
+          {showHeader ? (
+            <thead>
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    // Add the sorting props to control sorting. For this example
+                    // we can add them into the header props
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                      {column.render('Header')}
+                      {/* Add a sort direction indicator */}
+                      <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+          ) : null}
           <tbody {...getTableBodyProps()}>
             {page.map((row, i) => {
               prepareRow(row);

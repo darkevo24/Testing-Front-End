@@ -31,6 +31,7 @@ $border-color: $stroke;
   --white: #ffffff;
   --black: #333333;
   --black-dark: #000000;
+  --black-dark-10: #2D2627;
   --red: #FF0000;
   --red-light: #FFEEEE;
   --red-bg: rgba(255, 0, 0, 0.08);
@@ -41,6 +42,7 @@ $border-color: $stroke;
   --secondary: #F5F6FA;
   --blue: #007AFF;
   --blue-link: #2F80ED;
+  --blue-dark: #0066CC;
 
   --primary: var(--red);
   --light: var(--gray);

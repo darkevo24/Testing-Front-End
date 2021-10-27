@@ -1,16 +1,9 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+import chunk from 'lodash/chunk';
 import styled from 'styled-components';
-import { CardWithIconAndText } from '../../components/Cards/CardWithIconAndText';
-import { ReactComponent as EkonomiSvg } from 'assets/ekonomi.svg';
-import { ReactComponent as LingkunganSvg } from 'assets/lingkungan.svg';
-import { ReactComponent as Bundaya } from 'assets/budaya.svg';
-import { ReactComponent as PerlindungamSvg } from 'assets/perlindungam.svg';
-import { ReactComponent as PendidikanSvg } from 'assets/pendidikan.svg';
-import { ReactComponent as PemerintahanSvg } from 'assets/pemerintahan.svg';
-import { ReactComponent as PendukungSvg } from 'assets/pendukung.svg';
-import { ReactComponent as KetertibanSvg } from 'assets/ketertiban.svg';
-import { ReactComponent as PembangunanSvg } from 'assets/pembangunan.svg';
-import { ReactComponent as PertahananSvg } from 'assets/pertahanan.svg';
+import { CardWithIconAndText } from 'components/Cards/CardWithIconAndText';
+import { TOPIC_LIST } from 'utils/constants';
 
 const Box = styled.div`
   margin-top: 0;
@@ -39,24 +32,29 @@ const BoxFlex = styled.div`
   display: flex;
 `;
 
-export const Topic = () => (
-  <BoxFlex style={{ margin: '44px 0' }}>
-    <BoxTopic>Topic</BoxTopic>
-    <Box>
-      <BoxFlex>
-        <CardWithIconAndText icon={<EkonomiSvg />} text={'Ekonomi dan Industri'} />
-        <CardWithIconAndText icon={<LingkunganSvg />} text={'Lingkungan dabn SDA'} />
-        <CardWithIconAndText icon={<Bundaya />} text={'Bundaya dan Agama'} />
-        <CardWithIconAndText icon={<PerlindungamSvg />} text={'Perlindungan Sosial & Kesehtan'} />
-        <CardWithIconAndText icon={<PembangunanSvg />} text={'Pembangunan Daerah'} />
-      </BoxFlex>
-      <BoxFlex>
-        <CardWithIconAndText icon={<PendidikanSvg />} text={'Pendidikan dan Tenaga Kerja'} />
-        <CardWithIconAndText icon={<PemerintahanSvg />} text={'Pemerintahan Umum'} />
-        <CardWithIconAndText icon={<PendukungSvg />} text={'Pendukung Umum'} />
-        <CardWithIconAndText icon={<KetertibanSvg />} text={'Ketertiban Umum dan Keselamantan'} />
-        <CardWithIconAndText icon={<PertahananSvg />} text={'Pertahanan dan Luar Negeri'} />
-      </BoxFlex>
-    </Box>
-  </BoxFlex>
-);
+export const Topic = () => {
+  const list = chunk(TOPIC_LIST, 5);
+  const history = useHistory();
+
+  const handleGoNext = (item) => {
+    history.push({
+      pathname: '/topic-detail',
+      state: item.title,
+    });
+  };
+
+  return (
+    <BoxFlex style={{ margin: '44px 0' }}>
+      <BoxTopic>Topic</BoxTopic>
+      <Box>
+        {list.map((subList, index) => (
+          <BoxFlex key={index}>
+            {subList.map((item, itemIndex) => (
+              <CardWithIconAndText item={item} onClick={handleGoNext} id={index + 'card' + itemIndex} />
+            ))}
+          </BoxFlex>
+        ))}
+      </Box>
+    </BoxFlex>
+  );
+};

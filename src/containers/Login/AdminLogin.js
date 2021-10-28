@@ -2,10 +2,11 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import Input from 'components/Input';
 import { loginUser } from './reducer';
 
 import Logo from 'assets/logo-large.png';
@@ -29,7 +30,6 @@ const AdminLogin = () => {
 
   const { error, loading } = useSelector((state) => state.auth);
 
-  // TODO: handle actual submit of the form
   const onSubmit = (data) => dispatch(loginUser(data));
 
   return (
@@ -39,24 +39,26 @@ const AdminLogin = () => {
           <img className="logo align-self-center" src={Logo} alt="logo" />
           <div className="sdp-heading my-4">Sign In!</div>
           <Form onSubmit={handleSubmit(onSubmit)} noValidate>
-            <Controller
+            <Input
               name="email"
               control={control}
               rules={{ required: true }}
-              render={({ field }) => <Form.Control variant="floating" placeholder="Email Address" type="email" {...field} />}
+              variant="floating"
+              placeholder="Email Address"
+              type="email"
+              error={errors.email?.message}
             />
-            <div className="sdp-error">{errors.email?.message}</div>
-            <Controller
+            <Input
               name="password"
               control={control}
               rules={{ required: true }}
-              render={({ field }) => (
-                <Form.Control variant="floating" type="password" placeholder="Password" className="mt-4" {...field} />
-              )}
+              variant="floating"
+              placeholder="password"
+              type="password"
+              error={errors.password?.message}
+              className="mt-4"
             />
-            <div className="sdp-error">{errors.password?.message}</div>
             <div className="sdp-error">{error}</div>
-
             <Button disabled={loading} type="submit" className="mt-48 px-32 float-end fw-bold">
               Login
             </Button>

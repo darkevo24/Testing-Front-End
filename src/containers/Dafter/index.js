@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Modal from 'components/Modal';
 import Notification from 'components/Notification';
 import Table from 'components/Table';
-import makeData from 'utils/makeData';
+import { makeData } from 'utils/dataConfig/dafter';
 import DafterForm, { submitDafterForm } from './DafterForm';
 
 const Dafter = () => {

@@ -1,4 +1,4 @@
-const instansiData = [
+export const instansiData = [
   'Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi',
   'Kementerian Pertanian',
   'Kebudayaan',
@@ -6,7 +6,7 @@ const instansiData = [
   'Dan Teknologi',
 ];
 
-const nameData = [
+export const nameData = [
   'Pendidikan Kecakapan Kerja Unggulan (PKKU)',
   'Rencana Definitif Kebutuhan Kelompok (E-RDKK)',
   'Calon Petani Calon Lapangan (CPCL)',
@@ -14,9 +14,9 @@ const nameData = [
   'Lahan Pertanian Pangan Berkelanjutan (LP2B)',
 ];
 
-const konsepData = ['PKKU', 'RDKK', 'CPCL', 'CPCL sub Sektor Perkebunan', 'LP2B'];
+export const konsepData = ['PKKU', 'RDKK', 'CPCL', 'CPCL sub Sektor Perkebunan', 'LP2B'];
 
-const definisiData = [
+export const definisiData = [
   'Pendidikan Kecakapan Kerja unggulan (PKKU) adalah program layanan pendidikan dan pelatihan berorie',
   'RDKK merupakan alat perumusan untuk memenuhi kebutuhan sarana produksi dan alat mesin pertanian, baik yang berdasarkan kredit/permodalan usahatani bagi anggota poktan yang memerlukan maupun dari swadana petani',
   'CPCL adalah calon petani penerima bantuan dan calon lokasi lahan yang akan menerima bantuan pemerintah',
@@ -24,7 +24,7 @@ const definisiData = [
   'Lahan Pertanian Pangan Berkelanjutan adalah bidang lahan pertanian yang ditetapkan untuk dilindungi dan dikembangkan secara konsisten guna menghasilkan pangan pokok bagi kemandirian, ketahanan, dan kedaulatan pangan nasional',
 ];
 
-const sumberData = [
+export const sumberData = [
   'Petunjuk Teknis Pendidikan Kecapaan Kerja Unggulan (PKKU) dan Pendidikan Kecakapan Kewirausa',
   'Peraturan Menteri Pertanian Nomor 82/Permentan/OT.140/8/2013',
   'Keputusan Direktur Jenderal Tanaman Pangan Nomor 218/HK/310/12/2029 tentang Petunjuk Teknis Bantuan Pemerintah Program Peningkatan Produksi, Produktivitas dan Mutu Hasil Tanaman Pangan Tahun Anggaran 2020',
@@ -32,11 +32,11 @@ const sumberData = [
   'Peraturan Bupati Agam Nomor 12 Tahun 2020 tentang Perlindungan Lahan Pertanian Pangan Berkelanjutan',
 ];
 
-const jadwalData = ['Tahunan', 'Harian', 'Tahunan', 'Harian', 'Tahunan'];
+export const jadwalData = ['Tahunan', 'Harian', 'Tahunan', 'Harian', 'Tahunan'];
 
-const dibuatData = ['24/04/2018', '16/08/2005', '09/11/2019', '12/01/2011', '30/08/2017'];
-const diperData = ['14/08/2021', '24/02/2015', '13/12/2020', '22/04/2016', '05/00/2019'];
-const produsenData = [
+export const dibuatData = ['24/04/2018', '16/08/2005', '09/11/2019', '12/01/2011', '30/08/2017'];
+export const diperData = ['14/08/2021', '24/02/2015', '13/12/2020', '22/04/2016', '05/00/2019'];
+export const produsenData = [
   'Direktorat Jendral Pendidikan & Kebudayaan',
   'Direktorat Jenderal Prasarana dan Sarana Pertanian',
   'Direktorat Jenderal Tanaman Pangan',
@@ -44,9 +44,9 @@ const produsenData = [
   'Direktorat Jenderal Tanaman Pangan',
 ];
 
-const indukData = ['PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL'];
+export const indukData = ['PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL'];
 
-const formatData = ['csv;xlsx;', 'xlsx;', 'text;plain;', 'csv;xlsx;', 'csv;'];
+export const formatData = ['csv;xlsx;', 'xlsx;', 'text;plain;', 'csv;xlsx;', 'csv;'];
 
 const getRandomIndex = () => Math.floor(Math.random() * instansiData.length);
 
@@ -77,7 +77,7 @@ const newRow = () => {
  * @param {Number} length - Length of the data to be generated
  * @returns - Random data generated based on designs
  */
-export default function makeData(length) {
+export function makeData(length) {
   const records = Array.from({ length });
   return records.map(newRow);
 }

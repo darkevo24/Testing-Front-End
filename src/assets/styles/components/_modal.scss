@@ -26,6 +26,12 @@
     color: $black;
     font-size: 15px;
     font-weight: 600;
+    line-height: normal;
+  }
+  &__subtitle {
+    color: $gray;
+    font-size: 12px;
+    line-height: normal;
   }
   .modal {
     &-header {

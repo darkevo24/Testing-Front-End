@@ -22,3 +22,11 @@ export const getQueryString = (params) => {
     .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
     .join('&');
 };
+
+export const submitForm = (id) => () => {
+  const formNode = document.getElementById(id);
+  if (formNode) {
+    const submitButton = formNode.querySelector('button[type="submit"]');
+    submitButton.click();
+  }
+};

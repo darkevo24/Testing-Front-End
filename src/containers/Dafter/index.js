@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -7,18 +7,21 @@ import Modal from 'components/Modal';
 import Notification from 'components/Notification';
 import Table from 'components/Table';
 import makeData from 'utils/makeData';
+import DafterForm, { submitDafterForm } from './DafterForm';
 
 const Dafter = () => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [recordToDelete, setRecordToDelete] = useState(null);
+  const [isDafterFormVisible, setIsDafterFormVisible] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
+  const [dafterFormRef, setDafterFormRef] = useState(null);
 
   const showDeleteModal = (data) => {
-    setRecordToDelete(data);
+    setSelectedRecord(data);
     setIsDeleteModalVisible(true);
   };
 
   const hideDeleteModal = () => {
-    setRecordToDelete(null);
+    setSelectedRecord(null);
     setIsDeleteModalVisible(false);
   };
 
@@ -28,11 +31,26 @@ const Dafter = () => {
     Notification.show({
       message: (
         <div>
-          Daftar <span className="fw-bold">{recordToDelete.name}</span> Berhasil Ditambahkan
+          Daftar <span className="fw-bold">{selectedRecord.name}</span> Berhasil Ditambahkan
         </div>
       ),
       icon: 'check',
     });
+  };
+
+  const showDafterFormModal = (data) => {
+    setSelectedRecord(data);
+    setIsDafterFormVisible(true);
+  };
+
+  const hideDafterFormModal = () => {
+    setSelectedRecord(null);
+    setIsDafterFormVisible(false);
+  };
+
+  const handleDafterFromSubmit = (data) => {
+    const rr = dafterFormRef;
+    debugger;
   };
 
   const columns = useMemo(
@@ -113,9 +131,7 @@ const Dafter = () => {
     search: true,
     searchPlaceholder: 'Cari Data',
     searchButtonText: 'Tambah Data',
-    onSearch: (searchText) => {
-      // Todo: handle Search
-    },
+    onSearch: showDafterFormModal,
   };
   return (
     <Container fluid className="dafter-page pb-100">
@@ -134,6 +150,19 @@ const Dafter = () => {
           { text: 'Hapus', onClick: handleDelete },
         ]}>
         Apakah anda yakin untuk menghapus <span className="fw-bold">Data UMKM?</span>
+      </Modal>
+      <Modal
+        size="lg"
+        visible={isDafterFormVisible}
+        onClose={hideDafterFormModal}
+        icon="info"
+        title={selectedRecord ? 'Edit Data' : 'Tambah Data'}
+        subtitle="Isi form dibawah untuk menambah data"
+        actions={[
+          { variant: 'secondary', text: 'Batal', onClick: hideDafterFormModal },
+          { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDafterForm },
+        ]}>
+        <DafterForm data={selectedRecord} onSubmit={handleDafterFromSubmit} />
       </Modal>
     </Container>
   );

@@ -14,3 +14,5 @@ export const Breadcrumbs = ({ breadcrumbsList }) => {
     </Breadcrumb>
   );
 };
+
+export default Breadcrumbs;

@@ -161,7 +161,7 @@ const Dafter = () => {
         size="lg"
         visible={isDafterFormVisible}
         onClose={hideDafterFormModal}
-        icon="info"
+        icon="splitCircle"
         title={selectedRecord ? 'Edit Data' : 'Tambah Data'}
         subtitle="Isi form dibawah untuk menambah data"
         actions={[

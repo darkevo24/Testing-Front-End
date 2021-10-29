@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Dropdown, Input } from 'components';
-import { instansiData, jadwalData } from 'utils/dataConfig/dafter';
+import { formatData, instansiData, jadwalData, nameData } from 'utils/dataConfig/dafter';
 import { submitForm } from 'utils/helper';
 
 export const daftarFormId = 'dafter-form-id';
@@ -28,6 +28,9 @@ const DafterForm = ({ data, onSubmit }) => {
     handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      ...data,
+    },
   });
 
   return (
@@ -86,6 +89,43 @@ const DafterForm = ({ data, onSubmit }) => {
             placeholder="Select"
             options={jadwalData.map((jadwal) => ({ value: jadwal, label: jadwal }))}
             error={errors.jadwal?.message}
+          />
+          {/* TODO: add date pickers for ::dibuat // ::diper */}
+          <Input
+            group
+            label="Produsen Data"
+            name="produsen"
+            control={control}
+            rules={{ required: true }}
+            error={errors.produsen?.message}
+          />
+          <Dropdown
+            group
+            label="Data Induk"
+            name="induk"
+            control={control}
+            rules={{ required: true }}
+            placeholder="Select"
+            options={nameData.map((name) => ({ value: name, label: name }))}
+            error={errors.induk?.message}
+          />
+          <Dropdown
+            group
+            label="Format"
+            name="format"
+            control={control}
+            rules={{ required: true }}
+            placeholder="Select"
+            options={formatData.map((format) => ({ value: format, label: format }))}
+            error={errors.format?.message}
+          />
+          <Input
+            group
+            label="Link Akses"
+            name="link"
+            control={control}
+            rules={{ required: true }}
+            error={errors.link?.message}
           />
           <Button className="invisible" type="submit" />
         </Form>

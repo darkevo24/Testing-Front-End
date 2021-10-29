@@ -9,7 +9,7 @@ export const Input = ({ name, control, rules, error, label, group, groupClass = 
         name={name}
         control={control}
         rules={rules}
-        render={({ field }) => <Form.Control maxLength={200} {...rest} {...field} />}
+        render={({ field }) => <Form.Control maxLength={rest.as === 'textarea' ? 800 : 200} {...rest} {...field} />}
       />
       <div className="sdp-error">{error}</div>
     </>

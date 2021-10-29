@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -13,7 +13,6 @@ const Dafter = () => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDafterFormVisible, setIsDafterFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
-  const [dafterFormRef, setDafterFormRef] = useState(null);
 
   const showDeleteModal = (data) => {
     setSelectedRecord(data);
@@ -49,7 +48,6 @@ const Dafter = () => {
   };
 
   const handleDafterFromSubmit = (data) => {
-    const rr = dafterFormRef;
     debugger;
   };
 
@@ -109,9 +107,7 @@ const Dafter = () => {
         actions: [
           {
             type: 'edit',
-            callback: () => {
-              // TODO: handle edit callback
-            },
+            callback: showDafterFormModal,
           },
           {
             type: 'trash',

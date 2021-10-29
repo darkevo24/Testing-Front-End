@@ -1,9 +1,13 @@
 export const instansiData = [
+  'Kementrian Pertanian',
   'Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi',
-  'Kementerian Pertanian',
-  'Kebudayaan',
-  'Riset',
-  'Dan Teknologi',
+  'Kementerian Sosial',
+  'Kementerian Energi dan Sumber Daya Mineral',
+  'Kementerian Pekerjaan Umum dan Perumahan Rakyat',
+  'Kementerian Kelautan dan Perikanan',
+  'Kementerian Koperasi dan Usaha Kecil Menengah',
+  'Kementerian Pemuda dan Olahraga',
+  'Kementerian Koordinator Bidang Perekonomian',
 ];
 
 export const nameData = [
@@ -32,7 +36,17 @@ export const sumberData = [
   'Peraturan Bupati Agam Nomor 12 Tahun 2020 tentang Perlindungan Lahan Pertanian Pangan Berkelanjutan',
 ];
 
-export const jadwalData = ['Tahunan', 'Harian', 'Tahunan', 'Harian', 'Tahunan'];
+export const jadwalData = [
+  'Harian',
+  'Mingguan',
+  'Bulanan',
+  'Triwulanan',
+  'Empat Bulanan',
+  'Semesteran',
+  'Tahunan',
+  'Dua Tahunan',
+  'Ad - hoc',
+];
 
 export const dibuatData = ['24/04/2018', '16/08/2005', '09/11/2019', '12/01/2011', '30/08/2017'];
 export const diperData = ['14/08/2021', '24/02/2015', '13/12/2020', '22/04/2016', '05/00/2019'];
@@ -46,9 +60,9 @@ export const produsenData = [
 
 export const indukData = ['PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL'];
 
-export const formatData = ['csv;xlsx;', 'xlsx;', 'text;plain;', 'csv;xlsx;', 'csv;'];
+export const formatData = ['csv', 'xlsx', 'pdf', 'png/jpg/jpeg', 'docx', 'json', 'xml'];
 
-const getRandomIndex = () => Math.floor(Math.random() * instansiData.length);
+const getRandomIndex = () => Math.floor(Math.random() * 5);
 
 /**
  * Generates a random row based on predefined data

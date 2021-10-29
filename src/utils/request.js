@@ -42,6 +42,7 @@ async function parseResponse(response) {
     });
     return { headers: responseHeaders, data };
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log('error inn parsing response for: ', response.url);
   }
   return null;

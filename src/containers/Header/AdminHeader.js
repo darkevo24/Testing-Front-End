@@ -9,6 +9,7 @@ export const AdminHeader = () => {
   const dispatch = useDispatch();
   const handleLogout = useCallback(() => {
     dispatch(logout());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <nav className="sdp-header navbar navbar-light border-bottom">

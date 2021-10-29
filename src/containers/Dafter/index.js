@@ -48,7 +48,7 @@ const Dafter = () => {
   };
 
   const handleDafterFromSubmit = (data) => {
-    debugger;
+    // debugger;
   };
 
   const columns = useMemo(

@@ -58,10 +58,18 @@
 	border-radius: 32px !important;
 }
 
+.br-40 {
+  border-radius: 40px !important;
+}
+
 .border-gray-stroke {
 	border: 1px solid $stroke;
 }
 
 .border-top-gray-stroke {
   border-top: 1px solid $stroke;
+}
+
+.border-bottom-gray-stroke {
+  border-bottom: 1px solid $stroke;
 }

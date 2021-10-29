@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
-import cx from 'classname';
+import cx from 'classnames';
 import { useLocation } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 import { ReactComponent as DropDownArrawSvg } from 'assets/drop-down-arraw.svg';

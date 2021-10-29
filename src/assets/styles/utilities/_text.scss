@@ -17,3 +17,19 @@ a {
     color: $blue;
   }
 }
+
+.sdp-text-green {
+  color: var(--green);
+}
+
+.sdp-text-blue {
+  color: var(--blue-light);
+}
+
+.sdp-text-grey {
+  color: var(--gray-dark);
+}
+
+.sdp-text-disable {
+  color: var(--gray);
+}

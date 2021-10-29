@@ -8,6 +8,7 @@ import { ReactComponent as SearchSvg } from 'assets/search.svg';
 import { TOPIC_LIST } from 'utils/constants';
 import { Breadcrumbs } from 'components/Breadcrumb';
 import Table from 'components/Table';
+import { Tags } from 'components/Tags';
 
 const tempData = [
   {
@@ -18,10 +19,22 @@ const tempData = [
     totalFiles: 32,
     linkTitle: 'Pemerintah Kabupaten Banjar Negara',
     date: moment().format('DD MMMM YYYY'),
-    tags: ['csv', 'jpg', 'png', 'pdf', 'wms'],
+    tags: ['csv', 'json', 'wms'],
   },
 ];
 
+const getTextClass = (type) => {
+  switch (type) {
+    case 'csv':
+      return 'sdp-text-green';
+    case 'json':
+      return 'sdp-text-grey';
+    case 'wms':
+      return 'sdp-text-blue';
+    default:
+      return 'sdp-text-disable';
+  }
+};
 const getElem = (data) => {
   const cards = [];
   data.forEach((item) => {
@@ -36,8 +49,13 @@ const getElem = (data) => {
             <div className="sdp-item-download">{item.totalDownloads} Downloads</div>
           </div>
           <div className="sdp-card-right-section d-flex flex-column justify-content-between">
-            <div className="sdp-right-wrapper-top">
+            <div className="d-flex align-items-center sdp-right-wrapper-top">
               <div className="sdp-item-file">{item.totalFiles} Files</div>
+              <div className="d-flex">
+                {item.tags.map((tag) => (
+                  <Tags key={tag} text={tag} colorClass={getTextClass(tag)} />
+                ))}
+              </div>
             </div>
             <div className="sdp-right-wrapper-bottom d-flex">
               <div className="sdp-item-link-title mr-12">{item.linkTitle}</div>

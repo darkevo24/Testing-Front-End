@@ -30,7 +30,7 @@ const DataVariable = () => {
     Notification.show({
       message: (
         <div>
-          Daftar <span className="fw-bold">{selectedRecord.name}</span> Berhasil Dihapus
+          Variabel <span className="fw-bold">{selectedRecord.name}</span> Berhasil Dihapus
         </div>
       ),
       icon: 'check',

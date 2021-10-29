@@ -19,6 +19,7 @@ const Table = ({
   searchButtonText = 'Search',
   onSearch,
   showHeader = true,
+  variant = 'default',
 }) => {
   const {
     getTableProps,
@@ -65,7 +66,7 @@ const Table = ({
   }
 
   return (
-    <div className={bem.b()}>
+    <div className={cx(bem.b(), bem.m(variant))}>
       {title ? <div className={bem.e('header')}>{title}</div> : null}
       <div className="d-flex justify-content-between align-items-center mb-40">
         <InputGroup>

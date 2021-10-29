@@ -19,6 +19,18 @@
     border-bottom-width: 1px;
     border-bottom-color: $stroke !important;
   }
+  &--light {
+    table.table {
+      thead {
+        tr {
+          background-color: $white !important;
+          th {
+            border-bottom-color: $gray-dark !important;
+          }
+        }
+      }
+    }
+  }
   thead {
     tr {
       background-color: $light-bg;

@@ -7,7 +7,10 @@ export const Breadcrumbs = ({ breadcrumbsList }) => {
   return (
     <Breadcrumb className="cursor-pointer w-100 d-flex align-items-center bg-gray pt-12 pl-100">
       {breadcrumbsList.map((item) => (
-        <Breadcrumb.Item onClick={() => !item?.isActive && history.push(item.path)} active={item.isActive}>
+        <Breadcrumb.Item
+          key={item.path || item.label}
+          onClick={() => !item?.isActive && history.push(item.path)}
+          active={item.isActive}>
           {item.label}
         </Breadcrumb.Item>
       ))}

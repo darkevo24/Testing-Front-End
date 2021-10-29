@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as CircleSplitSvg } from 'assets/circle-split.svg';
 import { ReactComponent as SearchSvg } from 'assets/search.svg';
-import { Anchor } from 'components/Custom';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 const Box = styled.div`
@@ -56,7 +55,7 @@ export const Search = () => {
 
         <Dropdown.Menu>
           {List.map((item) => (
-            <Dropdown.Item>{item}</Dropdown.Item>
+            <Dropdown.Item key={item}>{item}</Dropdown.Item>
           ))}
         </Dropdown.Menu>
       </Dropdown>

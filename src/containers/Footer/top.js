@@ -130,11 +130,13 @@ export const Top = () => (
           </FooterLink>
         </Column>
 
-        {List.map((item) => (
-          <Column>
+        {List.map((item, index) => (
+          <Column key={index + item.title}>
             <Titles>{item.title}</Titles>
             {item.linkList.map((linkItem) => (
-              <FooterLink href="#">{linkItem.title}</FooterLink>
+              <FooterLink href="#" key={linkItem.title}>
+                {linkItem.title}
+              </FooterLink>
             ))}
           </Column>
         ))}

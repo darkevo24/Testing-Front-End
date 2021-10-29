@@ -49,9 +49,10 @@ export const Topic = () => {
       <Box>
         {list.map((subList, index) => (
           <BoxFlex key={index}>
-            {subList.map((item, itemIndex) => (
-              <CardWithIconAndText item={item} onClick={handleGoNext} id={index + 'card' + itemIndex} />
-            ))}
+            {subList.map((item, itemIndex) => {
+              const id = index + 'card' + itemIndex;
+              return <CardWithIconAndText item={item} onClick={handleGoNext} key={id} id={id} />;
+            })}
           </BoxFlex>
         ))}
       </Box>

@@ -1,4 +1,4 @@
-import { getCookieByName } from '../getCookie';
+import { getCookieByName } from '../cookie';
 import Cookies from 'js-cookie';
 
 describe('utils/getCookie', () => {

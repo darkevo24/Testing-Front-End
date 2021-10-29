@@ -2,7 +2,7 @@ import { forwardRef, useImperativeHandle, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cx from 'classnames';
 import { Close, alertIcons } from '../Icons';
-import { setNotificationOptions } from '../../containers/App/reducer';
+import { setNotificationOptions } from 'containers/App/reducer';
 
 import bn from 'utils/bemNames';
 

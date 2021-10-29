@@ -7,15 +7,18 @@ import bn from 'utils/bemNames';
 
 const bem = bn('modal');
 
-const Modal = ({ actions, visible, children, onClose, icon, title = 'Modal title' }) => {
+const Modal = ({ actions, size, visible, children, onClose, icon, title = 'Modal title', subtitle }) => {
   const Icon = modalIcons[icon];
   return (
-    <RBModal show={visible} onHide={onClose} backdrop backdropClassName={bem.e('backdrop')} className={bem.b()}>
+    <RBModal show={visible} size={size} onHide={onClose} backdrop backdropClassName={bem.e('backdrop')} className={bem.b()}>
       <div className={bem.e('section')}>
         <RBModal.Header>
           <div className={bem.e('header-wrapper')}>
             {Icon && <Icon />}
-            <div className={bem.e('title')}>{title}</div>
+            <div className={bem.e('title-wrapper')}>
+              <div className={bem.e('title')}>{title}</div>
+              {subtitle && <div className={bem.e('subtitle')}>{subtitle}</div>}
+            </div>
           </div>
           <div className="cursor-pointer p-1" onClick={onClose}>
             <Close />

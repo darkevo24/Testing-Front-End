@@ -3,12 +3,19 @@ import { routerMiddleware } from 'connected-react-router';
 
 import createReducer from './reducers';
 
+const rootReducer = (state, action) => {
+  if (action.type === 'LOGIN_REDUCER/logout') {
+    state = undefined;
+  }
+  return createReducer()(state, action);
+};
+
 export function configureAppStore(initialState = {}, history) {
   // Create the store with saga middleware
   const middlewares = [routerMiddleware(history)];
 
   const store = configureStore({
-    reducer: createReducer(),
+    reducer: rootReducer,
     preloadedState: initialState,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

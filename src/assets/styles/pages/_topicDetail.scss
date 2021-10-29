@@ -17,7 +17,7 @@
   .sdp-item-wrapper {
     .menu-item {
       &:hover {
-        border-radius: 4px;
+        border-radius: $border-radius;
         background: var(--gray-bg);
       }
     }

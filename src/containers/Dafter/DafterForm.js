@@ -12,12 +12,17 @@ export const daftarFormId = 'dafter-form-id';
 export const submitDafterForm = submitForm(daftarFormId);
 const schema = yup
   .object({
-    instansi: yup.string().required(),
+    instansi: yup.mixed().required(),
     name: yup.string().required(),
     konsep: yup.string().required(),
     definisi: yup.string().required(),
     sumber: yup.string().required(),
-    jadwal: yup.string().required(),
+    jadwal: yup.mixed().required(),
+    // TODO: add validations for dibuat and diper
+    produsen: yup.string().required(),
+    induk: yup.mixed().required(),
+    format: yup.mixed().required(),
+    link: yup.string().required(),
   })
   .required();
 

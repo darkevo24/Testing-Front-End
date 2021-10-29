@@ -55,9 +55,9 @@ export const Dropdown = ({
           }
           return (
             <RBDropdownButton title={title} variant={variant} {...rest} {...field}>
-              {options.map((option) => (
+              {options.map((option, index) => (
                 <RBDropdown.Item
-                  key={option.value}
+                  key={`${index}-${option.value}`}
                   onClick={handleClick(option)}
                   active={selectedOption?.value === option.value}>
                   {option.label}

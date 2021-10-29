@@ -1,14 +1,39 @@
+import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import RBTable from 'react-bootstrap/Table';
 import cx from 'classnames';
-import { usePagination, useSortBy, useTable } from 'react-table';
+import { useAsyncDebounce, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 
 import { LeftChevron, RightChevron, Search, actionIcons } from 'components/Icons';
 import bn from 'utils/bemNames';
 
 const bem = bn('table');
+
+const FilterSearchInput = ({ searchPlaceholder = 'Search', preGlobalFilteredRows, globalFilter, setGlobalFilter }) => {
+  const [value, setValue] = useState(globalFilter);
+  const onSearchChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
+  const handleSearchChange = ({ target: { value = '' } = {} }) => {
+    setValue(value);
+    onSearchChange(value);
+  };
+
+  return (
+    <InputGroup>
+      <Form.Control
+        variant="normal"
+        type="text"
+        placeholder={searchPlaceholder}
+        value={value}
+        onChange={handleSearchChange}
+      />
+      <Search />
+    </InputGroup>
+  );
+};
 
 const Table = ({
   columns,
@@ -35,12 +60,15 @@ const Table = ({
     nextPage,
     previousPage,
     // setPageSize,
-    state: { pageIndex /* pageSize */ },
+    preGlobalFilteredRows,
+    setGlobalFilter,
+    state: { globalFilter, pageIndex /* pageSize */ },
   } = useTable(
     {
       columns,
       data,
     },
+    useGlobalFilter,
     useSortBy,
     usePagination,
   );
@@ -69,10 +97,12 @@ const Table = ({
     <div className={cx(bem.b(), bem.m(variant))}>
       {title ? <div className={bem.e('header')}>{title}</div> : null}
       <div className="d-flex justify-content-between align-items-center mb-40">
-        <InputGroup>
-          <Form.Control variant="normal" type="text" placeholder={searchPlaceholder} />
-          <Search />
-        </InputGroup>
+        <FilterSearchInput
+          searchPlaceholder={searchPlaceholder}
+          preGlobalFilteredRows={preGlobalFilteredRows}
+          globalFilter={globalFilter}
+          setGlobalFilter={setGlobalFilter}
+        />
         <Button variant="info" className="btn-rounded ml-16 text-nowrap" onClick={onSearch}>
           {searchButtonText}
         </Button>

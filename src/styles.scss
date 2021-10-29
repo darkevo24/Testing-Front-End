@@ -1,6 +1,8 @@
 @import 'assets/styles/global';
 
 #root {
+  overflow: overlay;
+  overflow-x: hidden;
   &> div,
   .auth-container,
   .app-container {

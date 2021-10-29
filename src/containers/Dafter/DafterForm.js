@@ -113,6 +113,7 @@ const DafterForm = ({ data, onSubmit }) => {
             group
             label="Format"
             name="format"
+            multi
             control={control}
             rules={{ required: true }}
             placeholder="Select"

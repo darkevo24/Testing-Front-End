@@ -34,4 +34,9 @@
   &-menu.show {
     width: 100%;
   }
+  &-item {
+    svg {
+      margin-left: 4px;
+    }
+  }
 }

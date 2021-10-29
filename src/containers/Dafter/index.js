@@ -30,7 +30,7 @@ const Dafter = () => {
     Notification.show({
       message: (
         <div>
-          Daftar <span className="fw-bold">{selectedRecord.name}</span> Berhasil Ditambahkan
+          Daftar <span className="fw-bold">{selectedRecord.name}</span> Berhasil Dihapus
         </div>
       ),
       icon: 'check',
@@ -48,7 +48,17 @@ const Dafter = () => {
   };
 
   const handleDafterFromSubmit = (data) => {
-    // debugger;
+    // TODO: handle the data posted to server
+    hideDafterFormModal();
+    Notification.show({
+      type: 'secondary',
+      message: (
+        <div>
+          Daftar <span className="fw-bold">{data.name}</span> Berhasil Ditambahkan
+        </div>
+      ),
+      icon: 'check',
+    });
   };
 
   const columns = useMemo(

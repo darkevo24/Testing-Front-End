@@ -24,6 +24,9 @@
   &__warning {
     background-color: $red-light;
   }
+  &__secondary {
+    background-color: $gray-bg;
+  }
   &__message {
     color: $black-dark;
     font-size: 14px;

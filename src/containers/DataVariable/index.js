@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Modal from 'components/Modal';
 import Notification from 'components/Notification';
 import Table from 'components/Table';
+import { Breadcrumb } from 'components';
 import { makeData } from 'utils/dataConfig/data-variable';
 import DataVariableForm, { submitDataVariableForm } from './DataVariableForm';
 
@@ -107,8 +108,19 @@ const DataVariable = () => {
     searchButtonText: 'Tambah Varaibel',
     onSearch: () => showDataVariableFormModal(),
   };
+  const breadcrumbsList = [
+    {
+      path: '/admin/dafter',
+      label: 'Daftar Data',
+    },
+    {
+      isActive: true,
+      label: 'Data UMKM',
+    },
+  ];
   return (
     <Container fluid className="dafter-page pb-100">
+      <Breadcrumb breadcrumbsList={breadcrumbsList} />
       <Row>
         <Col sm={{ span: 10, offset: 1 }} md={{ span: 8, offset: 2 }}>
           <Table {...tableConfig} />

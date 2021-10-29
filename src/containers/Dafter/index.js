@@ -127,7 +127,7 @@ const Dafter = () => {
     search: true,
     searchPlaceholder: 'Cari Data',
     searchButtonText: 'Tambah Data',
-    onSearch: showDafterFormModal,
+    onSearch: () => showDafterFormModal(),
   };
   return (
     <Container fluid className="dafter-page pb-100">

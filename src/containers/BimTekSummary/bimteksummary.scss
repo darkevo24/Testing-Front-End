@@ -1,0 +1,70 @@
+.bimteksum-title {
+  font-family: Myriad Pro;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 25px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2D2627;
+}
+
+.bimteksum-title-border {
+  width: 32px;
+  height: 3px;
+  background: #FF0000;
+  margin-top: 8px;
+}
+
+.bimteksum-viewall {
+  font-family: Myriad Pro;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 17px;
+  letter-spacing: 0px;
+  text-align: right;
+  color: #007AFF;
+  cursor: pointer;
+}
+
+.bimtek-jadwal-card {
+  padding: 16px 24px;
+  margin-bottom: 8px;
+}
+
+.bimtek-jadwal-title {
+  font-family: Myriad Pro;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 19px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2D2627;
+}
+
+.bimteksum-carousel {
+  overflow-x: scroll;
+  width: 744px;
+  white-space: nowrap;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+
+  .item {
+    width: 650px;
+    display: inline-block;
+    margin-right: 8px;
+  }
+
+  .image {
+    height: 240px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+.bimteksum-carousel::-webkit-scrollbar {
+  display: none;
+}

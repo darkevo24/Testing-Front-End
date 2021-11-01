@@ -39,6 +39,7 @@ const Table = ({
   columns,
   data,
   title,
+  subTitle,
   search,
   searchPlaceholder = 'Search',
   searchButtonText = 'Search',
@@ -96,7 +97,7 @@ const Table = ({
   return (
     <div className={cx(bem.b(), bem.m(variant))}>
       {title ? <div className={bem.e('header')}>{title}</div> : null}
-      <div className="d-flex justify-content-between align-items-center mb-40">
+      <div className="d-flex justify-content-between align-items-center mb-30">
         <FilterSearchInput
           searchPlaceholder={searchPlaceholder}
           preGlobalFilteredRows={preGlobalFilteredRows}
@@ -108,6 +109,7 @@ const Table = ({
         </Button>
       </div>
       <div className={bem.e('table-wrapper')}>
+        {subTitle ? <div className={bem.e('sub-header')}>{subTitle}</div> : null}
         <RBTable bordered={false} {...getTableProps()}>
           {showHeader ? (
             <thead>

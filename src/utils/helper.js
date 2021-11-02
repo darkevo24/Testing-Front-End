@@ -30,3 +30,38 @@ export const submitForm = (id) => () => {
     submitButton.click();
   }
 };
+
+export const convertToPlain = (html) => {
+  // Create a new div element
+  var tempDivElement = document.createElement('div');
+  // Set the HTML content with the given value
+  tempDivElement.innerHTML = html;
+
+  // Retrieve the text property of the element
+  return tempDivElement.textContent || tempDivElement.innerText || '';
+};
+
+export const copyToClipboard = (text) => {
+  const textToCopy = convertToPlain(text);
+  // navigator clipboard api needs a secure context (https)
+  if (navigator.clipboard && window.isSecureContext) {
+    // navigator clipboard api method'
+    return navigator.clipboard.writeText(textToCopy);
+  } else {
+    // text area method
+    const textArea = document.createElement('textarea');
+    textArea.value = convertToPlain;
+    // make the textarea out of viewport
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    return new Promise((res, rej) => {
+      // here the magic happens
+      document.execCommand('copy') ? res() : rej();
+      textArea.remove();
+    });
+  }
+};

@@ -129,6 +129,7 @@ const DafterForm = ({ data, onSubmit }) => {
             group
             label="Link Akses"
             name="link"
+            isLink
             control={control}
             rules={{ required: true }}
             error={errors.link?.message}

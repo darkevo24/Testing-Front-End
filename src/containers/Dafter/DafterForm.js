@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Dropdown, Input } from 'components';
+import { DatePicker, Dropdown, Input } from 'components';
 import { formatData, instansiData, jadwalData, nameData } from 'utils/dataConfig/dafter';
 import { submitForm } from 'utils/helper';
 
@@ -96,6 +96,8 @@ const DafterForm = ({ data, onSubmit }) => {
             error={errors.jadwal?.message}
           />
           {/* TODO: add date pickers for ::dibuat // ::diper */}
+          <DatePicker group label="Dibuat" name="dibuat" control={control} rules={{ required: true }} />
+          <DatePicker group label="Diperbarui" name="diper" control={control} rules={{ required: true }} />
           <Input
             group
             label="Produsen Data"

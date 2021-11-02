@@ -1,0 +1,31 @@
+.sdp-date-picker {
+  .icon-box {
+    z-index: 1;
+  }
+  .react-datepicker-popper {
+    z-index: 9;
+  }
+  .react-datepicker__triangle {
+    display: none
+  }
+  input {
+    @extend .form-control;
+    padding-left: 2.5rem !important;
+  }
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__action-button {
+    cursor: pointer;
+    height: 2rem;
+    width: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__text {
+    margin-bottom: 0;
+  }
+}

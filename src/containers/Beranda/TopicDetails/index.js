@@ -83,7 +83,7 @@ const TopicDetail = () => {
     },
     {
       isActive: true,
-      label: `Topic - ${topic}`,
+      label: `Topik - ${topic}`,
     },
   ];
 

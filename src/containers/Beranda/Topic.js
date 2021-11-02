@@ -45,7 +45,7 @@ export const Topic = () => {
 
   return (
     <BoxFlex style={{ margin: '44px 0' }}>
-      <BoxTopic>Topic</BoxTopic>
+      <BoxTopic>Topik</BoxTopic>
       <Box>
         {list.map((subList, index) => (
           <BoxFlex key={index}>

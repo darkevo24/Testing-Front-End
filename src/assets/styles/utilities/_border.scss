@@ -45,6 +45,9 @@
 .br-4 {
 	border-radius: 4px !important;
 }
+.br-6 {
+  border-radius: 6px !important;
+}
 .br-8 {
 	border-radius: 8px !important;
 }
@@ -70,6 +73,14 @@
 
 .border-top-gray-stroke {
   border-top: 1px solid $stroke;
+}
+
+.border-left-gray-stroke {
+  border-left: 1px solid $stroke;
+}
+
+.border-right-gray-stroke {
+  border-right: 1px solid $stroke;
 }
 
 .border-bottom-gray-stroke {

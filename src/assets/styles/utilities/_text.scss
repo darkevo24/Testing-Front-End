@@ -37,6 +37,10 @@ a {
 }
 
 .sdp-text-blue {
+  color: var(--blue);
+}
+
+.sdp-text-blue-light {
   color: var(--blue-light);
 }
 
@@ -44,7 +48,7 @@ a {
   color: var(--blue-dark);
 }
 
-.sdp-text-grey {
+.sdp-text-grey-dark {
   color: var(--gray-dark);
 }
 
@@ -52,10 +56,30 @@ a {
   color: var(--gray);
 }
 
+.sdp-text-teal {
+  color: var(--teal);
+}
+
+.sdp-text-orange {
+  color: var(--orange);
+}
+
 .sdp-text-red {
-  color: var(--gray);
+  color: var(--red);
+}
+
+.sdp-text-red-dark {
+  color: var(--red-dark);
 }
 
 .sdp-text-black-dark {
   color: var(--black-dark-10)
+}
+
+.sdp-text-black-light {
+  color: var(--black-light)
+}
+
+.sdp-text-black-lighter {
+  color: var(--black-light-10)
 }

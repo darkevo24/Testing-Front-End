@@ -9,6 +9,13 @@ import {
   PendidikanSvg,
   PendukungSvg,
   PerlindungamSvg,
+  APIManagementIcon,
+  ContentManagementIcon,
+  DashboardManagementIcon,
+  DataManagementIcon,
+  KonfigurasiIcon,
+  LogActivityIcon,
+  UserManagementIcon,
 } from 'assets/icons';
 
 export const apiUrl = '/api';
@@ -81,5 +88,53 @@ export const TOPIC_LIST = [
     title: 'Pendukung Umum',
     items: ['Kebijakan Pemerintah', 'Manajemen Kegiatan', 'Kewilayahan', 'Data Dukung Lainnya'],
     icon: <PertahananSvg />,
+  },
+];
+
+const Text =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.';
+
+export const CMS_DASHBOARD = [
+  {
+    title: 'Content Management',
+    description: Text,
+    icon: <ContentManagementIcon />,
+    iconColor: 'sdp-text-blue',
+  },
+  {
+    title: 'Data Management',
+    description: Text,
+    icon: <DataManagementIcon />,
+    iconColor: 'sdp-text-red-dark',
+  },
+  {
+    title: 'User Management',
+    description: Text,
+    icon: <UserManagementIcon />,
+    iconColor: 'sdp-text-teal',
+  },
+  {
+    title: 'Dashboard Management',
+    description: Text,
+    icon: <DashboardManagementIcon />,
+    iconColor: 'sdp-text-blue',
+  },
+  {
+    title: 'API Management',
+    description: Text,
+    icon: <APIManagementIcon />,
+    iconColor: 'sdp-text-orange',
+  },
+  {
+    title: 'Log Activity',
+    description: Text,
+    icon: <LogActivityIcon />,
+    iconColor: 'sdp-text-red-dark',
+  },
+  {
+    title: 'Konfigurasi',
+    description: Text,
+    icon: <KonfigurasiIcon />,
+    iconColor: 'sdp-text-teal',
   },
 ];

@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import { AdminHeader } from 'containers/Header';
+import { CMSHeader } from 'containers/Header/CMSHeader';
 import { tokenSelector } from 'containers/Login/reducer';
 
 export const AdminAuthLayout = ({ children }) => {
@@ -16,9 +17,24 @@ export const AdminAppLayout = ({ children }) => {
   );
 };
 
+export const CMSAppLayout = ({ children }) => {
+  return (
+    <div className="app-container admin-app-container">
+      <CMSHeader />
+      {children}
+    </div>
+  );
+};
+
 export const AdminLayout = ({ children }) => {
   const token = useSelector(tokenSelector);
   const Layout = !!token ? AdminAppLayout : AdminAuthLayout;
+  return <Layout>{children}</Layout>;
+};
+
+export const CMSLayout = ({ children }) => {
+  const token = useSelector(tokenSelector);
+  const Layout = !!token ? CMSAppLayout : AdminAuthLayout;
   return <Layout>{children}</Layout>;
 };
 
@@ -34,5 +50,8 @@ export const PublicRoute = ({ component: Component, ...rest }) => {
 
 AdminLayout.PrivateRoute = PrivateRoute;
 AdminLayout.PublicRoute = PublicRoute;
+
+CMSLayout.PrivateRoute = PrivateRoute;
+CMSLayout.PublicRoute = PublicRoute;
 
 export default AdminLayout;

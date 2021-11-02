@@ -30,4 +30,6 @@
 
 @include bg-variant(".bg-gray-light", $gray-light);
 
+@include bg-variant(".bg-gray-lighter", $gray-lighter);
+
 @include bg-variant(".bg-blue-light", rgba(0, 122, 255, 0.12));

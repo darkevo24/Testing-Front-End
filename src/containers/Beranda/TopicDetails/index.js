@@ -28,9 +28,9 @@ const getTextClass = (type) => {
     case 'csv':
       return 'sdp-text-green';
     case 'json':
-      return 'sdp-text-grey';
+      return 'sdp-text-grey-dark';
     case 'wms':
-      return 'sdp-text-blue';
+      return 'sdp-text-blue-light';
     default:
       return 'sdp-text-disable';
   }
@@ -50,7 +50,7 @@ const getElem = (data) => {
           </div>
           <div className="sdp-card-right-section d-flex flex-column justify-content-between">
             <div className="d-flex align-items-center sdp-right-wrapper-top">
-              <div className="fs-13 lh-16 sdp-text-grey">{item.totalFiles} Files</div>
+              <div className="fs-13 lh-16 sdp-text-grey-dark">{item.totalFiles} Files</div>
               <div className="d-flex">
                 {item.tags.map((tag) => (
                   <Tags key={tag} text={tag} colorClass={getTextClass(tag)} />

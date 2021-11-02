@@ -69,15 +69,6 @@ export const DatePicker = ({
                     onChange(date);
                   }
                 }}
-                // popperModifiers={{
-                //   preventOverflow: {
-                //     enabled: true,
-                //     escapeWithReference: false, // force popper to stay in viewport (even when input is scrolled out of view)
-                //     boundariesElement: 'viewport',
-                //     fn: () => {},
-                //   },
-                //   fn: () => {},
-                // }}
                 onMonthChange={() => {
                   window.scrollBy(0, -1);
                   window.scrollBy(0, 1);

@@ -18,6 +18,21 @@ const AdminRoutes = lazy(() => import('./AdminRoutes'));
 const AppRoutes = lazy(() => import('./AppRoutes'));
 
 function App(props) {
+  const layout = {
+    kiri: [
+      {
+        component: 'search',
+        props: { test: '12345' },
+      },
+      {
+        component: 'beritaUtama',
+      },
+    ],
+  };
+  if (!window.localStorage.getItem('beritalayout')) {
+    window.localStorage.setItem('beritalayout', JSON.stringify(layout));
+  }
+
   return (
     <div>
       <Helmet titleTemplate="%s - Satu Data Portal" defaultTitle="Satu Data Portal">

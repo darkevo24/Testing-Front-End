@@ -18,19 +18,11 @@ const AdminRoutes = lazy(() => import('./AdminRoutes'));
 const AppRoutes = lazy(() => import('./AppRoutes'));
 
 function App(props) {
-  const layout = {
-    kiri: [
-      {
-        component: 'search',
-        props: { test: '12345' },
-      },
-      {
-        component: 'beritaUtama',
-      },
-    ],
-  };
   if (!window.localStorage.getItem('beritalayout')) {
-    window.localStorage.setItem('beritalayout', JSON.stringify(layout));
+    window.localStorage.setItem(
+      'beritalayout',
+      '{"kiri":[{"label":"search","props":{"test":"12345"},"uid":"t6fJQutD0","component":"search"},{"label":"beritaUtama","uid":"k1_zI4m8Ct","component":"beritaUtama"}],"kanan":[{"label":"topikpopuler","uid":"WAPu69Mnq","component":"topikpopuler"}],"inactive":[]}',
+    );
   }
 
   return (

@@ -1,3 +1,22 @@
+.sdp-input-wrapper {
+  position: relative;
+  .icon-box {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    padding-left: 1rem;
+    transform: translateY(-50%);
+    height: 40px;
+  }
+  input + .icon-box {
+    left: auto;
+    right: 0;
+    padding-left: unset;
+    border-left: 1px solid $stroke;
+    width: 40px;
+  }
+}
+
 .form-floating {
   &> .form-control {
     border: none;
@@ -51,6 +70,12 @@
     &::placeholder {
       color: $light;
     }
+  }
+  &.has-left-icon {
+    padding-left: 2.5rem;
+  }
+  &.has-right-icon {
+    padding-right: 2.5rem;
   }
 }
 

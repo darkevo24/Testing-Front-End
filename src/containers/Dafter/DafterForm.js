@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Dropdown, Input } from 'components';
+import { DatePicker, Dropdown, Input } from 'components';
 import { formatData, instansiData, jadwalData, nameData } from 'utils/dataConfig/dafter';
 import { submitForm } from 'utils/helper';
 
@@ -18,7 +18,8 @@ const schema = yup
     definisi: yup.string().required(),
     sumber: yup.string().required(),
     jadwal: yup.mixed().required(),
-    // TODO: add validations for dibuat and diper
+    dibuat: yup.mixed().required(),
+    diper: yup.mixed().required(),
     produsen: yup.string().required(),
     induk: yup.mixed().required(),
     format: yup.mixed().required(),
@@ -95,7 +96,22 @@ const DafterForm = ({ data, onSubmit }) => {
             options={jadwalData.map((jadwal) => ({ value: jadwal, label: jadwal }))}
             error={errors.jadwal?.message}
           />
-          {/* TODO: add date pickers for ::dibuat // ::diper */}
+          <DatePicker
+            group
+            label="Dibuat"
+            name="dibuat"
+            control={control}
+            rules={{ required: true }}
+            error={errors.dibuat?.message}
+          />
+          <DatePicker
+            group
+            label="Diperbarui"
+            name="diper"
+            control={control}
+            rules={{ required: true }}
+            error={errors.diper?.message}
+          />
           <Input
             group
             label="Produsen Data"
@@ -129,6 +145,7 @@ const DafterForm = ({ data, onSubmit }) => {
             group
             label="Link Akses"
             name="link"
+            isLink
             control={control}
             rules={{ required: true }}
             error={errors.link?.message}

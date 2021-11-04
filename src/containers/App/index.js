@@ -18,6 +18,13 @@ const AdminRoutes = lazy(() => import('./AdminRoutes'));
 const AppRoutes = lazy(() => import('./AppRoutes'));
 
 function App(props) {
+  if (!window.localStorage.getItem('beritalayout')) {
+    window.localStorage.setItem(
+      'beritalayout',
+      '{"kiri":[{"label":"search","props":{"test":"12345"},"uid":"t6fJQutD0","component":"search"},{"label":"beritaUtama","uid":"k1_zI4m8Ct","component":"beritaUtama"}],"kanan":[{"label":"topikpopuler","uid":"WAPu69Mnq","component":"topikpopuler"}],"inactive":[]}',
+    );
+  }
+
   return (
     <div>
       <Helmet titleTemplate="%s - Satu Data Portal" defaultTitle="Satu Data Portal">

@@ -4,10 +4,24 @@
   font-weight: 700;
 }
 
+.sdp-sub-heading {
+  color: var(--black-dark-10);
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 20px;
+}
+
 .sdp-error {
  color: $red;
  font-size: 14px;
  margin-top: 4px;
+}
+
+.sdp-title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--black-dark-10);
 }
 
 a {
@@ -26,6 +40,10 @@ a {
   color: var(--blue-light);
 }
 
+.sdp-text-blue-dark {
+  color: var(--blue-dark);
+}
+
 .sdp-text-grey {
   color: var(--gray-dark);
 }
@@ -36,4 +54,8 @@ a {
 
 .sdp-text-red {
   color: var(--gray);
+}
+
+.sdp-text-black-dark {
+  color: var(--black-dark-10)
 }

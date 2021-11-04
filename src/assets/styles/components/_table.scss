@@ -12,6 +12,10 @@
     @extend .my-42;
     @extend .sdp-heading;
   }
+  &__sub-header {
+    @extend .mb-16;
+    @extend .sdp-heading;
+  }
   &__table-wrapper {
     overflow-x: scroll;
   }

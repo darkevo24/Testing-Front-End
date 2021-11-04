@@ -10,9 +10,11 @@
 @import './utilities/text';
 @import './utilities/background';
 @import './utilities/border';
+@import './utilities/font';
 
 // All component styles goers here
 @import './components/button';
+@import './components/datepicker';
 @import './components/dropdown';
 @import './components/form';
 @import './components/icon';
@@ -26,3 +28,4 @@
 @import './pages/topicDetail';
 @import './pages/forum';
 @import './pages/bimtek';
+@import './pages/komunitas';

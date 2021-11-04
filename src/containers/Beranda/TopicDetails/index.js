@@ -41,24 +41,24 @@ const getElem = (data) => {
     cards.push({
       card: (
         <div className="sdp-card-wrapped d-flex p-16 justify-content-between border-top-gray-stroke" key={item.id}>
-          <div className="sdp-card-left-section flex-column">
+          <div className="flex-column">
             <div className="sdp-left-wrapper mb-27">
-              <div className="sdp-item-title mb-8">{item.title}</div>
-              <div className="sdp-item-description">{item.description}</div>
+              <div className="mb-8 fs-16 fw-600 lh-19 sdp-text-black-dark">{item.title}</div>
+              <div className="fs-14 lh-17 sdp-text-black-dark">{item.description}</div>
             </div>
-            <div className="sdp-item-download">{item.totalDownloads} Downloads</div>
+            <div className="fw-600 fs-13 lh-13 sdp-text-disable">{item.totalDownloads} Downloads</div>
           </div>
           <div className="sdp-card-right-section d-flex flex-column justify-content-between">
             <div className="d-flex align-items-center sdp-right-wrapper-top">
-              <div className="sdp-item-file">{item.totalFiles} Files</div>
+              <div className="fs-13 lh-16 sdp-text-grey">{item.totalFiles} Files</div>
               <div className="d-flex">
                 {item.tags.map((tag) => (
                   <Tags key={tag} text={tag} colorClass={getTextClass(tag)} />
                 ))}
               </div>
             </div>
-            <div className="sdp-right-wrapper-bottom d-flex">
-              <div className="sdp-item-link-title mr-12">{item.linkTitle}</div>
+            <div className="sdp-right-wrapper-bottom d-flex align-items-center">
+              <div className="fs-13 lh-16 sdp-text-blue-dark mr-12">{item.linkTitle}</div>
               <div className="sdp-item-file d-flex">{item.date}</div>
             </div>
           </div>
@@ -83,7 +83,7 @@ const TopicDetail = () => {
     },
     {
       isActive: true,
-      label: `Topic - ${topic}`,
+      label: `Topik - ${topic}`,
     },
   ];
 
@@ -114,7 +114,7 @@ const TopicDetail = () => {
   return (
     <div className="sdp-topic-detail-wrapper">
       <Breadcrumbs breadcrumbsList={breadcrumbsList} />
-      <Row className="ml-100 mr-100 mt-48">
+      <Row className="mx-200 mt-48">
         <Col xs={3}>
           <div className="d-flex" onClick={() => setIsExpanded(!isExpanded)}>
             <div
@@ -123,7 +123,7 @@ const TopicDetail = () => {
               })}>
               <DropDownArrawSvg />
             </div>
-            <div className="menu-title">{topic}</div>
+            <div className="sdp-title">{topic}</div>
           </div>
           {isExpanded ? (
             <div className="sdp-item-wrapper mt-32 mb-32 pr-32">

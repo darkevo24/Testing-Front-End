@@ -1,0 +1,25 @@
+.sdp-komunitas-wrapper {
+  .sdp-table tbody tr td {
+    border-bottom-color: var(--white) !important;
+  }
+
+  .sdp-rating-wrapper {
+    .star-ratings {
+      display: flex !important;
+
+      .star-container {
+        padding-right: 0 !important;
+
+        svg {
+          height: 14px !important;
+          width: 14px !important;
+        }
+      }
+    }
+
+    .sdp-rate-button {
+      margin-top: 17px;
+      width: max-content;
+    }
+  }
+}

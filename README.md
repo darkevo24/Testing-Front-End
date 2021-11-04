@@ -45,3 +45,9 @@ We will be having multiple environments on server:
 2. fix: keys error for whole application
 3. chore: lint fixes
 4. feat(admin): added authentication and authorization
+
+#### Deployment instructions:
+
+1. Connect the bappenas server using the details provided by server admin.
+2. run `update.sh` script using `sh update.sh` command and provide git credentials to update from git.
+3. The script will handle the process of updating the server code.

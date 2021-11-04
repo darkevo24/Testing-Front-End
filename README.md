@@ -31,7 +31,7 @@ We will be having multiple environments on server:
 
 1. Create a branch from develop branch for your ticket/feature.
 2. Add all the related commits to that branch.
-3. Raise a RP against develop branch and get it reviewed and merged.
+3. Raise a pull request against develop branch and get it reviewed and merged.
 4. If any issue or bug arises in Production/Staging, we can create hot-fix branch and merge it directly in staging and production branches, but also to be merged in develop branch.
 
 #### Commit convention:

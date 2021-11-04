@@ -16,6 +16,7 @@
     "lint": "yarn run eslint src",
     "lint:fix": "yarn run eslint --fix src",
     "lint:css": "stylelint src/**/*.css",
+    "prepare": "husky install",
     "prettify": "prettier --write"
   },
   "lint-staged": {
@@ -45,6 +46,9 @@
       }
     }
   },
+  "eslintIgnore": [
+    "commitlint.config.js"
+  ],
   "dependencies": {
     "@hookform/resolvers": "2.8.2",
     "@reduxjs/toolkit": "1.6.0",
@@ -102,10 +106,14 @@
     "yup": "0.32.11"
   },
   "devDependencies": {
+    "@commitlint/cli": "14.1.0",
+    "@commitlint/config-conventional": "14.1.0",
+    "devmoji": "2.3.0",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.6",
     "enzyme-to-json": "3.4.4",
-    "jest-junit": "12.3.0"
+    "jest-junit": "12.3.0",
+    "postinstall-prepare": "2.0.0"
   },
   "browserslist": {
     "production": [

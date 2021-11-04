@@ -18,6 +18,7 @@ import reportWebVitals from './reportWebVitals';
 import App from './containers/App';
 
 import './styles.scss';
+import './locales/i18n';
 
 const initialState = {};
 const store = configureAppStore(initialState, history);

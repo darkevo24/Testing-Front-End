@@ -10,6 +10,7 @@
 
 # production
 /build
+translation.json
 
 # misc
 .DS_Store

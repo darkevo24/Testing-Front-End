@@ -7,6 +7,10 @@ import { AppLayout } from 'layouts/AppLayout';
 const BerandaPage = lazy(() => import('containers/Beranda'));
 const TopicDetailPage = lazy(() => import('containers/Beranda/TopicDetails'));
 const ForumPage = lazy(() => import('containers/Forum'));
+const BimTekSummaryPage = lazy(() => import('containers/BimTekSummary'));
+const BimTekFormPage = lazy(() => import('containers/BimTekForm'));
+const BimTekJadwalPage = lazy(() => import('containers/BimTekJadwal'));
+const TentangPage = lazy(() => import('containers/TentangSDI'));
 const KomunitasPage = lazy(() => import('containers/Komunitas'));
 const BeritaLayout = lazy(() => import('containers/BeritaLayout'));
 const BeritaPage = lazy(() => import('containers/Berita'));
@@ -22,6 +26,10 @@ function AppRoutes(props) {
         <Route exact path="/bl" component={BeritaLayout} />
         <Route exact path="/berita" component={BeritaPage} />
         <Route exact path="/" render={() => <Redirect to="/home" />} />
+        <Route path="/bimtek-summary" component={BimTekSummaryPage} />
+        <Route path="/bimtek-form" component={BimTekFormPage} />
+        <Route path="/bimtek-jadwal" component={BimTekJadwalPage} />
+        <Route path="/tentang" component={TentangPage} />
       </Switch>
     </AppLayout>
   );

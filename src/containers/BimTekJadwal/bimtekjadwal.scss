@@ -1,0 +1,54 @@
+.bimtek-filter .form-select {
+  font-family: Myriad Pro;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 14px;
+  letter-spacing: 0px;
+  text-align: left;
+  padding: 13px 16px;
+}
+
+.bimtek-jadwal-card {
+  padding: 16px 24px;
+  margin-bottom: 8px;
+}
+
+.bimtek-collapse-btn {
+  font-family: Myriad Pro;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: 0px;
+  text-align: right;
+  color: #858A8F;
+  cursor: pointer;
+
+  .chevron-up {
+    display: none;
+  }
+  .chevron-down {
+    display: inline;
+  }
+}
+
+.bimtek-collapse-btn.show {
+  .chevron-up {
+    display: inline;
+  }
+  .chevron-down {
+    display: none;
+  }
+}
+
+.bimtek-jadwal-title {
+  font-family: Myriad Pro;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 19px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2D2627;
+}

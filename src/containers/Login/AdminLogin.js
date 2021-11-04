@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import Input from 'components/Input';
 import { loginUser } from './reducer';
 
@@ -20,6 +21,7 @@ const schema = yup
 
 const AdminLogin = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const {
     control,
     formState: { errors },
@@ -37,14 +39,14 @@ const AdminLogin = () => {
       <Row className="h-100 align-items-center justify-content-center">
         <Col sm={12} md={8} xl={4} className="login-form p-50 d-flex flex-column">
           <img className="logo align-self-center" src={Logo} alt="logo" />
-          <div className="sdp-heading my-4">Sign In!</div>
+          <div className="sdp-heading my-4">{t('auth.admin.title')}</div>
           <Form onSubmit={handleSubmit(onSubmit)} noValidate>
             <Input
               name="email"
               control={control}
               rules={{ required: true }}
               variant="floating"
-              placeholder="Email Address"
+              placeholder={t('fields.email.placeholder')}
               type="email"
               error={errors.email?.message}
             />
@@ -53,7 +55,7 @@ const AdminLogin = () => {
               control={control}
               rules={{ required: true }}
               variant="floating"
-              placeholder="password"
+              placeholder={t('fields.password.placeholder')}
               type="password"
               error={errors.password?.message}
               className="mt-4"

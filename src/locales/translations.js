@@ -1,9 +1,20 @@
+import en from './en/translation.json';
+import id from './id/translation.json';
+
 /**
  * This file is separate from the './i18n.js' simply to make the Hot Module Replacement work seamlessly.
  * Your components can import this file in 'messages.js' files which would ruin the HMR if this isn't a separate module
  */
 
 export const translations = {};
+export const translationsJson = {
+  en: {
+    translation: en,
+  },
+  id: {
+    translation: id,
+  },
+};
 
 /*
  * Converts the static JSON file into an object where keys are identical

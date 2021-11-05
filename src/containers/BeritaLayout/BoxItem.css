@@ -4,8 +4,8 @@
 
 .box_item_component .outer {
   border-top: none;
-  min-width: 140px;
-  max-width: 140px;
+  min-width: 240px;
+  max-width: 240px;
   overflow: hidden;
 }
 
@@ -32,4 +32,8 @@
   padding: 10px;
   border-radius: 0 0 5px 5px;
   margin: 3px;
+}
+
+.box_item_component .props input {
+  width: 100%;
 }

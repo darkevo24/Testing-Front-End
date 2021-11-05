@@ -41,6 +41,15 @@ export default class Box extends React.Component {
     this.setState({ items: items });
   };
 
+  onChildStateChange = (label, key, value) => {
+    this.setState((prevState) => ({
+      items: prevState.items.map((el) => {
+        if (el.label === label) el.props[key] = value;
+        return el;
+      }),
+    }));
+  };
+
   render() {
     /*
         Note the two layers of DropTarget. 
@@ -54,7 +63,6 @@ export default class Box extends React.Component {
           <DropTarget onHit={this.handleDrop} targetKey="boxItem" dropData={{ name: this.props.name }}>
             <div className="box">
               {this.state.items.map((item, index) => {
-                console.log(item);
                 return (
                   <BoxItem
                     key={item.uid}
@@ -63,7 +71,8 @@ export default class Box extends React.Component {
                     index={index}
                     swap={this.swap}
                     itemprops={item.props}
-                    component={item.component}>
+                    component={item.component}
+                    onChildStateChange={this.onChildStateChange}>
                     {item.label}
                   </BoxItem>
                 );

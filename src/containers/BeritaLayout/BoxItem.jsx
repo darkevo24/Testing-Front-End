@@ -12,6 +12,8 @@ export default class BoxItem extends React.Component {
     this.state = {
       itemprops: props.itemprops ? props.itemprops : {},
     };
+
+    this.handleChange = this.handleChange.bind(this);
   }
 
   handleDrop = (e) => {
@@ -24,13 +26,17 @@ export default class BoxItem extends React.Component {
     this.props.kill(this.props.uid);
   };
 
+  handleChange = (event) => {
+    this.setState((prevState) => ({ itemprops: { ...prevState.itemprops, [event.target.id]: event.target.value } }));
+    this.props.onChildStateChange(this.props.children, event.target.id, event.target.value);
+  };
+
   render() {
     /*
         Notice how these are wrapped in a DragDropContainer (so you can drag them) AND
         in a DropTarget (enabling you to rearrange items in the box by dragging them on
         top of each other)
       */
-    console.log(this.props.itemprops);
     return (
       <div className="box_item_component">
         <DragDropContainer
@@ -53,9 +59,13 @@ export default class BoxItem extends React.Component {
               {this.props.itemprops ? (
                 <div className="props">
                   {Object.keys(this.state.itemprops).map((key) => (
-                    <div>
-                      <label>{key}</label>
-                      <input value={this.state.itemprops[key]} />
+                    <div key={key} className="row">
+                      <div className="col-lg-4">
+                        <label>{key}</label>
+                      </div>
+                      <div className="col-lg-8">
+                        <input id={key} value={this.state.itemprops[key]} onChange={this.handleChange} />
+                      </div>
                     </div>
                   ))}
                 </div>

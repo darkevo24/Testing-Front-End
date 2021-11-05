@@ -26,21 +26,21 @@ export default class DragThingsToBoxesDemo extends React.Component {
     let obj = JSON.parse(window.localStorage.getItem('beritalayout'));
 
     const itemKiri = obj.kiri.map((el) => ({
-      label: el.component,
+      label: el.label,
       props: el.props,
       uid: shortid.generate(),
       component: el.component,
     }));
 
     const itemKanan = obj.kanan.map((el) => ({
-      label: el.component,
+      label: el.label,
       props: el.props,
       uid: shortid.generate(),
       component: el.component,
     }));
 
     const inactiveItems = obj.inactive.map((el) => ({
-      label: el.component,
+      label: el.label,
       props: el.props,
       uid: shortid.generate(),
       component: el.component,
@@ -50,9 +50,9 @@ export default class DragThingsToBoxesDemo extends React.Component {
       <div>
         <div className="drag_things_to_boxes">
           <div className="boxes">
-            <Box targetKey="box" items={itemKiri} title="Bagian Kiri" ref={this.kiri} />
-            <Box targetKey="box" items={itemKanan} title="Bagian Kanan" ref={this.kanan} />
-            <Box targetKey="box" items={inactiveItems} title="Inactive Items" ref={this.inactive} />
+            <Box targetKey="box" items={itemKiri} title="Konten Utama" ref={this.kiri} />
+            <Box targetKey="box" items={itemKanan} title="Sidebar Kanan" ref={this.kanan} />
+            <Box targetKey="box" items={inactiveItems} title="Tidak Ditampilkan" ref={this.inactive} />
           </div>
         </div>
         <div className="mt-4">

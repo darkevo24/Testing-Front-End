@@ -7,6 +7,13 @@ import './BoxItem.css';
 */
 
 export default class BoxItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      itemprops: props.itemprops ? props.itemprops : {},
+    };
+  }
+
   handleDrop = (e) => {
     e.stopPropagation();
     this.props.swap(e.dragData.index, this.props.index, e.dragData);
@@ -23,7 +30,7 @@ export default class BoxItem extends React.Component {
         in a DropTarget (enabling you to rearrange items in the box by dragging them on
         top of each other)
       */
-
+    console.log(this.props.itemprops);
     return (
       <div className="box_item_component">
         <DragDropContainer
@@ -32,6 +39,7 @@ export default class BoxItem extends React.Component {
             label: this.props.children,
             index: this.props.index,
             props: this.props.itemprops,
+            component: this.props.component,
           }}
           onDrop={this.deleteMe}
           disappearDraggedElement={true}
@@ -42,6 +50,18 @@ export default class BoxItem extends React.Component {
                 <span className="grabber">&#8759;</span>
                 {this.props.children}
               </div>
+              {this.props.itemprops ? (
+                <div className="props">
+                  {Object.keys(this.state.itemprops).map((key) => (
+                    <div>
+                      <label>{key}</label>
+                      <input value={this.state.itemprops[key]} />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                ''
+              )}
             </div>
           </DropTarget>
         </DragDropContainer>

@@ -3,9 +3,9 @@ import Card from 'react-bootstrap/Card';
 import styled from 'styled-components';
 import { ReactComponent as LocationTag } from 'assets/location-tag.svg';
 
-const BimtekSumJadwal = ({title, startDate, endDate, city}) => {
+const BimtekSumJadwal = ({ title, startDate, endDate, city }) => {
   const DateBox = styled.div`
-    background: #F5F6FA;
+    background: #f5f6fa;
     border-radius: 4px;
     padding: 8px 12px;
     display: inline-block;
@@ -25,7 +25,9 @@ const BimtekSumJadwal = ({title, startDate, endDate, city}) => {
         <div>
           <DateBox>{startDate}</DateBox> - <DateBox>{endDate}</DateBox>
         </div>
-        <div className="mt-3"><LocationTag className="mr-10"/> {city}</div>
+        <div className="mt-3">
+          <LocationTag className="mr-10" /> {city}
+        </div>
       </div>
     </Card>
   );

@@ -61,9 +61,7 @@ const BimTekForm = () => {
               <Form.Label>Materi Bimtek</Form.Label>
               <Form.Control type="text" />
             </Form.Group>
-            <Button variant="info" >
-              Kirim Pengajuan
-            </Button>
+            <Button variant="info">Kirim Pengajuan</Button>
           </Form>
         </Card.Body>
       </Card>

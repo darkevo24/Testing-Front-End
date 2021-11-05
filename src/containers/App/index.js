@@ -21,7 +21,7 @@ function App(props) {
   if (!window.localStorage.getItem('beritalayout')) {
     window.localStorage.setItem(
       'beritalayout',
-      '{"kiri":[{"label":"search","props":{"test":"12345"},"uid":"t6fJQutD0","component":"search"},{"label":"beritaUtama","uid":"k1_zI4m8Ct","component":"beritaUtama"}],"kanan":[{"label":"topikpopuler","uid":"WAPu69Mnq","component":"topikpopuler"}],"inactive":[]}',
+      '{"kiri":[{"label":"Search","props":{"test":"12345"},"uid":"t6fJQutD0","component":"search"},{"label":"Berita Utama","uid":"k1_zI4m8Ct","component":"beritaUtama"},{"label":"Berita Utama Lainnya","uid":"k1_zI4m8Ct1","component":"beritaUtamaLain"},{"label":"Kegiatan Satu Data Indonesia","uid":"k1_zI4m8Ct2","component":"kegiatanSatuData"},{"label":"List Berita","uid":"k1_zI4m8Ct3","component":"listBerita"}],"kanan":[{"label":"Topik Populer","uid":"WAPu69Mnq","component":"topikPopuler"},{"label":"Berita Lainnya","uid":"WAPu69Mnq1","component":"beritaLainnya"},{"label":"Populer","uid":"WAPu69Mnq2","component":"populer"},{"label":"Tweets","uid":"WAPu69Mnq3","component":"tweets"}],"inactive":[]}',
     );
   }
 

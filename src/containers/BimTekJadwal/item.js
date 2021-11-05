@@ -11,19 +11,12 @@ import { ReactComponent as LocationTag } from 'assets/location-tag.svg';
 import { ReactComponent as Download } from 'assets/download-red.svg';
 
 const CustomToggle = ({ children, eventKey, callback }) => {
-  const decoratedOnClick = useAccordionButton(
-    eventKey,
-    () => callback && callback(eventKey),
-  );
-  return (
-    <div onClick={decoratedOnClick}>
-      {children}
-    </div>
-  );
+  const decoratedOnClick = useAccordionButton(eventKey, () => callback && callback(eventKey));
+  return <div onClick={decoratedOnClick}>{children}</div>;
 };
 
 const DateBox = styled.div`
-  background: #F5F6FA;
+  background: #f5f6fa;
   border-radius: 4px;
   padding: 8px 12px;
   display: inline-block;
@@ -37,7 +30,7 @@ const DateBox = styled.div`
 `;
 
 const Button = styled.div`
-  background: #F5F6FA;
+  background: #f5f6fa;
   border-radius: 4px;
   padding: 12px;
   display: inline-block;
@@ -51,19 +44,21 @@ const Button = styled.div`
   cursor: pointer;
 `;
 
-const BimTekJadwalItem = ({title, startDate, endDate, city, location, speaker, materi}) => {
+const BimTekJadwalItem = ({ title, startDate, endDate, city, location, speaker, materi }) => {
   const [collapse, setCollapse] = useState(false);
 
   return (
     <Card className="bimtek-jadwal-card">
       <Accordion>
         <Row className="mb-3">
-          <Col xs={9} className="bimtek-jadwal-title">{title}</Col>
-          <Col className={collapse ? "bimtek-collapse-btn show" : "bimtek-collapse-btn"}>
+          <Col xs={9} className="bimtek-jadwal-title">
+            {title}
+          </Col>
+          <Col className={collapse ? 'bimtek-collapse-btn show' : 'bimtek-collapse-btn'}>
             <CustomToggle eventKey="0" callback={() => setCollapse(!collapse)}>
-              {collapse ? "Sembunyikan Detail" : "Lihat Detail" }
-              <ChevronUp className="chevron-up ml-10"/>
-              <ChevronDown className="chevron-down ml-10"/>
+              {collapse ? 'Sembunyikan Detail' : 'Lihat Detail'}
+              <ChevronUp className="chevron-up ml-10" />
+              <ChevronDown className="chevron-down ml-10" />
             </CustomToggle>
           </Col>
         </Row>
@@ -71,7 +66,9 @@ const BimTekJadwalItem = ({title, startDate, endDate, city, location, speaker, m
           <div>
             <DateBox>{startDate}</DateBox> - <DateBox>{endDate}</DateBox>
           </div>
-          <div className="mt-3"><LocationTag className="mr-10"/> {city}</div>
+          <div className="mt-3">
+            <LocationTag className="mr-10" /> {city}
+          </div>
         </div>
         <Accordion.Collapse eventKey="0" className="mt-3">
           <div>
@@ -86,7 +83,7 @@ const BimTekJadwalItem = ({title, startDate, endDate, city, location, speaker, m
             </div>
             <div className="text-end mt-2">
               <Button>
-                <Download className="mr-10"/> Download Materi
+                <Download className="mr-10" /> Download Materi
               </Button>
             </div>
           </div>
@@ -95,6 +92,5 @@ const BimTekJadwalItem = ({title, startDate, endDate, city, location, speaker, m
     </Card>
   );
 };
-
 
 export default BimTekJadwalItem;

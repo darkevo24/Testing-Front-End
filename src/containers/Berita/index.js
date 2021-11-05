@@ -13,6 +13,18 @@ const BeritaUtama = () => <BeritaDiv color="lightblue">Berita Utama</BeritaDiv>;
 
 const TopikPopuler = () => <BeritaDiv color="lightyellow">Topik Populer</BeritaDiv>;
 
+const BeritaUtamaLain = () => <BeritaDiv color="lightgreen">Berita Utama Lainnya</BeritaDiv>;
+
+const KegiatanSatuData = () => <BeritaDiv color="lightgrey">Kegiatan Satu Data Indonesia</BeritaDiv>;
+
+const ListBerita = () => <BeritaDiv color="plum">List Berita</BeritaDiv>;
+
+const BeritaLainnya = () => <BeritaDiv color="orange">Berita Lainnya</BeritaDiv>;
+
+const Populer = () => <BeritaDiv color="beige">Populer</BeritaDiv>;
+
+const Tweets = () => <BeritaDiv color="skyblue">Tweets</BeritaDiv>;
+
 const layout = JSON.parse(window.localStorage.getItem('beritalayout'));
 
 const renderComp = (el) => {
@@ -22,7 +34,13 @@ const renderComp = (el) => {
 const components = {
   search: Search,
   beritaUtama: BeritaUtama,
-  topikpopuler: TopikPopuler,
+  beritaUtamaLain: BeritaUtamaLain,
+  kegiatanSatuData: KegiatanSatuData,
+  listBerita: ListBerita,
+  topikPopuler: TopikPopuler,
+  beritaLainnya: BeritaLainnya,
+  populer: Populer,
+  tweets: Tweets,
 };
 
 const Berita = () => (

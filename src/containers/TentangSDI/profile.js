@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const TentangProfile = ({urlPhoto, name, position}) => {
+const TentangProfile = ({ urlPhoto, name, position }) => {
   const ProfileName = styled.div`
     font-family: Myriad Pro;
     font-size: 16px;
@@ -9,7 +9,7 @@ const TentangProfile = ({urlPhoto, name, position}) => {
     line-height: 19px;
     letter-spacing: 0px;
     text-align: center;
-    color: #2D2627;
+    color: #2d2627;
     margin: 16px 0;
   `;
 
@@ -41,7 +41,7 @@ const TentangProfile = ({urlPhoto, name, position}) => {
 
   return (
     <Container>
-      <ProfilePhoto/>
+      <ProfilePhoto />
       <ProfileName>{name}</ProfileName>
       <ProfilePosition>{position}</ProfilePosition>
     </Container>

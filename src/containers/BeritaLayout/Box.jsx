@@ -13,14 +13,19 @@ export default class Box extends React.Component {
 
   handleDrop = (e) => {
     let items = this.state.items.slice();
-    items.push({ label: e.dragData.label, uid: shortid.generate(), props: e.dragData.props, component: e.dragData.label });
+    items.push({
+      label: e.dragData.label,
+      uid: shortid.generate(),
+      props: e.dragData.props,
+      component: e.dragData.component,
+    });
     this.setState({ items: items });
     e.containerElem.style.visibility = 'hidden';
   };
 
   swap = (fromIndex, toIndex, dragData) => {
     let items = this.state.items.slice();
-    const item = { label: dragData.label, uid: shortid.generate(), props: dragData.props, component: dragData.label };
+    const item = { label: dragData.label, uid: shortid.generate(), props: dragData.props, component: dragData.component };
     items.splice(toIndex, 0, item);
     this.setState({ items: items });
   };
@@ -49,6 +54,7 @@ export default class Box extends React.Component {
           <DropTarget onHit={this.handleDrop} targetKey="boxItem" dropData={{ name: this.props.name }}>
             <div className="box">
               {this.state.items.map((item, index) => {
+                console.log(item);
                 return (
                   <BoxItem
                     key={item.uid}
@@ -56,7 +62,8 @@ export default class Box extends React.Component {
                     kill={this.kill}
                     index={index}
                     swap={this.swap}
-                    itemprops={item.props}>
+                    itemprops={item.props}
+                    component={item.component}>
                     {item.label}
                   </BoxItem>
                 );

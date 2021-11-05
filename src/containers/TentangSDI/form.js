@@ -21,7 +21,7 @@ const ContactUs = () => {
           </Form.Group>
           <Form.Group controlId="message">
             <Form.Label>Pesan</Form.Label>
-            <Form.Control as="textarea" rows={3} style={{height: "100px"}} />
+            <Form.Control as="textarea" rows={3} style={{ height: '100px' }} />
           </Form.Group>
           <Button className="w-100">Kirim Pesan</Button>
         </Form>

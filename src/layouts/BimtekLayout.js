@@ -1,4 +1,4 @@
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -11,20 +11,14 @@ export const BimtekLayout = ({ children }) => {
 
   return (
     <Container fluid className="bimtek-container">
-      <div
-        className="bimtek-header"
-        onClick={handleOnClick}
-        style={{cursor: "pointer"}}
-      >
+      <div className="bimtek-header" onClick={handleOnClick} style={{ cursor: 'pointer' }}>
         Bimbingan Teknis
       </div>
       <Row>
         <Col xs="3">
-          <BimTekSidebar/>
+          <BimTekSidebar />
         </Col>
-        <Col>
-          {children}
-        </Col>
+        <Col>{children}</Col>
       </Row>
     </Container>
   );

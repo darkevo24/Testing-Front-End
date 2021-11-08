@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const langs = ['en', 'id'];
+// Note: add languages here to build more translations
+const langs = ['id'];
 
 const baseLocalePath = path.resolve(__dirname, 'src', 'locales');
 const outputFileName = 'translation.json';

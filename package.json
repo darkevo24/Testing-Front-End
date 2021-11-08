@@ -8,6 +8,9 @@
     "node": ">=14.0.0"
   },
   "scripts": {
+    "prerequisite": "yarn compile:locale",
+    "prestart": "yarn prerequisite",
+    "prebuild": "yarn prerequisite",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest --coverage",

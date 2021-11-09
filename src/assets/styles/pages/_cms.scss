@@ -1,0 +1,38 @@
+.cms-header {
+  padding: 32px;
+  border-bottom: 1px solid #E1E2EA;
+}
+
+.cms-title {
+  font-family: Myriad Pro;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+
+.cms-content {
+  padding: 32px;
+
+  .table-header {
+    font-family: Myriad Pro;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 17px;
+    letter-spacing: 0px;
+    text-align: left;
+    color: #2D2627;
+    padding: 15px 16px;
+  }
+
+  .table-body {
+    padding: 15px 16px;
+  }
+
+  span {
+    padding: 0 8px;
+  }
+}

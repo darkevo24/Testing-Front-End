@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import { AdminHeader } from 'containers/Header';
 import { tokenSelector } from 'containers/Login/reducer';
+import { CMSSidebar } from 'components/Sidebars/CMSSidebar';
 
 export const AdminAuthLayout = ({ children }) => {
   return <div className="auth-container admin-auth-container">{children}</div>;
@@ -11,7 +12,12 @@ export const AdminAppLayout = ({ children }) => {
   return (
     <div className="app-container admin-app-container">
       <AdminHeader />
-      {children}
+      <div className="d-flex">
+        <CMSSidebar />
+        <div style={{width: "100%"}}>
+          {children}
+        </div>
+      </div>
     </div>
   );
 };

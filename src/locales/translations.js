@@ -1,4 +1,4 @@
-import en from './en/translation.json';
+// import en from './en/translation.json';
 import id from './id/translation.json';
 
 /**
@@ -8,9 +8,10 @@ import id from './id/translation.json';
 
 export const translations = {};
 export const translationsJson = {
-  en: {
-    translation: en,
-  },
+  // Note: removing this for now as we are going fully indonesian
+  // en: {
+  //   translation: en,
+  // },
   id: {
     translation: id,
   },

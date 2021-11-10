@@ -165,7 +165,7 @@ const DataSet = () => {
       <Breadcrumb breadcrumbsList={breadcrumbsList} />
       <Row className="mx-200 mt-48">
         <Col xs={3}>
-          <div className="sdp-heading">{t('beranda.dataset.title')}</div>
+          <div className="sdp-heading mb-24">{t('beranda.dataset.title')}</div>
           <MapTile
             title={t('beranda.dataset.filterLocal')}
             description={

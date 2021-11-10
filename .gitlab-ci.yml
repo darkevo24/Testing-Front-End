@@ -4,7 +4,7 @@ stages:
 deploy:
   stage: deploy
   script:
-    - sh update.sh
+    - sh /home/rsa-key-20211026/update.sh
   only:
     - staging
   tags:

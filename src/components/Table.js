@@ -30,22 +30,29 @@ const FilterSearchInput = ({ searchPlaceholder = 'Search', preGlobalFilteredRows
         value={value}
         onChange={handleSearchChange}
       />
-      <Search />
+      <div className="icon-container">
+        <Search />
+      </div>
     </InputGroup>
   );
 };
 
 const Table = ({
+  className,
   columns,
   data,
   title,
   subTitle,
   search,
+  // paginate,
   searchPlaceholder = 'Search',
   searchButtonText = 'Search',
+  searchLeftComponent,
+  searchRightComponent,
   onSearch,
   showHeader = true,
   variant = 'default',
+  highlightOnHover,
 }) => {
   const {
     getTableProps,
@@ -94,19 +101,42 @@ const Table = ({
     }
   }
 
+  // const getRequestParams = (searchTitle, page, pageSize) => {
+  //   let params = {};
+
+  //   if (searchTitle) {
+  //     params['title'] = searchTitle;
+  //   }
+
+  //   if (page) {
+  //     params['page'] = page - 1;
+  //   }
+
+  //   if (pageSize) {
+  //     params['size'] = pageSize;
+  //   }
+
+  //   return params;
+  // };
+
   return (
-    <div className={cx(bem.b(), bem.m(variant))}>
+    <div className={cx(bem.b(), bem.m(variant), bem.m(highlightOnHover && 'highlight'), className)}>
       {title ? <div className={bem.e('header')}>{title}</div> : null}
-      <div className="d-flex justify-content-between align-items-center mb-30">
+      <div className={cx(bem.e('header-wrapper'), 'd-flex justify-content-between align-items-center mb-30')}>
+        {searchLeftComponent && searchLeftComponent}
         <FilterSearchInput
           searchPlaceholder={searchPlaceholder}
           preGlobalFilteredRows={preGlobalFilteredRows}
           globalFilter={globalFilter}
           setGlobalFilter={setGlobalFilter}
         />
-        <Button variant="info" className="btn-rounded ml-16 text-nowrap" onClick={onSearch}>
-          {searchButtonText}
-        </Button>
+        {searchRightComponent ? (
+          searchRightComponent
+        ) : (
+          <Button variant="info" className="btn-rounded ml-16 text-nowrap" onClick={onSearch}>
+            {searchButtonText}
+          </Button>
+        )}
       </div>
       <div className={bem.e('table-wrapper')}>
         {subTitle ? <div className={bem.e('sub-header')}>{subTitle}</div> : null}
@@ -197,6 +227,16 @@ Table.Actions = ({ cell, ...rest }) => {
           </div>
         );
       })}
+    </div>
+  );
+};
+
+Table.Card = ({ cell }) => {
+  const { column: { renderChild } = {}, row } = cell;
+  const { original: item } = row;
+  return (
+    <div className="sdp-card-wrapped d-flex p-16 justify-content-between border-top-gray-stroke" key={item.id}>
+      {renderChild && renderChild(item)}
     </div>
   );
 };

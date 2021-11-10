@@ -35,6 +35,20 @@
       }
     }
   }
+  &--highlight {
+    table.table {
+      tbody {
+        tr {
+          border-left: 4px solid transparent;
+          margin-left: -4px;
+          &:hover {
+            border-left: 4px solid $red;
+            transition: border-left 300ms linear;
+          }
+        }
+      }
+    }
+  }
   thead {
     tr {
       background-color: $light-bg;

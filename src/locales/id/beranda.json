@@ -1,0 +1,9 @@
+{
+  "beranda": {
+    "title": "Beranda",
+    "dataset": {
+      "title": "Dataset",
+      "searchPlaceholder": "Cari Dataset"
+    }
+  }
+}

@@ -155,6 +155,12 @@ export const Calender = (props) => (
   </svg>
 );
 
+export const Circle = (props) => (
+  <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="6" cy="6.5" r="6" fill={`var(--${getColor(props, types.danger)})`} />
+  </svg>
+);
+
 export const actionIcons = {
   edit: Edit,
   trash: Trash,
@@ -175,6 +181,7 @@ export const icons = {
   edit: Edit,
   calender: Calender,
   check: Check,
+  circle: Circle,
   close: Close,
   copy: Copy,
   trash: Trash,

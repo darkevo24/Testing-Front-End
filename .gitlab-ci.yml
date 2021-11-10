@@ -7,3 +7,7 @@ deploy:
     - sh update.sh
   only:
     - staging
+  tags:
+    - deployment
+    - frontend
+

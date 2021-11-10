@@ -1,17 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import RBDropdown from 'react-bootstrap/Dropdown';
 import RBDropdownButton from 'react-bootstrap/DropdownButton';
 import cx from 'classnames';
-import { useLocation } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
-import { ReactComponent as DropDownArrawSvg } from 'assets/drop-down-arraw.svg';
 import { ReactComponent as SearchSvg } from 'assets/search.svg';
 import { useTranslation } from 'react-i18next';
 import { makeData } from 'utils/dataConfig/data-set';
-import { TOPIC_LIST } from 'utils/constants';
-import { Breadcrumbs } from 'components/Breadcrumb';
-import Table from 'components/Table';
-import { Tags } from 'components/Tags';
+import { Breadcrumb, SectionList, Table, Tags } from 'components';
 import { Circle } from 'components/Icons';
 import bn from 'utils/bemNames';
 
@@ -19,13 +14,9 @@ const bem = bn('data-set');
 
 const DataSet = () => {
   const { t } = useTranslation();
-  const [isExpanded, setIsExpanded] = useState(true);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [selectedTopic, setSelectedTopic] = useState('');
   const data = useMemo(() => makeData(200), []);
-  const location = useLocation();
-  const topic = location.state || '';
-  const topicCards = TOPIC_LIST.find((item) => item.title === topic)?.items || [];
+
   const breadcrumbsList = useMemo(
     () => [
       {
@@ -40,11 +31,73 @@ const DataSet = () => {
     [t],
   );
 
-  const options = useMemo(() => [{ label: 'Relevansi', value: 'relevansi' }], []);
+  const sectionsData = useMemo(
+    () => [
+      {
+        filter: 'group',
+        title: 'Group',
+        showMoreText: t('beranda.dataset.groupShowMore'),
+        searchPlaceholder: t('beranda.dataset.groupSearchPlaceholder'),
+        options: [
+          { text: 'Industri', count: 166 },
+          { text: 'Kependudukan', count: 148 },
+          { text: 'Hukum', count: 156 },
+          { text: 'Kesehatan', count: 174 },
+          { text: 'Sosial', count: 166 },
+          { text: 'Dalam Negeri', count: 87 },
+          { text: 'Usaha Kecil Menengah', count: 47 },
+          { text: 'Koperasi', count: 141 },
+          { text: 'Keuangan', count: 141 },
+          { text: 'Pariwisata', count: 141 },
+          { text: '2Industri', count: 266 },
+          { text: '2Kependudukan', count: 248 },
+          { text: '2Hukum', count: 256 },
+          { text: '2Kesehatan', count: 274 },
+          { text: '2Sosial', count: 266 },
+          { text: '2Dalam Negeri', count: 287 },
+          { text: '2Usaha Kecil Menengah', count: 247 },
+          { text: '2Koperasi', count: 241 },
+          { text: '2Keuangan', count: 241 },
+          { text: '2Pariwisata', count: 241 },
+        ],
+      },
+      {
+        filter: 'instansi',
+        title: t('beranda.dataset.instansiTitle'),
+        showMoreText: t('beranda.dataset.instansiShowMore'),
+        searchPlaceholder: t('beranda.dataset.instansiSearchPlaceholder'),
+        options: [
+          { text: 'Industri', count: 166 },
+          { text: 'Kependudukan', count: 148 },
+          { text: 'Hukum', count: 156 },
+          { text: 'Kesehatan', count: 174 },
+          { text: 'Sosial', count: 166 },
+          { text: 'Dalam Negeri', count: 87 },
+          { text: 'Usaha Kecil Menengah', count: 47 },
+          { text: 'Koperasi', count: 141 },
+          { text: 'Keuangan', count: 141 },
+          { text: 'Pariwisata', count: 141 },
+          { text: '2Industri', count: 266 },
+          { text: '2Kependudukan', count: 248 },
+          { text: '2Hukum', count: 256 },
+          { text: '2Kesehatan', count: 274 },
+          { text: '2Sosial', count: 266 },
+          { text: '2Dalam Negeri', count: 287 },
+          { text: '2Usaha Kecil Menengah', count: 247 },
+          { text: '2Koperasi', count: 241 },
+          { text: '2Keuangan', count: 241 },
+          { text: '2Pariwisata', count: 241 },
+        ],
+      },
+    ],
+    [t],
+  );
 
-  useEffect(() => {
-    setSelectedTopic(topicCards[0]);
-  }, [location.pathname]); //eslint-disable-line
+  const handleOptionSelect = (filter) => (option) => {
+    // TODO: handle the selected filters
+  };
+
+  const options = useMemo(() => [{ label: 'Relevansi', value: 'relevansi' }], []);
 
   const tableConfig = {
     columns: [
@@ -108,31 +161,19 @@ const DataSet = () => {
 
   return (
     <div className={cx('sdp-topic-detail-wrapper', bem.b())}>
-      <Breadcrumbs breadcrumbsList={breadcrumbsList} />
+      <Breadcrumb breadcrumbsList={breadcrumbsList} />
       <Row className="mx-200 mt-48">
         <Col xs={3}>
-          <div className="d-flex" onClick={() => setIsExpanded(!isExpanded)}>
-            <div
-              className={cx('sdp-icon mr-10 bg-gray br-3 d-flex justify-content-center align-items-center', {
-                'sdp-icon-rotate': !isExpanded,
-              })}>
-              <DropDownArrawSvg />
-            </div>
-            <div className="sdp-title">{topic}</div>
-          </div>
-          {isExpanded ? (
-            <div className="sdp-item-wrapper mt-32 mb-32 pr-32">
-              {topicCards.map((item) => (
-                <div
-                  className={cx('menu-item pl-16 pt-12 pb-12', {
-                    'bg-gray br-4': item === selectedTopic,
-                  })}
-                  onClick={() => setSelectedTopic(item)}>
-                  {item}
-                </div>
-              ))}
-            </div>
-          ) : null}
+          {sectionsData.map((sectionItem) => {
+            return (
+              <SectionList
+                {...sectionItem}
+                className="mt-8"
+                search
+                onSelectOption={handleOptionSelect(sectionItem.filter)}
+              />
+            );
+          })}
         </Col>
         <Col>
           <Table className={bem.e('table')} {...tableConfig} />

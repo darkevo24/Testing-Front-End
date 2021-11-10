@@ -3,7 +3,13 @@
     "title": "Beranda",
     "dataset": {
       "title": "Dataset",
-      "searchPlaceholder": "Cari Dataset"
+      "searchPlaceholder": "Cari Dataset",
+      "groupTitle": "Group",
+      "groupSearchPlaceholder": "Cari Grup",
+      "groupShowMore": "Show More Group",
+      "instansiTitle": "Instansi",
+      "instansiSearchPlaceholder": "Cari Instansi",
+      "instansiShowMore": "Show More Instansi"
     }
   }
 }

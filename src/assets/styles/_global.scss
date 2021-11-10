@@ -5,12 +5,13 @@
 @import './vendors/date-picker';
 
 // All utility styles goes here
+@import './utilities/background';
+@import './utilities/border';
+@import './utilities/flex';
+@import './utilities/font';
 @import './utilities/scrollbar';
 @import './utilities/spacing';
 @import './utilities/text';
-@import './utilities/background';
-@import './utilities/border';
-@import './utilities/font';
 
 // All component styles goers here
 @import './components/button';

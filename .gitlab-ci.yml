@@ -1,6 +1,12 @@
 stages:
   - deploy
 
+cache:
+  paths:
+    - node_modules
+    - "packages/*/node_modules"
+    - .eslint
+
 deploy:
   stage: deploy
   script:

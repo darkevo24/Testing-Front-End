@@ -12,8 +12,8 @@ deploy:
   script:
     - yarn install
     - yarn build
-    - sudo mkdir -p /var/www/html/sdi
-    - sudo cp -R ./build/. /var/www/html/sdi
+    - mkdir -p /var/www/html/sdi
+    - cp -R ./build/. /var/www/html/sdi
   only:
     - staging
   tags:

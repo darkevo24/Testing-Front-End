@@ -3,11 +3,12 @@ import RBDropdown from 'react-bootstrap/Dropdown';
 import RBDropdownButton from 'react-bootstrap/DropdownButton';
 import cx from 'classnames';
 import { Row, Col } from 'react-bootstrap';
-import { ReactComponent as SearchSvg } from 'assets/search.svg';
 import { useTranslation } from 'react-i18next';
-import { makeData } from 'utils/dataConfig/data-set';
-import { Breadcrumb, SectionList, Table, Tags } from 'components';
+
+import { Breadcrumb, MapTile, SectionList, Table, Tags } from 'components';
 import { Circle } from 'components/Icons';
+import { ReactComponent as SearchSvg } from 'assets/search.svg';
+import { makeData } from 'utils/dataConfig/data-set';
 import bn from 'utils/bemNames';
 
 const bem = bn('data-set');
@@ -164,6 +165,15 @@ const DataSet = () => {
       <Breadcrumb breadcrumbsList={breadcrumbsList} />
       <Row className="mx-200 mt-48">
         <Col xs={3}>
+          <div className="sdp-heading">{t('beranda.dataset.title')}</div>
+          <MapTile
+            title={t('beranda.dataset.filterLocal')}
+            description={
+              <>
+                Map tiles by <span className="text-hightlighted"> Badan Informasi Geospasial</span>
+              </>
+            }
+          />
           {sectionsData.map((sectionItem) => {
             return (
               <SectionList

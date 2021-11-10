@@ -3,6 +3,7 @@
     "title": "Beranda",
     "dataset": {
       "title": "Dataset",
+      "filterLocal": "Filter by Location",
       "searchPlaceholder": "Cari Dataset",
       "groupTitle": "Group",
       "groupSearchPlaceholder": "Cari Grup",

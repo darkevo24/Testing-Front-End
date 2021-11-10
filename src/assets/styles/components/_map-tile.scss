@@ -1,0 +1,6 @@
+.sdp-map-tile {
+  &__body {
+    height: 200px;
+    @extend .flex-center;
+  }
+}

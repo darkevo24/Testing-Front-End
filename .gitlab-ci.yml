@@ -4,8 +4,10 @@ stages:
 deploy:
   stage: deploy
   script:
-    - cd /home/rsa-key-20211026
-    - sh update.sh
+    - yarn install
+    - yarn build
+    - sudo mkdir -p /var/www/html/sdi
+    - sudo cp -R ./build/. /var/www/html/sdi
   only:
     - staging
   tags:

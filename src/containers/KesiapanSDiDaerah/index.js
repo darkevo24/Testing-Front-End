@@ -1,7 +1,6 @@
 import { Breadcrumbs } from 'components/Breadcrumb';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import './kesiapanSdiDaerah.scss';
 import KesiapanSDILayout from '../../layouts/KesiapanSDILayout';
 
 const KesiapanSDIDaerah = () => {
@@ -21,7 +20,7 @@ const KesiapanSDIDaerah = () => {
       <Breadcrumbs breadcrumbsList={breadcrumbsList} />
       <KesiapanSDILayout>
         <div>
-          <Row className="kesiapan-sdi-daerah mb-3 rectangle">
+          <Row className="kesiapan-sdi-iframe-container mb-3">
             <Col className="justify-content-center align-items-center just">
               <span className="fw-bold">Iframe Superset</span>
             </Col>

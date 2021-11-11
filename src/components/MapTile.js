@@ -1,6 +1,4 @@
-import { useState } from 'react';
 import cx from 'classnames';
-import { Minus, Plus, Search } from 'components/Icons';
 import bn from 'utils/bemNames';
 
 const bem = bn('map-tile');

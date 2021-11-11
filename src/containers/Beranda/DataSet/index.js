@@ -1,13 +1,15 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import RBDropdown from 'react-bootstrap/Dropdown';
 import RBDropdownButton from 'react-bootstrap/DropdownButton';
 import cx from 'classnames';
 import { Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { ReactComponent as SearchSvg } from 'assets/search.svg';
 import { Breadcrumb, MapTile, SectionList, Table, Tags } from 'components';
 import { Circle } from 'components/Icons';
-import { ReactComponent as SearchSvg } from 'assets/search.svg';
+import { datasetSelector, getDataSet } from '../reducer';
 import { makeData } from 'utils/dataConfig/data-set';
 import bn from 'utils/bemNames';
 
@@ -15,8 +17,22 @@ const bem = bn('data-set');
 
 const DataSet = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState(null);
+  const [filterParams, setFilterParams] = useState({});
   const data = useMemo(() => makeData(200), []);
+
+  const { error, loading, params, result } = useSelector(datasetSelector);
+
+  const fetchDataset = () => {
+    const payloadParams = {
+      ...params,
+      ...filterParams,
+    };
+    return dispatch(getDataSet(payloadParams));
+  };
+
+  useEffect(fetchDataset, [filterParams]);
 
   const breadcrumbsList = useMemo(
     () => [

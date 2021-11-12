@@ -53,9 +53,13 @@ a {
 }
 
 .sdp-text-red {
-  color: var(--gray);
+  color: var(--red);
 }
 
 .sdp-text-black-dark {
   color: var(--black-dark-10)
+}
+
+.text-hightlighted {
+  color: $blue;
 }

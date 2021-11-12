@@ -48,3 +48,12 @@ $customSpacings: 6, 7, 8, 10, 12, 15, 16, 18, 24, 27, 30, 32, 35, 40, 42, 48, 50
 		padding-bottom: #{$size}px !important;
   }
 }
+
+$customWidths: 40, 42, 48, 50, 80, 120, 180, 200, 250, 320;
+
+@each $size in $customWidths {
+  .wpx-#{$size} {
+		min-width: #{$size}px !important;
+		width: #{$size}px !important;
+  }
+}

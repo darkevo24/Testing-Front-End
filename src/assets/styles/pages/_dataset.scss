@@ -1,0 +1,53 @@
+.sdp-data-set {
+  .sdp-table__header-wrapper {
+    .input-group {
+      .icon-container {
+        background-color: $gray-bg;
+        svg,
+        svg * {
+          fill: $red;
+        }
+      }
+    }
+  }
+  &__filters-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  &__filter {
+    display: flex;
+    align-items: center;
+    margin-right: 0.5rem;
+    margin-top: 1rem;
+    &-title {
+      color: $black-dark-10;
+      text-transform: capitalize;
+    }
+    &-tag {
+      margin-right: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid $stroke;
+      border-radius: 2rem;
+      height: max-content;
+      color: $gray-dark;
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      @extend .text-nowrap;
+      .icon-box {
+        height: 1rem;
+        width: 1rem;
+        margin-left: 0.25rem;
+        svg {
+          height: 0.5rem;
+          width: 0.5rem;
+        }
+      }
+    }
+    &-tags {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+}

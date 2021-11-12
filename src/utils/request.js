@@ -137,3 +137,10 @@ export function deleteRequest(url, options) {
 }
 
 export const apiUrls = appApiUrls;
+
+export const defaultNumberOfRows = 10;
+
+export const paginationParams = {
+  start: 0,
+  rows: defaultNumberOfRows,
+};

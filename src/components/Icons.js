@@ -187,6 +187,7 @@ export const Plus = (props) => (
 export const actionIcons = {
   edit: Edit,
   trash: Trash,
+  search: Search,
 };
 
 export const modalIcons = {

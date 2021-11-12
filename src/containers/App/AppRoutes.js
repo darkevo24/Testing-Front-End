@@ -15,6 +15,9 @@ const TentangPage = lazy(() => import('containers/TentangSDI'));
 const KomunitasPage = lazy(() => import('containers/Komunitas'));
 const BeritaLayout = lazy(() => import('containers/BeritaLayout'));
 const BeritaPage = lazy(() => import('containers/Berita'));
+const KesiapanData = lazy(() => import('containers/KesiapanData'));
+const KesiapanSDIDaerah = lazy(() => import('containers/KesiapanSDiDaerah'));
+const KesiapanSDIPusat = lazy(() => import('containers/KesiapanSDIPusat'));
 
 function AppRoutes(props) {
   return (
@@ -32,6 +35,9 @@ function AppRoutes(props) {
         <Route path="/bimtek-form" component={BimTekFormPage} />
         <Route path="/bimtek-jadwal" component={BimTekJadwalPage} />
         <Route path="/tentang" component={TentangPage} />
+        <Route path="/kesiapan-data" component={KesiapanData} />
+        <Route path="/kesiapan-sdi-daerah" component={KesiapanSDIDaerah} />
+        <Route path="/kesiapan-sdi-pusat" component={KesiapanSDIPusat} />
       </Switch>
     </AppLayout>
   );

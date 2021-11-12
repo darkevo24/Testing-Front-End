@@ -1,24 +1,20 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
-import { AdminAppLayout } from 'layouts/AdminLayout';
-import { CMSForm } from 'components/CMSForm';
-import './cmsBeritaBaru.scss';
+import { CMSForm } from 'components';
+import bn from 'utils/bemNames';
+import cx from 'classnames';
+
+const bem = bn('content-create');
 
 const CMSBeritaBaru = () => {
   const history = useHistory();
-  const ContentLayout = styled.div`
-    background: #FAFAFA;
-    margin-bottom: 72px;
-    height: 100%;
-  `;
 
   return (
-    <AdminAppLayout>
-      <div className="cms-header d-flex justify-content-between">
-        <div className="cms-title" style={{fontSize: "24px"}}>
+    <div className={bem.e('section')}>
+      <div className={cx(bem.e('header'), "d-flex justify-content-between")}>
+        <div className={bem.e('title')}>
           Buat Berita Baru
           <Button onClick={() => history.push('/admin/berita')} className="ml-24" variant="secondary" style={{width: "112px"}}>Batal</Button>
           <Button className="ml-10" variant="info" style={{width: "112px"}}>Simpan</Button>
@@ -28,10 +24,10 @@ const CMSBeritaBaru = () => {
           <Button className="ml-24" variant="secondary" style={{width: "112px"}}>Preview</Button>
         </div>
       </div>
-      <ContentLayout className="cms-content">
-        <CMSForm data={[]} style={{maxWidth: "720px"}} />
-      </ContentLayout>
-    </AdminAppLayout>
+      <div className={bem.e('body')}>
+        <CMSForm data={[]} />
+      </div>
+    </div>
   );
 };
 

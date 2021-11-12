@@ -22,6 +22,9 @@
 @import './components/modal';
 @import './components/notification';
 @import './components/table';
+@import './components/_fileInput';
+@import './components/_cmsSidebar';
+@import './components/_cmsForm';
 
 // All pages styles goes here
 @import './pages/login';
@@ -30,5 +33,4 @@
 @import './pages/bimtek';
 @import './pages/komunitas';
 @import './pages/cms';
-@import './pages/admin-app';
 @import './pages/kesiapanSDI';

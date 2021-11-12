@@ -1,34 +1,21 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import InputGroup from 'react-bootstrap/InputGroup';
+import { Search } from 'components/Icons';
+import { CMSTable } from 'components';
 
-import styled from 'styled-components';
-import { AdminAppLayout } from 'layouts/AdminLayout';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import { useHistory } from 'react-router-dom';
+import bn from 'utils/bemNames';
+import cx from 'classnames';
+
+const bem = bn('content-table');
 
 const CMSBerita = () => {
   const history = useHistory();
-  const ButtonAdd = styled.div`
-    font-family: Myriad Pro;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    height: 48px;
-    letter-spacing: 0px;
-    background: #007AFF;
-    color: #FFFFFF;
-    padding: 13px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-  `;
-
-  const RowTable = styled.div`
-    border: 1px solid #E1E2EA;
-    box-sizing: border-box;
-    border-radius: 4px;
-    margin-bottom: 8px;
-  `;
 
   const dataBerita = [
     {
@@ -47,40 +34,49 @@ const CMSBerita = () => {
     }
   ];
 
-  const tableWidth = [ 50, 12, 9, 11, 11, 7]; // total 100%
-
   return (
-    <AdminAppLayout>
-      <div className="cms-header">
-        <div className="cms-title">Berita</div>
-        <div className="d-flex justify-content-between mt-3">
-          <ButtonAdd onClick={() => history.push('/admin/berita-baru')}><Plus/> Buat Berita</ButtonAdd>
-          <Form>
-            <Form.Control style={{width: "360px"}} type="text" placeholder="Cari Berita" />
-          </Form>
-        </div>
+    <div className={bem.e('section')}>
+      <div className={bem.e('header')}>
+        <div className={cx(bem.e('title'), 'mb-4')}>Berita</div>
+        <Row className="justify-content-between">
+          <Col xs={2}>
+            <Button
+              variant="info"
+              className="text-center"
+              onClick={() => history.push('/admin/berita-baru')}>
+              <Plus/> Buat Berita
+            </Button>
+          </Col>
+          <Col xs={4}>
+            <InputGroup>
+              <Form.Control
+                variant="normal"
+                type="text"
+                placeholder="Cari Berita"
+              />
+              <Search />
+            </InputGroup>
+          </Col>
+        </Row>
       </div>
-      <div className="cms-content">
-        <div className="table-header d-flex">
-          <span style={{width: tableWidth[0]+"%"}}>Judul Berita</span>
-          <span style={{width: tableWidth[1]+"%"}}>Tanggal Publish</span>
-          <span style={{width: tableWidth[2]+"%"}}>Status</span>
-          <span style={{width: tableWidth[3]+"%"}}>Author</span>
-          <span style={{width: tableWidth[4]+"%"}}>Editor</span>
-          <span style={{width: tableWidth[5]+"%"}}></span>
-        </div>
-        {dataBerita.map((item, key) => (
-          <RowTable className="table-body d-flex" key={key}>
-            <span style={{width: tableWidth[0]+"%"}}>{item.title}</span>
-            <span style={{width: tableWidth[1]+"%"}}>{item.datePublish}</span>
-            <span style={{width: tableWidth[2]+"%"}}>{item.status}</span>
-            <span style={{width: tableWidth[3]+"%"}}>{item.createBy}</span>
-            <span style={{width: tableWidth[4]+"%"}}>{item.createBy}</span>
-            <span style={{width: tableWidth[5]+"%"}}><Button onClick={() => history.push('/admin/berita-detail/'+item.id)} variant="info">Detail</Button></span>
-          </RowTable>
-        ))}
-      </div>
-    </AdminAppLayout>
+      <CMSTable
+        customWidth={[ 50, 12, 9, 11, 11, 7]}
+        header={[
+          'Judul Berita',
+          'Tanggal Publish',
+          'Status',
+          'Author',
+          'Editor'
+        ]}
+        data={dataBerita.map((item) => {
+          let value = {
+      			data: [item.title, item.datePublish, item.status, item.createBy, item.createBy],
+      			action: "/admin/berita-detail/"+item.id
+      		}
+      		return value
+        })}
+      />
+  </div>
   );
 };
 

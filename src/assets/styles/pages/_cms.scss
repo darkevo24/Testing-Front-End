@@ -1,38 +1,149 @@
-.cms-header {
-  padding: 32px;
-  border-bottom: 1px solid #E1E2EA;
-}
+.app-container.admin-app-container {
+  .sdp-content-table {
+    &__header {
+      padding: 32px;
+      border-bottom: 1px solid #E1E2EA;
+    }
 
-.cms-title {
-  font-family: Myriad Pro;
-  font-size: 32px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 40px;
-  letter-spacing: 0px;
-  text-align: left;
-}
+    &__title {
+      font-family: Myriad Pro;
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 40px;
+      letter-spacing: 0px;
+      text-align: left;
+    }
 
-.cms-content {
-  padding: 32px;
+    &__body {
+      padding: 32px;
 
-  .table-header {
-    font-family: Myriad Pro;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 17px;
-    letter-spacing: 0px;
-    text-align: left;
-    color: #2D2627;
-    padding: 15px 16px;
+      .table-header {
+        font-family: Myriad Pro;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 17px;
+        letter-spacing: 0px;
+        text-align: left;
+        color: #2D2627;
+        padding: 15px 16px;
+      }
+
+      .table-body {
+        padding: 15px 16px;
+        border: 1px solid #E1E2EA;
+        box-sizing: border-box;
+        border-radius: 4px;
+        margin-bottom: 8px;
+      }
+
+      span {
+        padding: 0 8px;
+      }
+    }
   }
 
-  .table-body {
-    padding: 15px 16px;
+  .sdp-content-detail {
+    &__section {
+      padding: 32px;
+
+      .sdp-log {
+        &__title {
+          font-family: Myriad Pro;
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 25px;
+          margin-bottom: 2.5rem;
+        }
+
+        &__date {
+          font-family: Myriad Pro;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 17px;
+          color: #515154;
+
+          &-line {
+            background: #E1E2EA;
+            height: 2px;
+            width: 50%;
+          }
+        }
+
+        &__status {
+          border-radius: 2px;
+          padding: 4px 6px;
+          margin-right: 8px;
+          height: 28px;
+
+          &.selesai {
+            background: rgba(21, 165, 95, 0.12);
+            color: #15A55F;
+          }
+          &.diproses {
+            background: rgba(222, 136, 19, 0.12);
+            color: #DE8813;
+          }
+          &.terkirim {
+            background: rgba(104, 72, 195, 0.12);
+            color: #6848C4;
+          }
+          &.dibuat {
+            background: #F5F6FA;
+            color: #858A8F;
+          }
+        }
+
+        &__content {
+          font-family: Myriad Pro;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 21px;
+          color: #858A8F;
+        }
+      }
+    }
+
+    &__title {
+      font-family: Myriad Pro;
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 40px;
+      letter-spacing: 0px;
+      text-align: left;
+    }
   }
 
-  span {
-    padding: 0 8px;
+  .sdp-content-create {
+    &__header {
+      padding: 32px;
+      border-bottom: 1px solid #E1E2EA;
+    }
+
+    &__title {
+      font-family: Myriad Pro;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 40px;
+      letter-spacing: 0px;
+      text-align: left;
+    }
+
+    &__body {
+      padding: 32px;
+      background: #FAFAFA;
+      height: 100%;
+
+      .sdp-form {
+        max-width: 720px;
+        margin-bottom: 72px;
+      }
+    }
   }
 }

@@ -1,8 +1,8 @@
-import React from 'react';
+import cx from 'classnames';
 
-export const Loader = () => {
+export const Loader = ({ fullscreen = false }) => {
   return (
-    <div className="d-flex justify-content-center">
+    <div className={cx('flex-center', { 'abs-center h-100 w-100 bg-secondary-translucent': fullscreen })}>
       <div className="spinner-border" role="status">
         <span className="visually-hidden">Loading...</span>
       </div>

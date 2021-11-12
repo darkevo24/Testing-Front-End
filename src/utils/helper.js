@@ -1,6 +1,6 @@
 import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
-import filter from 'lodash/filter';
+import isString from 'lodash/isString';
 import map from 'lodash/map';
 import pick from 'lodash/pick';
 
@@ -100,7 +100,8 @@ export const mapParamsToOrString = (data = {}, keys = [], dataAccessor = 'id') =
 
 export const mapOrStringsToFq = (data, keys = []) => {
   const dataKeys = map(keys, (key) => data[key]);
-  const fq = filter(dataKeys, Boolean).join(', ');
+  const dataKeysWithValue = dataKeys.filter((orString) => orString && isString(orString));
+  const fq = dataKeysWithValue.join(', ');
   if (fq) {
     data.fq = fq;
   }

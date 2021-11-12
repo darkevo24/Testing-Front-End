@@ -5,12 +5,8 @@
       "title": "Dataset",
       "filterLocal": "Filter by Location",
       "searchPlaceholder": "Cari Dataset",
-      "groupTitle": "Group",
-      "groupSearchPlaceholder": "Cari Grup",
-      "groupShowMore": "Show More Group",
-      "instansiTitle": "Instansi",
-      "instansiSearchPlaceholder": "Cari Instansi",
-      "instansiShowMore": "Show More Instansi"
+      "filterPlaceholder": "Cari {{filter}}",
+      "filterShowMore": "Show More {{filter}}"
     }
   }
 }

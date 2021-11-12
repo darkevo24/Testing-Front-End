@@ -1,6 +1,7 @@
 .sdp-section-list {
   &__header {
     padding: 0.5rem 1rem;
+    text-transform: capitalize;
   }
   &__option-item {
     padding-left: 1rem;;
@@ -11,12 +12,14 @@
     color: $black-dark-10;
     border: 1px solid $stroke;
     border-top-width: 0;
+    &:hover {
+      cursor: pointer;
+    }
     &.show-more {
       color: $info;
       @extend .flex-center;
       &:hover {
         text-decoration: underline;
-        cursor: pointer;
       }
     }
   }

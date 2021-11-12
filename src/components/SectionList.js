@@ -90,7 +90,10 @@ const SectionList = ({
           </InputGroup>
         )}
         {truncatedOptions.map((option) => (
-          <div key={`${title}-${option.text}`} className={bem.e('option-item')} onClick={handleOptionSelect(option)}>
+          <div
+            key={option.id ? `${title}-${option.id}` : `${title}-${option.text}`}
+            className={bem.e('option-item')}
+            onClick={handleOptionSelect(option)}>
             {option.text}
           </div>
         ))}

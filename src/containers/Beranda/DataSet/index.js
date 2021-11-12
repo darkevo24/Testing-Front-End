@@ -5,12 +5,16 @@ import cx from 'classnames';
 import { Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import NumberFormat from 'react-number-format';
+import cloneDeep from 'lodash/cloneDeep';
+import find from 'lodash/find';
+import map from 'lodash/map';
+import remove from 'lodash/remove';
 
 import { ReactComponent as SearchSvg } from 'assets/search.svg';
-import { Breadcrumb, MapTile, SectionList, Table, Tags } from 'components';
-import { Circle } from 'components/Icons';
+import { Breadcrumb, Loader, MapTile, SectionList, Table, Tags } from 'components';
+import { Circle, Close } from 'components/Icons';
 import { datasetSelector, getDataSet } from '../reducer';
-import { makeData } from 'utils/dataConfig/data-set';
 import bn from 'utils/bemNames';
 
 const bem = bn('data-set');
@@ -19,20 +23,20 @@ const DataSet = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState(null);
-  const [filterParams, setFilterParams] = useState({});
-  const data = useMemo(() => makeData(200), []);
 
-  const { error, loading, params, result } = useSelector(datasetSelector);
+  const { /* error, */ pageSize, loading, params, searchFacets, result } = useSelector(datasetSelector);
 
-  const fetchDataset = () => {
-    const payloadParams = {
-      ...params,
-      ...filterParams,
+  const fetchDataset = (override) => {
+    const filterParams = {
+      ...cloneDeep(params),
+      ...cloneDeep(override),
     };
-    return dispatch(getDataSet(payloadParams));
+    return dispatch(getDataSet(filterParams));
   };
 
-  useEffect(fetchDataset, [filterParams]);
+  const data = useMemo(() => result?.results || [], [result]);
+
+  useEffect(fetchDataset, []);
 
   const breadcrumbsList = useMemo(
     () => [
@@ -48,75 +52,47 @@ const DataSet = () => {
     [t],
   );
 
-  const sectionsData = useMemo(
-    () => [
-      {
-        filter: 'group',
-        title: 'Group',
-        showMoreText: t('beranda.dataset.groupShowMore'),
-        searchPlaceholder: t('beranda.dataset.groupSearchPlaceholder'),
-        options: [
-          { text: 'Industri', count: 166 },
-          { text: 'Kependudukan', count: 148 },
-          { text: 'Hukum', count: 156 },
-          { text: 'Kesehatan', count: 174 },
-          { text: 'Sosial', count: 166 },
-          { text: 'Dalam Negeri', count: 87 },
-          { text: 'Usaha Kecil Menengah', count: 47 },
-          { text: 'Koperasi', count: 141 },
-          { text: 'Keuangan', count: 141 },
-          { text: 'Pariwisata', count: 141 },
-          { text: '2Industri', count: 266 },
-          { text: '2Kependudukan', count: 248 },
-          { text: '2Hukum', count: 256 },
-          { text: '2Kesehatan', count: 274 },
-          { text: '2Sosial', count: 266 },
-          { text: '2Dalam Negeri', count: 287 },
-          { text: '2Usaha Kecil Menengah', count: 247 },
-          { text: '2Koperasi', count: 241 },
-          { text: '2Keuangan', count: 241 },
-          { text: '2Pariwisata', count: 241 },
-        ],
-      },
-      {
-        filter: 'instansi',
-        title: t('beranda.dataset.instansiTitle'),
-        showMoreText: t('beranda.dataset.instansiShowMore'),
-        searchPlaceholder: t('beranda.dataset.instansiSearchPlaceholder'),
-        options: [
-          { text: 'Industri', count: 166 },
-          { text: 'Kependudukan', count: 148 },
-          { text: 'Hukum', count: 156 },
-          { text: 'Kesehatan', count: 174 },
-          { text: 'Sosial', count: 166 },
-          { text: 'Dalam Negeri', count: 87 },
-          { text: 'Usaha Kecil Menengah', count: 47 },
-          { text: 'Koperasi', count: 141 },
-          { text: 'Keuangan', count: 141 },
-          { text: 'Pariwisata', count: 141 },
-          { text: '2Industri', count: 266 },
-          { text: '2Kependudukan', count: 248 },
-          { text: '2Hukum', count: 256 },
-          { text: '2Kesehatan', count: 274 },
-          { text: '2Sosial', count: 266 },
-          { text: '2Dalam Negeri', count: 287 },
-          { text: '2Usaha Kecil Menengah', count: 247 },
-          { text: '2Koperasi', count: 241 },
-          { text: '2Keuangan', count: 241 },
-          { text: '2Pariwisata', count: 241 },
-        ],
-      },
-    ],
-    [t],
-  );
+  const sectionsData = useMemo(() => {
+    if (!searchFacets) {
+      return [];
+    }
+    return map(searchFacets, (val, key) => ({
+      filter: key,
+      title: val.title,
+      showMoreText: t('beranda.dataset.filterShowMore', { filter: val.title }),
+      searchPlaceholder: t('beranda.dataset.filterPlaceholder', { filter: val.title }),
+      options: map(val.items, (item) => ({
+        ...item,
+        id: item.name,
+        text: item.display_name,
+      })),
+    }));
+  }, [searchFacets]);
 
   const handleOptionSelect = (filter) => (option) => {
-    // TODO: handle the selected filters
+    const newFilterParams = cloneDeep(params);
+    let currentFilter = newFilterParams[filter];
+    if (currentFilter) {
+      const findPredicate = (f) => f.id === option.id;
+      const foundFilter = find(currentFilter, findPredicate);
+      if (foundFilter) {
+        remove(currentFilter, findPredicate);
+      } else {
+        currentFilter.push(option);
+      }
+    } else {
+      currentFilter = [option];
+    }
+    newFilterParams[filter] = currentFilter;
+    newFilterParams.start = 0;
+    newFilterParams.currentPage = 0;
+    fetchDataset(newFilterParams);
   };
 
   const options = useMemo(() => [{ label: 'Relevansi', value: 'relevansi' }], []);
 
   const tableConfig = {
+    variant: 'card',
     columns: [
       {
         id: 'card',
@@ -126,14 +102,13 @@ const DataSet = () => {
             <div className="sdp-card-wrapped d-flex p-16 justify-content-between" key={item.id}>
               <div className="flex-column">
                 <div className="sdp-left-wrapper mb-27">
-                  <div className="mb-8 fs-16 fw-600 lh-19 sdp-text-black-dark">
-                    {item.title} - {item.date}
-                  </div>
-                  <div className="fs-14 lh-17 sdp-text-black-dark">{item.description}</div>
+                  <div className="mb-8 fs-16 fw-600 lh-19 sdp-text-black-dark">{item.title}</div>
+                  <div className="fs-14 lh-17 sdp-text-black-dark">{item.notes}</div>
                 </div>
                 <div className="d-flex">
+                  {/* TODO: check if we need to display the tags or this is format data */}
                   {item.tags.map((tag) => (
-                    <Tags key={tag} text={tag} />
+                    <Tags key={`${item.id}-${tag.id}`} text={tag.display_name} />
                   ))}
                 </div>
               </div>
@@ -157,7 +132,9 @@ const DataSet = () => {
     searchLeftComponent: (
       <div className="d-flex align-items-center justify-content-center fs-20 fw-bold">
         <Circle />
-        <div className="ml-12 sdp-text-black-dark">31.771</div>
+        <div className="ml-12 sdp-text-black-dark">
+          <NumberFormat displayType="text" thousandSeparator="." decimalSeparator="," value={result?.count} />
+        </div>
         <div className="text-nowrap mr-80 ml-6 sdp-text-disable">Datasets Found</div>
       </div>
     ),
@@ -173,13 +150,58 @@ const DataSet = () => {
         ))}
       </RBDropdownButton>
     ),
+    renderFilters: () => {
+      const addedFilters = params['facet.field'].filter((filter) => !!params[filter] && params[filter].length);
+      return (
+        <div className={bem.e('filters-wrapper')}>
+          {map(addedFilters, (filter, index) => {
+            const filterOptions = params[filter];
+            if (filterOptions) {
+              return (
+                <div key={`filter-${filter}`} className={bem.e('filter')}>
+                  <div className={bem.e('filter-title')}>{filter}:</div>
+                  <div className={cx(bem.e('filter-tags'), 'd-flex, ml-8')}>
+                    {map(filterOptions, (option) => (
+                      <div key={`${filter}-${option.id}`} className={bem.e('filter-tag')}>
+                        {option.display_name}
+                        <div
+                          className="icon-box"
+                          onClick={() => {
+                            handleOptionSelect(filter)(option);
+                          }}>
+                          <Close />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+          })}
+        </div>
+      );
+    },
     highlightOnHover: true,
+    totalCount: result?.count || null,
+    pageSize,
+    currentPage: params.currentPage,
+    manualPagination: true,
+    onPageIndexChange: (currentPage) => {
+      const start = currentPage * pageSize;
+      if (params.start !== start) {
+        const params = {
+          start,
+          currentPage,
+        };
+        fetchDataset(params);
+      }
+    },
   };
 
   return (
     <div className={cx('sdp-topic-detail-wrapper', bem.b())}>
       <Breadcrumb breadcrumbsList={breadcrumbsList} />
-      <Row className="mx-200 mt-48">
+      <Row className="mx-200 mt-48 mb-16">
         <Col xs={3}>
           <div className="sdp-heading mb-24">{t('beranda.dataset.title')}</div>
           <MapTile
@@ -201,9 +223,10 @@ const DataSet = () => {
             );
           })}
         </Col>
-        <Col>
+        <Col xs={9}>
           <Table className={bem.e('table')} {...tableConfig} />
         </Col>
+        {loading && <Loader fullscreen />}
       </Row>
     </div>
   );

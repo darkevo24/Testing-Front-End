@@ -49,6 +49,17 @@
       }
     }
   }
+  &--card {
+    tbody {
+      tr {
+        &:first-child {
+          td {
+            border-top: 1px solid $stroke;
+          }
+        }
+      }
+    }
+  }
   thead {
     tr {
       background-color: $light-bg;
@@ -97,6 +108,10 @@
         color: $black-dark;
       }
     }
+  }
+  .empty-data {
+    @extend .sdp-text-disable;
+    @extend .fs-18;
   }
 }
 

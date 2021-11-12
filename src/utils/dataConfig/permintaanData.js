@@ -55,7 +55,7 @@ const getRandomIndex = () => Math.floor(Math.random() * 5);
 const newRow = () => {
   const dataindex = getRandomIndex();
   return {
-    id: idData[dataindex],
+    idData: idData[dataindex],
     namaPeminta: namaPemintaData[dataindex],
     instansi: instansiData[dataindex],
     unitKerja: unitKerjaData[dataindex],

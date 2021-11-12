@@ -12,7 +12,9 @@ const PermintaanData = () => {
   const history = useHistory();
 
   const showPermintaanDataForm = (data) => {
+    console.log('data', data);
     setSelectedRecord(data);
+    console.log('selected record', selectedRecord);
     history.push('/permintaan-data-form', { data: selectedRecord });
   };
 
@@ -20,7 +22,7 @@ const PermintaanData = () => {
     () => [
       {
         Header: 'ID',
-        accessor: 'id',
+        accessor: 'idData',
       },
       {
         Header: 'Nama Peminta',

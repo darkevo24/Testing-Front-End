@@ -5,9 +5,8 @@ import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { DatePicker, Dropdown, Input } from 'components';
+import { Input } from 'components';
 import { submitForm } from 'utils/helper';
-import { nameData } from '../../utils/dataConfig/dafter';
 import { LeftChevron } from '../../components/Icons';
 import { useHistory } from 'react-router-dom';
 
@@ -29,6 +28,7 @@ const schema = yup
   .required();
 
 const PermintaanDataForm = ({ data, onSubmit }) => {
+  console.log(data);
   const history = useHistory();
   const backToTable = () => {
     history.push('/permintaan-data');
@@ -86,6 +86,7 @@ const PermintaanDataForm = ({ data, onSubmit }) => {
               label="Deskripsi Data"
               name="deskripsi"
               control={control}
+              isDisabled
               rules={{ required: true }}
               error={errors.deskripsi?.message}
             />
@@ -94,35 +95,35 @@ const PermintaanDataForm = ({ data, onSubmit }) => {
               label="Tujuan Permintaan Data"
               name="tujuanPermintaan"
               control={control}
+              isDisabled
               rules={{ required: true }}
               error={errors.tujuanPermintaan?.message}
             />
-            <DatePicker
+            <Input
               group
               label="Target Waktu"
               name="targetWaktu"
               control={control}
+              isDisabled
               rules={{ required: true }}
               error={errors.targetWaktu?.message}
             />
-            <Dropdown
+            <Input
               group
               label="Produsen Data"
               name="produsen"
               control={control}
               rules={{ required: true }}
-              placeholder="Pilih produsen"
-              options={nameData.map((name) => ({ value: name, label: name }))}
+              isDisabled
               error={errors.induk?.message}
             />
-            <Dropdown
+            <Input
               group
               label="Jenis Data"
               name="tipe"
               control={control}
               rules={{ required: true }}
-              placeholder="Pilih jenis data"
-              options={nameData.map((name) => ({ value: name, label: name }))}
+              isDisabled
               error={errors.induk?.message}
             />
             <Input
@@ -130,6 +131,7 @@ const PermintaanDataForm = ({ data, onSubmit }) => {
               label="URL Dataset"
               name="url"
               isLink
+              isDisabled
               control={control}
               rules={{ required: true }}
               error={errors.url?.message}
@@ -165,7 +167,7 @@ const PermintaanDataForm = ({ data, onSubmit }) => {
               <p className="fw-bold">Instansi</p>
             </div>
             <div className="px-5 col-2">
-              <p className="fw-light">Instansi</p>
+              <p className="fw-light">{schema.instansi}</p>
             </div>
           </div>
           <div className="d-flex flex-row">

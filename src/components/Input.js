@@ -15,6 +15,7 @@ export const Input = ({
   leftIcon,
   rightIcon,
   isLink,
+  isDisabled,
   ...rest
 }) => {
   let { as: inputAs } = rest;
@@ -59,7 +60,14 @@ export const Input = ({
                 <LeftIconNode />
               </div>
             )}
-            <Form.Control maxLength={maxLength} {...rest} {...field} value={field.value || ''} className={finalClassName} />
+            <Form.Control
+              maxLength={maxLength}
+              {...rest}
+              {...field}
+              value={field.value || ''}
+              className={finalClassName}
+              disabled={isDisabled}
+            />
             {RightIconNode && (
               <div className="icon-box" onClick={handleIconClick(field)}>
                 <RightIconNode />

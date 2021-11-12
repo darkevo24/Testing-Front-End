@@ -91,7 +91,9 @@ export const mapParamsToOrString = (data = {}, keys = [], dataAccessor = 'id') =
       }
       return value;
     });
-    data[key] = `${key}:${keyData.join(' OR ')}`;
+    if (keyData.length) {
+      data[key] = `${key}:${keyData.join(' OR ')}`;
+    }
   });
   return data;
 };

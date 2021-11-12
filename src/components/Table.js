@@ -201,4 +201,24 @@ Table.Actions = ({ cell, ...rest }) => {
   );
 };
 
+Table.Button = ({ cell, ...rest }) => {
+  const { column: { actions = [] } = {}, row } = cell;
+  const id = row.id || row.index;
+  return (
+    <div className="d-flex action-icon-wrapper">
+      {actions.map(({ text, variant, callback }) => {
+        const Text = text;
+        if (!Text) return null;
+        return (
+          <div key={`${id}-${text}`} className="flex" onClick={() => callback(row.original)}>
+            <Button variant={variant} className="ml-16 text-nowrap">
+              {Text}
+            </Button>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 export default Table;

@@ -13,7 +13,6 @@ const PermintaanData = () => {
 
   const showPermintaanDataForm = (data) => {
     setSelectedRecord(data);
-    console.log('data', selectedRecord);
     history.push('/permintaan-data-form', { data: selectedRecord });
   };
 

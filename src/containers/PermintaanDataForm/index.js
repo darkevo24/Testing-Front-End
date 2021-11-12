@@ -141,6 +141,51 @@ const PermintaanDataForm = ({ data, onSubmit }) => {
           <h4 className="fw-bold">Log Status</h4>
         </Row>
       </div>
+      <div className="px-5">
+        <h5 className="px-5 fw-bold mb-3 border-bottom-gray-stroke py-2">Informasi Peminta Data</h5>
+        <ul>
+          <div className="d-flex flex-row">
+            <div className="px-5 col-2">
+              <p className="fw-bold">Nama Lengkap</p>
+            </div>
+            <div className="px-5 col-2">
+              <p className="fw-light">Nama</p>
+            </div>
+          </div>
+          <div className="d-flex flex-row">
+            <div className="px-5 col-2">
+              <p className="fw-bold">NIP/NIK</p>
+            </div>
+            <div className="px-5 col-2">
+              <p className="fw-light">NIK</p>
+            </div>
+          </div>
+          <div className="d-flex flex-row">
+            <div className="px-5 col-2">
+              <p className="fw-bold">Instansi</p>
+            </div>
+            <div className="px-5 col-2">
+              <p className="fw-light">Instansi</p>
+            </div>
+          </div>
+          <div className="d-flex flex-row">
+            <div className="px-5 col-2">
+              <p className="fw-bold">Unit Kerja</p>
+            </div>
+            <div className="px-5 col-2">
+              <p className="fw-light">Unit Kerja</p>
+            </div>
+          </div>
+          <div className="d-flex flex-row">
+            <div className="px-5 col-2">
+              <p className="fw-bold">Status Kepegawaian</p>
+            </div>
+            <div className="px-5 col-2">
+              <p className="fw-light">Status</p>
+            </div>
+          </div>
+        </ul>
+      </div>
     </div>
   );
 };

@@ -1,87 +1,42 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const BeritaDiv = styled.div`
-  padding: 16px;
-  background-color: ${(props) => (props.color ? props.color : 'black')};
-  margin: 16px;
+import Search from './Search';
+import BeritaUtama from './BeritaUtama';
+import BeritaUtamaLain from './BeritaUtamaLain';
+import KegiatanSatuData from './KegiatanSatuData';
+import ListBerita from './ListBerita';
+import TopikPopuler from './TopikPopuler';
+import BeritaLainnya from './BeritaLainnya';
+import Populer from './Populer';
+import Tweets from './Tweets';
+
+export const BeritaDiv = styled.div`
+  background-color: ${(props) => (props.color ? props.color : 'white')};
+  margin: 16px 0;
 `;
 
-const BeritaGrid = styled.div`
+export const BeritaGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(${(props) => (props.columns ? props.columns : 1)}, minmax(0, 1fr));
+  grid-column-gap: 8.34px;
+  grid-row-gap: 16px;
 `;
 
-const Search = () => <BeritaDiv color="pink">Search</BeritaDiv>;
+export const SectionTitle = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+  color: #2d2627;
 
-const BeritaUtama = () => <BeritaDiv color="lightblue">Berita Utama</BeritaDiv>;
-
-const TopikPopuler = (props) => {
-  return (
-    <BeritaDiv color="lightyellow">
-      <h5>Topik Populer</h5>
-      {Array.apply(null, { length: props.jumlah }).map((e, i) => (
-        <div>Topik {i + 1}</div>
-      ))}
-    </BeritaDiv>
-  );
-};
-
-const BeritaUtamaLain = (props) => {
-  return (
-    <BeritaDiv color="lightgreen">
-      <h5>Berita Utama Lainnya</h5>
-      <BeritaGrid columns={props.columns}>
-        {Array.apply(null, { length: props.jumlah }).map((e, i) => (
-          <div>Berita {i + 1}</div>
-        ))}
-      </BeritaGrid>
-    </BeritaDiv>
-  );
-};
-
-const KegiatanSatuData = (props) => {
-  return (
-    <BeritaDiv color="lightgrey">
-      <h5>Kegiatan Satu Data Indonesia</h5>
-      <BeritaGrid columns={props.columns}>
-        {Array.apply(null, { length: props.jumlah }).map((e, i) => (
-          <div>Berita {i + 1}</div>
-        ))}
-      </BeritaGrid>
-    </BeritaDiv>
-  );
-};
-
-const ListBerita = (props) => {
-  return (
-    <BeritaDiv color="plum">
-      <h5>List Berita</h5>
-      <BeritaGrid columns={props.columns}>
-        {Array.apply(null, { length: props.jumlah }).map((e, i) => (
-          <div>Berita {i + 1}</div>
-        ))}
-      </BeritaGrid>
-    </BeritaDiv>
-  );
-};
-
-const BeritaLainnya = () => <BeritaDiv color="orange">Berita Lainnya</BeritaDiv>;
-
-const Populer = (props) => {
-  return (
-    <BeritaDiv color="beige">
-      <h5>Populer</h5>
-      <BeritaGrid columns={props.columns}>
-        {Array.apply(null, { length: props.jumlah }).map((e, i) => (
-          <div>Berita {i + 1}</div>
-        ))}
-      </BeritaGrid>
-    </BeritaDiv>
-  );
-};
-
-const Tweets = () => <BeritaDiv color="skyblue">Tweets</BeritaDiv>;
+  &:after {
+    content: '';
+    display: block;
+    height: 4px;
+    width: 48px;
+    background: #ff0000;
+    margin: 12px 0 24px;
+  }
+`;
 
 const layout = JSON.parse(window.localStorage.getItem('beritalayout'));
 
@@ -104,7 +59,9 @@ const components = {
 const Berita = () => (
   <div className="row mt-4">
     <div className="col-lg-2"></div>
-    <div className="col-lg-6">{layout.kiri.map((el) => renderComp(el))}</div>
+    <div className="col-lg-6" style={{ paddingRight: '5.5%' }}>
+      {layout.kiri.map((el) => renderComp(el))}
+    </div>
     <div className="col-lg-2">{layout.kanan.map((el) => renderComp(el))}</div>
     <div className="col-lg-2"></div>
   </div>

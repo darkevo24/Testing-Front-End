@@ -158,6 +158,7 @@ export const Calender = (props) => (
 export const actionIcons = {
   edit: Edit,
   trash: Trash,
+  search: Search,
 };
 
 export const modalIcons = {

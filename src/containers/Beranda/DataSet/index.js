@@ -26,11 +26,15 @@ const DataSet = () => {
 
   const { /* error, */ pageSize, loading, params, searchFacets, result } = useSelector(datasetSelector);
 
-  const fetchDataset = (override) => {
+  const fetchDataset = (override, reset = false) => {
     const filterParams = {
       ...cloneDeep(params),
       ...cloneDeep(override),
     };
+    if (reset) {
+      filterParams.start = 0;
+      filterParams.currentPage = 0;
+    }
     return dispatch(getDataSet(filterParams));
   };
 
@@ -84,9 +88,7 @@ const DataSet = () => {
       currentFilter = [option];
     }
     newFilterParams[filter] = currentFilter;
-    newFilterParams.start = 0;
-    newFilterParams.currentPage = 0;
-    fetchDataset(newFilterParams);
+    fetchDataset(newFilterParams, true);
   };
 
   const options = useMemo(() => [{ label: 'Relevansi', value: 'relevansi' }], []);
@@ -126,7 +128,7 @@ const DataSet = () => {
     searchPlaceholder: t('beranda.dataset.searchPlaceholder'),
     searchButtonText: <SearchSvg />,
     onSearch: (searchText) => {
-      // Todo: handle Search
+      fetchDataset({ q: searchText }, true);
     },
     showHeader: false,
     searchLeftComponent: (

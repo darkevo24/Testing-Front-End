@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import RBTable from 'react-bootstrap/Table';
 import cx from 'classnames';
+import isFunction from 'lodash/isFunction';
 import { useAsyncDebounce, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 
 import { LeftChevron, RightChevron, Search, actionIcons } from 'components/Icons';
@@ -12,10 +13,23 @@ import bn from 'utils/bemNames';
 
 const bem = bn('table');
 
-const FilterSearchInput = ({ searchPlaceholder = 'Search', preGlobalFilteredRows, globalFilter, setGlobalFilter }) => {
+const FilterSearchInput = ({
+  searchPlaceholder = 'Search',
+  onSearch,
+  preGlobalFilteredRows,
+  globalFilter,
+  setGlobalFilter,
+  manualPagination = false,
+}) => {
   const [value, setValue] = useState(globalFilter);
   const onSearchChange = useAsyncDebounce((value) => {
-    setGlobalFilter(value || undefined);
+    if (manualPagination) {
+      if (isFunction(onSearch)) {
+        onSearch(value);
+      }
+    } else {
+      setGlobalFilter(value || undefined);
+    }
   }, 200);
   const handleSearchChange = ({ target: { value = '' } = {} }) => {
     setValue(value);
@@ -124,6 +138,8 @@ const Table = ({
           preGlobalFilteredRows={preGlobalFilteredRows}
           globalFilter={globalFilter}
           setGlobalFilter={setGlobalFilter}
+          onSearch={onSearch}
+          manualPagination={manualPagination}
         />
         {searchRightComponent ? (
           searchRightComponent

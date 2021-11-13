@@ -73,36 +73,38 @@ const SectionList = ({
           {isExpanded ? <Minus /> : <Plus />}
         </div>
       </div>
-      <motion.div animate={controls} className={bem.e('options')}>
-        {search && (
-          <InputGroup>
-            <Form.Control
-              variant="normal"
-              className={bem.e('search-input')}
-              type="text"
-              placeholder={searchPlaceholder}
-              value={searchText}
-              onChange={handleSearchChange}
-            />
-            <div className="icon-container">
-              <Search variant="gray" />
+      {isExpanded && (
+        <motion.div animate={controls} className={bem.e('options')}>
+          {search && (
+            <InputGroup>
+              <Form.Control
+                variant="normal"
+                className={bem.e('search-input')}
+                type="text"
+                placeholder={searchPlaceholder}
+                value={searchText}
+                onChange={handleSearchChange}
+              />
+              <div className="icon-container">
+                <Search variant="gray" />
+              </div>
+            </InputGroup>
+          )}
+          {truncatedOptions.map((option) => (
+            <div
+              key={option.id ? `${title}-${option.id}` : `${title}-${option.text}`}
+              className={bem.e('option-item')}
+              onClick={handleOptionSelect(option)}>
+              {option.text}
             </div>
-          </InputGroup>
-        )}
-        {truncatedOptions.map((option) => (
-          <div
-            key={option.id ? `${title}-${option.id}` : `${title}-${option.text}`}
-            className={bem.e('option-item')}
-            onClick={handleOptionSelect(option)}>
-            {option.text}
-          </div>
-        ))}
-        {truncatedOptions.length !== filterdOptions.length && (
-          <div className={cx(bem.e('option-item'), 'show-more')} onClick={handleShowMore}>
-            {showMoreText}
-          </div>
-        )}
-      </motion.div>
+          ))}
+          {truncatedOptions.length !== filterdOptions.length && (
+            <div className={cx(bem.e('option-item'), 'show-more')} onClick={handleShowMore}>
+              {showMoreText}
+            </div>
+          )}
+        </motion.div>
+      )}
     </div>
   );
 };

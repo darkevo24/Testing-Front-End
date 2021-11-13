@@ -25,7 +25,7 @@ function AppRoutes(props) {
       <Switch>
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
-        <Route exact path="/data-set" component={DataSetPage} />
+        <Route path="/data-set" component={DataSetPage} />
         <Route exact path="/forum" component={ForumPage} />
         <Route exact path="/komunitas" component={KomunitasPage} />
         <Route exact path="/bl" component={BeritaLayout} />

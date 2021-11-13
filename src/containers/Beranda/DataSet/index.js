@@ -105,10 +105,10 @@ const DataSet = () => {
                   <div className="mb-8 fs-16 fw-600 lh-19 sdp-text-black-dark">{item.title}</div>
                   <div className="fs-14 lh-17 sdp-text-black-dark">{item.notes}</div>
                 </div>
-                <div className="d-flex">
+                <div className="d-flex flex-wrap mt-n8">
                   {/* TODO: check if we need to display the tags or this is format data */}
                   {item.tags.map((tag) => (
-                    <Tags key={`${item.id}-${tag.id}`} text={tag.display_name} />
+                    <Tags key={`${item.id}-${tag.id}`} className="mt-8 px-12" text={tag.display_name} />
                   ))}
                 </div>
               </div>

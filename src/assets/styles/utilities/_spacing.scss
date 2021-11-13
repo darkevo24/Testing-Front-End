@@ -21,7 +21,13 @@ $customSpacings: 6, 7, 8, 10, 12, 15, 16, 18, 24, 27, 30, 32, 35, 40, 42, 48, 50
 	.mt-#{$size} {
 		margin-top: #{$size}px !important;
   }
+  .mt-n#{$size} {
+		margin-top: #{$size}px !important;
+  }
 	.mb-#{$size} {
+		margin-bottom: #{$size}px !important;
+  }
+	.mb-n#{$size} {
 		margin-bottom: #{$size}px !important;
   }
 	.p-#{$size} {

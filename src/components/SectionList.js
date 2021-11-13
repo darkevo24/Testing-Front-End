@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import isFunction from 'lodash/isFunction';
 import { motion, useAnimation } from 'framer-motion';
-import { Minus, Plus, Search } from 'components/Icons';
+import { Close, Minus, Plus, Search } from 'components/Icons';
 import bn from 'utils/bemNames';
 
 const bem = bn('section-list');
@@ -19,10 +19,12 @@ const SectionList = ({
   className,
   onSelectOption,
   numberOfOptionsToShow = 10,
+  selectedOptions = [],
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [searchText, setSearchText] = useState('');
   const [itemsToShow, setItemsToShow] = useState(numberOfOptionsToShow);
+  const selectedIds = selectedOptions.map((option) => option.id);
   const controls = useAnimation();
 
   const handleSearchChange = ({ target: { value = '' } = {} }) => {
@@ -90,14 +92,24 @@ const SectionList = ({
               </div>
             </InputGroup>
           )}
-          {truncatedOptions.map((option) => (
-            <div
-              key={option.id ? `${title}-${option.id}` : `${title}-${option.text}`}
-              className={bem.e('option-item')}
-              onClick={handleOptionSelect(option)}>
-              {option.text}
-            </div>
-          ))}
+          {truncatedOptions.map((option) => {
+            const id = option.id;
+            const isSelected = selectedIds.includes(id);
+            return (
+              <div
+                key={id ? `${title}-${id}` : `${title}-${option.text}`}
+                className={cx(bem.e('option-item'), { 'selected-item': isSelected })}
+                onClick={handleOptionSelect(option)}>
+                {option.text}
+                {!!option.count && <div className={bem.e('tag')}>{option.count}</div>}
+                {isSelected && (
+                  <div className={cx(bem.e('remove-option'), 'icon-container')}>
+                    <Close variant="danger" />
+                  </div>
+                )}
+              </div>
+            );
+          })}
           {truncatedOptions.length !== filterdOptions.length && (
             <div className={cx(bem.e('option-item'), 'show-more')} onClick={handleShowMore}>
               {showMoreText}

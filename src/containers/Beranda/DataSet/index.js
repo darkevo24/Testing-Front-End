@@ -70,8 +70,9 @@ const DataSet = () => {
         id: item.name,
         text: item.display_name,
       })),
+      selectedOptions: params[key],
     }));
-  }, [searchFacets]);
+  }, [searchFacets, params]);
 
   const handleOptionSelect = (filter) => (option) => {
     const newFilterParams = cloneDeep(params);

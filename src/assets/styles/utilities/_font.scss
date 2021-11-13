@@ -4,6 +4,7 @@ $customBoldSizes: 600;
 @each $size in $customSizes {
   .fs-#{$size} {
     font-size: #{$size}px !important;
+    line-height: #{$size}px;
   }
   .lh-#{$size} {
     line-height: #{$size}px !important;

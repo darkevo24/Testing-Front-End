@@ -19,13 +19,14 @@ import {
 } from 'assets/icons';
 
 export const apiUrl = '/api';
-export const dataUrl = '/data';
+export const dataUrl = '/data/api';
 
 export const getApiEndpoint = (path) => `${apiUrl}/${path}`;
 export const getDataEndpoint = (path) => `${dataUrl}/${path}`;
 
 export const apiUrls = {
   login: getApiEndpoint('login'),
+  dataset: getDataEndpoint('3/action/package_search'),
 };
 
 export const TOPIC_LIST = [
@@ -124,12 +125,6 @@ export const CMS_DASHBOARD = [
     description: Text,
     icon: <APIManagementIcon />,
     iconColor: 'sdp-text-orange',
-  },
-  {
-    title: 'Log Activity',
-    description: Text,
-    icon: <LogActivityIcon />,
-    iconColor: 'sdp-text-red-dark',
   },
   {
     title: 'Konfigurasi',

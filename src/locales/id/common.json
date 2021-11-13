@@ -1,0 +1,16 @@
+{
+  "fields": {
+    "email": {
+      "label": "Email Address",
+      "placeholder": "Email Address"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Password"
+    },
+    "select": "Select"
+  },
+  "common": {
+    "noData": "No Data to show!"
+  }
+}

@@ -33,3 +33,7 @@
 @include bg-variant(".bg-gray-lighter", $gray-lighter);
 
 @include bg-variant(".bg-blue-light", rgba(0, 122, 255, 0.12));
+
+.bg-secondary-translucent {
+  background-color: rgba($color: $secondary, $alpha: 0.5);
+}

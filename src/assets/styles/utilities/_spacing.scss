@@ -21,7 +21,13 @@ $customSpacings: 6, 7, 8, 9, 10, 11, 12, 15, 16, 18, 24, 27, 30, 32, 35, 40, 42,
 	.mt-#{$size} {
 		margin-top: #{$size}px !important;
   }
+  .mt-n#{$size} {
+		margin-top: #{$size}px !important;
+  }
 	.mb-#{$size} {
+		margin-bottom: #{$size}px !important;
+  }
+	.mb-n#{$size} {
 		margin-bottom: #{$size}px !important;
   }
 	.p-#{$size} {
@@ -46,5 +52,14 @@ $customSpacings: 6, 7, 8, 9, 10, 11, 12, 15, 16, 18, 24, 27, 30, 32, 35, 40, 42,
   }
 	.pb-#{$size} {
 		padding-bottom: #{$size}px !important;
+  }
+}
+
+$customWidths: 40, 42, 48, 50, 80, 120, 180, 200, 250, 320;
+
+@each $size in $customWidths {
+  .wpx-#{$size} {
+		min-width: #{$size}px !important;
+		width: #{$size}px !important;
   }
 }

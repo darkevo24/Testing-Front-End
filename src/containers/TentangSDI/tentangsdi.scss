@@ -1,0 +1,68 @@
+.tentang-container {
+  width: 1000px;
+  margin: auto;
+  margin-bottom: 72px;
+}
+
+.tentang-logo {
+  width: 160px;
+  margin: auto;
+  padding: 80px 0;
+
+  img {
+    width: 100%;
+  }
+}
+
+.tentang-title {
+  font-family: Myriad Pro;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2D2627;
+
+  &-sm {
+    font-size: 20px !important;
+    line-height: 25px;
+  }
+}
+
+.tentang-desc {
+  font-family: Myriad Pro;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2D2627;
+}
+
+.contactus-container {
+  background: #F5F6FA;
+  margin-bottom: 80px;
+}
+
+.contactus-wrapper {
+  width: 480px;
+  margin: auto;
+  padding: 80px 0;
+
+  .form-control {
+    margin-bottom: 24px;
+  }
+}
+
+.contactus-title {
+  font-family: Myriad Pro;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #2D2627;
+}

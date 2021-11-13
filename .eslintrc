@@ -24,7 +24,10 @@
   },
   "rules": {
     "react/jsx-filename-extension": "off",
-    "prettier/prettier": "error",
+    "react-hooks/exhaustive-deps": "off",
+    "prettier/prettier": ["error", {
+      "endOfLine": "auto"
+    }],
     "no-console": "warn",
     "no-eval": "error",
     "import/first": "error",

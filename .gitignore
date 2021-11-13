@@ -10,14 +10,15 @@
 
 # production
 /build
+translation.json
 
 # misc
 .DS_Store
 
 # .env
 .env
-!.env.example
 .env.*
+!.env.example
 
 # IDE
 .idea

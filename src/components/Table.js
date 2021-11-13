@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -30,23 +31,46 @@ const FilterSearchInput = ({ searchPlaceholder = 'Search', preGlobalFilteredRows
         value={value}
         onChange={handleSearchChange}
       />
-      <Search />
+      <div className="icon-container">
+        <Search />
+      </div>
     </InputGroup>
   );
 };
 
 const Table = ({
+  className,
   columns,
   data,
   title,
   subTitle,
   search,
+  // paginate,
   searchPlaceholder = 'Search',
   searchButtonText = 'Search',
+  searchLeftComponent,
+  searchRightComponent,
   onSearch,
   showHeader = true,
   variant = 'default',
+  highlightOnHover,
+  manualPagination = false,
+  renderFilters = () => null,
+  totalCount,
+  pageSize,
+  currentPage,
+  onPageIndexChange = () => null,
 }) => {
+  const tableOptions = {
+    columns,
+    data,
+    manualPagination,
+  };
+  if (manualPagination && totalCount && pageSize) {
+    tableOptions.pageCount = Math.ceil(totalCount / pageSize);
+    tableOptions.initialState = { pageIndex: currentPage };
+  }
+  const { t } = useTranslation();
   const {
     getTableProps,
     getTableBodyProps,
@@ -63,16 +87,12 @@ const Table = ({
     // setPageSize,
     preGlobalFilteredRows,
     setGlobalFilter,
-    state: { globalFilter, pageIndex /* pageSize */ },
-  } = useTable(
-    {
-      columns,
-      data,
-    },
-    useGlobalFilter,
-    useSortBy,
-    usePagination,
-  );
+    state: { globalFilter, pageIndex },
+  } = useTable(tableOptions, useGlobalFilter, useSortBy, usePagination);
+
+  useEffect(() => {
+    onPageIndexChange(pageIndex);
+  }, [pageIndex]);
 
   const totalPages = pageOptions.length;
   let startPage, endPage;
@@ -95,21 +115,27 @@ const Table = ({
   }
 
   return (
-    <div className={cx(bem.b(), bem.m(variant))}>
+    <div className={cx(bem.b(), bem.m(variant), bem.m(highlightOnHover && 'highlight'), className)}>
       {title ? <div className={bem.e('header')}>{title}</div> : null}
-      <div className="d-flex justify-content-between align-items-center mb-30">
+      <div className={cx(bem.e('header-wrapper'), 'd-flex justify-content-between align-items-center mb-30')}>
+        {searchLeftComponent && searchLeftComponent}
         <FilterSearchInput
           searchPlaceholder={searchPlaceholder}
           preGlobalFilteredRows={preGlobalFilteredRows}
           globalFilter={globalFilter}
           setGlobalFilter={setGlobalFilter}
         />
-        <Button variant="info" className="btn-rounded ml-16 text-nowrap" onClick={onSearch}>
-          {searchButtonText}
-        </Button>
+        {searchRightComponent ? (
+          searchRightComponent
+        ) : (
+          <Button variant="info" className="btn-rounded ml-16 text-nowrap" onClick={onSearch}>
+            {searchButtonText}
+          </Button>
+        )}
       </div>
       <div className={bem.e('table-wrapper')}>
         {subTitle ? <div className={bem.e('sub-header')}>{subTitle}</div> : null}
+        {renderFilters()}
         <RBTable bordered={false} {...getTableProps()}>
           {showHeader ? (
             <thead>
@@ -142,36 +168,29 @@ const Table = ({
           </tbody>
         </RBTable>
       </div>
-      <div className="pagination float-end">
-        <div className={cx('pagination-prev', { disabled: !canPreviousPage })} onClick={() => previousPage()}>
-          <LeftChevron variant={canPreviousPage ? 'dim' : 'light'} />
+      {!manualPagination || (manualPagination && totalCount) ? (
+        <div className="pagination float-end">
+          <div className={cx('pagination-prev', { disabled: !canPreviousPage })} onClick={() => previousPage()}>
+            <LeftChevron variant={canPreviousPage ? 'dim' : 'light'} />
+          </div>
+          {Array.from({ length: endPage - startPage }).map((_, index) => {
+            const currentPageIndex = startPage + index;
+            return (
+              <div
+                key={`page-${currentPageIndex}`}
+                className={cx('pagination-page', { active: currentPageIndex === pageIndex })}
+                onClick={() => gotoPage(currentPageIndex)}>
+                {currentPageIndex + 1}
+              </div>
+            );
+          })}
+          <div className={cx('pagination-next', { disabled: !canNextPage })} onClick={() => nextPage()}>
+            <RightChevron variant={canNextPage ? 'dim' : 'light'} />
+          </div>
         </div>
-        {Array.from({ length: endPage - startPage }).map((_, index) => {
-          const currentPageIndex = startPage + index;
-          return (
-            <div
-              key={`page-${currentPageIndex}`}
-              className={cx('pagination-page', { active: currentPageIndex === pageIndex })}
-              onClick={() => gotoPage(currentPageIndex)}>
-              {currentPageIndex + 1}
-            </div>
-          );
-        })}
-        <div className={cx('pagination-next', { disabled: !canNextPage })} onClick={() => nextPage()}>
-          <RightChevron variant={canNextPage ? 'dim' : 'light'} />
-        </div>
-        {/* <select
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}>
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select> */}
-      </div>
+      ) : (
+        <div className="empty-data flex-center">{t('common.noData')}</div>
+      )}
     </div>
   );
 };
@@ -197,6 +216,16 @@ Table.Actions = ({ cell, ...rest }) => {
           </div>
         );
       })}
+    </div>
+  );
+};
+
+Table.Card = ({ cell }) => {
+  const { column: { renderChild } = {}, row } = cell;
+  const { original: item } = row;
+  return (
+    <div className="sdp-card-wrapped d-flex p-16 justify-content-between border-top-gray-stroke" key={item.id}>
+      {renderChild && renderChild(item)}
     </div>
   );
 };

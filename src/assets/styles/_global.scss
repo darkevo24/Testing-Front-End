@@ -5,12 +5,13 @@
 @import './vendors/date-picker';
 
 // All utility styles goes here
+@import './utilities/background';
+@import './utilities/border';
+@import './utilities/flex';
+@import './utilities/font';
 @import './utilities/scrollbar';
 @import './utilities/spacing';
 @import './utilities/text';
-@import './utilities/background';
-@import './utilities/border';
-@import './utilities/font';
 
 // All component styles goers here
 @import './components/button';
@@ -19,13 +20,18 @@
 @import './components/form';
 @import './components/icon';
 @import './components/input';
+@import './components/map-tile';
 @import './components/modal';
 @import './components/notification';
+@import './components/section-list';
 @import './components/table';
 
 // All pages styles goes here
 @import './pages/login';
 @import './pages/topicDetail';
 @import './pages/forum';
+@import './pages/bimtek';
 @import './pages/komunitas';
+@import './pages/dataset';
+@import './pages/kesiapanSDI';
 @import './pages/csmDashboard';

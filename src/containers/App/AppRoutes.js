@@ -6,6 +6,7 @@ import { AppLayout } from 'layouts/AppLayout';
 
 const BerandaPage = lazy(() => import('containers/Beranda'));
 const TopicDetailPage = lazy(() => import('containers/Beranda/TopicDetails'));
+const DataSetPage = lazy(() => import('containers/Beranda/DataSet'));
 const ForumPage = lazy(() => import('containers/Forum'));
 const BimTekSummaryPage = lazy(() => import('containers/BimTekSummary'));
 const BimTekFormPage = lazy(() => import('containers/BimTekForm'));
@@ -24,6 +25,7 @@ function AppRoutes(props) {
       <Switch>
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
+        <Route path="/data-set" component={DataSetPage} />
         <Route exact path="/forum" component={ForumPage} />
         <Route exact path="/komunitas" component={KomunitasPage} />
         <Route exact path="/bl" component={BeritaLayout} />

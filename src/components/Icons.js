@@ -155,6 +155,35 @@ export const Calender = (props) => (
   </svg>
 );
 
+export const Circle = (props) => (
+  <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="6" cy="6.5" r="6" fill={`var(--${getColor(props, types.danger)})`} />
+  </svg>
+);
+
+export const Minus = (props) => (
+  <svg width="12" height="3" viewBox="0 0 12 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M0 1.2C0 0.88174 0.105357 0.576516 0.292893 0.351472C0.48043 0.126428 0.734784 0 1 0H11C11.2652 0 11.5196 0.126428 11.7071 0.351472C11.8946 0.576516 12 0.88174 12 1.2C12 1.51826 11.8946 1.82348 11.7071 2.04853C11.5196 2.27357 11.2652 2.4 11 2.4H1C0.734784 2.4 0.48043 2.27357 0.292893 2.04853C0.105357 1.82348 0 1.51826 0 1.2Z"
+      fill={`var(--${getColor(props, types.dark)})`}
+    />
+  </svg>
+);
+
+// TODO: get the actual icon for plus
+export const Plus = (props) => (
+  <svg width="12" height="3" viewBox="0 0 12 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M0 1.2C0 0.88174 0.105357 0.576516 0.292893 0.351472C0.48043 0.126428 0.734784 0 1 0H11C11.2652 0 11.5196 0.126428 11.7071 0.351472C11.8946 0.576516 12 0.88174 12 1.2C12 1.51826 11.8946 1.82348 11.7071 2.04853C11.5196 2.27357 11.2652 2.4 11 2.4H1C0.734784 2.4 0.48043 2.27357 0.292893 2.04853C0.105357 1.82348 0 1.51826 0 1.2Z"
+      fill={`var(--${getColor(props, types.dark)})`}
+    />
+    <path
+      d="M0 1.2C0 0.88174 0.105357 0.576516 0.292893 0.351472C0.48043 0.126428 0.734784 0 1 0H11C11.2652 0 11.5196 0.126428 11.7071 0.351472C11.8946 0.576516 12 0.88174 12 1.2C12 1.51826 11.8946 1.82348 11.7071 2.04853C11.5196 2.27357 11.2652 2.4 11 2.4H1C0.734784 2.4 0.48043 2.27357 0.292893 2.04853C0.105357 1.82348 0 1.51826 0 1.2Z"
+      fill={`var(--${getColor(props, types.dark)})`}
+    />
+  </svg>
+);
+
 export const actionIcons = {
   edit: Edit,
   trash: Trash,
@@ -176,12 +205,15 @@ export const icons = {
   edit: Edit,
   calender: Calender,
   check: Check,
+  circle: Circle,
   close: Close,
   copy: Copy,
   trash: Trash,
   info: Info,
   leftChevron: LeftChevron,
   link: Link,
+  minus: Minus,
+  plus: Plus,
   rightChevron: RightChevron,
   search: Search,
   splitCircle: SplitCircle,

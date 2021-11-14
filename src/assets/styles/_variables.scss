@@ -7,15 +7,18 @@ $font-family-base: $font-family-sans-serif !default;
 $white: #ffffff;
 $black: #333333;
 $black-dark: #000000;
+$black-dark-10: #2D2627;
 $red: #FF0000;
 $red-light: #FFEEEE;
 $red-bg: rgba(255, 0, 0, 0.08);
 $gray: #858A8F;
 $gray-dark: #515154;
 $gray-light: #B9B9B9;
+$gray-lighter: #FAFAFA;
 $gray-bg: #F5F6FA;
 $blue: #007AFF;
 $blue-link: #2F80ED;
+$violet: #A016A3;
 
 // Colors
 $primary: $red;
@@ -34,12 +37,16 @@ $outline-primary: $red;
   --black: #333333;
   --black-dark: #000000;
   --black-dark-10: #2D2627;
+  --black-light: #313B44;
+  --black-light-10: #4C5A67;
   --red: #FF0000;
+  --red-dark: #E91D28;
   --red-light: #FFEEEE;
   --red-bg: rgba(255, 0, 0, 0.08);
   --gray: #858A8F;
   --gray-dark: #515154;
   --gray-light: #B9B9B9;
+  --gray-light-10: #FAFAFA;
   --gray-bg: #F5F6FA;
   --secondary: #F5F6FA;
   --blue: #007AFF;
@@ -47,6 +54,9 @@ $outline-primary: $red;
   --blue-dark: #0066CC;
   --blue-light: #0087D2;
   --green: #1DB553;
+  --teal: #35D0DA;
+  --orange: #FF912C;
+  --violet: #A016A3;
 
 
   --primary: var(--red);

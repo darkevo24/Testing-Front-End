@@ -16,6 +16,7 @@ import Notify, { Notification } from 'components/Notification';
 
 const AdminRoutes = lazy(() => import('./AdminRoutes'));
 const AppRoutes = lazy(() => import('./AppRoutes'));
+const CMSRoutes = lazy(() => import('./CMSRoutes'));
 
 function App(props) {
   if (!window.localStorage.getItem('beritalayout')) {
@@ -31,6 +32,7 @@ function App(props) {
         <meta name="description" content="Satu Data Portal" />
       </Helmet>
       <Switch>
+        <Route path="/cms" component={CMSRoutes} />
         <Route path="/admin" component={AdminRoutes} />
         <Route path="/" component={AppRoutes} />
       </Switch>

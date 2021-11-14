@@ -35,6 +35,31 @@
       }
     }
   }
+  &--highlight {
+    table.table {
+      tbody {
+        tr {
+          border-left: 4px solid transparent;
+          margin-left: -4px;
+          &:hover {
+            border-left: 4px solid $red;
+            transition: border-left 300ms linear;
+          }
+        }
+      }
+    }
+  }
+  &--card {
+    tbody {
+      tr {
+        &:first-child {
+          td {
+            border-top: 1px solid $stroke;
+          }
+        }
+      }
+    }
+  }
   thead {
     tr {
       background-color: $light-bg;
@@ -83,6 +108,10 @@
         color: $black-dark;
       }
     }
+  }
+  .empty-data {
+    @extend .sdp-text-disable;
+    @extend .fs-18;
   }
 }
 

@@ -9,5 +9,8 @@
       "placeholder": "Password"
     },
     "select": "Select"
+  },
+  "common": {
+    "noData": "No Data to show!"
   }
 }

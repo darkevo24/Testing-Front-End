@@ -16,6 +16,7 @@ const TAB_LIST_2 = [
   { title: 'Forum', link: '/forum' },
   { title: 'Berita', link: '/berita' },
   { title: 'Tentang', link: '/tentang' },
+  { title: 'Dashboard', link: '/kesiapan-sdi-daerah' },
 ];
 
 const getTabList = (list, pathname, history) => {
@@ -60,6 +61,11 @@ export const Header = () => {
               <li>
                 <Anchor className="dropdown-item" onClick={() => history.push('/Layanan1')}>
                   Layanan 1
+                </Anchor>
+              </li>
+              <li>
+                <Anchor className="dropdown-item" onClick={() => history.push('/Layanan1')}>
+                  Layanan 2
                 </Anchor>
               </li>
             </ul>

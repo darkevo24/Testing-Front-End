@@ -18,3 +18,8 @@ export { ReactComponent as DataManagementIcon } from 'assets/icons/CMS/DataManag
 export { ReactComponent as KonfigurasiIcon } from 'assets/icons/CMS/Konfigurasi.svg';
 export { ReactComponent as LogActivityIcon } from 'assets/icons/CMS/LogActivity.svg';
 export { ReactComponent as UserManagementIcon } from 'assets/icons/CMS/UserManagement.svg';
+export { ReactComponent as SidebarApiIcon } from 'assets/icons/Sidebars/sidebar-api.svg';
+export { ReactComponent as SidebarConfigIcon } from 'assets/icons/Sidebars/sidebar-config.svg';
+export { ReactComponent as SidebarContentIcon } from 'assets/icons/Sidebars/sidebar-content-management.svg';
+export { ReactComponent as SidebarDataIcon } from 'assets/icons/Sidebars/sidebar-data-management.svg';
+export { ReactComponent as SidebarUserIcon } from 'assets/icons/Sidebars/sidebar-user-management.svg';

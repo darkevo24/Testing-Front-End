@@ -43,7 +43,7 @@ const CMSBerita = () => {
             <Button
               variant="info"
               className="text-center"
-              onClick={() => history.push('/admin/berita-baru')}>
+              onClick={() => history.push('/cms/berita-baru')}>
               <Plus/> Buat Berita
             </Button>
           </Col>
@@ -71,7 +71,7 @@ const CMSBerita = () => {
         data={dataBerita.map((item) => {
           let value = {
       			data: [item.title, item.datePublish, item.status, item.createBy, item.createBy],
-      			action: "/admin/berita-detail/"+item.id
+      			action: "/cms/berita-detail/"+item.id
       		}
       		return value
         })}

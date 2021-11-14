@@ -8,16 +8,16 @@ const CMSTable = ({ customWidth, header, data }) => {
     <div className="sdp-content-table__body">
       <div className="table-header d-flex justify-content-between">
         {header.map((title, key) => (
-          <span style={{width: customWidth.length !== (header.length + 1) ? "auto" : (customWidth[key] + "%") }}>
+          <span key={key} style={{width: customWidth.length !== (header.length + 1) ? "auto" : (customWidth[key] + "%") }}>
             {title}
           </span>
         ))}
         <span style={{width: customWidth.length !== (header.length + 1) ? "auto" : (customWidth[customWidth.length - 1] + "%") }}></span>
       </div>
-      {data.map((item) => (
-        <div className="table-body d-flex justify-content-between">
+      {data.map((item, idx) => (
+        <div key={idx} className="table-body d-flex justify-content-between">
           {item.data.map((value, key) => (
-            <span style={{width: customWidth.length !== (item.data.length + 1) ? "auto" : (customWidth[key] + "%") }}>
+            <span key={key} style={{width: customWidth.length !== (item.data.length + 1) ? "auto" : (customWidth[key] + "%") }}>
               {value}
             </span>
           ))}

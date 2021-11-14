@@ -3,12 +3,18 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { CMSLayout, PrivateRoute } from 'layouts/AdminLayout';
 
 const DashboardPage = lazy(() => import('containers/CMS/Dashboard'));
+const BeritaPage = lazy(() => import('containers/CMS/Berita'));
+const BeritaBaruPage = lazy(() => import('containers/CMS/BeritaBaru'));
+const BeritaDetailPage = lazy(() => import('containers/CMS/BeritaDetail'));
 
 function CMSRoutes() {
   return (
     <CMSLayout>
       <Switch>
         <PrivateRoute exact path="/cms/dashboard" component={DashboardPage} />
+        <PrivateRoute exact path="/cms/berita" component={BeritaPage} />
+        <PrivateRoute exact path="/cms/berita-baru" component={BeritaBaruPage} />
+        <PrivateRoute exact path="/cms/berita-detail/:id" component={BeritaDetailPage} />
         <Route exact path="/cms" render={() => <Redirect to="/cms/dashboard" />} />
       </Switch>
     </CMSLayout>

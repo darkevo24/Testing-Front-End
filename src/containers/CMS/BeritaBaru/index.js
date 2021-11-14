@@ -16,7 +16,7 @@ const CMSBeritaBaru = () => {
       <div className={cx(bem.e('header'), "d-flex justify-content-between")}>
         <div className={bem.e('title')}>
           Buat Berita Baru
-          <Button onClick={() => history.push('/admin/berita')} className="ml-24" variant="secondary" style={{width: "112px"}}>Batal</Button>
+          <Button onClick={() => history.push('/cms/berita')} className="ml-24" variant="secondary" style={{width: "112px"}}>Batal</Button>
           <Button className="ml-10" variant="info" style={{width: "112px"}}>Simpan</Button>
         </div>
         <div>

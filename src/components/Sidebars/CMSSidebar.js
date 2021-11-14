@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import { ApiSvg, ConfigSvg, ContentSvg, DataSvg, UserSvg } from 'assets/icons';
+import { SidebarApiIcon, SidebarConfigIcon, SidebarContentIcon, SidebarDataIcon, SidebarUserIcon } from 'assets/icons';
 import bn from 'utils/bemNames';
 
 const bem = bn('sidebar');
@@ -27,7 +27,7 @@ export const CMSSidebar = () => {
     <div className={cx(bem.e('section'), 'pb-5')}>
       <div className="mt-3">
         <div className={bem.e('title')}>
-          <ContentSvg className="mr-10" /> Content Management
+          <SidebarContentIcon className="mr-10" /> Content Management
         </div>
         <SidebarItem
           title="About Us"
@@ -39,7 +39,7 @@ export const CMSSidebar = () => {
         />
         <SidebarItem
           title="Berita"
-          pathname="/admin/berita"
+          pathname="/cms/berita"
         />
         <SidebarItem
           title="Contact Us"
@@ -56,7 +56,7 @@ export const CMSSidebar = () => {
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>
-          <DataSvg className="mr-10" />Dashboard Management
+          <SidebarDataIcon className="mr-10" />Dashboard Management
         </div>
         <SidebarItem
           title="Data Analytics"
@@ -73,7 +73,7 @@ export const CMSSidebar = () => {
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>
-          <DataSvg className="mr-10" />Data Management
+          <SidebarDataIcon className="mr-10" />Data Management
         </div>
         <SidebarItem
           title="Daftar Data"
@@ -90,7 +90,7 @@ export const CMSSidebar = () => {
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>
-          <ApiSvg className="mr-10" />API
+          <SidebarApiIcon className="mr-10" />API
         </div>
         <SidebarItem
           title="API Management"
@@ -99,7 +99,7 @@ export const CMSSidebar = () => {
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>
-          <UserSvg className="mr-10" /> User Management
+          <SidebarUserIcon className="mr-10" /> User Management
         </div>
         <SidebarItem
           title="Pengguna"
@@ -112,7 +112,7 @@ export const CMSSidebar = () => {
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>
-          <ConfigSvg className="mr-10" />Konfigurasi
+          <SidebarConfigIcon className="mr-10" />Konfigurasi
         </div>
         <SidebarItem
           title="Log Aktivitas"

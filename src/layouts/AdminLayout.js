@@ -13,19 +13,20 @@ export const AdminAppLayout = ({ children }) => {
   return (
     <div className="app-container admin-app-container">
       <AdminHeader />
-      <div className="d-flex">
-        <CMSSidebar />
-        <div style={{ width: '100%' }}>{children}</div>
-      </div>
+      {children}
     </div>
   );
 };
 
 export const CMSAppLayout = ({ children }) => {
+  const Sidebar = window.location.pathname !== "/cms/dashboard" ? CMSSidebar : "div";
   return (
     <div className="app-container admin-app-container">
       <CMSHeader />
-      {children}
+      <div className="d-flex">
+        <Sidebar />
+        <div style={{ width: '100%' }}>{children}</div>
+      </div>
     </div>
   );
 };

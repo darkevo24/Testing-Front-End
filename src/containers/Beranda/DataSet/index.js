@@ -122,15 +122,14 @@ const DataSet = () => {
                   <div className="fs-14 lh-17 sdp-text-black-dark">{item.notes}</div>
                 </div>
                 <div className="d-flex flex-wrap mt-n8">
-                  {/* TODO: check if we need to display the tags or this is format data */}
-                  {item.tags.map((tag) => (
-                    <Tags key={`${item.id}-${tag.id}`} className="mt-8 px-12" text={tag.display_name} />
+                  {item.resources?.map((tag) => (
+                    <Tags key={`${item.id}-${tag.id}`} className="mt-8 px-12" text={tag.format} />
                   ))}
                 </div>
               </div>
               <div className="sdp-card-right-section d-flex flex-column justify-content-between">
                 <div className="sdp-right-wrapper-bottom d-flex align-items-center">
-                  <div className="fs-13 lh-16 sdp-text-blue-dark mr-12">{item.linkTitle}</div>
+                  <div className="fs-13 lh-16 sdp-text-blue-dark mr-12">{item.organization?.title}</div>
                 </div>
               </div>
             </div>

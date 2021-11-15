@@ -1,0 +1,76 @@
+.app-container.admin-app-container {
+  .sdp-sidebar {
+    &__section {
+      background: #2B333A;
+      width: 300px;
+
+      .accordion {
+        .accordion-item, .accordion-button {
+          background: none;
+        }
+
+        .accordion-body {
+          padding: 0;
+
+          div {
+            padding-left: 40px;
+          }
+        }
+
+        .accordion-button {
+          border-color: none;
+          box-shadow: none;
+          font-family: Myriad Pro;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 17px;
+          letter-spacing: 0px;
+          color: #B9C1C9;
+          padding: 12px 24px ;
+          cursor: pointer;
+        }
+
+        .accordion-header.selected {
+          .accordion-button {
+            background: #495763;
+          }
+        }
+
+        .active {
+          background: #3E4954;
+        }
+      }
+    }
+
+    &__title {
+      font-family: Myriad Pro;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 14px;
+      letter-spacing: 1px;
+      color: #85909B;
+      padding: 12px 24px;
+      text-transform: uppercase;
+    }
+
+    &__item {
+      font-family: Myriad Pro;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 17px;
+      letter-spacing: 0px;
+      color: #B9C1C9;
+      padding: 12px 24px ;
+      cursor: pointer;
+
+      &.active {
+        background: #495763;
+        color: #FFFFFF;
+        border-right: 4px solid #FF0000;
+      }
+    }
+  }
+}

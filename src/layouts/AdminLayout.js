@@ -3,6 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { AdminHeader } from 'containers/Header';
 import { CMSHeader } from 'containers/Header/CMSHeader';
 import { tokenSelector } from 'containers/Login/reducer';
+import { CMSSidebar } from 'components/Sidebars/CMSSidebar';
 
 export const AdminAuthLayout = ({ children }) => {
   return <div className="auth-container admin-auth-container">{children}</div>;
@@ -18,10 +19,14 @@ export const AdminAppLayout = ({ children }) => {
 };
 
 export const CMSAppLayout = ({ children }) => {
+  const Sidebar = window.location.pathname !== "/cms/dashboard" ? CMSSidebar : "div";
   return (
     <div className="app-container admin-app-container">
       <CMSHeader />
-      {children}
+      <div className="d-flex">
+        <Sidebar />
+        <div style={{ width: '100%' }}>{children}</div>
+      </div>
     </div>
   );
 };

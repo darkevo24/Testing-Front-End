@@ -1,19 +1,19 @@
 .sdp-table-title {
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 22px;
-  color: var(--gray-dark);
+  font-weight: bold !important;
+  font-size: 18px !important;
+  line-height: 22px !important;
+  color: var(--gray-dark) !important;
 }
 
 .sdp-table-sub-title {
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 19px;
-  color: var(--black-dark-10);
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  line-height: 19px !important;
+  color: var(--black-dark-10) !important;
 }
 
 .sdp-form-label {
-  font-size: 14px;
-  line-height: 17px;
-  color: var(--gray-dark);
+  font-size: 14px !important;
+  line-height: 17px !important;
+  color: var(--gray-dark) !important;
 }

@@ -13,7 +13,7 @@ import bn from 'utils/bemNames';
 
 const bem = bn('table');
 
-const FilterSearchInput = ({
+export const FilterSearchInput = ({
   searchPlaceholder = 'Search',
   onSearch,
   preGlobalFilteredRows,
@@ -66,6 +66,7 @@ const Table = ({
   searchRightComponent,
   onSearch,
   showHeader = true,
+  showSearch = true,
   variant = 'default',
   highlightOnHover,
   manualPagination = false,
@@ -131,24 +132,26 @@ const Table = ({
   return (
     <div className={cx(bem.b(), bem.m(variant), bem.m(highlightOnHover && 'highlight'), className)}>
       {title ? <div className={bem.e('header')}>{title}</div> : null}
-      <div className={cx(bem.e('header-wrapper'), 'd-flex justify-content-between align-items-center mb-30')}>
-        {searchLeftComponent && searchLeftComponent}
-        <FilterSearchInput
-          searchPlaceholder={searchPlaceholder}
-          preGlobalFilteredRows={preGlobalFilteredRows}
-          globalFilter={globalFilter}
-          setGlobalFilter={setGlobalFilter}
-          onSearch={onSearch}
-          manualPagination={manualPagination}
-        />
-        {searchRightComponent ? (
-          searchRightComponent
-        ) : (
-          <Button variant="info" className="btn-rounded ml-16 text-nowrap" onClick={onSearch}>
-            {searchButtonText}
-          </Button>
-        )}
-      </div>
+      {showSearch ? (
+        <div className={cx(bem.e('header-wrapper'), 'd-flex justify-content-between align-items-center mb-30')}>
+          {searchLeftComponent && searchLeftComponent}
+          <FilterSearchInput
+            searchPlaceholder={searchPlaceholder}
+            preGlobalFilteredRows={preGlobalFilteredRows}
+            globalFilter={globalFilter}
+            setGlobalFilter={setGlobalFilter}
+            onSearch={onSearch}
+            manualPagination={manualPagination}
+          />
+          {searchRightComponent ? (
+            searchRightComponent
+          ) : (
+            <Button variant="info" className="btn-rounded ml-16 text-nowrap" onClick={onSearch}>
+              {searchButtonText}
+            </Button>
+          )}
+        </div>
+      ) : null}
       <div className={bem.e('table-wrapper')}>
         {subTitle ? <div className={bem.e('sub-header')}>{subTitle}</div> : null}
         {renderFilters()}
@@ -223,13 +226,17 @@ Table.Actions = ({ cell, ...rest }) => {
   const id = row.id || row.index;
   return (
     <div className="d-flex action-icon-wrapper">
-      {actions.map(({ icon, type, variant, callback }) => {
+      {actions.map(({ icon, type, variant, title, callback, classes }) => {
         const Icon = icon || actionIcons[type];
-        if (!Icon) return null;
-        return (
+        if (!Icon && !title) return null;
+        return Icon ? (
           <div key={`${id}-${type}`} className="icon-box" onClick={() => callback(row.original)}>
             <Icon variant={variant || (type === 'trash' && 'danger')} />
           </div>
+        ) : (
+          <button key={`${id}-${type}`} className={classes} onClick={() => callback(row.original)}>
+            {title}
+          </button>
         );
       })}
     </div>

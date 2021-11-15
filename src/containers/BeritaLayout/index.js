@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Box from './Box';
 import { useRef } from 'react';
 import './beritalayout.scss';
+import Berita from 'containers/Berita';
 var shortid = require('shortid');
 
 const HeaderWrapper = styled.div`
@@ -51,6 +52,10 @@ const ContentWrapper = styled.div`
   padding: 32px;
 `;
 
+const PreviewWrapper = styled.div`
+  background: #fafafa;
+`;
+
 const BeritaLayout = () => {
   const kiri = useRef(null);
   const kanan = useRef(null);
@@ -86,7 +91,18 @@ const BeritaLayout = () => {
       inactive: inactive.current.state.items,
     };
 
+    window.localStorage.clearItem('tempberitalayout');
     window.localStorage.setItem('beritalayout', JSON.stringify(obj));
+  };
+
+  const preview = () => {
+    let obj = {
+      kiri: kiri.current.state.items,
+      kanan: kanan.current.state.items,
+      inactive: inactive.current.state.items,
+    };
+
+    window.localStorage.setItem('tempberitalayout', JSON.stringify(obj));
   };
 
   return (
@@ -96,7 +112,9 @@ const BeritaLayout = () => {
           <HeaderTitle>Layout Berita</HeaderTitle>
           <div>
             <Button className="batal">Batal</Button>
-            <Button className="preview">Preview</Button>
+            <Button className="preview" onClick={preview}>
+              Preview
+            </Button>
             <Button className="simpan" onClick={onSave}>
               Simpan
             </Button>
@@ -111,6 +129,20 @@ const BeritaLayout = () => {
             </div>
           </div>
         </ContentWrapper>
+        <PreviewWrapper>
+          <div className="row" style={{ paddingTop: '64px' }}>
+            <div className="col-lg-2"></div>
+            <div className="col-lg-8">
+              <HeaderTitle>Layout Berita</HeaderTitle>
+            </div>
+            <div className="col-lg-2"></div>
+          </div>
+          <div className="row">
+            <div className="col-lg-12">
+              <Berita />
+            </div>
+          </div>
+        </PreviewWrapper>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import { AppLayout } from 'layouts/AppLayout';
 
 const BerandaPage = lazy(() => import('containers/Beranda'));
 const TopicDetailPage = lazy(() => import('containers/Beranda/TopicDetails'));
+const DataSetPage = lazy(() => import('containers/Beranda/DataSet'));
 const ForumPage = lazy(() => import('containers/Forum'));
 const BimTekSummaryPage = lazy(() => import('containers/BimTekSummary'));
 const BimTekFormPage = lazy(() => import('containers/BimTekForm'));
@@ -14,6 +15,9 @@ const TentangPage = lazy(() => import('containers/TentangSDI'));
 const KomunitasPage = lazy(() => import('containers/Komunitas'));
 const BeritaLayout = lazy(() => import('containers/BeritaLayout'));
 const BeritaPage = lazy(() => import('containers/Berita'));
+const KesiapanData = lazy(() => import('containers/KesiapanData'));
+const KesiapanSDIDaerah = lazy(() => import('containers/KesiapanSDiDaerah'));
+const KesiapanSDIPusat = lazy(() => import('containers/KesiapanSDIPusat'));
 
 function AppRoutes(props) {
   return (
@@ -21,6 +25,7 @@ function AppRoutes(props) {
       <Switch>
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
+        <Route path="/data-set" component={DataSetPage} />
         <Route exact path="/forum" component={ForumPage} />
         <Route exact path="/komunitas" component={KomunitasPage} />
         <Route exact path="/bl" component={BeritaLayout} />
@@ -30,6 +35,9 @@ function AppRoutes(props) {
         <Route path="/bimtek-form" component={BimTekFormPage} />
         <Route path="/bimtek-jadwal" component={BimTekJadwalPage} />
         <Route path="/tentang" component={TentangPage} />
+        <Route path="/kesiapan-data" component={KesiapanData} />
+        <Route path="/kesiapan-sdi-daerah" component={KesiapanSDIDaerah} />
+        <Route path="/kesiapan-sdi-pusat" component={KesiapanSDIPusat} />
       </Switch>
     </AppLayout>
   );

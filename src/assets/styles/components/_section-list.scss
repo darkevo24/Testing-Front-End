@@ -1,0 +1,59 @@
+.sdp-section-list {
+  &__header {
+    padding: 0.5rem 1rem;
+    text-transform: capitalize;
+  }
+  &__option-item {
+    padding-left: 1rem;;
+    padding-right: 1rem;;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    color: $black-dark-10;
+    border: 1px solid $stroke;
+    border-top-width: 0;
+    &:hover {
+      cursor: pointer;
+    }
+    &.show-more {
+      color: $info;
+      @extend .flex-center;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    &.selected-item {
+      color: $violet;
+    }
+  }
+  &__tag {
+    font-size: 14px;
+    padding: 4px 6px;
+    border-radius: 1.5rem;
+    background-color: $gray-bg;
+    margin-left: 8px;
+  }
+  .selected-item {
+    .icon-container {
+      margin-right: 0;
+      top: unset;
+      transform: unset;
+      margin-left: auto;
+      svg {
+        width: 8px;
+        height: 8px;
+      }
+    }
+  }
+  &__search-input {
+    border-top-width: 0;
+    border-radius: 0 !important;
+    height: 48px;
+  }
+  .icon-container {
+    top: 50%;
+    transform: translateY(-50%);
+    justify-content: flex-end;
+    margin-right: 1rem;
+  }
+}

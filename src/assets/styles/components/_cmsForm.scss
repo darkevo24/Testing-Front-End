@@ -1,0 +1,20 @@
+.app-container.admin-app-container {
+  .sdp-form {
+    .form-control, .form-select {
+      margin-bottom: 24px;
+    }
+
+    .form-label {
+      font-family: Myriad Pro;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 17px;
+      color: #515154;
+    }
+
+    .react-datepicker__input-container input {
+      margin-bottom: 0;
+    }
+  }
+}

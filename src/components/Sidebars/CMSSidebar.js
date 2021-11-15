@@ -8,7 +8,7 @@ import bn from 'utils/bemNames';
 
 const bem = bn('sidebar');
 
-const SidebarItem = ({title, pathname}) => {
+const SidebarItem = ({ title, pathname }) => {
   const history = useHistory();
   const location = useLocation();
 
@@ -17,141 +17,82 @@ const SidebarItem = ({title, pathname}) => {
       className={cx(bem.e('item'), {
         active: location.pathname.includes(pathname),
       })}
-      onClick={() => history.push(pathname)} >
+      onClick={() => history.push(pathname)}>
       {title}
     </div>
   );
 };
 
 export const CMSSidebar = () => {
-  return  (
+  return (
     <div className={cx(bem.e('section'), 'pb-5')}>
       <div className="mt-3">
         <div className={bem.e('title')}>
           <SidebarContentIcon className="mr-10" /> Content Management
         </div>
-        <SidebarItem
-          title="About Us"
-          pathname="/cms/about-us"
-        />
-        <SidebarItem
-          title="Struktur Organisasi"
-          pathname="#"
-        />
-        <SidebarItem
-          title="Berita"
-          pathname="/cms/berita"
-        />
-        <SidebarItem
-          title="Contact Us"
-          pathname="#"
-        />
-        <SidebarItem
-          title="Forum"
-          pathname="#"
-        />
-        <SidebarItem
-          title="Komunitas Ahli"
-          pathname="#"
-        />
+        <SidebarItem title="About Us" pathname="/cms/about-us" />
+        <SidebarItem title="Struktur Organisasi" pathname="#" />
+        <SidebarItem title="Berita" pathname="/cms/berita" />
+        <SidebarItem title="Contact Us" pathname="#" />
+        <SidebarItem title="Forum" pathname="#" />
+        <SidebarItem title="Komunitas Ahli" pathname="#" />
         <Accordion>
           <Accordion.Item>
-            <Accordion.Header className={cx('', {
-                selected: window.location.pathname.includes("/cms/bimtek")
-              })}>Bimbingan Teknis</Accordion.Header>
+            <Accordion.Header
+              className={cx('', {
+                selected: window.location.pathname.includes('/cms/bimtek'),
+              })}>
+              Bimbingan Teknis
+            </Accordion.Header>
             <Accordion.Body>
-              <SidebarItem
-                title="Permintaan Bimbingan Teknis"
-                pathname="/cms/bimtek-permintaan"
-              />
-              <SidebarItem
-                title="Jadwal Bimbingan Teknis"
-                pathname="/cms/bimtek-jadwal"
-              />
-              <SidebarItem
-                title="Dokumentasi Bimbingan Teknis"
-                pathname="/cms/bimtek-dokumentasi"
-              />
+              <SidebarItem title="Permintaan Bimbingan Teknis" pathname="/cms/bimtek-permintaan" />
+              <SidebarItem title="Jadwal Bimbingan Teknis" pathname="/cms/bimtek-jadwal" />
+              <SidebarItem title="Dokumentasi Bimbingan Teknis" pathname="/cms/bimtek-dokumentasi" />
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>
-          <SidebarDataIcon className="mr-10" />Dashboard Management
+          <SidebarDataIcon className="mr-10" />
+          Dashboard Management
         </div>
-        <SidebarItem
-          title="Data Analytics"
-          pathname="#"
-        />
-        <SidebarItem
-          title="Kesiapan SDI"
-          pathname="#"
-        />
-        <SidebarItem
-          title="Dashboard Executive"
-          pathname="#"
-        />
+        <SidebarItem title="Data Analytics" pathname="#" />
+        <SidebarItem title="Kesiapan SDI" pathname="#" />
+        <SidebarItem title="Dashboard Executive" pathname="#" />
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>
-          <SidebarDataIcon className="mr-10" />Data Management
+          <SidebarDataIcon className="mr-10" />
+          Data Management
         </div>
-        <SidebarItem
-          title="Daftar Data"
-          pathname="#"
-        />
-        <SidebarItem
-          title="Permintaan Data"
-          pathname="#"
-        />
-        <SidebarItem
-          title="Sandbox"
-          pathname="#"
-        />
+        <SidebarItem title="Daftar Data" pathname="#" />
+        <SidebarItem title="Permintaan Data" pathname="#" />
+        <SidebarItem title="Sandbox" pathname="#" />
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>
-          <SidebarApiIcon className="mr-10" />API
+          <SidebarApiIcon className="mr-10" />
+          API
         </div>
-        <SidebarItem
-          title="API Management"
-          pathname="#"
-        />
+        <SidebarItem title="API Management" pathname="#" />
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>
           <SidebarUserIcon className="mr-10" /> User Management
         </div>
-        <SidebarItem
-          title="Pengguna"
-          pathname="#"
-        />
-        <SidebarItem
-          title="Instansi"
-          pathname="#"
-        />
+        <SidebarItem title="Pengguna" pathname="#" />
+        <SidebarItem title="Instansi" pathname="#" />
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>
-          <SidebarConfigIcon className="mr-10" />Konfigurasi
+          <SidebarConfigIcon className="mr-10" />
+          Konfigurasi
         </div>
-        <SidebarItem
-          title="Log Aktivitas"
-          pathname="#"
-        />
-        <SidebarItem
-          title="Sekuriti"
-          pathname="#"
-        />
-        <SidebarItem
-          title="Aset"
-          pathname="#"
-        />
-        <SidebarItem
-          title="Media Sosial"
-          pathname="#"
-        />
+        <SidebarItem title="Log Aktivitas" pathname="#" />
+        <SidebarItem title="Sekuriti" pathname="#" />
+        <SidebarItem title="Aset" pathname="#" />
+        <SidebarItem title="Media Sosial" pathname="#" />
       </div>
     </div>
   );

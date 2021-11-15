@@ -19,7 +19,7 @@ export const AdminAppLayout = ({ children }) => {
 };
 
 export const CMSAppLayout = ({ children }) => {
-  const Sidebar = window.location.pathname !== "/cms/dashboard" ? CMSSidebar : "div";
+  const Sidebar = window.location.pathname !== '/cms/dashboard' ? CMSSidebar : 'div';
   return (
     <div className="app-container admin-app-container">
       <CMSHeader />

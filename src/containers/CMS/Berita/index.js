@@ -19,19 +19,19 @@ const CMSBerita = () => {
 
   const dataBerita = [
     {
-      "id": 1,
-      "title": "Kemenhub Berbagi Pengalaman Penanganan Covid-19 Sektor Transportasi Di Forum ASEAN-Republik Korea ke-11",
-      "datePublish": "28-11-2021",
-      "status": "Published",
-      "createBy": "Sigmund Freud"
+      id: 1,
+      title: 'Kemenhub Berbagi Pengalaman Penanganan Covid-19 Sektor Transportasi Di Forum ASEAN-Republik Korea ke-11',
+      datePublish: '28-11-2021',
+      status: 'Published',
+      createBy: 'Sigmund Freud',
     },
     {
-      "id": 2,
-      "title": "Kemenhub Berbagi Pengalaman Penanganan Covid-19 Sektor Transportasi Di Forum ASEAN-Republik Korea ke-12",
-      "datePublish": "-",
-      "status": "Draft",
-      "createBy": "Sigmund Freud"
-    }
+      id: 2,
+      title: 'Kemenhub Berbagi Pengalaman Penanganan Covid-19 Sektor Transportasi Di Forum ASEAN-Republik Korea ke-12',
+      datePublish: '-',
+      status: 'Draft',
+      createBy: 'Sigmund Freud',
+    },
   ];
 
   return (
@@ -40,43 +40,30 @@ const CMSBerita = () => {
         <div className={cx(bem.e('title'), 'mb-4')}>Berita</div>
         <Row className="justify-content-between">
           <Col xs={2}>
-            <Button
-              variant="info"
-              className="text-center"
-              onClick={() => history.push('/cms/berita-baru')}>
-              <Plus/> Buat Berita
+            <Button variant="info" className="text-center" onClick={() => history.push('/cms/berita-baru')}>
+              <Plus /> Buat Berita
             </Button>
           </Col>
           <Col xs={4}>
             <InputGroup>
-              <Form.Control
-                variant="normal"
-                type="text"
-                placeholder="Cari Berita"
-              />
+              <Form.Control variant="normal" type="text" placeholder="Cari Berita" />
               <Search />
             </InputGroup>
           </Col>
         </Row>
       </div>
       <CMSTable
-        customWidth={[ 50, 12, 9, 11, 11, 7]}
-        header={[
-          'Judul Berita',
-          'Tanggal Publish',
-          'Status',
-          'Author',
-          'Editor'
-        ]}
+        customWidth={[50, 12, 9, 11, 11, 7]}
+        header={['Judul Berita', 'Tanggal Publish', 'Status', 'Author', 'Editor']}
         data={dataBerita.map((item) => {
           let value = {
-      			data: [item.title, item.datePublish, item.status, item.createBy, item.createBy],
-      			action: "/cms/berita-detail/"+item.id
-      		}
-      		return value
+            data: [item.title, item.datePublish, item.status, item.createBy, item.createBy],
+            action: '/cms/berita-detail/' + item.id,
+          };
+          return value;
         })}
       />
-  </div>
+    </div>
   );
 };
 

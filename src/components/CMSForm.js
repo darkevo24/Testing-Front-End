@@ -7,17 +7,17 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { DatePicker, Dropdown, Input, FileInput } from 'components';
 
-import {Editor} from '@tinymce/tinymce-react';
+import { Editor } from '@tinymce/tinymce-react';
 
 const schema = yup
   .object({
     title: yup.string().required(),
     category: yup.mixed().required(),
-    thumbnail: yup.mixed().required()
+    thumbnail: yup.mixed().required(),
   })
   .required();
 
-const CMSForm = ({data, style, onSubmit}) => {
+const CMSForm = ({ data, style, onSubmit }) => {
   // config tinymce
   const initConfig = {
     height: 500,
@@ -26,13 +26,13 @@ const CMSForm = ({data, style, onSubmit}) => {
     plugins: [
       'advlist autolink lists link image charmap print preview anchor',
       'searchreplace visualblocks code fullscreen',
-      'insertdatetime media table paste code help wordcount'
+      'insertdatetime media table paste code help wordcount',
     ],
     toolbar:
       // eslint-disable-next-line no-multi-str
       'bold italic underline | \
       alignleft aligncenter alignright alignjustify | \
-      numlist bullist outdent indent'
+      numlist bullist outdent indent',
   };
 
   const {
@@ -40,7 +40,7 @@ const CMSForm = ({data, style, onSubmit}) => {
     formState: { errors },
     handleSubmit,
   } = useForm({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
 
   return (
@@ -53,14 +53,7 @@ const CMSForm = ({data, style, onSubmit}) => {
         rules={{ required: true }}
         error={errors.thumbnail?.message}
       />
-      <Input
-        group
-        label="Judul"
-        name="title"
-        control={control}
-        rules={{ required: true }}
-        error={errors.title?.message}
-      />
+      <Input group label="Judul" name="title" control={control} rules={{ required: true }} error={errors.title?.message} />
       <Dropdown
         group
         label="Kategori"
@@ -80,11 +73,7 @@ const CMSForm = ({data, style, onSubmit}) => {
       />
       <Form.Group controlId="berita" className="mb-4">
         <Form.Label>Isi Berita</Form.Label>
-        <Editor
-          apiKey="ne6hq4p5tdn0hwuirba4i005nv3yavpgeahao9yy58ka476c"
-          init={initConfig}
-          className="tinymce-custom"
-        />
+        <Editor apiKey="ne6hq4p5tdn0hwuirba4i005nv3yavpgeahao9yy58ka476c" init={initConfig} className="tinymce-custom" />
       </Form.Group>
       <Input
         group
@@ -117,12 +106,7 @@ const CMSForm = ({data, style, onSubmit}) => {
           />
         </Col>
       </Row>
-      <Form.Check
-        id="switchEnabled"
-        type="switch"
-        label="Enable"
-        variant="info"
-      />
+      <Form.Check id="switchEnabled" type="switch" label="Enable" variant="info" />
     </Form>
   );
 };

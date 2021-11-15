@@ -31,7 +31,14 @@ export const FileInput = ({
         rules={rules}
         render={({ field }) => (
           <div className="sdp-input-wrapper">
-            <Form.Control type="file" maxLength={maxLength} {...rest} {...field} value={field.value || ''} className={finalClassName} />
+            <Form.Control
+              type="file"
+              maxLength={maxLength}
+              {...rest}
+              {...field}
+              value={field.value || ''}
+              className={finalClassName}
+            />
             <div className="upload-info">Upload Image (format .png, .jpeg, .jpg max. 512KB)</div>
           </div>
         )}

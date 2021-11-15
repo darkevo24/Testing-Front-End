@@ -38,9 +38,10 @@ export const SectionTitle = styled.div`
   }
 `;
 
-const layout = window.localStorage.getItem('tempberitalayout')
-  ? JSON.parse(window.localStorage.getItem('tempberitalayout'))
-  : JSON.parse(window.localStorage.getItem('beritalayout'));
+const layout =
+  window.location.pathname !== '/berita' && window.localStorage.getItem('tempberitalayout')
+    ? JSON.parse(window.localStorage.getItem('tempberitalayout'))
+    : JSON.parse(window.localStorage.getItem('beritalayout'));
 
 const renderComp = (el) => {
   return React.createElement(components[el.component], { ...el.props, key: el.component });

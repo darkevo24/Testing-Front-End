@@ -39,8 +39,8 @@ const bulan = [
 const BeritaLainnya = () => (
   <Wrapper>
     <SectionTitle>Berita Lainnya</SectionTitle>
-    {bulan.map((el) => (
-      <TopikItem>
+    {bulan.map((el, i) => (
+      <TopikItem key={'bl' + i}>
         <span style={{ color: '#007AFF' }}>{el.month}</span>
         <span>–</span>
         <span>{el.year}</span>

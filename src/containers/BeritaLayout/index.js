@@ -61,7 +61,9 @@ const BeritaLayout = () => {
   const kanan = useRef(null);
   const inactive = useRef(null);
 
-  let obj = JSON.parse(window.localStorage.getItem('beritalayout'));
+  let obj = window.localStorage.getItem('tempberitalayout')
+    ? JSON.parse(window.localStorage.getItem('tempberitalayout'))
+    : JSON.parse(window.localStorage.getItem('beritalayout'));
 
   const itemKiri = obj.kiri.map((el) => ({
     label: el.label,
@@ -91,8 +93,9 @@ const BeritaLayout = () => {
       inactive: inactive.current.state.items,
     };
 
-    window.localStorage.clearItem('tempberitalayout');
+    window.localStorage.removeItem('tempberitalayout');
     window.localStorage.setItem('beritalayout', JSON.stringify(obj));
+    alert('Layout berhasil disimpan');
   };
 
   const preview = () => {
@@ -103,6 +106,12 @@ const BeritaLayout = () => {
     };
 
     window.localStorage.setItem('tempberitalayout', JSON.stringify(obj));
+    window.location.reload();
+  };
+
+  const batal = () => {
+    window.localStorage.removeItem('tempberitalayout');
+    window.location.reload();
   };
 
   return (
@@ -111,7 +120,9 @@ const BeritaLayout = () => {
         <HeaderWrapper>
           <HeaderTitle>Layout Berita</HeaderTitle>
           <div>
-            <Button className="batal">Batal</Button>
+            <Button className="batal" onClick={batal}>
+              Batal
+            </Button>
             <Button className="preview" onClick={preview}>
               Preview
             </Button>

@@ -230,6 +230,7 @@ const DataSet = () => {
           {sectionsData.map((sectionItem) => {
             return (
               <SectionList
+                key={`section-${sectionItem.filter}`}
                 {...sectionItem}
                 className="mt-8"
                 search

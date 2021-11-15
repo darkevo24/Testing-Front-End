@@ -28,6 +28,7 @@ const getTabList = (list, pathname, history) => {
       className={cx({
         active: pathname === tab.link,
       })}
+      key={tab.link}
       onClick={() => history.push(tab.link)}>
       {tab.title}
     </Nav.Link>

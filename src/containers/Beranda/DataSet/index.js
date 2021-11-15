@@ -92,7 +92,20 @@ const DataSet = () => {
     fetchDataset(newFilterParams, true);
   };
 
-  const options = useMemo(() => [{ label: 'Relevansi', value: 'relevansi' }], []);
+  const options = useMemo(
+    () => [
+      // { label: t('fields.relevansi.label'), value: 'relevansi' },
+      { label: t('common.nameAtoZ'), value: 'title asc' },
+      { label: t('common.nameZtoA'), value: 'title desc' },
+      { label: t('common.lastModified'), value: 'metadata_modified desc' },
+    ],
+    [],
+  );
+
+  const onSortChange = (option) => () => {
+    setSelectedOption(option);
+    fetchDataset({ sort: option.value }, true);
+  };
 
   const tableConfig = {
     variant: 'card',
@@ -146,7 +159,7 @@ const DataSet = () => {
         {options.map((option, index) => (
           <RBDropdown.Item
             key={`${index}-${option.value}`}
-            onClick={() => setSelectedOption(option)}
+            onClick={onSortChange(option)}
             active={selectedOption?.value === option.value}>
             {option.label}
           </RBDropdown.Item>

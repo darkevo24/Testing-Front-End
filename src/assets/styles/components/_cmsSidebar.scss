@@ -3,6 +3,44 @@
     &__section {
       background: #2B333A;
       width: 300px;
+
+      .accordion {
+        .accordion-item, .accordion-button {
+          background: none;
+        }
+
+        .accordion-body {
+          padding: 0;
+
+          div {
+            padding-left: 40px;
+          }
+        }
+
+        .accordion-button {
+          border-color: none;
+          box-shadow: none;
+          font-family: Myriad Pro;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 17px;
+          letter-spacing: 0px;
+          color: #B9C1C9;
+          padding: 12px 24px ;
+          cursor: pointer;
+        }
+
+        .accordion-header.selected {
+          .accordion-button {
+            background: #495763;
+          }
+        }
+
+        .active {
+          background: #3E4954;
+        }
+      }
     }
 
     &__title {

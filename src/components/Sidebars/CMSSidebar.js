@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
+import Accordion from 'react-bootstrap/Accordion';
 
 import { SidebarApiIcon, SidebarConfigIcon, SidebarContentIcon, SidebarDataIcon, SidebarUserIcon } from 'assets/icons';
 import bn from 'utils/bemNames';
@@ -31,7 +32,7 @@ export const CMSSidebar = () => {
         </div>
         <SidebarItem
           title="About Us"
-          pathname="#"
+          pathname="/cms/about-us"
         />
         <SidebarItem
           title="Struktur Organisasi"
@@ -53,6 +54,27 @@ export const CMSSidebar = () => {
           title="Komunitas Ahli"
           pathname="#"
         />
+        <Accordion>
+          <Accordion.Item>
+            <Accordion.Header className={cx('', {
+                selected: window.location.pathname.includes("/cms/bimtek")
+              })}>Bimbingan Teknis</Accordion.Header>
+            <Accordion.Body>
+              <SidebarItem
+                title="Permintaan Bimbingan Teknis"
+                pathname="/cms/bimtek-permintaan"
+              />
+              <SidebarItem
+                title="Jadwal Bimbingan Teknis"
+                pathname="/cms/bimtek-jadwal"
+              />
+              <SidebarItem
+                title="Dokumentasi Bimbingan Teknis"
+                pathname="/cms/bimtek-dokumentasi"
+              />
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>

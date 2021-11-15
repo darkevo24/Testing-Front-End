@@ -4,6 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 // import { useHistory } from 'react-router-dom';
 
+import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import { CMSForm } from 'components';
 import bn from 'utils/bemNames';
@@ -45,8 +46,9 @@ const CMSBeritaDetail = props => {
               Edit Detail {idBerita}
             </div>
             <div>
-              Saved 1 minutes ago Draft
-              <Button className="ml-24" variant="secondary" style={{width: "112px"}}>Preview</Button>
+              <Button variant="secondary"><DeleteIcon/></Button>
+              <Button className="ml-10" variant="secondary" style={{width: "112px"}}>Lihat</Button>
+              <Button className="ml-10" variant="info" style={{width: "112px"}}>Simpan</Button>
             </div>
           </div>
           <CMSForm data={[]} />

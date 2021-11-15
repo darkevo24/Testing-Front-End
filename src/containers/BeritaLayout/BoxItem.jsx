@@ -1,6 +1,6 @@
 import React from 'react';
 import { DragDropContainer, DropTarget } from 'react-drag-drop-container';
-import './BoxItem.css';
+import './beritalayout.scss';
 
 /*
     BoxItem - a thing that appears in a box, after you drag something into the box
@@ -37,6 +37,11 @@ export default class BoxItem extends React.Component {
         in a DropTarget (enabling you to rearrange items in the box by dragging them on
         top of each other)
       */
+    const labels = {
+      jumlah: 'Jumlah',
+      columns: 'Kolom',
+    };
+
     return (
       <div className="box_item_component">
         <DragDropContainer
@@ -52,7 +57,7 @@ export default class BoxItem extends React.Component {
           dragHandleClassName="grabber">
           <DropTarget onHit={this.handleDrop} targetKey="boxItem">
             <div className="outer">
-              <div className="item">
+              <div className={'item' + (this.props.itemprops ? ' hasprops' : '')}>
                 <span className="grabber">&#8759;</span>
                 {this.props.children}
               </div>
@@ -61,7 +66,7 @@ export default class BoxItem extends React.Component {
                   {Object.keys(this.state.itemprops).map((key) => (
                     <div key={key} className="row">
                       <div className="col-lg-4">
-                        <label>{key}</label>
+                        <label>{labels[key]}</label>
                       </div>
                       <div className="col-lg-8">
                         <input id={key} value={this.state.itemprops[key]} onChange={this.handleChange} />

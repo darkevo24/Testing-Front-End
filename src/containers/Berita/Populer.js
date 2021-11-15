@@ -59,7 +59,7 @@ const Populer = (props) => {
       <Header>Lihat Semua</Header>
       <BeritaGrid columns={props.columns}>
         {Array.apply(null, { length: props.jumlah }).map((e, i) => (
-          <BeritaItem>
+          <BeritaItem key={'populer' + i}>
             <ImageWrapper>
               <Image src="https://cdn0-production-images-kly.akamaized.net/qCtvfeEWHK-aiReMuuZFBm7y-3Q=/300x172/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3626876/original/071959500_1636427539-IMG-20211109-WA0003.jpg" />
               <Topik>Megapolitan</Topik>

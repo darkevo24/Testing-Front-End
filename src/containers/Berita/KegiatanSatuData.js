@@ -40,7 +40,7 @@ const KegiatanSatuData = (props) => {
       <SectionTitle>Kegiatan Satu Data Indonesia</SectionTitle>
       <BeritaGrid columns={props.columns}>
         {Array.apply(null, { length: props.jumlah }).map((e, i) => (
-          <BeritaCard>
+          <BeritaCard key={'ksdi' + i}>
             <BeritaCardImageWrapper>
               <BeritaCardImage src={berita[i % 3].imageSrc} />
             </BeritaCardImageWrapper>

@@ -8,4 +8,7 @@ export { default as Modal } from './Modal';
 export { default as Notification } from './Notification';
 export { default as SectionList } from './SectionList';
 export { default as Table } from './Table';
+export { default as FileInput } from './FileInput';
+export { default as CMSTable } from './CMSTable';
+export { default as CMSForm } from './CMSForm';
 export { default as Tags } from './Tags';

@@ -6,7 +6,7 @@ import { CMS_DASHBOARD } from 'utils/constants';
 
 const Dashboard = () => {
   return (
-    <Row md={5} className="m-50 d-flex align-items-center justify-content-center">
+    <Row md={4} className="m-50 d-flex align-items-center justify-content-center">
       {CMS_DASHBOARD.map((_, idx) => (
         <Col key={idx} className="sdp-csm-card m-10">
           <Card className="m-24">

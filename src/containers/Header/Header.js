@@ -1,10 +1,14 @@
 import React from 'react';
 import cx from 'classnames';
 import Button from 'react-bootstrap/Button';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Nav from 'react-bootstrap/Nav';
+import Container from 'react-bootstrap/Container';
+
 import { useHistory, useLocation } from 'react-router-dom';
 
 import Logo from 'assets/logo-satu.jpg';
-import { Anchor } from 'components/Custom';
 import './header.scss';
 
 const TAB_LIST_1 = [
@@ -20,16 +24,13 @@ const TAB_LIST_2 = [
 
 const getTabList = (list, pathname, history) => {
   return list.map((tab) => (
-    <li key={tab.title} className="nav-item">
-      <Anchor
-        className={cx('nav-link', {
-          active: pathname === tab.link,
-        })}
-        aria-current="page"
-        onClick={() => history.push(tab.link)}>
-        {tab.title}
-      </Anchor>
-    </li>
+    <Nav.Link
+      className={cx({
+        active: pathname === tab.link,
+      })}
+      onClick={() => history.push(tab.link)}>
+      {tab.title}
+    </Nav.Link>
   ));
 };
 
@@ -40,38 +41,25 @@ export const Header = () => {
   const goTo = (params) => () => history.push(params);
 
   return (
-    <nav className="sdp-header navbar navbar-light">
-      <div className="container-fluid">
+    <Navbar bg="transparent" className="sdp-header">
+      <Container className="mw-100">
         <img src={Logo} alt="" />
-        <ul className="nav justify-content-end">
+        <Nav>
           {getTabList(TAB_LIST_1, location.pathname, history)}
-          <li className="nav-item dropdown">
-            <Anchor
-              className={cx('nav-link dropdown-toggle', {
-                active: ['/Layanan1'].includes(location.pathname),
-              })}
-              id="navbarDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Layanan
-            </Anchor>
-            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li>
-                <Anchor className="dropdown-item" onClick={() => history.push('/Layanan1')}>
-                  Layanan 1
-                </Anchor>
-              </li>
-            </ul>
-          </li>
+          <NavDropdown
+            className={cx({
+              active: ['/Layanan1'].includes(location.pathname),
+            })}
+            title="Layanan"
+            id="basic-nav-dropdown">
+            <NavDropdown.Item onClick={() => history.push('/Layanan1')}>Layanan 1</NavDropdown.Item>
+          </NavDropdown>
           {getTabList(TAB_LIST_2, location.pathname, history)}
-          <li>
-            <Button variant="info" className="btn-rounded" onClick={goTo('/admin/login')}>
-              Sign In
-            </Button>
-          </li>
-        </ul>
-      </div>
-    </nav>
+          <Button variant="info" className="btn-rounded" onClick={goTo('/admin/login')}>
+            Sign In
+          </Button>
+        </Nav>
+      </Container>
+    </Navbar>
   );
 };

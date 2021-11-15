@@ -2,12 +2,15 @@
   top: 0;
   right: 0;
   left: 0;
-  .nav-item {
-    .nav-link {
-      color: #2D2627
-    }
-    .active {
-      color: #FF0000
+
+  .nav-link {
+    color: #2D2627 !important;
+  }
+
+  .active {
+    color: #FF0000 !important;
+    .dropdown-toggle {
+      color: #FF0000 !important;
     }
   }
 }

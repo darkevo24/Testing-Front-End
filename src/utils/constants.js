@@ -14,7 +14,6 @@ import {
   DashboardManagementIcon,
   DataManagementIcon,
   KonfigurasiIcon,
-  LogActivityIcon,
   UserManagementIcon,
 } from 'assets/icons';
 

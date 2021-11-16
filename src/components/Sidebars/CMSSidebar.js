@@ -36,7 +36,7 @@ export const CMSSidebar = () => {
         <SidebarItem title="Contact Us" pathname="#" />
         <SidebarItem title="Forum" pathname="#" />
         <SidebarItem title="Komunitas Ahli" pathname="#" />
-        <Accordion>
+        <Accordion defaultActiveKey="0">
           <Accordion.Item>
             <Accordion.Header
               className={cx('', {

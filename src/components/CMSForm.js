@@ -5,9 +5,7 @@ import Row from 'react-bootstrap/Row';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { DatePicker, Dropdown, Input, FileInput } from 'components';
-
-import { Editor } from '@tinymce/tinymce-react';
+import { DatePicker, Dropdown, Input, FileInput, TextEditor } from 'components';
 
 const schema = yup
   .object({
@@ -17,24 +15,7 @@ const schema = yup
   })
   .required();
 
-const CMSForm = ({ data, style, onSubmit }) => {
-  // config tinymce
-  const initConfig = {
-    height: 500,
-    menubar: false,
-    toolbar_location: 'bottom',
-    plugins: [
-      'advlist autolink lists link image charmap print preview anchor',
-      'searchreplace visualblocks code fullscreen',
-      'insertdatetime media table paste code help wordcount',
-    ],
-    toolbar:
-      // eslint-disable-next-line no-multi-str
-      'bold italic underline | \
-      alignleft aligncenter alignright alignjustify | \
-      numlist bullist outdent indent',
-  };
-
+const CMSForm = ({data, style, onSubmit}) => {
   const {
     control,
     formState: { errors },
@@ -73,7 +54,7 @@ const CMSForm = ({ data, style, onSubmit }) => {
       />
       <Form.Group controlId="berita" className="mb-4">
         <Form.Label>Isi Berita</Form.Label>
-        <Editor apiKey="ne6hq4p5tdn0hwuirba4i005nv3yavpgeahao9yy58ka476c" init={initConfig} className="tinymce-custom" />
+        <TextEditor />
       </Form.Group>
       <Input
         group

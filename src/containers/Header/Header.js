@@ -13,13 +13,13 @@ import './header.scss';
 
 const TAB_LIST_1 = [
   { title: 'Beranda', link: '/home' },
-  { title: 'Data Set', link: '/data-set' },
+  { title: 'Dataset', link: '/data-set' },
+  { title: 'Berita', link: '/berita' },
+  { title: 'Tentang', link: '/tentang' },
 ];
 const TAB_LIST_2 = [
   { title: 'Sandbox', link: '/sandbox' },
   { title: 'Forum', link: '/forum' },
-  { title: 'Berita', link: '/berita' },
-  { title: 'Tentang', link: '/tentang' },
 ];
 
 const getTabList = (list, pathname, history) => {
@@ -47,15 +47,15 @@ export const Header = () => {
         <img src={Logo} alt="" />
         <Nav>
           {getTabList(TAB_LIST_1, location.pathname, history)}
-          <NavDropdown
+          {/* <NavDropdown
             className={cx({
               active: ['/Layanan1'].includes(location.pathname),
             })}
             title="Layanan"
             id="basic-nav-dropdown">
             <NavDropdown.Item onClick={() => history.push('/Layanan1')}>Layanan 1</NavDropdown.Item>
-          </NavDropdown>
-          {getTabList(TAB_LIST_2, location.pathname, history)}
+          </NavDropdown> */}
+          {/* {getTabList(TAB_LIST_2, location.pathname, history)} */}
           <Button variant="info" className="btn-rounded" onClick={goTo('/admin/login')}>
             Sign In
           </Button>

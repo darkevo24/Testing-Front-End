@@ -15,8 +15,11 @@
 
 // All component styles goes here
 @import './components/button';
+@import './components/cms-sidebar';
+@import './components/cms-form';
 @import './components/datepicker';
 @import './components/dropdown';
+@import './components/file-input';
 @import './components/form';
 @import './components/icon';
 @import './components/input';
@@ -25,9 +28,7 @@
 @import './components/notification';
 @import './components/section-list';
 @import './components/table';
-@import './components/_fileInput';
-@import './components/_cmsSidebar';
-@import './components/_cmsForm';
+@import './components/cms-form-bimtek';
 
 // All pages styles goes here
 @import './pages/login';

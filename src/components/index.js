@@ -12,3 +12,5 @@ export { default as FileInput } from './FileInput';
 export { default as CMSTable } from './CMSTable';
 export { default as CMSForm } from './CMSForm';
 export { default as Tags } from './Tags';
+export { default as CMSBimtekForm } from './CMSBimtekForm';
+export { default as TextEditor } from './TextEditor';

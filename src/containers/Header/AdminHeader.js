@@ -13,7 +13,7 @@ import cx from 'classnames';
 
 const TAB_LIST_1 = [
   { title: 'Beranda', link: '/home' },
-  { title: 'Dataset', link: '/new-dataset' },
+  { title: 'Dataset', link: '/dataset' },
 ];
 const TAB_LIST_2 = [
   { title: 'Berita', link: '/berita' },

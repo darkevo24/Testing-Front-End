@@ -72,7 +72,7 @@ const List = [
       },
       {
         title: 'Dataset',
-        link: '/new-dataset',
+        link: '/dataset',
       },
       {
         title: 'Dashboard',

@@ -16,7 +16,7 @@ import Logo from 'assets/logo-satu.jpg';
 
 const COMMON_ROUTES = [
   { title: 'Beranda', link: '/home' },
-  { title: 'Dataset', link: '/new-dataset' },
+  { title: 'Dataset', link: '/dataset' },
 ];
 
 const PUBLIC_ROUTES = [...COMMON_ROUTES, { title: 'Berita', link: '/berita' }, { title: 'Tentang', link: '/tentang' }];

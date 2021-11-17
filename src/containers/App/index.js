@@ -34,7 +34,7 @@ function App(props) {
       <Switch>
         <Route path="/cms" component={CMSRoutes} />
         <Route path="/admin" component={AdminRoutes} />
-        <Route path="/" component={AppRoutes} />
+        <Route component={AppRoutes} />
       </Switch>
       <GlobalStyle />
       <Notification

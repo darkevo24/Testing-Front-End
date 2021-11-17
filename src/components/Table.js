@@ -20,6 +20,7 @@ export const FilterSearchInput = ({
   globalFilter,
   setGlobalFilter,
   manualPagination = false,
+  searchValue,
 }) => {
   const [value, setValue] = useState(globalFilter);
   const onSearchChange = useAsyncDebounce((value) => {
@@ -42,7 +43,7 @@ export const FilterSearchInput = ({
         variant="normal"
         type="text"
         placeholder={searchPlaceholder}
-        value={value}
+        value={value || searchValue}
         onChange={handleSearchChange}
       />
       <div className="icon-container">
@@ -75,6 +76,7 @@ const Table = ({
   pageSize,
   currentPage,
   onPageIndexChange = () => null,
+  searchValue = '',
 }) => {
   const tableOptions = {
     columns,
@@ -146,6 +148,7 @@ const Table = ({
             setGlobalFilter={setGlobalFilter}
             onSearch={onSearch}
             manualPagination={manualPagination}
+            searchValue={searchValue}
           />
           {searchRightComponent ? (
             searchRightComponent

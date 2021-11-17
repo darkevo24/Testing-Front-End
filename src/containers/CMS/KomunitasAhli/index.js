@@ -46,7 +46,6 @@ const KomunitasAhli = () => {
         status: 'Rejected',
       },
     ];
-    debugger;
     if (searchText) data = data.filter((item) => item.name_ahli.toLowerCase().includes(searchText.toLowerCase()));
     if (status.value === 'All') return data;
     return data.filter((item) => item.status === status.value);

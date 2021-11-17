@@ -1,7 +1,7 @@
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
-import { DatePicker, Input} from 'components';
+import { DatePicker, Input } from 'components';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,11 +13,15 @@ import cx from 'classnames';
 
 const bem = bn('bimtek-form');
 
-const BimtekTable = ({modal, headers, label}) => (
+const BimtekTable = ({ modal, headers, label }) => (
   <div className={bem.e('section')}>
     <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
       <div className={bem.e('header-title')}>{label}</div>
-        {modal ? <div className={bem.e('header-add')}><Plus /> Tambah {label}</div> : null }
+      {modal ? (
+        <div className={bem.e('header-add')}>
+          <Plus /> Tambah {label}
+        </div>
+      ) : null}
     </div>
     <Table className={bem.e('table')}>
       <thead>
@@ -28,33 +32,30 @@ const BimtekTable = ({modal, headers, label}) => (
         </tr>
       </thead>
       <tbody>
-        <tr><td className="text-center" colSpan={33}>Tidak ada data</td></tr>
+        <tr>
+          <td className="text-center" colSpan={33}>
+            Tidak ada data
+          </td>
+        </tr>
       </tbody>
     </Table>
   </div>
 );
 
-const CMSBimtekForm = ({data, disabled = false, modalAction = false}) => {
+const CMSBimtekForm = ({ data, disabled = false, modalAction = false }) => {
   const schema = yup
     .object({
-      name: yup.string().required()
+      name: yup.string().required(),
     })
     .required();
 
-  const {
-    control,
-  } = useForm({
-    resolver: yupResolver(schema)
+  const { control } = useForm({
+    resolver: yupResolver(schema),
   });
 
   return (
     <div className="sdp-form">
-      <Input
-        group
-        label="Nama Bimtek"
-        name="name"
-        control={control}
-      />
+      <Input group label="Nama Bimtek" name="name" control={control} />
       <Row className="align-items-end">
         <Col>
           <DatePicker
@@ -66,15 +67,7 @@ const CMSBimtekForm = ({data, disabled = false, modalAction = false}) => {
           />
         </Col>
         <Col>
-          <Input
-            disabled={disabled}
-            group
-            className="m-0"
-            type="time"
-            label=""
-            name="publishedTime"
-            control={control}
-          />
+          <Input disabled={disabled} group className="m-0" type="time" label="" name="publishedTime" control={control} />
         </Col>
       </Row>
       <Row className="align-items-end">
@@ -88,34 +81,12 @@ const CMSBimtekForm = ({data, disabled = false, modalAction = false}) => {
           />
         </Col>
         <Col>
-          <Input
-            disabled={disabled}
-            group
-            className="m-0"
-            type="time"
-            label=""
-            name="publishedTime"
-            control={control}
-          />
+          <Input disabled={disabled} group className="m-0" type="time" label="" name="publishedTime" control={control} />
         </Col>
       </Row>
-      <Input
-        disabled={disabled}
-        group
-        label="Tempat"
-        name="place"
-        control={control}
-      />
-      <BimtekTable
-        modal={modalAction}
-        label="Pembicara"
-        headers={["Nama Pembicara", "Tanggal", "Sesi", ""]}
-      />
-      <BimtekTable
-        modal={modalAction}
-        label="Materi"
-        headers={["Materi", "Lampiran", ""]}
-      />
+      <Input disabled={disabled} group label="Tempat" name="place" control={control} />
+      <BimtekTable modal={modalAction} label="Pembicara" headers={['Nama Pembicara', 'Tanggal', 'Sesi', '']} />
+      <BimtekTable modal={modalAction} label="Materi" headers={['Materi', 'Lampiran', '']} />
     </div>
   );
 };

@@ -13,28 +13,28 @@ const bem = bn('content-table');
 const CMSBimtekPermintaan = () => {
   const dataBimtek = [
     {
-      "id": 1,
-      "name": "Portal SDI",
-      "instance": "Bapenas",
-      "dateRequest": "28-11-2021 08:33",
-      "dateImplement": "28-11-2021 09:00",
-      "status": "Approved"
+      id: 1,
+      name: 'Portal SDI',
+      instance: 'Bapenas',
+      dateRequest: '28-11-2021 08:33',
+      dateImplement: '28-11-2021 09:00',
+      status: 'Approved',
     },
     {
-      "id": 2,
-      "name": "Portal SDI",
-      "instance": "Bapenas",
-      "dateRequest": "28-11-2021 09:33",
-      "dateImplement": "28-11-2021 10:00",
-      "status": "Approved"
+      id: 2,
+      name: 'Portal SDI',
+      instance: 'Bapenas',
+      dateRequest: '28-11-2021 09:33',
+      dateImplement: '28-11-2021 10:00',
+      status: 'Approved',
     },
     {
-      "id": 3,
-      "name": "Portal SDI",
-      "instance": "Bapenas",
-      "dateRequest": "28-11-2021 10:33",
-      "dateImplement": "28-11-2021 11:00",
-      "status": "Approved"
+      id: 3,
+      name: 'Portal SDI',
+      instance: 'Bapenas',
+      dateRequest: '28-11-2021 10:33',
+      dateImplement: '28-11-2021 11:00',
+      status: 'Approved',
     },
   ];
 
@@ -43,8 +43,7 @@ const CMSBimtekPermintaan = () => {
       <div className={bem.e('header')}>
         <div className={bem.e('title')}>Permintaan Bimbingan Teknis</div>
         <Row className="justify-content-between">
-          <Col xs={2}>
-          </Col>
+          <Col xs={2}></Col>
           <Col xs={5} className="d-flex align-items-center">
             <div className="mr-10">Instansi</div>
             <div className="mr-10">
@@ -53,31 +52,21 @@ const CMSBimtekPermintaan = () => {
               </Form.Select>
             </div>
             <InputGroup>
-              <Form.Control
-                variant="normal"
-                type="text"
-                placeholder="Cari Bimbingan Teknis"
-              />
+              <Form.Control variant="normal" type="text" placeholder="Cari Bimbingan Teknis" />
               <Search />
             </InputGroup>
           </Col>
         </Row>
       </div>
       <CMSTable
-        customWidth={[ 18, 18, 18, 22, 18, 7]}
-        header={[
-          'Nama',
-          'Instansi',
-          'Tanggal Permintaan',
-          'Tanggal Pelaksanaan Disetujui',
-          'Status'
-        ]}
+        customWidth={[18, 18, 18, 22, 18, 7]}
+        header={['Nama', 'Instansi', 'Tanggal Permintaan', 'Tanggal Pelaksanaan Disetujui', 'Status']}
         data={dataBimtek.map((item) => {
           let value = {
-      			data: [item.name, item.instance, item.dateRequest, item.dateImplement, item.status],
-      			action: "/cms/bimtek-permintaan/"+item.id
-      		}
-      		return value
+            data: [item.name, item.instance, item.dateRequest, item.dateImplement, item.status],
+            action: '/cms/bimtek-permintaan/' + item.id,
+          };
+          return value;
         })}
       />
     </div>

@@ -114,11 +114,14 @@ const DataSet = () => {
         id: 'card',
         Header: 'Card',
         Cell: ({ cell: { row: { original: item } = {} } = {} }) => {
+          const dataSetUrl = `/data/dataset/${item.name}`;
           return (
             <div className="sdp-card-wrapped d-flex p-16 justify-content-between" key={item.id}>
               <div className="flex-column">
                 <div className="sdp-left-wrapper mb-27 mr-16">
-                  <div className="mb-8 fs-16 fw-600 lh-19 sdp-text-black-dark">{item.title}</div>
+                  <a title="data-set" href={dataSetUrl} className="sdp-link">
+                    <div className="mb-8 fs-16 fw-600 lh-19">{item.title}</div>
+                  </a>
                   <div className="fs-14 lh-17 sdp-text-black-dark">{item.notes}</div>
                 </div>
                 <div className="d-flex flex-wrap mt-n8">

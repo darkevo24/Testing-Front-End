@@ -41,3 +41,11 @@
     }
   }
 }
+
+.nav-item.dropdown {
+  .dropdown-toggle.nav-link {
+    &::after {
+      vertical-align: middle;
+    }
+  }
+}

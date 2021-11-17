@@ -1,9 +1,10 @@
 import React, { lazy } from 'react';
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import AppLayout, { PrivateRoute, PublicRoute } from 'layouts/AppLayout';
+import lazily from 'utils/lazily';
 
-import { AppLayout } from 'layouts/AppLayout';
-
+const { Login } = lazily(() => import('containers/Login'));
 const BerandaPage = lazy(() => import('containers/Beranda'));
 const TopicDetailPage = lazy(() => import('containers/Beranda/TopicDetails'));
 const DataSetPage = lazy(() => import('containers/Beranda/DataSet'));
@@ -18,14 +19,16 @@ const BeritaPage = lazy(() => import('containers/Berita'));
 const KesiapanData = lazy(() => import('containers/KesiapanData'));
 const KesiapanSDIDaerah = lazy(() => import('containers/KesiapanSDiDaerah'));
 const KesiapanSDIPusat = lazy(() => import('containers/KesiapanSDIPusat'));
+const NotFoundPage = lazy(() => import('containers/NotFound'));
 
 function AppRoutes(props) {
   return (
-    <AppLayout>
-      <Switch>
+    <Switch>
+      <PublicRoute exact path="/login" component={Login} />
+      <AppLayout>
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
-        <Route path="/data-set" component={DataSetPage} />
+        <Route exact path="/data-set" component={DataSetPage} />
         <Route exact path="/forum" component={ForumPage} />
         <Route exact path="/komunitas" component={KomunitasPage} />
         <Route exact path="/bl" component={BeritaLayout} />
@@ -38,8 +41,9 @@ function AppRoutes(props) {
         <Route path="/kesiapan-data" component={KesiapanData} />
         <Route path="/kesiapan-sdi-daerah" component={KesiapanSDIDaerah} />
         <Route path="/kesiapan-sdi-pusat" component={KesiapanSDIPusat} />
-      </Switch>
-    </AppLayout>
+        <Route path="*" component={NotFoundPage} />
+      </AppLayout>
+    </Switch>
   );
 }
 

@@ -17,7 +17,7 @@ import { Circle, Close } from 'components/Icons';
 import { datasetSelector, getDataSet } from '../reducer';
 import bn from 'utils/bemNames';
 
-const bem = bn('data-set');
+const bem = bn('dataset');
 
 const DataSet = () => {
   const { t } = useTranslation();
@@ -119,7 +119,7 @@ const DataSet = () => {
             <div className="sdp-card-wrapped d-flex p-16 justify-content-between" key={item.id}>
               <div className="flex-column">
                 <div className="sdp-left-wrapper mb-27 mr-16">
-                  <a title="data-set" href={dataSetUrl} className="sdp-link">
+                  <a title="dataset" href={dataSetUrl} className="sdp-link">
                     <div className="mb-8 fs-16 fw-600 lh-19">{item.title}</div>
                   </a>
                   <div className="fs-14 lh-17 sdp-text-black-dark">{item.notes}</div>

@@ -19,7 +19,7 @@ const BeritaPage = lazy(() => import('containers/Berita'));
 const KesiapanData = lazy(() => import('containers/KesiapanData'));
 const KesiapanSDIDaerah = lazy(() => import('containers/KesiapanSDiDaerah'));
 const KesiapanSDIPusat = lazy(() => import('containers/KesiapanSDIPusat'));
-const NotFoundPage = lazy(() => import('containers/NotFound'));
+// const NotFoundPage = lazy(() => import('containers/NotFound'));
 
 function AppRoutes(props) {
   return (
@@ -28,20 +28,19 @@ function AppRoutes(props) {
       <AppLayout>
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
-        <Route exact path="/data-set" component={DataSetPage} />
+        <Route exact path="/dataset" component={DataSetPage} />
         <Route exact path="/forum" component={ForumPage} />
         <Route exact path="/komunitas" component={KomunitasPage} />
         <Route exact path="/bl" component={BeritaLayout} />
         <Route exact path="/berita" component={BeritaPage} />
-        <Route exact path="/" render={() => <Redirect to="/home" />} />
-        <Route path="/bimtek-summary" component={BimTekSummaryPage} />
-        <Route path="/bimtek-form" component={BimTekFormPage} />
-        <Route path="/bimtek-jadwal" component={BimTekJadwalPage} />
-        <Route path="/tentang" component={TentangPage} />
-        <Route path="/kesiapan-data" component={KesiapanData} />
-        <Route path="/kesiapan-sdi-daerah" component={KesiapanSDIDaerah} />
-        <Route path="/kesiapan-sdi-pusat" component={KesiapanSDIPusat} />
-        <Route path="*" component={NotFoundPage} />
+        <Route exact path="/bimtek-summary" component={BimTekSummaryPage} />
+        <Route exact path="/bimtek-form" component={BimTekFormPage} />
+        <Route exact path="/bimtek-jadwal" component={BimTekJadwalPage} />
+        <Route exact path="/tentang" component={TentangPage} />
+        <Route exact path="/kesiapan-data" component={KesiapanData} />
+        <Route exact path="/kesiapan-sdi-daerah" component={KesiapanSDIDaerah} />
+        <Route exact path="/kesiapan-sdi-pusat" component={KesiapanSDIPusat} />
+        {/* <Route path="*" component={NotFoundPage} /> */}
       </AppLayout>
     </Switch>
   );

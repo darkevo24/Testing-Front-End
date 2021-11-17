@@ -16,6 +16,7 @@ import { Breadcrumb, Loader, MapTile, SectionList, Table, Tags } from 'component
 import { Circle, Close } from 'components/Icons';
 import { datasetSelector, getDataSet } from '../reducer';
 import bn from 'utils/bemNames';
+import { parseQueryString } from 'utils/helper';
 
 const bem = bn('dataset');
 
@@ -40,7 +41,10 @@ const DataSet = () => {
 
   const data = useMemo(() => result?.results || [], [result]);
 
-  useEffect(fetchDataset, []);
+  useEffect(() => {
+    const searchParam = parseQueryString();
+    fetchDataset(searchParam);
+  }, []);
 
   const breadcrumbsList = useMemo(
     () => [
@@ -143,6 +147,7 @@ const DataSet = () => {
     data,
     searchPlaceholder: t('beranda.dataset.searchPlaceholder'),
     searchButtonText: <SearchSvg />,
+    searchValue: params?.q || '',
     onSearch: (searchText) => {
       fetchDataset({ q: searchText }, true);
     },
@@ -153,7 +158,7 @@ const DataSet = () => {
         <div className="ml-12 sdp-text-black-dark">
           <NumberFormat displayType="text" thousandSeparator="." decimalSeparator="," value={result?.count} />
         </div>
-        <div className="text-nowrap mr-80 ml-6 sdp-text-disable">Datasets Found</div>
+        <div className="text-nowrap mr-80 ml-6 sdp-text-disable">Datasets Found {params?.q ? `for "${params.q}"` : ''}</div>
       </div>
     ),
     searchRightComponent: (

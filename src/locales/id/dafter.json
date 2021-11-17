@@ -1,0 +1,24 @@
+{
+  "dafter": {
+    "tabs": {
+      "dafter": {
+        "key": "dafter",
+        "title": "Dafter"
+      },
+      "sdg": {
+        "key": "sdg",
+        "title": "SDGs"
+      },
+      "rkp": {
+        "key": "rkp",
+        "title": "RKP 2022"
+      },
+      "dafterSafa": {
+        "key": "dafter-saya",
+        "title": "Daftar Data Saya"
+      }
+    },
+    "title": "Daftar Data",
+    "searchPlaceholder": "Pencarian"
+  }
+}

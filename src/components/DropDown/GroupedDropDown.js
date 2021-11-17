@@ -3,15 +3,28 @@ import React from 'react';
 import Select, { components } from 'react-select';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
+import cloneDeep from 'lodash/cloneDeep';
 import { MinusIcon, PlusIcon } from 'assets';
 
-export default class GroupedDropdown extends React.Component {
+const Control = ({ children, ...props }) => {
+  const { icon, text, value } = props.selectProps;
+
+  return (
+    <components.Control {...props}>
+      <i>{icon}</i>
+      <span>{value?.value || text}</span>
+      {children}
+    </components.Control>
+  );
+};
+
+class GroupedDropdown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedValues: {},
       collapsed: [],
-      data: [],
+      options: [],
     };
   }
 
@@ -21,7 +34,7 @@ export default class GroupedDropdown extends React.Component {
       this.setState({ selectedValues: { ...defaultData } });
     }
     this.setState({
-      data,
+      options: [...data],
     });
   }
 
@@ -37,24 +50,26 @@ export default class GroupedDropdown extends React.Component {
 
   handleOnChange = (selected) => {
     this.setState({ selectedValues: selected });
-    //this.props.onChange(selected);
+    this.props.onChange(selected);
   };
 
   handleCollapsedData = (key) => {
     const collapseClone = [...this.state.collapsed];
-    const dataClone = [...this.state.data];
-    const { data } = this.props;
+    const dataClone = cloneDeep(this.state.options);
+    const propsDataClone = cloneDeep(this.props.data);
     if (collapseClone.includes(key)) {
       const index = dataClone.findIndex((item) => item.label === key);
-      const propIndex = data.findIndex((item) => item.label === key);
-      dataClone[index].options = data[propIndex].options;
+      const propIndex = propsDataClone.findIndex((item) => item.label === key);
+      dataClone[index].options = propsDataClone[propIndex].options;
+      const collapseIndex = collapseClone.findIndex((item) => item === key);
+      if (collapseIndex !== -1) collapseClone.splice(collapseIndex, 1);
     } else {
       collapseClone.push(key);
       const index = dataClone.findIndex((item) => item.label === key);
-      dataClone[index].options = [];
+      dataClone[index].options = [{ value: '', label: '', isDisabled: true }];
     }
     this.setState({
-      data: dataClone,
+      options: dataClone,
       collapsed: collapseClone,
     });
   };
@@ -63,31 +78,31 @@ export default class GroupedDropdown extends React.Component {
     const { collapsed } = this.state;
     const isCollapsed = collapsed.includes(data.label);
     return (
-      <div className="d-flex align-items-center sdp-text-red" onClick={() => this.handleCollapsedData(data.label)}>
-        {isCollapsed ? <MinusIcon /> : <PlusIcon />}
+      <div className="d-flex align-items-center" onClick={() => this.handleCollapsedData(data.label)}>
+        {!isCollapsed ? <MinusIcon /> : <PlusIcon />}
         <span>{data.label}</span>
       </div>
     );
   };
 
   render() {
-    const { data, placeHolder, isLoading = false, isClearable = true, isDisabled = false, Control, propClass } = this.props;
-    const { selectedValues } = this.state;
+    const { propClass, icon, text } = this.props;
+    const { selectedValues, options } = this.state;
     return (
       <Select
         formatGroupLabel={this.formatGroupLabel}
         closeMenuOnSelect={true}
         value={!isEmpty(selectedValues) ? selectedValues : null}
-        options={data}
+        options={options}
         className={`basic-single ${propClass}`}
         classNamePrefix="select"
         onChange={this.handleOnChange}
-        isClearable={isClearable}
-        placeholder={placeHolder}
-        isLoading={isLoading}
-        isDisabled={isDisabled}
         components={{ Control }}
+        icon={icon}
+        text={text}
       />
     );
   }
 }
+
+export default GroupedDropdown;

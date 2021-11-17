@@ -20,6 +20,7 @@ export const FilterSearchInput = ({
   globalFilter,
   setGlobalFilter,
   manualPagination = false,
+  searchValue,
 }) => {
   const [value, setValue] = useState(globalFilter);
   const onSearchChange = useAsyncDebounce((value) => {
@@ -42,7 +43,7 @@ export const FilterSearchInput = ({
         variant="normal"
         type="text"
         placeholder={searchPlaceholder}
-        value={value}
+        value={value || searchValue}
         onChange={handleSearchChange}
       />
       <div className="icon-container">
@@ -75,6 +76,7 @@ const Table = ({
   pageSize,
   currentPage,
   onPageIndexChange = () => null,
+  searchValue = '',
 }) => {
   const tableOptions = {
     columns,
@@ -129,8 +131,12 @@ const Table = ({
     }
   }
 
+  const tableWrapperClasses = {
+    [bem.m('highlight')]: highlightOnHover,
+  };
+
   return (
-    <div className={cx(bem.b(), bem.m(variant), bem.m(highlightOnHover && 'highlight'), className)}>
+    <div className={cx(bem.b(), bem.m(variant), className, tableWrapperClasses)}>
       {title ? <div className={bem.e('header')}>{title}</div> : null}
       {showSearch ? (
         <div className={cx(bem.e('header-wrapper'), 'd-flex justify-content-between align-items-center mb-30')}>
@@ -142,6 +148,7 @@ const Table = ({
             setGlobalFilter={setGlobalFilter}
             onSearch={onSearch}
             manualPagination={manualPagination}
+            searchValue={searchValue}
           />
           {searchRightComponent ? (
             searchRightComponent

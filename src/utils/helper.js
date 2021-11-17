@@ -23,7 +23,7 @@ export const safeStringify = (value) => {
   }
 };
 
-export const getQueryString = (params) => {
+export const generateQueryString = (params) => {
   return Object.keys(params)
     .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
     .join('&');
@@ -110,4 +110,15 @@ export const mapOrStringsToFq = (data, keys = []) => {
 
 export const pickValidDatasetPaginationParams = (data) => {
   return pick(data, ['q', 'fq', 'facet.field', 'facet.limit', 'start', 'rows', 'sort']);
+};
+
+/**
+ * Returns parsed query string into JSON object.
+ */
+export const parseQueryString = () => {
+  const search = window.location.search.substring(1);
+  if (!search) {
+    return {};
+  }
+  return JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
 };

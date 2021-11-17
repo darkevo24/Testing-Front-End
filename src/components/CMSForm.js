@@ -15,7 +15,7 @@ const schema = yup
   })
   .required();
 
-const CMSForm = ({data, style, onSubmit}) => {
+const CMSForm = ({ data, style, onSubmit }) => {
   const {
     control,
     formState: { errors },

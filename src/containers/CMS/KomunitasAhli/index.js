@@ -27,6 +27,31 @@ const KomunitasAhli = () => {
     console.log(data);
   };
 
+  const getData = () => {
+    let data = [
+      {
+        kode_ahli: '001',
+        name_ahli: 'Davis Geidt',
+        keahlian: 'Komputer dan Jaringan',
+        level: 'Pusat',
+        penyelenggara: 'Wali Data',
+        status: 'Approved',
+      },
+      {
+        kode_ahli: '002',
+        name_ahli: 'Erin Dias',
+        keahlian: 'Matematika dan Statistik',
+        level: 'Pusat',
+        penyelenggara: 'Wali Data',
+        status: 'Rejected',
+      },
+    ];
+    debugger;
+    if (searchText) data = data.filter((item) => item.name_ahli.toLowerCase().includes(searchText.toLowerCase()));
+    if (status.value === 'All') return data;
+    return data.filter((item) => item.status === status.value);
+  };
+
   const columns = [
     {
       Header: 'Kode Ahli',
@@ -78,30 +103,14 @@ const KomunitasAhli = () => {
   ];
   const tableConfig = {
     columns,
-    data: [
-      {
-        kode_ahli: '001',
-        name_ahli: 'Davis Geidt',
-        keahlian: 'Komputer dan Jaringan',
-        level: 'Pusat',
-        penyelenggara: 'Wali Data',
-        status: 'Approved',
-      },
-      {
-        kode_ahli: '002',
-        name_ahli: 'Erin Dias',
-        keahlian: 'Matematika dan Statistik',
-        level: 'Pusat',
-        penyelenggara: 'Wali Data',
-        status: 'Rejected',
-      },
-    ],
+    data: getData(),
     title: '',
     search: true,
     searchPlaceholder: 'Cari...',
     searchButtonText: 'Search',
     showSearch: false,
     onSearch: () => {},
+    variant: 'spaced',
   };
   return (
     <div className="sdp-komunitas-container">

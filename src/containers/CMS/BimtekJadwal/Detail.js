@@ -11,29 +11,29 @@ import bn from 'utils/bemNames';
 
 const bem = bn('content-detail');
 
-const CMSJadwalDetail = props => {
+const CMSJadwalDetail = (props) => {
   // const id = props.match.params.id;
   // const history = useHistory();
   const dataLog = [
     {
-      date: "12 Desember 2021",
-      status: "Selesai",
-      content: "Dataset sudah dapat di akses di portal data.go.id"
+      date: '12 Desember 2021',
+      status: 'Selesai',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
     },
     {
-      date: "10 Desember 2021",
-      status: "Diproses",
-      content: "Dataset sudah dapat di akses di portal data.go.id"
+      date: '10 Desember 2021',
+      status: 'Diproses',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
     },
     {
-      date: "08 Desember 2021",
-      status: "Terkirim",
-      content: "Dataset sudah dapat di akses di portal data.go.id"
+      date: '08 Desember 2021',
+      status: 'Terkirim',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
     },
     {
-      date: "08 Desember 2021",
-      status: "Dibuat",
-      content: "Dataset sudah dapat di akses di portal data.go.id"
+      date: '08 Desember 2021',
+      status: 'Dibuat',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
     },
   ];
 
@@ -42,13 +42,17 @@ const CMSJadwalDetail = props => {
       <Col sm={9}>
         <div>
           <div className="d-flex justify-content-between mb-4">
-            <div className={bem.e('title')}>
-              Jadwal Bimbingan Teknis
-            </div>
+            <div className={bem.e('title')}>Jadwal Bimbingan Teknis</div>
             <div>
-              <Button variant="secondary"><DeleteIcon/></Button>
-              <Button className="ml-10" variant="secondary" style={{width: "112px"}}>Simpan</Button>
-              <Button className="ml-10" variant="info" style={{width: "112px"}}>Kirim</Button>
+              <Button variant="secondary">
+                <DeleteIcon />
+              </Button>
+              <Button className="ml-10" variant="secondary" style={{ width: '112px' }}>
+                Simpan
+              </Button>
+              <Button className="ml-10" variant="info" style={{ width: '112px' }}>
+                Kirim
+              </Button>
             </div>
           </div>
           <CMSBimtekForm />

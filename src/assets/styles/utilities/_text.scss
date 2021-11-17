@@ -24,6 +24,16 @@
  margin-top: 4px;
 }
 
+.sdp-link {
+  text-decoration: none;
+  color: $black-dark-10;
+  &:hover {
+    color: $black-dark-10;
+    border-bottom: 1px solid $black-dark-10;
+    text-decoration: underline;
+  }
+}
+
 .sdp-title {
   font-weight: 600;
   font-size: 16px;
@@ -88,15 +98,15 @@ a {
 }
 
 .sdp-text-black-dark {
-  color: var(--black-dark-10)
+  color: var(--black-dark-10);
 }
 
 .sdp-text-black-light {
-  color: var(--black-light)
+  color: var(--black-light);
 }
 
 .sdp-text-black-lighter {
-  color: var(--black-light-10)
+  color: var(--black-light-10);
 }
 
 .text-hightlighted {

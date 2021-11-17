@@ -1,0 +1,8 @@
+.sdp-404 {
+  @extend .flex-center;
+  flex-direction: column;
+  padding: 48px;
+  &__img-not-found {
+    width: 350px;
+  }
+}

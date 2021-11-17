@@ -3,19 +3,20 @@ import { routerMiddleware } from 'connected-react-router';
 
 import createReducer from './reducers';
 
-const rootReducer = (state, action) => {
-  if (action.type === 'LOGIN_REDUCER/logout') {
-    state = undefined;
-  }
-  return createReducer()(state, action);
-};
+// Note: removing this as we need to keep the public data regardless of authentication.
+// const rootReducer = (state, action) => {
+//   if (action.type === 'LOGIN_REDUCER/logout') {
+//     state = undefined;
+//   }
+//   return createReducer()(state, action);
+// };
 
 export function configureAppStore(initialState = {}, history) {
   // Create the store with saga middleware
   const middlewares = [routerMiddleware(history)];
 
   const store = configureStore({
-    reducer: rootReducer,
+    reducer: createReducer(),
     preloadedState: initialState,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

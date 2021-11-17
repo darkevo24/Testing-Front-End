@@ -1,6 +1,5 @@
 import React from 'react';
 import Logo from 'assets/logo-satu.jpg';
-import './header.scss';
 
 export const CMSHeader = () => {
   return (

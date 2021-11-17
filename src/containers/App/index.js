@@ -8,7 +8,7 @@
 
 import React, { lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import GlobalStyle from 'global-styles';
 
@@ -32,6 +32,9 @@ function App(props) {
         <meta name="description" content="Satu Data Portal" />
       </Helmet>
       <Switch>
+        <Route exact path="/">
+          <Redirect to="/home" />
+        </Route>
         <Route path="/cms" component={CMSRoutes} />
         <Route path="/admin" component={AdminRoutes} />
         <Route path="/" component={AppRoutes} />

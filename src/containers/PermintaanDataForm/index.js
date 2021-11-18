@@ -5,10 +5,11 @@ import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Input } from 'components';
+import { Input, Modal } from 'components';
 import { LeftChevron } from '../../components/Icons';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 export const permintaanDataFormId = 'permintaan-data-form-id';
 const schema = yup
@@ -84,18 +85,24 @@ const TerkirimButton = () => {
   );
 };
 
-const DiprosesButton = () => {
-  return (
-    <Col>
-      <Button variant="info" className="text-white py-2 px-5 fw-bold float-end mx-4">
-        Selesai
-      </Button>
-    </Col>
-  );
-};
-
 const PermintaanDataForm = ({ onSubmit }) => {
   const data = useSelector((state) => state.permintaanData?.result.data);
+  const [isSuccessFormVisible, setIsSuccessFormVisible] = useState(false);
+  const showSuccessModal = () => {
+    setIsSuccessFormVisible(true);
+  };
+  const hideSuccessModal = () => {
+    setIsSuccessFormVisible(false);
+  };
+  const DiprosesButton = () => {
+    return (
+      <Col>
+        <Button variant="info" className="text-white py-2 px-5 fw-bold float-end mx-4" onClick={showSuccessModal}>
+          Selesai
+        </Button>
+      </Col>
+    );
+  };
 
   const {
     control,
@@ -228,6 +235,17 @@ const PermintaanDataForm = ({ onSubmit }) => {
           </div>
         </ul>
       </div>
+      <Modal
+        visible={isSuccessFormVisible}
+        onClose={hideSuccessModal}
+        icon="splitCircle"
+        subtitle="Apakah anda ingin menyelesaikan Permintaan Data?"
+        actions={[
+          { variant: 'secondary', text: 'Batal', onClick: hideSuccessModal },
+          { text: 'Selesai', onClick: hideSuccessModal },
+        ]}>
+        <Input group name="konsep" rules={{ required: true }} />
+      </Modal>
     </div>
   );
 };

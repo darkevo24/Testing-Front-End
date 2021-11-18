@@ -18,9 +18,19 @@ const CMSJadwalBaru = () => {
       <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
         <div className={bem.e('title')}>
           Bidang Baru
-          <Button onClick={() => history.goBack()} className="ml-24 bg-white sdp-text-grey-dark border-gray-stroke" variant="secondary" style={{ width: '112px' }}>Batal</Button>
-          <Button className="ml-10" variant="secondary" style={{ width: '112px' }}>Simpan</Button>
-          <Button className="ml-10" variant="info" style={{ width: '112px' }}>Kirim</Button>
+          <Button
+            onClick={() => history.goBack()}
+            className="ml-24 bg-white sdp-text-grey-dark border-gray-stroke"
+            variant="secondary"
+            style={{ width: '112px' }}>
+            Batal
+          </Button>
+          <Button className="ml-10" variant="secondary" style={{ width: '112px' }}>
+            Simpan
+          </Button>
+          <Button className="ml-10" variant="info" style={{ width: '112px' }}>
+            Kirim
+          </Button>
         </div>
         <div>Saved 1 minutes ago Draft</div>
       </div>

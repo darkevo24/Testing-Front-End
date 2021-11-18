@@ -37,11 +37,11 @@ const CMSStrukturDetail = (props) => {
     },
   ];
   const dataDummy = {
-    'kode': 'XXX',
+    kode: 'XXX',
     nama: 'Coba',
     level: 1,
-    status: 'Waiting Approval'
-  }
+    status: 'Waiting Approval',
+  };
 
   return (
     <Row className={bem.e('section')}>
@@ -50,9 +50,19 @@ const CMSStrukturDetail = (props) => {
           <div className="d-flex justify-content-between mb-4">
             <div className={bem.e('title')}>Bidang Detail</div>
             <div>
-              <Button variant="secondary"><DeleteIcon /></Button>
-              <Button onClick={() => history.goBack()}  className="ml-10 bg-white sdp-text-grey-dark border-gray-stroke" variant="secondary" style={{ width: '112px' }}>Batal</Button>
-              <Button className="ml-10" variant="info" style={{ width: '112px' }}>Simpan</Button>
+              <Button variant="secondary">
+                <DeleteIcon />
+              </Button>
+              <Button
+                onClick={() => history.goBack()}
+                className="ml-10 bg-white sdp-text-grey-dark border-gray-stroke"
+                variant="secondary"
+                style={{ width: '112px' }}>
+                Batal
+              </Button>
+              <Button className="ml-10" variant="info" style={{ width: '112px' }}>
+                Simpan
+              </Button>
             </div>
           </div>
           <CMSStrukturForm data={dataDummy} />

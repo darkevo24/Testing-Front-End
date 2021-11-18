@@ -7,5 +7,5 @@ import beritaReducer from './Berita/reducer';
 export default combineReducers({
   aboutUs: aboutUsReducer,
   aboutUsDetail: aboutUsDetailReducer,
-  berita: beritaReducer
+  berita: beritaReducer,
 });

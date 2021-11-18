@@ -38,7 +38,7 @@ const CMSStrukturOrganisasi = () => {
       nama: 'Test Bidang 1',
       level: 1,
       status: 'DRAFT',
-    }
+    },
   ];
 
   return (

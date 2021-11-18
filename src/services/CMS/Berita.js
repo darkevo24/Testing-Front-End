@@ -16,21 +16,14 @@ const API_URL = {
   },
 };
 
-export const createBerita = (
-  thumbnail,
-  category,
-  tagline,
-  title,
-  content,
-  reference
-) => {
+export const createBerita = (thumbnail, category, tagline, title, content, reference) => {
   let params = {
     judul: title,
     content: content,
     issn: reference,
     tagline: tagline,
     kategori: category,
-    status: 0
+    status: 0,
   };
   return HTTP.post(API_URL.berita(), HTTP.defaultHeaders(), params)
     .then((res) => {
@@ -41,7 +34,7 @@ export const createBerita = (
     })
     .then((content) => {
       return {
-        id: content.id
+        id: content.id,
       };
     })
     .catch((err) => {
@@ -71,7 +64,7 @@ export const filterBerita = (page = 1, size = 10, sort = 'id') => {
         sort: sort,
         records: content.data.map((item) => {
           return {
-            id: item.id
+            id: item.id,
           };
         }),
       };

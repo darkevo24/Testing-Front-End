@@ -22,7 +22,7 @@ const CMSStrukturForm = ({ disabled = false, data }) => {
     .object({
       nama: yup.string().required(),
       kode: yup.string().required(),
-      level: yup.mixed().required()
+      level: yup.mixed().required(),
     })
     .required();
 
@@ -33,10 +33,10 @@ const CMSStrukturForm = ({ disabled = false, data }) => {
     resolver: yupResolver(schema),
   });
 
-  const level = [ 1, 2, 3, 4, 5 ];
-  const [ modalProfile, setModalProfile ] = useState(false);
-  const [ listProfile, setListProfile ] = useState([]);
-  const [ profile, setProfile ] = useState({})
+  const level = [1, 2, 3, 4, 5];
+  const [modalProfile, setModalProfile] = useState(false);
+  const [listProfile, setListProfile] = useState([]);
+  const [profile, setProfile] = useState({});
 
   const submitProfile = () => {
     listProfile.push(profile);
@@ -45,7 +45,7 @@ const CMSStrukturForm = ({ disabled = false, data }) => {
   };
 
   const removeProfile = (index) => {
-    let arr = listProfile
+    let arr = listProfile;
     arr.splice(index, 1);
     setListProfile(arr);
   };
@@ -53,7 +53,7 @@ const CMSStrukturForm = ({ disabled = false, data }) => {
   const inputProfileHandler = () => (event) => {
     setProfile({
       ...profile,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
@@ -61,14 +61,7 @@ const CMSStrukturForm = ({ disabled = false, data }) => {
     <div>
       <Row>
         <Col>
-          <Input
-            disabled={disabled}
-            group
-            label="Kode Bidang"
-            name="kode"
-            control={control}
-            error={errors.kode?.message}
-          />
+          <Input disabled={disabled} group label="Kode Bidang" name="kode" control={control} error={errors.kode?.message} />
         </Col>
         <Col>
           <Dropdown
@@ -83,19 +76,13 @@ const CMSStrukturForm = ({ disabled = false, data }) => {
           />
         </Col>
       </Row>
-      <Input
-        disabled={disabled}
-        group
-        label="Nama Bidang"
-        name="nama"
-        control={control}
-        error={errors.nama?.message}
-      />
-      <div className={cx(bem.e('header'), 'd-flex justify-content-between mt-5')}>
+      <Input disabled={disabled} group label="Nama Bidang" name="nama" control={control} error={errors.nama?.message} />
+      <div className={cx(bem.e('header'), ' d-flex justify-content-between mt-5 ')}>
         <div className={bem.e('header-title')}>Profil</div>
-          <div className={bem.e('header-add')} onClick={() => setModalProfile(true)}>
-            <Plus /> Tambah Profil
-          </div>
+        <div className={bem.e('header-add')} onClick={() => setModalProfile(true)}>
+          <Plus />
+          Tambah Profil
+        </div>
       </div>
       <div className={bem.e('section')}>
         <Table className={bem.e('table')}>
@@ -114,39 +101,52 @@ const CMSStrukturForm = ({ disabled = false, data }) => {
                   Tidak ada data
                 </td>
               </tr>
-            ) : listProfile.map((row, key) => (
-              <tr key={key}>
-                <td>{row.foto ? row.foto : ""}</td>
-                <td>{row.nama ? row.nama : ""}</td>
-                <td>{row.jabatan ? row.jabatan : ""}</td>
-                <td><span>Edit</span> <span onClick={() => removeProfile(key)}>Delete</span></td>
-              </tr>
-            ))}
+            ) : (
+              listProfile.map((row, key) => (
+                <tr key={key}>
+                  <td>{row.foto ? row.foto : ''}</td>
+                  <td>{row.nama ? row.nama : ''}</td>
+                  <td>{row.jabatan ? row.jabatan : ''}</td>
+                  <td>
+                    <span>Edit</span> <span onClick={() => removeProfile(key)}>Delete</span>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </Table>
       </div>
-      <Modal
-        visible={modalProfile}
-        onClose={() => setModalProfile(false)}
-        title="Tambah Profil"
-      >
+      <Modal visible={modalProfile} onClose={() => setModalProfile(false)} title="Tambah Profil">
         <div>
           <Form.Group className="mb-4">
             <Form.Label>Nama</Form.Label>
-            <Form.Control type="text" value={profile.nama ? profile.nama : ""} name="nama" onChange={inputProfileHandler()} />
+            <Form.Control
+              type="text"
+              value={profile.nama ? profile.nama : ''}
+              name="nama"
+              onChange={inputProfileHandler()}
+            />
           </Form.Group>
           <Form.Group className="mb-4">
             <Form.Label>Jabatan</Form.Label>
             <Form.Control type="text" name="jabatan" onChange={inputProfileHandler()} />
           </Form.Group>
-          {profile.foto ? profile.foto : ""}
+          {profile.foto ? profile.foto : ''}
           <Form.Group className="mb-4">
             <Form.Label>Foto</Form.Label>
             <Form.Control type="file" name="foto" onChange={inputProfileHandler()} />
           </Form.Group>
           <div className="d-flex justify-content-end mb-5">
-            <Button onClick={() => setModalProfile(false)} className="ml-24 bg-white sdp-text-grey-dark border-gray-stroke" variant="secondary" style={{ width: '112px' }}>Batal</Button>
-            <Button onClick={() => submitProfile()} className="ml-10" variant="info" style={{ width: '112px' }}>Simpan</Button>
+            <Button
+              onClick={() => setModalProfile(false)}
+              className="ml-24 bg-white sdp-text-grey-dark border-gray-stroke"
+              variant="secondary"
+              style={{ width: '112px' }}>
+              Batal
+            </Button>
+            <Button onClick={() => submitProfile()} className="ml-10" variant="info" style={{ width: '112px' }}>
+              Simpan
+            </Button>
           </div>
         </div>
       </Modal>

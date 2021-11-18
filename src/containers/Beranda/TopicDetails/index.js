@@ -70,7 +70,7 @@ const getElem = (data) => {
 };
 
 const TopicDetail = () => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState('');
   const [data, setData] = useState(tempData);
   const [topic, setTopic] = useState('');

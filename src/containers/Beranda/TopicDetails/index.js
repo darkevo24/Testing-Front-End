@@ -220,7 +220,7 @@ const TopicDetail = () => {
           {isExpanded ? (
             <div className="sdp-topic-title-list border-gray-stroke br-4 py-8 mt-10">
               {TOPIC_LIST.map((topic) => (
-                <div className="sdp-topic-wrapper" onClick={() => changeTopic(topic.title)}>
+                <div key={`hover-${topic.title}`} className="sdp-topic-wrapper" onClick={() => changeTopic(topic.title)}>
                   {topic.icon}
                   <span>{topic.title}</span>
                 </div>
@@ -230,6 +230,7 @@ const TopicDetail = () => {
           <div className="sdp-item-wrapper mt-32 mb-32 pr-32">
             {topicCards.map((item) => (
               <div
+                key={`topic-card-${item}`}
                 className={cx('menu-item pl-16 pt-12 pb-12 cursor-pointer', {
                   'bg-gray br-4': item === selectedGroup,
                 })}

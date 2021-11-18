@@ -3,6 +3,10 @@
     &__header {
       padding: 32px;
       border-bottom: 1px solid $stroke;
+
+      button svg {
+        width: 18px;
+      }
     }
 
     &__title {

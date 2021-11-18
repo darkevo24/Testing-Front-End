@@ -9,3 +9,15 @@
     opacity: 0.7;
   }
 }
+
+.icon-box-lg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 4rem;
+  height: 4rem;
+  &:hover {
+    opacity: 0.7;
+  }
+}

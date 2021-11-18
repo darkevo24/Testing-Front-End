@@ -1,8 +1,22 @@
 .kesiapan-sdi-iframe-container {
-  width: 600px;
+  position: static;
+  width: 1000px;
   height: 1000px;
   background: dimgray;
   font-size: 24px;
   align-items: center;
-  justify-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.kesiapan-sdi-modal {
+  position: fixed;
+  width: 300px;
+  height: 200px;
+  font-size: 12px;
+  background: white;
+  justify-content: left;
+  border-color: black;
+  border-width: 1px;
+  z-index: 2;
 }

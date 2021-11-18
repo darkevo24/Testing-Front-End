@@ -9,7 +9,8 @@ import history from './history';
 import appReducer from 'containers/App/reducer';
 import authReducer from 'containers/Login/reducer';
 import berandaReducer from 'containers/Beranda/reducer';
-import permintaanDataReducer from 'containers/PermintaanData/reducer';
+import permintaanDataReducer from 'containers/CMS/PermintaanData/reducer';
+import permintaanDataDetailReducer from 'containers/CMS/PermintaanDataForm/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -20,6 +21,8 @@ export default function createReducer(injectedReducers) {
     auth: authReducer,
     beranda: berandaReducer,
     permintaanData: permintaanDataReducer,
+    permintaanDataDetail: permintaanDataDetailReducer,
+
     router: connectRouter(history),
     ...injectedReducers,
   });

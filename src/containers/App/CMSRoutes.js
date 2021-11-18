@@ -18,6 +18,8 @@ const BimtekJadwalDetailPage = lazy(() => import('containers/CMS/BimtekJadwal/De
 const BimtekDokumentasiPage = lazy(() => import('containers/CMS/BimtekDokumentasi'));
 const BimtekDokumentasiBaruPage = lazy(() => import('containers/CMS/BimtekDokumentasi/Create.js'));
 const BimtekDokumentasiDetailPage = lazy(() => import('containers/CMS/BimtekDokumentasi/Detail.js'));
+const PermintaanData = lazy(() => import('containers/CMS/PermintaanData/index'));
+const PermintaanDataDetail = lazy(() => import('containers/CMS/PermintaanDataForm/index'));
 
 function CMSRoutes() {
   return (
@@ -39,6 +41,8 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/bimtek-dokumentasi" component={BimtekDokumentasiPage} />
         <PrivateRoute exact path="/cms/bimtek-dokumentasi/baru" component={BimtekDokumentasiBaruPage} />
         <PrivateRoute exact path="/cms/bimtek-dokumentasi/:id" component={BimtekDokumentasiDetailPage} />
+        <PrivateRoute exact path="/cms/permintaan-data" component={PermintaanData} />
+        <PrivateRoute exact path="/cms/permintaan-data/:id" component={PermintaanDataDetail} />
         <Route exact path="/cms" render={() => <Redirect to="/cms/dashboard" />} />
       </Switch>
     </CMSLayout>

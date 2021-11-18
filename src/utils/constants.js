@@ -26,6 +26,8 @@ export const getDataEndpoint = (path) => `${dataUrl}/${path}`;
 export const apiUrls = {
   login: getApiEndpoint('login'),
   dataset: getDataEndpoint('3/action/package_search'),
+  listPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
+  detailPermintaanData: getApiEndpoint('sekretariat/permintaan-data/'),
 };
 
 export const TOPIC_LIST = [

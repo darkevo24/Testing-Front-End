@@ -20,8 +20,6 @@ const KesiapanData = lazy(() => import('containers/KesiapanData'));
 const KesiapanSDIDaerah = lazy(() => import('containers/KesiapanSDiDaerah'));
 const KesiapanSDIPusat = lazy(() => import('containers/KesiapanSDIPusat'));
 // const NotFoundPage = lazy(() => import('containers/NotFound'));
-const PermintaanData = lazy(() => import('containers/PermintaanData'));
-const PermintaanDataForm = lazy(() => import('containers/PermintaanDataForm'));
 
 function AppRoutes(props) {
   return (
@@ -40,8 +38,6 @@ function AppRoutes(props) {
         <Route path="/bimtek-form" component={BimTekFormPage} />
         <Route path="/bimtek-jadwal" component={BimTekJadwalPage} />
         <Route path="/tentang" component={TentangPage} />
-        <Route path="/permintaan-data" component={PermintaanData} />
-        <Route path="/permintaan-data-form" component={PermintaanDataForm} />
         <Route exact path="/tentang" component={TentangPage} />
         <Route exact path="/kesiapan-data" component={KesiapanData} />
         <Route exact path="/kesiapan-sdi-daerah" component={KesiapanSDIDaerah} />

@@ -9,7 +9,8 @@
       "filterShowMore": "Show More {{filter}}"
     },
     "topic": {
-      "searchPlaceholder": "Cari di topik"
+      "searchPlaceholder": "Cari di topik",
+      "searchInstansi": "Semua Instansi"
     }
   }
 }

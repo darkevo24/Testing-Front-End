@@ -8,6 +8,7 @@
   }
 
   .sdp-item-wrapper {
+    position: relative;
     .menu-item {
       &:hover {
         border-radius: $border-radius;
@@ -17,7 +18,6 @@
   }
 
   .sdp-card-wrapped {
-
     .sdp-card-right-section {
       .sdp-item-link-title {
         font-size: 13px;
@@ -25,6 +25,32 @@
         text-align: right;
         color: var(--blue-dark);
       }
+    }
+  }
+
+  .sdp-topic-title-list {
+    position: absolute;
+    z-index: 1;
+    background: var(--white);
+
+    .sdp-topic-wrapper {
+      padding-right: 20px;
+      svg {
+        color: var(--red);
+        height: 20px;
+        width: 20px;
+        margin: 13px 16px;
+      }
+
+      span {
+        font-size: 14px;
+        line-height: 17px;
+        color: var(--black-dark-10);
+      }
+    }
+    .sdp-topic-wrapper:hover {
+      border-radius: 4px;
+      background: var(--gray-bg);
     }
   }
 }

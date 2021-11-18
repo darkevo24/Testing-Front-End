@@ -70,11 +70,11 @@ const getElem = (data) => {
 };
 
 const TopicDetail = () => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState('');
   const [data, setData] = useState(tempData);
+  const [topic, setTopic] = useState('');
   const location = useLocation();
-  const topic = location.state || '';
   const topicCards = TOPIC_LIST.find((item) => item.title === topic)?.items || [];
   const breadcrumbsList = [
     {
@@ -88,10 +88,19 @@ const TopicDetail = () => {
   ];
 
   useEffect(() => {
-    setSelectedTopic(topicCards[0]);
+    const topic = location.state || '';
     const displayData = getElem(tempData);
+    setTopic(topic);
+    setSelectedTopic(topicCards[0]);
     setData(displayData);
   }, [location.pathname]); //eslint-disable-line
+
+  const changeTopic = (title) => {
+    const topicCards = TOPIC_LIST.find((item) => item.title === title)?.items || [];
+    setSelectedTopic(topicCards[0]);
+    setTopic(title);
+    setIsExpanded(false);
+  };
 
   const tableConfig = {
     columns: [
@@ -126,18 +135,26 @@ const TopicDetail = () => {
             <div className="sdp-title">{topic}</div>
           </div>
           {isExpanded ? (
-            <div className="sdp-item-wrapper mt-32 mb-32 pr-32">
-              {topicCards.map((item) => (
-                <div
-                  className={cx('menu-item pl-16 pt-12 pb-12', {
-                    'bg-gray br-4': item === selectedTopic,
-                  })}
-                  onClick={() => setSelectedTopic(item)}>
-                  {item}
+            <div className="sdp-topic-title-list border-gray-stroke br-4 py-8 mt-10">
+              {TOPIC_LIST.map((topic) => (
+                <div className="sdp-topic-wrapper" onClick={() => changeTopic(topic.title)}>
+                  {topic.icon}
+                  <span>{topic.title}</span>
                 </div>
               ))}
             </div>
           ) : null}
+          <div className="sdp-item-wrapper mt-32 mb-32 pr-32">
+            {topicCards.map((item) => (
+              <div
+                className={cx('menu-item pl-16 pt-12 pb-12', {
+                  'bg-gray br-4': item === selectedTopic,
+                })}
+                onClick={() => setSelectedTopic(item)}>
+                {item}
+              </div>
+            ))}
+          </div>
         </Col>
         <Col>
           <Table {...tableConfig} />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -13,6 +13,9 @@ import { Input, TextEditor } from 'components';
 import bn from 'utils/bemNames';
 import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { getAboutUs, getAboutUsLogs } from './reducer';
+
 const bem = bn('content-detail');
 
 const schema = yup
@@ -24,29 +27,58 @@ const schema = yup
   .required();
 
 const CMSAboutUsEdit = (props) => {
-  // const history = useHistory();
-  const dataLog = [
-    {
-      date: '12 Desember 2021',
-      status: 'Selesai',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '10 Desember 2021',
-      status: 'Diproses',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '08 Desember 2021',
-      status: 'Terkirim',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '08 Desember 2021',
-      status: 'Dibuat',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
+  let dispatch = useDispatch();
+  let id = props.match.params.id;
+  let data = useSelector((state) => state.cms.aboutUsDetail);
+  let monthList = [
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember',
   ];
+  let dataLog = useSelector((state) =>
+    state.cms.aboutUsDetail.logs.records.map((item) => {
+      return {
+        date: [item.action_at.getDate(), monthList[item.action_at.getMonth()], item.action_at.getFullYear()].join(' '),
+        status: item.status,
+        content: item.action,
+      };
+    }),
+  );
+  useEffect(() => (id ? dispatch(getAboutUs(id)) : null), []);
+  useEffect(() => (id ? dispatch(getAboutUsLogs(id)) : null), []);
+  console.log(data);
+  // const history = useHistory();
+  // const dataLog = [
+  //   {
+  //     date: '12 Desember 2021',
+  //     status: 'Selesai',
+  //     content: 'Dataset sudah dapat di akses di portal data.go.id',
+  //   },
+  //   {
+  //     date: '10 Desember 2021',
+  //     status: 'Diproses',
+  //     content: 'Dataset sudah dapat di akses di portal data.go.id',
+  //   },
+  //   {
+  //     date: '08 Desember 2021',
+  //     status: 'Terkirim',
+  //     content: 'Dataset sudah dapat di akses di portal data.go.id',
+  //   },
+  //   {
+  //     date: '08 Desember 2021',
+  //     status: 'Dibuat',
+  //     content: 'Dataset sudah dapat di akses di portal data.go.id',
+  //   },
+  // ];
 
   const {
     control,

@@ -9,6 +9,7 @@ import history from './history';
 import appReducer from 'containers/App/reducer';
 import authReducer from 'containers/Login/reducer';
 import berandaReducer from 'containers/Beranda/reducer';
+import cmsReducer from 'containers/CMS/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -18,6 +19,7 @@ export default function createReducer(injectedReducers) {
     global: appReducer,
     auth: authReducer,
     beranda: berandaReducer,
+    cms: cmsReducer,
     router: connectRouter(history),
     ...injectedReducers,
   });

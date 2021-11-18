@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -6,16 +6,16 @@ import Row from 'react-bootstrap/Row';
 import Table from 'components/Table';
 import { makeData } from 'utils/dataConfig/permintaanData';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { getDataSet } from './reducer';
 
 const PermintaanData = () => {
-  const [selectedRecord, setSelectedRecord] = useState(null);
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const showPermintaanDataForm = (data) => {
-    console.log('data', data);
-    setSelectedRecord(data);
-    console.log('selected record', selectedRecord);
-    history.push('/permintaan-data-form', { data: selectedRecord });
+    dispatch(getDataSet(data));
+    history.push('/permintaan-data-form');
   };
 
   const columns = useMemo(

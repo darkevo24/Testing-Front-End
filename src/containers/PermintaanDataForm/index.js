@@ -6,12 +6,11 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Input } from 'components';
-import { submitForm } from 'utils/helper';
 import { LeftChevron } from '../../components/Icons';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 export const permintaanDataFormId = 'permintaan-data-form-id';
-export const submitPermintaanDataForm = submitForm(permintaanDataFormId);
 const schema = yup
   .object({
     id: yup.mixed().required(),
@@ -27,12 +26,77 @@ const schema = yup
   })
   .required();
 
-const PermintaanDataForm = ({ data, onSubmit }) => {
-  console.log(data);
+const SuccessText = () => {
   const history = useHistory();
   const backToTable = () => {
     history.push('/permintaan-data');
   };
+  return (
+    <Row className="d-flex">
+      <div className="icon-box border py-4 px-4 w-auto" onClick={backToTable}>
+        <LeftChevron></LeftChevron>
+      </div>
+      <Row className="permintaan-data-form-success fw-bold justify-content-center align-items-center">Selesai</Row>
+    </Row>
+  );
+};
+
+const TerkirimText = () => {
+  const history = useHistory();
+  const backToTable = () => {
+    history.push('/permintaan-data');
+  };
+  return (
+    <Row className="d-flex">
+      <div className="icon-box border py-4 px-4 w-auto" onClick={backToTable}>
+        <LeftChevron></LeftChevron>
+      </div>
+      <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Terkirim</Row>
+    </Row>
+  );
+};
+
+const DiprosesText = () => {
+  const history = useHistory();
+  const backToTable = () => {
+    history.push('/permintaan-data');
+  };
+  return (
+    <Row className="d-flex">
+      <div className="icon-box border py-4 px-4 w-auto" onClick={backToTable}>
+        <LeftChevron></LeftChevron>
+      </div>
+      <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">Terproses</Row>
+    </Row>
+  );
+};
+
+const TerkirimButton = () => {
+  return (
+    <Col>
+      <Button variant="info" className="text-white py-2 px-5 fw-bold float-end">
+        Proses
+      </Button>
+      <Button variant="outline-secondary" className="text-black fw-bold py-2 px-5 mx-4 float-end">
+        Tolak
+      </Button>
+    </Col>
+  );
+};
+
+const DiprosesButton = () => {
+  return (
+    <Col>
+      <Button variant="info" className="text-white py-2 px-5 fw-bold float-end mx-4">
+        Selesai
+      </Button>
+    </Col>
+  );
+};
+
+const PermintaanDataForm = ({ onSubmit }) => {
+  const data = useSelector((state) => state.permintaanData?.result.data);
+
   const {
     control,
     formState: { errors },
@@ -46,40 +110,16 @@ const PermintaanDataForm = ({ data, onSubmit }) => {
 
   return (
     <div className="dafter-form">
-      <Row className="d-flex">
-        <div className="icon-box border py-4 px-4 w-auto" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
-        </div>
-        <Row className="permintaan-data-form-success fw-bold justify-content-center align-items-center">Selesai</Row>
-      </Row>
-      <Row className="d-flex">
-        <div className="icon-box border py-4 px-4 w-auto" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
-        </div>
-        <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Terkirim</Row>
-      </Row>
-      <Row className="d-flex">
-        <div className="icon-box border py-4 px-4 w-auto" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
-        </div>
-        <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">Terproses</Row>
-      </Row>
+      {data.status === 'Selesai' ? <SuccessText /> : null}
+      {data.status === 'Terkirim' ? <TerkirimText /> : null}
+      {data.status === 'Diproses' ? <DiprosesText /> : null}
       <div className="p-5 d-flex flex-row">
         <Row className="w-75 px-5">
           <Col>
             <h1 className="mb-5 fw-bold">Detail</h1>
           </Col>
-          <Col>
-            <Button variant="info" className="text-white py-2 px-5 fw-bold float-end mx-4">
-              Selesai
-            </Button>
-            <Button variant="info" className="text-white py-2 px-5 fw-bold float-end">
-              Proses
-            </Button>
-            <Button variant="outline-secondary" className="text-black fw-bold py-2 px-5 mx-4 float-end">
-              Tolak
-            </Button>
-          </Col>
+          {data.status === 'Terkirim' ? <TerkirimButton /> : null}
+          {data.status === 'Diproses' ? <DiprosesButton /> : null}
           <Form id={permintaanDataFormId} onSubmit={handleSubmit(onSubmit)} noValidate>
             <Input
               group

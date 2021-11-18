@@ -33,7 +33,7 @@ const BimtekTable = ({ modal, headers, label }) => (
       </thead>
       <tbody>
         <tr>
-          <td className="text-center" colSpan={33}>
+          <td className="text-center" colSpan={headers.length}>
             Tidak ada data
           </td>
         </tr>

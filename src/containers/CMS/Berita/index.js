@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { filterBerita } from './reducer';
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
@@ -15,24 +18,11 @@ import cx from 'classnames';
 const bem = bn('content-table');
 
 const CMSBerita = () => {
+  let dispatch = useDispatch();
   const history = useHistory();
 
-  const dataBerita = [
-    {
-      id: 1,
-      title: 'Kemenhub Berbagi Pengalaman Penanganan Covid-19 Sektor Transportasi Di Forum ASEAN-Republik Korea ke-11',
-      datePublish: '28-11-2021',
-      status: 'Published',
-      createBy: 'Sigmund Freud',
-    },
-    {
-      id: 2,
-      title: 'Kemenhub Berbagi Pengalaman Penanganan Covid-19 Sektor Transportasi Di Forum ASEAN-Republik Korea ke-12',
-      datePublish: '-',
-      status: 'Draft',
-      createBy: 'Sigmund Freud',
-    },
-  ];
+  useEffect(() => dispatch(filterBerita({ page: 1, size: 100 })), []);
+  const dataBerita = useSelector((state) => state.cms.berita.dataset.records);
 
   return (
     <div className={bem.e('section')}>

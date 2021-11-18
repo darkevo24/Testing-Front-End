@@ -1,66 +1,32 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import cx from 'classnames';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import isArray from 'lodash/isArray';
+import get from 'lodash/get';
 import map from 'lodash/map';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { logout } from 'containers/Login/reducer';
-import { tokenSelector } from 'containers/Login/reducer';
+import { logout, tokenSelector, userSelector } from 'containers/Login/reducer';
+import { TOPIC_LIST } from 'utils/constants';
 
 import Logo from 'assets/logo-satu.jpg';
 
-const COMMON_ROUTES = [
-  { title: 'Beranda', link: '/home' },
-  { title: 'Dataset', link: '/dataset' },
-];
-
-const PUBLIC_ROUTES = [...COMMON_ROUTES, { title: 'Berita', link: '/berita' }, { title: 'Tentang', link: '/tentang' }];
-const MEMBER_ROUTES = [
-  ...COMMON_ROUTES,
-  {
-    title: 'Layanan',
-    links: [
-      { title: 'Permintaan Data', link: '/permintaan-data' },
-      { title: 'Bimtek', link: '/bimtek' },
-      { title: 'Komunitas Ahli', link: '/komunitas-ahli' },
-      { title: 'Forum SDI', link: '/forum' },
-    ],
-  },
-  {
-    title: 'Dashboard',
-    links: [
-      { title: 'Kesiapan SDI', link: '/kesiapan-sdi' },
-      { title: 'Eksekutif', link: '/eksekutif' },
-      { title: 'Data Analytic', link: '/data-analytic' },
-    ],
-  },
-  {
-    title: 'Sandbox',
-    links: [
-      { title: 'Daftar Data', link: '/dafter' },
-      { title: 'Metadata Registry', link: '/sdmx' },
-    ],
-  },
-  { title: 'Berita', link: '/berita' },
-  { title: 'Tentang', link: '/tentang' },
-  { title: 'API', link: '/api' },
-];
+const getPathnameFromRoute = (route) => get(route, 'link.pathname', route.link);
 
 const getNavDropDown = (tab, pathname, goTo) => {
   return (
     <NavDropdown
       className={cx({
-        active: map(tab.links, 'link').includes(pathname),
+        active: map(tab.links, getPathnameFromRoute).includes(pathname),
       })}
       title={tab.title}
       id={`${tab.title}-nav-dropdown`}>
       {map(tab.links, (route) => (
-        <NavDropdown.Item key={route.link} onClick={goTo(route.link)}>
+        <NavDropdown.Item key={getPathnameFromRoute(route)} onClick={goTo(route.link)}>
           {route.title}
         </NavDropdown.Item>
       ))}
@@ -73,12 +39,13 @@ const getNavLinks = (list, pathname, goTo) => {
     if (tab.links && isArray(tab.links)) {
       return getNavDropDown(tab, pathname, goTo);
     }
+    const currentPathname = getPathnameFromRoute(tab);
     return (
       <Nav.Link
         className={cx({
-          active: pathname === tab.link,
+          active: pathname === currentPathname,
         })}
-        key={tab.link}
+        key={currentPathname}
         onClick={goTo(tab.link)}>
         {tab.title}
       </Nav.Link>
@@ -90,6 +57,7 @@ export const Header = () => {
   const history = useHistory();
   const location = useLocation();
   const token = useSelector(tokenSelector);
+  const user = useSelector(userSelector);
 
   const isLoggedIn = !!token;
 
@@ -100,6 +68,61 @@ export const Header = () => {
     dispatch(logout());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const COMMON_ROUTES = useMemo(
+    () => [
+      { title: 'Beranda', link: '/home' },
+      {
+        title: 'Dataset',
+        link: isLoggedIn
+          ? '/dataset'
+          : {
+              pathname: '/topic-detail',
+              state: get(TOPIC_LIST, '0.title'),
+            },
+      },
+    ],
+    [isLoggedIn],
+  );
+
+  const PUBLIC_ROUTES = useMemo(
+    () => [...COMMON_ROUTES, { title: 'Berita', link: '/berita' }, { title: 'Tentang', link: '/tentang' }],
+    [],
+  );
+
+  const MEMBER_ROUTES = useMemo(
+    () => [
+      ...COMMON_ROUTES,
+      {
+        title: 'Layanan',
+        links: [
+          { title: 'Permintaan Data', link: '/permintaan-data' },
+          { title: 'Bimtek', link: '/bimtek' },
+          { title: 'Komunitas Ahli', link: '/komunitas-ahli' },
+          { title: 'Forum SDI', link: '/forum' },
+        ],
+      },
+      {
+        title: 'Dashboard',
+        links: [
+          { title: 'Kesiapan SDI', link: '/kesiapan-sdi' },
+          { title: 'Eksekutif', link: '/eksekutif' },
+          { title: 'Data Analytic', link: '/data-analytic' },
+        ],
+      },
+      {
+        title: 'Sandbox',
+        links: [
+          { title: 'Daftar Data', link: '/dafter' },
+          { title: 'Metadata Registry', link: '/sdmx' },
+        ],
+      },
+      { title: 'Berita', link: '/berita' },
+      { title: 'Tentang', link: '/tentang' },
+      { title: 'API', link: '/api' },
+    ],
+    [isLoggedIn],
+  );
 
   const renderPublicNav = () => {
     return (
@@ -116,8 +139,7 @@ export const Header = () => {
     return (
       <Nav className="h-100 d-flex align-items-center">
         {getNavLinks(MEMBER_ROUTES, location.pathname, goTo)}
-        {/* TODO: replace title with actual user name */}
-        <NavDropdown title="Achmad Adam" id="user-nav-dropdown" className="user-nav h-100">
+        <NavDropdown title={user?.name || 'Achmad Adam'} id="user-nav-dropdown" className="user-nav h-100">
           <NavDropdown.Item onClick={handleLogout}>Sign Out</NavDropdown.Item>
         </NavDropdown>
       </Nav>
@@ -127,7 +149,7 @@ export const Header = () => {
   return (
     <Navbar bg="transparent" className="sdp-header">
       <Container className={cx('mw-100 h-100', { 'pr-24': !isLoggedIn })}>
-        <img src={Logo} alt="" />
+        <img src={Logo} alt="brand-logo" />
         {isLoggedIn ? renderMemberNav() : renderPublicNav()}
       </Container>
     </Navbar>

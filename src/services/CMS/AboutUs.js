@@ -156,10 +156,34 @@ export const doTentangWorkflow = (id, action) => {
       return res.message;
     })
     .then((message) => {
-      return Promise.resolve({ success: false, message: message });
+      return Promise.resolve({ success: true, message: message });
     })
     .catch((err) => {
       console.log(err);
       return Promise.resolve({ success: false, message: err.message });
+    });
+};
+
+export const updateTentang = (id, title, content, videourl) => {
+  let params = {
+    judul: title,
+    isi: content,
+    video: videourl,
+  };
+  return HTTP.put(API_URL.tentang(id), HTTP.defaultHeaders(), params)
+    .then((res) => {
+      if (!res || res.status !== 'success') {
+        return Promise.reject(res);
+      }
+      return res.content;
+    })
+    .then((content) => {
+      return {
+        id: content.id,
+        title: content.judul,
+        content: content.isi,
+        video_url: content.video,
+        status: content.status,
+      };
     });
 };

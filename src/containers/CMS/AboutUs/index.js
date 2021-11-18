@@ -27,7 +27,7 @@ const CMSAboutUs = () => {
     },
   };
   // called only once
-  useEffect(() => dispatch(filterAboutUs({ page: 1, size: 100 })), []);
+  useEffect(() => dispatch(filterAboutUs({ page: 1, size: 10 })), []);
 
   return (
     <div className={bem.e('section')}>

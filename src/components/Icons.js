@@ -44,6 +44,15 @@ export const RightChevron = (props) => (
   </svg>
 );
 
+export const DownChevron = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16">
+    <path
+      d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+      fill={`var(--${getColor(props)})`}
+    />
+  </svg>
+);
+
 export const Search = (props) => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -218,4 +227,5 @@ export const icons = {
   search: Search,
   splitCircle: SplitCircle,
   splitTriangle: SplitTriangle,
+  downChevron: DownChevron,
 };

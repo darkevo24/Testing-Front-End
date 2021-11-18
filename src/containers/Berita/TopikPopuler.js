@@ -35,7 +35,7 @@ const TopikPopuler = (props) => {
         <Title>Topik Populer</Title>
       </TopikItem>
       {Array.apply(null, { length: props.jumlah }).map((e, i) => (
-        <TopikItem className="child">
+        <TopikItem className="child" key={'tp' + i}>
           <span>{topics[i % 3]}</span>
           <ArrowRightRed />
         </TopikItem>

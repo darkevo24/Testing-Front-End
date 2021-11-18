@@ -1,5 +1,5 @@
 import { apiUrls as appApiUrls } from './constants';
-import { getQueryString, safeParse } from './helper';
+import { generateQueryString, safeParse } from './helper';
 import { cookieKeys, getCookieByName } from './cookie';
 
 export const typeJSON = 'application/json';
@@ -90,7 +90,7 @@ export async function request(url, { method = 'GET', headers: optionHeaders = {}
   }
   // Checking if we need to add query string or not.
   if (['GET', 'DELETE'].includes(method)) {
-    url += `?${getQueryString(data)}`;
+    url += `?${generateQueryString(data)}`;
   }
 
   const fetchResponse = await fetch(url, options);
@@ -137,3 +137,10 @@ export function deleteRequest(url, options) {
 }
 
 export const apiUrls = appApiUrls;
+
+export const defaultNumberOfRows = 10;
+
+export const paginationParams = {
+  start: 0,
+  rows: defaultNumberOfRows,
+};

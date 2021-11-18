@@ -10,7 +10,9 @@ export const Input = ({
   error,
   label,
   group,
+  labelClass,
   groupClass = 'mb-3',
+  groupProps,
   className,
   leftIcon,
   rightIcon,
@@ -48,7 +50,7 @@ export const Input = ({
 
   const inputNode = (
     <>
-      {label && <Form.Label>{label}</Form.Label>}
+      {label && <Form.Label className={labelClass}>{label}</Form.Label>}
       <Controller
         name={name}
         control={control}
@@ -79,7 +81,13 @@ export const Input = ({
       <div className="sdp-error">{error}</div>
     </>
   );
-  return group ? <Form.Group className={groupClass}>{inputNode}</Form.Group> : inputNode;
+  return group ? (
+    <Form.Group className={groupClass} {...groupProps}>
+      {inputNode}
+    </Form.Group>
+  ) : (
+    inputNode
+  );
 };
 
 export default Input;

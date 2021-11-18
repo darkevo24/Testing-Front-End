@@ -1,0 +1,28 @@
+{
+  "profilAhliBaru": {
+    "kodeAhli": "Kode Ahli",
+    "nameAhli": "Nama Ahli",
+    "bidangKeahlian": "Bidang Keahlian",
+    "daerah": "Daerah",
+    "instansi": "Instansi / Lembaga",
+    "penyelenggara": "Penyelenggara",
+    "pendidikan": "Pendidikan",
+    "riwayatSingkat": "Riwayat Singkat",
+    "fotoProfil": "Foto Profil",
+    "cv": "CV",
+    "kontak": {
+      "1": {
+        "label": "Kontak 1",
+        "placeHolder": "No Handphone"
+      },
+      "2": {
+        "label": "Kontak 2",
+        "placeHolder": "Email"
+      },
+      "3": "Kontak 3",
+      "4": "Kontak 4",
+      "5": "Kontak 5",
+      "6": "Kontak 6"
+    }
+  }
+}

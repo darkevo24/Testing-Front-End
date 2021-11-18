@@ -90,6 +90,23 @@
     transform: translateY(-50%);
     z-index: 9;
   }
+  .icon-container {
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    height: 38px;
+    width: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $border-radius;
+    svg {
+      position: relative;
+      right: unset;
+      top: unset;
+      transform: unset;
+    }
+  }
 }
 
 textarea.form-control {

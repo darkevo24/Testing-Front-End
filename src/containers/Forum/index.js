@@ -48,7 +48,7 @@ const Forum = () => {
       </Col>
       <Formik
         validationSchema={schema}
-        onSubmit={console.log}
+        onSubmit={() => {}}
         initialValues={{
           data_yang_diminta: '',
           tujuan_permintaan_data: '',

@@ -52,7 +52,7 @@ const ListBerita = (props) => {
     <Wrapper>
       <BeritaGrid columns={props.columns}>
         {Array.apply(null, { length: props.jumlah }).map((e, i) => (
-          <BeritaItem className="row">
+          <BeritaItem className="row" key={'lb' + i}>
             <div className="col-lg-4" style={{ paddingRight: '24px' }}>
               <Image src="https://cdn0-production-images-kly.akamaized.net/gIDRPzEs3mEphuPi_b90S6FVvvs=/200x112/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3611600/original/089535000_1635120005-20211025-Fabio-Quartararo-6.jpg" />
             </div>

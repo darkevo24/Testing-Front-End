@@ -1,7 +1,23 @@
 import React from 'react';
 import { DropTarget } from 'react-drag-drop-container';
+import styled from 'styled-components';
 import BoxItem from './BoxItem';
 var shortid = require('shortid');
+
+const Title = styled.div`
+  font-weight: bold;
+  font-size: 20px;
+  color: #2b333a;
+
+  &:after {
+    content: '';
+    display: block;
+    height: 4px;
+    width: 48px;
+    background: #ff0000;
+    margin-top: 12px;
+  }
+`;
 
 export default class Box extends React.Component {
   constructor(props) {
@@ -58,7 +74,7 @@ export default class Box extends React.Component {
     */
     return (
       <div className="component_box">
-        <h5>{this.props.title}</h5>
+        <Title>{this.props.title}</Title>
         <DropTarget onHit={this.handleDrop} targetKey={this.props.targetKey} dropData={{ name: this.props.name }}>
           <DropTarget onHit={this.handleDrop} targetKey="boxItem" dropData={{ name: this.props.name }}>
             <div className="box">

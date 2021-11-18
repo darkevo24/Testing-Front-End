@@ -1,22 +1,74 @@
-.dropDown {
-  background: #f2f2f2;
-  border-radius: 8px;
-  height: 56px;
+.grouped-dropdown {
+  .select__control {
+    display: flex;
+    max-width: 220px;
+    width: 220px;
+    padding: 15px;
+    height: 56;
+    border: 0;
+    justify-content: space-around;
 
-  button {
-    line-height: 47px;
-    width: 160px;
-    font-size: 14px;
-    color: #2d2627;
-
-    .btn-check:focus + &,
-    &:focus {
-      outline: 0;
-      box-shadow: none;
+    span {
+      white-space: nowrap;
+      width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    svg {
-      margin-right: 16px;
+    .select__value-container {
+      display: none;
+    }
+
+    .select__indicators {
+      .select__indicator-separator {
+        display: none;
+      }
+
+      .select__indicator {
+        padding: 0;
+        padding-left: 10px;
+        svg {
+          color: var(--gray);
+          padding: 0;
+        }
+      }
+    }
+  }
+
+  .select__menu {
+    width: 400px;
+
+    .select__group-heading {
+      padding-left: 15px;
+      svg {
+        color: var(--red);
+        height: 12px;
+        width: 12px;
+        margin-right: 10px;
+      }
+
+      span {
+        font-weight: bold;
+        font-size: 10px;
+        line-height: 13px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--black-dark-10)
+      }
+    }
+
+    .select__option {
+      font-size: 14px;
+      line-height: 17px;
+      color: var(--gray-dark);
+    }
+
+    .select__option--is-disabled {
+      display: none;
+    }
+
+    .select__option--is-selected, .select__option--is-focused {
+      background: var(--gray-bg)
     }
   }
 }
@@ -26,6 +78,7 @@
   &-toggle.btn {
     background-color: $white;
     border: 1px solid $stroke;
+    color: $gray;
     width: 100%;
     display: flex;
     align-items: center;
@@ -37,6 +90,14 @@
   &-item {
     svg {
       margin-left: 4px;
+    }
+  }
+}
+
+.nav-item.dropdown {
+  .dropdown-toggle.nav-link {
+    &::after {
+      vertical-align: middle;
     }
   }
 }

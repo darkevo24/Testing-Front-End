@@ -8,6 +8,7 @@ import { connectRouter } from 'connected-react-router';
 import history from './history';
 import appReducer from 'containers/App/reducer';
 import authReducer from 'containers/Login/reducer';
+import berandaReducer from 'containers/Beranda/reducer';
 import permintaanDataReducer from 'containers/PermintaanData/reducer';
 
 /**
@@ -17,6 +18,7 @@ export default function createReducer(injectedReducers) {
   const rootReducer = combineReducers({
     global: appReducer,
     auth: authReducer,
+    beranda: berandaReducer,
     permintaanData: permintaanDataReducer,
     router: connectRouter(history),
     ...injectedReducers,

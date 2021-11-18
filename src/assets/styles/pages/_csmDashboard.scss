@@ -1,0 +1,15 @@
+.sdp-csm-card {
+  border: 1px solid #E2E6E9;
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  padding: 0;
+  margin-top: 0;
+  .card {
+    border: none;
+
+    .card-body {
+      padding: 0;
+    }
+  }
+}

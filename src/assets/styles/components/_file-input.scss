@@ -1,0 +1,12 @@
+.sdp-input-wrapper {
+  position: relative;
+  .upload-info {
+    position: absolute;
+    right: 4px;
+    bottom: 8px;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    color: $gray;
+  }
+}

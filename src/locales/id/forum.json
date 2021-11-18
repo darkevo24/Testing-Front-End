@@ -1,0 +1,11 @@
+{
+  "forumFields": {
+    "nik": "NIK",
+    "namaLengkap": "Nama Lengkap",
+    "email": "E-mail",
+    "nomorHandphone": "Nomor Handphone",
+    "instansiPeminta": "Instansi Peminta",
+    "data_yang_diminta": "Data yang diminta",
+    "tujuan_permintaan_data": "Tujuan Permintaan Data"
+  }
+}

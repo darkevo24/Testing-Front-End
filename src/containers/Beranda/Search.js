@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import { ReactComponent as CircleSplitSvg } from 'assets/circle-split.svg';
 import { ReactComponent as SearchSvg } from 'assets/search.svg';
 import GroupedDropdown from 'components/DropDown/GroupedDropDown';
+import { tokenSelector } from 'containers/Login/reducer';
 import { TOPIC_LIST } from 'utils/constants';
 
 const Box = styled.div`
@@ -55,12 +57,17 @@ export const Search = () => {
   const [searchText, setSearchText] = useState('');
   const [selectedItem, setSelectedItem] = useState({ value: '', label: '' });
   const history = useHistory();
+  const token = useSelector(tokenSelector);
+
+  const isLoggedIn = !!token;
+
   const onChange = (data) => {
     setSelectedItem(data);
   };
 
   const handleSearch = () => {
-    history.push(`/dataset?q=${searchText}`);
+    const datasetRoute = isLoggedIn ? 'dataset' : 'topic-detail';
+    history.push(`/${datasetRoute}?q=${searchText}`);
   };
 
   return (

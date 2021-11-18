@@ -28,7 +28,7 @@ function AppRoutes(props) {
       <AppLayout>
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
-        <Route exact path="/dataset" component={DataSetPage} />
+        <PrivateRoute exact path="/dataset" component={DataSetPage} />
         <Route exact path="/forum" component={ForumPage} />
         <Route exact path="/komunitas" component={KomunitasPage} />
         <Route exact path="/bl" component={BeritaLayout} />

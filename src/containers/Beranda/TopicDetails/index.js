@@ -8,6 +8,7 @@ import { Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import cloneDeep from 'lodash/cloneDeep';
+import get from 'lodash/get';
 import uniqBy from 'lodash/uniqBy';
 import { ReactComponent as DropDownArrawSvg } from 'assets/drop-down-arraw.svg';
 import { ReactComponent as SearchSvg } from 'assets/search.svg';
@@ -94,7 +95,7 @@ const TopicDetail = () => {
   };
 
   useEffect(() => {
-    const newTopic = location.state || '';
+    const newTopic = location.state || get(TOPIC_LIST, '0.title');
     const newTopicCards = TOPIC_LIST.find((item) => item.title === newTopic)?.items || [];
     setTopic(newTopic);
     setSelectedGroup(newTopicCards[0]);

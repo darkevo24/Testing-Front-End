@@ -55,7 +55,7 @@ const TopicDetail = () => {
   const { t } = useTranslation();
   const ref = useRef();
 
-  useOnClickOutside(ref, () => closeFilterModal);
+  useOnClickOutside(ref, () => closeFilterModal());
 
   const options = useMemo(
     () => [
@@ -152,6 +152,7 @@ const TopicDetail = () => {
   const closeFilterModal = () => {
     setInstansiFilterItem([]);
     setShowInstansiFilter(false);
+    setFilterData([...instansiFilterData]);
   };
 
   const tableConfig = {

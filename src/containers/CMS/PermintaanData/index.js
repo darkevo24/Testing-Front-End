@@ -21,22 +21,21 @@ const CMSPermintaanData = () => {
   useEffect(() => {
     fetchDataset();
   }, []);
-  console.log('data', data);
 
-  const dataPermintaan = [
-    {
-      id: 'PD000123',
-      namaPeminta: 'Ibrahim Hanifa',
-      instansi: 'Bapenas',
-      unitKerja: 'SDI',
-      deskripsi: 'Data Penduduk DKI',
-      tanggalPermintaan: '28-11-2021 08:33',
-      targetWaktu: '28-11-2021 09:00',
-      produsen: 'Kementerian Dalam Negeri',
-      jenisData: 'Statistik',
-      status: 'Approved',
-    },
-  ];
+  // const dataPermintaan = [
+  //   {
+  //     id: 'PD000123',
+  //     namaPeminta: 'Ibrahim Hanifa',
+  //     instansi: 'Bapenas',
+  //     unitKerja: 'SDI',
+  //     deskripsi: 'Data Penduduk DKI',
+  //     tanggalPermintaan: '28-11-2021 08:33',
+  //     targetWaktu: '28-11-2021 09:00',
+  //     produsen: 'Kementerian Dalam Negeri',
+  //     jenisData: 'Statistik',
+  //     status: 'Approved',
+  //   },
+  // ];
 
   return (
     <div className={bem.e('section')}>

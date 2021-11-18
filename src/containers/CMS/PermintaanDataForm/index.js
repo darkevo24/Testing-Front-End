@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -11,8 +12,77 @@ import { getPermintaanDataDetail, permintaanDataDetailSelector } from './reducer
 import { Input } from '../../../components';
 import bn from '../../../utils/bemNames';
 import { LogStatus } from '../../../components/Sidebars/LogStatus';
+import { LeftChevron } from '../../../components/Icons';
 
 const bem = bn('content-detail');
+
+const SuccessText = () => {
+  const history = useHistory();
+  const backToTable = () => {
+    history.push('/permintaan-data');
+  };
+  return (
+    <Row className="d-flex">
+      <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
+        <LeftChevron></LeftChevron>
+      </div>
+      <Row className="permintaan-data-form-success fw-bold justify-content-center align-items-center">Selesai</Row>
+    </Row>
+  );
+};
+
+const TerkirimText = () => {
+  const history = useHistory();
+  const backToTable = () => {
+    history.push('/permintaan-data');
+  };
+  return (
+    <Row className="d-flex">
+      <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
+        <LeftChevron></LeftChevron>
+      </div>
+      <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Terkirim</Row>
+    </Row>
+  );
+};
+
+const DiprosesText = () => {
+  const history = useHistory();
+  const backToTable = () => {
+    history.push('/permintaan-data');
+  };
+  return (
+    <Row className="d-flex">
+      <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
+        <LeftChevron></LeftChevron>
+      </div>
+      <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">Terproses</Row>
+    </Row>
+  );
+};
+
+const TerkirimButton = () => {
+  return (
+    <div>
+      <Button className="ml-10" variant="secondary" style={{ width: '112px' }}>
+        Tolak
+      </Button>
+      <Button className="ml-10" variant="info" style={{ width: '112px' }}>
+        Proses
+      </Button>
+    </div>
+  );
+};
+
+const DiprosesButton = () => {
+  return (
+    <div>
+      <Button className="ml-10" variant="info" style={{ width: '112px' }}>
+        Selesai
+      </Button>
+    </div>
+  );
+};
 
 const CMSPermintaanDataView = () => {
   const dataLog = [];
@@ -57,82 +127,80 @@ const CMSPermintaanDataView = () => {
   });
 
   return (
-    <Row className={bem.e('section')}>
-      <Col sm={9}>
-        <div>
-          <div className="d-flex justify-content-between mb-4">
-            <div className={bem.e('title')}>Detail</div>
+    <div>
+      {data.status === 'Selesai' ? <SuccessText /> : null}
+      {data.status === 'Terkirim' ? <TerkirimText /> : null}
+      {data.status === 'Diproses' ? <DiprosesText /> : null}
+      <Row className={bem.e('section')}>
+        <Col sm={9} className="my-5">
+          <div>
+            <div className="d-flex justify-content-between mb-4">
+              <div className={bem.e('title')}>Detail</div>
+              <div>
+                {data.status === 'Terkirim' ? <TerkirimButton /> : null}
+                {data.status === 'Diproses' ? <DiprosesButton /> : null}
+              </div>
+            </div>
+            <Form className="sdp-form">
+              <Input isDisabled group label="Deskripsi Data" name="deskripsi" control={control} />
+              <Input isDisabled group label="Tujuan Permintaan data" name="tujuan" control={control} />
+              <Input isDisabled group label="Target Waktu" name="targetWaktu" control={control} />
+              <Input isDisabled group label="Produsen Data" name="produsen" control={control} />
+              <Input isDisabled group label="Jenis Data" name="jenisData" control={control} />
+              <Input isDisabled group isLink label="URL Dataset" name="position" control={control} />
+            </Form>
             <div>
-              <Button className="ml-10" variant="secondary" style={{ width: '112px' }}>
-                Tolak
-              </Button>
-              <Button className="ml-10" variant="info" style={{ width: '112px' }}>
-                Proses
-              </Button>
-              <Button className="ml-10" variant="info" style={{ width: '112px' }}>
-                Selesai
-              </Button>
+              <h5 className="fw-bold mb-3 border-bottom-gray-stroke py-2">Informasi Peminta Data</h5>
+              <ul>
+                <div className="d-flex flex-row">
+                  <div className="col-2">
+                    <p className="fw-bold">Nama Lengkap</p>
+                  </div>
+                  <div className="col-2">
+                    <p className="fw-light">{data.namaPeminta}</p>
+                  </div>
+                </div>
+                <div className="d-flex flex-row">
+                  <div className="col-2">
+                    <p className="fw-bold">NIP/NIK</p>
+                  </div>
+                  <div className="col-2">
+                    <p className="fw-light">{data.NIK}</p>
+                  </div>
+                </div>
+                <div className="d-flex flex-row">
+                  <div className="col-2">
+                    <p className="fw-bold">Instansi</p>
+                  </div>
+                  <div className="col-2">
+                    <p className="fw-light">{data.instansi}</p>
+                  </div>
+                </div>
+                <div className="d-flex flex-row">
+                  <div className="col-2">
+                    <p className="fw-bold">Unit Kerja</p>
+                  </div>
+                  <div className="col-2">
+                    <p className="fw-light">{data.unitKerja}</p>
+                  </div>
+                </div>
+                <div className="d-flex flex-row">
+                  <div className="col-2">
+                    <p className="fw-bold">Status Kepegawaian</p>
+                  </div>
+                  <div className="col-2">
+                    <p className="fw-light">{data.status}</p>
+                  </div>
+                </div>
+              </ul>
             </div>
           </div>
-          <Form className="sdp-form">
-            <Input isDisabled group label="Deskripsi Data" name="deskripsi" control={control} />
-            <Input isDisabled group label="Tujuan Permintaan data" name="tujuan" control={control} />
-            <Input isDisabled group label="Target Waktu" name="targetWaktu" control={control} />
-            <Input isDisabled group label="Produsen Data" name="produsen" control={control} />
-            <Input isDisabled group label="Jenis Data" name="jenisData" control={control} />
-            <Input isDisabled group isLink label="URL Dataset" name="position" control={control} />
-          </Form>
-          <div>
-            <h5 className="fw-bold mb-3 border-bottom-gray-stroke py-2">Informasi Peminta Data</h5>
-            <ul>
-              <div className="d-flex flex-row">
-                <div className="col-2">
-                  <p className="fw-bold">Nama Lengkap</p>
-                </div>
-                <div className="col-2">
-                  <p className="fw-light">{data.namaPeminta}</p>
-                </div>
-              </div>
-              <div className="d-flex flex-row">
-                <div className="col-2">
-                  <p className="fw-bold">NIP/NIK</p>
-                </div>
-                <div className="col-2">
-                  <p className="fw-light">{data.NIK}</p>
-                </div>
-              </div>
-              <div className="d-flex flex-row">
-                <div className="col-2">
-                  <p className="fw-bold">Instansi</p>
-                </div>
-                <div className="col-2">
-                  <p className="fw-light">{data.instansi}</p>
-                </div>
-              </div>
-              <div className="d-flex flex-row">
-                <div className="col-2">
-                  <p className="fw-bold">Unit Kerja</p>
-                </div>
-                <div className="col-2">
-                  <p className="fw-light">{data.unitKerja}</p>
-                </div>
-              </div>
-              <div className="d-flex flex-row">
-                <div className="col-2">
-                  <p className="fw-bold">Status Kepegawaian</p>
-                </div>
-                <div className="col-2">
-                  <p className="fw-light">{data.status}</p>
-                </div>
-              </div>
-            </ul>
-          </div>
-        </div>
-      </Col>
-      <Col sm={3}>
-        <LogStatus data={dataLog} />
-      </Col>
-    </Row>
+        </Col>
+        <Col sm={3} className="my-5">
+          <LogStatus data={dataLog} />
+        </Col>
+      </Row>
+    </div>
   );
 };
 

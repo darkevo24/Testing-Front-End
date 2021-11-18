@@ -51,7 +51,7 @@ const berandaSlice = createSlice({
     builder.addCase(getDataSet.fulfilled, (state, action) => {
       state.dataset.loading = false;
       state.dataset.result = action.payload;
-      if (!state.dataset.searchFacets) {
+      if (!state.dataset.searchFacets || state.dataset?.params?.resetFilter) {
         state.dataset.searchFacets = action.payload.search_facets;
       }
     });

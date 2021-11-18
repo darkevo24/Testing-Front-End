@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import moment from 'moment';
 import cx from 'classnames';
+import RBDropdown from 'react-bootstrap/Dropdown';
+import RBDropdownButton from 'react-bootstrap/DropdownButton';
 import { useLocation } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import cloneDeep from 'lodash/cloneDeep';
 import uniqBy from 'lodash/uniqBy';
 import { ReactComponent as DropDownArrawSvg } from 'assets/drop-down-arraw.svg';
@@ -33,16 +36,33 @@ const TopicDetail = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState('');
   const [searchText, setSearchText] = useState('');
+  const [selectedOption, setSelectedOption] = useState(null);
   const [orginazation, setOrginazation] = useState('');
   const { pageSize, loading, params, searchFacets, result } = useSelector(datasetSelector);
   const [topic, setTopic] = useState('');
   const location = useLocation();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
+  const options = useMemo(
+    () => [
+      // { label: t('fields.relevansi.label'), value: 'relevansi' },
+      { label: t('common.nameAtoZ'), value: 'title asc' },
+      { label: t('common.nameZtoA'), value: 'title desc' },
+      { label: t('common.lastModified'), value: 'metadata_modified desc' },
+    ],
+    [],
+  );
+
+  const onSortChange = (option) => () => {
+    setSelectedOption(option);
+    fetchDataset({ sort: option.value }, true);
+  };
   const topicCards = TOPIC_LIST.find((item) => item.title === topic)?.items || [];
   const breadcrumbsList = [
     {
       path: '/home',
-      label: 'Beranda',
+      label: t('beranda.title'),
     },
     {
       isActive: true,
@@ -146,10 +166,23 @@ const TopicDetail = () => {
     data,
     title: '',
     search: true,
-    searchPlaceholder: 'Cari di topik',
+    searchPlaceholder: t('beranda.topic.searchPlaceholder'),
     searchButtonText: <SearchSvg />,
+    highlightSearchInput: true,
+    searchRightComponent: (
+      <RBDropdownButton title={selectedOption?.label || 'Select'} varient="secondary" className="wpx-180 ml-10">
+        {options.map((option, index) => (
+          <RBDropdown.Item
+            key={`${index}-${option.value}`}
+            onClick={onSortChange(option)}
+            active={selectedOption?.value === option.value}>
+            {option.label}
+          </RBDropdown.Item>
+        ))}
+      </RBDropdownButton>
+    ),
     onSearch: (searchText) => {
-      // Todo: handle Search
+      fetchDataset({ q: searchText }, true);
     },
     showHeader: false,
     highlightOnHover: true,

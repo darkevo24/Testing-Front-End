@@ -151,6 +151,7 @@ const DataSet = () => {
     onSearch: (searchText) => {
       fetchDataset({ q: searchText }, true);
     },
+    highlightSearchInput: true,
     showHeader: false,
     searchLeftComponent: (
       <div className="d-flex align-items-center justify-content-center fs-20 fw-bold">

@@ -1,0 +1,109 @@
+.sdp-tentang {
+  &__container {
+    max-width: 1000px;
+    margin: auto;
+    margin-bottom: 72px;
+  }
+
+  &__logo {
+    width: 160px;
+    margin: auto;
+    padding: 80px 0;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  &__title {
+    font-family: Myriad Pro;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 40px;
+    letter-spacing: 0px;
+    text-align: left;
+    color: $black-dark-10;
+
+    &-sm {
+      font-size: 20px !important;
+      line-height: 25px;
+    }
+  }
+
+  &__description {
+    font-family: Myriad Pro;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0px;
+    text-align: left;
+    color: $black-dark-10;
+  }
+
+  &__red-line {
+    background: $red;
+    height: 4px;
+  }
+
+  &__grey-line {
+    background: $stroke;
+    height: 4px;
+  }
+
+  &__card {
+    background: $white;
+    border: 2px solid $stroke;
+    box-sizing: border-box;
+    border-radius: 4px;
+    font-size: 15px;
+    line-height: 18px;
+    align-items: center;
+    text-align: center;
+    color: $black-dark-10;
+    width: 184px;
+    height: 112px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+    padding: 0 8px;
+    display: inline-grid;
+
+    &-top {
+      width: 48px;
+      height: 2px;
+      margin-left: 16px;
+      background: $red;
+    }
+  }
+}
+
+.contactus-container {
+  background: $gray-bg;
+  margin-bottom: 80px;
+  background-image: url('../../background-batik.png');
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.contactus-wrapper {
+  width: 480px;
+  margin: auto;
+  padding: 80px 0;
+
+  .form-control {
+    margin-bottom: 24px;
+  }
+}
+
+.contactus-title {
+  font-family: Myriad Pro;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: $black-dark-10;
+}

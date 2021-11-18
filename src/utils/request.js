@@ -30,16 +30,18 @@ async function parseResponse(response) {
   }
 
   try {
-    const responseType = response.headers.get('Content-Type');
-    if (responseType && responseType.includes('json')) {
-      return response.json();
-    }
-    const textData = await response.text();
-    const data = textData ? safeParse(textData) : textData;
     const responseHeaders = {};
     response.headers.forEach(function (value, name) {
       responseHeaders[name] = value;
     });
+    let data = {};
+    const responseType = response.headers.get('Content-Type');
+    if (responseType && responseType.includes('json')) {
+      data = await response.json();
+    } else {
+      const textData = await response.text();
+      data = textData ? safeParse(textData) : textData;
+    }
     return { headers: responseHeaders, data };
   } catch (error) {
     // eslint-disable-next-line no-console

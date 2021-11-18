@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import jwtDecode from 'jwt-decode';
 import forOwn from 'lodash/forOwn';
 import { apiUrls, post } from 'utils/request';
 import { cookieKeys, getCookieByName, setCookie, removeAllCookie } from 'utils/cookie';
@@ -17,9 +16,7 @@ export const loginUser = createAsyncThunk('login/login', async (credentials) => 
   const response = await post(apiUrls.login, credentials);
   const token = response.headers?.token;
   setCookie(cookieKeys.token, token);
-  // TODO: make use of expiry details from decoded token.
-  // eslint-disable-next-line no-unused-vars
-  const user = jwtDecode(token);
+  const user = response.data;
   return { token, user };
 });
 

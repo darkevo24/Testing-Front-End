@@ -64,9 +64,14 @@ const KesiapanSDIDaerah = () => {
         </div>
         <div onClick={hideDisplayDropdown}>
           {displayDropdown ? <ShowModal /> : null}
-          <Row className="kesiapan-sdi-iframe-container mb-3">
-            <Col className="justify-content-center align-items-center just">
-              <span className="fw-bold">Iframe Superset</span>
+          <Row className="kesiapan-sdi-iframe-container">
+            <Col className="justify-content-center align-items-center">
+              <iframe
+                width="1000"
+                height="1000"
+                frameBorder="0"
+                seamless
+                src="http://103.170.104.187:8088/r/28?standalone=true"></iframe>
             </Col>
           </Row>
         </div>

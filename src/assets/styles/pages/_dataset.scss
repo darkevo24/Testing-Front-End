@@ -1,15 +1,4 @@
 .sdp-dataset {
-  .sdp-table__header-wrapper {
-    .input-group {
-      .icon-container {
-        background-color: $gray-bg;
-        svg,
-        svg * {
-          fill: $red;
-        }
-      }
-    }
-  }
   &__filters-wrapper {
     display: flex;
     flex-wrap: wrap;

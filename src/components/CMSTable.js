@@ -1,9 +1,8 @@
 import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
 
-const CMSTable = ({ customWidth, header, data }) => {
+const CMSTable = ({ customWidth, header, data, tableState = 'idle' }) => {
   const history = useHistory();
-
   return (
     <div className="sdp-content-table__body">
       <div className="table-header d-flex justify-content-between">
@@ -20,7 +19,12 @@ const CMSTable = ({ customWidth, header, data }) => {
       {data.map((item, idx) => (
         <div key={idx} className="table-body d-flex justify-content-between">
           {item.data.map((value, key) => (
-            <span key={key} style={{ width: customWidth.length !== item.data.length + 1 ? 'auto' : customWidth[key] + '%' }}>
+            <span
+              key={key}
+              style={Object.assign(
+                { width: customWidth.length !== item.data.length + 1 ? 'auto' : customWidth[key] + '%' },
+                item.dataStyle && item.dataStyle.length - 1 >= key && item.dataStyle[key] ? item.dataStyle[key] : {},
+              )}>
               {value}
             </span>
           ))}
@@ -33,6 +37,19 @@ const CMSTable = ({ customWidth, header, data }) => {
                 Detail
               </Button>
             )}
+            {item.actions
+              ? item.actions.map((act, key) => {
+                  return (
+                    <Button
+                      onClick={() => history.push(act.link)}
+                      variant="info"
+                      disabled={act.disabled}
+                      key={idx + ':' + key}>
+                      {act.title}
+                    </Button>
+                  );
+                })
+              : ''}
           </span>
         </div>
       ))}

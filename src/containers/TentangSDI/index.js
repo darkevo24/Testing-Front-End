@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Logo from 'assets/logo-satu-data-id.png';
 
@@ -9,9 +10,18 @@ import TentangProfile from './profile.js';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 
+import { getTentang } from './reducer';
+import { useEffect } from 'react';
+import { AboutUs } from 'services/CMS';
+
 const bem = bn('tentang');
 
 const TentangSDI = () => {
+  let dispatch = useDispatch();
+  let listContent = useSelector((state) => state.tentang.tentang_list);
+  let componentState = useSelector((state) => state.tentang.status);
+  useEffect(() => dispatch(getTentang()), []);
+
   let strukturOrganisasi = [
     {
       name: 'Oktorialdi, Ph.D',
@@ -32,7 +42,7 @@ const TentangSDI = () => {
       level: 2,
     },
   ];
-  
+
   let arrayLevel = [];
   for (var i = 0; i < strukturOrganisasi.length; i++) {
     if (arrayLevel.indexOf(strukturOrganisasi[i].level) === -1) {
@@ -54,29 +64,22 @@ const TentangSDI = () => {
         <div className={bem.e('logo')}>
           <img src={Logo} alt="" />
         </div>
-        <iframe
-          width="100%"
-          height="500"
-          title="sample"
-          src="https://www.youtube.com/embed/0QTSpz8Nagk"
-          frameborder="0"
-          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen></iframe>
-        <div className="mt-5">
-          <div className={cx(bem.e('title'), 'mb-3')}>Tentang SDI</div>
-          <p className={bem.e('description')}>
-            Satu Data Indonesia (SDI) merupakan kebijakan tata kelola data pemerintah yang bertujuan untuk menciptakan data
-            berkualitas, mudah diakses, dan dapat dibagipakaikan antar Instansi Pusat serta Daerah. Kebijakan ini tertuang
-            dalam Peraturan Presiden no. 39 tahun 2019 tentang Satu Data Indonesia. Melalu SDI, seluruh data pemerintah dan
-            data instansi lain yang terkait dapat bermuara di Portal Satu Data Indonesia (data.go.id).
-            <br />
-            <br />
-            Portal Satu Data Indonesia merupakan portal resmi data terbuka Indonesia yang dikelola oleh Sekretariat Satu Data
-            Indonesia tingkat Pusat, Kementerian Perencanaan Pembangunan Nasional / Bappenas. Melalui Portal Satu Data
-            Indonesia, kami berupaya penuh untuk memperbaiki tata kelola data demi terwujudnya transparansi dan akuntabilitas
-            pemerintah, serta mendukung pembangunan nasional.
-          </p>
-        </div>
+        {listContent.map((data, key) => (
+          <div key={key}>
+            <iframe
+              width="100%"
+              height="500"
+              title="sample"
+              src={data.video_url}
+              frameborder="0"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+            <div className="mt-5">
+              <div className={cx(bem.e('title'), 'mb-3')}>{data.title}</div>
+              <p className={bem.e('description')} dangerouslySetInnerHTML={{ __html: unescape(data.content) }}></p>
+            </div>
+          </div>
+        ))}
         <div className="mt-100">
           <Row className="align-items-center mb-5">
             <Col>
@@ -107,7 +110,7 @@ const TentangSDI = () => {
               <div className={bem.e('title-sm')}>Bidang Operational</div>
             </Col>
             <Col>
-              <div className={bem.e(('grey-line'))}></div>
+              <div className={bem.e('grey-line')}></div>
             </Col>
           </Row>
           <div className="d-flex flex-wrap">

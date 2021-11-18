@@ -1,4 +1,4 @@
-import { getQueryString, safeParse } from '../../utils/helper';
+import { generateQueryString, safeParse } from '../../utils/helper';
 import { cookieKeys, getCookieByName } from '../../utils/cookie';
 
 class SuccessResponse {
@@ -88,7 +88,7 @@ export const request = async (url, method = REQUEST_GET, headers = defaultHeader
     requestOptions.body = headers['Content-Type'] === typeJSON ? JSON.stringify(data) : data;
   }
   if (['GET', 'DELETE'].includes(method) && Object.keys(data).length) {
-    url += `?${getQueryString(data)}`;
+    url += `?${generateQueryString(data)}`;
   }
   return await parseResponse(await fetch(url, requestOptions));
 };

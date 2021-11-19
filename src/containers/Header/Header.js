@@ -97,7 +97,7 @@ export const Header = () => {
         title: 'Layanan',
         links: [
           { title: 'Permintaan Data', link: '/permintaan-data' },
-          { title: 'Bimtek', link: '/bimtek' },
+          { title: 'Bimtek', link: '/bimtek-summary' },
           { title: 'Komunitas Ahli', link: '/komunitas-ahli' },
           { title: 'Forum SDI', link: '/forum' },
         ],

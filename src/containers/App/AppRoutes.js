@@ -19,6 +19,7 @@ const BeritaPage = lazy(() => import('containers/Berita'));
 const KesiapanData = lazy(() => import('containers/KesiapanData'));
 const KesiapanSDIDaerah = lazy(() => import('containers/KesiapanSDiDaerah'));
 const KesiapanSDIPusat = lazy(() => import('containers/KesiapanSDIPusat'));
+const DafterPage = lazy(() => import('containers/Dafter'));
 // const NotFoundPage = lazy(() => import('containers/NotFound'));
 
 function AppRoutes(props) {
@@ -29,6 +30,7 @@ function AppRoutes(props) {
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
         <PrivateRoute exact path="/dataset" component={DataSetPage} />
+        <PrivateRoute exact path="/dafter" component={DafterPage} />
         <Route exact path="/forum" component={ForumPage} />
         <Route exact path="/komunitas" component={KomunitasPage} />
         <Route exact path="/bl" component={BeritaLayout} />

@@ -151,7 +151,7 @@ export const Header = () => {
   return (
     <Navbar bg="transparent" className="sdp-header">
       <Container className={cx('mw-100 h-100', { 'pr-24': !isLoggedIn })}>
-        <img src={Logo} alt="brand-logo" />
+        <img src={Logo} alt="brand-logo" className="cursor-pointer" onClick={goTo('/home')} />
         {isLoggedIn ? renderMemberNav() : renderPublicNav()}
       </Container>
     </Navbar>

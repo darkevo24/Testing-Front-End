@@ -66,7 +66,7 @@ const TopicDetail = () => {
 
   const options = useMemo(
     () => [
-      // { label: t('fields.relevansi.label'), value: 'relevansi' },
+      { label: t('fields.relevansi.label'), value: 'score desc' },
       { label: t('common.nameAtoZ'), value: 'title asc' },
       { label: t('common.nameZtoA'), value: 'title desc' },
       { label: t('common.lastModified'), value: 'metadata_modified desc' },

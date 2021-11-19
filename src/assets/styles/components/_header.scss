@@ -11,26 +11,28 @@
       color: $primary !important;
     }
   }
-  .user-nav {
-    padding: 0 24px;
+}
+
+.user-nav {
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid $stroke;
+  margin-left: 36px;
+  .dropdown-toggle.nav-link {
+    padding: 0;
+    font-weight: 600;
+    height: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
-    border-left: 1px solid $stroke;
-    margin-left: 36px;
-    .dropdown-toggle.nav-link {
-      padding: 0;
-      font-weight: 600;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      &::after {
-        display: none;
-      }
+    color: $black-dark-10 !important;
+    &::after {
+      display: none;
     }
   }
 }
 
-.sdp-cms-header{
+.sdp-cms-header {
   padding: 0 !important;
 }

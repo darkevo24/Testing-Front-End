@@ -18,8 +18,14 @@ $customSpacings: 0, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 18, 20, 24, 27, 28, 30, 
   .ml-#{$size} {
 		margin-left: #{$size}px !important;
   }
+  .ml-n#{$size} {
+		margin-left: -#{$size}px !important;
+  }
 	.mr-#{$size} {
 		margin-right: #{$size}px !important;
+  }
+  .mr-n#{$size} {
+		margin-right: -#{$size}px !important;
   }
 	.mt-#{$size} {
 		margin-top: #{$size}px !important;

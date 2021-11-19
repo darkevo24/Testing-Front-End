@@ -6,7 +6,7 @@ import { cookieKeys, getCookieByName, setCookie, removeAllCookie } from 'utils/c
 export const initialState = {
   loading: false,
   token: getCookieByName(cookieKeys.token) || '',
-  user: null,
+  user: getCookieByName(cookieKeys.user) || null,
   error: null,
 };
 
@@ -15,8 +15,9 @@ export const LOGIN_REDUCER = 'LOGIN_REDUCER';
 export const loginUser = createAsyncThunk('login/login', async (credentials) => {
   const response = await post(apiUrls.login, credentials);
   const token = response.headers?.token;
-  setCookie(cookieKeys.token, token);
   const user = response.data;
+  setCookie(cookieKeys.token, token);
+  setCookie(cookieKeys.user, user);
   return { token, user };
 });
 

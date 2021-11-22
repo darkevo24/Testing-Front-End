@@ -32,7 +32,7 @@ function AppRoutes(props) {
         <PrivateRoute exact path="/dataset" component={DataSetPage} />
         <PrivateRoute exact path="/dafter" component={DafterPage} />
         <Route exact path="/forum" component={ForumPage} />
-        <Route exact path="/komunitas" component={KomunitasPage} />
+        <PrivateRoute exact path="/komunitas-ahli" component={KomunitasPage} />
         <Route exact path="/bl" component={BeritaLayout} />
         <Route exact path="/berita" component={BeritaPage} />
         <Route exact path="/bimtek-summary" component={BimTekSummaryPage} />

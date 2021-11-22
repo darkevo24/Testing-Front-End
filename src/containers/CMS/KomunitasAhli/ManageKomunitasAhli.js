@@ -7,8 +7,8 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FaceBookIcon, InstagramIcon, TwitterIcon, YouTubeIcon } from 'assets/icons/SocialMedia';
 import Modal from 'components/Modal';
+import { Kontak_list } from 'utils/constants';
 
 const schema = yup
   .object({
@@ -16,25 +16,6 @@ const schema = yup
     name_ahli: yup.string().required(),
   })
   .required();
-
-const Kontak_list = [
-  {
-    name: 'facebook',
-    icon: <FaceBookIcon />,
-  },
-  {
-    name: 'twitter',
-    icon: <TwitterIcon />,
-  },
-  {
-    name: 'instagram',
-    icon: <InstagramIcon />,
-  },
-  {
-    name: 'youtube',
-    icon: <YouTubeIcon />,
-  },
-];
 
 const KomunitasAhli = () => {
   const [showKontakModal, setShowKontakModal] = useState(false);

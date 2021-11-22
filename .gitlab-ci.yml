@@ -1,0 +1,22 @@
+stages:
+  - deploy
+
+cache:
+  paths:
+    - node_modules
+    - "packages/*/node_modules"
+    - .eslint
+
+deploy:
+  stage: deploy
+  script:
+    - yarn install
+    - yarn build
+    - mkdir -p /var/www/html/sdi
+    - cp -R ./build/. /var/www/html/sdi
+  only:
+    - staging
+  tags:
+    - deployment
+    - frontend
+

@@ -8,6 +8,17 @@
       "label": "Password",
       "placeholder": "Password"
     },
-    "select": "Select"
+    "select": "Select",
+    "relevansi": {
+      "label": "Relevansi",
+      "placeholder": "Relevansi"
+    }
+  },
+  "common": {
+    "noData": "No Data to show!",
+    "lastModified": "Terakhir Dimodifikasi",
+    "nameAtoZ": "Nama A-Z",
+    "nameZtoA": "Nama Z-A",
+    "download": "Download"
   }
 }

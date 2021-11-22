@@ -4,6 +4,13 @@
   font-weight: 700;
 }
 
+.sdp-heading-big {
+  color: $black-dark-10;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: bold;
+}
+
 .sdp-sub-heading {
   color: var(--black-dark-10);
   font-weight: bold;
@@ -15,6 +22,16 @@
  color: $red;
  font-size: 14px;
  margin-top: 4px;
+}
+
+.sdp-link {
+  text-decoration: none;
+  color: $black-dark-10;
+  &:hover {
+    color: $black-dark-10;
+    border-bottom: 1px solid $black-dark-10;
+    text-decoration: underline;
+  }
 }
 
 .sdp-title {
@@ -36,7 +53,15 @@ a {
   color: var(--green);
 }
 
+.sdp-text-white {
+  color: var(--white);
+}
+
 .sdp-text-blue {
+  color: var(--blue);
+}
+
+.sdp-text-blue-light {
   color: var(--blue-light);
 }
 
@@ -44,7 +69,7 @@ a {
   color: var(--blue-dark);
 }
 
-.sdp-text-grey {
+.sdp-text-grey-dark {
   color: var(--gray-dark);
 }
 
@@ -52,10 +77,38 @@ a {
   color: var(--gray);
 }
 
+.sdp-text-teal {
+  color: var(--teal);
+}
+
+.sdp-text-orange {
+  color: var(--orange);
+}
+
+.sdp-text-orange-light {
+  color: var(--light-orange);
+}
+
 .sdp-text-red {
-  color: var(--gray);
+  color: var(--red);
+}
+
+.sdp-text-red-dark {
+  color: var(--red-dark);
 }
 
 .sdp-text-black-dark {
-  color: var(--black-dark-10)
+  color: var(--black-dark-10);
+}
+
+.sdp-text-black-light {
+  color: var(--black-light);
+}
+
+.sdp-text-black-lighter {
+  color: var(--black-light-10);
+}
+
+.text-hightlighted {
+  color: $blue;
 }

@@ -1,0 +1,16 @@
+{
+  "beranda": {
+    "title": "Beranda",
+    "dataset": {
+      "title": "Dataset",
+      "filterLocal": "Filter by Location",
+      "searchPlaceholder": "Cari Dataset",
+      "filterPlaceholder": "Cari {{filter}}",
+      "filterShowMore": "Show More {{filter}}"
+    },
+    "topic": {
+      "searchPlaceholder": "Cari di topik",
+      "searchInstansi": "Semua Instansi"
+    }
+  }
+}

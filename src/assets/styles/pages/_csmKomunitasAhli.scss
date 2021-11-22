@@ -1,0 +1,26 @@
+.sdp-komunitas-container {
+  .sdp-left-wrapper {
+    .basic-single {
+      width: 100%;
+      margin-right: 12px;
+    }
+  }
+}
+
+.sdp-manage-komunitas-container{
+  .input-group svg {
+    position: initial !important;
+    right: 1rem !important;
+    top: 50% !important;
+    z-index: 9 !important;
+    transform: none !important;
+  }
+
+  .form-control {
+    height: auto;
+  }
+
+  .select__control {
+    height: 100%;
+  }
+}

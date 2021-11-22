@@ -1,0 +1,24 @@
+.sdp-tabs {
+  .nav-tabs {
+    border-bottom: 1px solid $stroke;
+    .nav-link {
+      border: none;
+      padding-left: 16px;
+      color: $black-dark-10;
+      &.active {
+        position: relative;
+        font-weight: 700;
+        &::after {
+          height: 3px;
+          background-color: $danger;
+          border-radius: 3px;
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: -1px;
+          right: 0;
+        }
+      }
+    }
+  }
+}

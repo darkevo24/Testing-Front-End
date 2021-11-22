@@ -1,0 +1,38 @@
+.sdp-header {
+  padding: 0;
+  min-height: 56px;
+  border-bottom: 1px solid $stroke;
+  .nav-link {
+    color: $black-dark-10 !important;
+  }
+  .active {
+    color: $primary !important;
+    .dropdown-toggle {
+      color: $primary !important;
+    }
+  }
+}
+
+.user-nav {
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid $stroke;
+  margin-left: 36px;
+  .dropdown-toggle.nav-link {
+    padding: 0;
+    font-weight: 600;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    color: $black-dark-10 !important;
+    &::after {
+      display: none;
+    }
+  }
+}
+
+.sdp-cms-header {
+  padding: 0 !important;
+}

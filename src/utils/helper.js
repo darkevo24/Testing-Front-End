@@ -1,3 +1,9 @@
+import isArray from 'lodash/isArray';
+import isObject from 'lodash/isObject';
+import isString from 'lodash/isString';
+import map from 'lodash/map';
+import pick from 'lodash/pick';
+
 export const safeParse = (value) => {
   try {
     return JSON.parse(value);
@@ -17,7 +23,7 @@ export const safeStringify = (value) => {
   }
 };
 
-export const getQueryString = (params) => {
+export const generateQueryString = (params) => {
   return Object.keys(params)
     .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
     .join('&');
@@ -64,4 +70,55 @@ export const copyToClipboard = (text) => {
       textArea.remove();
     });
   }
+};
+
+export const mapParamsToJsonString = (data = {}, keys = []) => {
+  keys.forEach((key) => {
+    data[key] = safeStringify(data[key]);
+  });
+  return data;
+};
+
+export const mapParamsToOrString = (data = {}, keys = [], dataAccessor = 'id') => {
+  keys.forEach((key) => {
+    const currentData = data[key];
+    if (!currentData || !isArray(currentData)) {
+      return;
+    }
+    const keyData = map(currentData, (value) => {
+      if (isObject(value)) {
+        return value[dataAccessor];
+      }
+      return value;
+    });
+    if (keyData.length) {
+      data[key] = `${key}:${keyData.join(' OR ')}`;
+    }
+  });
+  return data;
+};
+
+export const mapOrStringsToFq = (data, keys = []) => {
+  const dataKeys = map(keys, (key) => data[key]);
+  const dataKeysWithValue = dataKeys.filter((orString) => orString && isString(orString));
+  const fq = dataKeysWithValue.join(', ');
+  if (fq) {
+    data.fq = fq;
+  }
+  return data;
+};
+
+export const pickValidDatasetPaginationParams = (data) => {
+  return pick(data, ['q', 'fq', 'facet.field', 'facet.limit', 'start', 'rows', 'sort']);
+};
+
+/**
+ * Returns parsed query string into JSON object.
+ */
+export const parseQueryString = () => {
+  const search = window.location.search.substring(1);
+  if (!search) {
+    return {};
+  }
+  return JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
 };

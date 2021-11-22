@@ -6,7 +6,7 @@
 }
 
 .bimtek-header {
-  font-family: Myriad Pro;
+   
   font-style: normal;
   font-weight: bold;
   font-size: 24px;
@@ -20,7 +20,7 @@
   padding: 16px;
 
   a {
-    color: #515154;
+    color: $gray-dark;
     text-decoration: none;
     font-weight: normal;
   }

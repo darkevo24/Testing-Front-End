@@ -1,0 +1,8 @@
+.sdp-map-tile {
+  &__body {
+    @extend .flex-center;
+    img {
+      width: 100%;
+    }
+  }
+}

@@ -71,8 +71,8 @@ const List = [
         link: '/brenda',
       },
       {
-        title: 'Data Set',
-        link: '/data-set',
+        title: 'Dataset',
+        link: '/dataset',
       },
       {
         title: 'Dashboard',

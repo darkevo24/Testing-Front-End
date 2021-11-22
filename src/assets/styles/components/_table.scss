@@ -19,6 +19,18 @@
   &__table-wrapper {
     overflow-x: scroll;
   }
+  .highlight-search-input {
+    &.input-group {
+      .icon-container {
+        z-index: 9;
+        background-color: $gray-bg;
+        svg,
+        svg * {
+          fill: $red;
+        }
+      }
+    }
+  }
   .table > :not(caption) > * > * {
     border-bottom-width: 1px;
     border-bottom-color: $stroke !important;
@@ -30,6 +42,89 @@
           background-color: $white !important;
           th {
             border-bottom-color: $gray-dark !important;
+          }
+        }
+      }
+    }
+  }
+  &--spaced {
+    table.table {
+      border-collapse: separate !important;
+      border-spacing:0 8px !important;
+      thead {
+        tr {
+          background-color: transparent !important;
+          th {
+            border-bottom-color: transparent !important;
+          }
+        }
+      }
+      tbody {
+        tr {
+          box-shadow: 0px 1px 2px $black-shadow;
+          border-radius: $border-radius;
+          td {
+            border-top: 1px solid $stroke !important;
+            border-bottom: 1px solid $stroke !important;
+            &:first-child {
+              border-left: 1px solid $stroke !important;
+              border-top-left-radius: $border-radius;
+              border-bottom-left-radius: $border-radius;
+              padding-left: 16px;
+              overflow: hidden;
+              &::before {
+                content: "";
+                left: 0;
+                top: 0;
+                bottom: 0;
+                background-color: $danger;
+                position: absolute;
+                height: 100%;
+                width: 4px;
+                opacity: 0;
+              }
+            }
+            &:last-child {
+              border-right: 1px solid $stroke !important;
+              border-top-right-radius: $border-radius;
+              border-bottom-right-radius: $border-radius;
+            }
+          }
+          &:hover {
+            td {
+              position: relative;
+              &:first-child {
+                &::before {
+                  transition: 300ms ease-in;
+                  opacity: 1;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  &--highlight {
+    table.table {
+      tbody {
+        tr {
+          border-left: 4px solid transparent;
+          margin-left: -4px;
+          &:hover {
+            border-left: 4px solid $red;
+            transition: border-left 300ms ease-in;
+          }
+        }
+      }
+    }
+  }
+  &--card {
+    tbody {
+      tr {
+        &:first-child {
+          td {
+            border-top: 1px solid $stroke;
           }
         }
       }
@@ -83,6 +178,10 @@
         color: $black-dark;
       }
     }
+  }
+  .empty-data {
+    @extend .sdp-text-disable;
+    @extend .fs-18;
   }
 }
 

@@ -1,11 +1,13 @@
 import React, { lazy } from 'react';
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import AppLayout, { PrivateRoute, PublicRoute } from 'layouts/AppLayout';
+import lazily from 'utils/lazily';
 
-import { AppLayout } from 'layouts/AppLayout';
-
+const { Login } = lazily(() => import('containers/Login'));
 const BerandaPage = lazy(() => import('containers/Beranda'));
 const TopicDetailPage = lazy(() => import('containers/Beranda/TopicDetails'));
+const DataSetPage = lazy(() => import('containers/Beranda/DataSet'));
 const ForumPage = lazy(() => import('containers/Forum'));
 const BimTekSummaryPage = lazy(() => import('containers/BimTekSummary'));
 const BimTekFormPage = lazy(() => import('containers/BimTekForm'));
@@ -16,26 +18,31 @@ const BeritaLayout = lazy(() => import('containers/BeritaLayout'));
 const BeritaPage = lazy(() => import('containers/Berita'));
 const KesiapanSDIDaerah = lazy(() => import('containers/KesiapanSDiDaerah'));
 const KesiapanSDIPusat = lazy(() => import('containers/KesiapanSDIPusat'));
+const DafterPage = lazy(() => import('containers/Dafter'));
+// const NotFoundPage = lazy(() => import('containers/NotFound'));
 
 function AppRoutes(props) {
   return (
-    <AppLayout>
-      <Switch>
+    <Switch>
+      <PublicRoute exact path="/login" component={Login} />
+      <AppLayout>
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
+        <PrivateRoute exact path="/dataset" component={DataSetPage} />
+        <PrivateRoute exact path="/dafter" component={DafterPage} />
         <Route exact path="/forum" component={ForumPage} />
         <Route exact path="/komunitas" component={KomunitasPage} />
         <Route exact path="/bl" component={BeritaLayout} />
         <Route exact path="/berita" component={BeritaPage} />
-        <Route exact path="/" render={() => <Redirect to="/home" />} />
-        <Route path="/bimtek-summary" component={BimTekSummaryPage} />
-        <Route path="/bimtek-form" component={BimTekFormPage} />
-        <Route path="/bimtek-jadwal" component={BimTekJadwalPage} />
-        <Route path="/tentang" component={TentangPage} />
-        <Route path="/kesiapan-sdi-daerah" component={KesiapanSDIDaerah} />
-        <Route path="/kesiapan-sdi-pusat" component={KesiapanSDIPusat} />
-      </Switch>
-    </AppLayout>
+        <Route exact path="/bimtek-summary" component={BimTekSummaryPage} />
+        <Route exact path="/bimtek-form" component={BimTekFormPage} />
+        <Route exact path="/bimtek-jadwal" component={BimTekJadwalPage} />
+        <Route exact path="/tentang" component={TentangPage} />
+        <Route exact path="/kesiapan-sdi-daerah" component={KesiapanSDIDaerah} />
+        <Route exact path="/kesiapan-sdi-pusat" component={KesiapanSDIPusat} />
+        {/* <Route path="*" component={NotFoundPage} /> */}
+      </AppLayout>
+    </Switch>
   );
 }
 

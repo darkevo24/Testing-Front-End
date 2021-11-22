@@ -1,0 +1,31 @@
+.sdp-bimtek-form {
+  &__section {
+    margin-bottom: 32px;
+  }
+
+  &__header {
+     
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 17px;
+    margin-bottom: 16px;
+
+    &-add {
+      color: #FF0000;
+      cursor: pointer;
+
+      svg {
+        width: 18px;
+      }
+    }
+  }
+
+  &__table {
+    background: #FFFFFF;
+
+    thead {
+      border-bottom: solid 2px #FF0000;
+    }
+  }
+}

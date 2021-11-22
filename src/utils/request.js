@@ -1,5 +1,5 @@
 import { apiUrls as appApiUrls } from './constants';
-import { getQueryString, safeParse } from './helper';
+import { generateQueryString, safeParse } from './helper';
 import { cookieKeys, getCookieByName } from './cookie';
 
 export const typeJSON = 'application/json';
@@ -30,16 +30,18 @@ async function parseResponse(response) {
   }
 
   try {
-    const responseType = response.headers.get('Content-Type');
-    if (responseType && responseType.includes('json')) {
-      return response.json();
-    }
-    const textData = await response.text();
-    const data = textData ? safeParse(textData) : textData;
     const responseHeaders = {};
     response.headers.forEach(function (value, name) {
       responseHeaders[name] = value;
     });
+    let data = {};
+    const responseType = response.headers.get('Content-Type');
+    if (responseType && responseType.includes('json')) {
+      data = await response.json();
+    } else {
+      const textData = await response.text();
+      data = textData ? safeParse(textData) : textData;
+    }
     return { headers: responseHeaders, data };
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -90,7 +92,7 @@ export async function request(url, { method = 'GET', headers: optionHeaders = {}
   }
   // Checking if we need to add query string or not.
   if (['GET', 'DELETE'].includes(method)) {
-    url += `?${getQueryString(data)}`;
+    url += `?${generateQueryString(data)}`;
   }
 
   const fetchResponse = await fetch(url, options);
@@ -137,3 +139,10 @@ export function deleteRequest(url, options) {
 }
 
 export const apiUrls = appApiUrls;
+
+export const defaultNumberOfRows = 10;
+
+export const paginationParams = {
+  start: 0,
+  rows: defaultNumberOfRows,
+};

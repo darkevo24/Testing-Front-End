@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
@@ -13,6 +13,7 @@ import { Input } from '../../../components';
 import bn from '../../../utils/bemNames';
 import { LogStatus } from '../../../components/Sidebars/LogStatus';
 import { LeftChevron } from '../../../components/Icons';
+import Modal from '../../../components/Modal';
 
 const bem = bn('content-detail');
 
@@ -61,23 +62,23 @@ const DiprosesText = () => {
   );
 };
 
-const TerkirimButton = () => {
+const TerkirimButton = (onTolak, onProses) => {
   return (
     <div>
-      <Button className="ml-10" variant="secondary" style={{ width: '112px' }}>
+      <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={onTolak}>
         Tolak
       </Button>
-      <Button className="ml-10" variant="info" style={{ width: '112px' }}>
+      <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={onProses}>
         Proses
       </Button>
     </div>
   );
 };
 
-const DiprosesButton = () => {
+const DiprosesButton = (onSelesai) => {
   return (
     <div>
-      <Button className="ml-10" variant="info" style={{ width: '112px' }}>
+      <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={onSelesai}>
         Selesai
       </Button>
     </div>
@@ -85,6 +86,10 @@ const DiprosesButton = () => {
 };
 
 const CMSPermintaanDataView = () => {
+  const [showTolakModal, setShowTolakModal] = useState(false);
+  const [showProsesModal, setShowProsesModal] = useState(false);
+  const [showSelesaiModal, setShowSelesaiModal] = useState(false);
+
   const dataLog = [];
   const schema = yup
     .object({
@@ -200,6 +205,48 @@ const CMSPermintaanDataView = () => {
           <LogStatus data={dataLog} />
         </Col>
       </Row>
+      <Modal
+        Visible={showTolakModal}
+        onClose={() => setShowTolakModal(false)}
+        subtitle="Apakah anda menolak Permintaan Data?"
+        actions={[
+          { variant: 'secondary', text: 'Batal', onClick: () => setShowTolakModal(false) },
+          { text: 'Konfirmasi', type: 'submit', onClick: () => setShowTolakModal(false) },
+        ]}>
+        <Form noValidate>
+          <Form.Group as={Col} md="8" className="mb-16">
+            <Form.Control type="text area" name="link" rules={{ required: true }} />
+          </Form.Group>
+        </Form>
+      </Modal>
+      <Modal
+        Visible={showProsesModal}
+        onClose={() => setShowProsesModal(false)}
+        subtitle="Apakah anda memproses Permintaan Data?"
+        actions={[
+          { variant: 'secondary', text: 'Batal', onClick: () => setShowProsesModal(false) },
+          { text: 'Konfirmasi', type: 'submit', onClick: () => setShowProsesModal(false) },
+        ]}>
+        <Form noValidate>
+          <Form.Group as={Col} md="8" className="mb-16">
+            <Form.Control type="text area" name="link" rules={{ required: true }} />
+          </Form.Group>
+        </Form>
+      </Modal>
+      <Modal
+        Visible={showSelesaiModal}
+        onClose={() => setShowSelesaiModal(false)}
+        subtitle="Apakah anda ingin menyelesaikan Permintaan Data?"
+        actions={[
+          { variant: 'secondary', text: 'Batal', onClick: () => setShowSelesaiModal(false) },
+          { text: 'Konfirmasi', type: 'submit', onClick: () => setShowSelesaiModal(false) },
+        ]}>
+        <Form noValidate>
+          <Form.Group as={Col} md="8" className="mb-16">
+            <Form.Control type="text area" name="link" rules={{ required: true }} />
+          </Form.Group>
+        </Form>
+      </Modal>
     </div>
   );
 };

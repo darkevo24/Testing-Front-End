@@ -57,9 +57,9 @@ export const CMSSidebar = () => {
           <SidebarDataIcon className="mr-10" />
           Dashboard Management
         </div>
-        <SidebarItem title="Data Analytics" pathname="#" />
+        <SidebarItem title="Data Analytics" pathname="/cms/data-analytic" />
         <SidebarItem title="Kesiapan SDI" pathname="#" />
-        <SidebarItem title="Dashboard Executive" pathname="#" />
+        <SidebarItem title="Dashboard Executive" pathname="/cms/dashboard-eksekutif" />
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>

@@ -100,7 +100,7 @@ const KomunitasAhliPage = () => {
       },
     ],
     data: getElem(tempData),
-    subTitle: 'Top 5 Ahli Minggu Ini',
+    subTitle: 'Komunitas Ahli',
     search: true,
     searchPlaceholder: 'Cari Ahli Berdasarkan Nama',
     searchButtonText: <SearchSvg />,

@@ -1,0 +1,27 @@
+{
+  "sandbox": {
+    "title": "Sandbox",
+    "dafter": {
+      "tabs": {
+        "dafter": {
+          "key": "dafter",
+          "title": "Dafter Data"
+        },
+        "sdg": {
+          "key": "sdg",
+          "title": "SDGs"
+        },
+        "rkp": {
+          "key": "rkp",
+          "title": "RKP 2022"
+        },
+        "dafterSafa": {
+          "key": "dafterSafa",
+          "title": "Daftar Data Saya"
+        }
+      },
+      "title": "Daftar Data",
+      "searchPlaceholder": "Pencarian"
+    }
+  }
+}

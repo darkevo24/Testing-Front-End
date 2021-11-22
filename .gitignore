@@ -23,6 +23,7 @@ translation.json
 # IDE
 .idea
 .vscode
+.vs
 
 # Logs
 logs

@@ -3,8 +3,6 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-import { KesiapanSDISidebar } from 'components/Sidebars/KesiapanSDISidebar';
-
 export const KesiapanSDILayout = ({ children }) => {
   const history = useHistory();
   const handleOnClick = () => history.push('/kesiapan-sdi-pusat');
@@ -15,9 +13,6 @@ export const KesiapanSDILayout = ({ children }) => {
         Kesiapan SDI
       </div>
       <Row>
-        <Col xs="3">
-          <KesiapanSDISidebar />
-        </Col>
         <Col>{children}</Col>
       </Row>
     </Container>

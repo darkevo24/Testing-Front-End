@@ -16,8 +16,17 @@ const EditorConfig = {
     numlist bullist outdent indent',
 };
 
-const TextEditor = () => {
-  return <Editor apiKey="ne6hq4p5tdn0hwuirba4i005nv3yavpgeahao9yy58ka476c" init={EditorConfig} className="tinymce-custom" />;
+const TextEditor = ({ defaultValue, disabled, onChange = () => {} }) => {
+  return (
+    <Editor
+      apiKey="ne6hq4p5tdn0hwuirba4i005nv3yavpgeahao9yy58ka476c"
+      init={EditorConfig}
+      className="tinymce-custom"
+      initialValue={defaultValue}
+      disabled={disabled}
+      onEditorChange={(e) => onChange(e)}
+    />
+  );
 };
 
 export default TextEditor;

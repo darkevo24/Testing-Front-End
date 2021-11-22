@@ -31,11 +31,11 @@ export const CMSSidebar = () => {
           <SidebarContentIcon className="mr-10" /> Content Management
         </div>
         <SidebarItem title="About Us" pathname="/cms/about-us" />
-        <SidebarItem title="Struktur Organisasi" pathname="#" />
+        <SidebarItem title="Struktur Organisasi" pathname="/cms/struktur" />
         <SidebarItem title="Berita" pathname="/cms/berita" />
         <SidebarItem title="Contact Us" pathname="#" />
         <SidebarItem title="Forum" pathname="#" />
-        <SidebarItem title="Komunitas Ahli" pathname="#" />
+        <SidebarItem title="Komunitas Ahli" pathname="/cms/komunitas-ahli" />
         <Accordion defaultActiveKey="0">
           <Accordion.Item>
             <Accordion.Header

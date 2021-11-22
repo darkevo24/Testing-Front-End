@@ -53,4 +53,74 @@
       background: var(--gray-bg);
     }
   }
+
+  .sdp-table__header-wrapper {
+    position: relative;
+
+    .sdp-right-wrapper {
+      position: relative;
+      .sdp-instansi-button {
+        box-shadow: none;
+        width: max-content;
+        svg {
+          margin-right: 12px;
+        }
+      }
+    }
+    .sdp-instansi-filter {
+      position: absolute;
+      z-index: 10;
+      background: var(--white);
+      padding: 16px;
+      top: 0;
+      left: 0;
+      right: 0;
+
+      .sdp-instansi-filter-header {
+        .basic-single {
+          min-width: 750px;
+
+          .select__control {
+            background: var(--stroke);
+            svg {
+              margin-left: 16px;
+            }
+            .select__indicators {
+              display: none;
+            }
+          }
+
+          .select__menu {
+            .menu-item {
+              svg, img {
+                margin-right: 12px;
+              }
+            }
+          }
+        }
+
+        button {
+          svg {
+            margin-right: 12px;
+            color: var(--stroke);
+          }
+        }
+      }
+
+      .sdp-instansi-filter-tags {
+        padding: 20px 0;
+
+        .sdp-instansi-filter-tags-wrapper {
+          .sdp-instansi-filter-tags-item{
+            max-width: 160px;
+
+            span {
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+      }
+    }
+  }
 }

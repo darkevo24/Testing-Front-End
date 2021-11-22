@@ -9,6 +9,8 @@ import history from './history';
 import appReducer from 'containers/App/reducer';
 import authReducer from 'containers/Login/reducer';
 import berandaReducer from 'containers/Beranda/reducer';
+import cmsReducer from 'containers/CMS/reducer';
+import tentangReducer from 'containers/TentangSDI/reducer';
 import permintaanDataReducer from 'containers/CMS/PermintaanData/reducer';
 import permintaanDataDetailReducer from 'containers/CMS/PermintaanDataForm/reducer';
 
@@ -20,6 +22,8 @@ export default function createReducer(injectedReducers) {
     global: appReducer,
     auth: authReducer,
     beranda: berandaReducer,
+    cms: cmsReducer,
+    tentang: tentangReducer,
     permintaanData: permintaanDataReducer,
     permintaanDataDetail: permintaanDataDetailReducer,
 

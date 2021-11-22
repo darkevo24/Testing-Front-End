@@ -19,8 +19,9 @@ export const FilterSearchInput = ({
   preGlobalFilteredRows,
   globalFilter,
   setGlobalFilter,
-  manualPagination = false,
   searchValue,
+  manualPagination = false,
+  highlightSearchInput = false,
 }) => {
   const [value, setValue] = useState(globalFilter);
   const onSearchChange = useAsyncDebounce((value) => {
@@ -38,7 +39,7 @@ export const FilterSearchInput = ({
   };
 
   return (
-    <InputGroup>
+    <InputGroup className={cx({ 'highlight-search-input': highlightSearchInput })}>
       <Form.Control
         variant="normal"
         type="text"
@@ -77,6 +78,7 @@ const Table = ({
   currentPage,
   onPageIndexChange = () => null,
   searchValue = '',
+  highlightSearchInput = false,
 }) => {
   const tableOptions = {
     columns,
@@ -149,6 +151,7 @@ const Table = ({
             onSearch={onSearch}
             manualPagination={manualPagination}
             searchValue={searchValue}
+            highlightSearchInput={highlightSearchInput}
           />
           {searchRightComponent ? (
             searchRightComponent

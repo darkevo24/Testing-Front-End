@@ -19,6 +19,18 @@
   &__table-wrapper {
     overflow-x: scroll;
   }
+  .highlight-search-input {
+    &.input-group {
+      .icon-container {
+        z-index: 9;
+        background-color: $gray-bg;
+        svg,
+        svg * {
+          fill: $red;
+        }
+      }
+    }
+  }
   .table > :not(caption) > * > * {
     border-bottom-width: 1px;
     border-bottom-color: $stroke !important;

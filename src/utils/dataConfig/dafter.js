@@ -62,6 +62,29 @@ export const indukData = ['PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL', 'PKKU; RDKK;CPCL
 
 export const formatData = ['csv', 'xlsx', 'pdf', 'png/jpg/jpeg', 'docx', 'json', 'xml'];
 
+export const instansiFilterData = [
+  {
+    value: 'Kementerian Kesehatan Republik Indonesia',
+    label: 'Kementerian Kesehatan Republik Indonesia',
+    icon: 'https://freesvg.org/img/1636985147low-poly-pink-background.png',
+  },
+  {
+    value: 'Kementerian Hukum dan Hak Asasi Manusia Republik Indonesia',
+    label: 'Kementerian Hukum dan Hak Asasi Manusia Republik Indonesia',
+    icon: '',
+  },
+  {
+    value: 'Kementerian Kesehatan Republik Indonesia 1',
+    label: 'Kementerian Kesehatan Republik Indonesia 1',
+    icon: 'https://freesvg.org/img/1636985147low-poly-pink-background.png',
+  },
+  {
+    value: 'Kementerian Hukum dan Hak Asasi Manusia Republik Indonesia 2',
+    label: 'Kementerian Hukum dan Hak Asasi Manusia Republik Indonesia 2',
+    icon: '',
+  },
+];
+
 const getRandomIndex = () => Math.floor(Math.random() * 5);
 
 /**

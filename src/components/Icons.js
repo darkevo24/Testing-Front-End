@@ -4,6 +4,7 @@ const types = {
   dim: 'gray-dark',
   gray: 'gray',
   light: 'gray-light',
+  red: 'red',
 };
 
 const getColor = (details, defaultColor) => types[details.variant] || (defaultColor ?? types.dim);
@@ -39,6 +40,15 @@ export const RightChevron = (props) => (
   <svg width="7" height="10" viewBox="0 0 7 10" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M6.01207 5.01229C6.01207 4.74712 5.90676 4.49282 5.71929 4.30529L1.71929 0.305288C1.62704 0.209778 1.5167 0.133596 1.39469 0.0811869C1.27269 0.0287779 1.14147 0.00119157 1.00869 3.7757e-05C0.87591 -0.00111606 0.744232 0.0241854 0.621336 0.0744663C0.498439 0.124747 0.386787 0.199 0.292894 0.292893C0.199001 0.386786 0.124747 0.498438 0.0744663 0.621334C0.0241854 0.744231 -0.00111606 0.87591 3.77571e-05 1.00869C0.00119157 1.14147 0.0287788 1.27269 0.0811878 1.39469C0.133597 1.5167 0.209778 1.62704 0.305288 1.71929L3.59829 5.01229L0.305288 8.30529C0.12313 8.49389 0.0223355 8.74649 0.0246139 9.00869C0.0268924 9.27089 0.132062 9.5217 0.31747 9.70711C0.502878 9.89252 0.753691 9.99768 1.01589 9.99996C1.27808 10.0022 1.53069 9.90145 1.71929 9.71929L5.71929 5.71929C5.90676 5.53176 6.01207 5.27745 6.01207 5.01229Z"
+      fill={`var(--${getColor(props)})`}
+    />
+  </svg>
+);
+
+export const DownChevron = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16">
+    <path
+      d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
       fill={`var(--${getColor(props)})`}
     />
   </svg>
@@ -218,4 +228,5 @@ export const icons = {
   search: Search,
   splitCircle: SplitCircle,
   splitTriangle: SplitTriangle,
+  downChevron: DownChevron,
 };

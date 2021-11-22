@@ -7,6 +7,10 @@
       "searchPlaceholder": "Cari Dataset",
       "filterPlaceholder": "Cari {{filter}}",
       "filterShowMore": "Show More {{filter}}"
+    },
+    "topic": {
+      "searchPlaceholder": "Cari di topik",
+      "searchInstansi": "Semua Instansi"
     }
   }
 }

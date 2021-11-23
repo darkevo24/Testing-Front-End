@@ -19,6 +19,9 @@ const BeritaPage = lazy(() => import('containers/Berita'));
 const KesiapanData = lazy(() => import('containers/KesiapanData'));
 const KesiapanSDIDaerah = lazy(() => import('containers/KesiapanSDiDaerah'));
 const KesiapanSDIPusat = lazy(() => import('containers/KesiapanSDIPusat'));
+const DashboardEksekutif = lazy(() => import('containers/Dashboard/DashboardEksekutif'));
+const DashboardSaya = lazy(() => import('containers/Dashboard/DashboardSaya'));
+const DataAnalytic = lazy(() => import('containers/Dashboard/DataAnalytic'));
 const DafterPage = lazy(() => import('containers/Dafter'));
 // const NotFoundPage = lazy(() => import('containers/NotFound'));
 
@@ -42,6 +45,9 @@ function AppRoutes(props) {
         <Route exact path="/kesiapan-data" component={KesiapanData} />
         <Route exact path="/kesiapan-sdi-daerah" component={KesiapanSDIDaerah} />
         <Route exact path="/kesiapan-sdi-pusat" component={KesiapanSDIPusat} />
+        <Route exact path="/dashboard-eksekutif" component={DashboardEksekutif} />
+        <Route exact path="/dashboard-saya" component={DashboardSaya} />
+        <Route exact path="/data-analytic" component={DataAnalytic} />
         {/* <Route path="*" component={NotFoundPage} /> */}
       </AppLayout>
     </Switch>

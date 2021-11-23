@@ -3,19 +3,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { useState } from 'react';
-import dropdownArrow from '../../assets/drop-down-arraw.svg';
-import '../../assets/styles/pages/_dashboard.scss';
-import { Dropdown, ListGroup } from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap';
+
+import 'assets/styles/pages/_dashboard.scss';
 
 const Dashboard = (props) => {
-  const [displayDropdown, setDisplayDropdown] = useState(false);
   const [currentDashboard, setCurrentDashboard] = useState(props.options[0]);
-  const showDisplayDropdown = () => {
-    displayDropdown ? setDisplayDropdown(false) : setDisplayDropdown(true);
-  };
-  const hideDisplayDropdown = () => {
-    setDisplayDropdown(false);
-  };
   const breadcrumbsList = [
     {
       path: '/home',
@@ -30,8 +23,6 @@ const Dashboard = (props) => {
       label: props.title,
     },
   ];
-
-  console.log(props.options);
 
   return (
     <div className="kesiapan-sd-pusat-wrapper">

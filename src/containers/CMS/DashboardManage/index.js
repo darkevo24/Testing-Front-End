@@ -1,7 +1,7 @@
+import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import bn from '../../../utils/bemNames';
-import React from 'react';
+import bn from 'utils/bemNames';
 
 const bem = bn('content-table');
 
@@ -21,6 +21,7 @@ const CMSDashboardManage = (props) => {
                 height="1000"
                 frameBorder="0"
                 seamless
+                title={props.title}
                 src={props.url}></iframe>
             </Col>
           </Row>

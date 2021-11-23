@@ -9,6 +9,7 @@ import NumberFormat from 'react-number-format';
 import cloneDeep from 'lodash/cloneDeep';
 import find from 'lodash/find';
 import map from 'lodash/map';
+import uniqBy from 'lodash/uniqBy';
 import remove from 'lodash/remove';
 
 import { ReactComponent as SearchSvg } from 'assets/search.svg';
@@ -98,7 +99,7 @@ const DataSet = () => {
 
   const options = useMemo(
     () => [
-      // { label: t('fields.relevansi.label'), value: 'relevansi' },
+      { label: t('fields.relevansi.label'), value: 'score desc' },
       { label: t('common.nameAtoZ'), value: 'title asc' },
       { label: t('common.nameZtoA'), value: 'title desc' },
       { label: t('common.lastModified'), value: 'metadata_modified desc' },
@@ -119,6 +120,14 @@ const DataSet = () => {
         Header: 'Card',
         Cell: ({ cell: { row: { original: item } = {} } = {} }) => {
           const dataSetUrl = `/data/dataset/${item.name}`;
+          const numberOfMaxFormats = 4;
+          const uniqFormats =
+            uniqBy(
+              item.resources.filter((r) => !!r.format),
+              'format',
+            ) || [];
+          const formatesToShow = uniqFormats.slice(0, numberOfMaxFormats);
+          const hiddenFormats = uniqFormats.length - formatesToShow.length;
           return (
             <div className="sdp-card-wrapped d-flex p-16 justify-content-between" key={item.id}>
               <div className="flex-column">
@@ -129,9 +138,10 @@ const DataSet = () => {
                   <div className="fs-14 lh-17 sdp-text-black-dark">{item.notes}</div>
                 </div>
                 <div className="d-flex flex-wrap mt-n8">
-                  {item.resources?.map((tag) => (
+                  {formatesToShow?.map((tag) => (
                     <Tags key={`${item.id}-${tag.id}`} className="mt-8 px-12" text={tag.format} />
                   ))}
+                  {!!hiddenFormats && <Tags className="px-12 text-nowrap" text={`${hiddenFormats} others`} />}
                 </div>
               </div>
               <div className="sdp-card-right-section d-flex flex-column justify-content-between">
@@ -151,6 +161,7 @@ const DataSet = () => {
     onSearch: (searchText) => {
       fetchDataset({ q: searchText }, true);
     },
+    highlightSearchInput: true,
     showHeader: false,
     searchLeftComponent: (
       <div className="d-flex align-items-center justify-content-center fs-20 fw-bold">

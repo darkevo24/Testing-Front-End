@@ -4,6 +4,7 @@ const types = {
   dim: 'gray-dark',
   gray: 'gray',
   light: 'gray-light',
+  red: 'red',
 };
 
 const getColor = (details, defaultColor) => types[details.variant] || (defaultColor ?? types.dim);

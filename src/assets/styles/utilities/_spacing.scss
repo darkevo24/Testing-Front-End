@@ -1,6 +1,9 @@
-$customSpacings: 0, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 18, 20, 24, 27, 30, 32, 35, 40, 42, 48, 50, 80, 97, 100, 200, 250, 320, 328, 500;
+$customSpacings: 0, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 18, 20, 24, 27, 28, 30, 32, 35, 40, 42, 48, 50, 80, 97, 100, 200, 250, 320, 328, 500;
 
 @each $size in $customSpacings {
+  .h-#{$size} {
+    height: #{$size}px;
+  }
 	.m-#{$size} {
 		margin: #{$size}px !important;
 	}
@@ -15,8 +18,14 @@ $customSpacings: 0, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 18, 20, 24, 27, 30, 32, 
   .ml-#{$size} {
 		margin-left: #{$size}px !important;
   }
+  .ml-n#{$size} {
+		margin-left: -#{$size}px !important;
+  }
 	.mr-#{$size} {
 		margin-right: #{$size}px !important;
+  }
+  .mr-n#{$size} {
+		margin-right: -#{$size}px !important;
   }
 	.mt-#{$size} {
 		margin-top: #{$size}px !important;

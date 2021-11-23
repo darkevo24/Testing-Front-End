@@ -22,6 +22,7 @@ const KesiapanSDIPusat = lazy(() => import('containers/KesiapanSDIPusat'));
 const DashboardEksekutif = lazy(() => import('containers/Dashboard/DashboardEksekutif'));
 const DashboardSaya = lazy(() => import('containers/Dashboard/DashboardSaya'));
 const DataAnalytic = lazy(() => import('containers/Dashboard/DataAnalytic'));
+const DafterPage = lazy(() => import('containers/Dafter'));
 // const NotFoundPage = lazy(() => import('containers/NotFound'));
 
 function AppRoutes(props) {
@@ -31,9 +32,10 @@ function AppRoutes(props) {
       <AppLayout>
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
-        <Route exact path="/dataset" component={DataSetPage} />
+        <PrivateRoute exact path="/dataset" component={DataSetPage} />
+        <PrivateRoute exact path="/dafter" component={DafterPage} />
         <Route exact path="/forum" component={ForumPage} />
-        <Route exact path="/komunitas" component={KomunitasPage} />
+        <PrivateRoute exact path="/komunitas-ahli" component={KomunitasPage} />
         <Route exact path="/bl" component={BeritaLayout} />
         <Route exact path="/berita" component={BeritaPage} />
         <Route exact path="/bimtek-summary" component={BimTekSummaryPage} />

@@ -1,7 +1,7 @@
+import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import bn from '../../../utils/bemNames';
-import React from 'react';
+import bn from 'utils/bemNames';
 
 const bem = bn('content-table');
 

@@ -1,10 +1,10 @@
-import { Breadcrumbs } from 'components/Breadcrumb';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import KesiapanSDILayout from '../../layouts/KesiapanSDILayout';
-import { useState } from 'react';
-import { icons } from '../../components/Icons';
-import { useHistory } from 'react-router-dom';
+import { Breadcrumbs } from 'components/Breadcrumb';
+import KesiapanSDILayout from 'layouts/KesiapanSDILayout';
+import { icons } from 'components/Icons';
 
 const KesiapanSDIDaerah = () => {
   const [displayDropdown, setDisplayDropdown] = useState(false);

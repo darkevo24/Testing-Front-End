@@ -1,0 +1,30 @@
+.sdp-popover {
+  .popover-arrow {
+    display: none;
+  }
+  &__header,
+  &__body {
+    @extend .py-16;
+    @extend .px-24;
+    background: transparent;
+  }
+  &__header {
+    @extend .text-nowrap;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    color: $black;
+    border-bottom: 1px solid $stroke;
+  }
+  &__body {
+    font-size: 14px;
+    line-height: 17px;
+    color: $black-dark-10;
+  }
+
+  border: 1px solid $danger;
+  box-shadow: 0px 8px 40px -8px $shadow;
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 600px;
+}

@@ -21,13 +21,19 @@ import React from 'react';
 
 export const apiUrl = '/api';
 export const dataUrl = '/data/api';
+export const portalUrl = '/portal';
+export const v1Url = '/v1';
 
 export const getApiEndpoint = (path) => `${apiUrl}/${path}`;
 export const getDataEndpoint = (path) => `${dataUrl}/${path}`;
+export const getPortalEndpoint = (path) => `${apiUrl + portalUrl}/${path}`;
+export const getV1Endpoint = (path) => `${apiUrl + v1Url}/${path}`;
 
 export const apiUrls = {
   login: getApiEndpoint('login'),
   dataset: getDataEndpoint('3/action/package_search'),
+  perminataanData: getPortalEndpoint('permintaan-data'),
+  instansiData: getV1Endpoint('instansi'),
 };
 
 export const TOPIC_LIST = [
@@ -102,6 +108,7 @@ export const CMS_DASHBOARD = [
     description: Text,
     icon: <ContentManagementIcon />,
     iconColor: 'sdp-text-blue',
+    link: '/cms/about-us',
   },
   {
     title: 'Data Management',

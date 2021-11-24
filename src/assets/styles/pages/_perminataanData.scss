@@ -1,0 +1,11 @@
+.sdp-perminataan-data-container {
+  .sdp-perminataan-left-sidebar {
+    margin-top: 16px;
+    .sdp-perminataan-sidebar-item {
+      padding: 15px 16px;
+    }
+    .active {
+      background: var(--secondary);
+    }
+  }
+}

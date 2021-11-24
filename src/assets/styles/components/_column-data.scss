@@ -1,0 +1,42 @@
+.sdp-column-data {
+  &__row {
+    @extend .mx-0;
+    @extend .mb-24;
+    &:last-child {
+      @extend .mb-0;
+      .sdp-column-data__col {
+        border-bottom: none;
+        @extend .pb-0;
+      }
+    }
+  }
+  &__col {
+    border-bottom: 1px solid $stroke-dark;
+    @extend .pb-24;
+    @extend .px-0;
+    @extend .mr-24;
+    &:last-child {
+      @extend .mr-0;
+    }
+  }
+  &__label {
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: $gray;
+    margin-bottom: 8px;
+  }
+  &__value {
+    font-size: 14px;
+    line-height: 17px;
+    color: $black-dark-10;
+  }
+  &__value-link {
+    padding: 4px 12px;
+    background: $blue-bg;
+    color: $blue;
+    font-weight: 600;
+  }
+}

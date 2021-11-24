@@ -6,6 +6,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import RBTable from 'react-bootstrap/Table';
 import cx from 'classnames';
 import isFunction from 'lodash/isFunction';
+import isString from 'lodash/isString';
 import { useAsyncDebounce, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 
 import { LeftChevron, RightChevron, Search, actionIcons } from 'components/Icons';
@@ -79,6 +80,8 @@ const Table = ({
   onPageIndexChange = () => null,
   searchValue = '',
   highlightSearchInput = false,
+  onRowClick,
+  rowClass,
 }) => {
   const tableOptions = {
     columns,
@@ -137,6 +140,16 @@ const Table = ({
     [bem.m('highlight')]: highlightOnHover,
   };
 
+  const handleRowClick = (data) => {
+    if (isFunction(onRowClick)) onRowClick(data.original);
+  };
+
+  const getRowClass = (data) => {
+    if (isString(rowClass)) return rowClass;
+    if (isFunction(rowClass)) return rowClass(data.original);
+    return '';
+  };
+
   return (
     <div className={cx(bem.b(), bem.m(variant), className, tableWrapperClasses)}>
       {title ? <div className={bem.e('header')}>{title}</div> : null}
@@ -187,7 +200,7 @@ const Table = ({
             {page.map((row, i) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()}>
+                <tr {...row.getRowProps()} onClick={() => handleRowClick(row)} className={getRowClass(row)}>
                   {row.cells.map((cell) => {
                     return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
                   })}

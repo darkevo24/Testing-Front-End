@@ -32,7 +32,20 @@ export const CMSSidebar = () => {
         </div>
         <SidebarItem title="About Us" pathname="/cms/about-us" />
         <SidebarItem title="Struktur Organisasi" pathname="/cms/struktur" />
-        <SidebarItem title="Berita" pathname="/cms/berita" />
+        <Accordion defaultActiveKey="0">
+          <Accordion.Item>
+            <Accordion.Header
+              className={cx('', {
+                selected: window.location.pathname.includes('/cms/berita'),
+              })}>
+              Berita
+            </Accordion.Header>
+            <Accordion.Body>
+              <SidebarItem title="Konten Berita" pathname="/cms/berita-konten" />
+              <SidebarItem title="Layout Berita" pathname="/cms/berita-layout" />
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
         <SidebarItem title="Contact Us" pathname="#" />
         <SidebarItem title="Forum" pathname="#" />
         <SidebarItem title="Komunitas Ahli" pathname="/cms/komunitas-ahli" />

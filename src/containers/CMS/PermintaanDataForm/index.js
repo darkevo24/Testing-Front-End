@@ -62,7 +62,7 @@ const DiprosesText = () => {
   );
 };
 
-const TerkirimButton = (onTolak, onProses) => {
+const TerkirimButton = ({ onTolak, onProses }) => {
   return (
     <div>
       <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={onTolak}>
@@ -75,7 +75,7 @@ const TerkirimButton = (onTolak, onProses) => {
   );
 };
 
-const DiprosesButton = (onSelesai) => {
+const DiprosesButton = ({ onSelesai }) => {
   return (
     <div>
       <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={onSelesai}>
@@ -86,9 +86,33 @@ const DiprosesButton = (onSelesai) => {
 };
 
 const CMSPermintaanDataView = () => {
-  const [showTolakModal, setShowTolakModal] = useState(false);
-  const [showProsesModal, setShowProsesModal] = useState(false);
-  const [showSelesaiModal, setShowSelesaiModal] = useState(false);
+  const [showTolakModal, isSetShowTolakModal] = useState(false);
+  const [showProsesModal, isSetShowProsesModal] = useState(false);
+  const [showSelesaiModal, isSetShowSelesaiModal] = useState(false);
+
+  const setShowTolakModal = () => {
+    isSetShowTolakModal(true);
+  };
+
+  const hideTolakModal = () => {
+    isSetShowTolakModal(false);
+  };
+
+  const setShowProsesModal = () => {
+    isSetShowProsesModal(true);
+  };
+
+  const hideProsesModal = () => {
+    isSetShowProsesModal(false);
+  };
+
+  const setShowSelesaiModal = () => {
+    isSetShowSelesaiModal(true);
+  };
+
+  const hideSelesaiModal = () => {
+    isSetShowSelesaiModal(false);
+  };
 
   const dataLog = [];
   const schema = yup
@@ -113,10 +137,16 @@ const CMSPermintaanDataView = () => {
     const id = url.split('/')[3];
     return dispatch(getPermintaanDataDetail(id));
   };
+
+  const dataTemp = {
+    id: 1,
+    status: 'Diproses',
+  };
+
   useEffect(() => {
     fetchDataset();
   }, []);
-  const data = useMemo(() => result?.results || [], [result]);
+  const data = useMemo(() => result?.results || dataTemp, [result]);
   useEffect(() => {
     fetchDataset();
   }, []);
@@ -142,8 +172,10 @@ const CMSPermintaanDataView = () => {
             <div className="d-flex justify-content-between mb-4">
               <div className={bem.e('title')}>Detail</div>
               <div>
-                {data.status === 'Terkirim' ? <TerkirimButton /> : null}
-                {data.status === 'Diproses' ? <DiprosesButton /> : null}
+                {data.status === 'Terkirim' ? (
+                  <TerkirimButton onTolak={setShowTolakModal} onProses={setShowProsesModal} />
+                ) : null}
+                {data.status === 'Diproses' ? <DiprosesButton onSelesai={setShowSelesaiModal} /> : null}
               </div>
             </div>
             <Form className="sdp-form">
@@ -152,7 +184,7 @@ const CMSPermintaanDataView = () => {
               <Input isDisabled group label="Target Waktu" name="targetWaktu" control={control} />
               <Input isDisabled group label="Produsen Data" name="produsen" control={control} />
               <Input isDisabled group label="Jenis Data" name="jenisData" control={control} />
-              <Input isDisabled group isLink label="URL Dataset" name="position" control={control} />
+              <Input isDisabled group isLink label="URL Dataset" name="url" control={control} />
             </Form>
             <div>
               <h5 className="fw-bold mb-3 border-bottom-gray-stroke py-2">Informasi Peminta Data</h5>
@@ -204,49 +236,50 @@ const CMSPermintaanDataView = () => {
         <Col sm={3} className="my-5">
           <LogStatus data={dataLog} />
         </Col>
+        <Modal
+          visible={showTolakModal}
+          onClose={() => hideTolakModal()}
+          title="Apakah anda menolak Permintaan Data?"
+          actions={[
+            { variant: 'secondary', text: 'Batal', onClick: () => hideTolakModal() },
+            { text: 'Konfirmasi', type: 'submit', onClick: () => hideTolakModal() },
+          ]}>
+          <Form noValidate>
+            <Form.Group as={Col} md="12" className="mb-16">
+              <Form.Control as="textarea" type="text" name="catatan" rules={{ required: true }} />
+            </Form.Group>
+          </Form>
+        </Modal>
+        <Modal
+          visible={showProsesModal}
+          onClose={() => hideProsesModal(false)}
+          title="Apakah anda memproses Permintaan Data?"
+          actions={[
+            { variant: 'secondary', text: 'Batal', onClick: () => hideProsesModal() },
+            { text: 'Konfirmasi', type: 'submit', onClick: () => hideProsesModal() },
+          ]}>
+          <Form noValidate>
+            <Form.Group as={Col} md="12" className="mb-16">
+              <Form.Control as="textarea" type="text" name="catatan" rules={{ required: true }} />
+            </Form.Group>
+          </Form>
+        </Modal>
+        <Modal
+          visible={showSelesaiModal}
+          onClose={() => hideSelesaiModal()}
+          title="Apakah anda ingin menyelesaikan Permintaan Data?"
+          actions={[
+            { variant: 'secondary', text: 'Batal', onClick: () => hideSelesaiModal() },
+            { text: 'Konfirmasi', type: 'submit', onClick: () => hideSelesaiModal() },
+          ]}>
+          <Form noValidate>
+            <Form.Group as={Col} md="12" className="mb-16">
+              <Input group isLink label="URL Dataset" name="url" control={control} rules={{ required: true }} />
+              <Form.Control as="textarea" type="text" name="catatan" rules={{ required: true }} />
+            </Form.Group>
+          </Form>
+        </Modal>
       </Row>
-      <Modal
-        Visible={showTolakModal}
-        onClose={() => setShowTolakModal(false)}
-        subtitle="Apakah anda menolak Permintaan Data?"
-        actions={[
-          { variant: 'secondary', text: 'Batal', onClick: () => setShowTolakModal(false) },
-          { text: 'Konfirmasi', type: 'submit', onClick: () => setShowTolakModal(false) },
-        ]}>
-        <Form noValidate>
-          <Form.Group as={Col} md="8" className="mb-16">
-            <Form.Control type="text area" name="link" rules={{ required: true }} />
-          </Form.Group>
-        </Form>
-      </Modal>
-      <Modal
-        Visible={showProsesModal}
-        onClose={() => setShowProsesModal(false)}
-        subtitle="Apakah anda memproses Permintaan Data?"
-        actions={[
-          { variant: 'secondary', text: 'Batal', onClick: () => setShowProsesModal(false) },
-          { text: 'Konfirmasi', type: 'submit', onClick: () => setShowProsesModal(false) },
-        ]}>
-        <Form noValidate>
-          <Form.Group as={Col} md="8" className="mb-16">
-            <Form.Control type="text area" name="link" rules={{ required: true }} />
-          </Form.Group>
-        </Form>
-      </Modal>
-      <Modal
-        Visible={showSelesaiModal}
-        onClose={() => setShowSelesaiModal(false)}
-        subtitle="Apakah anda ingin menyelesaikan Permintaan Data?"
-        actions={[
-          { variant: 'secondary', text: 'Batal', onClick: () => setShowSelesaiModal(false) },
-          { text: 'Konfirmasi', type: 'submit', onClick: () => setShowSelesaiModal(false) },
-        ]}>
-        <Form noValidate>
-          <Form.Group as={Col} md="8" className="mb-16">
-            <Form.Control type="text area" name="link" rules={{ required: true }} />
-          </Form.Group>
-        </Form>
-      </Modal>
     </div>
   );
 };

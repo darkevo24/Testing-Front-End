@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, get } from 'utils/request';
+import { apiUrls, get, post } from 'utils/request';
 import cloneDeep from 'lodash/cloneDeep';
 
 export const initialState = {
@@ -14,6 +14,21 @@ export const PERMINTAAN_DATA_DETAIL = 'PERMINTAAN_DATA_DETAIL';
 export const getPermintaanDataDetail = createAsyncThunk('permintaan-data/detail', async (params) => {
   let data = cloneDeep(params);
   const response = await get(apiUrls.detailPermintaanData + data);
+  return response?.result;
+});
+
+export const postPermintaanDataTolak = createAsyncThunk('permintaan-data/tolak', async (params, data) => {
+  const response = await post(apiUrls.detailPermintaanData + data + '/tolak', params);
+  return response?.result;
+});
+
+export const postPermintaanDataProses = createAsyncThunk('permintaan-data/proses', async (params, data) => {
+  const response = await post(apiUrls.detailPermintaanData + data + '/proses', params);
+  return response?.result;
+});
+
+export const postPermintaanDataSelesai = createAsyncThunk('permintaan-data/selesai', async (params, data) => {
+  const response = await post(apiUrls.detailPermintaanData + data + '/selesai', params);
   return response?.result;
 });
 

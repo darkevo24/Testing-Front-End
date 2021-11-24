@@ -104,7 +104,7 @@ export const Perminataan = () => {
   const getData = () => {
     if (!records?.length) return [];
     if (activeTab === 'semua') return records;
-    return records.filter((item) => item.status.toLowerCase() === activeTab.toLowerCase());
+    return records.filter((item) => (item?.status || '').toLowerCase() === activeTab.toLowerCase());
   };
   const tableData = getData();
   const tableConfig = {

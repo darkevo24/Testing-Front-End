@@ -1,14 +1,22 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import { CMS_DASHBOARD } from 'utils/constants';
 
 const Dashboard = () => {
+  const history = useHistory();
+
+  const redirectToPage = (page) => {
+    if (!page?.link) return;
+    history.push(page.link);
+  };
+
   return (
     <Row md={4} className="m-50 d-flex align-items-center justify-content-center">
       {CMS_DASHBOARD.map((_, idx) => (
-        <Col key={idx} className="sdp-csm-card m-10">
+        <Col key={idx} className="sdp-csm-card m-10" onClick={() => redirectToPage(_)}>
           <Card className="m-24">
             <div className={_.iconColor}>{_.icon}</div>
             <Card.Body className="mt-16">

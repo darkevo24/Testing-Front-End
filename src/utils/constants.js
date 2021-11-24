@@ -108,6 +108,7 @@ export const CMS_DASHBOARD = [
     description: Text,
     icon: <ContentManagementIcon />,
     iconColor: 'sdp-text-blue',
+    link: '/cms/about-us',
   },
   {
     title: 'Data Management',

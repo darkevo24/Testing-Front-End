@@ -5,6 +5,7 @@ import { CMSLayout, PrivateRoute } from 'layouts/AdminLayout';
 const DashboardPage = lazy(() => import('containers/CMS/Dashboard'));
 const KomunitasAhliPage = lazy(() => import('containers/CMS/KomunitasAhli'));
 const ManageKomunitasAhliPage = lazy(() => import('containers/CMS/KomunitasAhli/ManageKomunitasAhli'));
+const BeritaLayout = lazy(() => import('containers/CMS/BeritaLayout'));
 const BeritaPage = lazy(() => import('containers/CMS/Berita'));
 const BeritaBaruPage = lazy(() => import('containers/CMS/BeritaBaru'));
 const BeritaDetailPage = lazy(() => import('containers/CMS/BeritaDetail'));
@@ -37,7 +38,8 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/struktur-baru" component={StrukturBaruPage} />
         <PrivateRoute exact path="/cms/struktur-detail/:id" component={StrukturDetailPage} />
         <PrivateRoute exact path="/cms/about-us/edit/:id?" component={AboutUsEditPage} />
-        <PrivateRoute exact path="/cms/berita" component={BeritaPage} />
+        <PrivateRoute exact path="/cms/berita-layout" component={BeritaLayout} />
+        <PrivateRoute exact path="/cms/berita-konten" component={BeritaPage} />
         <PrivateRoute exact path="/cms/berita-baru" component={BeritaBaruPage} />
         <PrivateRoute exact path="/cms/berita-detail/:id" component={BeritaDetailPage} />
         <PrivateRoute exact path="/cms/bimtek-permintaan" component={BimtekPermintaanPage} />

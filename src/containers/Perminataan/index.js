@@ -9,8 +9,9 @@ import Button from 'react-bootstrap/Button';
 import { NoPerminataanData, StatusSvg } from 'components/Icons';
 import { perminataanDatasetSelector, getPerminataanData } from './slice';
 import Table from 'components/Table';
-import { Loader } from 'components';
-import { prefixID } from './Forum/constant';
+import { prefixID } from './constant';
+import SideBarLoader from '../../components/Loader/Sidebar';
+import TableLoader from '../../components/Loader/TableLoader';
 
 const LIST = [
   {
@@ -51,7 +52,7 @@ export const Perminataan = () => {
   };
 
   useEffect(() => {
-    if (!records?.length) fetchPerminataanDataset(page || 0);
+    fetchPerminataanDataset(page || 0);
   }, []);
 
   const handleBuatPermintaan = () => {
@@ -59,15 +60,20 @@ export const Perminataan = () => {
   };
 
   const rowClick = (data) => {
-    debugger;
+    if ((data?.status || '').toLowerCase() === 'ditolak') return;
     history.push(`/permintaan-data-detail/${data.id}`);
+  };
+
+  const getRowClass = (data) => {
+    if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
+    return 'bg-gray';
   };
 
   const columns = [
     {
       Header: '',
       accessor: 'perminataanID',
-      Cell: ({ ...rest }) => <span>{prefixID(rest.row.original.id)}</span>,
+      Cell: ({ ...rest }) => <span>{prefixID(rest?.row?.original?.id || '')}</span>,
     },
     {
       Header: '',
@@ -88,7 +94,7 @@ export const Perminataan = () => {
     },
     {
       Header: '',
-      accessor: 'status',
+      accessor: 'statusInfo',
       Cell: ({ ...rest }) => {
         const className = {
           draft: 'stroke',
@@ -129,7 +135,8 @@ export const Perminataan = () => {
     pageSize: size,
     currentPage: page,
     manualPagination: true,
-    rowClick: rowClick,
+    onRowClick: rowClick,
+    rowClass: getRowClass,
     onPageIndexChange: (currentPage) => {
       if (currentPage !== page) {
         fetchPerminataanDataset(currentPage);
@@ -142,24 +149,32 @@ export const Perminataan = () => {
       <span className="fs-24 lh-30 fw-bold sdp-text-black-dark">Permintaan Data</span>
       <Row className="mt-40">
         <Col xs={6} md={3}>
-          <Button variant="primary" className="br-48 py-16 px-48" onClick={handleBuatPermintaan}>
-            +&nbsp;&nbsp;Buat Permintaan
-          </Button>
+          {loading ? (
+            <SideBarLoader />
+          ) : (
+            <>
+              <Button variant="primary" className="br-48 py-16 px-48" onClick={handleBuatPermintaan}>
+                +&nbsp;&nbsp;Buat Permintaan
+              </Button>
 
-          <div className="sdp-perminataan-left-sidebar mr-40">
-            {LIST.map((item) => (
-              <div
-                className={cx('sdp-perminataan-sidebar-item', {
-                  active: activeTab === item.key,
-                })}
-                onClick={() => setActiveTab(item.key)}>
-                {item.title}
+              <div className="sdp-perminataan-left-sidebar mr-40">
+                {LIST.map((item) => (
+                  <div
+                    className={cx('sdp-perminataan-sidebar-item', {
+                      active: activeTab === item.key,
+                    })}
+                    onClick={() => setActiveTab(item.key)}>
+                    {item.title}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </>
+          )}
         </Col>
         <Col xs={12} md={9} className="">
-          {!records?.length || !tableData?.length ? (
+          {loading ? (
+            <TableLoader />
+          ) : !records?.length || !tableData?.length ? (
             <div className="sdp-perminataan-no-data d-flex justify-content-center align-items-center h-100 flex-column">
               <NoPerminataanData />
               <spn className="mt-10 fs-18 lh-22 sdp-text-disable">Tidak Ada Permintaan Data</spn>
@@ -168,8 +183,9 @@ export const Perminataan = () => {
             <Table {...tableConfig} />
           )}
         </Col>
-        {loading && <Loader fullscreen />}
       </Row>
     </div>
   );
 };
+
+/*<Loader fullscreen />*/

@@ -10,12 +10,21 @@ export const initialState = {
     records: [],
     size: defaultNumberOfRows,
     totalRecords: null,
-    newRecord: {},
   },
   kirimset: {
     loading: false,
     success: false,
     error: null,
+  },
+  detaildataSet: {
+    loading: false,
+    error: '',
+    record: {},
+  },
+  logdataset: {
+    loading: false,
+    error: '',
+    record: [],
   },
   instansiData: [],
   instansiLoading: false,
@@ -36,13 +45,23 @@ export const setPerminataanData = createAsyncThunk('portal/setPerminataanData', 
 });
 
 export const setKirimPerminataanData = createAsyncThunk('portal/setKirimPerminataanData', async (params) => {
-  const response = await post(`${apiUrls.perminataanData}/${params.id}/kirim`, params.payload);
+  const response = await post(`${apiUrls.perminataanData}/${params.id}/${params.url}`, params.payload);
   return response?.data;
 });
 
 export const getInstansiData = createAsyncThunk('portal/getInstansiData', async (params) => {
   const response = await get(apiUrls.instansiData);
   return response?.data?.content?.records;
+});
+
+export const getPerminataanDataById = createAsyncThunk('portal/getPerminataanDataById', async (params) => {
+  const response = await get(`${apiUrls.perminataanData}/${params}`);
+  return response?.data?.content;
+});
+
+export const getPerminataanLogDataById = createAsyncThunk('portal/getPerminataanLogDataById', async (params) => {
+  const response = await get(`${apiUrls.perminataanData}/${params}/logs`, params);
+  return response?.data?.content;
 });
 
 const perminataanSlice = createSlice({
@@ -82,11 +101,9 @@ const perminataanSlice = createSlice({
     });
     builder.addCase(setPerminataanData.pending, (state, action) => {
       state.dataset.loading = true;
-      state.dataset.newRecord = {};
     });
     builder.addCase(setPerminataanData.fulfilled, (state, action) => {
       state.dataset.loading = false;
-      state.dataset.newRecord = action.payload.content;
     });
     builder.addCase(setPerminataanData.rejected, (state, action) => {
       state.dataset.loading = false;
@@ -104,11 +121,35 @@ const perminataanSlice = createSlice({
       state.kirimset.loading = false;
       state.kirimset.error = action.error.message;
     });
+    builder.addCase(getPerminataanDataById.pending, (state, action) => {
+      state.detaildataSet.loading = true;
+    });
+    builder.addCase(getPerminataanDataById.fulfilled, (state, action) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.record = action.payload;
+    });
+    builder.addCase(getPerminataanDataById.rejected, (state, action) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.error = action.error.message;
+    });
+    builder.addCase(getPerminataanLogDataById.pending, (state, action) => {
+      state.logdataset.loading = true;
+    });
+    builder.addCase(getPerminataanLogDataById.fulfilled, (state, action) => {
+      state.logdataset.loading = false;
+      state.logdataset.record = action.payload.reverse();
+    });
+    builder.addCase(getPerminataanLogDataById.rejected, (state, action) => {
+      state.logdataset.loading = false;
+      state.logdataset.error = action.error.message;
+    });
   },
 });
 
 export const perminataanDatasetSelector = (state) => state.perminataan?.dataset;
 export const kirimsetSelector = (state) => state.perminataan?.kirimset;
+export const detailDatasetSelector = (state) => state.perminataan?.detaildataSet;
+export const logDatasetSelector = (state) => state.perminataan?.logdataset;
 export const perminataanForumErrorSelector = (state) => state.perminataan?.error;
 export const instansiiDatasetSelector = (state) => ({
   instansiData: state.perminataan?.instansiData,

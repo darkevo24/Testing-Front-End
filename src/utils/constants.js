@@ -27,7 +27,7 @@ export const v1Url = '/v1';
 export const getApiEndpoint = (path) => `${apiUrl}/${path}`;
 export const getDataEndpoint = (path) => `${dataUrl}/${path}`;
 export const getPortalEndpoint = (path) => `${apiUrl + portalUrl}/${path}`;
-export const getV1Endpoint = (path) => `${v1Url}/${path}`;
+export const getV1Endpoint = (path) => `${apiUrl + v1Url}/${path}`;
 
 export const apiUrls = {
   login: getApiEndpoint('login'),

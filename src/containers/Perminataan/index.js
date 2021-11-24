@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import cx from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -57,10 +58,15 @@ export const Perminataan = () => {
     history.push('/forum');
   };
 
+  const rowClick = (data) => {
+    debugger;
+    history.push(`/permintaan-data-detail/${data.id}`);
+  };
+
   const columns = [
     {
       Header: '',
-      accessor: 'id',
+      accessor: 'perminataanID',
       Cell: ({ ...rest }) => <span>{prefixID(rest.row.original.id)}</span>,
     },
     {
@@ -74,6 +80,11 @@ export const Perminataan = () => {
     {
       Header: '',
       accessor: 'tanggalTarget',
+      Cell: ({ ...rest }) => (
+        <span>
+          {rest.row.original?.tanggalTarget ? moment(rest.row.original.tanggalTarget).format('DD MMMM YYYY') : '---'}
+        </span>
+      ),
     },
     {
       Header: '',
@@ -118,6 +129,7 @@ export const Perminataan = () => {
     pageSize: size,
     currentPage: page,
     manualPagination: true,
+    rowClick: rowClick,
     onPageIndexChange: (currentPage) => {
       if (currentPage !== page) {
         fetchPerminataanDataset(currentPage);

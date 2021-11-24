@@ -42,7 +42,7 @@ export const setKirimPerminataanData = createAsyncThunk('portal/setKirimPerminat
 
 export const getInstansiData = createAsyncThunk('portal/getInstansiData', async (params) => {
   const response = await get(apiUrls.instansiData);
-  return response?.data?.result;
+  return response?.data?.content?.records;
 });
 
 const perminataanSlice = createSlice({

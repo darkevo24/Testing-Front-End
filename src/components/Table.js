@@ -79,6 +79,7 @@ const Table = ({
   onPageIndexChange = () => null,
   searchValue = '',
   highlightSearchInput = false,
+  rowClick,
 }) => {
   const tableOptions = {
     columns,
@@ -137,6 +138,10 @@ const Table = ({
     [bem.m('highlight')]: highlightOnHover,
   };
 
+  const onRowClick = (data) => {
+    if (isFunction(rowClick)) rowClick(data);
+  };
+
   return (
     <div className={cx(bem.b(), bem.m(variant), className, tableWrapperClasses)}>
       {title ? <div className={bem.e('header')}>{title}</div> : null}
@@ -187,7 +192,7 @@ const Table = ({
             {page.map((row, i) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()}>
+                <tr {...row.getRowProps()} onClick={() => onRowClick(row)}>
                   {row.cells.map((cell) => {
                     return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
                   })}

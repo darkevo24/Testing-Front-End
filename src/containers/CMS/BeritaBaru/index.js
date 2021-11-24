@@ -17,7 +17,7 @@ const CMSBeritaBaru = () => {
         <div className={bem.e('title')}>
           Buat Berita Baru
           <Button
-            onClick={() => history.push('/cms/berita')}
+            onClick={() => history.push('/cms/berita-konten')}
             className="ml-24"
             variant="secondary"
             style={{ width: '112px' }}>

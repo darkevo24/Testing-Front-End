@@ -77,3 +77,56 @@
 .ddcontainer {
   display: block !important;
 }
+
+// bem name styling
+.sdp-berita-layout {
+  &__header {
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e1e2ea;
+
+    &-title {
+      font-weight: bold;
+      font-size: 32px;
+      color: #000000;
+    }
+  }
+
+  &__content {
+    padding: 32px;
+  }
+
+  &__preview {
+    background: #fafafa;
+  }
+
+  &__button {
+    width: 112px;
+    text-align: center;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    font-weight: 600;
+    font-size: 14px;
+    margin-left: 8px;
+    border-radius: 4px;
+    border: 0;
+
+    &.batal {
+      color: #858a8f;
+      background: #f5f6fa;
+    }
+
+    &.preview {
+      color: #515154;
+      background: #ffffff;
+      border: 1px solid #e1e2ea;
+    }
+
+    &.simpan {
+      background: #007aff;
+      color: #ffffff;
+    }
+  }
+}

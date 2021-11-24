@@ -16,7 +16,7 @@ export const DatePicker = ({
   error,
   label,
   labelClass,
-  format = 'YYYY-MM-DD',
+  format = 'DD/MM/YYYY',
   group,
   groupClass = 'mb-3',
   className,
@@ -55,7 +55,9 @@ export const DatePicker = ({
               </div>
               <RDatePicker
                 selected={
-                  field && field.value && typeof field.value === 'string' ? moment(field.value).toDate() : field.value
+                  field && field.value && typeof field.value === 'string'
+                    ? moment(field.value, format).toDate()
+                    : field.value
                 }
                 {...datePickerProps}
                 autoComplete="off"
@@ -64,7 +66,7 @@ export const DatePicker = ({
                     onChange('');
                     return;
                   }
-                  const date = moment(e).format(format).toString();
+                  const date = moment(e).toDate();
                   const fullYear = e.getFullYear();
                   if (Number(fullYear) <= 9999) {
                     onChange(date);

@@ -11,32 +11,25 @@ import * as yup from 'yup';
 import { BackArrow } from 'components/Icons';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import Modal from 'components/Modal';
 import { DatePicker } from 'components';
 import { useSelector, useDispatch } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
-import { INSTANSI_LIST, prefixID } from './constant';
 import Input from 'components/Input';
 import {
   instansiiDatasetSelector,
   getInstansiData,
   setPerminataanData,
-  updateResult,
   perminataanDatasetSelector,
   perminataanForumErrorSelector,
-  setKirimPerminataanData,
-  kirimsetSelector,
-  updateStatus,
 } from '../slice';
-import { usePrevious } from 'utils/hooks';
 
-const schema = yup.object({
+export const schema = yup.object({
   deskripsi: yup.string().required(),
   tujuanPermintaan: yup.string().required(),
   tanggalTarget: yup.string().required(),
 });
 
-const DROPDOWN_LIST = [
+export const DROPDOWN_LIST = [
   {
     value: 'Statistik',
     label: 'Statistik',
@@ -56,20 +49,15 @@ const DROPDOWN_LIST = [
 ];
 
 const Forum = () => {
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [tipeData, setTipeData] = useState({});
   const [instansiSumber, setInstansiSumber] = useState({});
   const [errorDetail, setErrorDetail] = useState({});
-  const [catatan, setCatatan] = useState('');
   const history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
-  const { newRecord, records, loading } = useSelector(perminataanDatasetSelector);
+  const { loading } = useSelector(perminataanDatasetSelector);
   const instansiDetail = useSelector(instansiiDatasetSelector);
   const apiError = useSelector(perminataanForumErrorSelector);
-  const { loading: kirimLoading, success: kirimSuccess, error: kirimError } = useSelector(kirimsetSelector);
-  const prevRecord = usePrevious(newRecord) || {};
-  const prevKirimSuccess = usePrevious(kirimSuccess) || false;
 
   const handleBackButton = () => {
     history.push('/permintaan-data');
@@ -84,24 +72,8 @@ const Forum = () => {
   });
 
   useEffect(() => {
-    dispatch(getInstansiData());
+    if (!instansiDetail?.instansiData?.length) dispatch(getInstansiData());
   }, []);
-
-  useEffect(() => {
-    if (!prevKirimSuccess && kirimSuccess) {
-      updateStatus();
-      handleBackButton();
-    }
-  }, [kirimSuccess]);
-
-  useEffect(() => {
-    const index = records.findIndex((item) => item.id === newRecord?.id);
-    if (index !== -1) return;
-    dispatch(updateResult([...records, newRecord]));
-    if (isEmpty(prevRecord) && !isEmpty(newRecord)) {
-      setShowConfirmModal(true);
-    }
-  }, [newRecord]);
 
   const onSubmit = (detail) => {
     if (loading) return;
@@ -123,12 +95,9 @@ const Forum = () => {
         },
         jenisData: tipeData?.value !== 'Lainnya' ? tipeData.value : detail.tipeDataText,
       }),
-    );
-  };
-
-  const confirmSubmit = () => {
-    if (kirimLoading) return;
-    dispatch(setKirimPerminataanData({ id: newRecord.id, payload: { catatan } }));
+    ).then(() => {
+      handleBackButton();
+    });
   };
 
   return (
@@ -219,7 +188,7 @@ const Forum = () => {
             <Form.Group as={Col} md="6" className="mb-16">
               <label className="sdp-form-label py-8">Instansi Sumber Data</label>
               <SingleDropDown
-                data={instansiDetail?.instansiData?.length ? instansiDetail?.instansiData : INSTANSI_LIST}
+                data={instansiDetail?.instansiData.map((item) => ({ value: item.id, label: item.nama }))}
                 isLoading={instansiDetail?.loading || false}
                 onChange={(data = {}) => {
                   setInstansiSumber(data);
@@ -258,38 +227,19 @@ const Forum = () => {
               </Form.Group>
             ) : null}
           </Row>
-          <Button type="submit" className="br-40 m-24 px-97 py-10">
-            {loading && (
-              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="mr-10" />
-            )}
-            Kirit
-          </Button>
-        </Form>
-      </Row>
-      {showConfirmModal && (
-        <Modal visible={true} onClose={() => setShowConfirmModal(false)} title="" showHeader={false} centered={true}>
-          Apakah anda yakin ingin mengirim permintaan data <b>{prefixID(newRecord.id)}</b>
-          <textarea
-            placeholder="Tulis Catatan"
-            name="catatan"
-            value={catatan}
-            onChange={({ target: { value = '' } = {} }) => setCatatan(value)}
-            className="border-gray-stroke br-4 w-100 mt-24 mb-24 h-214"
-          />
-          <label className="sdp-text-red">{kirimError}</label>
-          <div className="d-flex justify-content-end">
-            <Button className="br-4 mr-8 px-57 py-13 bg-transparent" variant="light" onClick={handleBackButton}>
+          <div className="d-flex justify-content-end px-24">
+            <Button variant="light" className="br-40 mr-12 mb-12 px-62 py-12 bg-transparent" onClick={handleBackButton}>
               Betal
             </Button>
-            <Button className="br-4 px-39 py-13" variant="info" onClick={confirmSubmit}>
-              {kirimLoading && (
+            <Button type="submit" variant="info" className="br-40  mb-12 px-54 py-12">
+              {loading && (
                 <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="mr-10" />
               )}
-              Konfirmasi
+              Simpan
             </Button>
           </div>
-        </Modal>
-      )}
+        </Form>
+      </Row>
     </>
   );
 };

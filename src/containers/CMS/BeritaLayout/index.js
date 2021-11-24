@@ -4,57 +4,11 @@ import Box from './Box';
 import { useRef } from 'react';
 import './beritalayout.scss';
 import Berita from 'containers/Berita';
+import cx from 'classnames';
+import bn from 'utils/bemNames';
+
+const bem = bn('berita-layout');
 var shortid = require('shortid');
-
-const HeaderWrapper = styled.div`
-  padding: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid #e1e2ea;
-`;
-
-const HeaderTitle = styled.div`
-  font-weight: bold;
-  font-size: 32px;
-  color: #000000;
-`;
-
-const Button = styled.button`
-  width: 112px;
-  text-align: center;
-  padding-top: 13px;
-  padding-bottom: 13px;
-  font-weight: 600;
-  font-size: 14px;
-  margin-left: 8px;
-  border-radius: 4px;
-  border: 0;
-
-  &.batal {
-    color: #858a8f;
-    background: #f5f6fa;
-  }
-
-  &.preview {
-    color: #515154;
-    background: #ffffff;
-    border: 1px solid #e1e2ea;
-  }
-
-  &.simpan {
-    background: #007aff;
-    color: #ffffff;
-  }
-`;
-
-const ContentWrapper = styled.div`
-  padding: 32px;
-`;
-
-const PreviewWrapper = styled.div`
-  background: #fafafa;
-`;
 
 const BeritaLayout = () => {
   const kiri = useRef(null);
@@ -117,21 +71,21 @@ const BeritaLayout = () => {
   return (
     <div className="row">
       <div className="col-lg-12">
-        <HeaderWrapper>
-          <HeaderTitle>Layout Berita</HeaderTitle>
+        <div className={bem.e('header')}>
+          <div className={bem.e('header-title')}>Layout Berita</div>
           <div>
-            <Button className="batal" onClick={batal}>
+            <button className={cx(bem.e('button'), 'batal')} onClick={batal}>
               Batal
-            </Button>
-            <Button className="preview" onClick={preview}>
+            </button>
+            <button className={cx(bem.e('button'), 'preview')} onClick={preview}>
               Preview
-            </Button>
-            <Button className="simpan" onClick={onSave}>
+            </button>
+            <button className={cx(bem.e('button'), 'simpan')} onClick={onSave}>
               Simpan
-            </Button>
+            </button>
           </div>
-        </HeaderWrapper>
-        <ContentWrapper>
+        </div>
+        <div className={bem.e('content')}>
           <div className="drag_things_to_boxes">
             <div className="boxes">
               <Box targetKey="box" items={itemKiri} title="Konten Utama" ref={kiri} />
@@ -139,12 +93,12 @@ const BeritaLayout = () => {
               <Box targetKey="box" items={inactiveItems} title="Sembunyikan" ref={inactive} />
             </div>
           </div>
-        </ContentWrapper>
-        <PreviewWrapper>
+        </div>
+        <div className={bem.e('preview')}>
           <div className="row" style={{ paddingTop: '64px' }}>
             <div className="col-lg-2"></div>
             <div className="col-lg-8">
-              <HeaderTitle>Layout Berita</HeaderTitle>
+              <div className={bem.e('header-title')}>Layout Berita</div>
             </div>
             <div className="col-lg-2"></div>
           </div>
@@ -153,7 +107,7 @@ const BeritaLayout = () => {
               <Berita />
             </div>
           </div>
-        </PreviewWrapper>
+        </div>
       </div>
     </div>
   );

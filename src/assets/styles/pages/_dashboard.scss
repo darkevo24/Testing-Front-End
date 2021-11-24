@@ -1,0 +1,30 @@
+.dropdown-toggle.btn {
+  padding: 16px 15px;
+  border-radius: 4px;
+  border: 1px solid #e1e2ea;
+  // box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  // display: inline-flex;
+  font-size: 18px;
+  color: black;
+}
+
+.dropdown-item {
+  color: #2d2627;
+  font-size: 14px;
+  padding: 16px;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: #f5f6fa;
+  color: #2d2627;
+  border-right: 4px solid #ff0000;
+}
+
+.dashboard-title .dropdown {
+  display: inline-block;
+}
+
+.dropdown-menu.show {
+  width: 400px;
+}

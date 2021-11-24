@@ -32,7 +32,20 @@ export const CMSSidebar = () => {
         </div>
         <SidebarItem title="About Us" pathname="/cms/about-us" />
         <SidebarItem title="Struktur Organisasi" pathname="/cms/struktur" />
-        <SidebarItem title="Berita" pathname="/cms/berita" />
+        <Accordion defaultActiveKey="0">
+          <Accordion.Item>
+            <Accordion.Header
+              className={cx('', {
+                selected: window.location.pathname.includes('/cms/berita'),
+              })}>
+              Berita
+            </Accordion.Header>
+            <Accordion.Body>
+              <SidebarItem title="Konten Berita" pathname="/cms/berita-konten" />
+              <SidebarItem title="Layout Berita" pathname="/cms/berita-layout" />
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
         <SidebarItem title="Contact Us" pathname="#" />
         <SidebarItem title="Forum" pathname="#" />
         <SidebarItem title="Komunitas Ahli" pathname="/cms/komunitas-ahli" />
@@ -57,9 +70,9 @@ export const CMSSidebar = () => {
           <SidebarDataIcon className="mr-10" />
           Dashboard Management
         </div>
-        <SidebarItem title="Data Analytics" pathname="#" />
-        <SidebarItem title="Kesiapan SDI" pathname="#" />
-        <SidebarItem title="Dashboard Executive" pathname="#" />
+        <SidebarItem title="Data Analytics" pathname="/cms/data-analytic" />
+        <SidebarItem title="Kesiapan SDI" pathname="/cms/kesiapan-sdi" />
+        <SidebarItem title="Dashboard Executive" pathname="/cms/dashboard-eksekutif" />
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>

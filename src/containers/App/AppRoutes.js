@@ -16,11 +16,12 @@ const BimTekFormPage = lazy(() => import('containers/BimTekForm'));
 const BimTekJadwalPage = lazy(() => import('containers/BimTekJadwal'));
 const TentangPage = lazy(() => import('containers/TentangSDI'));
 const KomunitasPage = lazy(() => import('containers/Komunitas'));
-const BeritaLayout = lazy(() => import('containers/BeritaLayout'));
 const BeritaPage = lazy(() => import('containers/Berita'));
-const KesiapanData = lazy(() => import('containers/KesiapanData'));
 const KesiapanSDIDaerah = lazy(() => import('containers/KesiapanSDiDaerah'));
 const KesiapanSDIPusat = lazy(() => import('containers/KesiapanSDIPusat'));
+const DashboardEksekutif = lazy(() => import('containers/Dashboard/DashboardEksekutif'));
+const DashboardSaya = lazy(() => import('containers/Dashboard/DashboardSaya'));
+const DataAnalytic = lazy(() => import('containers/Dashboard/DataAnalytic'));
 const DafterPage = lazy(() => import('containers/Dafter'));
 // const NotFoundPage = lazy(() => import('containers/NotFound'));
 
@@ -37,15 +38,16 @@ function AppRoutes(props) {
         <PrivateRoute exact path="/dataset" component={DataSetPage} />
         <PrivateRoute exact path="/dafter" component={DafterPage} />
         <PrivateRoute exact path="/komunitas-ahli" component={KomunitasPage} />
-        <Route exact path="/bl" component={BeritaLayout} />
         <Route exact path="/berita" component={BeritaPage} />
         <Route exact path="/bimtek-summary" component={BimTekSummaryPage} />
         <Route exact path="/bimtek-form" component={BimTekFormPage} />
         <Route exact path="/bimtek-jadwal" component={BimTekJadwalPage} />
         <Route exact path="/tentang" component={TentangPage} />
-        <Route exact path="/kesiapan-data" component={KesiapanData} />
         <Route exact path="/kesiapan-sdi-daerah" component={KesiapanSDIDaerah} />
         <Route exact path="/kesiapan-sdi-pusat" component={KesiapanSDIPusat} />
+        <Route exact path="/dashboard-eksekutif" component={DashboardEksekutif} />
+        <Route exact path="/dashboard-saya" component={DashboardSaya} />
+        <Route exact path="/data-analytic" component={DataAnalytic} />
         {/* <Route path="*" component={NotFoundPage} /> */}
       </AppLayout>
     </Switch>

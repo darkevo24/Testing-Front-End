@@ -58,7 +58,7 @@ export const CMSSidebar = () => {
           Dashboard Management
         </div>
         <SidebarItem title="Data Analytics" pathname="/cms/data-analytic" />
-        <SidebarItem title="Kesiapan SDI" pathname="#" />
+        <SidebarItem title="Kesiapan SDI" pathname="/cms/kesiapan-sdi" />
         <SidebarItem title="Dashboard Executive" pathname="/cms/dashboard-eksekutif" />
       </div>
       <div className="mt-3">

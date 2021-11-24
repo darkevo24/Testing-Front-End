@@ -16,6 +16,8 @@ import {
   KonfigurasiIcon,
   UserManagementIcon,
 } from 'assets/icons';
+import { FaceBookIcon, InstagramIcon, TwitterIcon, YouTubeIcon } from '../assets/icons/SocialMedia';
+import React from 'react';
 
 export const apiUrl = '/api';
 export const dataUrl = '/data/api';
@@ -130,5 +132,24 @@ export const CMS_DASHBOARD = [
     description: Text,
     icon: <KonfigurasiIcon />,
     iconColor: 'sdp-text-teal',
+  },
+];
+
+export const Kontak_list = [
+  {
+    name: 'facebook',
+    icon: <FaceBookIcon />,
+  },
+  {
+    name: 'twitter',
+    icon: <TwitterIcon />,
+  },
+  {
+    name: 'instagram',
+    icon: <InstagramIcon />,
+  },
+  {
+    name: 'youtube',
+    icon: <YouTubeIcon />,
   },
 ];

@@ -9,9 +9,10 @@
   },
   "scripts": {
     "prerequisite": "yarn compile:locale",
-    "prestart": "yarn prerequisite",
     "prebuild": "yarn prerequisite",
-    "start": "react-scripts start",
+    "start": "FORCE_COLOR=1 npm-run-all -l -p run:*",
+    "run:app": "react-scripts start",
+    "run:locle-watcher": "nodemon --exec \"yarn compile:locale\" --watch src/locales --ignore src/locales/*/translation.json",
     "build": "react-scripts build",
     "test": "jest --coverage",
     "eject": "react-scripts eject",
@@ -122,6 +123,8 @@
     "enzyme-adapter-react-16": "1.15.6",
     "enzyme-to-json": "3.4.4",
     "jest-junit": "12.3.0",
+    "nodemon": "2.0.15",
+    "npm-run-all": "4.1.5",
     "postinstall-prepare": "2.0.0"
   },
   "browserslist": {

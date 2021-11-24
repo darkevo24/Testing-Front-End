@@ -11,6 +11,7 @@ import authReducer from 'containers/Login/reducer';
 import berandaReducer from 'containers/Beranda/reducer';
 import cmsReducer from 'containers/CMS/reducer';
 import tentangReducer from 'containers/TentangSDI/reducer';
+import perminataanReducer from 'containers/Perminataan/slice';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -22,6 +23,7 @@ export default function createReducer(injectedReducers) {
     beranda: berandaReducer,
     cms: cmsReducer,
     tentang: tentangReducer,
+    perminataan: perminataanReducer,
     router: connectRouter(history),
     ...injectedReducers,
   });

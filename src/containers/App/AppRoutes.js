@@ -8,7 +8,8 @@ const { Login } = lazily(() => import('containers/Login'));
 const BerandaPage = lazy(() => import('containers/Beranda'));
 const TopicDetailPage = lazy(() => import('containers/Beranda/TopicDetails'));
 const DataSetPage = lazy(() => import('containers/Beranda/DataSet'));
-const ForumPage = lazy(() => import('containers/Forum'));
+const { Perminataan } = lazily(() => import('containers/Perminataan'));
+const ForumPage = lazy(() => import('containers/Perminataan/Forum'));
 const BimTekSummaryPage = lazy(() => import('containers/BimTekSummary'));
 const BimTekFormPage = lazy(() => import('containers/BimTekForm'));
 const BimTekJadwalPage = lazy(() => import('containers/BimTekJadwal'));
@@ -27,11 +28,12 @@ function AppRoutes(props) {
     <Switch>
       <PublicRoute exact path="/login" component={Login} />
       <AppLayout>
+        <PrivateRoute exact path="/permintaan-data" component={Perminataan} />
+        <PrivateRoute exact path="/forum" component={ForumPage} />
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
         <PrivateRoute exact path="/dataset" component={DataSetPage} />
         <PrivateRoute exact path="/dafter" component={DafterPage} />
-        <Route exact path="/forum" component={ForumPage} />
         <PrivateRoute exact path="/komunitas-ahli" component={KomunitasPage} />
         <Route exact path="/bl" component={BeritaLayout} />
         <Route exact path="/berita" component={BeritaPage} />

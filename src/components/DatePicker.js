@@ -15,6 +15,7 @@ export const DatePicker = ({
   rules,
   error,
   label,
+  labelClass,
   format = 'YYYY-MM-DD',
   group,
   groupClass = 'mb-3',
@@ -34,7 +35,7 @@ export const DatePicker = ({
   }
   const DatePickerNode = (
     <>
-      {label && <Form.Label>{label}</Form.Label>}
+      {label && <Form.Label className={labelClass}>{label}</Form.Label>}
       <Controller
         name={name}
         control={control}

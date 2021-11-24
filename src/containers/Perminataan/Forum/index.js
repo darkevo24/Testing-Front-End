@@ -104,6 +104,7 @@ const Forum = () => {
   }, [newRecord]);
 
   const onSubmit = (detail) => {
+    if (loading) return;
     let errorClone = { ...errorDetail };
     if (!tipeData?.value) errorClone = { ...errorClone, tipeData: true };
     if (!instansiSumber?.value) errorClone = { ...errorClone, instansiSumber: true };
@@ -126,6 +127,7 @@ const Forum = () => {
   };
 
   const confirmSubmit = () => {
+    if (kirimLoading) return;
     dispatch(setKirimPerminataanData({ id: newRecord.id, payload: { catatan } }));
   };
 
@@ -276,13 +278,10 @@ const Forum = () => {
           />
           <label className="sdp-text-red">{kirimError}</label>
           <div className="d-flex justify-content-end">
-            <Button
-              className="br-4 mr-8 px-57 py-13 bg-transparent"
-              variant="light"
-              onClick={() => setShowConfirmModal(false)}>
+            <Button className="br-4 mr-8 px-57 py-13 bg-transparent" variant="light" onClick={handleBackButton}>
               Betal
             </Button>
-            <Button className="br-4 px-39 py-13" variant="info" onClick={handleBackButton}>
+            <Button className="br-4 px-39 py-13" variant="info" onClick={confirmSubmit}>
               {kirimLoading && (
                 <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="mr-10" />
               )}

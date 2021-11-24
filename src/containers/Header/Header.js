@@ -18,13 +18,15 @@ import Logo from 'assets/logo-satu.jpg';
 const getPathnameFromRoute = (route) => get(route, 'link.pathname', route.link);
 
 const getNavDropDown = (tab, pathname, goTo) => {
+  const id = `${tab.title}-nav-dropdown`;
   return (
     <NavDropdown
       className={cx({
         active: map(tab.links, getPathnameFromRoute).includes(pathname),
       })}
       title={tab.title}
-      id={`${tab.title}-nav-dropdown`}>
+      key={id}
+      id={id}>
       {map(tab.links, (route) => (
         <NavDropdown.Item key={getPathnameFromRoute(route)} onClick={goTo(route.link)}>
           {route.title}
@@ -149,7 +151,7 @@ export const Header = () => {
   return (
     <Navbar bg="transparent" className="sdp-header">
       <Container className={cx('mw-100 h-100', { 'pr-24': !isLoggedIn })}>
-        <img src={Logo} alt="brand-logo" />
+        <img src={Logo} alt="brand-logo" className="cursor-pointer" onClick={goTo('/home')} />
         {isLoggedIn ? renderMemberNav() : renderPublicNav()}
       </Container>
     </Navbar>

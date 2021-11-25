@@ -8,14 +8,27 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { getPermintaanDataDetail, permintaanDataDetailSelector } from './reducer';
-import { Input } from '../../../components';
-import bn from '../../../utils/bemNames';
-import { LogStatus } from '../../../components/Sidebars/LogStatus';
-import { LeftChevron } from '../../../components/Icons';
-import Modal from '../../../components/Modal';
+import {
+  getPermintaanDataDetail,
+  permintaanDataDetailSelector,
+  postPermintaanDataProses,
+  postPermintaanDataSelesai,
+  postPermintaanDataTolak,
+} from './reducer';
+import { Input } from 'components';
+import bn from 'utils/bemNames';
+import { LogStatus } from 'components/Sidebars/LogStatus';
+import { LeftChevron } from 'components/Icons';
+import Modal from 'components/Modal';
+import { submitForm } from 'utils/helper';
 
 const bem = bn('content-detail');
+export const tolakFormId = 'tolak-form-id';
+export const prosesFormId = 'proses-form-id';
+export const selesaiFormId = 'selesai-form-id';
+export const submitTolakForm = submitForm(tolakFormId);
+export const submitProsesForm = submitForm(prosesFormId);
+export const submitSelesaiForm = submitForm(selesaiFormId);
 
 const SuccessText = () => {
   const history = useHistory();
@@ -119,14 +132,16 @@ const CMSPermintaanDataView = () => {
     .object({
       id: yup.mixed().required(),
       namaPeminta: yup.mixed().required(),
-      instansi: yup.mixed().required(),
-      unitKerja: yup.mixed().required(),
       deskripsi: yup.mixed().required(),
-      targetWaktu: yup.mixed().required(),
+      jenisData: yup.string().required(),
+      tanggaltarget: yup.string().required(),
       produsen: yup.mixed().required(),
       tipe: yup.mixed().required(),
-      tanggalPermintaan: yup.mixed().required(),
+      tanggalPermintaan: yup.string().required(),
+      tujuanPermintaan: yup.string().required(),
       status: yup.mixed().required(),
+      catatan: yup.mixed().required(),
+      urlDataset: yup.string().required(),
     })
     .required();
 
@@ -137,30 +152,42 @@ const CMSPermintaanDataView = () => {
     const id = url.split('/')[3];
     return dispatch(getPermintaanDataDetail(id));
   };
-
-  const dataTemp = {
-    id: 1,
-    status: 'Diproses',
+  const onSubmitTolak = (data) => {
+    const url = window.location.pathname;
+    const id = url.split('/')[3];
+    dispatch(postPermintaanDataTolak(data, id));
   };
 
+  const onSubmitProses = (data) => {
+    const url = window.location.pathname;
+    const id = url.split('/')[3];
+    dispatch(postPermintaanDataProses(data, id));
+  };
+
+  const onSubmitSelesai = (data) => {
+    const url = window.location.pathname;
+    const id = url.split('/')[3];
+    dispatch(postPermintaanDataSelesai(data, id));
+  };
+
+  const data = useMemo(() => result || {}, [result]);
   useEffect(() => {
     fetchDataset();
-  }, []);
-  const data = useMemo(() => result?.results || dataTemp, [result]);
-  useEffect(() => {
-    fetchDataset();
-  }, []);
+    reset(data);
+  }, [data]);
+  console.log('data', data);
 
   const {
     control,
     formState: { errors },
+    handleSubmit,
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       ...data,
     },
   });
-
   return (
     <div>
       {data.status === 'Selesai' ? <SuccessText /> : null}
@@ -178,13 +205,13 @@ const CMSPermintaanDataView = () => {
                 {data.status === 'Diproses' ? <DiprosesButton onSelesai={setShowSelesaiModal} /> : null}
               </div>
             </div>
-            <Form className="sdp-form">
+            <Form className="sdp-form" noValidate>
               <Input isDisabled group label="Deskripsi Data" name="deskripsi" control={control} />
-              <Input isDisabled group label="Tujuan Permintaan data" name="tujuan" control={control} />
-              <Input isDisabled group label="Target Waktu" name="targetWaktu" control={control} />
+              <Input isDisabled group label="Tujuan Permintaan data" name="tujuanPermintaan" control={control} />
+              <Input isDisabled group label="Target Waktu" name="tanggalTarget" control={control} />
               <Input isDisabled group label="Produsen Data" name="produsen" control={control} />
               <Input isDisabled group label="Jenis Data" name="jenisData" control={control} />
-              <Input isDisabled group isLink label="URL Dataset" name="url" control={control} />
+              <Input isDisabled group isLink label="URL Dataset" name="urlDataset" control={control} />
             </Form>
             <div>
               <h5 className="fw-bold mb-3 border-bottom-gray-stroke py-2">Informasi Peminta Data</h5>
@@ -194,7 +221,7 @@ const CMSPermintaanDataView = () => {
                     <p className="fw-bold">Nama Lengkap</p>
                   </div>
                   <div className="col-2">
-                    <p className="fw-light">{data.namaPeminta}</p>
+                    <p className="fw-light">{data.user?.name}</p>
                   </div>
                 </div>
                 <div className="d-flex flex-row">
@@ -202,7 +229,7 @@ const CMSPermintaanDataView = () => {
                     <p className="fw-bold">NIP/NIK</p>
                   </div>
                   <div className="col-2">
-                    <p className="fw-light">{data.NIK}</p>
+                    <p className="fw-light">{data.user?.roles}</p>
                   </div>
                 </div>
                 <div className="d-flex flex-row">
@@ -210,7 +237,7 @@ const CMSPermintaanDataView = () => {
                     <p className="fw-bold">Instansi</p>
                   </div>
                   <div className="col-2">
-                    <p className="fw-light">{data.instansi}</p>
+                    <p className="fw-light">{data.user?.instansi}</p>
                   </div>
                 </div>
                 <div className="d-flex flex-row">
@@ -218,7 +245,7 @@ const CMSPermintaanDataView = () => {
                     <p className="fw-bold">Unit Kerja</p>
                   </div>
                   <div className="col-2">
-                    <p className="fw-light">{data.unitKerja}</p>
+                    <p className="fw-light">{data.user?.unitKerja}</p>
                   </div>
                 </div>
                 <div className="d-flex flex-row">
@@ -242,11 +269,19 @@ const CMSPermintaanDataView = () => {
           title="Apakah anda menolak Permintaan Data?"
           actions={[
             { variant: 'secondary', text: 'Batal', onClick: () => hideTolakModal() },
-            { text: 'Konfirmasi', type: 'submit', onClick: () => hideTolakModal() },
+            { text: 'Konfirmasi', type: 'submit', onClick: submitTolakForm },
           ]}>
-          <Form noValidate>
+          <Form id={tolakFormId} onSubmit={handleSubmit(onSubmitTolak)} noValidate>
             <Form.Group as={Col} md="12" className="mb-16">
-              <Form.Control as="textarea" type="text" name="catatan" rules={{ required: true }} />
+              <Input
+                name="catatan"
+                as="textarea"
+                control={control}
+                rules={{ required: true }}
+                placeholder="Tulis catatan"
+                type="text"
+                error={errors.catatan?.message}
+              />
             </Form.Group>
           </Form>
         </Modal>
@@ -256,11 +291,19 @@ const CMSPermintaanDataView = () => {
           title="Apakah anda memproses Permintaan Data?"
           actions={[
             { variant: 'secondary', text: 'Batal', onClick: () => hideProsesModal() },
-            { text: 'Konfirmasi', type: 'submit', onClick: () => hideProsesModal() },
+            { text: 'Konfirmasi', type: 'submit', onClick: submitProsesForm },
           ]}>
-          <Form noValidate>
+          <Form id={prosesFormId} onSubmit={handleSubmit(onSubmitProses)} noValidate>
             <Form.Group as={Col} md="12" className="mb-16">
-              <Form.Control as="textarea" type="text" name="catatan" rules={{ required: true }} />
+              <Input
+                name="catatan"
+                as="textarea"
+                control={control}
+                rules={{ required: true }}
+                placeholder="Tulis catatan"
+                type="text"
+                error={errors.catatan?.message}
+              />
             </Form.Group>
           </Form>
         </Modal>
@@ -270,12 +313,20 @@ const CMSPermintaanDataView = () => {
           title="Apakah anda ingin menyelesaikan Permintaan Data?"
           actions={[
             { variant: 'secondary', text: 'Batal', onClick: () => hideSelesaiModal() },
-            { text: 'Konfirmasi', type: 'submit', onClick: () => hideSelesaiModal() },
+            { text: 'Konfirmasi', type: 'submit', onClick: submitSelesaiForm },
           ]}>
-          <Form noValidate>
+          <Form id={selesaiFormId} onSubmit={handleSubmit(onSubmitSelesai)} noValidate>
             <Form.Group as={Col} md="12" className="mb-16">
               <Input group isLink label="URL Dataset" name="url" control={control} rules={{ required: true }} />
-              <Form.Control as="textarea" type="text" name="catatan" rules={{ required: true }} />
+              <Input
+                name="catatan"
+                as="textarea"
+                control={control}
+                rules={{ required: true }}
+                placeholder="Tulis catatan"
+                type="text"
+                error={errors.catatan?.message}
+              />
             </Form.Group>
           </Form>
         </Modal>

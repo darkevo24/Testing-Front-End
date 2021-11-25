@@ -12,7 +12,7 @@ export const PERMINTAAN_DATA = 'PERMINTAAN_DATA';
 
 export const getPermintaanData = createAsyncThunk('permintaan-data/list', async (params) => {
   const response = await get(apiUrls.listPermintaanData);
-  return response?.result;
+  return response;
 });
 
 const permintaanDataDetailSlice = createSlice({
@@ -34,6 +34,6 @@ const permintaanDataDetailSlice = createSlice({
   },
 });
 
-export const permintaanDataSelector = (state) => state.permintaanDataDetail?.result;
+export const permintaanDataSelector = (state) => state.permintaanData?.result.data.content;
 
 export default permintaanDataDetailSlice.reducer;

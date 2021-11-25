@@ -17,7 +17,7 @@ const CMSPermintaanData = () => {
   const fetchDataset = () => {
     return dispatch(getPermintaanData());
   };
-  const data = useMemo(() => result?.results || [], [result]);
+  const data = useMemo(() => result?.records || [], [result]);
   useEffect(() => {
     fetchDataset();
   }, []);
@@ -75,11 +75,11 @@ const CMSPermintaanData = () => {
           let value = {
             data: [
               item.id,
-              item.namaPeminta,
-              item.instansi,
-              item.unitKerja,
+              item.user.name,
+              item.instansi.nama,
+              item.instansi.unitKerja[0],
               item.deskripsi,
-              item.targetWaktu,
+              item.tanggalTarget,
               item.produsen,
               item.jenisData,
               item.tanggalPermintaan,

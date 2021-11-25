@@ -13,7 +13,7 @@ const Popover = ({ children, className, header, trigger, triggerOn = 'click', pl
     </RBPopover>
   );
   return (
-    <OverlayTrigger trigger={triggerOn} overlay={overlay} placement={placement} {...rest}>
+    <OverlayTrigger rootClose trigger={triggerOn} overlay={overlay} placement={placement} {...rest}>
       {trigger}
     </OverlayTrigger>
   );

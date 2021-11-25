@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import cx from 'classnames';
-import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -62,7 +61,7 @@ const Dafter = () => {
     [activeTab, t],
   );
   return (
-    <Container fluid className="dafter-page pb-100">
+    <div className="dafter-page pb-100">
       <Breadcrumb breadcrumbsList={breadcrumbsList} />
       <Row>
         <Col sm={{ span: 10, offset: 1 }}>
@@ -95,7 +94,7 @@ const Dafter = () => {
           </Tabs>
         </Col>
       </Row>
-    </Container>
+    </div>
   );
 };
 

@@ -35,16 +35,17 @@
 @import './components/tabs';
 
 // All pages styles goes here
-@import './pages/notFound';
-@import './pages/login';
-@import './pages/topicDetail';
-@import './pages/forum';
 @import './pages/bimtek';
-@import './pages/komunitas';
 @import './pages/cms';
-@import './pages/dataset';
-@import './pages/kesiapanSDI';
 @import './pages/csmDashboard';
-@import 'pages/csmKomunitasAhli';
-@import './pages/tentangsdi';
+@import './pages/csmKomunitasAhli';
+@import './pages/dafter';
+@import './pages/dataset';
+@import './pages/forum';
+@import './pages/kesiapanSDI';
+@import './pages/komunitas';
+@import './pages/login';
+@import './pages/notFound';
 @import './pages/perminataanData';
+@import './pages/tentangsdi';
+@import './pages/topicDetail';

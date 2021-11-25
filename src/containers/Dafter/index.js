@@ -24,22 +24,22 @@ const Dafter = () => {
       {
         key: t('sandbox.dafter.tabs.dafter.key'),
         title: t('sandbox.dafter.tabs.dafter.title'),
-        component: <DafterTable />,
+        component: <DafterTable bem={bem} />,
       },
       {
         key: t('sandbox.dafter.tabs.sdg.key'),
         title: t('sandbox.dafter.tabs.sdg.title'),
-        component: <DafterTable />,
+        component: <DafterTable bem={bem} />,
       },
       {
         key: t('sandbox.dafter.tabs.rkp.key'),
         title: t('sandbox.dafter.tabs.rkp.title'),
-        component: <DafterTable />,
+        component: <DafterTable bem={bem} />,
       },
       {
         key: t('sandbox.dafter.tabs.dafterSafa.key'),
         title: t('sandbox.dafter.tabs.dafterSafa.title'),
-        component: <DafterTable />,
+        component: <DafterTable bem={bem} />,
       },
     ],
     [],

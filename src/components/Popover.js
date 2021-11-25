@@ -7,7 +7,7 @@ const bem = bn('popover');
 
 const Popover = ({ children, className, header, trigger, triggerOn = 'click', placement = 'bottom', ...rest }) => {
   const overlay = (
-    <RBPopover id="pppppopver" className={cx(bem.b(), className)} {...rest}>
+    <RBPopover className={cx(bem.b(), className)} {...rest}>
       {header && <RBPopover.Header className={bem.e('header')}>{header}</RBPopover.Header>}
       <RBPopover.Body className={bem.e('body')}>{children}</RBPopover.Body>
     </RBPopover>

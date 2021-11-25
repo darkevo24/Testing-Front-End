@@ -7,7 +7,7 @@ import Popover from 'components/Popover';
 import { makeData } from 'utils/dataConfig/dafter';
 import DafterForm, { submitDafterForm } from './DafterForm';
 
-const DafterTable = () => {
+const DafterTable = ({ bem }) => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDafterFormVisible, setIsDafterFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
@@ -88,7 +88,11 @@ const DafterTable = () => {
             { label: 'PRIORITAS', value: 'Ya' },
           ];
           return (
-            <Popover trigger={<span>{item.instansi}</span>} header="Detail Data Cakupan Wilayah Internet">
+            <Popover
+              placement="bottom-start"
+              className={bem.e('popover')}
+              trigger={<span>{item.instansi}</span>}
+              header="Detail Data Cakupan Wilayah Internet">
               <ColumnData items={items} />
             </Popover>
           );

@@ -126,21 +126,21 @@ const DaftarDataSayaTable = () => {
 
   return (
     <>
-      <div class="container-fluid bg-gray-lighter p-24 mb-40 mt-32">
-        <div class="row">
-          <div class="col">
+      <div className="container-fluid bg-gray-lighter p-24 mb-40 mt-32">
+        <div className="row">
+          <div className="col">
             <label className="sdp-form-label py-8">Instansi</label>
             <SingleSelectDropdown data={dropdownFilters} placeHolder="Semua" isLoading={false} noValue={true} />
           </div>
-          <div class="col">
+          <div className="col">
             <label className="sdp-form-label py-8">Produsen Data</label>
             <SingleSelectDropdown data={dropdownFilters} placeHolder="Semua" isLoading={false} noValue={true} />
           </div>
-          <div class="col">
+          <div className="col">
             <label className="sdp-form-label py-8">Data Induk</label>
             <SingleSelectDropdown data={dropdownFilters} placeHolder="Semua" isLoading={false} noValue={true} />
           </div>
-          <div class="col">
+          <div className="col">
             <label className="sdp-form-label py-8">Prioritas</label>
             <SingleSelectDropdown data={dropdownFilters} placeHolder="Ya" isLoading={false} noValue={true} />
           </div>

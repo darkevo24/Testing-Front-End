@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import truncate from 'lodash/truncate';
 import ColumnData from 'components/ColumnData';
 import Modal from 'components/Modal';
 import Notification from 'components/Notification';
@@ -7,6 +8,7 @@ import Popover from 'components/Popover';
 import { makeData } from 'utils/dataConfig/dafter';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import DafterForm, { submitDafterForm } from './DafterForm';
+import { Check } from 'components/Icons';
 
 const DafterTable = ({ bem }) => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -102,6 +104,7 @@ const DafterTable = ({ bem }) => {
       {
         Header: 'Nama Data',
         accessor: 'name',
+        Cell: (data) => truncate(data.cell.value, { length: 20 }),
       },
       {
         Header: 'Jadwal Pemutakhiran',
@@ -122,10 +125,18 @@ const DafterTable = ({ bem }) => {
       {
         Header: 'Label',
         accessor: 'label',
+        Cell: (data) => (
+          <div className={bem.e('tag-wrapper')}>
+            {data.cell.value.map((label) => (
+              <div className={bem.e('tag')}>{label}</div>
+            ))}
+          </div>
+        ),
       },
       {
         Header: 'Status',
         accessor: 'status',
+        Cell: (data) => (data.cell.value === 'active' ? <Check variant="green" /> : null),
       },
       {
         id: 'actions',
@@ -161,21 +172,21 @@ const DafterTable = ({ bem }) => {
 
   return (
     <>
-      <div class="container-fluid bg-gray-lighter p-24 mb-40 mt-32">
-        <div class="row">
-          <div class="col">
+      <div className="container-fluid bg-gray-lighter p-24 mb-40 mt-32">
+        <div className="row">
+          <div className="col">
             <label className="sdp-form-label py-8">Instansi</label>
             <SingleSelectDropdown data={dropdownFilters} placeHolder="Semua" isLoading={false} noValue={true} />
           </div>
-          <div class="col">
+          <div className="col">
             <label className="sdp-form-label py-8">Produsen Data</label>
             <SingleSelectDropdown data={dropdownFilters} placeHolder="Semua" isLoading={false} noValue={true} />
           </div>
-          <div class="col">
+          <div className="col">
             <label className="sdp-form-label py-8">Data Induk</label>
             <SingleSelectDropdown data={dropdownFilters} placeHolder="Semua" isLoading={false} noValue={true} />
           </div>
-          <div class="col">
+          <div className="col">
             <label className="sdp-form-label py-8">Prioritas</label>
             <SingleSelectDropdown data={dropdownFilters} placeHolder="Ya" isLoading={false} noValue={true} />
           </div>

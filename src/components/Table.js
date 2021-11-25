@@ -58,6 +58,7 @@ export const FilterSearchInput = ({
 const Table = ({
   className,
   columns,
+  cms = false,
   data,
   title,
   subTitle,
@@ -138,6 +139,7 @@ const Table = ({
 
   const tableWrapperClasses = {
     [bem.m('highlight')]: highlightOnHover,
+    [bem.m('cms')]: cms,
   };
 
   const handleRowClick = (data) => {

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import cx from 'classnames';
 import truncate from 'lodash/truncate';
 import ColumnData from 'components/ColumnData';
 import Modal from 'components/Modal';
@@ -10,7 +11,7 @@ import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import DafterForm, { submitDafterForm } from './DafterForm';
 import { Check } from 'components/Icons';
 
-const DafterTable = ({ bem }) => {
+const DafterTable = ({ bem, cms = false }) => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDafterFormVisible, setIsDafterFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
@@ -46,6 +47,12 @@ const DafterTable = ({ bem }) => {
   const hideDafterFormModal = () => {
     setSelectedRecord(null);
     setIsDafterFormVisible(false);
+  };
+
+  const showDafterDetailPage = (data) => {
+    // TODO: handle the detail page for daftar cms
+    // setSelectedRecord(data);
+    // setIsDafterFormVisible(true);
   };
 
   const handleDafterFromSubmit = (data) => {
@@ -136,20 +143,28 @@ const DafterTable = ({ bem }) => {
       {
         Header: 'Status',
         accessor: 'status',
-        Cell: (data) => (data.cell.value === 'active' ? <Check variant="green" /> : null),
+        Cell: (data) => (data.cell.value === 'active' ? <Check variant="green" /> : <Check variant="stroke" />),
       },
       {
         id: 'actions',
-        actions: [
-          {
-            type: 'edit',
-            callback: showDafterFormModal,
-          },
-          {
-            type: 'trash',
-            callback: showDeleteModal,
-          },
-        ],
+        actions: cms
+          ? [
+              {
+                title: 'Detail',
+                classes: 'btn btn-info',
+                callback: showDafterDetailPage,
+              },
+            ]
+          : [
+              {
+                type: 'edit',
+                callback: showDafterFormModal,
+              },
+              {
+                type: 'trash',
+                callback: showDeleteModal,
+              },
+            ],
         Cell: Table.Actions,
       },
     ],
@@ -159,6 +174,7 @@ const DafterTable = ({ bem }) => {
   const tableConfig = {
     columns,
     data,
+    cms,
     showSearch: false,
     highlightOnHover: true,
     variant: 'spaced',
@@ -172,7 +188,7 @@ const DafterTable = ({ bem }) => {
 
   return (
     <>
-      <div className="container-fluid bg-gray-lighter p-24 mb-40 mt-32">
+      <div className={cx(cms ? 'mb-30' : 'bg-gray-lighter mb-40 p-24 mt-32')}>
         <div className="row">
           <div className="col">
             <label className="sdp-form-label py-8">Instansi</label>
@@ -192,6 +208,7 @@ const DafterTable = ({ bem }) => {
           </div>
         </div>
       </div>
+      {cms && <div className="divider mx-n32 mb-24" />}
       <Table {...tableConfig} />
       <Modal
         visible={isDeleteModalVisible}

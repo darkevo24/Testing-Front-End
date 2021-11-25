@@ -15,10 +15,12 @@
     }
   },
   "common": {
+    "addData": "Tambah Data",
     "noData": "No Data to show!",
     "lastModified": "Terakhir Dimodifikasi",
     "nameAtoZ": "Nama A-Z",
     "nameZtoA": "Nama Z-A",
-    "download": "Download"
+    "download": "Download",
+    "searchPlaceholder": "Cari Data"
   }
 }

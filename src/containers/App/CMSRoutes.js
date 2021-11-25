@@ -11,20 +11,21 @@ const BeritaBaruPage = lazy(() => import('containers/CMS/BeritaBaru'));
 const BeritaDetailPage = lazy(() => import('containers/CMS/BeritaDetail'));
 const AboutUsPage = lazy(() => import('containers/CMS/AboutUs'));
 const StrukturOrganisasiPage = lazy(() => import('containers/CMS/StrukturOrganisasi'));
-const StrukturBaruPage = lazy(() => import('containers/CMS/StrukturOrganisasi/Create.js'));
-const StrukturDetailPage = lazy(() => import('containers/CMS/StrukturOrganisasi/Detail.js'));
+const StrukturBaruPage = lazy(() => import('containers/CMS/StrukturOrganisasi/Create'));
+const StrukturDetailPage = lazy(() => import('containers/CMS/StrukturOrganisasi/Detail'));
 const AboutUsEditPage = lazy(() => import('containers/CMS/AboutUsEdit'));
 const BimtekPermintaanPage = lazy(() => import('containers/CMS/BimtekPermintaan'));
-const BimtekPermintaanEditPage = lazy(() => import('containers/CMS/BimtekPermintaan/Edit.js'));
+const BimtekPermintaanEditPage = lazy(() => import('containers/CMS/BimtekPermintaan/Edit'));
 const BimtekJadwalPage = lazy(() => import('containers/CMS/BimtekJadwal'));
-const BimtekJadwalBaruPage = lazy(() => import('containers/CMS/BimtekJadwal/Create.js'));
-const BimtekJadwalDetailPage = lazy(() => import('containers/CMS/BimtekJadwal/Detail.js'));
+const BimtekJadwalBaruPage = lazy(() => import('containers/CMS/BimtekJadwal/Create'));
+const BimtekJadwalDetailPage = lazy(() => import('containers/CMS/BimtekJadwal/Detail'));
 const BimtekDokumentasiPage = lazy(() => import('containers/CMS/BimtekDokumentasi'));
-const BimtekDokumentasiBaruPage = lazy(() => import('containers/CMS/BimtekDokumentasi/Create.js'));
-const BimtekDokumentasiDetailPage = lazy(() => import('containers/CMS/BimtekDokumentasi/Detail.js'));
+const BimtekDokumentasiBaruPage = lazy(() => import('containers/CMS/BimtekDokumentasi/Create'));
+const BimtekDokumentasiDetailPage = lazy(() => import('containers/CMS/BimtekDokumentasi/Detail'));
 const KesiapanSDI = lazy(() => import('containers/CMS/KesiapanSDI/index'));
 const DashboardEksekutifPage = lazy(() => import('containers/CMS/DashboardManage/DashboardEksekutif'));
 const DataAnalyticPage = lazy(() => import('containers/CMS/DashboardManage/DataAnalytic'));
+const DaftarPage = lazy(() => import('containers/CMS/Daftar'));
 
 function CMSRoutes() {
   return (
@@ -53,6 +54,7 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/kesiapan-sdi" component={KesiapanSDI} />
         <PrivateRoute exact path="/cms/dashboard-eksekutif" component={DashboardEksekutifPage} />
         <PrivateRoute exact path="/cms/data-analytic" component={DataAnalyticPage} />
+        <PrivateRoute exact path="/cms/daftar" component={DaftarPage} />
         <Route exact path="/cms" render={() => <Redirect to="/cms/dashboard" />} />
       </Switch>
     </CMSLayout>

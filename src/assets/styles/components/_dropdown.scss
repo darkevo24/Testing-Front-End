@@ -1,3 +1,9 @@
+.select {
+  &__indicator-separator {
+    display: none;
+  }
+}
+
 .grouped-dropdown {
   .select__control {
     display: flex;

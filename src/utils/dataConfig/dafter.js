@@ -1,3 +1,5 @@
+import truncate from 'lodash/truncate';
+
 export const instansiData = [
   'Kementrian Pertanian',
   'Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi',
@@ -95,13 +97,15 @@ const newRow = () => {
   const dataIndex = getRandomIndex();
   return {
     instansi: instansiData[dataIndex],
-    name: nameData[dataIndex],
+    name: truncate(nameData[dataIndex], { length: 20, separator: ' ' }),
     konsep: konsepData[dataIndex],
     definisi: definisiData[dataIndex],
     sumber: sumberData[dataIndex],
     jadwal: jadwalData[dataIndex],
     dibuat: dibuatData[dataIndex],
     diper: diperData[dataIndex],
+    label: '-',
+    status: '-',
     produsen: produsenData[dataIndex],
     induk: indukData[dataIndex],
     format: formatData[dataIndex],

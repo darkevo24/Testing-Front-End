@@ -10,6 +10,9 @@ import Breadcrumb from 'components/Breadcrumb';
 import { Search } from 'components/Icons';
 import Tabs from 'components/Tabs';
 import DafterTable from './DafterTable';
+import SdgTable from './SdgTable';
+import RkpTable from './RkpTable';
+import DaftarDataSayaTable from './DaftarDataSayaTable';
 import bn from 'utils/bemNames';
 
 const bem = bn('dafter');
@@ -28,17 +31,17 @@ const Dafter = () => {
       {
         key: t('sandbox.dafter.tabs.sdg.key'),
         title: t('sandbox.dafter.tabs.sdg.title'),
-        component: <DafterTable bem={bem} />,
+        component: <SdgTable bem={bem} />,
       },
       {
         key: t('sandbox.dafter.tabs.rkp.key'),
         title: t('sandbox.dafter.tabs.rkp.title'),
-        component: <DafterTable bem={bem} />,
+        component: <RkpTable bem={bem} />,
       },
       {
         key: t('sandbox.dafter.tabs.dafterSafa.key'),
         title: t('sandbox.dafter.tabs.dafterSafa.title'),
-        component: <DafterTable bem={bem} />,
+        component: <DaftarDataSayaTable bem={bem} />,
       },
     ],
     [],
@@ -60,6 +63,7 @@ const Dafter = () => {
     ],
     [activeTab, t],
   );
+
   return (
     <div className="dafter-page pb-100">
       <Breadcrumb breadcrumbsList={breadcrumbsList} />
@@ -85,6 +89,7 @@ const Dafter = () => {
               </Button>
             </div>
           </div>
+
           <Tabs activeKey={activeTab} onSelect={(k) => setActiveTab(k)}>
             {tabs.map((tab) => (
               <Tabs.Tab key={tab.key} eventKey={tab.key} title={tab.title}>

@@ -1,14 +1,12 @@
 import { useMemo, useState } from 'react';
-import ColumnData from 'components/ColumnData';
 import Modal from 'components/Modal';
 import Notification from 'components/Notification';
 import Table from 'components/Table';
-import Popover from 'components/Popover';
 import { makeData } from 'utils/dataConfig/dafter';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import DafterForm, { submitDafterForm } from './DafterForm';
 
-const DafterTable = ({ bem }) => {
+const DaftarDataSayaTable = () => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDafterFormVisible, setIsDafterFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
@@ -64,40 +62,7 @@ const DafterTable = ({ bem }) => {
     () => [
       {
         Header: 'Instansi',
-        id: 'instansi',
-        Cell: ({ cell: { row: { original: item } = {} } = {} }) => {
-          const items = [
-            { label: 'ID Konsep', value: 'CPCL' },
-            { label: 'KONSEP', value: 'CPCL' },
-            {
-              label: 'DEFINISI',
-              value:
-                'CPCL adalah calon petani penerima bantuan dan calon lokasi lahan yang akan menerima bantuan pemerintah	',
-            },
-            {
-              label: 'sumber definisi',
-              value:
-                'Keputusan Direktur Jenderal Tanaman Pangan Nomor 218/HK/310/12/2029 tentang Petunjuk Teknis Bantuan Pemerintah Program Peningkatan Produksi, Produktivitas dan Mutu Hasil Tanaman Pangan Tahun Anggaran 2020',
-            },
-            { label: 'dATA INDUK', value: 'PKKU; RDKK;CPCL' },
-            { label: 'fORMAT', value: 'CSV' },
-            { label: 'LINK AKSES', value: 'https://umkm.depkop.go.id', variant: 'link' },
-            { label: 'PILAR SDGS', value: 'Sosial' },
-            { label: 'Tujuan sdgs', value: '1. Mengakhiri kemiskinan dalam segala bentuk dimanapun' },
-            { label: 'PN RKP', value: '-' },
-            { label: 'PP RKP', value: '-' },
-            { label: 'PRIORITAS', value: 'Ya' },
-          ];
-          return (
-            <Popover
-              placement="bottom-start"
-              className={bem.e('popover')}
-              trigger={<span>{item.instansi}</span>}
-              header="Detail Data Cakupan Wilayah Internet">
-              <ColumnData items={items} />
-            </Popover>
-          );
-        },
+        accessor: 'instansi',
       },
       {
         Header: 'Nama Data',
@@ -210,4 +175,4 @@ const DafterTable = ({ bem }) => {
   );
 };
 
-export default DafterTable;
+export default DaftarDataSayaTable;

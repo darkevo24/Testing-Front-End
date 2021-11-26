@@ -12,8 +12,9 @@ const Popover = ({ children, className, header, trigger, triggerOn = 'click', pl
       <RBPopover.Body className={bem.e('body')}>{children}</RBPopover.Body>
     </RBPopover>
   );
+  const finalTriggerOn = triggerOn === 'hover' ? ['hover', 'focus'] : triggerOn;
   return (
-    <OverlayTrigger rootClose trigger={triggerOn} overlay={overlay} placement={placement} {...rest}>
+    <OverlayTrigger rootClose trigger={finalTriggerOn} overlay={overlay} placement={placement} {...rest}>
       {trigger}
     </OverlayTrigger>
   );

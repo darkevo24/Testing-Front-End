@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import Breadcrumb from 'components/Breadcrumb';
+import HighlightWords from 'components/HighlightWords';
 import { Search } from 'components/Icons';
 import Tabs from 'components/Tabs';
 import DafterTable from './DafterTable';
@@ -21,6 +22,15 @@ const Dafter = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState(t('sandbox.dafter.tabs.dafter.key'));
   const activeTitle = t(`sandbox.dafter.tabs.${activeTab}.title`);
+  const stats = useMemo(
+    () => [
+      { title: 'Jumlah Data pada Daftar Data', value: 35798 },
+      { title: 'Jumlah Instansi pada Daftar Data', value: 70 },
+      { title: 'Jumlah Dataset Terharvest', value: 35798 },
+      { title: 'Jumlah Instansi Terharvest', value: 50 },
+    ],
+    [],
+  );
   const tabs = useMemo(
     () => [
       {
@@ -69,7 +79,7 @@ const Dafter = () => {
       <Breadcrumb breadcrumbsList={breadcrumbsList} />
       <Row>
         <Col sm={{ span: 10, offset: 1 }}>
-          <div className={cx(bem.e('header-wrapper'), 'd-flex justify-content-between align-items-center mt-42 mb-50')}>
+          <div className={cx(bem.e('header-wrapper'), 'd-flex justify-content-between align-items-center mt-42 mb-40')}>
             <div className="sdp-heading-big">{activeTitle}</div>
             <div className="d-flex">
               <InputGroup>
@@ -88,6 +98,14 @@ const Dafter = () => {
                 {t('common.download')}
               </Button>
             </div>
+          </div>
+          <div className="d-flex mb-50">
+            {stats.map((stat) => (
+              <div key={stat.title} className={cx(bem.e('stat-card'), 'card mr-24')}>
+                <HighlightWords text={stat.title} />
+                <div className="sdp-sub-heading fs-24 lh-29 mt-8">{stat.value}</div>
+              </div>
+            ))}
           </div>
 
           <Tabs activeKey={activeTab} onSelect={(k) => setActiveTab(k)}>

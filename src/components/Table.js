@@ -202,7 +202,10 @@ const Table = ({
             {page.map((row, i) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()} onClick={() => handleRowClick(row)} className={getRowClass(row)}>
+                <tr
+                  {...row.getRowProps()}
+                  onClick={() => handleRowClick(row)}
+                  className={cx(getRowClass(row), { 'cursor-pointer': !!onRowClick })}>
                   {row.cells.map((cell) => {
                     return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
                   })}

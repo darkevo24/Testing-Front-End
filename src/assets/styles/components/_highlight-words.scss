@@ -1,0 +1,17 @@
+.sdp-highlight-words {
+  word-spacing: 2px;
+  &__highlighted {
+    position: relative;
+    padding-right: 2px;
+    &:after {
+      height: 2px;
+      background-color: $danger;
+      border-radius: 2px;
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      right: 0;
+    }
+  }
+}

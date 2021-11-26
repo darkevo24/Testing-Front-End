@@ -6,8 +6,10 @@ import Row from 'react-bootstrap/Row';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import Modal from 'components/Modal';
 import Notification from 'components/Notification';
+import Popover from 'components/Popover';
 import Table from 'components/Table';
 import { Breadcrumb } from 'components';
+import truncate from 'lodash/truncate';
 import { makeData } from 'utils/dataConfig/data-variable';
 import DataVariableForm, { submitDataVariableForm } from './DataVariableForm';
 
@@ -89,6 +91,16 @@ const DataVariable = () => {
       {
         Header: 'Definisi',
         accessor: 'definisi',
+        Cell: ({ cell: { value } = {} }) => {
+          return (
+            <Popover
+              placement="bottom-start"
+              triggerOn="hover"
+              trigger={<span className="cursor-pointer">{truncate(value, { length: 50 })}</span>}>
+              {value}
+            </Popover>
+          );
+        },
       },
       {
         Header: 'Pengaturan Akses',

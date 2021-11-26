@@ -102,6 +102,7 @@ const DafterTable = ({ bem, cms = false }) => {
           return (
             <Popover
               placement="bottom-start"
+              variant="highlight"
               className={bem.e('popover')}
               triggerOn="hover"
               trigger={<span className="cursor-pointer">{item.instansi}</span>}

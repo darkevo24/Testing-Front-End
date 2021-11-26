@@ -5,9 +5,18 @@ import bn from 'utils/bemNames';
 
 const bem = bn('popover');
 
-const Popover = ({ children, className, header, trigger, triggerOn = 'click', placement = 'bottom', ...rest }) => {
+const Popover = ({
+  children,
+  className,
+  header,
+  trigger,
+  triggerOn = 'click',
+  placement = 'bottom',
+  variant = 'default',
+  ...rest
+}) => {
   const overlay = (
-    <RBPopover className={cx(bem.b(), className)} {...rest}>
+    <RBPopover className={cx(bem.b(), bem.m(variant), className)} {...rest}>
       {header && <RBPopover.Header className={bem.e('header')}>{header}</RBPopover.Header>}
       <RBPopover.Body className={bem.e('body')}>{children}</RBPopover.Body>
     </RBPopover>

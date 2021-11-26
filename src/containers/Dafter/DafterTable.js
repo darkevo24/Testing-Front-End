@@ -132,10 +132,12 @@ const DafterTable = ({ bem, cms = false }) => {
       {
         Header: 'Label',
         accessor: 'label',
-        Cell: (data) => (
+        Cell: ({ cell: { row, value = [] } }) => (
           <div className={bem.e('tag-wrapper')}>
-            {data.cell.value.map((label) => (
-              <div className={bem.e('tag')}>{label}</div>
+            {value.map((label) => (
+              <div key={`${row.id}-${label}`} className={bem.e('tag')}>
+                {label}
+              </div>
             ))}
           </div>
         ),

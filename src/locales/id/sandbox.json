@@ -22,6 +22,12 @@
       },
       "title": "Daftar Data",
       "searchPlaceholder": "Pencarian"
+    },
+    "variable": {
+      "title": "Variabel",
+      "reference": "Kode Referensi",
+      "searchPlaceholder": "Pencarian",
+      "addVariable": "Tambah Variabel"
     }
   }
 }

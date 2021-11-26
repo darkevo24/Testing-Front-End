@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import cx from 'classnames';
 import truncate from 'lodash/truncate';
+import { useHistory } from 'react-router-dom';
 import ColumnData from 'components/ColumnData';
 import Modal from 'components/Modal';
 import Notification from 'components/Notification';
@@ -12,6 +13,7 @@ import DafterForm, { submitDafterForm } from './DafterForm';
 import { Check } from 'components/Icons';
 
 const DafterTable = ({ bem, cms = false }) => {
+  const history = useHistory();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDafterFormVisible, setIsDafterFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
@@ -101,7 +103,8 @@ const DafterTable = ({ bem, cms = false }) => {
             <Popover
               placement="bottom-start"
               className={bem.e('popover')}
-              trigger={<span>{item.instansi}</span>}
+              triggerOn="hover"
+              trigger={<span className="cursor-pointer">{item.instansi}</span>}
               header="Detail Data Cakupan Wilayah Internet">
               <ColumnData items={items} />
             </Popover>
@@ -172,6 +175,11 @@ const DafterTable = ({ bem, cms = false }) => {
     highlightOnHover: true,
     variant: 'spaced',
   };
+  if (!cms) {
+    tableConfig.onRowClick = (data) => {
+      history.push('/data-variable');
+    };
+  }
   const dropdownFilters = [
     { label: 'Option 1', value: 'Option 1' },
     { label: 'Option 2', value: 'Option 2' },

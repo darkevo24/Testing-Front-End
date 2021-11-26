@@ -9,6 +9,7 @@ export const definisiData = [
 ];
 
 export const pengaturanData = ['Terbuka', 'Terbuka', 'Terbuka'];
+export const codeData = ['Ya', 'Tidak', 'Tidak'];
 
 const getRandomIndex = () => Math.floor(Math.random() * 3);
 
@@ -20,9 +21,11 @@ const newRow = () => {
   const dataIndex = getRandomIndex();
   return {
     name: nameData[dataIndex],
-    konsep: konsepData[dataIndex],
+    'id-konsep': konsepData[dataIndex],
+    konsep: 'ID',
     definisi: definisiData[dataIndex],
     pengaturan: pengaturanData[dataIndex],
+    code: codeData[dataIndex],
   };
 };
 

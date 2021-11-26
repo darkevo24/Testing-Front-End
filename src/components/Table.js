@@ -171,7 +171,7 @@ const Table = ({
           {searchRightComponent ? (
             searchRightComponent
           ) : (
-            <Button variant="info" className="btn-rounded ml-16 text-nowrap" onClick={onSearch}>
+            <Button variant="info" className="btn-rounded ml-16 px-24 text-nowrap" onClick={onSearch}>
               {searchButtonText}
             </Button>
           )}

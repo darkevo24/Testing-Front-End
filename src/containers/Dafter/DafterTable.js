@@ -69,8 +69,8 @@ const DafterTable = ({ bem, cms = false }) => {
     });
   };
 
-  const columns = useMemo(
-    () => [
+  const columns = useMemo(() => {
+    const items = [
       {
         Header: 'Instansi',
         id: 'instansi',
@@ -145,31 +145,22 @@ const DafterTable = ({ bem, cms = false }) => {
         accessor: 'status',
         Cell: (data) => (data.cell.value === 'active' ? <Check variant="green" /> : <Check variant="stroke" />),
       },
-      {
+    ];
+    if (cms) {
+      items.push({
         id: 'actions',
-        actions: cms
-          ? [
-              {
-                title: 'Detail',
-                classes: 'btn btn-info',
-                callback: showDafterDetailPage,
-              },
-            ]
-          : [
-              {
-                type: 'edit',
-                callback: showDafterFormModal,
-              },
-              {
-                type: 'trash',
-                callback: showDeleteModal,
-              },
-            ],
+        actions: [
+          {
+            title: 'Detail',
+            classes: 'btn btn-info',
+            callback: showDafterDetailPage,
+          },
+        ],
         Cell: Table.Actions,
-      },
-    ],
-    [],
-  );
+      });
+    }
+    return items;
+  }, [cms]);
   const data = useMemo(() => makeData(200), []);
   const tableConfig = {
     columns,

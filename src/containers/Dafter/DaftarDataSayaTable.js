@@ -5,8 +5,9 @@ import Table from 'components/Table';
 import { makeData } from 'utils/dataConfig/dafter';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import DafterForm, { submitDafterForm } from './DafterForm';
+import { Check } from 'components/Icons';
 
-const DaftarDataSayaTable = () => {
+const DaftarDataSayaTable = ({ bem }) => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDafterFormVisible, setIsDafterFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
@@ -87,10 +88,18 @@ const DaftarDataSayaTable = () => {
       {
         Header: 'Label',
         accessor: 'label',
+        Cell: (data) => (
+          <div className={bem.e('tag-wrapper')}>
+            {data.cell.value.map((label) => (
+              <div className={bem.e('tag')}>{label}</div>
+            ))}
+          </div>
+        ),
       },
       {
         Header: 'Status',
         accessor: 'status',
+        Cell: (data) => (data.cell.value === 'active' ? <Check variant="green" /> : <Check variant="stroke" />),
       },
       {
         id: 'actions',

@@ -15,3 +15,14 @@
     color: $gray-dark;
   }
 }
+
+.blue-primary {
+  background: $blue;
+  color: #fff;
+
+  &:hover {
+      background: $blue-hover;
+      color: #fff;
+  }
+}
+

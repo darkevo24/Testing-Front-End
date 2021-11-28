@@ -10,6 +10,43 @@ import './index.scss';
 
 const ManagementApi = () => {
   const history = useHistory();
+  const LIST_TABLE = [
+    {
+      title: 'Judul 1',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
+      json: 'data.go.id/api/(instansi)/(judul).json',
+    },
+    {
+      title: 'Judul 2',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
+      json: 'data.go.id/api/(instansi)/(judul).json',
+    },
+    {
+      title: 'Judul 3',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
+      json: 'data.go.id/api/(instansi)/(judul).json',
+    },
+    {
+      title: 'Judul 4',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
+      json: 'data.go.id/api/(instansi)/(judul).json',
+    },
+    {
+      title: 'Judul 5',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
+      json: 'data.go.id/api/(instansi)/(judul).json',
+    },
+    {
+      title: 'Judul 6',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
+      json: 'data.go.id/api/(instansi)/(judul).json',
+    },
+    {
+      title: 'Judul 7',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
+      json: 'data.go.id/api/(instansi)/(judul).json',
+    },
+  ];
   return (
     <div className="management-api">
       <div className="container">
@@ -59,48 +96,15 @@ const ManagementApi = () => {
               <th width="25%">Output JSON</th>
             </thead>
             <tbody>
-              <tr>
-                <td className="data-title">Judul API 1</td>
-                <td className="data-description">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et
-                </td>
-                <td className="data-json">data.go.id/api/(instansi)/(judul).json</td>
-              </tr>
-              <tr>
-                <td className="data-title">Judul API 1</td>
-                <td className="data-description">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et
-                </td>
-                <td className="data-json">data.go.id/api/(instansi)/(judul).json</td>
-              </tr>
-              <tr>
-                <td className="data-title">Judul API 1</td>
-                <td className="data-description">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et
-                </td>
-                <td className="data-json">data.go.id/api/(instansi)/(judul).json</td>
-              </tr>
-              <tr>
-                <td className="data-title">Judul API 1</td>
-                <td className="data-description">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et
-                </td>
-                <td className="data-json">data.go.id/api/(instansi)/(judul).json</td>
-              </tr>
-              <tr>
-                <td className="data-title">Judul API 1</td>
-                <td className="data-description">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et
-                </td>
-                <td className="data-json">data.go.id/api/(instansi)/(judul).json</td>
-              </tr>
-              <tr>
-                <td className="data-title">Judul API 1</td>
-                <td className="data-description">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et
-                </td>
-                <td className="data-json">data.go.id/api/(instansi)/(judul).json</td>
-              </tr>
+              {LIST_TABLE.map((data) => {
+                return (
+                  <tr>
+                    <td className="data-title">{data.title}</td>
+                    <td className="data-description">{data.description}</td>
+                    <td className="data-json">{data.json}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
           <div className="wrapper-pagination">

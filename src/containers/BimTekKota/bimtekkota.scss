@@ -1,0 +1,16 @@
+.sdp-bimtek-kota {
+  &__item {
+    border: 1px solid #E1E2EA;
+    border-radius: 4px;
+    padding: 12px;
+    height: 150px;
+
+    .date {
+      background: #f5f6fa;
+      border-radius: 4px;
+      padding: 8px 12px;
+      display: inline-block;
+      font-size: 14px;
+    }
+  }
+}

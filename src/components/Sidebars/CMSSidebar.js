@@ -30,8 +30,21 @@ export const CMSSidebar = () => {
         <div className={bem.e('title')}>
           <SidebarContentIcon className="mr-10" /> Content Management
         </div>
-        <SidebarItem title="About Us" pathname="/cms/about-us" />
-        <SidebarItem title="Struktur Organisasi" pathname="/cms/struktur" />
+        <Accordion defaultActiveKey="0">
+          <Accordion.Item>
+            <Accordion.Header
+              className={cx('', {
+                selected: window.location.pathname.includes('/cms/about-us') || window.location.pathname.includes('/cms/contact-us') || window.location.pathname.includes('/cms/struktur'),
+              })}>
+              Tentang
+            </Accordion.Header>
+            <Accordion.Body>
+              <SidebarItem title="About Us" pathname="/cms/about-us" />
+              <SidebarItem title="Struktur Organisasi" pathname="/cms/struktur" />
+                <SidebarItem title="Contact Us" pathname="/cms/contact-us" />
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
         <Accordion defaultActiveKey="0">
           <Accordion.Item>
             <Accordion.Header
@@ -46,7 +59,6 @@ export const CMSSidebar = () => {
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
-        <SidebarItem title="Contact Us" pathname="#" />
         <SidebarItem title="Forum" pathname="#" />
         <SidebarItem title="Komunitas Ahli" pathname="/cms/komunitas-ahli" />
         <Accordion defaultActiveKey="0">

@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import Box from './Box';
 import { useRef } from 'react';
 import './beritalayout.scss';

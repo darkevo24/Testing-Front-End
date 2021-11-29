@@ -41,6 +41,15 @@
   }
 }
 
+.sdp-link-blue {
+  text-decoration: none;
+  color: $blue;
+  &:hover {
+    color: $blue-link;
+    text-decoration: underline;
+  }
+}
+
 .sdp-title {
   font-weight: 600;
   font-size: 16px;

@@ -37,7 +37,8 @@ const TitleBox = styled.div`
   line-height: 23px;
 `;
 
-export const Cards = ({ trendingData = [], popularData = [] }) => {
+export const Cards = ({ isLoggedIn, trendingData = [], popularData = [] }) => {
+  const linkToRedirect = isLoggedIn ? '/dataset' : '/topic-detail';
   const renderDataSet = (data) => {
     const dataSetUrl = `/data/dataset/${data.name}`;
     const numberOfMaxFormats = 2;
@@ -68,7 +69,9 @@ export const Cards = ({ trendingData = [], popularData = [] }) => {
           <TrendingSvg style={{ margin: '0 10px' }} />
           <TitleBox>Dataset Trending</TitleBox>
         </LeftBox>
-        <RightBox>Lihat Semua</RightBox>
+        <a title="Lihat Semua" href={linkToRedirect} className="sdp-link-blue">
+          <RightBox>Lihat Semua</RightBox>
+        </a>
       </FlexBox>
       <FlexBox>{trendingData.map(renderDataSet)}</FlexBox>
       <FlexBox style={{ marginTop: '40px' }}>
@@ -76,7 +79,9 @@ export const Cards = ({ trendingData = [], popularData = [] }) => {
           <PopulerSvg style={{ margin: '0 10px' }} />
           <TitleBox>Dataset populer</TitleBox>
         </LeftBox>
-        <RightBox>Lihat Semua</RightBox>
+        <a title="Lihat Semua" href={linkToRedirect} className="sdp-link-blue">
+          <RightBox>Lihat Semua</RightBox>
+        </a>
       </FlexBox>
       <FlexBox>{popularData.map(renderDataSet)}</FlexBox>
     </Box>

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import take from 'lodash/take';
 import { Loader } from 'components';
+import { tokenSelector } from 'containers/Login/reducer';
 import { datasetSelector, getDataSet, getInitialParams } from './reducer';
 import { Top } from './Top';
 import { Search } from './Search';
@@ -16,6 +17,8 @@ const Container = styled.div`
 const BerandaPage = () => {
   const dispatch = useDispatch();
   const { /* error, */ loading, result } = useSelector(datasetSelector);
+  const token = useSelector(tokenSelector);
+  const isLoggedIn = !!token;
 
   useEffect(() => {
     dispatch(getDataSet(getInitialParams()));
@@ -30,7 +33,7 @@ const BerandaPage = () => {
       <Container>
         <Search />
         <Topic />
-        <Cards trendingData={trendingData} popularData={popularData} />
+        <Cards isLoggedIn={isLoggedIn} trendingData={trendingData} popularData={popularData} />
         {loading && <Loader fullscreen />}
       </Container>
     </>

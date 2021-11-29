@@ -22,7 +22,7 @@ const BimtekJadwalDetailPage = lazy(() => import('containers/CMS/BimtekJadwal/De
 const BimtekDokumentasiPage = lazy(() => import('containers/CMS/BimtekDokumentasi'));
 const BimtekDokumentasiBaruPage = lazy(() => import('containers/CMS/BimtekDokumentasi/Create'));
 const BimtekDokumentasiDetailPage = lazy(() => import('containers/CMS/BimtekDokumentasi/Detail'));
-const KesiapanSDI = lazy(() => import('containers/CMS/KesiapanSDI/index'));
+const KesiapanSDI = lazy(() => import('containers/CMS/DashboardManage/KesiapanSDI'));
 const DashboardEksekutifPage = lazy(() => import('containers/CMS/DashboardManage/DashboardEksekutif'));
 const DataAnalyticPage = lazy(() => import('containers/CMS/DashboardManage/DataAnalytic'));
 const DaftarPage = lazy(() => import('containers/CMS/Daftar'));

@@ -39,7 +39,7 @@ const TitleBox = styled.div`
 
 export const Cards = ({ trendingData = [], popularData = [] }) => {
   const renderDataSet = (data) => {
-    // const dataSetUrl = `/data/dataset/${data.name}`;
+    const dataSetUrl = `/data/dataset/${data.name}`;
     const numberOfMaxFormats = 2;
     const uniqFormats =
       uniqBy(
@@ -50,6 +50,7 @@ export const Cards = ({ trendingData = [], popularData = [] }) => {
     const hiddenFormats = uniqFormats.length - formatesToShow.length;
     return (
       <CardWithDetail
+        dataSetUrl={dataSetUrl}
         title={data.title}
         description={data.notes}
         count={data.num_resources}

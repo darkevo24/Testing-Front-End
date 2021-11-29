@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
+import uniqBy from 'lodash/uniqBy';
 import { ReactComponent as TrendingSvg } from 'assets/trending.svg';
 import { ReactComponent as PopulerSvg } from 'assets/populer.svg';
 import { CardWithDetail } from '../../components/Cards/CardWithDetail';
@@ -35,73 +37,47 @@ const TitleBox = styled.div`
   line-height: 23px;
 `;
 
-export const Cards = () => (
-  <Box>
-    <FlexBox>
-      <LeftBox>
-        <TrendingSvg style={{ margin: '0 10px' }} />
-        <TitleBox>Dataset Trending</TitleBox>
-      </LeftBox>
-      <RightBox>Lihat Semua</RightBox>
-    </FlexBox>
-    <FlexBox>
+export const Cards = ({ trendingData = [], popularData = [] }) => {
+  const renderDataSet = (data) => {
+    // const dataSetUrl = `/data/dataset/${data.name}`;
+    const numberOfMaxFormats = 2;
+    const uniqFormats =
+      uniqBy(
+        data.resources.filter((r) => !!r.format),
+        'format',
+      ) || [];
+    const formatesToShow = uniqFormats.slice(0, numberOfMaxFormats);
+    const hiddenFormats = uniqFormats.length - formatesToShow.length;
+    return (
       <CardWithDetail
-        title={'Banjarnegara Dalam Angka BDA 2021'}
-        description={'Pemerintah Kabupaten Banjar Negara'}
-        date={'12 Jan 2021'}
+        title={data.title}
+        description={data.notes}
+        count={data.num_resources}
+        formats={formatesToShow}
+        hiddenFormats={hiddenFormats}
+        date={moment(new Date(data.metadata_created)).format('DD MMM YYYY')}
         views={232}
       />
-      <CardWithDetail
-        title={'DIK Kabupaten Karanganyar Tahun 2021'}
-        description={'Pemerintah Kabupaten Banjar Negara'}
-        date={'12 Jan 2021'}
-        views={232}
-      />
-      <CardWithDetail
-        title={'Banjarnegara Dalam Angka BDA 2021'}
-        description={'Pemerintah Kabupaten Banjar Negara'}
-        date={'12 Jan 2021'}
-        views={232}
-      />
-      <CardWithDetail
-        title={'Banjarnegara Dalam Angka BDA 2021'}
-        description={'Pemerintah Kabupaten Banjar Negara'}
-        date={'12 Jan 2021'}
-        views={232}
-      />
-    </FlexBox>
-    <FlexBox style={{ marginTop: '40px' }}>
-      <LeftBox>
-        <PopulerSvg style={{ margin: '0 10px' }} />
-        <TitleBox>Dataset populer</TitleBox>
-      </LeftBox>
-      <RightBox>Lihat Semua</RightBox>
-    </FlexBox>
-    <FlexBox>
-      <CardWithDetail
-        title={'Banjarnegara Dalam Angka BDA 2021'}
-        description={'Pemerintah Kabupaten Banjar Negara'}
-        date={'12 Jan 2021'}
-        views={232}
-      />
-      <CardWithDetail
-        title={'DIK Kabupaten Karanganyar Tahun 2021'}
-        description={'Pemerintah Kabupaten Banjar Negara'}
-        date={'12 Jan 2021'}
-        views={232}
-      />
-      <CardWithDetail
-        title={'Banjarnegara Dalam Angka BDA 2021'}
-        description={'Pemerintah Kabupaten Banjar Negara'}
-        date={'12 Jan 2021'}
-        views={232}
-      />
-      <CardWithDetail
-        title={'Banjarnegara Dalam Angka BDA 2021'}
-        description={'Pemerintah Kabupaten Banjar Negara'}
-        date={'12 Jan 2021'}
-        views={232}
-      />
-    </FlexBox>
-  </Box>
-);
+    );
+  };
+  return (
+    <Box>
+      <FlexBox>
+        <LeftBox>
+          <TrendingSvg style={{ margin: '0 10px' }} />
+          <TitleBox>Dataset Trending</TitleBox>
+        </LeftBox>
+        <RightBox>Lihat Semua</RightBox>
+      </FlexBox>
+      <FlexBox>{trendingData.map(renderDataSet)}</FlexBox>
+      <FlexBox style={{ marginTop: '40px' }}>
+        <LeftBox>
+          <PopulerSvg style={{ margin: '0 10px' }} />
+          <TitleBox>Dataset populer</TitleBox>
+        </LeftBox>
+        <RightBox>Lihat Semua</RightBox>
+      </FlexBox>
+      <FlexBox>{popularData.map(renderDataSet)}</FlexBox>
+    </Box>
+  );
+};

@@ -10,6 +10,12 @@ import {
 
 const facetFields = ['organization', 'groups', 'tags', 'res_format'];
 
+export const getInitialParams = () => ({
+  currentPage: 0,
+  'facet.field': facetFields,
+  ...paginationParams,
+});
+
 export const initialState = {
   loading: false,
   dataset: {
@@ -18,11 +24,7 @@ export const initialState = {
     result: null,
     searchFacets: null,
     pageSize: defaultNumberOfRows,
-    params: {
-      currentPage: 0,
-      'facet.field': facetFields,
-      ...paginationParams,
-    },
+    params: getInitialParams(),
   },
   user: null,
   error: null,

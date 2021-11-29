@@ -66,9 +66,10 @@ export const AdminHeader = () => {
             })}
             title="Dashboard"
             id="basic-nav-dropdown">
-            <NavDropdown.Item onClick={() => history.push('/kesiapan-sdi')}>Kesiapan SDI</NavDropdown.Item>
-            <NavDropdown.Item onClick={() => history.push('/eksekutif')}>Eksekutif</NavDropdown.Item>
+            <NavDropdown.Item onClick={() => history.push('/kesiapan-sdi-pusat')}>Kesiapan SDI</NavDropdown.Item>
+            <NavDropdown.Item onClick={() => history.push('/dashboard-eksekutif')}>Eksekutif</NavDropdown.Item>
             <NavDropdown.Item onClick={() => history.push('/data-analytic')}>Data Analytic</NavDropdown.Item>
+            <NavDropdown.Item onClick={() => history.push('/dashboard-saya')}>Dashboard Saya</NavDropdown.Item>
           </NavDropdown>
           <NavDropdown
             className={cx({

@@ -25,7 +25,7 @@ const Dashboard = (props) => {
   ];
 
   return (
-    <div className="kesiapan-sd-pusat-wrapper">
+    <div className="kesiapan-sd-pusat-wrapper dashboard">
       <Breadcrumbs breadcrumbsList={breadcrumbsList} />
       <Container fluid className="bimtek-container">
         <div className="bimtek-header">{props.title}</div>

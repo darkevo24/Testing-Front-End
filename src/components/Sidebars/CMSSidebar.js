@@ -34,14 +34,17 @@ export const CMSSidebar = () => {
           <Accordion.Item>
             <Accordion.Header
               className={cx('', {
-                selected: window.location.pathname.includes('/cms/about-us') || window.location.pathname.includes('/cms/contact-us') || window.location.pathname.includes('/cms/struktur'),
+                selected:
+                  window.location.pathname.includes('/cms/about-us') ||
+                  window.location.pathname.includes('/cms/contact-us') ||
+                  window.location.pathname.includes('/cms/struktur'),
               })}>
               Tentang
             </Accordion.Header>
             <Accordion.Body>
               <SidebarItem title="About Us" pathname="/cms/about-us" />
               <SidebarItem title="Struktur Organisasi" pathname="/cms/struktur" />
-                <SidebarItem title="Contact Us" pathname="/cms/contact-us" />
+              <SidebarItem title="Contact Us" pathname="/cms/contact-us" />
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>

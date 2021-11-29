@@ -9,56 +9,44 @@ import { ReactComponent as LocationTag } from 'assets/location-tag.svg';
 import { ReactComponent as DownloadIcon } from 'assets/download-red.svg';
 import { NoPerminataanData } from 'components/Icons';
 
-import './bimtekmateri.scss';
-
 const BimtekMateri = () => {
-  const {
-    control,
-  } = useForm({});
+  const { control } = useForm({});
 
   const dataMateri = [
     {
-      "id": 1,
-      "namaFile": "Pendahuluan dan Latarbelakang",
-      "namaBimtek": "Perencanaan dan Program Bimbingan Teknis",
-      "tanggal": "2021-08-09",
-      "lokasi": "Jakarta Selatan",
-      "urlFile": ""
+      id: 1,
+      namaFile: 'Pendahuluan dan Latarbelakang',
+      namaBimtek: 'Perencanaan dan Program Bimbingan Teknis',
+      tanggal: '2021-08-09',
+      lokasi: 'Jakarta Selatan',
+      urlFile: '',
     },
     {
-      "id": 2,
-      "namaFile": "Materi Pokok",
-      "namaBimtek": "Perencanaan dan Program Bimbingan Teknis",
-      "tanggal": "2021-08-09",
-      "lokasi": "Jakarta Selatan",
-      "urlFile": ""
+      id: 2,
+      namaFile: 'Materi Pokok',
+      namaBimtek: 'Perencanaan dan Program Bimbingan Teknis',
+      tanggal: '2021-08-09',
+      lokasi: 'Jakarta Selatan',
+      urlFile: '',
     },
     {
-      "id": 2,
-      "namaFile": "Penutupan",
-      "namaBimtek": "Perencanaan dan Program Bimbingan Teknis",
-      "tanggal": "2021-08-09",
-      "lokasi": "Jakarta Selatan",
-      "urlFile": ""
-    }
+      id: 2,
+      namaFile: 'Penutupan',
+      namaBimtek: 'Perencanaan dan Program Bimbingan Teknis',
+      tanggal: '2021-08-09',
+      lokasi: 'Jakarta Selatan',
+      urlFile: '',
+    },
   ];
 
   return (
     <BimtekLayout className="sdp-bimtek-materi">
       <Row className="mb-12">
         <Col xs={4}>
-          <Dropdown
-            name="filterName"
-            control={control}
-            placeholder="Nama Bimtek"
-          />
+          <Dropdown name="filterName" control={control} placeholder="Nama Bimtek" />
         </Col>
         <Col xs={4}>
-          <DatePicker
-            name="filterDate"
-            control={control}
-            placeholder="Filter Tanggal"
-          />
+          <DatePicker name="filterDate" control={control} placeholder="Filter Tanggal" />
         </Col>
       </Row>
       {dataMateri.length === 0 ? (
@@ -89,7 +77,9 @@ const MateriItem = ({ namaFile, namaBimtek, tanggal, lokasi, urlFile }) => {
         <div className="mb-12">{namaBimtek}</div>
         <div>
           <span className="mr-40 bg-gray fs-14 p-10 mb-10">{tanggal}</span>
-          <span><LocationTag className="mr-10"/> {lokasi}</span>
+          <span>
+            <LocationTag className="mr-10" /> {lokasi}
+          </span>
         </div>
       </Col>
       <Col sm={3} className="text-end">

@@ -18,7 +18,7 @@ export const BimtekLayout = ({ children }) => {
         <Col xs="3">
           <BimTekSidebar />
         </Col>
-        <Col style={{ marginRight: "-100px" }}>{children}</Col>
+        <Col className="mr-n100">{children}</Col>
       </Row>
     </Container>
   );

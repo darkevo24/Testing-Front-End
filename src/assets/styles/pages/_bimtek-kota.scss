@@ -1,12 +1,12 @@
 .sdp-bimtek-kota {
   &__item {
-    border: 1px solid #E1E2EA;
+    border: 1px solid $stroke;
     border-radius: 4px;
     padding: 12px;
     height: 150px;
 
     .date {
-      background: #f5f6fa;
+      background: $gray-bg;
       border-radius: 4px;
       padding: 8px 12px;
       display: inline-block;

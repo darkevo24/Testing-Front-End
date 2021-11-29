@@ -12,86 +12,84 @@ import { Search, NoPerminataanData, Close } from 'components/Icons';
 
 import bn from 'utils/bemNames';
 import cx from 'classnames';
-import './bimtekdokumentasi.scss';
 
 const bem = bn('bimtek-dokumentasi');
 
 const BimTekDokumentasi = () => {
-  const {
-    control,
-  } = useForm({});
+  const { control } = useForm({});
 
   const dataDokumentasi = [
-  	{
-  		"label": "Minggu ini",
-  		"data": [
-  			{
-  				"id": 1,
-  				"photos": [
-            "https://i.picsum.photos/id/544/536/354.jpg?hmac=w5hlO2J6AMeb_LBrkxt3mI59Ss5pjTgdJImTKDonzhc",
-            "https://i.picsum.photos/id/174/536/354.jpg?hmac=BfySTNvwCB_IZZueijD4RPBFgdEyPtIJRFTotFQ7Bz0",
-            "https://i.picsum.photos/id/679/536/354.jpg?hmac=DjxD7ZCUdEANv_Jc2kgtDCPnxeSbfGvI_5O0bpGo7UY"
-          ],
-  				"title": "Belajar Word",
-          "date": "25 November 2021",
-  				"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a."
-  			},
-  			{
-  				"id": 2,
-  				"photos": [
-            "https://i.picsum.photos/id/132/536/354.jpg?hmac=ySCa5N4b-Q3YNUAT2pz9ffGI1Uq3pmk9el_00tooo8A",
-            "https://i.picsum.photos/id/557/536/354.jpg?hmac=8K4sIO3JciaBqsEhBcIhOTSrpWJu1zCcRR4UAzoF5g4",
-            "https://i.picsum.photos/id/417/536/354.jpg?hmac=Matsrj1iHedTOJ1uSvFWYRPrdtI6xSFcv9slnup-NQo"
-          ],
-  				"title": "Perencanaan dan Program Bimbingan Teknis",
-          "date": "23 November 2021",
-  				"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a."
-  			},
-  			{
-  				"id": 3,
-  				"photos": [
-            "https://i.picsum.photos/id/892/536/354.jpg?hmac=60WxlDjmsmE707hkhf2GjWSxc4kxxl4ggWFAxnQ-vd0",
-            "https://i.picsum.photos/id/990/536/354.jpg?hmac=lxIb_KJ25hKUrltIoEOtgpkV73jgyl8K__1dJg28HgM"
-          ],
-  				"title": "Bimbingan Teknis Pemrograman",
-          "date": "22 November 2021",
-  				"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a."
-  			}
-  		]
-  	},
     {
-  		"label": "Minggu Lalu",
-  		"data": [
+      label: 'Minggu ini',
+      data: [
         {
-  				"id": 3,
-  				"photos": [
-            "https://i.picsum.photos/id/129/536/354.jpg?hmac=gjW_nduOoXN0pECejBE5tOikjkxxiYjU9JQq_Y-nPBQ"
+          id: 1,
+          photos: [
+            'https://i.picsum.photos/id/544/536/354.jpg?hmac=w5hlO2J6AMeb_LBrkxt3mI59Ss5pjTgdJImTKDonzhc',
+            'https://i.picsum.photos/id/174/536/354.jpg?hmac=BfySTNvwCB_IZZueijD4RPBFgdEyPtIJRFTotFQ7Bz0',
+            'https://i.picsum.photos/id/679/536/354.jpg?hmac=DjxD7ZCUdEANv_Jc2kgtDCPnxeSbfGvI_5O0bpGo7UY',
           ],
-  				"title": "Bimbingan Teknis Pemrograman",
-          "date": "30 November 2021",
-  				"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a."
-  			},
-  			{
-  				"id": 1,
-  				"photos": [
-            "https://i.picsum.photos/id/9/536/354.jpg?hmac=5PiiV8cCMwZsDl8bYwpetFqtPuNn5uY2WcKTEb5ykW4"
+          title: 'Belajar Word',
+          date: '25 November 2021',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a.',
+        },
+        {
+          id: 2,
+          photos: [
+            'https://i.picsum.photos/id/132/536/354.jpg?hmac=ySCa5N4b-Q3YNUAT2pz9ffGI1Uq3pmk9el_00tooo8A',
+            'https://i.picsum.photos/id/557/536/354.jpg?hmac=8K4sIO3JciaBqsEhBcIhOTSrpWJu1zCcRR4UAzoF5g4',
+            'https://i.picsum.photos/id/417/536/354.jpg?hmac=Matsrj1iHedTOJ1uSvFWYRPrdtI6xSFcv9slnup-NQo',
           ],
-  				"title": "Belajar Word",
-          "date": "30 November 2021",
-  				"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a."
-  			}
-  		]
-  	}
+          title: 'Perencanaan dan Program Bimbingan Teknis',
+          date: '23 November 2021',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a.',
+        },
+        {
+          id: 3,
+          photos: [
+            'https://i.picsum.photos/id/892/536/354.jpg?hmac=60WxlDjmsmE707hkhf2GjWSxc4kxxl4ggWFAxnQ-vd0',
+            'https://i.picsum.photos/id/990/536/354.jpg?hmac=lxIb_KJ25hKUrltIoEOtgpkV73jgyl8K__1dJg28HgM',
+          ],
+          title: 'Bimbingan Teknis Pemrograman',
+          date: '22 November 2021',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a.',
+        },
+      ],
+    },
+    {
+      label: 'Minggu Lalu',
+      data: [
+        {
+          id: 3,
+          photos: ['https://i.picsum.photos/id/129/536/354.jpg?hmac=gjW_nduOoXN0pECejBE5tOikjkxxiYjU9JQq_Y-nPBQ'],
+          title: 'Bimbingan Teknis Pemrograman',
+          date: '30 November 2021',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a.',
+        },
+        {
+          id: 1,
+          photos: ['https://i.picsum.photos/id/9/536/354.jpg?hmac=5PiiV8cCMwZsDl8bYwpetFqtPuNn5uY2WcKTEb5ykW4'],
+          title: 'Belajar Word',
+          date: '30 November 2021',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a.',
+        },
+      ],
+    },
   ];
 
-  const [ docDetail, setDocDetail ] = useState(false);
-  const [ selectedDoc, setSelectedDoc ] = useState({
-    "photos": "",
-    "title": "",
-    "date": "",
-    "description": ""
+  const [docDetail, setDocDetail] = useState(false);
+  const [selectedDoc, setSelectedDoc] = useState({
+    photos: '',
+    title: '',
+    date: '',
+    description: '',
   });
-  const [ activePhoto, setActivePhoto ] = useState(0);
+  const [activePhoto, setActivePhoto] = useState(0);
 
   const openDetail = (list, item) => {
     setDocDetail(true);
@@ -109,11 +107,7 @@ const BimTekDokumentasi = () => {
           </InputGroup>
         </Col>
         <Col xs={3}>
-          <DatePicker
-            name="filterDate"
-            control={control}
-            placeholder="Filter Tanggal"
-          />
+          <DatePicker name="filterDate" control={control} placeholder="Filter Tanggal" />
         </Col>
       </Row>
       {dataDokumentasi.length === 0 ? (
@@ -139,7 +133,7 @@ const BimTekDokumentasi = () => {
                   title={item.title}
                   urlPhoto={item.photos[0]}
                   date={item.date}
-                  onClick={() => openDetail(i,j)}
+                  onClick={() => openDetail(i, j)}
                 />
               ))}
             </div>
@@ -148,11 +142,25 @@ const BimTekDokumentasi = () => {
       ))}
 
       <Modal show={docDetail} onHide={setDocDetail} dialogClassName={bem.e('modal')}>
-        <Modal.Header className={bem.e('modal-header')} style={{ backgroundImage: "url('" + selectedDoc.photos[activePhoto] + "')"}}>
-          <div onClick={() => setDocDetail(false)} className={cx(bem.e('detail-close'), 'bg-white rounded-circle')}><Close /></div>
-          <div onClick={() => setActivePhoto(activePhoto-1)} className={cx(bem.e('detail-left'), 'bg-white rounded-circle')}><div></div></div>
-          <div onClick={() => setActivePhoto(activePhoto+1)} className={cx(bem.e('detail-right'), 'bg-white rounded-circle')}><div></div></div>
-          <div className={cx(bem.e('detail-page'), 'sdp-text-white fs-16')}>{(activePhoto + 1) + " / " +selectedDoc.photos.length}</div>
+        <Modal.Header
+          className={bem.e('modal-header')}
+          style={{ backgroundImage: "url('" + selectedDoc.photos[activePhoto] + "')" }}>
+          <div onClick={() => setDocDetail(false)} className={cx(bem.e('detail-close'), 'bg-white rounded-circle')}>
+            <Close />
+          </div>
+          <div
+            onClick={() => setActivePhoto(activePhoto - 1)}
+            className={cx(bem.e('detail-left'), 'bg-white rounded-circle')}>
+            <div></div>
+          </div>
+          <div
+            onClick={() => setActivePhoto(activePhoto + 1)}
+            className={cx(bem.e('detail-right'), 'bg-white rounded-circle')}>
+            <div></div>
+          </div>
+          <div className={cx(bem.e('detail-page'), 'sdp-text-white fs-16')}>
+            {activePhoto + 1 + ' / ' + selectedDoc.photos.length}
+          </div>
         </Modal.Header>
         <Modal.Body>
           <div className="sdp-text-grey-dark fs-14 mb-16">{selectedDoc.date}</div>

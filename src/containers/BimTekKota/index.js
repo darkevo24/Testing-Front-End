@@ -9,46 +9,42 @@ import { Dropdown } from 'components';
 import { ReactComponent as LocationTag } from 'assets/location-tag.svg';
 import { Search, NoPerminataanData } from 'components/Icons';
 
-import './bimtekkota.scss';
-
 const BimtekKota = () => {
-  const {
-    control,
-  } = useForm({});
+  const { control } = useForm({});
 
   const dataKota = [
     {
-      "id": 1,
-      "namaFile": "Pendahuluan dan Latarbelakang",
-      "namaBimtek": "Perencanaan dan Program Bimbingan Teknis",
-      "tanggal": "2021-08-09",
-      "lokasi": "Jakarta Selatan",
-      "urlFile": ""
+      id: 1,
+      namaFile: 'Pendahuluan dan Latarbelakang',
+      namaBimtek: 'Perencanaan dan Program Bimbingan Teknis',
+      tanggal: '2021-08-09',
+      lokasi: 'Jakarta Selatan',
+      urlFile: '',
     },
     {
-      "id": 2,
-      "namaFile": "Materi Pokok",
-      "namaBimtek": "Perencanaan dan Program Bimbingan Teknis",
-      "tanggal": "2021-08-09",
-      "lokasi": "Jakarta Selatan",
-      "urlFile": ""
+      id: 2,
+      namaFile: 'Materi Pokok',
+      namaBimtek: 'Perencanaan dan Program Bimbingan Teknis',
+      tanggal: '2021-08-09',
+      lokasi: 'Jakarta Selatan',
+      urlFile: '',
     },
     {
-      "id": 2,
-      "namaFile": "Penutupan",
-      "namaBimtek": "Perencanaan dan Program Bimbingan Teknis",
-      "tanggal": "2021-08-09",
-      "lokasi": "Jakarta Selatan",
-      "urlFile": ""
+      id: 2,
+      namaFile: 'Penutupan',
+      namaBimtek: 'Perencanaan dan Program Bimbingan Teknis',
+      tanggal: '2021-08-09',
+      lokasi: 'Jakarta Selatan',
+      urlFile: '',
     },
     {
-      "id": 3,
-      "namaFile": "Penutupan",
-      "namaBimtek": "Perencanaan dan Program Bimbingan Teknis",
-      "tanggal": "2021-08-09",
-      "lokasi": "Jakarta Selatan",
-      "urlFile": ""
-    }
+      id: 3,
+      namaFile: 'Penutupan',
+      namaBimtek: 'Perencanaan dan Program Bimbingan Teknis',
+      tanggal: '2021-08-09',
+      lokasi: 'Jakarta Selatan',
+      urlFile: '',
+    },
   ];
 
   return (
@@ -56,11 +52,7 @@ const BimtekKota = () => {
       <div className="fw-bold fs-32 mb-12">Kota Pelaksana</div>
       <Row className="mb-3">
         <Col xs={3}>
-          <Dropdown
-            name="filterName"
-            control={control}
-            placeholder="Kota"
-          />
+          <Dropdown name="filterName" control={control} placeholder="Kota" />
         </Col>
         <Col xs={5}>
           <InputGroup>
@@ -78,12 +70,7 @@ const BimtekKota = () => {
           </div>
         ) : null}
         {dataKota.map((item, key) => (
-          <KotaItem
-            key={key}
-            nama={item.namaFile}
-            tanggal={item.tanggal}
-            lokasi={item.lokasi}
-          />
+          <KotaItem key={key} nama={item.namaFile} tanggal={item.tanggal} lokasi={item.lokasi} />
         ))}
       </Row>
     </BimtekLayout>
@@ -98,7 +85,9 @@ const KotaItem = ({ nama, tanggal, lokasi }) => {
         <div className="mb-3">
           <span className="date">{tanggal}</span> - <span className="date">{tanggal}</span>
         </div>
-        <div><LocationTag className="mr-10"/> {lokasi}</div>
+        <div>
+          <LocationTag className="mr-10" /> {lokasi}
+        </div>
       </div>
     </Col>
   );

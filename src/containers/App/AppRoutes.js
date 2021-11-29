@@ -17,8 +17,7 @@ const BimTekJadwalPage = lazy(() => import('containers/BimTekJadwal'));
 const TentangPage = lazy(() => import('containers/TentangSDI'));
 const KomunitasPage = lazy(() => import('containers/Komunitas'));
 const BeritaPage = lazy(() => import('containers/Berita'));
-const KesiapanSDIDaerah = lazy(() => import('containers/KesiapanSDiDaerah'));
-const KesiapanSDIPusat = lazy(() => import('containers/KesiapanSDIPusat'));
+const KesiapanSDI = lazy(() => import('containers/Dashboard/KesiapanSDI'));
 const DashboardEksekutif = lazy(() => import('containers/Dashboard/DashboardEksekutif'));
 const DashboardSaya = lazy(() => import('containers/Dashboard/DashboardSaya'));
 const DataAnalytic = lazy(() => import('containers/Dashboard/DataAnalytic'));
@@ -45,8 +44,7 @@ function AppRoutes(props) {
         <Route exact path="/bimtek-form" component={BimTekFormPage} />
         <Route exact path="/bimtek-jadwal" component={BimTekJadwalPage} />
         <Route exact path="/tentang" component={TentangPage} />
-        <Route exact path="/kesiapan-sdi-daerah" component={KesiapanSDIDaerah} />
-        <Route exact path="/kesiapan-sdi-pusat" component={KesiapanSDIPusat} />
+        <Route exact path="/kesiapan-sdi" component={KesiapanSDI} />
         <Route exact path="/dashboard-eksekutif" component={DashboardEksekutif} />
         <Route exact path="/dashboard-saya" component={DashboardSaya} />
         <Route exact path="/data-analytic" component={DataAnalytic} />

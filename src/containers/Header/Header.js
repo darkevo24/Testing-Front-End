@@ -107,7 +107,7 @@ export const Header = () => {
       {
         title: 'Dashboard',
         links: [
-          { title: 'Kesiapan SDI', link: '/kesiapan-sdi-pusat' },
+          { title: 'Kesiapan SDI', link: '/kesiapan-sdi' },
           { title: 'Eksekutif', link: '/dashboard-eksekutif' },
           { title: 'Data Analytic', link: '/data-analytic' },
           { title: 'Dashboard Saya', link: '/dashboard-saya' },

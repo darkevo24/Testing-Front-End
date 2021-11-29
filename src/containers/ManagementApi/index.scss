@@ -72,7 +72,7 @@
                         color: #858A8F;
                         outline: none;
                         border: none;
-                        width: 85%;
+                        width: 100%;
                         &:focus {
                             outline: none;
                         }
@@ -151,50 +151,7 @@
         }
     }
 
-    // Pagination
-    .wrapper-pagination {
-        display: flex;
-        justify-content: flex-end;
-        padding-top: 40px;
-        padding-bottom: 70px;
-        .pagination {
-            .page-link {
-                color: #858A8F;
-                background: #F5F6FA;
-                border-radius: 2px;
-                margin-left: 13px;
-                border: none;
-                width: 32px;
-                height: 32px;
-                &:hover {
-                    background: #2B333A;
-                    color: #fff;
-                }
-
-                &.active {
-                    background: #2B333A;
-                    color: #fff;
-                }
-
-                &.next,
-                &.prev {
-                    background: #fff;
-                    border: 1px solid #E1E2EA;
-                    vertical-align: middle;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-            }
-        }
-    }
-
-
-
-
-    
-    // Add Detail
-
+    // =============== Add Detail Page ===============
     .header-add {
         width: 100%;
         display: flex;
@@ -325,20 +282,6 @@
             margin-top: 20px;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     &.add {
         padding-left: 200px;

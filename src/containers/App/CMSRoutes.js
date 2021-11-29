@@ -27,11 +27,15 @@ const DashboardEksekutifPage = lazy(() => import('containers/CMS/DashboardManage
 const DataAnalyticPage = lazy(() => import('containers/CMS/DashboardManage/DataAnalytic'));
 const DaftarPage = lazy(() => import('containers/CMS/Daftar'));
 const ManagementApi = lazy(() => import('containers/CMS/ManagementApi'));
+const ManagementApiDetail = lazy(() => import('containers/CMS/ManagementApi/DetailApi'));
+const ManagementApiForm = lazy(() => import('containers/CMS/ManagementApi/Form'));
 
 function CMSRoutes() {
   return (
     <CMSLayout>
       <Switch>
+        <PrivateRoute exact path="/cms/api/form" component={ManagementApiForm} />
+        <PrivateRoute exact path="/cms/api/detail" component={ManagementApiDetail} />
         <PrivateRoute exact path="/cms/api" component={ManagementApi} />
         <PrivateRoute exact path="/cms/manage-komunitas-ahli" component={ManageKomunitasAhliPage} />
         <PrivateRoute exact path="/cms/komunitas-ahli" component={KomunitasAhliPage} />

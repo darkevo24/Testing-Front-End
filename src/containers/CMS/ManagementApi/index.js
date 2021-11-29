@@ -1,4 +1,3 @@
-import { useHistory, useLocation } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import LogoBappenas from 'assets/Logo_Bappenas_Indonesia.png';
 import { ReactComponent as Search } from 'assets/search-api.svg';
@@ -8,7 +7,6 @@ import { ReactComponent as Next } from 'assets/next.svg';
 import './index.scss';
 
 const ManagementApi = () => {
-  const history = useHistory();
   const LIST_CARD = [
     {
       img: 'assets/Logo_Bappenas_Indonesia.png',
@@ -64,6 +62,42 @@ const ManagementApi = () => {
       url: 'https://bappenas.go.id/data.json/ 123456789/ 01112131415',
       file: 3,
     },
+    {
+      img: 'assets/Logo_Bappenas_Indonesia.png',
+      title: 'Bappenas',
+      url: 'https://bappenas.go.id/data.json/ 123456789/ 01112131415',
+      file: 3,
+    },
+    {
+      img: 'assets/Logo_Bappenas_Indonesia.png',
+      title: 'Kominfo',
+      url: 'https://bappenas.go.id/data.json/ 123456789/ 01112131415',
+      file: 3,
+    },
+    {
+      img: 'assets/Logo_Bappenas_Indonesia.png',
+      title: 'Kemendagri',
+      url: 'https://bappenas.go.id/data.json/ 123456789/ 01112131415',
+      file: 3,
+    },
+    {
+      img: 'assets/Logo_Bappenas_Indonesia.png',
+      title: 'Bappenas',
+      url: 'https://bappenas.go.id/data.json/ 123456789/ 01112131415',
+      file: 3,
+    },
+    {
+      img: 'assets/Logo_Bappenas_Indonesia.png',
+      title: 'Kominfo',
+      url: 'https://bappenas.go.id/data.json/ 123456789/ 01112131415',
+      file: 3,
+    },
+    {
+      img: 'assets/Logo_Bappenas_Indonesia.png',
+      title: 'Kemendagri',
+      url: 'https://bappenas.go.id/data.json/ 123456789/ 01112131415',
+      file: 3,
+    },
   ];
 
   return (
@@ -81,9 +115,6 @@ const ManagementApi = () => {
             </div>
             <div className="col-md-6 d-flex align-bottom">
               <div className="wrapper-right">
-                {/* <button className="btn blue-primary" onClick={() => history.push('/api/add')}>
-                  Tambah API
-                </button> */}
                 <div className="input-group">
                   <input type="text" placeholder="Cari..." />
                   <div class="input-group-append">
@@ -100,7 +131,7 @@ const ManagementApi = () => {
           <div className="row">
             {LIST_CARD.map((data, index) => {
               return (
-                <div key={index} className="col-md-3 mb-15">
+                <div key={index} className="col-md-3 px-7 mb-15">
                   <div className="card-list">
                     <div className="card-logo">
                       <img src={LogoBappenas} width="60px" />

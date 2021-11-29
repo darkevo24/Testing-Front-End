@@ -68,6 +68,11 @@ const AddApi = () => {
       equlvalent: 'Judul',
       source: 'Judul',
     },
+    {
+      property: 'Title',
+      equlvalent: 'Judul',
+      source: 'Judul',
+    },
   ];
 
   const handleImport = (e) => {

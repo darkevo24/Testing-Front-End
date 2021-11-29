@@ -14,6 +14,9 @@ const ForumPage = lazy(() => import('containers/Perminataan/Forum'));
 const BimTekSummaryPage = lazy(() => import('containers/BimTekSummary'));
 const BimTekFormPage = lazy(() => import('containers/BimTekForm'));
 const BimTekJadwalPage = lazy(() => import('containers/BimTekJadwal'));
+const BimTekMateriPage = lazy(() => import('containers/BimTekMateri'));
+const BimTekKotaPage = lazy(() => import('containers/BimTekKota'));
+const BimTekDokumentasiPage = lazy(() => import('containers/BimTekDokumentasi'));
 const TentangPage = lazy(() => import('containers/TentangSDI'));
 const KomunitasPage = lazy(() => import('containers/Komunitas'));
 const BeritaPage = lazy(() => import('containers/Berita'));
@@ -43,6 +46,9 @@ function AppRoutes(props) {
         <Route exact path="/bimtek-summary" component={BimTekSummaryPage} />
         <Route exact path="/bimtek-form" component={BimTekFormPage} />
         <Route exact path="/bimtek-jadwal" component={BimTekJadwalPage} />
+        <Route exact path="/bimtek-materi" component={BimTekMateriPage} />
+        <Route exact path="/bimtek-kota-pelaksanaan" component={BimTekKotaPage} />
+        <Route exact path="/bimtek-dokumentasi" component={BimTekDokumentasiPage} />
         <Route exact path="/tentang" component={TentangPage} />
         <Route exact path="/kesiapan-sdi" component={KesiapanSDI} />
         <Route exact path="/dashboard-eksekutif" component={DashboardEksekutif} />

@@ -13,7 +13,10 @@ const EditorConfig = {
     // eslint-disable-next-line no-multi-str
     'bold italic underline | \
     alignleft aligncenter alignright alignjustify | \
-    numlist bullist outdent indent',
+    numlist bullist outdent indent | \
+    image',
+  images_upload_url: process.env.REACT_APP_API_URL + '/file/public-upload',
+  file_picker_types: 'image media',
 };
 
 const TextEditor = ({ defaultValue, disabled, onChange = () => {} }) => {

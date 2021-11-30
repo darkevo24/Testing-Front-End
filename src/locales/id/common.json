@@ -22,5 +22,13 @@
     "nameZtoA": "Nama Z-A",
     "download": "Download",
     "searchPlaceholder": "Cari Data"
+  },
+  "header": {
+    "userNav": {
+      "changePassword": "Ubah Password",
+      "cmsApplication": "Aplikasi Sekertariat",
+      "privacyPolicy": "Kebijakan Privasi",
+      "signOut": "Keluar"
+    }
   }
 }

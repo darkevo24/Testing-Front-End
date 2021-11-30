@@ -6,6 +6,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import isArray from 'lodash/isArray';
 import get from 'lodash/get';
 import map from 'lodash/map';
+import { useTranslation } from 'react-i18next';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import { useDispatch, useSelector } from 'react-redux';
@@ -60,6 +61,7 @@ export const Header = () => {
   const location = useLocation();
   const token = useSelector(tokenSelector);
   const user = useSelector(userSelector);
+  const { t } = useTranslation();
 
   const isLoggedIn = !!token;
 
@@ -143,7 +145,10 @@ export const Header = () => {
       <Nav className="h-100 d-flex align-items-center">
         {getNavLinks(MEMBER_ROUTES, location.pathname, goTo)}
         <NavDropdown title={user?.name || 'Achmad Adam'} id="user-nav-dropdown" className="user-nav h-100">
-          <NavDropdown.Item onClick={handleLogout}>Sign Out</NavDropdown.Item>
+          <NavDropdown.Item>{t('header.userNav.changePassword')}</NavDropdown.Item>
+          <NavDropdown.Item onClick={goTo('/cms')}>{t('header.userNav.cmsApplication')}</NavDropdown.Item>
+          <NavDropdown.Item>{t('header.userNav.privacyPolicy')}</NavDropdown.Item>
+          <NavDropdown.Item onClick={handleLogout}>{t('header.userNav.signOut')}</NavDropdown.Item>
         </NavDropdown>
       </Nav>
     );

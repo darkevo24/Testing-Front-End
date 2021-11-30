@@ -239,23 +239,6 @@ export const PencilSvg = (props) => (
   </svg>
 );
 
-export const actionIcons = {
-  edit: Edit,
-  trash: Trash,
-  search: Search,
-};
-
-export const modalIcons = {
-  info: Info,
-  splitCircle: SplitCircle,
-  splitTriangle: SplitTriangle,
-};
-
-export const alertIcons = {
-  check: Check,
-  info: Info,
-};
-
 export const icons = {
   edit: Edit,
   calender: Calender,

@@ -9,7 +9,7 @@ import isFunction from 'lodash/isFunction';
 import isString from 'lodash/isString';
 import { useAsyncDebounce, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 
-import { LeftChevron, RightChevron, Search, actionIcons } from 'components/Icons';
+import { LeftChevron, RightChevron, Search, icons } from 'components/Icons';
 import bn from 'utils/bemNames';
 
 const bem = bn('table');
@@ -255,7 +255,7 @@ Table.Actions = ({ cell, ...rest }) => {
   return (
     <div className="d-flex action-icon-wrapper">
       {actions.map(({ icon, type, variant, title, callback, classes }) => {
-        const Icon = icon || actionIcons[type];
+        const Icon = icon || icons[type];
         if (!Icon && !title) return null;
         return Icon ? (
           <div key={`${id}-${type}`} className="icon-box" onClick={() => callback(row.original)}>

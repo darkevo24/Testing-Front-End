@@ -2,7 +2,7 @@ import cx from 'classnames';
 import Button from 'react-bootstrap/Button';
 import RBModal from 'react-bootstrap/Modal';
 
-import { Close, modalIcons } from 'components/Icons';
+import { Close, icons } from 'components/Icons';
 import bn from 'utils/bemNames';
 
 const bem = bn('modal');
@@ -19,7 +19,7 @@ const Modal = ({
   showHeader = true,
   centered = false,
 }) => {
-  const Icon = modalIcons[icon];
+  const Icon = icons[icon];
   return (
     <RBModal
       show={visible}

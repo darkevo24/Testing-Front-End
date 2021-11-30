@@ -182,6 +182,7 @@
   .action-icon-wrapper {
     .icon-box {
       margin-right: 4px;
+      border-radius: $border-radius;
       &:last-child {
         margin-right: 0;
       }

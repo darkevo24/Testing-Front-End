@@ -111,7 +111,7 @@ const DaftarDataSayaTable = ({ bem }) => {
             callback: showDafterFormModal,
           },
           {
-            type: 'trash',
+            type: 'cross',
             callback: showDeleteModal,
           },
         ],

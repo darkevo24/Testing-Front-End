@@ -1,22 +1,43 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import cx from 'classnames';
 import truncate from 'lodash/truncate';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import ColumnData from 'components/ColumnData';
 import Modal from 'components/Modal';
+import Loader from 'components/Loader';
 import Notification from 'components/Notification';
 import Table from 'components/Table';
 import Popover from 'components/Popover';
-import { makeData } from 'utils/dataConfig/dafter';
-import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
-import DafterForm, { submitDafterForm } from './DafterForm';
 import { Check } from 'components/Icons';
+import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
+import cloneDeep from 'lodash/cloneDeep';
+import DafterForm, { submitDafterForm } from './DafterForm';
+import { getKatalog, katalogSelector } from './reducer';
 
 const DafterTable = ({ bem, cms = false }) => {
   const history = useHistory();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDafterFormVisible, setIsDafterFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const { pageSize, loading, params, result } = useSelector(katalogSelector);
+  const dispatch = useDispatch();
+
+  const fetchKatalog = (override, reset = false) => {
+    const filterParams = {
+      ...cloneDeep(params),
+      ...cloneDeep(override),
+    };
+    if (reset) {
+      filterParams.start = 0;
+      filterParams.currentPage = 0;
+    }
+    return dispatch(getKatalog(filterParams));
+  };
+  const katlogData = useMemo(() => result || [], [result]);
+  useEffect(() => {
+    fetchKatalog();
+  }, []);
 
   const showDeleteModal = (data) => {
     setSelectedRecord(data);
@@ -53,7 +74,7 @@ const DafterTable = ({ bem, cms = false }) => {
 
   const showDafterDetailPage = (data) => {
     // TODO: handle the detail page for daftar cms
-    // setSelectedRecord(data);
+    setSelectedRecord(data);
     // setIsDafterFormVisible(true);
   };
 
@@ -105,7 +126,7 @@ const DafterTable = ({ bem, cms = false }) => {
               variant="highlight"
               className={bem.e('popover')}
               triggerOn="hover"
-              trigger={<span className="cursor-pointer">{item.instansi}</span>}
+              trigger={<span className="cursor-pointer">{item.instansi.nama}</span>}
               header="Detail Data Cakupan Wilayah Internet">
               <ColumnData items={items} />
             </Popover>
@@ -114,31 +135,32 @@ const DafterTable = ({ bem, cms = false }) => {
       },
       {
         Header: 'Nama Data',
-        accessor: 'name',
+        accessor: 'nama',
         Cell: (data) => truncate(data.cell.value, { length: 20 }),
       },
       {
         Header: 'Jadwal Pemutakhiran',
-        accessor: 'jadwal',
+        accessor: 'jadwalPemutakhiran',
       },
       {
         Header: 'Dibuat',
-        accessor: 'dibuat',
+        accessor: 'createdDate',
       },
       {
         Header: 'Diperbarui',
-        accessor: 'diper',
+        accessor: 'lastModifiedDate',
       },
       {
         Header: 'Produsen Data',
-        accessor: 'produsen',
+        accessor: 'produsenData',
       },
       {
         Header: 'Label',
         accessor: 'label',
+        // TODO: replace with actual data
         Cell: ({ cell: { row, value = [] } }) => (
           <div className={bem.e('tag-wrapper')}>
-            {value.map((label) => (
+            {['SDGs', 'RKP'].map((label) => (
               <div key={`${row.id}-${label}`} className={bem.e('tag')}>
                 {label}
               </div>
@@ -149,7 +171,7 @@ const DafterTable = ({ bem, cms = false }) => {
       {
         Header: 'Status',
         accessor: 'status',
-        Cell: (data) => (data.cell.value === 'active' ? <Check variant="green" /> : <Check variant="stroke" />),
+        Cell: (data) => (data.cell.value ? <Check variant="green" /> : <Check variant="stroke" />),
       },
     ];
     if (cms) {
@@ -167,14 +189,29 @@ const DafterTable = ({ bem, cms = false }) => {
     }
     return items;
   }, [cms]);
-  const data = useMemo(() => makeData(200), []);
+
+  const data = useMemo(() => katlogData?.content?.records || [], [katlogData]);
+
   const tableConfig = {
     columns,
     data,
+    totalCount: result?.content?.totalRecords || null,
     cms,
+    pageSize,
+    currentPage: params.currentPage,
     showSearch: false,
     highlightOnHover: true,
     variant: 'spaced',
+    onPageIndexChange: (currentPage) => {
+      const start = currentPage * pageSize;
+      if (params.start !== start) {
+        const params = {
+          start,
+          currentPage,
+        };
+        fetchKatalog(params);
+      }
+    },
   };
   if (!cms) {
     tableConfig.onRowClick = (data) => {
@@ -204,14 +241,36 @@ const DafterTable = ({ bem, cms = false }) => {
             <label className="sdp-form-label py-8">Data Induk</label>
             <SingleSelectDropdown data={dropdownFilters} placeHolder="Semua" isLoading={false} noValue={true} />
           </div>
-          <div className="col">
-            <label className="sdp-form-label py-8">Prioritas</label>
-            <SingleSelectDropdown data={dropdownFilters} placeHolder="Ya" isLoading={false} noValue={true} />
-          </div>
+          {cms ? (
+            <>
+              <div className="col">
+                <label className="sdp-form-label py-8">Pilar SDGs</label>
+                <SingleSelectDropdown data={dropdownFilters} placeHolder="Ya" isLoading={false} noValue={true} />
+              </div>
+              <div className="col">
+                <label className="sdp-form-label py-8">Tujuan SDGs</label>
+                <SingleSelectDropdown data={dropdownFilters} placeHolder="Ya" isLoading={false} noValue={true} />
+              </div>
+              <div className="col">
+                <label className="sdp-form-label py-8">PN RKP</label>
+                <SingleSelectDropdown data={dropdownFilters} placeHolder="Ya" isLoading={false} noValue={true} />
+              </div>
+              <div className="col">
+                <label className="sdp-form-label py-8">PP RKP</label>
+                <SingleSelectDropdown data={dropdownFilters} placeHolder="Ya" isLoading={false} noValue={true} />
+              </div>
+            </>
+          ) : (
+            <div className="col">
+              <label className="sdp-form-label py-8">Prioritas</label>
+              <SingleSelectDropdown data={dropdownFilters} placeHolder="Ya" isLoading={false} noValue={true} />
+            </div>
+          )}
         </div>
       </div>
       {cms && <div className="divider mx-n32 mb-24" />}
       <Table {...tableConfig} />
+      {loading && <Loader fullscreen />}
       <Modal
         visible={isDeleteModalVisible}
         onClose={hideDeleteModal}

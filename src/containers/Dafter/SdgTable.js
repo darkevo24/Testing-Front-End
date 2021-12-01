@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import truncate from 'lodash/truncate';
 import Modal from 'components/Modal';
 import Notification from 'components/Notification';
 import Table from 'components/Table';
@@ -68,6 +69,7 @@ const SdgTable = ({ bem }) => {
       {
         Header: 'Nama Data',
         accessor: 'name',
+        Cell: (data) => truncate(data.cell.value, { length: 20 }),
       },
       {
         Header: 'Jadwal Pemutakhiran',

@@ -7,11 +7,11 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { NoPerminataanData, StatusSvg } from 'components/Icons';
-import { perminataanDatasetSelector, getPerminataanData } from './slice';
+import { perminataanDatasetSelector, getPerminataanData } from './reducer';
 import Table from 'components/Table';
 import { prefixID } from './constant';
-import SideBarLoader from '../../components/Loader/Sidebar';
-import TableLoader from '../../components/Loader/TableLoader';
+import SideBarLoader from 'components/Loader/Sidebar';
+import TableLoader from 'components/Loader/TableLoader';
 
 const LIST = [
   {

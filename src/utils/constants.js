@@ -21,13 +21,11 @@ import React from 'react';
 
 export const apiUrl = '/api';
 export const dataUrl = '/data/api';
-export const portalUrl = '/portal';
-export const v1Url = '/v1';
 
 export const getApiEndpoint = (path) => `${apiUrl}/${path}`;
 export const getDataEndpoint = (path) => `${dataUrl}/${path}`;
-export const getPortalEndpoint = (path) => `${apiUrl + portalUrl}/${path}`;
-export const getV1Endpoint = (path) => `${apiUrl + v1Url}/${path}`;
+export const getPortalEndpoint = (path) => `${apiUrl}/portal/${path}`;
+export const getV1Endpoint = (path) => `${apiUrl}/v1/${path}`;
 
 export const apiUrls = {
   login: getApiEndpoint('login'),

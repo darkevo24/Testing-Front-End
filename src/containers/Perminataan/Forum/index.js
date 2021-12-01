@@ -21,7 +21,7 @@ import {
   setPerminataanData,
   perminataanDatasetSelector,
   perminataanForumErrorSelector,
-} from '../slice';
+} from '../reducer';
 
 export const schema = yup.object({
   deskripsi: yup.string().required(),

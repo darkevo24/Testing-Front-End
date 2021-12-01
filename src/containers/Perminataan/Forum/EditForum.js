@@ -19,7 +19,7 @@ import {
   perminataanForumErrorSelector,
   setPerminataanData,
   updateResult,
-} from '../slice';
+} from '../reducer';
 import isEmpty from 'lodash/isEmpty';
 import { usePrevious } from 'utils/hooks';
 

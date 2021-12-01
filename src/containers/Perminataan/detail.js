@@ -16,7 +16,7 @@ import {
   kirimsetSelector,
   setKirimPerminataanData,
   getPerminataanData,
-} from './slice';
+} from './reducer';
 import { BackArrow, PencilSvg } from 'components/Icons';
 import { prefixID, getPerminataanInfo, getUserInfo, getClass } from './constant';
 import { userSelector } from '../Login/reducer';

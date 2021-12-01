@@ -76,10 +76,10 @@ const Daftar = () => {
     ],
     [activeTab, t],
   );
-
   useEffect(() => {
     dispatch(getInstansi());
   }, []);
+  const isSayaData = activeTab === t('sandbox.daftar.tabs.daftarSafa.key');
   return (
     <div className="daftar-page pb-100">
       <Breadcrumb breadcrumbsList={breadcrumbsList} />
@@ -101,7 +101,7 @@ const Daftar = () => {
                 </div>
               </InputGroup>
               <Button className="btn-rounded ml-16 px-32 text-nowrap" onClick={() => {}}>
-                {t('common.download')}
+                {isSayaData ? t('common.addData') : t('common.download')}
               </Button>
             </div>
           </div>

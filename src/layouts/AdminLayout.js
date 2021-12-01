@@ -45,12 +45,12 @@ export const CMSLayout = ({ children }) => {
 
 export const PrivateRoute = ({ component: Component, ...rest }) => {
   const token = useSelector(tokenSelector);
-  return <Route {...rest} render={(props) => (token ? <Component {...props} /> : <Redirect to="/admin/login" />)} />;
+  return <Route {...rest} render={(props) => (token ? <Component {...props} /> : <Redirect to="/home" />)} />;
 };
 
 export const PublicRoute = ({ component: Component, ...rest }) => {
   const token = useSelector(tokenSelector);
-  return <Route {...rest} render={(props) => (!token ? <Component {...props} /> : <Redirect to="/admin/dafter" />)} />;
+  return <Route {...rest} render={(props) => (!token ? <Component {...props} /> : <Redirect to="/home" />)} />;
 };
 
 AdminLayout.PrivateRoute = PrivateRoute;

@@ -7,13 +7,35 @@ import { ReactComponent as Arrow } from 'assets/arrow-left-add.svg';
 import { ReactComponent as Union } from 'assets/union.svg';
 import { ReactComponent as Prev } from 'assets/prev.svg';
 import { ReactComponent as Next } from 'assets/next.svg';
+import { Dropdown } from 'components';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import './index.scss';
 
-const AddApi = () => {
+const FormApi = () => {
+  const schema = yup
+    .object({
+      nama: yup.string().required(),
+      kode: yup.string().required(),
+      level: yup.mixed().required(),
+    })
+    .required();
+
+  const {
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const level = [1, 2, 3, 4, 5];
+
   const history = useHistory();
 
   const [detailImport, setDetailImport] = useState(false);
+  const [generateOutput, setGenerateOutput] = useState(false);
 
   const LIST_TABLE = [
     {
@@ -59,8 +81,23 @@ const AddApi = () => {
       source: 'Judul',
     },
     {
-      property: 'Deskripsi',
+      property: 'Title',
       equlvalent: 'Judul',
+      source: 'Judul',
+    },
+    {
+      property: 'Title',
+      equlvalent: 'Judul',
+      source: 'Judul',
+    },
+    {
+      property: 'Title',
+      equlvalent: 'Judul',
+      source: 'Judul',
+    },
+    {
+      property: 'Description',
+      equlvalent: 'Deskripsi',
       source: 'Description',
     },
     {
@@ -72,6 +109,21 @@ const AddApi = () => {
       property: 'Title',
       equlvalent: 'Judul',
       source: 'Judul',
+    },
+    {
+      property: 'Title',
+      equlvalent: 'Judul',
+      source: 'Judul',
+    },
+    {
+      property: 'Title',
+      equlvalent: 'Judul',
+      source: 'Judul',
+    },
+    {
+      property: 'Description',
+      equlvalent: 'Deskripsi',
+      source: 'Description',
     },
   ];
 
@@ -269,9 +321,13 @@ const AddApi = () => {
                           <td className="data-description">{data.property}</td>
                           <td className="data-description">{data.equlvalent}</td>
                           <td className="data-description select">
-                            <Form.Select>
-                              <option key={index}>{data.source}</option>
-                            </Form.Select>
+                            <Dropdown
+                              group
+                              control={control}
+                              placeholder={data.property}
+                              error={errors.level?.message}
+                              options={level.map((lvl) => ({ value: lvl, label: lvl }))}
+                            />
                           </td>
                         </tr>
                       );
@@ -280,20 +336,24 @@ const AddApi = () => {
                 </table>
               </div>
               <div className="wrapper-generate">
-                <button className="btn btn-success my-5">Generate Output</button>
+                <button className="btn btn-success my-5" onClick={() => setGenerateOutput(true)}>
+                  Generate Output
+                </button>
               </div>
-              <div className="wrapper-json">
-                <span> Output </span>
-                <div className="input-group">
-                  <input type="text" placeholder="https://bappenas.go.id/data.json" />
-                  <div class="input-group-append">
-                    <span class="input-group-text">
-                      <CopyJson />
-                    </span>
+              {generateOutput && (
+                <div className="wrapper-json">
+                  <span> Output </span>
+                  <div className="input-group">
+                    <input type="text" placeholder="https://bappenas.go.id/data.json" />
+                    <div class="input-group-append">
+                      <span class="input-group-text">
+                        <CopyJson />
+                      </span>
+                    </div>
                   </div>
+                  <button className="btn btn-json">Download JSON</button>
                 </div>
-                <button className="btn btn-json">Download JSON</button>
-              </div>
+              )}
             </div>
           </div>
         )}
@@ -302,4 +362,4 @@ const AddApi = () => {
   );
 };
 
-export default AddApi;
+export default FormApi;

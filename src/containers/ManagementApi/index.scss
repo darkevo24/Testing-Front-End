@@ -2,6 +2,8 @@
     min-height: 100vh;
     padding: 50px 0;
 
+
+
     .input-group {
         height: 40px;
         width: 100%;
@@ -140,10 +142,13 @@
                 .data-description {
                     color: #515154;
                     &.select {
+                        .mb-3 {
+                            margin: 0 !important;
+                        }
                         select {
                             background: #F5F6FA;
                             border-radius: 2px;
-                            border:none
+                            border: none;
                         }
                     }
                 }
@@ -201,6 +206,9 @@
 
         .form-group {
             margin-bottom: 25px;
+            input:disabled {
+                background: #F5F6FA;
+            }
             label {
                 color: #515154;
             }
@@ -247,6 +255,7 @@
             }
         }
         .input-group {
+
             .custom-file-input {
                 position: relative;
                 overflow: hidden;
@@ -254,12 +263,37 @@
                 &::before {
                     content: '';
                     position: absolute;
-                    background: #fff;
+                    background: #ffff;
                     width: 100%;
                     height: 100%;
                     right: 0;
                     z-index: 1;
                 }
+
+                &.detail {
+                    &::before {
+                        background: #F5F6FA;
+                    }
+                }
+            }
+            .source-api {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                background: #FFFFFF;
+                left: 10px;
+                top:8px;
+                color: #007AFF;
+                text-decoration: underline;
+                min-width: 89px;
+                height: 34px;
+                z-index: 2;
+                border: 1px solid #E1E2EA;
+                box-sizing: border-box;
+
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+                border-radius: 35px !important;
             }
             .input-group-append {
                 background: #F5F6FA;
@@ -343,7 +377,7 @@
             padding: 0 10px;
             .input-group {
                 margin: 0 15px;
-                width: 830px;
+                // width: 830px;
                 background: #F5F6FA;
                 height: 50px;
                 .input-group-text {
@@ -381,5 +415,17 @@
 
     .btn-success {
         color: #fff;
+    }
+
+}
+
+// Set Modal to Center
+.modal-dialog {
+    max-width: 430px;
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    .font-weight-bold{
+        font-weight: bold;
     }
 }

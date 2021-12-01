@@ -98,6 +98,12 @@ const ManagementApi = () => {
       url: 'https://bappenas.go.id/data.json/ 123456789/ 01112131415',
       file: 3,
     },
+    {
+      img: 'assets/Logo_Bappenas_Indonesia.png',
+      title: 'Bappenas',
+      url: 'https://bappenas.go.id/data.json/ 123456789/ 01112131415',
+      file: 3,
+    },
   ];
 
   return (
@@ -116,7 +122,7 @@ const ManagementApi = () => {
             <div className="col-md-6 d-flex align-bottom">
               <div className="wrapper-right">
                 <div className="input-group">
-                  <input type="text" placeholder="Cari..." />
+                  <input type="text" placeholder="Cari Instansi" />
                   <div class="input-group-append">
                     <span class="input-group-text">
                       <Search />
@@ -127,7 +133,9 @@ const ManagementApi = () => {
             </div>
           </div>
         </div>
-        <div className="main-content">
+      </div>
+      <div className="main-content">
+        <div className="container">
           <div className="row">
             {LIST_CARD.map((data, index) => {
               return (

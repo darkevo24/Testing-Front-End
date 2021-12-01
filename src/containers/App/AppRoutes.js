@@ -25,7 +25,9 @@ const DataAnalytic = lazy(() => import('containers/Dashboard/DataAnalytic'));
 const DafterPage = lazy(() => import('containers/Dafter'));
 const DataVariablePage = lazy(() => import('containers/DataVariable'));
 const ManagementApiPage = lazy(() => import('containers/ManagementApi'));
-const ManagementApiAddPage = lazy(() => import('containers/ManagementApi/add'));
+const ManagementApiAddPage = lazy(() => import('containers/ManagementApi/Form'));
+const ManagementApiDetailPage = lazy(() => import('containers/ManagementApi/ApiDetail'));
+const ManagementApiUpdatePage = lazy(() => import('containers/ManagementApi/UpdateApi'));
 // const NotFoundPage = lazy(() => import('containers/NotFound'));
 
 function AppRoutes(props) {
@@ -52,7 +54,9 @@ function AppRoutes(props) {
         <Route exact path="/dashboard-eksekutif" component={DashboardEksekutif} />
         <Route exact path="/dashboard-saya" component={DashboardSaya} />
         <Route exact path="/data-analytic" component={DataAnalytic} />
-        <Route exact path="/api/add" component={ManagementApiAddPage} />
+        <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
+        <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
+        <Route exact path="/api/form" component={ManagementApiAddPage} />
         <Route exact path="/api" component={ManagementApiPage} />
         {/* <Route path="*" component={NotFoundPage} /> */}
       </AppLayout>

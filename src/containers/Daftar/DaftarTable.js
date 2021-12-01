@@ -12,13 +12,13 @@ import Popover from 'components/Popover';
 import { Check } from 'components/Icons';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import cloneDeep from 'lodash/cloneDeep';
-import DafterForm, { submitDafterForm } from './DafterForm';
+import DaftarForm, { submitDaftarForm } from './DaftarForm';
 import { getKatalog, katalogSelector } from './reducer';
 
-const DafterTable = ({ bem, cms = false }) => {
+const DaftarTable = ({ bem, cms = false }) => {
   const history = useHistory();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [isDafterFormVisible, setIsDafterFormVisible] = useState(false);
+  const [isDaftarFormVisible, setIsDaftarFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const { pageSize, loading, params, result } = useSelector(katalogSelector);
   const dispatch = useDispatch();
@@ -62,25 +62,25 @@ const DafterTable = ({ bem, cms = false }) => {
     });
   };
 
-  const showDafterFormModal = (data) => {
+  const showDaftarFormModal = (data) => {
     setSelectedRecord(data);
-    setIsDafterFormVisible(true);
+    setIsDaftarFormVisible(true);
   };
 
-  const hideDafterFormModal = () => {
+  const hideDaftarFormModal = () => {
     setSelectedRecord(null);
-    setIsDafterFormVisible(false);
+    setIsDaftarFormVisible(false);
   };
 
-  const showDafterDetailPage = (data) => {
+  const showDaftarDetailPage = (data) => {
     // TODO: handle the detail page for daftar cms
     setSelectedRecord(data);
-    // setIsDafterFormVisible(true);
+    // setIsDaftarFormVisible(true);
   };
 
-  const handleDafterFromSubmit = (data) => {
+  const handleDaftarFromSubmit = (data) => {
     // TODO: handle the data posted to server
-    hideDafterFormModal();
+    hideDaftarFormModal();
     Notification.show({
       type: 'secondary',
       message: (
@@ -181,7 +181,7 @@ const DafterTable = ({ bem, cms = false }) => {
           {
             title: 'Detail',
             classes: 'btn btn-info',
-            callback: showDafterDetailPage,
+            callback: showDaftarDetailPage,
           },
         ],
         Cell: Table.Actions,
@@ -284,19 +284,19 @@ const DafterTable = ({ bem, cms = false }) => {
       </Modal>
       <Modal
         size="lg"
-        visible={isDafterFormVisible}
-        onClose={hideDafterFormModal}
+        visible={isDaftarFormVisible}
+        onClose={hideDaftarFormModal}
         icon="splitCircle"
         title={selectedRecord ? 'Edit Data' : 'Tambah Data'}
         subtitle="Isi form dibawah untuk menambah data"
         actions={[
-          { variant: 'secondary', text: 'Batal', onClick: hideDafterFormModal },
-          { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDafterForm },
+          { variant: 'secondary', text: 'Batal', onClick: hideDaftarFormModal },
+          { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDaftarForm },
         ]}>
-        <DafterForm data={selectedRecord} onSubmit={handleDafterFromSubmit} />
+        <DaftarForm data={selectedRecord} onSubmit={handleDaftarFromSubmit} />
       </Modal>
     </>
   );
 };
 
-export default DafterTable;
+export default DaftarTable;

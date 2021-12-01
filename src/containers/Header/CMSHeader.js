@@ -25,7 +25,7 @@ export const CMSHeader = () => {
         <img src={Logo} alt="brand-logo" />
         <ul className="nav d-flex align-items-center justify-content-end h-100">
           <Button outline onClick={goTo('/home')} variant="outline-secondary" className="br-6 hpx-35">
-            Portal SDI
+            {t('header.userNav.sdiPortal')}
           </Button>
           <li className="d-flex justify-content-end flex-row align-items-center h-100">
             <NavDropdown title={user?.name || 'Achmad Adam'} id="user-nav-dropdown" className="user-nav h-100">

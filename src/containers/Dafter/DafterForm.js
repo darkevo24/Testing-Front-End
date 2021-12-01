@@ -1,12 +1,15 @@
+import { useMemo } from 'react';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { DatePicker, Dropdown, Input } from 'components';
-import { formatData, instansiData, jadwalData, nameData } from 'utils/dataConfig/dafter';
+import { formatData, jadwalData, nameData } from 'utils/dataConfig/dafter';
 import { submitForm } from 'utils/helper';
+import { instansiDataSelector } from './reducer';
 
 export const daftarFormId = 'dafter-form-id';
 export const submitDafterForm = submitForm(daftarFormId);
@@ -38,6 +41,15 @@ const DafterForm = ({ data, onSubmit }) => {
       ...data,
     },
   });
+  const instansiData = useSelector(instansiDataSelector);
+  const instansiOptions = useMemo(
+    () =>
+      instansiData.result.map((instansi) => ({
+        value: instansi.id,
+        label: instansi.nama,
+      })) || [],
+    [instansiData],
+  );
 
   return (
     <div className="dafter-form">
@@ -50,7 +62,7 @@ const DafterForm = ({ data, onSubmit }) => {
             control={control}
             rules={{ required: true }}
             placeholder="Select"
-            options={instansiData.map((instansi) => ({ value: instansi, label: instansi }))}
+            options={instansiOptions}
             error={errors.instansi?.message}
           />
           <Input

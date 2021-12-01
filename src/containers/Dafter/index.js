@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import cx from 'classnames';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -15,11 +16,13 @@ import SdgTable from './SdgTable';
 import RkpTable from './RkpTable';
 import DaftarDataSayaTable from './DaftarDataSayaTable';
 import bn from 'utils/bemNames';
+import { getInstansi } from './reducer';
 
 const bem = bn('dafter');
 
 const Dafter = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(t('sandbox.dafter.tabs.dafter.key'));
   const activeTitle = t(`sandbox.dafter.tabs.${activeTab}.title`);
   const stats = useMemo(
@@ -74,6 +77,9 @@ const Dafter = () => {
     [activeTab, t],
   );
 
+  useEffect(() => {
+    dispatch(getInstansi());
+  }, []);
   return (
     <div className="dafter-page pb-100">
       <Breadcrumb breadcrumbsList={breadcrumbsList} />

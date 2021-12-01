@@ -49,7 +49,7 @@ export const jadwalData = [
 ];
 
 export const dibuatData = ['24/04/2018', '16/08/2005', '09/11/2019', '12/01/2011', '30/08/2017'];
-export const diperData = ['14/08/2021', '24/02/2015', '13/12/2020', '22/04/2016', '05/00/2019'];
+export const diperData = ['14/08/2021', '24/02/2015', '13/12/2020', '22/04/2016', '05/10/2019'];
 export const produsenData = [
   'Direktorat Jendral Pendidikan & Kebudayaan',
   'Direktorat Jenderal Prasarana dan Sarana Pertanian',

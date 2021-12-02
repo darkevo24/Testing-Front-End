@@ -18,15 +18,19 @@
 
 .blue-primary {
   background: $blue;
-  color: #fff;
+  color: $white;
 
   &:hover {
       background: $blue-hover;
-      color: #fff;
+      color: $white;
   }
 }
 
 .btn-success {
-  color: #fff;
+  color: $white;
+  &:hover,
+  &:focus {
+    color: $white;
+  }
 }
 

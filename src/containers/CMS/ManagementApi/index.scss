@@ -2,6 +2,12 @@
     min-height: 100vh;
     padding: 50px 0;
 
+    .form-group {
+        input:disabled {
+            background: #F5F6FA;
+        }
+    }
+
     .input-group {
         height: 40px;
         width: 100%;
@@ -55,6 +61,9 @@
             flex-direction: column;
             align-items: flex-end;
             width: 100%;
+            .input-group {
+                max-width: 450px;
+            }
 
             button {
                 height: 40px;
@@ -66,9 +75,7 @@
     }
 
     .main-content {
-        display: grid;
-        padding: 0 10px;
-            background: #FAFAFA;
+        background: #FAFAFA;
         padding-top: 30px;
         .card-list {
             display: flex;
@@ -77,6 +84,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             border-radius: 4px;
             position: relative;
+            cursor:pointer;
             .card-logo {
                 background: #F5F6FA;
                 padding: 10px;
@@ -127,7 +135,7 @@
         padding: 0 10px;
         .input-group {
             margin: 0 15px;
-            width: 830px;
+            // width: 830px;
             background: #F5F6FA;
             height: 50px;
             .input-group-text {
@@ -153,6 +161,19 @@
             font-size: 14px;
         }
 
+    }
+
+    &.main {
+        .wrapper-pagination {
+            justify-content: space-between;
+            align-items: center;
+            .count {
+                margin: 0;
+                color: #858A8F;
+                font-size: 14px;
+                font-weight: normal;
+            }
+        }
     }
 
     // ============ CreateAPI Pages =================
@@ -390,7 +411,6 @@
                             }
                         }
                         .input-group-text {
-
                             background: #F5F6FA;
                             border-top-left-radius: 0;
                             border-bottom-left-radius: 0;
@@ -521,6 +541,8 @@
         padding-left: 80px;
         padding-right: 80px;
         .header-log {
+            display: flex;
+            justify-content: space-between;
             padding-bottom: 30px;
             display: flex;
             align-items: center;
@@ -529,6 +551,12 @@
                 font-weight: bold;
                 font-size: 24px;
                 margin: 0;
+            }
+            .wrapper-icon {
+                svg {
+                    margin-left: 7px;
+                    cursor: pointer;
+                }
             }
         }
         .wrapper-log {
@@ -542,16 +570,18 @@
                     display: block;
                     color: #515154;
                     font-size: 14px;
+                    width: 115px;
                     margin: 0;
                     position: relative;
                     &::before {
                         content: '';
                         position: absolute;
-                        height: 2px;
-                        width: 35%;
-                        left: 30%;
-                        bottom: 0;
-                        background-color: #E1E2EA;;
+                        height: 1px;
+                        width: 146px;
+                        // right: 110px;
+                        left: 100%;
+                        bottom: 8px;
+                        background-color: #E1E2EA;
                     }
                 }
                 .description {
@@ -567,6 +597,16 @@
                     color: #6848C4;
                     padding: 4px 6px;
                     background: rgba(104, 72, 195, 0.12);
+                    border-radius: 2px;
+                    margin: 0;
+                }
+                .status-create {
+                    display: block;
+                    min-width: 50px;
+                    min-height: 17px;
+                    color: #858A8F;
+                    padding: 4px 6px;
+                    background: #F5F6FA;
                     border-radius: 2px;
                     margin: 0;
                 }
@@ -586,5 +626,18 @@
                 }
             }
         }
+        // Set Modal to Center
+    
     }
+
 }
+
+   .modal-dialog {
+        max-width: 430px;
+        display: flex;
+        align-items: center;
+        min-height: 100vh;
+        .font-weight-bold{
+            font-weight: bold;
+        }
+    }

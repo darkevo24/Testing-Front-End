@@ -35,5 +35,13 @@
             justify-content: center;
             align-items: center;
         }
+        &.next {
+            margin-right: 0;
+            margin-left: 12px;
+        }
+        &.prev {
+            margin-left: 0;
+            margin-right: 22px;
+        }
     }
 }

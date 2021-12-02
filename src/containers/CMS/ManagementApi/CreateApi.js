@@ -1,3 +1,4 @@
+import { useHistory, useLocation } from 'react-router-dom';
 import LogoBappenas from 'assets/Logo_Bappenas_Indonesia.png';
 import { ReactComponent as Search } from 'assets/search-api.svg';
 import { ReactComponent as Prev } from 'assets/prev.svg';
@@ -7,6 +8,7 @@ import { ReactComponent as Edit } from 'assets/edit.svg';
 import './index.scss';
 
 const CreateApi = () => {
+  const history = useHistory();
   const LIST_TABLE = [
     {
       title: 'Judul 1',
@@ -47,43 +49,49 @@ const CreateApi = () => {
   return (
     <div className="management-api add">
       <div className="card-bappenas">
-        <div className="row">
-          <div className="col-md-6">
-            <div className="wrapper-left">
-              <div className="card-logo">
-                <img src={LogoBappenas} alt="logo" height="60px" width="60px" />
-              </div>
-              <div className="card-description">
-                <h3>Bappenas</h3>
-                <div className="input-group">
-                  <input type="text" placeholder="https://bappenas.go.id/data.json/123456789/01112131415" />
-                  <div class="input-group-append">
-                    <span class="input-group-text">
-                      <Edit />
-                    </span>
-                  </div>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="wrapper-left">
+                <div className="card-logo">
+                  <img src={LogoBappenas} alt="logo" height="60px" width="60px" />
                 </div>
-                <p>3 Files</p>
+                <div className="card-description">
+                  <h3>Bappenas</h3>
+                  <div className="input-group">
+                    <input type="text" placeholder="https://bappenas.go.id/data.json/123456789/01112131415" />
+                    <div class="input-group-append">
+                      <span class="input-group-text">
+                        <Edit />
+                      </span>
+                    </div>
+                  </div>
+                  <p>3 Files</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div className="header-api">
-        <div className="row">
-          <div className="col-md-6">
-            <div className="wrapper-left">
-              <button className="btn blue-primary"> Tambah API </button>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6 pl-0">
+              <div className="wrapper-left">
+                <button className="btn blue-primary" onClick={() => history.push('api/form')}>
+                  Tambah API
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="col-md-6 d-flex align-bottom">
-            <div className="wrapper-right">
-              <div className="input-group">
-                <input type="text" placeholder="Cari..." />
-                <div class="input-group-append">
-                  <span class="input-group-text">
-                    <Search />
-                  </span>
+            <div className="col-md-6 d-flex align-bottom">
+              <div className="wrapper-right">
+                <div className="input-group">
+                  <input type="text" placeholder="Cari..." />
+                  <div class="input-group-append">
+                    <span class="input-group-text">
+                      <Search />
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -91,7 +99,7 @@ const CreateApi = () => {
         </div>
       </div>
       <div className="container">
-        <div className="management-table">
+        <div className="management-table pt-20">
           <table>
             <thead>
               <th width="20%">Judul API</th>
@@ -107,7 +115,9 @@ const CreateApi = () => {
                     <td className="data-description">{data.description}</td>
                     <td className="data-description">{data.json}</td>
                     <td className="data-description">
-                      <button className="btn btn-info">Detail</button>
+                      <button className="btn btn-info" onClick={() => history.push('api-detail/api-1')}>
+                        Detail
+                      </button>
                     </td>
                   </tr>
                 );

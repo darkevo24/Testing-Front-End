@@ -1,18 +1,12 @@
-import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import { Row, Col } from 'react-bootstrap';
-import { ModalDelete, Dropdown } from 'components';
 import { ReactComponent as CopyJson } from 'assets/copy-json.svg';
-import { ReactComponent as IconEdit } from 'assets/cms-api-edit.svg';
-import { ReactComponent as IconDelete } from 'assets/cms-api-delete.svg';
 
 import './index.scss';
 
-const DetailApi = () => {
+const EditApi = () => {
   const history = useHistory();
-  const [modalProfile, setModalProfile] = useState(false);
   const LIST_TABLE = [
     {
       field: 'Title',
@@ -72,48 +66,44 @@ const DetailApi = () => {
             <div className="header-log">
               <h1>Detail API</h1>
               <div className="wrapper-icon">
-                <IconDelete onClick={() => setModalProfile(true)} />
-                <IconEdit onClick={() => history.push('/cms/api/edit/api-1')} />
+                <button className="btn btn-secondary ml-50" style={{ width: '112px' }} onClick={() => history.goBack()}>
+                  Batal
+                </button>
+                <button className="btn btn-info ml-10" style={{ width: '112px' }}>
+                  Simpan
+                </button>
               </div>
             </div>
-            <div className="wrapper-input pb-10">
+            <div className="wrapper-input">
               <div className="form-group">
                 <label for="Judul">Judul</label>
                 <div className="box-input">
-                  <input type="text" placeholder="Lorem Ipsum" disabled />
+                  <input type="text" placeholder="Lorem Ipsum" />
                 </div>
               </div>
               <div className="form-group">
                 <label for="Judul">Deskripsi</label>
                 <div className="box-input">
-                  <input type="text" placeholder="Lorem Ipsum" disabled />
+                  <input type="text" placeholder="Lorem Ipsum" />
                 </div>
               </div>
               <div className="form-group">
                 <label for="Judul">Source API</label>
                 <div className="box-input">
-                  <input type="text" placeholder="data.go.id/api/data" disabled />
+                  <input type="text" placeholder="data.go.id/api/data" />
                 </div>
               </div>
-              {/* <div className="form-group">
-                <label for="Judul">Source Api</label>
-                <div className="box-input">
-                  <div className="input-group">
-                    <input className="custom-file-input" type="file" />
-                    <div class="input-group-append">Upload</div>
-                  </div>
-                </div>
-              </div> */}
               <div className="form-group">
                 <label for="Judul">Max Data Parameter</label>
                 <div className="box-input">
-                  <input type="text" placeholder="Dinas Kesehatan DKI Jakarta" disabled />
+                  <input type="text" placeholder="Dinas Kesehatan DKI Jakarta" />
                 </div>
               </div>
+              <button className="btn btn-success mt-0">Import</button>
             </div>
             <div className="wrapper-result">
-              <div className="wrapper-data pt-0">
-                <div className="wrapper-title p-0">
+              <div className="wrapper-data">
+                <div className="wrapper-title">
                   <h1>Source API</h1>
                   <a href="#">(data-ckan-api.json)</a>
                 </div>
@@ -136,11 +126,11 @@ const DetailApi = () => {
                   </table>
                 </div>
               </div>
-              <div className="wrapper-dcat pb-30">
-                <div className="wrapper-title pt-20 pb-0">
+              <div className="wrapper-dcat">
+                <div className="wrapper-title">
                   <h1>Mapping DCAT</h1>
                 </div>
-                <div className="wrapper-input pb-0">
+                <div className="wrapper-input">
                   <Row>
                     <Col md={6}>
                       <div className="form-group">
@@ -151,7 +141,7 @@ const DetailApi = () => {
                     <Col md={6}>
                       <div className="form-group">
                         <label for="Judul"> Email </label>
-                        <input type="text" placeholder="example@mail.com" disabled />
+                        <input type="text" placeholder="example@mail.com" />
                       </div>
                     </Col>
                   </Row>
@@ -169,7 +159,7 @@ const DetailApi = () => {
                     </Col>
                   </Row>
                 </div>
-                <div className="management-table pt-0">
+                <div className="management-table">
                   <table>
                     <thead className="head-table-border">
                       <th width="20%">No</th>
@@ -194,6 +184,9 @@ const DetailApi = () => {
                       })}
                     </tbody>
                   </table>
+                </div>
+                <div className="wrapper-generate">
+                  <button className="btn btn-success mb-30 mt-20">Generate Output</button>
                 </div>
               </div>
               <div className="wrapper-json">
@@ -228,32 +221,8 @@ const DetailApi = () => {
           </Col>
         </Row>
       </div>
-      <ModalDelete visible={modalProfile} onClose={() => setModalProfile(false)}>
-        <div>
-          <p className="mt-20">
-            Apakah anda yakin ingin
-            <span className="text-danger"> menghapus </span>
-            Source API <span className="font-weight-bold">PD00013</span>?
-          </p>
-          <Form.Group className="mt-40 mb-30">
-            <Form.Control as="textarea" placeholder="Tulis Catatan" />
-          </Form.Group>
-          <div className="d-flex justify-content-end mb-5">
-            <Button
-              onClick={() => setModalProfile(false)}
-              className="ml-24 bg-white sdp-text-grey-dark border-gray-stroke"
-              variant="secondary"
-              style={{ width: '112px' }}>
-              Batal
-            </Button>
-            <Button className="ml-10" variant="info" style={{ width: '112px' }}>
-              Konfirmasi
-            </Button>
-          </div>
-        </div>
-      </ModalDelete>
     </div>
   );
 };
 
-export default DetailApi;
+export default EditApi;

@@ -88,7 +88,7 @@ const ManagementApi = () => {
             </div>
           </div>
         </div>
-        <div className="management-table">
+        <div className="management-table bappenas">
           <table>
             <thead>
               <th width="25%">Judul API</th>

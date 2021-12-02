@@ -149,7 +149,7 @@ const ApiDetail = () => {
                 </div>
               </div>
             </label>
-            <input type="text" value="Gilghashi Dullahaim" />
+            <input type="text" placeholder="Gilghashi Dullahaim" />
           </div>
           <div className="form-group">
             <label for="Judul">
@@ -163,7 +163,7 @@ const ApiDetail = () => {
             </label>
             <input
               type="text"
-              value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu morbi mi eget nullam. Ante etiam pharetra, quis viverra."
+              placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu morbi mi eget nullam. Ante etiam pharetra, quis viverra."
             />
           </div>
           <div className="form-group">
@@ -192,7 +192,7 @@ const ApiDetail = () => {
                 </div>
               </div>
             </label>
-            <input type="text" value="10000" />
+            <input type="text" placeholder="10000" />
           </div>
           <button className="btn btn-success">Import</button>
         </div>
@@ -264,13 +264,13 @@ const ApiDetail = () => {
                 <Col md={12}>
                   <div className="form-group">
                     <label for="Judul"> Nama </label>
-                    <input type="text" value="API 1" />
+                    <input type="text" placeholder="API 1" />
                   </div>
                 </Col>
                 <Col md={12}>
                   <div className="form-group">
                     <label for="Judul"> Email </label>
-                    <input type="text" value="debbie.baker@example.com" />
+                    <input type="text" placeholder="debbie.baker@example.com" />
                   </div>
                 </Col>
               </Row>
@@ -278,7 +278,7 @@ const ApiDetail = () => {
                 <Col md={6}>
                   <div className="form-group">
                     <label for="Judul"> File Download URL </label>
-                    <input type="text" value="data.go.id/api/data" />
+                    <input type="text" placeholder="data.go.id/api/data" />
                   </div>
                 </Col>
                 <Col md={6}>
@@ -324,7 +324,7 @@ const ApiDetail = () => {
             <div className="wrapper-json">
               <span> Output </span>
               <div className="input-group">
-                <input type="text" value="https://bappenas.go.id/data.json" />
+                <input type="text" placeholder="https://bappenas.go.id/data.json" />
                 <div class="input-group-append">
                   <span class="input-group-text">
                     <CopyJson />

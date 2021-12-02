@@ -26,7 +26,7 @@ const DafterPage = lazy(() => import('containers/Dafter'));
 const DataVariablePage = lazy(() => import('containers/DataVariable'));
 const ManagementApiPage = lazy(() => import('containers/ManagementApi'));
 const ManagementApiAddPage = lazy(() => import('containers/ManagementApi/Form'));
-const ManagementApiDetailPage = lazy(() => import('containers/ManagementApi/ApiDetail'));
+const ManagementApiDetailPage = lazy(() => import('containers/ManagementApi/DetailApi'));
 const ManagementApiUpdatePage = lazy(() => import('containers/ManagementApi/UpdateApi'));
 // const NotFoundPage = lazy(() => import('containers/NotFound'));
 

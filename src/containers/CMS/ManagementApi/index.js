@@ -1,3 +1,4 @@
+import { useHistory } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import LogoBappenas from 'assets/Logo_Bappenas_Indonesia.png';
 import { ReactComponent as Search } from 'assets/search-api.svg';
@@ -7,7 +8,20 @@ import { ReactComponent as Next } from 'assets/next.svg';
 import './index.scss';
 
 const ManagementApi = () => {
+  const history = useHistory();
   const LIST_CARD = [
+    {
+      img: 'assets/Logo_Bappenas_Indonesia.png',
+      title: 'Kominfo',
+      url: 'https://bappenas.go.id/data.json/ 123456789/ 01112131415',
+      file: 3,
+    },
+    {
+      img: 'asse       ts/Logo_Bappenas_Indonesia.png',
+      title: 'Kemendagri',
+      url: 'https://bappenas.go.id/data.json/ 123456789/ 01112131415',
+      file: 3,
+    },
     {
       img: 'assets/Logo_Bappenas_Indonesia.png',
       title: 'Bappenas',
@@ -17,18 +31,6 @@ const ManagementApi = () => {
     {
       img: 'assets/Logo_Bappenas_Indonesia.png',
       title: 'Kominfo',
-      url: 'https://bappenas.go.id/data.json/ 123456789/ 01112131415',
-      file: 3,
-    },
-    {
-      img: 'assets/Logo_Bappenas_Indonesia.png',
-      title: 'Kemendagri',
-      url: 'https://bappenas.go.id/data.json/ 123456789/ 01112131415',
-      file: 3,
-    },
-    {
-      img: 'assets/Logo_Bappenas_Indonesia.png',
-      title: 'Bappenas',
       url: 'https://bappenas.go.id/data.json/ 123456789/ 01112131415',
       file: 3,
     },
@@ -107,7 +109,7 @@ const ManagementApi = () => {
   ];
 
   return (
-    <div className="management-api">
+    <div className="management-api main">
       <div className="container">
         <div className="header-api">
           <div className="row">
@@ -139,8 +141,8 @@ const ManagementApi = () => {
           <div className="row">
             {LIST_CARD.map((data, index) => {
               return (
-                <div key={index} className="col-md-3 px-7 mb-15">
-                  <div className="card-list">
+                <div key={index} className="col-md-3 px-8 mb-15">
+                  <div className="card-list" onClick={() => history.push('api-baru')}>
                     <div className="card-logo">
                       <img src={LogoBappenas} width="60px" />
                     </div>
@@ -148,7 +150,7 @@ const ManagementApi = () => {
                       <h3>{data.title}</h3>
                       <p>{data.url}</p>
                       <div className="card-amount">
-                        <span> {data.file} </span>
+                        <span> {data.file} Files </span>
                       </div>
                     </div>
                   </div>
@@ -156,40 +158,41 @@ const ManagementApi = () => {
               );
             })}
           </div>
-        </div>
-        <div className="wrapper-pagination">
-          <ul className="pagination">
-            <li className="page-item">
-              <a className="page-link prev" href="#">
-                <Prev />
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link active" href="#">
-                1
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                2
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                3
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                4
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link next" href="#">
-                <Next />
-              </a>
-            </li>
-          </ul>
+          <div className="wrapper-pagination pt-15">
+            <span className="count">Display 1-24</span>
+            <ul className="pagination">
+              <li className="page-item">
+                <a className="page-link prev" href="#">
+                  <Prev />
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link active" href="#">
+                  1
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  2
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  3
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  4
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link next" href="#">
+                  <Next />
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

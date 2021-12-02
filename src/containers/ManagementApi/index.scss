@@ -108,6 +108,13 @@
 
     .management-table {
         padding-top: 40px;
+        &.bappenas {
+            table {
+                tr {
+                    cursor: pointer;
+                }
+            }
+        }
         table {
             width: 100%;
             border-collapse: separate;

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import Form from 'react-bootstrap/Form';
 import { Row, Col } from 'react-bootstrap';
 import { ReactComponent as CopyJson } from 'assets/copy-json.svg';
 import { ReactComponent as Arrow } from 'assets/arrow-left-add.svg';

@@ -229,7 +229,7 @@ const Forum = () => {
           </Row>
           <div className="d-flex justify-content-end px-24">
             <Button variant="light" className="br-40 mr-12 mb-12 px-62 py-12 bg-transparent" onClick={handleBackButton}>
-              Betal
+              Batal
             </Button>
             <Button type="submit" variant="info" className="br-40  mb-12 px-54 py-12">
               {loading && (

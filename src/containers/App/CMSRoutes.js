@@ -26,6 +26,7 @@ const KesiapanSDI = lazy(() => import('containers/CMS/DashboardManage/KesiapanSD
 const DashboardEksekutifPage = lazy(() => import('containers/CMS/DashboardManage/DashboardEksekutif'));
 const DataAnalyticPage = lazy(() => import('containers/CMS/DashboardManage/DataAnalytic'));
 const DaftarPage = lazy(() => import('containers/CMS/Daftar'));
+const DaftarDetailPage = lazy(() => import('containers/CMS/Daftar/CMSDaftarDetail'));
 
 function CMSRoutes() {
   return (
@@ -55,6 +56,7 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/dashboard-eksekutif" component={DashboardEksekutifPage} />
         <PrivateRoute exact path="/cms/data-analytic" component={DataAnalyticPage} />
         <PrivateRoute exact path="/cms/daftar" component={DaftarPage} />
+        <PrivateRoute exact path="/cms/daftar-detail/:id" component={DaftarDetailPage} />
         <Route exact path="/cms" render={() => <Redirect to="/cms/dashboard" />} />
       </Switch>
     </CMSLayout>

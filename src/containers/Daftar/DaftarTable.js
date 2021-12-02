@@ -198,6 +198,7 @@ const DaftarTable = ({ bem, cms = false }) => {
     totalCount: result?.content?.totalRecords || null,
     cms,
     pageSize,
+    manualPagination: true,
     currentPage: params.currentPage,
     showSearch: false,
     highlightOnHover: true,

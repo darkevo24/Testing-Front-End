@@ -8,7 +8,7 @@ import { Dropdown, Input } from 'components';
 import { pengaturanData } from 'utils/dataConfig/data-variable';
 import { submitForm } from 'utils/helper';
 
-export const dataVariableFormId = 'dafter-form-id';
+export const dataVariableFormId = 'daftar-form-id';
 export const submitDataVariableForm = submitForm(dataVariableFormId);
 const schema = yup
   .object({
@@ -32,7 +32,7 @@ const DataVariableForm = ({ data, onSubmit }) => {
   });
 
   return (
-    <div className="dafter-form">
+    <div className="daftar-form">
       <Row>
         <Form id={dataVariableFormId} onSubmit={handleSubmit(onSubmit)} noValidate>
           <Input

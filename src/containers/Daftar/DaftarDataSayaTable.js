@@ -1,15 +1,16 @@
 import { useMemo, useState } from 'react';
+import truncate from 'lodash/truncate';
 import Modal from 'components/Modal';
 import Notification from 'components/Notification';
 import Table from 'components/Table';
-import { makeData } from 'utils/dataConfig/dafter';
+import { makeData } from 'utils/dataConfig/daftar';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
-import DafterForm, { submitDafterForm } from './DafterForm';
+import DaftarForm, { submitDaftarForm } from './DaftarForm';
 import { Check } from 'components/Icons';
 
-const RkpTable = ({ bem }) => {
+const DaftarDataSayaTable = ({ bem }) => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [isDafterFormVisible, setIsDafterFormVisible] = useState(false);
+  const [isDaftarFormVisible, setIsDaftarFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
 
   const showDeleteModal = (data) => {
@@ -35,19 +36,19 @@ const RkpTable = ({ bem }) => {
     });
   };
 
-  const showDafterFormModal = (data) => {
+  const showDaftarFormModal = (data) => {
     setSelectedRecord(data);
-    setIsDafterFormVisible(true);
+    setIsDaftarFormVisible(true);
   };
 
-  const hideDafterFormModal = () => {
+  const hideDaftarFormModal = () => {
     setSelectedRecord(null);
-    setIsDafterFormVisible(false);
+    setIsDaftarFormVisible(false);
   };
 
-  const handleDafterFromSubmit = (data) => {
+  const handleDaftarFromSubmit = (data) => {
     // TODO: handle the data posted to server
-    hideDafterFormModal();
+    hideDaftarFormModal();
     Notification.show({
       type: 'secondary',
       message: (
@@ -68,6 +69,7 @@ const RkpTable = ({ bem }) => {
       {
         Header: 'Nama Data',
         accessor: 'name',
+        Cell: (data) => truncate(data.cell.value, { length: 20 }),
       },
       {
         Header: 'Jadwal Pemutakhiran',
@@ -103,6 +105,20 @@ const RkpTable = ({ bem }) => {
         accessor: 'status',
         Cell: (data) => (data.cell.value === 'active' ? <Check variant="green" /> : <Check variant="stroke" />),
       },
+      {
+        id: 'actions',
+        actions: [
+          {
+            type: 'edit',
+            callback: showDaftarFormModal,
+          },
+          {
+            type: 'cross',
+            callback: showDeleteModal,
+          },
+        ],
+        Cell: Table.Actions,
+      },
     ],
     [],
   );
@@ -114,7 +130,6 @@ const RkpTable = ({ bem }) => {
     highlightOnHover: true,
     variant: 'spaced',
   };
-
   const dropdownFilters = [
     { label: 'Option 1', value: 'Option 1' },
     { label: 'Option 2', value: 'Option 2' },
@@ -143,16 +158,6 @@ const RkpTable = ({ bem }) => {
             <SingleSelectDropdown data={dropdownFilters} placeHolder="Ya" isLoading={false} noValue={true} />
           </div>
         </div>
-        <div className="row pt-24">
-          <div className="col-3">
-            <label className="sdp-form-label py-8">PN RKP</label>
-            <SingleSelectDropdown data={dropdownFilters} placeHolder="-" isLoading={false} noValue={true} />
-          </div>
-          <div className="col-3">
-            <label className="sdp-form-label py-8">PP RKP</label>
-            <SingleSelectDropdown data={dropdownFilters} placeHolder="-" isLoading={false} noValue={true} />
-          </div>
-        </div>
       </div>
       <Table {...tableConfig} />
       <Modal
@@ -168,19 +173,19 @@ const RkpTable = ({ bem }) => {
       </Modal>
       <Modal
         size="lg"
-        visible={isDafterFormVisible}
-        onClose={hideDafterFormModal}
+        visible={isDaftarFormVisible}
+        onClose={hideDaftarFormModal}
         icon="splitCircle"
         title={selectedRecord ? 'Edit Data' : 'Tambah Data'}
         subtitle="Isi form dibawah untuk menambah data"
         actions={[
-          { variant: 'secondary', text: 'Batal', onClick: hideDafterFormModal },
-          { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDafterForm },
+          { variant: 'secondary', text: 'Batal', onClick: hideDaftarFormModal },
+          { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDaftarForm },
         ]}>
-        <DafterForm data={selectedRecord} onSubmit={handleDafterFromSubmit} />
+        <DaftarForm data={selectedRecord} onSubmit={handleDaftarFromSubmit} />
       </Modal>
     </>
   );
 };
 
-export default RkpTable;
+export default DaftarDataSayaTable;

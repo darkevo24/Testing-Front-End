@@ -163,11 +163,11 @@ const DataVariable = () => {
         label: t('sandbox.title'),
       },
       {
-        path: '/dafter',
-        label: t('sandbox.dafter.title'),
+        path: '/daftar',
+        label: t('sandbox.daftar.title'),
       },
       {
-        path: '/dafter',
+        path: '/daftar',
         label: selectedDaftar,
       },
       {
@@ -179,7 +179,7 @@ const DataVariable = () => {
   );
 
   return (
-    <div className="dafter-page pb-100">
+    <div className="daftar-page pb-100">
       <Breadcrumb breadcrumbsList={breadcrumbsList} />
       <Row>
         <Col sm={{ span: 10, offset: 1 }} md={{ span: 8, offset: 2 }}>

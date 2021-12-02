@@ -7,12 +7,12 @@ import { useSelector } from 'react-redux';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { DatePicker, Dropdown, Input } from 'components';
-import { formatData, jadwalData, nameData } from 'utils/dataConfig/dafter';
+import { formatData, jadwalData, nameData } from 'utils/dataConfig/daftar';
 import { submitForm } from 'utils/helper';
 import { instansiDataSelector } from './reducer';
 
-export const daftarFormId = 'dafter-form-id';
-export const submitDafterForm = submitForm(daftarFormId);
+export const daftarFormId = 'daftar-form-id';
+export const submitDaftarForm = submitForm(daftarFormId);
 const schema = yup
   .object({
     instansi: yup.mixed().required(),
@@ -30,7 +30,7 @@ const schema = yup
   })
   .required();
 
-const DafterForm = ({ data, onSubmit }) => {
+const DaftarForm = ({ data, onSubmit }) => {
   const {
     control,
     formState: { errors },
@@ -52,7 +52,7 @@ const DafterForm = ({ data, onSubmit }) => {
   );
 
   return (
-    <div className="dafter-form">
+    <div className="daftar-form">
       <Row>
         <Form id={daftarFormId} onSubmit={handleSubmit(onSubmit)} noValidate>
           <Dropdown
@@ -169,4 +169,4 @@ const DafterForm = ({ data, onSubmit }) => {
   );
 };
 
-export default DafterForm;
+export default DaftarForm;

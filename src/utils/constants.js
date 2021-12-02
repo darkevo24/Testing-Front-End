@@ -32,6 +32,7 @@ export const apiUrls = {
   dataset: getDataEndpoint('3/action/package_search'),
   perminataanData: getPortalEndpoint('permintaan-data'),
   instansiData: getV1Endpoint('instansi'),
+  katalogData: getApiEndpoint('v1/katalog'),
 };
 
 export const TOPIC_LIST = [

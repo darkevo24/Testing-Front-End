@@ -11,20 +11,20 @@ import Breadcrumb from 'components/Breadcrumb';
 import HighlightWords from 'components/HighlightWords';
 import { Search } from 'components/Icons';
 import Tabs from 'components/Tabs';
-import DafterTable from './DafterTable';
+import DaftarTable from './DaftarTable';
 import SdgTable from './SdgTable';
 import RkpTable from './RkpTable';
 import DaftarDataSayaTable from './DaftarDataSayaTable';
 import bn from 'utils/bemNames';
 import { getInstansi } from './reducer';
 
-const bem = bn('dafter');
+const bem = bn('daftar');
 
-const Dafter = () => {
+const Daftar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [activeTab, setActiveTab] = useState(t('sandbox.dafter.tabs.dafter.key'));
-  const activeTitle = t(`sandbox.dafter.tabs.${activeTab}.title`);
+  const [activeTab, setActiveTab] = useState(t('sandbox.daftar.tabs.daftar.key'));
+  const activeTitle = t(`sandbox.daftar.tabs.${activeTab}.title`);
   const stats = useMemo(
     () => [
       { title: 'Jumlah Data pada Daftar Data', value: 35798 },
@@ -37,23 +37,23 @@ const Dafter = () => {
   const tabs = useMemo(
     () => [
       {
-        key: t('sandbox.dafter.tabs.dafter.key'),
-        title: t('sandbox.dafter.tabs.dafter.title'),
-        component: <DafterTable bem={bem} />,
+        key: t('sandbox.daftar.tabs.daftar.key'),
+        title: t('sandbox.daftar.tabs.daftar.title'),
+        component: <DaftarTable bem={bem} />,
       },
       {
-        key: t('sandbox.dafter.tabs.sdg.key'),
-        title: t('sandbox.dafter.tabs.sdg.title'),
+        key: t('sandbox.daftar.tabs.sdg.key'),
+        title: t('sandbox.daftar.tabs.sdg.title'),
         component: <SdgTable bem={bem} />,
       },
       {
-        key: t('sandbox.dafter.tabs.rkp.key'),
-        title: t('sandbox.dafter.tabs.rkp.title'),
+        key: t('sandbox.daftar.tabs.rkp.key'),
+        title: t('sandbox.daftar.tabs.rkp.title'),
         component: <RkpTable bem={bem} />,
       },
       {
-        key: t('sandbox.dafter.tabs.dafterSafa.key'),
-        title: t('sandbox.dafter.tabs.dafterSafa.title'),
+        key: t('sandbox.daftar.tabs.daftarSafa.key'),
+        title: t('sandbox.daftar.tabs.daftarSafa.title'),
         component: <DaftarDataSayaTable bem={bem} />,
       },
     ],
@@ -66,8 +66,8 @@ const Dafter = () => {
         label: t('sandbox.title'),
       },
       {
-        path: '/dafter',
-        label: t('sandbox.dafter.title'),
+        path: '/daftar',
+        label: t('sandbox.daftar.title'),
       },
       {
         isActive: true,
@@ -76,12 +76,12 @@ const Dafter = () => {
     ],
     [activeTab, t],
   );
-
   useEffect(() => {
     dispatch(getInstansi());
   }, []);
+  const isSayaData = activeTab === t('sandbox.daftar.tabs.daftarSafa.key');
   return (
-    <div className="dafter-page pb-100">
+    <div className="daftar-page pb-100">
       <Breadcrumb breadcrumbsList={breadcrumbsList} />
       <Row>
         <Col sm={{ span: 10, offset: 1 }}>
@@ -92,7 +92,7 @@ const Dafter = () => {
                 <Form.Control
                   variant="normal"
                   type="text"
-                  placeholder={t('sandbox.dafter.searchPlaceholder')}
+                  placeholder={t('sandbox.daftar.searchPlaceholder')}
                   value={''}
                   onChange={() => {}}
                 />
@@ -101,7 +101,7 @@ const Dafter = () => {
                 </div>
               </InputGroup>
               <Button className="btn-rounded ml-16 px-32 text-nowrap" onClick={() => {}}>
-                {t('common.download')}
+                {isSayaData ? t('common.addData') : t('common.download')}
               </Button>
             </div>
           </div>
@@ -127,4 +127,4 @@ const Dafter = () => {
   );
 };
 
-export default Dafter;
+export default Daftar;

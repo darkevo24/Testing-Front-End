@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useHistory } from 'react-router-dom';
 import CMSStrukturForm from './Form.js';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getStrukturOrganisasiById,
+  getStrukturOrganisasiLogs,
+  detailDataSelector,
+  logDatasetSelector,
+  setStrukturOrganisasi,
+} from './reducer';
 
+import { Loader } from 'components';
 import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import bn from 'utils/bemNames';
@@ -12,42 +21,36 @@ import bn from 'utils/bemNames';
 const bem = bn('content-detail');
 
 const CMSStrukturDetail = (props) => {
-  // const id = props.match.params.id;
+  const id = props.match.params.id;
   const history = useHistory();
-  const dataLog = [
-    {
-      date: '12 Desember 2021',
-      status: 'Selesai',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '10 Desember 2021',
-      status: 'Diproses',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '08 Desember 2021',
-      status: 'Terkirim',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '08 Desember 2021',
-      status: 'Dibuat',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-  ];
-  const dataDummy = {
-    kode: 'XXX',
-    nama: 'Coba',
-    level: 1,
-    status: 'Waiting Approval',
+  const dispatch = useDispatch();
+  const { loading, record } = useSelector(detailDataSelector);
+  const { loading: logLoading, record: logRecord } = useSelector(logDatasetSelector);
+  const [bidang, setBidang] = useState(null);
+
+  useEffect(() => {
+    fetchData(id);
+  }, [id]);
+
+  const fetchData = (id) => {
+    dispatch(getStrukturOrganisasiById(id));
+    dispatch(getStrukturOrganisasiLogs(id));
+  };
+
+  const simpanData = () => {
+    if (!bidang) {
+      return;
+    }
+    dispatch(setStrukturOrganisasi({ id: id, payload: bidang })).then(() => {
+      history.goBack();
+    });
   };
 
   return (
     <Row className={bem.e('section')}>
       <Col sm={9}>
         <div>
-          <div className="d-flex justify-content-between mb-4">
+          <div className="d-flex justify-content-between mb-24">
             <div className={bem.e('title')}>Bidang Detail</div>
             <div>
               <Button variant="secondary">
@@ -60,17 +63,16 @@ const CMSStrukturDetail = (props) => {
                 style={{ width: '112px' }}>
                 Batal
               </Button>
-              <Button className="ml-10" variant="info" style={{ width: '112px' }}>
+              <Button onClick={() => simpanData()} className="ml-10" variant="info" style={{ width: '112px' }}>
                 Simpan
               </Button>
             </div>
           </div>
-          <CMSStrukturForm data={dataDummy} />
+          {!loading ? <CMSStrukturForm data={record} handleData={setBidang} /> : null}
         </div>
       </Col>
-      <Col sm={3}>
-        <LogStatus data={dataLog} />
-      </Col>
+      <Col sm={3}>{!logLoading ? <LogStatus data={logRecord.slice(0, 5)} /> : null}</Col>
+      {(loading || logLoading) && <Loader fullscreen={true} />}
     </Row>
   );
 };

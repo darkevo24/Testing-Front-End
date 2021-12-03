@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
@@ -6,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Search } from 'components/Icons';
 import { CMSTable } from 'components';
+import { getStrukturOrganisasi, strukturDatasetSelector } from './reducer';
 
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import { useHistory } from 'react-router-dom';
@@ -16,30 +18,37 @@ const bem = bn('content-table');
 
 const CMSStrukturOrganisasi = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const { loading, page, records } = useSelector(strukturDatasetSelector);
+  const [searchQuery, setSearchQuery] = useState('');
+  const statusStyle = {
+    DRAFT: {
+      color: '#858A8F',
+    },
+    MENUNGGU_PERSETUJUAN: {
+      color: '#DE8813',
+    },
+    DISETUJUI: {
+      color: '#007AFF',
+    },
+    DITAYANGKAN: {
+      color: '#15A55F',
+    },
+    DIBATALKAN: {
+      color: '#FF0000',
+    },
+  };
 
-  const dataBerita = [
-    {
-      id: 1,
-      kode: 'TB3',
-      nama: 'Test Bidang 3',
-      level: 3,
-      status: 'DRAFT',
-    },
-    {
-      id: 2,
-      kode: 'TB2',
-      nama: 'Test Bidang 2',
-      level: 2,
-      status: 'DRAFT',
-    },
-    {
-      id: 3,
-      kode: 'TB1',
-      nama: 'Test Bidang 1',
-      level: 1,
-      status: 'DRAFT',
-    },
-  ];
+  const fetchData = (params) => {
+    return dispatch(getStrukturOrganisasi(params));
+  };
+
+  useEffect(() => {
+    fetchData({
+      page: page,
+      q: searchQuery,
+    });
+  }, [searchQuery]);
 
   return (
     <div className={bem.e('section')}>
@@ -53,23 +62,31 @@ const CMSStrukturOrganisasi = () => {
           </Col>
           <Col xs={4}>
             <InputGroup>
-              <Form.Control variant="normal" type="text" placeholder="Cari Bidang" />
+              <Form.Control
+                onChange={(e) => setSearchQuery(e.target.value)}
+                variant="normal"
+                type="text"
+                placeholder="Cari Bidang"
+              />
               <Search />
             </InputGroup>
           </Col>
         </Row>
       </div>
-      <CMSTable
-        customWidth={[20, 30, 20, 23, 7]}
-        header={['Kode', 'Nama', 'Level', 'Status']}
-        data={dataBerita.map((item) => {
-          let value = {
-            data: [item.kode, item.nama, item.level, item.status],
-            action: '/cms/struktur-detail/' + item.id,
-          };
-          return value;
-        })}
-      />
+      {!loading ? (
+        <CMSTable
+          customWidth={[20, 30, 20, 23, 7]}
+          header={['Kode', 'Nama', 'Level', 'Status']}
+          data={records.map((item) => {
+            let value = {
+              data: [item.kode, item.nama, item.level, item.status],
+              action: '/cms/struktur-detail/' + item.id,
+              dataStyle: [null, null, null, statusStyle[item.status]],
+            };
+            return value;
+          })}
+        />
+      ) : null}
     </div>
   );
 };

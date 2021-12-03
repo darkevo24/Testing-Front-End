@@ -21,6 +21,59 @@
   border-right: 4px solid #ff0000;
 }
 
+.dashboard iframe {
+  width: 100%;
+  height: 100vh;
+
+  &[title='Pusat'] {
+    height: 1125px;
+  }
+
+  &[title='Daerah'] {
+    height: 1300px;
+  }
+
+  &[title='Dashboard RPJMN - Prioritas Nasional 1'] {
+    height: 1775px;
+  }
+
+  &[title='Dashboard RPJMN - Prioritas Nasional 2'] {
+    height: 875px;
+  }
+
+  &[title='Dashboard RPJMN - Prioritas Nasional 3'] {
+    height: 2650px;
+  }
+
+  &[title='Dashboard RPJMN - Prioritas Nasional 4'] {
+    height: 1970px;
+  }
+
+  &[title='Dashboard RPJMN - Prioritas Nasional 5'] {
+    height: 2110px;
+  }
+
+  &[title='Dashboard RPJMN - Prioritas Nasional 6'] {
+    height: 1305px;
+  }
+
+  &[title='Dashboard RPJMN - Prioritas Nasional 7'] {
+    height: 1810px;
+  }
+
+  &[title='Corona Virus Covid-19 Indonesia'] {
+    height: 2075px;
+  }
+
+  &[title='Cuaca dan Gempa Bumi'] {
+    height: 930px;
+  }
+
+  &[title='PIHPS Nasional'] {
+    height: 2250px;
+  }
+}
+
 .dashboard-title .dropdown {
   display: inline-block;
 }

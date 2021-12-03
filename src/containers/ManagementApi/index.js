@@ -1,5 +1,4 @@
 import { useHistory, useLocation } from 'react-router-dom';
-
 import LogoBappenas from 'assets/Logo_Bappenas_Indonesia.png';
 import { ReactComponent as Edit } from 'assets/edit.svg';
 import { ReactComponent as Search } from 'assets/search-api.svg';

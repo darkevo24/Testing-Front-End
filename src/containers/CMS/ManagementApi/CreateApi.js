@@ -4,6 +4,7 @@ import { ReactComponent as Search } from 'assets/search-api.svg';
 import { ReactComponent as Prev } from 'assets/prev.svg';
 import { ReactComponent as Next } from 'assets/next.svg';
 import { ReactComponent as Edit } from 'assets/edit.svg';
+import { CMSTable } from 'components';
 
 import './index.scss';
 
@@ -11,36 +12,43 @@ const CreateApi = () => {
   const history = useHistory();
   const LIST_TABLE = [
     {
+      id: 1,
       title: 'Judul 1',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
       json: 'data.go.id/api/(instansi)/(judul).json',
     },
     {
+      id: 2,
       title: 'Judul 2',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
       json: 'data.go.id/api/(instansi)/(judul).json',
     },
     {
+      id: 3,
       title: 'Judul 3',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
       json: 'data.go.id/api/(instansi)/(judul).json',
     },
     {
+      id: 4,
       title: 'Judul 4',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
       json: 'data.go.id/api/(instansi)/(judul).json',
     },
     {
+      id: 5,
       title: 'Judul 5',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
       json: 'data.go.id/api/(instansi)/(judul).json',
     },
     {
+      id: 6,
       title: 'Judul 6',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
       json: 'data.go.id/api/(instansi)/(judul).json',
     },
     {
+      id: 7,
       title: 'Judul 7',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
       json: 'data.go.id/api/(instansi)/(judul).json',
@@ -100,30 +108,17 @@ const CreateApi = () => {
       </div>
       <div className="container">
         <div className="management-table pt-20">
-          <table>
-            <thead>
-              <th width="20%">Judul API</th>
-              <th width="50%">Deskripsi</th>
-              <th width="20%">Output JSON</th>
-              <th width="10%">Detail</th>
-            </thead>
-            <tbody>
-              {LIST_TABLE.map((data) => {
-                return (
-                  <tr>
-                    <td className="data-title">{data.title}</td>
-                    <td className="data-description">{data.description}</td>
-                    <td className="data-description">{data.json}</td>
-                    <td className="data-description">
-                      <button className="btn btn-info" onClick={() => history.push('api-detail/api-1')}>
-                        Detail
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <CMSTable
+            customWidth={[20, 50, 20, 20, 10]}
+            header={['Judul API', 'Deskripsi', 'Output JSON', 'Detail']}
+            data={LIST_TABLE.map((item) => {
+              let value = {
+                data: [item.title, item.description, item.json],
+                action: '/cms/api-detail/' + item.id,
+              };
+              return value;
+            })}
+          />
           <div className="wrapper-pagination">
             <ul className="pagination">
               <li className="page-item">

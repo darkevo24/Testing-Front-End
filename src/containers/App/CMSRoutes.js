@@ -31,11 +31,13 @@ const ManagementApiBaru = lazy(() => import('containers/CMS/ManagementApi/Create
 const ManagementApiForm = lazy(() => import('containers/CMS/ManagementApi/Form'));
 const ManagementApiDetail = lazy(() => import('containers/CMS/ManagementApi/DetailApi'));
 const ManagementApiEdit = lazy(() => import('containers/CMS/ManagementApi/EditApi'));
+const LogActivity = lazy(() => import('containers/CMS/LogAktifitas'));
 
 function CMSRoutes() {
   return (
     <CMSLayout>
       <Switch>
+        <PrivateRoute exact path="/cms/log-activity" component={LogActivity} />
         <PrivateRoute exact path="/cms/api/edit/:id?" component={ManagementApiEdit} />
         <PrivateRoute exact path="/cms/api-detail/:id" component={ManagementApiDetail} />
         <PrivateRoute exact path="/cms/api/form" component={ManagementApiForm} />

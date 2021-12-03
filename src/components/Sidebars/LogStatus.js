@@ -1,6 +1,7 @@
 import React from 'react';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
+import { formatDate } from 'utils/helper';
 
 const bem = bn('log');
 
@@ -23,27 +24,3 @@ export const LogStatus = ({ data }) => (
         ))}
   </div>
 );
-
-const formatDate = (date) => {
-  if (!date) {
-    return '';
-  }
-  const currDate = new Date(date);
-  let monthList = [
-    'Januari',
-    'Februari',
-    'Maret',
-    'April',
-    'Mei',
-    'Juni',
-    'Juli',
-    'Agustus',
-    'September',
-    'Oktober',
-    'November',
-    'Desember',
-  ];
-
-  // format: dd Mon yyyy
-  return [currDate.getDate(), monthList[currDate.getMonth()], currDate.getFullYear()].join(' ');
-};

@@ -21,23 +21,6 @@ const CMSStrukturOrganisasi = () => {
   const dispatch = useDispatch();
   const { loading, page, records } = useSelector(strukturDatasetSelector);
   const [searchQuery, setSearchQuery] = useState('');
-  const statusStyle = {
-    DRAFT: {
-      color: '#858A8F',
-    },
-    MENUNGGU_PERSETUJUAN: {
-      color: '#DE8813',
-    },
-    DISETUJUI: {
-      color: '#007AFF',
-    },
-    DITAYANGKAN: {
-      color: '#15A55F',
-    },
-    DIBATALKAN: {
-      color: '#FF0000',
-    },
-  };
 
   const fetchData = (params) => {
     return dispatch(getStrukturOrganisasi(params));
@@ -81,7 +64,7 @@ const CMSStrukturOrganisasi = () => {
             let value = {
               data: [item.kode, item.nama, item.level, item.status],
               action: '/cms/struktur-detail/' + item.id,
-              dataStyle: [null, null, null, statusStyle[item.status]],
+              classValue: [null, null, null, item.status.toLowerCase()],
             };
             return value;
           })}

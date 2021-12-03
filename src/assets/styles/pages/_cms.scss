@@ -40,6 +40,26 @@
         box-sizing: border-box;
         border-radius: 4px;
         margin-bottom: 8px;
+
+        .sdp-log {
+          &__status {
+            &.ditayangkan {
+              color: var(--green-light);
+            }
+            &.menunggu_persetujuan {
+              color: var(--dark-orange);
+            }
+            &.diarsipkan, &.draft, &.tidak_ditayangkan {
+              color: $gray;
+            }
+            &.dibatalkan, &.ditolak {
+              color: $red
+            }
+            &.disetujui {
+              color: $blue
+            }
+          }
+        }
       }
 
       span {

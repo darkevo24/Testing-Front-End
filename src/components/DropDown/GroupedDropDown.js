@@ -7,12 +7,11 @@ import cloneDeep from 'lodash/cloneDeep';
 import { MinusIcon, PlusIcon } from 'assets';
 
 const Control = ({ children, ...props }) => {
-  const { icon, text, value } = props.selectProps;
+  const { icon } = props.selectProps;
 
   return (
     <components.Control {...props}>
       <i>{icon}</i>
-      <span>{value?.value || text}</span>
       {children}
     </components.Control>
   );
@@ -90,16 +89,16 @@ class GroupedDropdown extends React.Component {
     const { selectedValues, options } = this.state;
     return (
       <Select
+        placeholder="Semua Data"
         formatGroupLabel={this.formatGroupLabel}
         closeMenuOnSelect={true}
-        value={!isEmpty(selectedValues) ? selectedValues : null}
+        defaultValue={!isEmpty(selectedValues) ? selectedValues : text}
         options={options}
         className={`basic-single ${propClass}`}
         classNamePrefix="select"
         onChange={this.handleOnChange}
         components={{ Control }}
         icon={icon}
-        text={text}
       />
     );
   }

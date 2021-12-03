@@ -2,9 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import uniqBy from 'lodash/uniqBy';
+import truncate from 'lodash/truncate';
 import { ReactComponent as TrendingSvg } from 'assets/trending.svg';
 import { ReactComponent as PopulerSvg } from 'assets/populer.svg';
-import { CardWithDetail } from '../../components/Cards/CardWithDetail';
+import { CardWithDetail } from 'components/Cards/CardWithDetail';
 
 const Box = styled.div`
   margin: 80px 0;
@@ -52,8 +53,8 @@ export const Cards = ({ isLoggedIn, trendingData = [], popularData = [] }) => {
     return (
       <CardWithDetail
         dataSetUrl={dataSetUrl}
-        title={data.title}
-        description={data.notes}
+        title={truncate(data.title, { length: 60 })}
+        description={truncate(data.notes, { length: 80 })}
         count={data.num_resources}
         formats={formatesToShow}
         hiddenFormats={hiddenFormats}

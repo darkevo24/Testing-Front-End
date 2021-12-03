@@ -66,10 +66,7 @@ export const CardWithDetail = ({ title, dataSetUrl, description, date, views, fo
       border: '1px solid #E1E2EA',
       width: '308px',
     }}>
-    <Box
-      style={{
-        height: '120px',
-      }}>
+    <Box>
       <a title="dataset" href={dataSetUrl} className="sdp-link">
         <Box
           style={{
@@ -93,8 +90,8 @@ export const CardWithDetail = ({ title, dataSetUrl, description, date, views, fo
           lineHeight: '20px',
           margin: '10px 0px 0',
         }}>
-        <Box>{truncate(description, { length: 100 })}</Box>
-        <Box>{date}</Box>
+        <Box style={{ marginTop: '15px' }}>{description}</Box>
+        <Box style={{ marginTop: '10px' }}>{date}</Box>
       </Box>
     </Box>
     <Divider />

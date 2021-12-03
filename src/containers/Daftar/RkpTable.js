@@ -1,21 +1,16 @@
 import { useMemo, useState } from 'react';
-import cx from 'classnames';
 import truncate from 'lodash/truncate';
-import { useHistory } from 'react-router-dom';
-import ColumnData from 'components/ColumnData';
 import Modal from 'components/Modal';
 import Notification from 'components/Notification';
 import Table from 'components/Table';
-import Popover from 'components/Popover';
-import { makeData } from 'utils/dataConfig/dafter';
+import { makeData } from 'utils/dataConfig/daftar';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
-import DafterForm, { submitDafterForm } from './DafterForm';
+import DaftarForm, { submitDaftarForm } from './DaftarForm';
 import { Check } from 'components/Icons';
 
-const DafterTable = ({ bem, cms = false }) => {
-  const history = useHistory();
+const RkpTable = ({ bem }) => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [isDafterFormVisible, setIsDafterFormVisible] = useState(false);
+  const [isDaftarFormVisible, setIsDaftarFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
 
   const showDeleteModal = (data) => {
@@ -41,25 +36,19 @@ const DafterTable = ({ bem, cms = false }) => {
     });
   };
 
-  const showDafterFormModal = (data) => {
+  const showDaftarFormModal = (data) => {
     setSelectedRecord(data);
-    setIsDafterFormVisible(true);
+    setIsDaftarFormVisible(true);
   };
 
-  const hideDafterFormModal = () => {
+  const hideDaftarFormModal = () => {
     setSelectedRecord(null);
-    setIsDafterFormVisible(false);
+    setIsDaftarFormVisible(false);
   };
 
-  const showDafterDetailPage = (data) => {
-    // TODO: handle the detail page for daftar cms
-    // setSelectedRecord(data);
-    // setIsDafterFormVisible(true);
-  };
-
-  const handleDafterFromSubmit = (data) => {
+  const handleDaftarFromSubmit = (data) => {
     // TODO: handle the data posted to server
-    hideDafterFormModal();
+    hideDaftarFormModal();
     Notification.show({
       type: 'secondary',
       message: (
@@ -71,46 +60,11 @@ const DafterTable = ({ bem, cms = false }) => {
     });
   };
 
-  const columns = useMemo(() => {
-    const items = [
+  const columns = useMemo(
+    () => [
       {
         Header: 'Instansi',
-        id: 'instansi',
-        Cell: ({ cell: { row: { original: item } = {} } = {} }) => {
-          const items = [
-            { label: 'ID Konsep', value: 'CPCL' },
-            { label: 'KONSEP', value: 'CPCL' },
-            {
-              label: 'DEFINISI',
-              value:
-                'CPCL adalah calon petani penerima bantuan dan calon lokasi lahan yang akan menerima bantuan pemerintah	',
-            },
-            {
-              label: 'sumber definisi',
-              value:
-                'Keputusan Direktur Jenderal Tanaman Pangan Nomor 218/HK/310/12/2029 tentang Petunjuk Teknis Bantuan Pemerintah Program Peningkatan Produksi, Produktivitas dan Mutu Hasil Tanaman Pangan Tahun Anggaran 2020',
-            },
-            { label: 'dATA INDUK', value: 'PKKU; RDKK;CPCL' },
-            { label: 'fORMAT', value: 'CSV' },
-            { label: 'LINK AKSES', value: 'https://umkm.depkop.go.id', variant: 'link' },
-            { label: 'PILAR SDGS', value: 'Sosial' },
-            { label: 'Tujuan sdgs', value: '1. Mengakhiri kemiskinan dalam segala bentuk dimanapun' },
-            { label: 'PN RKP', value: '-' },
-            { label: 'PP RKP', value: '-' },
-            { label: 'PRIORITAS', value: 'Ya' },
-          ];
-          return (
-            <Popover
-              placement="bottom-start"
-              variant="highlight"
-              className={bem.e('popover')}
-              triggerOn="hover"
-              trigger={<span className="cursor-pointer">{item.instansi}</span>}
-              header="Detail Data Cakupan Wilayah Internet">
-              <ColumnData items={items} />
-            </Popover>
-          );
-        },
+        accessor: 'instansi',
       },
       {
         Header: 'Nama Data',
@@ -151,36 +105,18 @@ const DafterTable = ({ bem, cms = false }) => {
         accessor: 'status',
         Cell: (data) => (data.cell.value === 'active' ? <Check variant="green" /> : <Check variant="stroke" />),
       },
-    ];
-    if (cms) {
-      items.push({
-        id: 'actions',
-        actions: [
-          {
-            title: 'Detail',
-            classes: 'btn btn-info',
-            callback: showDafterDetailPage,
-          },
-        ],
-        Cell: Table.Actions,
-      });
-    }
-    return items;
-  }, [cms]);
+    ],
+    [],
+  );
   const data = useMemo(() => makeData(200), []);
   const tableConfig = {
     columns,
     data,
-    cms,
     showSearch: false,
     highlightOnHover: true,
     variant: 'spaced',
   };
-  if (!cms) {
-    tableConfig.onRowClick = (data) => {
-      history.push('/data-variable');
-    };
-  }
+
   const dropdownFilters = [
     { label: 'Option 1', value: 'Option 1' },
     { label: 'Option 2', value: 'Option 2' },
@@ -190,7 +126,7 @@ const DafterTable = ({ bem, cms = false }) => {
 
   return (
     <>
-      <div className={cx(cms ? 'mb-30' : 'bg-gray-lighter mb-40 p-24 mt-32')}>
+      <div className="container-fluid bg-gray-lighter p-24 mb-40 mt-32">
         <div className="row">
           <div className="col">
             <label className="sdp-form-label py-8">Instansi</label>
@@ -209,8 +145,17 @@ const DafterTable = ({ bem, cms = false }) => {
             <SingleSelectDropdown data={dropdownFilters} placeHolder="Ya" isLoading={false} noValue={true} />
           </div>
         </div>
+        <div className="row pt-24">
+          <div className="col-3">
+            <label className="sdp-form-label py-8">PN RKP</label>
+            <SingleSelectDropdown data={dropdownFilters} placeHolder="-" isLoading={false} noValue={true} />
+          </div>
+          <div className="col-3">
+            <label className="sdp-form-label py-8">PP RKP</label>
+            <SingleSelectDropdown data={dropdownFilters} placeHolder="-" isLoading={false} noValue={true} />
+          </div>
+        </div>
       </div>
-      {cms && <div className="divider mx-n32 mb-24" />}
       <Table {...tableConfig} />
       <Modal
         visible={isDeleteModalVisible}
@@ -225,19 +170,19 @@ const DafterTable = ({ bem, cms = false }) => {
       </Modal>
       <Modal
         size="lg"
-        visible={isDafterFormVisible}
-        onClose={hideDafterFormModal}
+        visible={isDaftarFormVisible}
+        onClose={hideDaftarFormModal}
         icon="splitCircle"
         title={selectedRecord ? 'Edit Data' : 'Tambah Data'}
         subtitle="Isi form dibawah untuk menambah data"
         actions={[
-          { variant: 'secondary', text: 'Batal', onClick: hideDafterFormModal },
-          { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDafterForm },
+          { variant: 'secondary', text: 'Batal', onClick: hideDaftarFormModal },
+          { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDaftarForm },
         ]}>
-        <DafterForm data={selectedRecord} onSubmit={handleDafterFromSubmit} />
+        <DaftarForm data={selectedRecord} onSubmit={handleDaftarFromSubmit} />
       </Modal>
     </>
   );
 };
 
-export default DafterTable;
+export default RkpTable;

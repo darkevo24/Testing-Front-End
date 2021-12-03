@@ -24,7 +24,7 @@ const KesiapanSDI = lazy(() => import('containers/Dashboard/KesiapanSDI'));
 const DashboardEksekutif = lazy(() => import('containers/Dashboard/DashboardEksekutif'));
 const DashboardSaya = lazy(() => import('containers/Dashboard/DashboardSaya'));
 const DataAnalytic = lazy(() => import('containers/Dashboard/DataAnalytic'));
-const DafterPage = lazy(() => import('containers/Dafter'));
+const DaftarPage = lazy(() => import('containers/Daftar'));
 const DataVariablePage = lazy(() => import('containers/DataVariable'));
 // const NotFoundPage = lazy(() => import('containers/NotFound'));
 
@@ -39,7 +39,7 @@ function AppRoutes(props) {
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
         <PrivateRoute exact path="/dataset" component={DataSetPage} />
-        <PrivateRoute exact path="/dafter" component={DafterPage} />
+        <PrivateRoute exact path="/daftar" component={DaftarPage} />
         <PrivateRoute exact path="/data-variable" component={DataVariablePage} />
         <PrivateRoute exact path="/komunitas-ahli" component={KomunitasPage} />
         <Route exact path="/berita" component={BeritaPage} />

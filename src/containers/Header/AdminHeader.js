@@ -77,7 +77,7 @@ export const AdminHeader = () => {
             })}
             title="Sandbox"
             id="basic-nav-dropdown">
-            <NavDropdown.Item onClick={() => history.push('/dafter')}>Daftar Data</NavDropdown.Item>
+            <NavDropdown.Item onClick={() => history.push('/daftar')}>Daftar Data</NavDropdown.Item>
             <NavDropdown.Item onClick={() => history.push('/sdmx')}>Metadata Registry</NavDropdown.Item>
           </NavDropdown>
           {getTabList(TAB_LIST_2, location.pathname, history)}

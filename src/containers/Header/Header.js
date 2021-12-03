@@ -118,7 +118,7 @@ export const Header = () => {
       {
         title: 'Sandbox',
         links: [
-          { title: 'Daftar Data', link: '/dafter' },
+          { title: 'Daftar Data', link: '/daftar' },
           { title: 'Metadata Registry', link: '/sdmx' },
         ],
       },

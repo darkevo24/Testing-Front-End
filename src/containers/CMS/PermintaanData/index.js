@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -8,34 +8,42 @@ import { getPermintaanData, permintaanDataSelector } from './reducer';
 import { Search } from '../../../components/Icons';
 import { CMSTable } from '../../../components';
 import bn from '../../../utils/bemNames';
+import * as _ from 'lodash';
+import ReactPaginate from 'react-paginate';
 
 const bem = bn('content-table');
 
 const CMSPermintaanData = () => {
+  const [instansiId, setIntansiId] = useState();
+  const [query, setQuery] = useState();
+  const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const result = useSelector(permintaanDataSelector);
   const fetchDataset = () => {
-    return dispatch(getPermintaanData());
+    let obj = {
+      size: 10,
+      page: page,
+    };
+    if (instansiId) obj['instansiId'] = Number(instansiId);
+    if (query) obj['q'] = query;
+    return dispatch(getPermintaanData(obj));
   };
   const data = useMemo(() => result?.records || [], [result]);
   useEffect(() => {
     fetchDataset();
-  }, []);
+  }, [instansiId, query, page]);
 
-  // const dataPermintaan = [
-  //   {
-  //     id: 'PD000123',
-  //     namaPeminta: 'Ibrahim Hanifa',
-  //     instansi: 'Bapenas',
-  //     unitKerja: 'SDI',
-  //     deskripsi: 'Data Penduduk DKI',
-  //     tanggalPermintaan: '28-11-2021 08:33',
-  //     targetWaktu: '28-11-2021 09:00',
-  //     produsen: 'Kementerian Dalam Negeri',
-  //     jenisData: 'Statistik',
-  //     status: 'Approved',
-  //   },
-  // ];
+  const updateInstansi = (val) => {
+    setIntansiId(val);
+  };
+
+  const updateQuery = _.debounce((val) => {
+    setQuery(val);
+  }, 1000);
+
+  const handlePageClick = (event) => {
+    setPage(event.selected + 1);
+  };
 
   return (
     <div className={bem.e('section')}>
@@ -46,12 +54,19 @@ const CMSPermintaanData = () => {
           <Col xs={5} className="d-flex align-items-center">
             <div className="mr-10">Instansi</div>
             <div className="mr-10">
-              <Form.Select aria-label="Default select example">
+              <Form.Select aria-label="Default select example" onChange={(e) => updateInstansi(e.target.value)}>
+                <option value="0">Kosong</option>
                 <option value="1">Badan Pusat</option>
+                <option value="2">Badan Pusat 2</option>
               </Form.Select>
             </div>
             <InputGroup>
-              <Form.Control variant="normal" type="text" placeholder="Cari Permintaan Data" />
+              <Form.Control
+                variant="normal"
+                type="text"
+                placeholder="Cari Permintaan Data"
+                onChange={(e) => updateQuery(e.target.value)}
+              />
               <Search />
             </InputGroup>
           </Col>
@@ -89,6 +104,16 @@ const CMSPermintaanData = () => {
           };
           return value;
         })}
+      />
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel=">"
+        className="pagination"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={result?.totalPages}
+        previousLabel="<"
+        renderOnZeroPageCount={null}
       />
     </div>
   );

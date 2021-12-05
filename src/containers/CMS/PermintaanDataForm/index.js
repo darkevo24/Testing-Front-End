@@ -127,7 +127,28 @@ const CMSPermintaanDataView = () => {
     isSetShowSelesaiModal(false);
   };
 
-  const dataLog = [];
+  const dataLog = [
+    {
+      date: '12 Desember 2021',
+      status: 'Perbarui',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
+    },
+    {
+      date: '10 Desember 2021',
+      status: 'Perbarui',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
+    },
+    {
+      date: '08 Desember 2021',
+      status: 'Perbarui',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
+    },
+    {
+      date: '08 Desember 2021',
+      status: 'Dibuat',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
+    },
+  ];
   const schema = yup
     .object({
       id: yup.mixed().required(),
@@ -174,7 +195,7 @@ const CMSPermintaanDataView = () => {
   useEffect(() => {
     fetchDataset();
     reset(data);
-  }, [data]);
+  }, []);
   console.log('data', data);
 
   const {
@@ -190,19 +211,19 @@ const CMSPermintaanDataView = () => {
   });
   return (
     <div>
-      {data.status === 'Selesai' ? <SuccessText /> : null}
-      {data.status === 'Terkirim' ? <TerkirimText /> : null}
-      {data.status === 'Diproses' ? <DiprosesText /> : null}
+      {data.status === 'SELESAI' ? <SuccessText /> : null}
+      {data.status === 'TERKIRIM' ? <TerkirimText /> : null}
+      {data.status === 'DIPROSES' ? <DiprosesText /> : null}
       <Row className={bem.e('section')}>
         <Col sm={9} className="my-5">
           <div>
             <div className="d-flex justify-content-between mb-4">
               <div className={bem.e('title')}>Detail</div>
               <div>
-                {data.status === 'Terkirim' ? (
+                {data.status === 'TERKIRIM' ? (
                   <TerkirimButton onTolak={setShowTolakModal} onProses={setShowProsesModal} />
                 ) : null}
-                {data.status === 'Diproses' ? <DiprosesButton onSelesai={setShowSelesaiModal} /> : null}
+                {data.status === 'DIPROSES' ? <DiprosesButton onSelesai={setShowSelesaiModal} /> : null}
               </div>
             </div>
             <Form className="sdp-form" noValidate>

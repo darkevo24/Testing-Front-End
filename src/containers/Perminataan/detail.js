@@ -20,7 +20,6 @@ import {
 import { BackArrow, PencilSvg } from 'components/Icons';
 import { prefixID, getPerminataanInfo, getUserInfo, getClass } from './constant';
 import { userSelector } from '../Login/reducer';
-import { usePrevious } from 'utils/hooks';
 import { Loader } from 'components';
 import { EditForum } from './Forum/EditForum';
 
@@ -86,12 +85,12 @@ export const PerminataanDetail = () => {
               </div>
               {status === 'draft' && (
                 <div className="d-flex">
-                  {/*<Button*/}
-                  {/*  variant="light"*/}
-                  {/*  className="bg-transparent mr-8 border-gray-stroke br-4"*/}
-                  {/*  onClick={() => setShowEditModal(true)}>*/}
-                  {/*  <PencilSvg />*/}
-                  {/*</Button>*/}
+                  <Button
+                    variant="light"
+                    className="bg-transparent mr-8 border-gray-stroke br-4"
+                    onClick={() => setShowEditModal(true)}>
+                    <PencilSvg />
+                  </Button>
                   <Button onClick={() => setShowConfirmModal(true)}>Kirim Permintaan</Button>
                 </div>
               )}
@@ -195,7 +194,7 @@ export const PerminataanDetail = () => {
           </div>
         </Modal>
       )}
-      {showEditModal && <EditForum data={record} onClose={() => setShowEditModal(false)} />}
+      {showEditModal && <EditForum data={record} onClose={() => setShowEditModal(false)} initialCall={initialCall} />}
       {(loading || logLoading) && <Loader fullscreen={true} />}
     </div>
   );

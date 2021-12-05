@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, defaultNumberOfRows, get, post } from 'utils/request';
+import { apiUrls, defaultNumberOfRows, get, post, put } from 'utils/request';
 
 export const initialState = {
   loading: false,
@@ -7,6 +7,7 @@ export const initialState = {
     loading: false,
     error: null,
     page: 0,
+    status: '',
     records: [],
     size: defaultNumberOfRows,
     totalRecords: null,
@@ -35,12 +36,17 @@ export const initialState = {
 export const PERMINATAAN_DATA_SLICE = 'PERMINATAAN_DATA_SLICE';
 
 export const getPerminataanData = createAsyncThunk('portal/getPerminataanData', async (params) => {
-  const response = await get(apiUrls.perminataanData, { data: { page: params + 1, size: 10 } });
+  const response = await get(apiUrls.perminataanData, { data: { page: params.page + 1, size: 10, status: params.status } });
   return response?.data?.content;
 });
 
 export const setPerminataanData = createAsyncThunk('portal/setPerminataanData', async (params) => {
   const response = await post(apiUrls.perminataanData, params);
+  return response?.data;
+});
+
+export const putPerminataanData = createAsyncThunk('portal/putPerminataanData', async (params) => {
+  const response = await put(`${apiUrls.perminataanData}/${params.id}`, params);
   return response?.data;
 });
 
@@ -77,7 +83,8 @@ const perminataanSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getPerminataanData.pending, (state, action) => {
-      state.dataset.page = action.meta.arg;
+      state.dataset.page = action.meta.arg.page;
+      state.dataset.status = action.meta.arg.status;
       state.dataset.loading = true;
     });
     builder.addCase(getPerminataanData.fulfilled, (state, action) => {
@@ -106,6 +113,16 @@ const perminataanSlice = createSlice({
       state.dataset.loading = false;
     });
     builder.addCase(setPerminataanData.rejected, (state, action) => {
+      state.dataset.loading = false;
+      state.error = action.error.message;
+    });
+    builder.addCase(putPerminataanData.pending, (state, action) => {
+      state.dataset.loading = true;
+    });
+    builder.addCase(putPerminataanData.fulfilled, (state, action) => {
+      state.dataset.loading = false;
+    });
+    builder.addCase(putPerminataanData.rejected, (state, action) => {
       state.dataset.loading = false;
       state.error = action.error.message;
     });

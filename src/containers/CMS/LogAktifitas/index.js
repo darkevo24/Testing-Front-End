@@ -1,12 +1,18 @@
-import Button from 'react-bootstrap/Button';
+import { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import InputGroup from 'react-bootstrap/InputGroup';
+import { Search, ModalAlertDanger } from 'components/Icons';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { CMSTable, DatePicker } from 'components';
+import { DatePicker } from 'components';
+import { ReactComponent as Prev } from 'assets/prev.svg';
+import { ReactComponent as Next } from 'assets/next.svg';
+import { ModalDelete } from 'components';
 
 import './index.scss';
-
 const schema = yup
   .object({
     title: yup.string().required(),
@@ -16,6 +22,7 @@ const schema = yup
   .required();
 
 const LogActivity = () => {
+  const [modalProfile, setModalProfile] = useState(false);
   const {
     control,
     formState: { errors },
@@ -102,13 +109,14 @@ const LogActivity = () => {
         <div className="header-log">
           <div className="wrapper-left">
             <h1> Log Aktivitas </h1>
-            <Button className="" variant="info" style={{ width: '112px' }}>
+            <Button className="" variant="info" style={{ width: '112px' }} onClick={() => setModalProfile(true)}>
               Download
             </Button>
             <Button
               className="ml-10 bg-white sdp-text-grey-dark border-gray-stroke secondary"
               variant="secondary"
-              style={{ width: '112px' }}>
+              style={{ width: '112px' }}
+              onClick={() => setModalProfile(true)}>
               Backup
             </Button>
           </div>
@@ -120,6 +128,7 @@ const LogActivity = () => {
                 control={control}
                 rules={{ required: false }}
                 error={errors.publishedDate?.message}
+                arrow={true}
               />
             </div>
             <div className="date">
@@ -129,22 +138,103 @@ const LogActivity = () => {
                 control={control}
                 rules={{ required: false }}
                 error={errors.publishedDate?.message}
+                arrow={true}
               />
             </div>
+            <InputGroup>
+              <Form.Control variant="normal" type="text" placeholder="Pencarian" />
+              <Search />
+            </InputGroup>
           </div>
         </div>
-        <CMSTable
-          customWidth={[20, 20, 20, 20, 20]}
-          header={['ID Pengguna', 'Alamat IP', 'Waktu', 'Aktivitas', 'Status']}
-          data={LIST_TABLE.map((item) => {
-            let value = {
-              data: [item.id_user, item.ip, item.time, item.activity, item.status],
-              action: '/cms/api-detail/' + item.id,
-            };
-            return value;
-          })}
-        />
+        <div className="management-table pt-0">
+          <table>
+            <thead className="head-table-border">
+              <th width="20%">ID Pengguna</th>
+              <th width="20%">Alamat IP</th>
+              <th width="20%">Waktu</th>
+              <th width="25%">Aktivitas</th>
+              <th width="15%">Status</th>
+            </thead>
+            <tbody>
+              {LIST_TABLE.map((data, index) => {
+                return (
+                  <tr>
+                    <td className="data-description">{data.id_user}</td>
+                    <td className="data-description">{data.ip}</td>
+                    <td className="data-description">{data.time}</td>
+                    <td className="data-description">{data.activity}</td>
+                    <td className={data.status === 'Berhasil' ? 'data-description' : 'data-description text-danger'}>
+                      {data.status}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div className="wrapper-pagination pt-25">
+          <ul className="pagination">
+            <li className="page-item">
+              <a className="page-link prev" href="#">
+                <Prev />
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link active" href="#">
+                1
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" href="#">
+                2
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" href="#">
+                3
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" href="#">
+                4
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link next" href="#">
+                <Next />
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
+      <ModalDelete visible={modalProfile} onClose={() => setModalProfile(false)}>
+        <div className="alert">
+          <ModalAlertDanger />
+          <p className="text-danger pt-15">
+            Data log yang di-backup akan didownload ke dalam bentuk csv dan
+            <span className="font-weight-bold"> akan dihapus dari sistem </span>
+          </p>
+        </div>
+        <p className="date-backup">
+          Backup Log Aktivitas
+          <span className="ml-10 mr-5 p-5"> 1 Jan 2021 - 1 Des 2021 </span>?
+        </p>
+        <div>
+          <div className="d-flex justify-content-end pb-20 pr-10">
+            <Button
+              onClick={() => setModalProfile(false)}
+              className="ml-24 bg-white sdp-text-grey-dark border-gray-stroke"
+              variant="secondary"
+              style={{ width: '112px' }}>
+              Batal
+            </Button>
+            <Button className="mx-10" variant="info" style={{ width: '112px' }}>
+              Konfirmasi
+            </Button>
+          </div>
+        </div>
+      </ModalDelete>
     </div>
   );
 };

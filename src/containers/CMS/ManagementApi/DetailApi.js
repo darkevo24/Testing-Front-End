@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Row, Col } from 'react-bootstrap';
-import { ModalDelete, Dropdown } from 'components';
+import { ModalDelete } from 'components';
 import { ReactComponent as CopyJson } from 'assets/copy-json.svg';
 import { ReactComponent as IconEdit } from 'assets/cms-api-edit.svg';
 import { ReactComponent as IconDelete } from 'assets/cms-api-delete.svg';

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import cx from 'classnames';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -10,21 +10,26 @@ import Row from 'react-bootstrap/Row';
 import Breadcrumb from 'components/Breadcrumb';
 import HighlightWords from 'components/HighlightWords';
 import { Search } from 'components/Icons';
+import Modal from 'components/Modal';
+import Notification from 'components/Notification';
 import Tabs from 'components/Tabs';
+import DaftarForm, { submitDaftarForm } from './DaftarForm';
 import DaftarTable from './DaftarTable';
 import SdgTable from './SdgTable';
 import RkpTable from './RkpTable';
 import DaftarDataSayaTable from './DaftarDataSayaTable';
 import bn from 'utils/bemNames';
-import { getInstansi } from './reducer';
+import { addKatalog, getInstansi, addKatalogSelector } from './reducer';
 
 const bem = bn('daftar');
 
 const Daftar = () => {
   const { t } = useTranslation();
+  const [isTambahModalVisible, setIsTambahModalVisble] = useState(false);
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(t('sandbox.daftar.tabs.daftar.key'));
   const activeTitle = t(`sandbox.daftar.tabs.${activeTab}.title`);
+  const { result } = useSelector(addKatalogSelector);
   const stats = useMemo(
     () => [
       { title: 'Jumlah Data pada Daftar Data', value: 35798 },
@@ -59,6 +64,46 @@ const Daftar = () => {
     ],
     [],
   );
+
+  const showTambahFormModal = () => {
+    setIsTambahModalVisble(true);
+  };
+
+  const hideTambahModal = () => {
+    setIsTambahModalVisble(false);
+  };
+
+  const handleTambahFromSubmit = (payload) => {
+    // TODO: handle the data posted to server
+    payload.instansi = payload.instansi.value;
+    payload.jadwalPemutakhiran = payload.jadwalPemutakhiran.value;
+    payload.indukData = [payload.indukData.value];
+    payload.format = 'png';
+
+    debugger;
+    dispatch(addKatalog(payload)).then((res) => {
+      hideTambahModal();
+      res?.payload
+        ? Notification.show({
+            type: 'secondary',
+            message: (
+              <div>
+                Daftar <span className="fw-bold">{res.meta.arg.name}</span> Berhasil Ditambahkan
+              </div>
+            ),
+            icon: 'check',
+          })
+        : Notification.show({
+            message: (
+              <div>
+                Error <span className="fw-bold">{res.error.message}</span> Data Tidak Ditambahkan
+              </div>
+            ),
+            icon: 'cross',
+          });
+    });
+  };
+
   const breadcrumbsList = useMemo(
     () => [
       {
@@ -100,7 +145,7 @@ const Daftar = () => {
                   <Search />
                 </div>
               </InputGroup>
-              <Button className="btn-rounded ml-16 px-32 text-nowrap" onClick={() => {}}>
+              <Button className="btn-rounded ml-16 px-32 text-nowrap" onClick={showTambahFormModal}>
                 {isSayaData ? t('common.addData') : t('common.download')}
               </Button>
             </div>
@@ -123,6 +168,19 @@ const Daftar = () => {
           </Tabs>
         </Col>
       </Row>
+      <Modal
+        size="lg"
+        visible={isTambahModalVisible}
+        onClose={hideTambahModal}
+        icon="splitCircle"
+        title="Tambah Data"
+        subtitle="Isi form dibawah untuk menambah data"
+        actions={[
+          { variant: 'secondary', text: 'Batal', onClick: hideTambahModal },
+          { text: 'Tambah', onClick: submitDaftarForm },
+        ]}>
+        <DaftarForm onSubmit={handleTambahFromSubmit} />
+      </Modal>
     </div>
   );
 };

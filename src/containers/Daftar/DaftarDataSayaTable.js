@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import truncate from 'lodash/truncate';
 import Modal from 'components/Modal';
 import Notification from 'components/Notification';
@@ -7,11 +8,13 @@ import { makeData } from 'utils/dataConfig/daftar';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import DaftarForm, { submitDaftarForm } from './DaftarForm';
 import { Check } from 'components/Icons';
+import { deleteKatalog, putKatalog } from './reducer';
 
 const DaftarDataSayaTable = ({ bem }) => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDaftarFormVisible, setIsDaftarFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const dispatch = useDispatch();
 
   const showDeleteModal = (data) => {
     setSelectedRecord(data);
@@ -25,7 +28,10 @@ const DaftarDataSayaTable = ({ bem }) => {
 
   const handleDelete = () => {
     // TODO: handle actual delete of the data.
-    setIsDeleteModalVisible(false);
+
+    dispatch(deleteKatalog(selectedRecord)).then((res) => {
+      setIsDeleteModalVisible(false);
+    });
     Notification.show({
       message: (
         <div>
@@ -48,15 +54,32 @@ const DaftarDataSayaTable = ({ bem }) => {
 
   const handleDaftarFromSubmit = (data) => {
     // TODO: handle the data posted to server
-    hideDaftarFormModal();
-    Notification.show({
-      type: 'secondary',
-      message: (
-        <div>
-          Daftar <span className="fw-bold">{data.name}</span> Berhasil Ditambahkan
-        </div>
-      ),
-      icon: 'check',
+
+    data.instansi = data.instansi.value;
+    data.jadwalPemutakhiran = data.jadwalPemutakhiran.value;
+    data.indukData = [data.indukData.value];
+    data.format = 'png';
+
+    dispatch(putKatalog(data)).then((res) => {
+      hideDaftarFormModal();
+      res.payload
+        ? Notification.show({
+            type: 'secondary',
+            message: (
+              <div>
+                Daftar <span className="fw-bold">{data.name}</span> Berhasil Ditambahkan
+              </div>
+            ),
+            icon: 'check',
+          })
+        : Notification.show({
+            message: (
+              <div>
+                Daftar <span className="fw-bold">{data.name}</span> Berhasil Ditambahkan
+              </div>
+            ),
+            icon: 'cross',
+          });
     });
   };
 

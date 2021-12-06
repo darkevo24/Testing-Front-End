@@ -16,17 +16,17 @@ export const submitDaftarForm = submitForm(daftarFormId);
 const schema = yup
   .object({
     instansi: yup.mixed().required(),
-    name: yup.string().required(),
+    nama: yup.string().required(),
     konsep: yup.string().required(),
     definisi: yup.string().required(),
-    sumber: yup.string().required(),
-    jadwal: yup.mixed().required(),
-    dibuat: yup.mixed().required(),
-    diper: yup.mixed().required(),
-    produsen: yup.string().required(),
-    induk: yup.mixed().required(),
+    sumberDefinisi: yup.string().required(),
+    jadwalPemutakhiran: yup.mixed().required(),
+    tanggalDibuat: yup.date().required(),
+    tanggalDiperbaharui: yup.date().required(),
+    produsenData: yup.string().required(),
+    indukData: yup.mixed().required(),
     format: yup.mixed().required(),
-    link: yup.string().required(),
+    linkAkses: yup.string().required(),
   })
   .required();
 
@@ -68,7 +68,7 @@ const DaftarForm = ({ data, onSubmit }) => {
           <Input
             group
             label="Name Data"
-            name="name"
+            name="nama"
             control={control}
             rules={{ required: true }}
             error={errors.name?.message}
@@ -93,7 +93,7 @@ const DaftarForm = ({ data, onSubmit }) => {
           <Input
             group
             label="Sumber Definisi"
-            name="sumber"
+            name="sumberDefinisi"
             control={control}
             rules={{ required: true }}
             error={errors.sumber?.message}
@@ -101,7 +101,7 @@ const DaftarForm = ({ data, onSubmit }) => {
           <Dropdown
             group
             label="Jadwal Pemutakhiran"
-            name="jadwal"
+            name="jadwalPemutakhiran"
             control={control}
             rules={{ required: true }}
             placeholder="Select"
@@ -111,7 +111,7 @@ const DaftarForm = ({ data, onSubmit }) => {
           <DatePicker
             group
             label="Dibuat"
-            name="dibuat"
+            name="tanggalDibuat"
             control={control}
             rules={{ required: true }}
             error={errors.dibuat?.message}
@@ -119,7 +119,7 @@ const DaftarForm = ({ data, onSubmit }) => {
           <DatePicker
             group
             label="Diperbarui"
-            name="diper"
+            name="tanggalDiperbaharui"
             control={control}
             rules={{ required: true }}
             error={errors.diper?.message}
@@ -127,7 +127,7 @@ const DaftarForm = ({ data, onSubmit }) => {
           <Input
             group
             label="Produsen Data"
-            name="produsen"
+            name="produsenData"
             control={control}
             rules={{ required: true }}
             error={errors.produsen?.message}
@@ -135,7 +135,7 @@ const DaftarForm = ({ data, onSubmit }) => {
           <Dropdown
             group
             label="Data Induk"
-            name="induk"
+            name="indukData"
             control={control}
             rules={{ required: true }}
             placeholder="Select"
@@ -156,7 +156,7 @@ const DaftarForm = ({ data, onSubmit }) => {
           <Input
             group
             label="Link Akses"
-            name="link"
+            name="linkAkses"
             isLink
             control={control}
             rules={{ required: true }}

@@ -27,7 +27,7 @@ export const tolakFormId = 'tolak-form-id';
 export const prosesFormId = 'proses-form-id';
 export const selesaiFormId = 'selesai-form-id';
 export const submitTolakForm = submitForm(tolakFormId);
-export const submitProsesForm = submitForm(prosesFormId);
+// export const submitProsesForm = submitForm(prosesFormId);
 export const submitSelesaiForm = submitForm(selesaiFormId);
 
 const SuccessText = () => {
@@ -195,6 +195,7 @@ const CMSPermintaanDataView = () => {
   useEffect(() => {
     fetchDataset();
     reset(data);
+    console.log(data);
   }, []);
   console.log('data', data);
 
@@ -209,6 +210,14 @@ const CMSPermintaanDataView = () => {
       ...data,
     },
   });
+
+  const submitProsesForm = (data) => {
+    console.log('submit done');
+    const url = window.location.pathname;
+    const id = url.split('/')[3];
+    dispatch(postPermintaanDataProses(data, id));
+  };
+
   return (
     <div>
       {data.status === 'SELESAI' ? <SuccessText /> : null}
@@ -306,14 +315,7 @@ const CMSPermintaanDataView = () => {
             </Form.Group>
           </Form>
         </Modal>
-        <Modal
-          visible={showProsesModal}
-          onClose={() => hideProsesModal(false)}
-          title="Apakah anda memproses Permintaan Data?"
-          actions={[
-            { variant: 'secondary', text: 'Batal', onClick: () => hideProsesModal() },
-            { text: 'Konfirmasi', type: 'submit', onClick: submitProsesForm },
-          ]}>
+        <Modal visible={showProsesModal} onClose={() => hideProsesModal(false)}>
           <Form id={prosesFormId} onSubmit={handleSubmit(onSubmitProses)} noValidate>
             <Form.Group as={Col} md="12" className="mb-16">
               <Input
@@ -326,6 +328,12 @@ const CMSPermintaanDataView = () => {
                 error={errors.catatan?.message}
               />
             </Form.Group>
+            <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => hideProsesModal()}>
+              Batal
+            </Button>
+            <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
+              proses
+            </Button>
           </Form>
         </Modal>
         <Modal

@@ -12,18 +12,22 @@ const Modal = ({ actions, size, visible, children, onClose, icon, title = 'Modal
   return (
     <RBModal show={visible} size={size} onHide={onClose} backdrop backdropClassName={bem.e('backdrop')} className={bem.b()}>
       <div className={bem.e('section')}>
-        <RBModal.Header>
-          <div className={bem.e('header-wrapper')}>
-            {Icon && <Icon />}
-            <div className={bem.e('title-wrapper')}>
-              <div className={bem.e('title')}>{title}</div>
-              {subtitle && <div className={bem.e('subtitle')}>{subtitle}</div>}
+        {title !== 'Modal title' ? (
+          <RBModal.Header>
+            <div className={bem.e('header-wrapper')}>
+              {Icon && <Icon />}
+              <div className={bem.e('title-wrapper')}>
+                <div className={bem.e('title')}>{title}</div>
+                {subtitle && <div className={bem.e('subtitle')}>{subtitle}</div>}
+              </div>
             </div>
-          </div>
-          <div className="cursor-pointer p-1" onClick={onClose}>
-            <Close />
-          </div>
-        </RBModal.Header>
+            <div className="cursor-pointer p-1" onClick={onClose}>
+              <Close />
+            </div>
+          </RBModal.Header>
+        ) : (
+          ''
+        )}
         <RBModal.Body>{children}</RBModal.Body>
       </div>
       {actions && (

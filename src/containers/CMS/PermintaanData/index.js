@@ -116,7 +116,7 @@ const CMSPermintaanData = () => {
           activeClassName="active"
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}
-          pageCount={result?.totalPages}
+          pageCount={Math.ceil(result?.totalPages)}
           previousLabel="<"
           renderOnZeroPageCount={null}
         />

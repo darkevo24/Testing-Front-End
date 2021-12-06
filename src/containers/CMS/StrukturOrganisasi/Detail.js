@@ -68,7 +68,7 @@ const CMSStrukturDetail = (props) => {
               </Button>
             </div>
           </div>
-          {!loading ? <CMSStrukturForm data={record} handleData={setBidang} /> : null}
+          {!loading ? <CMSStrukturForm dataValue={record} handleData={setBidang} /> : null}
         </div>
       </Col>
       <Col sm={3}>{!logLoading ? <LogStatus data={logRecord.slice(0, 5)} /> : null}</Col>

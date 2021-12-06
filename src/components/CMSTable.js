@@ -22,6 +22,7 @@ const CMSTable = ({ customWidth, header, data, tableState = 'idle' }) => {
           {item.data.map((value, key) => (
             <span
               key={key}
+              className={item.classValue && item.classValue[key] ? 'sdp-log__status ' + item.classValue[key] : {}}
               style={Object.assign(
                 { width: customWidth.length !== item.data.length + 1 ? 'auto' : customWidth[key] + '%' },
                 item.dataStyle && item.dataStyle.length - 1 >= key && item.dataStyle[key] ? item.dataStyle[key] : {},

@@ -122,3 +122,27 @@ export const parseQueryString = () => {
   }
   return JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
 };
+
+export const formatDate = (date) => {
+  if (!date) {
+    return '';
+  }
+  const currDate = new Date(date);
+  let monthList = [
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember',
+  ];
+
+  // format: dd Mon yyyy
+  return [currDate.getDate(), monthList[currDate.getMonth()], currDate.getFullYear()].join(' ');
+};

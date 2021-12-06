@@ -33,6 +33,7 @@ export const apiUrls = {
   perminataanData: getPortalEndpoint('permintaan-data'),
   instansiData: getV1Endpoint('instansi'),
   katalogData: getApiEndpoint('v1/katalog'),
+  strukturData: getApiEndpoint(`cms/v1/bidang`),
 };
 
 export const TOPIC_LIST = [

@@ -105,16 +105,22 @@ const CMSPermintaanData = () => {
           return value;
         })}
       />
-      <ReactPaginate
-        breakLabel="..."
-        nextLabel=">"
-        className="pagination"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={5}
-        pageCount={result?.totalPages}
-        previousLabel="<"
-        renderOnZeroPageCount={null}
-      />
+      <div className="wrapper-pagination">
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel=">"
+          className="pagination"
+          pageClassName="page-link"
+          nextClassName="page-link next"
+          previousClassName="page-link prev"
+          activeClassName="active"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={result?.totalPages}
+          previousLabel="<"
+          renderOnZeroPageCount={null}
+        />
+      </div>
     </div>
   );
 };

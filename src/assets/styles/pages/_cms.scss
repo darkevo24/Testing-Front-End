@@ -151,3 +151,55 @@
     }
   }
 }
+
+// Wrapper Pagination
+.wrapper-pagination {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0px 40px 40px 40px;
+}
+
+// Pagination
+.pagination {
+  .page-link {
+      color: #858A8F;
+      background: #F5F6FA;
+      border-radius: 2px;
+      margin:0 10px;
+      border: none;
+      width: 32px;
+      height: 32px;
+      &:hover {
+          background: #2B333A;
+          color: #fff;
+      }
+
+      &.active {
+          background: #2B333A;
+          color: #fff;
+      }
+
+      &.next,
+      &.prev {
+          background: #fff;
+          border: 1px solid #E1E2EA;
+          vertical-align: middle;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        a {
+          color: #000000;
+          text-decoration: none;
+        }
+      }
+      &.next {
+          margin-right: 0;
+          margin-left: 12px;
+      }
+      &.prev {
+          margin-left: 0;
+          margin-right: 22px;
+      }
+  }
+}
+

@@ -130,17 +130,17 @@ const CMSPermintaanDataView = () => {
   const dataLog = [
     {
       date: '12 Desember 2021',
-      status: 'Perbarui',
+      status: 'Selesai',
       content: 'Dataset sudah dapat di akses di portal data.go.id',
     },
     {
       date: '10 Desember 2021',
-      status: 'Perbarui',
+      status: 'Diproses',
       content: 'Dataset sudah dapat di akses di portal data.go.id',
     },
     {
       date: '08 Desember 2021',
-      status: 'Perbarui',
+      status: 'Terkirim',
       content: 'Dataset sudah dapat di akses di portal data.go.id',
     },
     {

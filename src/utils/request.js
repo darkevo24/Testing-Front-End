@@ -126,7 +126,7 @@ export function post(url, data, options) {
  * @param options - Options that are to be sent with the request.
  */
 export function put(url, data, options) {
-  return request(Object.assign(url, { method: 'PUT', data }, options));
+  return request(url, Object.assign({ method: 'PUT', data }, options));
 }
 
 /**

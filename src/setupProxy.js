@@ -6,6 +6,6 @@ module.exports = function (app) {
     target: `http://${appDomain}`,
     changeOrigin: true,
   };
-  app.use('/api', createProxyMiddleware(proxyOptions));
-  app.use('/data', createProxyMiddleware(proxyOptions));
+  const urlPaths = ['/api', '/api-be', '/data'];
+  urlPaths.forEach((url) => app.use(url, createProxyMiddleware(proxyOptions)));
 };

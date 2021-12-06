@@ -17,28 +17,37 @@ import {
   instansiiDatasetSelector,
   perminataanDatasetSelector,
   perminataanForumErrorSelector,
-  setPerminataanData,
+  putPerminataanData,
   updateResult,
 } from '../reducer';
 import isEmpty from 'lodash/isEmpty';
 import { usePrevious } from 'utils/hooks';
+import moment from 'moment';
 
-export const EditForum = ({ onClose, data }) => {
-  const [tipeData, setTipeData] = useState({});
-  const [instansiSumber, setInstansiSumber] = useState({});
+export const EditForum = ({ onClose, data, initialCall }) => {
+  const [tipeData, setTipeData] = useState({ value: data?.jenisData || '', label: data?.jenisData || '' });
+  const [instansiSumber, setInstansiSumber] = useState({
+    value: data?.instansi?.id || '',
+    label: data?.instansi?.nama || '',
+  });
   const [errorDetail, setErrorDetail] = useState({});
   const dispatch = useDispatch();
   const { newRecord, records, loading } = useSelector(perminataanDatasetSelector);
   const instansiDetail = useSelector(instansiiDatasetSelector);
   const apiError = useSelector(perminataanForumErrorSelector);
   const prevRecord = usePrevious(newRecord) || {};
-
   const {
     control,
     formState: { errors },
     handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      deskripsi: data.deskripsi,
+      tujuanPermintaan: data.tujuanPermintaan,
+      tanggalTarget: new Date(data.tanggalTarget),
+      tipeDataText: data?.tipeData,
+    },
   });
 
   useEffect(() => {
@@ -63,18 +72,22 @@ export const EditForum = ({ onClose, data }) => {
       setErrorDetail(errorClone);
       return;
     }
-
     dispatch(
-      setPerminataanData({
+      putPerminataanData({
+        id: data.id,
         deskripsi: detail.deskripsi,
         tujuanPermintaan: detail.tujuanPermintaan,
-        tanggalTarget: detail.tanggalTarget,
+        tanggalTarget: moment(detail.tanggalTarget).format('YYYY-MM-DD'),
         instansi: {
           id: instansiSumber.value,
         },
         jenisData: tipeData?.value !== 'Lainnya' ? tipeData.value : detail.tipeDataText,
       }),
-    );
+    ).then((e) => {
+      if (e?.error?.message) return;
+      initialCall();
+      onClose();
+    });
   };
 
   return (
@@ -108,6 +121,7 @@ export const EditForum = ({ onClose, data }) => {
                 delete errorDetail.tipeData;
               }}
               placeHolder=""
+              defaultData={tipeData}
             />
             {errorDetail?.tipeData && <label className="sdp-text-red py-8">Tipe Data is required</label>}
           </Form.Group>
@@ -132,6 +146,7 @@ export const EditForum = ({ onClose, data }) => {
                 delete errorDetail.instansiData;
               }}
               placeHolder=""
+              defaultData={instansiSumber}
             />
             {errorDetail?.instansiSumber && <label className="sdp-text-red py-8">Instansi Sumber Data is required</label>}
           </Form.Group>
@@ -154,7 +169,7 @@ export const EditForum = ({ onClose, data }) => {
         </Row>
         <div className="d-flex justify-content-end px-24">
           <Button variant="light" className="border-0 mr-12 mb-12 px-62 py-12 bg-transparent sdp-text-red" onClick={onClose}>
-            Betal
+            Batal
           </Button>
           <Button type="submit" variant="outline-primary" className="br-40 mb-12 mr-12 px-54 py-12">
             {loading && (

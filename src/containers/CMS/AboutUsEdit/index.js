@@ -25,6 +25,7 @@ import {
   doAboutUs,
 } from './reducer';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { formatDate } from 'utils/helper';
 
 const bem = bn('content-detail');
 
@@ -40,24 +41,10 @@ const CMSAboutUsEdit = (props) => {
   let dispatch = useDispatch();
   let id = props.match.params.id;
   let data = useSelector((state) => state.cms.aboutUsDetail);
-  let monthList = [
-    'Januari',
-    'Februari',
-    'Maret',
-    'April',
-    'Mei',
-    'Juni',
-    'Juli',
-    'Agustus',
-    'September',
-    'Oktober',
-    'November',
-    'Desember',
-  ];
   let dataLog = useSelector((state) =>
     state.cms.aboutUsDetail.logs.records.map((item) => {
       return {
-        date: [item.action_at.getDate(), monthList[item.action_at.getMonth()], item.action_at.getFullYear()].join(' '),
+        date: formatDate(item.action_at),
         status: item.status,
         content: item.action,
       };

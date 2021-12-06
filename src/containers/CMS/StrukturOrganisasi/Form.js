@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
@@ -8,78 +8,125 @@ import Form from 'react-bootstrap/Form';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 
+import { Modal } from 'components';
+import { ReactComponent as Plus } from 'assets/plus.svg';
+
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Dropdown, Input, Modal } from 'components';
-import { ReactComponent as Plus } from 'assets/plus.svg';
-
 const bem = bn('bimtek-form');
 
-const CMSStrukturForm = ({ disabled = false, data }) => {
+const CMSStrukturForm = ({ disabled = false, dataValue, handleData = () => {} }) => {
+  const [modalProfile, setModalProfile] = useState(false);
+  const [listProfile, setListProfile] = useState([]);
+  const [isEdit, setIsEdit] = useState(-1);
+
   const schema = yup
     .object({
       nama: yup.string().required(),
-      kode: yup.string().required(),
-      level: yup.mixed().required(),
+      jabatan: yup.string().required(),
     })
     .required();
 
   const {
-    control,
+    register,
     formState: { errors },
+    handleSubmit,
+    setValue,
+    getValues,
+    clearErrors,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const level = [1, 2, 3, 4, 5];
-  const [modalProfile, setModalProfile] = useState(false);
-  const [listProfile, setListProfile] = useState([]);
-  const [profile, setProfile] = useState({});
+  const submitProfile = (data) => {
+    if (isEdit < 0) {
+      // add state
+      setListProfile([...listProfile, data]);
+    } else {
+      // edit state
+      let edit = [...listProfile];
+      edit[isEdit] = data;
+      setListProfile(edit);
+    }
 
-  const submitProfile = () => {
-    listProfile.push(profile);
-    setProfile({});
+    handleData({
+      ...dataValue,
+      profil: listProfile,
+    });
     setModalProfile(false);
   };
 
   const removeProfile = (index) => {
-    let arr = listProfile;
-    arr.splice(index, 1);
-    setListProfile(arr);
+    let selected = listProfile[index];
+    setListProfile(listProfile.filter((item) => item !== selected));
+    handleData({
+      ...dataValue,
+      profil: listProfile,
+    });
   };
 
-  const inputProfileHandler = () => (event) => {
-    setProfile({
-      ...profile,
+  const openModal = (index = -1) => {
+    clearErrors();
+    if (index < 0) {
+      // modal add
+      setValue('nama', '');
+      setValue('jabatan', '');
+      setValue('foto', null);
+    } else {
+      // modal edit
+      var selected = listProfile[index];
+      setValue('nama', selected.nama ? selected.nama : '');
+      setValue('jabatan', selected.jabatan ? selected.jabatan : '');
+      setValue('foto', selected.foto ? selected.foto : '');
+    }
+
+    setIsEdit(index);
+    setModalProfile(true);
+  };
+
+  const inputBidangHandler = () => (event) => {
+    handleData({
+      ...dataValue,
       [event.target.name]: event.target.value,
     });
   };
+
+  useEffect(() => {
+    setListProfile(dataValue?.profil ? dataValue.profil : []);
+  }, [dataValue]);
 
   return (
     <div>
       <Row>
         <Col>
-          <Input disabled={disabled} group label="Kode Bidang" name="kode" control={control} error={errors.kode?.message} />
+          <Form.Group>
+            <Form.Label>Kode Bidang</Form.Label>
+            <Form.Control onChange={inputBidangHandler()} defaultValue={dataValue?.kode} type="text" name="kode" />
+          </Form.Group>
         </Col>
         <Col>
-          <Dropdown
-            disabled={disabled}
-            group
-            label="Level"
-            name="level"
-            control={control}
-            placeholder="Pilih Level"
-            error={errors.level?.message}
-            options={level.map((lvl) => ({ value: lvl, label: lvl }))}
-          />
+          <Form.Group>
+            <Form.Label>Level</Form.Label>
+            <Form.Select onChange={inputBidangHandler()} defaultValue={dataValue?.level} name="level">
+              <option disabled>Pilih Level</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </Form.Select>
+          </Form.Group>
         </Col>
       </Row>
-      <Input disabled={disabled} group label="Nama Bidang" name="nama" control={control} error={errors.nama?.message} />
+      <Form.Group className="mb-24 mt-24">
+        <Form.Label>Nama Bidang</Form.Label>
+        <Form.Control onChange={inputBidangHandler()} defaultValue={dataValue?.nama} type="text" name="nama" />
+      </Form.Group>
       <div className={cx(bem.e('header'), ' d-flex justify-content-between mt-5 ')}>
         <div className={bem.e('header-title')}>Profil</div>
-        <div className={bem.e('header-add')} onClick={() => setModalProfile(true)}>
+        <div className={bem.e('header-add')} onClick={() => openModal()}>
           <Plus />
           Tambah Profil
         </div>
@@ -103,12 +150,21 @@ const CMSStrukturForm = ({ disabled = false, data }) => {
               </tr>
             ) : (
               listProfile.map((row, key) => (
-                <tr key={key}>
-                  <td>{row.foto ? row.foto : ''}</td>
+                <tr key={key} className="align-middle">
+                  <td>
+                    <div
+                      style={{ backgroundImage: `url(${row.foto ? row.foto : ''})` }}
+                      className={bem.e('profile-circle')}></div>
+                  </td>
                   <td>{row.nama ? row.nama : ''}</td>
                   <td>{row.jabatan ? row.jabatan : ''}</td>
                   <td>
-                    <span>Edit</span> <span onClick={() => removeProfile(key)}>Delete</span>
+                    <span className="sdp-text-blue mr-12" onClick={() => openModal(key)}>
+                      Edit
+                    </span>
+                    <span className="sdp-text-disable" onClick={() => removeProfile(key)}>
+                      Delete
+                    </span>
                   </td>
                 </tr>
               ))
@@ -116,27 +172,27 @@ const CMSStrukturForm = ({ disabled = false, data }) => {
           </tbody>
         </Table>
       </div>
-      <Modal visible={modalProfile} onClose={() => setModalProfile(false)} title="Tambah Profil">
+      <Modal
+        visible={modalProfile}
+        onClose={() => setModalProfile(false)}
+        title={isEdit >= 0 ? 'Edit Profil' : 'Tambah Profil'}>
         <div>
-          <Form.Group className="mb-4">
+          <Form.Group className="mb-8 sdp-input-wrapper">
             <Form.Label>Nama</Form.Label>
-            <Form.Control
-              type="text"
-              value={profile.nama ? profile.nama : ''}
-              name="nama"
-              onChange={inputProfileHandler()}
-            />
+            <Form.Control defaultValue={getValues('nama')} type="text" name="nama" {...register('nama')} />
+            <div className="sdp-error">{errors.nama?.message}</div>
           </Form.Group>
-          <Form.Group className="mb-4">
+          <Form.Group className="mb-8">
             <Form.Label>Jabatan</Form.Label>
-            <Form.Control type="text" name="jabatan" onChange={inputProfileHandler()} />
+            <Form.Control defaultValue={getValues('jabatan')} type="text" name="jabatan" {...register('jabatan')} />
+            <div className="sdp-error">{errors.jabatan?.message}</div>
           </Form.Group>
-          {profile.foto ? profile.foto : ''}
-          <Form.Group className="mb-4">
+          <Form.Group className="mb-24">
             <Form.Label>Foto</Form.Label>
-            <Form.Control type="file" name="foto" onChange={inputProfileHandler()} />
+            <Form.Control type="file" name="file" />
+            <input className="invisible" type="text" name="foto" {...register('foto')} />
           </Form.Group>
-          <div className="d-flex justify-content-end mb-5">
+          <div className="d-flex justify-content-end mb-12">
             <Button
               onClick={() => setModalProfile(false)}
               className="ml-24 bg-white sdp-text-grey-dark border-gray-stroke"
@@ -144,7 +200,7 @@ const CMSStrukturForm = ({ disabled = false, data }) => {
               style={{ width: '112px' }}>
               Batal
             </Button>
-            <Button onClick={() => submitProfile()} className="ml-10" variant="info" style={{ width: '112px' }}>
+            <Button onClick={handleSubmit(submitProfile)} className="ml-10" variant="info" style={{ width: '112px' }}>
               Simpan
             </Button>
           </div>

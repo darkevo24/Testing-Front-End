@@ -19,7 +19,7 @@ import {
 import { FaceBookIcon, InstagramIcon, TwitterIcon, YouTubeIcon } from '../assets/icons/SocialMedia';
 import React from 'react';
 
-export const apiUrl = '/api';
+export const apiUrl = '/api-be';
 export const dataUrl = '/data/api';
 
 export const getApiEndpoint = (path) => `${apiUrl}/${path}`;
@@ -33,6 +33,7 @@ export const apiUrls = {
   perminataanData: getPortalEndpoint('permintaan-data'),
   instansiData: getV1Endpoint('instansi'),
   katalogData: getApiEndpoint('v1/katalog'),
+  strukturData: getApiEndpoint(`cms/v1/bidang`),
 };
 
 export const TOPIC_LIST = [

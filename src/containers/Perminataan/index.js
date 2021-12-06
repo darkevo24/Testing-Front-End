@@ -45,15 +45,20 @@ export const Perminataan = () => {
   const [activeTab, setActiveTab] = useState('semua');
   const dispatch = useDispatch();
 
-  const { size, loading, page, records, totalRecords } = useSelector(perminataanDatasetSelector);
+  const { size, loading, page, status, records, totalRecords } = useSelector(perminataanDatasetSelector);
 
-  const fetchPerminataanDataset = (page) => {
-    return dispatch(getPerminataanData(page));
+  const fetchPerminataanDataset = (params) => {
+    return dispatch(getPerminataanData(params));
   };
 
   useEffect(() => {
-    fetchPerminataanDataset(page || 0);
+    fetchPerminataanDataset({ page: page || 0, status });
   }, []);
+
+  const handleActiveTab = (tab) => {
+    setActiveTab(tab);
+    fetchPerminataanDataset({ page: 0, status: tab !== 'semua' ? tab.toUpperCase() : '' });
+  };
 
   const handleBuatPermintaan = () => {
     history.push('/forum');
@@ -118,15 +123,9 @@ export const Perminataan = () => {
     },
   ];
 
-  const getData = () => {
-    if (!records?.length) return [];
-    if (activeTab === 'semua') return records;
-    return records.filter((item) => (item?.status || '').toLowerCase() === activeTab.toLowerCase());
-  };
-  const tableData = getData();
   const tableConfig = {
     columns,
-    data: tableData,
+    data: records,
     title: '',
     showSearch: false,
     onSearch: () => {},
@@ -139,7 +138,7 @@ export const Perminataan = () => {
     rowClass: getRowClass,
     onPageIndexChange: (currentPage) => {
       if (currentPage !== page) {
-        fetchPerminataanDataset(currentPage);
+        fetchPerminataanDataset({ page: currentPage, status });
       }
     },
   };
@@ -160,10 +159,10 @@ export const Perminataan = () => {
               <div className="sdp-perminataan-left-sidebar mr-40">
                 {LIST.map((item) => (
                   <div
-                    className={cx('sdp-perminataan-sidebar-item', {
+                    className={cx('sdp-perminataan-sidebar-item cursor-pointer', {
                       active: activeTab === item.key,
                     })}
-                    onClick={() => setActiveTab(item.key)}>
+                    onClick={() => handleActiveTab(item.key)}>
                     {item.title}
                   </div>
                 ))}
@@ -173,8 +172,8 @@ export const Perminataan = () => {
         </Col>
         <Col xs={12} md={9} className="">
           {loading ? (
-            <TableLoader />
-          ) : !records?.length || !tableData?.length ? (
+            <TableLoader speed={2} width={'100%'} height={610} />
+          ) : !records?.length ? (
             <div className="sdp-perminataan-no-data d-flex justify-content-center align-items-center h-100 flex-column">
               <NoPerminataanData />
               <spn className="mt-10 fs-18 lh-22 sdp-text-disable">Tidak Ada Permintaan Data</spn>

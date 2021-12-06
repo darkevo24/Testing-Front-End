@@ -18,18 +18,23 @@ export const getPermintaanDataDetail = createAsyncThunk('permintaan-data/detail'
   return response?.data.content;
 });
 
-export const postPermintaanDataTolak = createAsyncThunk('permintaan-data/tolak', async (params, id) => {
-  const response = await post(apiUrls.detailPermintaanData + id + '/tolak', params);
+export const postPermintaanDataTolak = createAsyncThunk('permintaan-data/tolak', async (params) => {
+  const response = await post(apiUrls.detailPermintaanData + params + '/tolak', { catatan: 'tolak' });
   return response?.result;
 });
 
-export const postPermintaanDataProses = createAsyncThunk('permintaan-data/proses', async (params, id) => {
-  const response = await post(apiUrls.detailPermintaanData + id + '/proses', params);
+export const postPermintaanDataProses = createAsyncThunk('permintaan-data/proses', async (params) => {
+  // console.log(params);
+  // console.log(id);
+  const response = await post(apiUrls.detailPermintaanData + params + '/proses', { catatan: 'tolak' });
   return response?.result;
 });
 
-export const postPermintaanDataSelesai = createAsyncThunk('permintaan-data/selesai', async (params, id) => {
-  const response = await post(apiUrls.detailPermintaanData + id + '/selesai', params);
+export const postPermintaanDataSelesai = createAsyncThunk('permintaan-data/selesai', async (params) => {
+  const response = await post(apiUrls.detailPermintaanData + params + '/selesai', {
+    catatan: 'selesai',
+    urlDataset: 'http://test.go.id/dataset1',
+  });
   return response?.result;
 });
 
@@ -56,6 +61,7 @@ const permintaanDataDetailSlice = createSlice({
     builder.addCase(postPermintaanDataTolak.fulfilled, (state, action) => {
       state.loading = false;
       state.result = action.payload;
+      console.log(action);
     });
     builder.addCase(postPermintaanDataTolak.rejected, (state, action) => {
       state.loading = false;

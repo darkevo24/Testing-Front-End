@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import * as yup from 'yup';
+import InputGroup from 'react-bootstrap/InputGroup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   getPermintaanDataDetail,
@@ -21,14 +22,15 @@ import { LogStatus } from 'components/Sidebars/LogStatus';
 import { LeftChevron } from 'components/Icons';
 import Modal from 'components/Modal';
 import { submitForm } from 'utils/helper';
+import './index.scss';
 
 const bem = bn('content-detail');
 export const tolakFormId = 'tolak-form-id';
 export const prosesFormId = 'proses-form-id';
 export const selesaiFormId = 'selesai-form-id';
-export const submitTolakForm = submitForm(tolakFormId);
+// export const submitTolakForm = submitForm(tolakFormId);
 // export const submitProsesForm = submitForm(prosesFormId);
-export const submitSelesaiForm = submitForm(selesaiFormId);
+// export const submitSelesaiForm = submitForm(selesaiFormId);
 
 const SuccessText = () => {
   const history = useHistory();
@@ -102,6 +104,7 @@ const CMSPermintaanDataView = () => {
   const [showTolakModal, isSetShowTolakModal] = useState(false);
   const [showProsesModal, isSetShowProsesModal] = useState(false);
   const [showSelesaiModal, isSetShowSelesaiModal] = useState(false);
+  const [trigger, setTrigger] = useState(false);
 
   const setShowTolakModal = () => {
     isSetShowTolakModal(true);
@@ -176,28 +179,30 @@ const CMSPermintaanDataView = () => {
   const onSubmitTolak = (data) => {
     const url = window.location.pathname;
     const id = url.split('/')[3];
-    dispatch(postPermintaanDataTolak(data, id));
+    dispatch(postPermintaanDataTolak(id));
+    window.location.reload();
+    hideTolakModal();
   };
 
   const onSubmitProses = (data) => {
     const url = window.location.pathname;
     const id = url.split('/')[3];
-    dispatch(postPermintaanDataProses(data, id));
+    dispatch(postPermintaanDataProses(id));
+    window.location.reload();
   };
 
   const onSubmitSelesai = (data) => {
     const url = window.location.pathname;
     const id = url.split('/')[3];
-    dispatch(postPermintaanDataSelesai(data, id));
+    dispatch(postPermintaanDataSelesai(id));
+    window.location.reload();
   };
 
   const data = useMemo(() => result || {}, [result]);
   useEffect(() => {
     fetchDataset();
     reset(data);
-    console.log(data);
-  }, []);
-  console.log('data', data);
+  }, [trigger]);
 
   const {
     control,
@@ -210,13 +215,6 @@ const CMSPermintaanDataView = () => {
       ...data,
     },
   });
-
-  const submitProsesForm = (data) => {
-    console.log('submit done');
-    const url = window.location.pathname;
-    const id = url.split('/')[3];
-    dispatch(postPermintaanDataProses(data, id));
-  };
 
   return (
     <div>
@@ -293,14 +291,15 @@ const CMSPermintaanDataView = () => {
         <Col sm={3} className="my-5">
           <LogStatus data={dataLog} />
         </Col>
-        <Modal
-          visible={showTolakModal}
-          onClose={() => hideTolakModal()}
-          title="Apakah anda menolak Permintaan Data?"
-          actions={[
-            { variant: 'secondary', text: 'Batal', onClick: () => hideTolakModal() },
-            { text: 'Konfirmasi', type: 'submit', onClick: submitTolakForm },
-          ]}>
+        <Modal visible={showTolakModal} onClose={() => hideTolakModal()}>
+          <div className="mt-20 mb-20">
+            <p className="font-weight-bold mb-0">
+              Apakah anda yakin ingin
+              <span className="text-danger"> menolak </span>
+              Permintaan Data
+            </p>
+            PD00013?
+          </div>
           <Form id={tolakFormId} onSubmit={handleSubmit(onSubmitTolak)} noValidate>
             <Form.Group as={Col} md="12" className="mb-16">
               <Input
@@ -313,16 +312,32 @@ const CMSPermintaanDataView = () => {
                 error={errors.catatan?.message}
               />
             </Form.Group>
+            <div className="d-flex justify-content-end">
+              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => hideTolakModal()}>
+                Batal
+              </Button>
+              <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => onSubmitTolak()}>
+                proses
+              </Button>
+            </div>
           </Form>
         </Modal>
         <Modal visible={showProsesModal} onClose={() => hideProsesModal(false)}>
-          <p className="mt-20">
-            Apakah anda yakin ingin
-            <span className="text-danger"> menghapus </span>
-            Source API <span className="font-weight-bold">PD00013</span>?
-          </p>
+          <div className="mt-20 mb-20">
+            <p className="mb-0">
+              Apakah anda yakin ingin
+              <span className="text-blue"> Menyelesaikan </span>
+              Permintaan Data
+            </p>
+            <span className="font-weight-bold"> PD00013 </span>?
+          </div>
+          <div className="alert"> Masukan url dataset terkait pada kolom berikut </div>
+          <InputGroup>
+            <div className="url">URL</div>
+            <Form.Control variant="normal" type="text" />
+          </InputGroup>
           <Form id={prosesFormId} onSubmit={handleSubmit(onSubmitProses)} noValidate>
-            <Form.Group as={Col} md="12" className="mb-16">
+            <Form.Group as={Col} md="12" className="mb-16 mt-15">
               <Input
                 name="catatan"
                 as="textarea"
@@ -337,7 +352,7 @@ const CMSPermintaanDataView = () => {
               <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => hideProsesModal()}>
                 Batal
               </Button>
-              <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
+              <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => onSubmitProses()}>
                 proses
               </Button>
             </div>
@@ -349,7 +364,7 @@ const CMSPermintaanDataView = () => {
           title="Apakah anda ingin menyelesaikan Permintaan Data?"
           actions={[
             { variant: 'secondary', text: 'Batal', onClick: () => hideSelesaiModal() },
-            { text: 'Konfirmasi', type: 'submit', onClick: submitSelesaiForm },
+            { text: 'Konfirmasi', type: 'submit', onClick: () => onSubmitSelesai() },
           ]}>
           <Form id={selesaiFormId} onSubmit={handleSubmit(onSubmitSelesai)} noValidate>
             <Form.Group as={Col} md="12" className="mb-16">

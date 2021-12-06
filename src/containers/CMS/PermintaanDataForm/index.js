@@ -316,6 +316,11 @@ const CMSPermintaanDataView = () => {
           </Form>
         </Modal>
         <Modal visible={showProsesModal} onClose={() => hideProsesModal(false)}>
+          <p className="mt-20">
+            Apakah anda yakin ingin
+            <span className="text-danger"> menghapus </span>
+            Source API <span className="font-weight-bold">PD00013</span>?
+          </p>
           <Form id={prosesFormId} onSubmit={handleSubmit(onSubmitProses)} noValidate>
             <Form.Group as={Col} md="12" className="mb-16">
               <Input
@@ -328,12 +333,14 @@ const CMSPermintaanDataView = () => {
                 error={errors.catatan?.message}
               />
             </Form.Group>
-            <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => hideProsesModal()}>
-              Batal
-            </Button>
-            <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
-              proses
-            </Button>
+            <div className="d-flex justify-content-end">
+              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => hideProsesModal()}>
+                Batal
+              </Button>
+              <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
+                proses
+              </Button>
+            </div>
           </Form>
         </Modal>
         <Modal

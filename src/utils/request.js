@@ -1,6 +1,6 @@
 import { apiUrls as appApiUrls } from './constants';
 import { generateQueryString, safeParse } from './helper';
-import { cookieKeys, getCookieByName } from './cookie';
+import { cookieKeys, getCookieByName, removeAllCookie } from './cookie';
 
 export const typeJSON = 'application/json';
 export const typePlain = 'text/plain';
@@ -95,8 +95,17 @@ export async function request(url, { method = 'GET', headers: optionHeaders = {}
     url += `?${generateQueryString(data)}`;
   }
 
-  const fetchResponse = await fetch(url, options);
+  let fetchResponse;
+  try {
+    fetchResponse = await fetch(url, options);
+  } catch (error) {
+    fetchResponse = error.response;
+  }
   const response = checkStatus(fetchResponse);
+  if ([401].includes(response.status)) {
+    removeAllCookie();
+    window.location.reload();
+  }
   return parseResponse(response);
 }
 

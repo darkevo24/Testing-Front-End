@@ -30,7 +30,7 @@ const schema = yup
   })
   .required();
 
-const DaftarForm = ({ data, onSubmit }) => {
+const DaftarForm = ({ data, onSubmit, instansiOptions = [] }) => {
   const {
     control,
     formState: { errors },
@@ -41,15 +41,6 @@ const DaftarForm = ({ data, onSubmit }) => {
       ...data,
     },
   });
-  const instansiData = useSelector(instansiDataSelector);
-  const instansiOptions = useMemo(
-    () =>
-      instansiData.result.map((instansi) => ({
-        value: instansi.id,
-        label: instansi.nama,
-      })) || [],
-    [instansiData],
-  );
 
   return (
     <div className="daftar-form">

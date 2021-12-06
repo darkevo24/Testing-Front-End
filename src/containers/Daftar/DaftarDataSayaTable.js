@@ -10,7 +10,13 @@ import DaftarForm, { submitDaftarForm } from './DaftarForm';
 import { Check } from 'components/Icons';
 import { deleteKatalog, putKatalog } from './reducer';
 
-const DaftarDataSayaTable = ({ bem }) => {
+const DaftarDataSayaTable = ({
+  bem,
+  dataindukOptions = [],
+  instansiOptions = [],
+  priorityOptions = [],
+  produenOptions = [],
+}) => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDaftarFormVisible, setIsDaftarFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
@@ -153,12 +159,6 @@ const DaftarDataSayaTable = ({ bem }) => {
     highlightOnHover: true,
     variant: 'spaced',
   };
-  const dropdownFilters = [
-    { label: 'Option 1', value: 'Option 1' },
-    { label: 'Option 2', value: 'Option 2' },
-    { label: 'Option 3', value: 'Option 3' },
-    { label: 'Option 4', value: 'Option 4' },
-  ];
 
   return (
     <>
@@ -166,19 +166,19 @@ const DaftarDataSayaTable = ({ bem }) => {
         <div className="row">
           <div className="col">
             <label className="sdp-form-label py-8">Instansi</label>
-            <SingleSelectDropdown data={dropdownFilters} placeHolder="Semua" isLoading={false} noValue={true} />
+            <SingleSelectDropdown data={instansiOptions} placeHolder="Semua" isLoading={false} noValue={true} />
           </div>
           <div className="col">
             <label className="sdp-form-label py-8">Produsen Data</label>
-            <SingleSelectDropdown data={dropdownFilters} placeHolder="Semua" isLoading={false} noValue={true} />
+            <SingleSelectDropdown data={produenOptions} placeHolder="Semua" isLoading={false} noValue={true} />
           </div>
           <div className="col">
             <label className="sdp-form-label py-8">Data Induk</label>
-            <SingleSelectDropdown data={dropdownFilters} placeHolder="Semua" isLoading={false} noValue={true} />
+            <SingleSelectDropdown data={dataindukOptions} placeHolder="Semua" isLoading={false} noValue={true} />
           </div>
           <div className="col">
             <label className="sdp-form-label py-8">Prioritas</label>
-            <SingleSelectDropdown data={dropdownFilters} placeHolder="Ya" isLoading={false} noValue={true} />
+            <SingleSelectDropdown data={priorityOptions} placeHolder="Ya" isLoading={false} noValue={true} />
           </div>
         </div>
       </div>
@@ -205,7 +205,7 @@ const DaftarDataSayaTable = ({ bem }) => {
           { variant: 'secondary', text: 'Batal', onClick: hideDaftarFormModal },
           { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDaftarForm },
         ]}>
-        <DaftarForm data={selectedRecord} onSubmit={handleDaftarFromSubmit} />
+        <DaftarForm instansiOptions={instansiOptions} data={selectedRecord} onSubmit={handleDaftarFromSubmit} />
       </Modal>
     </>
   );

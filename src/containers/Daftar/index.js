@@ -19,7 +19,16 @@ import SdgTable from './SdgTable';
 import RkpTable from './RkpTable';
 import DaftarDataSayaTable from './DaftarDataSayaTable';
 import bn from 'utils/bemNames';
-import { addKatalog, getInstansi, addKatalogSelector } from './reducer';
+import {
+  addKatalog,
+  getDatainduk,
+  getInstansi,
+  getProduen,
+  dataindukDataSelector,
+  produenDataSelector,
+  instansiDataSelector,
+  addKatalogSelector,
+} from './reducer';
 
 const bem = bn('daftar');
 
@@ -30,6 +39,30 @@ const Daftar = () => {
   const [activeTab, setActiveTab] = useState(t('sandbox.daftar.tabs.daftar.key'));
   const activeTitle = t(`sandbox.daftar.tabs.${activeTab}.title`);
   const { result } = useSelector(addKatalogSelector);
+  const dataindukData = useSelector(dataindukDataSelector);
+  const instansiData = useSelector(instansiDataSelector);
+  const produenData = useSelector(produenDataSelector);
+
+  const instansiOptions =
+    instansiData?.result?.map((instansi) => ({
+      value: instansi.id,
+      label: instansi.nama,
+    })) || [];
+  const produenOptions =
+    produenData?.result?.map((produen) => ({
+      value: produen,
+      label: produen,
+    })) || [];
+  const dataindukOptions =
+    dataindukData?.result?.map((datainduk) => ({
+      value: datainduk,
+      label: datainduk,
+    })) || [];
+  const priorityOptions = [
+    { value: 1, label: 'Semua' },
+    { value: 2, label: 'Ya' },
+    { value: 3, label: 'Tidak' },
+  ];
   const stats = useMemo(
     () => [
       { title: 'Jumlah Data pada Daftar Data', value: 35798 },
@@ -39,30 +72,37 @@ const Daftar = () => {
     ],
     [],
   );
+  const tableProps = {
+    bem,
+    dataindukOptions,
+    instansiOptions,
+    priorityOptions,
+    produenOptions,
+  };
   const tabs = useMemo(
     () => [
       {
         key: t('sandbox.daftar.tabs.daftar.key'),
         title: t('sandbox.daftar.tabs.daftar.title'),
-        component: <DaftarTable bem={bem} />,
+        component: <DaftarTable {...tableProps} />,
       },
       {
         key: t('sandbox.daftar.tabs.sdg.key'),
         title: t('sandbox.daftar.tabs.sdg.title'),
-        component: <SdgTable bem={bem} />,
+        component: <SdgTable {...tableProps} />,
       },
       {
         key: t('sandbox.daftar.tabs.rkp.key'),
         title: t('sandbox.daftar.tabs.rkp.title'),
-        component: <RkpTable bem={bem} />,
+        component: <RkpTable {...tableProps} />,
       },
       {
         key: t('sandbox.daftar.tabs.daftarSafa.key'),
         title: t('sandbox.daftar.tabs.daftarSafa.title'),
-        component: <DaftarDataSayaTable bem={bem} />,
+        component: <DaftarDataSayaTable {...tableProps} />,
       },
     ],
-    [],
+    [tableProps],
   );
 
   const showTambahFormModal = () => {
@@ -80,7 +120,6 @@ const Daftar = () => {
     payload.indukData = [payload.indukData.value];
     payload.format = 'png';
 
-    debugger;
     dispatch(addKatalog(payload)).then((res) => {
       hideTambahModal();
       res?.payload
@@ -123,6 +162,8 @@ const Daftar = () => {
   );
   useEffect(() => {
     dispatch(getInstansi());
+    dispatch(getProduen());
+    dispatch(getDatainduk());
   }, []);
   const isSayaData = activeTab === t('sandbox.daftar.tabs.daftarSafa.key');
   return (
@@ -179,7 +220,7 @@ const Daftar = () => {
           { variant: 'secondary', text: 'Batal', onClick: hideTambahModal },
           { text: 'Tambah', onClick: submitDaftarForm },
         ]}>
-        <DaftarForm onSubmit={handleTambahFromSubmit} />
+        <DaftarForm instansiOptions={instansiOptions} onSubmit={handleTambahFromSubmit} />
       </Modal>
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
 import Row from 'react-bootstrap/Row';
@@ -89,13 +90,14 @@ const Forum = () => {
       setPerminataanData({
         deskripsi: detail.deskripsi,
         tujuanPermintaan: detail.tujuanPermintaan,
-        tanggalTarget: detail.tanggalTarget,
+        tanggalTarget: moment(detail.tanggalTarget).format('YYYY-MM-DD'),
         instansi: {
           id: instansiSumber.value,
         },
         jenisData: tipeData?.value !== 'Lainnya' ? tipeData.value : detail.tipeDataText,
       }),
-    ).then(() => {
+    ).then((e) => {
+      if (e?.error?.message) return;
       handleBackButton();
     });
   };

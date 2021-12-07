@@ -26,7 +26,7 @@ export const initialState = {
 export const STRUKTUR_ORGANISASI_SLICE = 'STRUKTUR_ORGANISASI_SLICE';
 
 export const getStrukturOrganisasi = createAsyncThunk('cms/getStrukturOrganisasi', async (params) => {
-  const response = await get(apiUrls.strukturData, { data: { q: params.q, page: params.page, rows: 10 } });
+  const response = await get(apiUrls.strukturData, { query: { q: params.q, page: params.page, rows: 10 } });
   return response?.data?.content;
 });
 

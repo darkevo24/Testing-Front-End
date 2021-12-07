@@ -1,3 +1,4 @@
+import isEmpty from 'lodash/isEmpty';
 import { apiUrls as appApiUrls } from './constants';
 import { generateQueryString, safeParse } from './helper';
 import { cookieKeys, getCookieByName, removeAllCookie } from './cookie';
@@ -74,7 +75,7 @@ function checkStatus(response) {
  *
  * @return {object}           The response data
  */
-export async function request(url, { method = 'GET', headers: optionHeaders = {}, data = {} }) {
+export async function request(url, { method = 'GET', headers: optionHeaders = {}, data = {}, query = {} }) {
   const defaultHeaders = {
     Accept: typeJSON,
     'Content-Type': typeJSON,
@@ -86,13 +87,13 @@ export async function request(url, { method = 'GET', headers: optionHeaders = {}
   const headers = Object.assign({}, defaultHeaders, optionHeaders);
   const options = { method, headers };
 
-  // Checking if we need to add body or not.
-  if (['POST', 'PUT'].includes(method)) {
+  // Checking if body has data.
+  if (!isEmpty(data)) {
     options.body = headers['Content-Type'] === typeJSON ? JSON.stringify(data) : data;
   }
   // Checking if we need to add query string or not.
-  if (['GET', 'DELETE'].includes(method)) {
-    url += `?${generateQueryString(data)}`;
+  if (!isEmpty(query)) {
+    url += `?${generateQueryString(query)}`;
   }
 
   let fetchResponse;
@@ -154,4 +155,9 @@ export const defaultNumberOfRows = 10;
 export const paginationParams = {
   start: 0,
   rows: defaultNumberOfRows,
+};
+
+export const apiPaginationParams = {
+  page: 1,
+  size: defaultNumberOfRows,
 };

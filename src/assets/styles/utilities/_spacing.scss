@@ -1,4 +1,4 @@
-$customSpacings: 0, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 18, 20, 24, 27, 28, 30, 32, 35, 40, 42, 48, 50, 80, 97, 100, 200, 250, 320, 328, 500;
+$customSpacings: 0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 18, 20, 24, 26, 27, 28, 30, 32, 35, 39, 40, 42, 44, 48, 50, 54, 56, 57, 62, 80, 97, 100, 200, 214, 250, 320, 328, 400,500;
 
 @each $size in $customSpacings {
   .h-#{$size} {
@@ -10,6 +10,10 @@ $customSpacings: 0, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 18, 20, 24, 27, 28, 30, 
 	.mx-#{$size} {
 		margin-left: #{$size}px !important;
 		margin-right: #{$size}px !important;
+	}
+  .mx-n#{$size} {
+		margin-left: -#{$size}px !important;
+		margin-right: -#{$size}px !important;
 	}
 	.my-#{$size} {
 		margin-top: #{$size}px !important;
@@ -64,11 +68,19 @@ $customSpacings: 0, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 18, 20, 24, 27, 28, 30, 
   }
 }
 
-$customWidths: 40, 42, 48, 50, 80, 120, 180, 200, 250, 320;
+$customWidths: 35, 40, 42, 48, 50, 56, 80, 85, 90, 120, 180, 200, 250, 300, 320;
 
 @each $size in $customWidths {
   .wpx-#{$size} {
 		min-width: #{$size}px !important;
 		width: #{$size}px !important;
   }
+  .hpx-#{$size} {
+		min-height: #{$size}px !important;
+		height: #{$size}px !important;
+  }
+}
+
+.h-fit-content {
+  height: fit-content !important;
 }

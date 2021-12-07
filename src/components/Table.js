@@ -6,9 +6,10 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import RBTable from 'react-bootstrap/Table';
 import cx from 'classnames';
 import isFunction from 'lodash/isFunction';
+import isString from 'lodash/isString';
 import { useAsyncDebounce, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 
-import { LeftChevron, RightChevron, Search, actionIcons } from 'components/Icons';
+import { LeftChevron, RightChevron, Search, icons } from 'components/Icons';
 import bn from 'utils/bemNames';
 
 const bem = bn('table');
@@ -57,6 +58,7 @@ export const FilterSearchInput = ({
 const Table = ({
   className,
   columns,
+  cms = false,
   data,
   title,
   subTitle,
@@ -79,6 +81,8 @@ const Table = ({
   onPageIndexChange = () => null,
   searchValue = '',
   highlightSearchInput = false,
+  onRowClick,
+  rowClass,
 }) => {
   const tableOptions = {
     columns,
@@ -135,6 +139,17 @@ const Table = ({
 
   const tableWrapperClasses = {
     [bem.m('highlight')]: highlightOnHover,
+    [bem.m('cms')]: cms,
+  };
+
+  const handleRowClick = (data) => {
+    if (isFunction(onRowClick)) onRowClick(data.original);
+  };
+
+  const getRowClass = (data) => {
+    if (isString(rowClass)) return rowClass;
+    if (isFunction(rowClass)) return rowClass(data.original);
+    return '';
   };
 
   return (
@@ -156,7 +171,7 @@ const Table = ({
           {searchRightComponent ? (
             searchRightComponent
           ) : (
-            <Button variant="info" className="btn-rounded ml-16 text-nowrap" onClick={onSearch}>
+            <Button variant="info" className="btn-rounded ml-16 px-24 text-nowrap" onClick={onSearch}>
               {searchButtonText}
             </Button>
           )}
@@ -187,7 +202,10 @@ const Table = ({
             {page.map((row, i) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()}>
+                <tr
+                  {...row.getRowProps()}
+                  onClick={() => handleRowClick(row)}
+                  className={cx(getRowClass(row), { 'cursor-pointer': !!onRowClick })}>
                   {row.cells.map((cell) => {
                     return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
                   })}
@@ -237,11 +255,13 @@ Table.Actions = ({ cell, ...rest }) => {
   return (
     <div className="d-flex action-icon-wrapper">
       {actions.map(({ icon, type, variant, title, callback, classes }) => {
-        const Icon = icon || actionIcons[type];
+        const isDelete = ['cross', 'delete', 'trash'].includes(type);
+        const iconBoxVarient = isDelete ? 'bg-red-light' : 'bg-secondary';
+        const Icon = icon || icons[type];
         if (!Icon && !title) return null;
         return Icon ? (
-          <div key={`${id}-${type}`} className="icon-box" onClick={() => callback(row.original)}>
-            <Icon variant={variant || (type === 'trash' && 'danger')} />
+          <div key={`${id}-${type}`} className={cx('icon-box', iconBoxVarient)} onClick={() => callback(row.original)}>
+            <Icon variant={variant || (isDelete && 'danger')} />
           </div>
         ) : (
           <button key={`${id}-${type}`} className={classes} onClick={() => callback(row.original)}>

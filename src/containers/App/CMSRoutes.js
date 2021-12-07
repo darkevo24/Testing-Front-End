@@ -5,24 +5,28 @@ import { CMSLayout, PrivateRoute } from 'layouts/AdminLayout';
 const DashboardPage = lazy(() => import('containers/CMS/Dashboard'));
 const KomunitasAhliPage = lazy(() => import('containers/CMS/KomunitasAhli'));
 const ManageKomunitasAhliPage = lazy(() => import('containers/CMS/KomunitasAhli/ManageKomunitasAhli'));
+const BeritaLayout = lazy(() => import('containers/CMS/BeritaLayout'));
 const BeritaPage = lazy(() => import('containers/CMS/Berita'));
 const BeritaBaruPage = lazy(() => import('containers/CMS/BeritaBaru'));
 const BeritaDetailPage = lazy(() => import('containers/CMS/BeritaDetail'));
 const AboutUsPage = lazy(() => import('containers/CMS/AboutUs'));
 const StrukturOrganisasiPage = lazy(() => import('containers/CMS/StrukturOrganisasi'));
-const StrukturBaruPage = lazy(() => import('containers/CMS/StrukturOrganisasi/Create.js'));
-const StrukturDetailPage = lazy(() => import('containers/CMS/StrukturOrganisasi/Detail.js'));
+const StrukturBaruPage = lazy(() => import('containers/CMS/StrukturOrganisasi/Create'));
+const StrukturDetailPage = lazy(() => import('containers/CMS/StrukturOrganisasi/Detail'));
 const AboutUsEditPage = lazy(() => import('containers/CMS/AboutUsEdit'));
 const BimtekPermintaanPage = lazy(() => import('containers/CMS/BimtekPermintaan'));
-const BimtekPermintaanEditPage = lazy(() => import('containers/CMS/BimtekPermintaan/Edit.js'));
+const BimtekPermintaanEditPage = lazy(() => import('containers/CMS/BimtekPermintaan/Edit'));
 const BimtekJadwalPage = lazy(() => import('containers/CMS/BimtekJadwal'));
-const BimtekJadwalBaruPage = lazy(() => import('containers/CMS/BimtekJadwal/Create.js'));
-const BimtekJadwalDetailPage = lazy(() => import('containers/CMS/BimtekJadwal/Detail.js'));
+const BimtekJadwalBaruPage = lazy(() => import('containers/CMS/BimtekJadwal/Create'));
+const BimtekJadwalDetailPage = lazy(() => import('containers/CMS/BimtekJadwal/Detail'));
 const BimtekDokumentasiPage = lazy(() => import('containers/CMS/BimtekDokumentasi'));
-const BimtekDokumentasiBaruPage = lazy(() => import('containers/CMS/BimtekDokumentasi/Create.js'));
-const BimtekDokumentasiDetailPage = lazy(() => import('containers/CMS/BimtekDokumentasi/Detail.js'));
-const PermintaanData = lazy(() => import('containers/CMS/PermintaanData/index'));
-const PermintaanDataDetail = lazy(() => import('containers/CMS/PermintaanDataForm/index'));
+const BimtekDokumentasiBaruPage = lazy(() => import('containers/CMS/BimtekDokumentasi/Create'));
+const BimtekDokumentasiDetailPage = lazy(() => import('containers/CMS/BimtekDokumentasi/Detail'));
+const KesiapanSDI = lazy(() => import('containers/CMS/DashboardManage/KesiapanSDI'));
+const DashboardEksekutifPage = lazy(() => import('containers/CMS/DashboardManage/DashboardEksekutif'));
+const DataAnalyticPage = lazy(() => import('containers/CMS/DashboardManage/DataAnalytic'));
+const DaftarPage = lazy(() => import('containers/CMS/Daftar'));
+const DaftarDetailPage = lazy(() => import('containers/CMS/Daftar/CMSDaftarDetail'));
 
 function CMSRoutes() {
   return (
@@ -36,7 +40,8 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/struktur-baru" component={StrukturBaruPage} />
         <PrivateRoute exact path="/cms/struktur-detail/:id" component={StrukturDetailPage} />
         <PrivateRoute exact path="/cms/about-us/edit/:id?" component={AboutUsEditPage} />
-        <PrivateRoute exact path="/cms/berita" component={BeritaPage} />
+        <PrivateRoute exact path="/cms/berita-layout" component={BeritaLayout} />
+        <PrivateRoute exact path="/cms/berita-konten" component={BeritaPage} />
         <PrivateRoute exact path="/cms/berita-baru" component={BeritaBaruPage} />
         <PrivateRoute exact path="/cms/berita-detail/:id" component={BeritaDetailPage} />
         <PrivateRoute exact path="/cms/bimtek-permintaan" component={BimtekPermintaanPage} />
@@ -47,8 +52,11 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/bimtek-dokumentasi" component={BimtekDokumentasiPage} />
         <PrivateRoute exact path="/cms/bimtek-dokumentasi/baru" component={BimtekDokumentasiBaruPage} />
         <PrivateRoute exact path="/cms/bimtek-dokumentasi/:id" component={BimtekDokumentasiDetailPage} />
-        <PrivateRoute exact path="/cms/permintaan-data" component={PermintaanData} />
-        <PrivateRoute exact path="/cms/permintaan-data/:id" component={PermintaanDataDetail} />
+        <PrivateRoute exact path="/cms/kesiapan-sdi" component={KesiapanSDI} />
+        <PrivateRoute exact path="/cms/dashboard-eksekutif" component={DashboardEksekutifPage} />
+        <PrivateRoute exact path="/cms/data-analytic" component={DataAnalyticPage} />
+        <PrivateRoute exact path="/cms/daftar" component={DaftarPage} />
+        <PrivateRoute exact path="/cms/daftar-detail/:id" component={DaftarDetailPage} />
         <Route exact path="/cms" render={() => <Redirect to="/cms/dashboard" />} />
       </Switch>
     </CMSLayout>

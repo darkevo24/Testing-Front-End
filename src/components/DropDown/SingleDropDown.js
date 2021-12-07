@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import Select, { components } from 'react-select';
@@ -67,6 +68,7 @@ export default class SingleSelectDropdown extends React.Component {
       noValue,
       defaultOptionIcon = null,
       defaultIcon,
+      className,
     } = this.props;
     const { selectedValues } = this.state;
     return (
@@ -74,7 +76,7 @@ export default class SingleSelectDropdown extends React.Component {
         closeMenuOnSelect={true}
         value={noValue ? null : !isEmpty(selectedValues) ? selectedValues : null}
         options={data}
-        className="basic-single"
+        className={cx(className, 'basic-single')}
         classNamePrefix="select"
         onChange={this.handleOnChange}
         isClearable={isClearable}

@@ -1,0 +1,23 @@
+.sdp-daftar {
+  &__popover {
+    margin-left: -16px;
+    max-width: 600px;
+  }
+  &__tag-wrapper {
+    display: flex;
+  }
+  &__tag {
+    @extend .flex-center;
+    background-color: $blue-bg-light;
+    border-radius: 24px;
+    padding: 4px 8px;
+    color: $black-dark-10;
+    margin-right: 4px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+  &__cms-search {
+    max-width: 500px;
+  }
+}

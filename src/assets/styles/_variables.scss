@@ -6,12 +6,16 @@ $font-family-base: $font-family-sans-serif !default;
 // palette
 $white: #ffffff;
 $black: #333333;
+$black-darker: #2B333A;
 $black-dark: #000000;
 $black-dark-10: #2D2627;
+$black-light: #313B44;
 $black-shadow: rgba(0, 0, 0, 0.05);
+$shadow: rgba(0, 0, 0, 0.16);
 $red: #FF0000;
 $red-light: #FFEEEE;
 $red-bg: rgba(255, 0, 0, 0.08);
+$orange: #FCA250;
 $gray: #858A8F;
 $gray-dark: #515154;
 $gray-light: #B9B9B9;
@@ -19,7 +23,11 @@ $gray-lighter: #FAFAFA;
 $gray-bg: #F5F6FA;
 $blue: #007AFF;
 $blue-link: #2F80ED;
+$blue-bg: rgba(0, 122, 255, 0.1);
+$blue-bg-light: rgba(0, 122, 255, 0.12);
 $violet: #A016A3;
+$green: #23BD73;
+
 
 // Colors
 $primary: $red;
@@ -28,6 +36,8 @@ $secondary: $gray-bg;
 $light: $gray;
 $light-bg: $gray-bg;
 $stroke: #E1E2EA;
+$stroke-dark: #BFC6CD;
+$stroke-button: #E2E6E9;
 $scrollbar: #D9DADF;
 $border-color: $stroke;
 
@@ -55,10 +65,14 @@ $outline-primary: $red;
   --blue-dark: #0066CC;
   --blue-light: #0087D2;
   --green: #1DB553;
+  --green-light: #15A55F;
   --teal: #35D0DA;
   --orange: #FF912C;
   --violet: #A016A3;
   --light-orange: #FCA250;
+  --dark-orange: #DE8813;
+  --purple: #6848C3;
+
 
   --primary: var(--red);
   --light: var(--gray);

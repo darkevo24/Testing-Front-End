@@ -132,7 +132,7 @@ const TopicDetail = () => {
 
   const data = useMemo(() => result?.results || [], [result]);
 
-  const handleInstansiFilter = (data = null) => {
+  const handleInstansiFilter = (data = null, applyFilters) => {
     if (!data) return;
     const instansiFilterItem_clone = [...instansiFilterItem];
     const index = instansiFilterItem_clone.findIndex((item) => item.value === data.value);
@@ -142,6 +142,9 @@ const TopicDetail = () => {
       instansiFilterItem_clone.push(data);
     }
     setInstansiFilterItem(instansiFilterItem_clone);
+    if (applyFilters) {
+      applyInstansiFilter(instansiFilterItem_clone);
+    }
   };
 
   const closeFilterModal = () => {
@@ -253,7 +256,7 @@ const TopicDetail = () => {
                 isLoading={false}
                 noValue={true}
                 onChange={handleInstansiFilter}
-                defaultIcon={<Search props="red" />}
+                defaultIcon={<Search variant="red" />}
                 defaultOptionIcon={
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="12" r="12" fill="#E1E2EA" />
@@ -317,6 +320,33 @@ const TopicDetail = () => {
         )}
       </>
     ),
+    renderFilters: () => {
+      return (
+        <div className="sdp-instansi-filter added-filters">
+          <div className="sdp-instansi-filter-header d-flex">
+            {selectedOrginization.map((item) => (
+              <Badge
+                pill
+                key={item.value}
+                className="sdp-instansi-filter-tags-item border-gray-stroke d-flex align-items-center br-40 px-16 py-9 bg-white m-10"
+                bg="light"
+                text="dark">
+                {item.icon && <img src={item.icon} alt={item.label} width="20px" height="20px" />}
+                <span className="fs-13 lh-15 fw-normal">{item.label}</span>
+                <i className="px-8 mr-n8 cursor-pointer" onClick={() => handleInstansiFilter(item, true)}>
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M7.75637 1.37206L5.12843 4L7.75637 6.62794C7.83259 6.70156 7.89338 6.78962 7.93521 6.88698C7.97703 6.98434 7.99905 7.08906 7.99997 7.19503C8.00089 7.30099 7.9807 7.40607 7.94057 7.50415C7.90045 7.60223 7.84119 7.69133 7.76626 7.76626C7.69133 7.84119 7.60223 7.90045 7.50415 7.94057C7.40607 7.9807 7.30099 8.00089 7.19503 7.99997C7.08906 7.99905 6.98434 7.97703 6.88698 7.93521C6.78962 7.89338 6.70156 7.83259 6.62794 7.75637L4 5.12843L1.37206 7.75637C1.29844 7.83259 1.21038 7.89338 1.11302 7.93521C1.01565 7.97703 0.910936 7.99905 0.804973 7.99997C0.69901 8.00089 0.593925 7.9807 0.495849 7.94057C0.397773 7.90045 0.30867 7.84119 0.23374 7.76626C0.15881 7.69133 0.0995531 7.60223 0.059427 7.50415C0.0193009 7.40607 -0.000890658 7.30099 3.01316e-05 7.19503C0.000950922 7.08906 0.0229658 6.98434 0.0647903 6.88698C0.106615 6.78962 0.167411 6.70156 0.243632 6.62794L2.87157 4L0.243632 1.37206C0.167411 1.29844 0.106615 1.21038 0.0647903 1.11302C0.0229658 1.01565 0.000950922 0.910936 3.01316e-05 0.804973C-0.000890658 0.69901 0.0193009 0.593925 0.059427 0.495849C0.0995531 0.397773 0.15881 0.30867 0.23374 0.23374C0.30867 0.15881 0.397773 0.0995531 0.495849 0.059427C0.593925 0.0193009 0.69901 -0.000890658 0.804973 3.01316e-05C0.910936 0.000950922 1.01565 0.0229658 1.11302 0.0647903C1.21038 0.106615 1.29844 0.167411 1.37206 0.243632L4 2.87157L6.62794 0.243632C6.70156 0.167411 6.78962 0.106615 6.88698 0.0647903C6.98434 0.0229658 7.08906 0.000950922 7.19503 3.01316e-05C7.30099 -0.000890658 7.40607 0.0193009 7.50415 0.059427C7.60223 0.0995531 7.69133 0.15881 7.76626 0.23374C7.84119 0.30867 7.90045 0.397773 7.94057 0.495849C7.9807 0.593925 8.00089 0.69901 7.99997 0.804973C7.99905 0.910936 7.97703 1.01565 7.93521 1.11302C7.89338 1.21038 7.83259 1.29844 7.75637 1.37206Z"
+                      fill="#2D2627"
+                    />
+                  </svg>
+                </i>
+              </Badge>
+            ))}
+          </div>
+        </div>
+      );
+    },
     onSearch: (searchText) => {
       fetchDataset({ q: searchText }, true);
     },

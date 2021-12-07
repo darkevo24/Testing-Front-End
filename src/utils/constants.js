@@ -16,18 +16,26 @@ import {
   KonfigurasiIcon,
   UserManagementIcon,
 } from 'assets/icons';
+import { FaceBookIcon, InstagramIcon, TwitterIcon, YouTubeIcon } from '../assets/icons/SocialMedia';
+import React from 'react';
 
-export const apiUrl = '/api';
+export const apiUrl = '/api-be';
 export const dataUrl = '/data/api';
 
 export const getApiEndpoint = (path) => `${apiUrl}/${path}`;
 export const getDataEndpoint = (path) => `${dataUrl}/${path}`;
+export const getPortalEndpoint = (path) => `${apiUrl}/portal/${path}`;
+export const getV1Endpoint = (path) => `${apiUrl}/v1/${path}`;
 
 export const apiUrls = {
   login: getApiEndpoint('login'),
   dataset: getDataEndpoint('3/action/package_search'),
-  listPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
-  detailPermintaanData: getApiEndpoint('sekretariat/permintaan-data/'),
+  perminataanData: getPortalEndpoint('permintaan-data'),
+  instansiData: getV1Endpoint('instansi'),
+  produenData: getV1Endpoint('katalog/produsendata'),
+  dataindukData: getV1Endpoint('katalog/datainduk'),
+  katalogData: getV1Endpoint('katalog'),
+  strukturData: getApiEndpoint('cms/v1/bidang'),
 };
 
 export const TOPIC_LIST = [
@@ -102,6 +110,7 @@ export const CMS_DASHBOARD = [
     description: Text,
     icon: <ContentManagementIcon />,
     iconColor: 'sdp-text-blue',
+    link: '/cms/about-us',
   },
   {
     title: 'Data Management',
@@ -132,5 +141,24 @@ export const CMS_DASHBOARD = [
     description: Text,
     icon: <KonfigurasiIcon />,
     iconColor: 'sdp-text-teal',
+  },
+];
+
+export const Kontak_list = [
+  {
+    name: 'facebook',
+    icon: <FaceBookIcon />,
+  },
+  {
+    name: 'twitter',
+    icon: <TwitterIcon />,
+  },
+  {
+    name: 'instagram',
+    icon: <InstagramIcon />,
+  },
+  {
+    name: 'youtube',
+    icon: <YouTubeIcon />,
   },
 ];

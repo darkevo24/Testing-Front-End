@@ -67,8 +67,9 @@ export const AdminHeader = () => {
             title="Dashboard"
             id="basic-nav-dropdown">
             <NavDropdown.Item onClick={() => history.push('/kesiapan-sdi')}>Kesiapan SDI</NavDropdown.Item>
-            <NavDropdown.Item onClick={() => history.push('/eksekutif')}>Eksekutif</NavDropdown.Item>
+            <NavDropdown.Item onClick={() => history.push('/dashboard-eksekutif')}>Eksekutif</NavDropdown.Item>
             <NavDropdown.Item onClick={() => history.push('/data-analytic')}>Data Analytic</NavDropdown.Item>
+            <NavDropdown.Item onClick={() => history.push('/dashboard-saya')}>Dashboard Saya</NavDropdown.Item>
           </NavDropdown>
           <NavDropdown
             className={cx({
@@ -76,7 +77,7 @@ export const AdminHeader = () => {
             })}
             title="Sandbox"
             id="basic-nav-dropdown">
-            <NavDropdown.Item onClick={() => history.push('/dafter')}>Daftar Data</NavDropdown.Item>
+            <NavDropdown.Item onClick={() => history.push('/daftar')}>Daftar Data</NavDropdown.Item>
             <NavDropdown.Item onClick={() => history.push('/sdmx')}>Metadata Registry</NavDropdown.Item>
           </NavDropdown>
           {getTabList(TAB_LIST_2, location.pathname, history)}

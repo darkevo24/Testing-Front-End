@@ -9,10 +9,11 @@ import history from './history';
 import appReducer from 'containers/App/reducer';
 import authReducer from 'containers/Login/reducer';
 import berandaReducer from 'containers/Beranda/reducer';
+import daftarReducer from 'containers/Daftar/reducer';
 import cmsReducer from 'containers/CMS/reducer';
 import tentangReducer from 'containers/TentangSDI/reducer';
-import permintaanDataReducer from 'containers/CMS/PermintaanData/reducer';
-import permintaanDataDetailReducer from 'containers/CMS/PermintaanDataForm/reducer';
+import perminataanReducer from 'containers/Perminataan/reducer';
+import strukturReducer from 'containers/CMS/StrukturOrganisasi/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -22,11 +23,11 @@ export default function createReducer(injectedReducers) {
     global: appReducer,
     auth: authReducer,
     beranda: berandaReducer,
+    daftar: daftarReducer,
     cms: cmsReducer,
     tentang: tentangReducer,
-    permintaanData: permintaanDataReducer,
-    permintaanDataDetail: permintaanDataDetailReducer,
-
+    perminataan: perminataanReducer,
+    struktur: strukturReducer,
     router: connectRouter(history),
     ...injectedReducers,
   });

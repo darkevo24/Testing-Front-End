@@ -67,58 +67,64 @@
         }
       }
     }
-    .sdp-instansi-filter {
-      position: absolute;
-      z-index: 10;
-      background: var(--white);
-      padding: 16px;
-      top: 0;
-      left: 0;
-      right: 0;
+  }
+}
 
-      .sdp-instansi-filter-header {
-        .basic-single {
-          min-width: 750px;
+.sdp-instansi-filter {
+  &.added-filters {
+    position: relative;
+    padding: 0;
+    z-index: 1;
+  }
+  position: absolute;
+  z-index: 10;
+  background: var(--white);
+  padding: 16px;
+  top: 0;
+  left: 0;
+  right: 0;
 
-          .select__control {
-            background: var(--stroke);
-            svg {
-              margin-left: 16px;
-            }
-            .select__indicators {
-              display: none;
-            }
-          }
+  .sdp-instansi-filter-header {
+    .basic-single {
+      min-width: 750px;
 
-          .select__menu {
-            .menu-item {
-              svg, img {
-                margin-right: 12px;
-              }
-            }
-          }
+      .select__control {
+        background: var(--stroke);
+        svg {
+          margin-left: 16px;
         }
-
-        button {
-          svg {
-            margin-right: 12px;
-            color: var(--stroke);
-          }
+        .select__indicators {
+          display: none;
         }
       }
 
-      .sdp-instansi-filter-tags {
-        padding: 20px 0;
-
-        .sdp-instansi-filter-tags-wrapper {
-          .sdp-instansi-filter-tags-item{
-            max-width: 160px;
-
-            span {
-              overflow: hidden;
-              text-overflow: ellipsis;
-            }
+      .select__menu {
+        .menu-item {
+          svg, img {
+            margin-right: 12px;
           }
+        }
+      }
+    }
+
+    button {
+      svg {
+        margin-right: 12px;
+        color: var(--stroke);
+      }
+    }
+  }
+
+  .sdp-instansi-filter-tags {
+    padding: 20px 0;
+
+    .sdp-instansi-filter-tags-wrapper {
+      .sdp-instansi-filter-tags-item{
+        max-width: 160px;
+
+        span {
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
     }

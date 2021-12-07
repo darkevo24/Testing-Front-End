@@ -38,12 +38,17 @@
 .rounded-0 {
   border-radius: 0 !important;
 }
-
+.br-2 {
+  border-radius: 2px !important;
+}
 .br-3 {
   border-radius: 3px !important;
 }
 .br-4 {
 	border-radius: 4px !important;
+}
+.br-5 {
+  border-radius: 5px !important;
 }
 .br-6 {
   border-radius: 6px !important;
@@ -66,10 +71,15 @@
 .br-40 {
   border-radius: 40px !important;
 }
+.br-48 {
+  border-radius: 48px !important;
+}
 .br-120 {
   border-radius: 120px !important;
 }
-
+.br-box {
+  box-sizing: border-box;
+}
 .border-gray-stroke {
 	border: 1px solid $stroke;
 }
@@ -88,4 +98,13 @@
 
 .border-bottom-gray-stroke {
   border-bottom: 1px solid $stroke;
+}
+
+.br-box-shadow {
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.divider {
+  height: 1px;
+  background-color: $stroke;
 }

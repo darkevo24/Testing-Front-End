@@ -1,22 +1,33 @@
+.select {
+  &__indicator-separator {
+    display: none;
+  }
+}
+
 .grouped-dropdown {
   .select__control {
     display: flex;
     max-width: 220px;
     width: 220px;
-    padding: 15px;
+    padding: 10px 15px 8px 15px;
     height: 56;
     border: 0;
     justify-content: space-around;
+    cursor: pointer;
+
+    .select__placeholder {
+      white-space: nowrap;
+      width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--black-dark-10)
+    }
 
     span {
       white-space: nowrap;
       width: 100px;
       overflow: hidden;
       text-overflow: ellipsis;
-    }
-
-    .select__value-container {
-      display: none;
     }
 
     .select__indicators {
@@ -35,8 +46,14 @@
     }
   }
 
+  .select__control--is-focused {
+    border-color: none !important;
+    box-shadow: none !important;
+  }
+
   .select__menu {
     width: 400px;
+    cursor: pointer;
 
     .select__group-heading {
       padding-left: 15px;
@@ -58,6 +75,7 @@
     }
 
     .select__option {
+      cursor: pointer;
       font-size: 14px;
       line-height: 17px;
       color: var(--gray-dark);
@@ -99,5 +117,11 @@
     &::after {
       vertical-align: middle;
     }
+  }
+}
+
+.basic-single {
+  .select__menu {
+    z-index: 11111;
   }
 }

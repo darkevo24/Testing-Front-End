@@ -40,6 +40,26 @@
         box-sizing: border-box;
         border-radius: 4px;
         margin-bottom: 8px;
+
+        .sdp-log {
+          &__status {
+            &.ditayangkan {
+              color: var(--green-light);
+            }
+            &.menunggu_persetujuan {
+              color: var(--dark-orange);
+            }
+            &.diarsipkan, &.draft, &.tidak_ditayangkan {
+              color: $gray;
+            }
+            &.dibatalkan, &.ditolak {
+              color: $red
+            }
+            &.disetujui {
+              color: $blue
+            }
+          }
+        }
       }
 
       span {
@@ -83,26 +103,30 @@
           margin-right: 8px;
           height: 28px;
 
-          &.selesai {
+          &.ditayangkan {
             background: rgba(21, 165, 95, 0.12);
-            color: #15A55F;
+            color: var(--green-light);
           }
-          &.diproses {
+          &.menunggu_persetujuan {
             background: rgba(222, 136, 19, 0.12);
-            color: #DE8813;
+            color: var(--dark-orange);
           }
-          &.terkirim {
-            background: rgba(104, 72, 195, 0.12);
-            color: #6848C4;
+          &.diarsipkan, &.draft, &.tidak_ditayangkan {
+            background: $gray-bg;
+            color: $gray;
           }
-          &.dibuat {
-            background: #F5F6FA;
-            color: #858A8F;
+          &.dibatalkan, &.ditolak {
+            background: rgba(255, 0, 0, 0.12);
+            color: $red
+          }
+          &.disetujui {
+            background: $blue-bg-light;
+            color: $blue
           }
         }
 
         &__content {
-           
+
           font-size: 14px;
           font-style: normal;
           font-weight: 400;

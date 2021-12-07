@@ -30,10 +30,38 @@ export const CMSSidebar = () => {
         <div className={bem.e('title')}>
           <SidebarContentIcon className="mr-10" /> Content Management
         </div>
-        <SidebarItem title="About Us" pathname="/cms/about-us" />
-        <SidebarItem title="Struktur Organisasi" pathname="/cms/struktur" />
-        <SidebarItem title="Berita" pathname="/cms/berita" />
-        <SidebarItem title="Contact Us" pathname="#" />
+        <Accordion defaultActiveKey="0">
+          <Accordion.Item>
+            <Accordion.Header
+              className={cx('', {
+                selected:
+                  window.location.pathname.includes('/cms/about-us') ||
+                  window.location.pathname.includes('/cms/contact-us') ||
+                  window.location.pathname.includes('/cms/struktur'),
+              })}>
+              Tentang
+            </Accordion.Header>
+            <Accordion.Body>
+              <SidebarItem title="About Us" pathname="/cms/about-us" />
+              <SidebarItem title="Struktur Organisasi" pathname="/cms/struktur" />
+              <SidebarItem title="Contact Us" pathname="/cms/contact-us" />
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
+        <Accordion defaultActiveKey="0">
+          <Accordion.Item>
+            <Accordion.Header
+              className={cx('', {
+                selected: window.location.pathname.includes('/cms/berita'),
+              })}>
+              Berita
+            </Accordion.Header>
+            <Accordion.Body>
+              <SidebarItem title="Konten Berita" pathname="/cms/berita-konten" />
+              <SidebarItem title="Layout Berita" pathname="/cms/berita-layout" />
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
         <SidebarItem title="Forum" pathname="#" />
         <SidebarItem title="Komunitas Ahli" pathname="/cms/komunitas-ahli" />
         <Accordion defaultActiveKey="0">
@@ -57,9 +85,18 @@ export const CMSSidebar = () => {
           <SidebarDataIcon className="mr-10" />
           Dashboard Management
         </div>
-        <SidebarItem title="Data Analytics" pathname="#" />
-        <SidebarItem title="Kesiapan SDI" pathname="#" />
-        <SidebarItem title="Dashboard Executive" pathname="#" />
+        {/* <SidebarItem title="Data Analytics" pathname="/cms/data-analytic" />
+        <SidebarItem title="Kesiapan SDI" pathname="/cms/kesiapan-sdi" />
+        <SidebarItem title="Dashboard Executive" pathname="/cms/dashboard-eksekutif" /> */}
+        <div className={cx(bem.e('item'))} onClick={() => window.open('http://103.170.104.187:8088/login/')}>
+          Data Analytics
+        </div>
+        <div className={cx(bem.e('item'))} onClick={() => window.open('http://103.170.104.187:8088/login/')}>
+          Kesiapan SDI
+        </div>
+        <div className={cx(bem.e('item'))} onClick={() => window.open('http://103.170.104.187:8088/login/')}>
+          Dashboard Executive
+        </div>
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>

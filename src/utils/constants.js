@@ -32,13 +32,17 @@ export const apiUrls = {
   dataset: getDataEndpoint('3/action/package_search'),
   perminataanData: getPortalEndpoint('permintaan-data'),
   instansiData: getV1Endpoint('instansi'),
-  katalogData: getApiEndpoint('v1/katalog'),
   cmsKomunitasAhliData: getCMSEndpoint('komunitas-ahli'),
   portalKomunitasAhliData: getPortalEndpoint('komunitas-ahli'),
   fileUpload: getApiEndpoint('file/upload'),
   uploadFoto: getApiEndpoint('file/public-image-upload'),
   bidangData: getCMSEndpoint('komunitas-ahli/bidang-keahlian'),
   daerahData: getV1Endpoint('kabupatenkota/search'),
+  produenData: getV1Endpoint('katalog/produsendata'),
+  dataindukData: getV1Endpoint('katalog/datainduk'),
+  katalogData: getV1Endpoint('katalog'),
+  strukturData: getApiEndpoint('cms/v1/bidang'),
+  cmsBeritaData: getApiEndpoint('cms/v1/berita'),
 };
 
 export const TOPIC_LIST = [

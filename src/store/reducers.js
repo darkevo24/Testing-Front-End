@@ -13,6 +13,8 @@ import daftarReducer from 'containers/Daftar/reducer';
 import cmsReducer from 'containers/CMS/reducer';
 import tentangReducer from 'containers/TentangSDI/reducer';
 import perminataanReducer from 'containers/Perminataan/reducer';
+import strukturReducer from 'containers/CMS/StrukturOrganisasi/reducer';
+import beritaCmsReducer from 'containers/CMS/BeritaBaru/reducer';
 import cmsKomunitasAhliReducer from 'containers/CMS/KomunitasAhli/reducer';
 
 /**
@@ -27,6 +29,8 @@ export default function createReducer(injectedReducers) {
     cms: cmsReducer,
     tentang: tentangReducer,
     perminataan: perminataanReducer,
+    struktur: strukturReducer,
+    cmsBerita: beritaCmsReducer,
     cmsKomunitasAhli: cmsKomunitasAhliReducer,
     router: connectRouter(history),
     ...injectedReducers,

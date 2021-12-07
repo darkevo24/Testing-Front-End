@@ -58,7 +58,7 @@ export const AdminHeader = () => {
             <NavDropdown.Item onClick={() => history.push('/permintaan-data')}>Permintaan Data</NavDropdown.Item>
             <NavDropdown.Item onClick={() => history.push('/bimtek')}>Bimtek</NavDropdown.Item>
             <NavDropdown.Item onClick={() => history.push('/komunitas-ahli')}>Komunitas Ahli</NavDropdown.Item>
-            <NavDropdown.Item onClick={() => history.push('/forum')}>Forum SDI</NavDropdown.Item>
+            <NavDropdown.Item onClick={() => history.push('/forum-sdi')}>Forum SDI</NavDropdown.Item>
           </NavDropdown>
           <NavDropdown
             className={cx({

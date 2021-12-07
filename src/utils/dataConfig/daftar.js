@@ -94,6 +94,7 @@ const getRandomIndex = () => Math.floor(Math.random() * 5);
 const newRow = () => {
   const dataIndex = getRandomIndex();
   return {
+    id: new Date().getTime(),
     instansi: instansiData[dataIndex],
     name: nameData[dataIndex],
     konsep: konsepData[dataIndex],

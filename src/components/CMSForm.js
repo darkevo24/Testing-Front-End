@@ -1,69 +1,99 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Button from 'react-bootstrap/Button';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { DatePicker, Dropdown, Input, FileInput, TextEditor } from 'components';
+import MultiDropDown from 'components/DropDown/MultiDropDown';
+import { submitForm } from 'utils/helper';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { getListKategori, getListTagline, kategoriSelector, taglineSelector } from 'containers/CMS/BeritaBaru/reducer';
+
+export const beritaFormId = 'berita-form-id';
+export const submitBeritaForm = submitForm(beritaFormId);
 const schema = yup
   .object({
-    title: yup.string().required(),
-    category: yup.mixed().required(),
-    thumbnail: yup.mixed().required(),
+    judul: yup.string().required(),
+    issn: yup.string().required(),
+    kategori: yup.mixed().required(),
   })
   .required();
 
 const CMSForm = ({ data, style, onSubmit }) => {
+  const dispatch = useDispatch();
+  const { records: kategoriRecords } = useSelector(kategoriSelector);
+  const { records: taglineRecords } = useSelector(taglineSelector);
+
   const {
     control,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      ...data,
+    },
   });
 
+  useEffect(() => {
+    dispatch(getListKategori('BERITA'));
+    dispatch(getListTagline());
+  }, []);
+
+  // const uploadFile = (e) => {
+  //   var file = e.target.files[0];
+  //   console.log(file);
+  //   if (file.size > 512000) {
+  //     return console.log('max size reached');
+  //   }
+  // };
+
   return (
-    <Form className="sdp-form" onSubmit={handleSubmit(onSubmit)} style={style}>
+    <Form id={beritaFormId} className="sdp-form" onSubmit={handleSubmit(onSubmit)} style={style}>
       <FileInput
         group
         label="Thumbnail"
-        name="thumbnail"
+        name="mainImage"
         control={control}
         rules={{ required: true }}
-        error={errors.thumbnail?.message}
+        error={errors.mainImage?.message}
         uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
       />
-      <Input group label="Judul" name="title" control={control} rules={{ required: true }} error={errors.title?.message} />
+      <Input group label="Judul" name="judul" control={control} rules={{ required: true }} error={errors.judul?.message} />
       <Dropdown
         group
         label="Kategori"
-        name="category"
+        name="kategori"
         control={control}
         rules={{ required: true }}
         placeholder="Pilih Kategori"
-        error={errors.category?.message}
+        options={kategoriRecords.map((kategori) => ({ value: kategori.id, label: kategori.keterangan }))}
+        error={errors.kategori?.message}
       />
-      <Input
-        group
-        label="Tagline"
-        name="tagline"
-        control={control}
-        rules={{ required: false }}
-        error={errors.tagline?.message}
-      />
-      <Form.Group controlId="berita" className="mb-4">
+      <Form.Group className="mb-3">
+        <Form.Label>Tagline</Form.Label>
+        <MultiDropDown
+          placeHolder="Pilih Tagline"
+          data={taglineRecords.map((tagline) => ({ label: tagline.keterangan, value: tagline.id }))}
+          onChange={(e) => setValue('taglineId', e)}
+        />
+      </Form.Group>
+      <Form.Group className="mb-3">
         <Form.Label>Isi Berita</Form.Label>
-        <TextEditor />
+        <TextEditor onChange={(e) => setValue('content', e)} />
       </Form.Group>
       <Input
         group
         label="No. Referensi ISSN"
-        name="reference"
+        name="issn"
         control={control}
         rules={{ required: false }}
-        error={errors.reference?.message}
+        error={errors.issn?.message}
       />
       <Row>
         <Col>
@@ -88,7 +118,7 @@ const CMSForm = ({ data, style, onSubmit }) => {
           />
         </Col>
       </Row>
-      <Form.Check id="switchEnabled" type="switch" label="Enable" variant="info" />
+      <Button className="invisible" type="submit" />
     </Form>
   );
 };

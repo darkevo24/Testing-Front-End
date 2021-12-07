@@ -20,6 +20,7 @@ const getPathnameFromRoute = (route) => get(route, 'link.pathname', route.link);
 
 const getNavDropDown = (tab, pathname, goTo) => {
   const id = `${tab.title}-nav-dropdown`;
+  const loginSuperset = () => window.open('http://103.170.104.187:8088/login/');
   return (
     <NavDropdown
       className={cx({
@@ -29,7 +30,9 @@ const getNavDropDown = (tab, pathname, goTo) => {
       key={id}
       id={id}>
       {map(tab.links, (route) => (
-        <NavDropdown.Item key={getPathnameFromRoute(route)} onClick={goTo(route.link)}>
+        <NavDropdown.Item
+          key={getPathnameFromRoute(route)}
+          onClick={route.link === '/dashboard-saya' ? loginSuperset : goTo(route.link)}>
           {route.title}
         </NavDropdown.Item>
       ))}
@@ -103,7 +106,7 @@ export const Header = () => {
           { title: 'Permintaan Data', link: '/permintaan-data' },
           { title: 'Bimtek', link: '/bimtek-summary' },
           { title: 'Komunitas Ahli', link: '/komunitas-ahli' },
-          { title: 'Forum SDI', link: '/forum' },
+          { title: 'Forum SDI', link: '/forum-sdi' },
         ],
       },
       {

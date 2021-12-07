@@ -8,7 +8,7 @@ import { makeData } from 'utils/dataConfig/daftar';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import DaftarForm, { submitDaftarForm } from './DaftarForm';
 import { Check } from 'components/Icons';
-import { deleteKatalog, putKatalog } from './reducer';
+import { deleteDaftarData, putDaftarData } from './reducer';
 
 const DaftarDataSayaTable = ({
   bem,
@@ -35,7 +35,7 @@ const DaftarDataSayaTable = ({
   const handleDelete = () => {
     // TODO: handle actual delete of the data.
 
-    dispatch(deleteKatalog(selectedRecord)).then((res) => {
+    dispatch(deleteDaftarData(selectedRecord)).then((res) => {
       setIsDeleteModalVisible(false);
     });
     Notification.show({
@@ -66,7 +66,7 @@ const DaftarDataSayaTable = ({
     data.indukData = [data.indukData.value];
     data.format = 'png';
 
-    dispatch(putKatalog(data)).then((res) => {
+    dispatch(putDaftarData(data)).then((res) => {
       hideDaftarFormModal();
       res.payload
         ? Notification.show({

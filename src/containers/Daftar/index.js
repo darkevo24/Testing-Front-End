@@ -20,14 +20,22 @@ import RkpTable from './RkpTable';
 import DaftarDataSayaTable from './DaftarDataSayaTable';
 import bn from 'utils/bemNames';
 import {
-  addKatalog,
+  addDaftarData,
   getDatainduk,
   getInstansi,
   getProduen,
+  getSDGPillers,
+  getSDGTujuan,
+  getRKPpn,
+  getRKPpp,
   dataindukDataSelector,
   produenDataSelector,
   instansiDataSelector,
-  addKatalogSelector,
+  addDaftarDataSelector,
+  sdgPillersSelector,
+  tujuanSDGPillersSelector,
+  rkpPNSelector,
+  rkpPPSelector,
 } from './reducer';
 
 const bem = bn('daftar');
@@ -38,10 +46,14 @@ const Daftar = () => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(t('sandbox.daftar.tabs.daftar.key'));
   const activeTitle = t(`sandbox.daftar.tabs.${activeTab}.title`);
-  const { result } = useSelector(addKatalogSelector);
+  const { result } = useSelector(addDaftarDataSelector);
   const dataindukData = useSelector(dataindukDataSelector);
   const instansiData = useSelector(instansiDataSelector);
   const produenData = useSelector(produenDataSelector);
+  const sdgPillersData = useSelector(sdgPillersSelector);
+  const tujuanSDGPillersData = useSelector(tujuanSDGPillersSelector);
+  const rkpPNData = useSelector(rkpPNSelector);
+  const rkpPPData = useSelector(rkpPPSelector);
 
   const instansiOptions =
     instansiData?.result?.map((instansi) => ({
@@ -57,6 +69,26 @@ const Daftar = () => {
     dataindukData?.result?.map((datainduk) => ({
       value: datainduk,
       label: datainduk,
+    })) || [];
+  const sdgPillerOptions =
+    sdgPillersData?.result?.map((sdgPiller) => ({
+      value: sdgPiller.id,
+      label: sdgPiller.keterangan,
+    })) || [];
+  const tujuanSDGPillerOptions =
+    tujuanSDGPillersData?.result?.map((tujuanSDGPiller) => ({
+      value: tujuanSDGPiller.id,
+      label: tujuanSDGPiller.keterangan,
+    })) || [];
+  const rkpPNOptions =
+    rkpPNData?.result?.map((rkpPN) => ({
+      value: rkpPN.id,
+      label: rkpPN.keterangan,
+    })) || [];
+  const rkpPPOptions =
+    rkpPPData?.result?.map((rkpPP) => ({
+      value: rkpPP.id,
+      label: rkpPP.keterangan,
     })) || [];
   const priorityOptions = [
     { value: 1, label: 'Semua' },
@@ -78,6 +110,10 @@ const Daftar = () => {
     instansiOptions,
     priorityOptions,
     produenOptions,
+    sdgPillerOptions,
+    tujuanSDGPillerOptions,
+    rkpPNOptions,
+    rkpPPOptions,
   };
   const tabs = useMemo(
     () => [
@@ -120,7 +156,7 @@ const Daftar = () => {
     payload.indukData = [payload.indukData.value];
     payload.format = 'png';
 
-    dispatch(addKatalog(payload)).then((res) => {
+    dispatch(addDaftarData(payload)).then((res) => {
       hideTambahModal();
       res?.payload
         ? Notification.show({
@@ -164,6 +200,8 @@ const Daftar = () => {
     dispatch(getInstansi());
     dispatch(getProduen());
     dispatch(getDatainduk());
+    dispatch(getSDGPillers());
+    dispatch(getRKPpn());
   }, []);
   const isSayaData = activeTab === t('sandbox.daftar.tabs.daftarSafa.key');
   return (

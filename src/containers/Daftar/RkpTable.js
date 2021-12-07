@@ -5,7 +5,15 @@ import { makeData } from 'utils/dataConfig/daftar';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import { Check } from 'components/Icons';
 
-const RkpTable = ({ bem, dataindukOptions = [], instansiOptions = [], priorityOptions = [], produenOptions = [] }) => {
+const RkpTable = ({
+  bem,
+  dataindukOptions = [],
+  instansiOptions = [],
+  priorityOptions = [],
+  produenOptions = [],
+  rkpPNOptions = [],
+  rkpPPOptions = [],
+}) => {
   const columns = useMemo(
     () => [
       {
@@ -63,13 +71,6 @@ const RkpTable = ({ bem, dataindukOptions = [], instansiOptions = [], priorityOp
     variant: 'spaced',
   };
 
-  const dropdownFilters = [
-    { label: 'Option 1', value: 'Option 1' },
-    { label: 'Option 2', value: 'Option 2' },
-    { label: 'Option 3', value: 'Option 3' },
-    { label: 'Option 4', value: 'Option 4' },
-  ];
-
   return (
     <>
       <div className="container-fluid bg-gray-lighter p-24 mb-40 mt-32">
@@ -94,11 +95,11 @@ const RkpTable = ({ bem, dataindukOptions = [], instansiOptions = [], priorityOp
         <div className="row pt-24">
           <div className="col-3">
             <label className="sdp-form-label py-8">PN RKP</label>
-            <SingleSelectDropdown data={dropdownFilters} placeHolder="-" isLoading={false} noValue={true} />
+            <SingleSelectDropdown data={rkpPNOptions} placeHolder="-" isLoading={false} noValue={true} />
           </div>
           <div className="col-3">
             <label className="sdp-form-label py-8">PP RKP</label>
-            <SingleSelectDropdown data={dropdownFilters} placeHolder="-" isLoading={false} noValue={true} />
+            <SingleSelectDropdown data={rkpPPOptions} placeHolder="-" isLoading={false} noValue={true} />
           </div>
         </div>
       </div>

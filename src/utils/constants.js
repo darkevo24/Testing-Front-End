@@ -34,7 +34,9 @@ export const apiUrls = {
   instansiData: getV1Endpoint('instansi'),
   produenData: getV1Endpoint('katalog/produsendata'),
   dataindukData: getV1Endpoint('katalog/datainduk'),
-  katalogData: getV1Endpoint('katalog'),
+  daftarData: getV1Endpoint('katalog'),
+  sdgPillers: getV1Endpoint('settings/key/SDGS'),
+  rkpPN: getV1Endpoint('settings/key/RKP'),
   strukturData: getApiEndpoint('cms/v1/bidang'),
 };
 

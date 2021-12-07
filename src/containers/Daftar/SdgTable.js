@@ -5,7 +5,15 @@ import { makeData } from 'utils/dataConfig/daftar';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import { Check } from 'components/Icons';
 
-const SdgTable = ({ bem, dataindukOptions = [], instansiOptions = [], priorityOptions = [], produenOptions = [] }) => {
+const SdgTable = ({
+  bem,
+  dataindukOptions = [],
+  instansiOptions = [],
+  priorityOptions = [],
+  produenOptions = [],
+  sdgPillerOptions = [],
+  tujuanSDGPillerOptions = [],
+}) => {
   const columns = useMemo(
     () => [
       {
@@ -62,12 +70,6 @@ const SdgTable = ({ bem, dataindukOptions = [], instansiOptions = [], priorityOp
     highlightOnHover: true,
     variant: 'spaced',
   };
-  const dropdownFilters = [
-    { label: 'Option 1', value: 'Option 1' },
-    { label: 'Option 2', value: 'Option 2' },
-    { label: 'Option 3', value: 'Option 3' },
-    { label: 'Option 4', value: 'Option 4' },
-  ];
 
   return (
     <>
@@ -93,11 +95,11 @@ const SdgTable = ({ bem, dataindukOptions = [], instansiOptions = [], priorityOp
         <div className="row pt-24">
           <div className="col-3">
             <label className="sdp-form-label py-8">Pilar SDGs</label>
-            <SingleSelectDropdown data={dropdownFilters} placeHolder="-" isLoading={false} noValue={true} />
+            <SingleSelectDropdown data={sdgPillerOptions} placeHolder="-" isLoading={false} noValue={true} />
           </div>
           <div className="col-3">
             <label className="sdp-form-label py-8">Tujuan SDGs</label>
-            <SingleSelectDropdown data={dropdownFilters} placeHolder="-" isLoading={false} noValue={true} />
+            <SingleSelectDropdown data={tujuanSDGPillerOptions} placeHolder="-" isLoading={false} noValue={true} />
           </div>
         </div>
       </div>

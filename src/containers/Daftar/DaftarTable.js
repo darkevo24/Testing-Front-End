@@ -10,7 +10,7 @@ import Popover from 'components/Popover';
 import { Check } from 'components/Icons';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import cloneDeep from 'lodash/cloneDeep';
-import { getKatalog, katalogSelector } from './reducer';
+import { getDaftarData, daftarDataSelector } from './reducer';
 
 const DaftarTable = ({
   bem,
@@ -22,23 +22,31 @@ const DaftarTable = ({
 }) => {
   const history = useHistory();
   const [selectedRecord, setSelectedRecord] = useState(null);
-  const { pageSize, loading, params, result } = useSelector(katalogSelector);
+  const { pageSize, loading, params, bodyParams, result } = useSelector(daftarDataSelector);
   const dispatch = useDispatch();
 
-  const fetchKatalog = (override, reset = false) => {
+  const fetchDaftarData = (filterOverride = {}, reset = false) => {
+    const { params: paramsOverride = {}, bodyParams: bodyParamsOverride = {} } = filterOverride;
     const filterParams = {
       ...cloneDeep(params),
-      ...cloneDeep(override),
+      ...cloneDeep(paramsOverride),
     };
     if (reset) {
       filterParams.start = 0;
       filterParams.currentPage = 0;
     }
-    return dispatch(getKatalog(filterParams));
+    const filterBodyParams = {
+      ...cloneDeep(bodyParams),
+      ...cloneDeep(bodyParamsOverride),
+    };
+    const filters = { params: filterParams, bodyParams: filterBodyParams };
+    return dispatch(getDaftarData(filters));
   };
+
   const katlogData = useMemo(() => result || [], [result]);
+
   useEffect(() => {
-    fetchKatalog();
+    fetchDaftarData();
   }, []);
 
   const showDaftarDetailPage = (data) => {
@@ -165,7 +173,7 @@ const DaftarTable = ({
           start,
           currentPage,
         };
-        fetchKatalog(params);
+        fetchDaftarData(params);
       }
     },
   };

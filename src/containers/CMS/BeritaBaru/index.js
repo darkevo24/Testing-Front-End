@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
 
 import CMSForm, { submitBeritaForm } from 'components/CMSForm';
+import Notification from 'components/Notification';
 import { formatDate } from 'utils/helper';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
@@ -17,14 +18,31 @@ const CMSBeritaBaru = () => {
 
   const onSubmit = (data) => {
     data.mainImage = 'https://rembangkab.go.id/haribawana/uploads/pemerintah-kabupaten-rembang-no-image.jpg';
-    data.taglineId = [];
     data.mainImageTitle = '';
     data.publishedDate = data.publishedDate ? formatDate(data.publishedDate) : '';
     data.kategori = data.kategori.value;
     data.status = 0;
 
-    dispatch(setNewBerita({ payload: data })).then(() => {
-      history.goBack();
+    // console.log(data);
+    dispatch(setNewBerita({ payload: data })).then((res) => {
+      res?.payload
+        ? Notification.show({
+            type: 'secondary',
+            message: (
+              <div>
+                Berita <span className="fw-bold">{res.payload.content.judul}</span> Berhasil Ditambahkan
+              </div>
+            ),
+            icon: 'check',
+          })
+        : Notification.show({
+            message: (
+              <div>
+                Error <span className="fw-bold">{res.error.message}</span> Data Tidak Ditambahkan
+              </div>
+            ),
+            icon: 'cross',
+          });
     });
   };
 

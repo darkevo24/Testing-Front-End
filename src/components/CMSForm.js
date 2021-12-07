@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { DatePicker, Dropdown, Input, FileInput, TextEditor } from 'components';
+import MultiDropDown from 'components/DropDown/MultiDropDown';
 import { submitForm } from 'utils/helper';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -73,14 +74,14 @@ const CMSForm = ({ data, style, onSubmit }) => {
         options={kategoriRecords.map((kategori) => ({ value: kategori.id, label: kategori.keterangan }))}
         error={errors.kategori?.message}
       />
-      <Input
-        group
-        label="Tagline"
-        name="tagline"
-        control={control}
-        rules={{ required: false }}
-        error={errors.tagline?.message}
-      />
+      <Form.Group className="mb-3">
+        <Form.Label>Tagline</Form.Label>
+        <MultiDropDown
+          placeHolder="Pilih Tagline"
+          data={taglineRecords.map((tagline) => ({ label: tagline.keterangan, value: tagline.id }))}
+          onChange={(e) => setValue('taglineId', e)}
+        />
+      </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Isi Berita</Form.Label>
         <TextEditor onChange={(e) => setValue('content', e)} />

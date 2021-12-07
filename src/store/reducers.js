@@ -14,6 +14,8 @@ import cmsReducer from 'containers/CMS/reducer';
 import tentangReducer from 'containers/TentangSDI/reducer';
 import perminataanReducer from 'containers/Perminataan/reducer';
 import strukturReducer from 'containers/CMS/StrukturOrganisasi/reducer';
+import permintaanDataReducer from 'containers/CMS/PermintaanData/reducer';
+import permintaanDataDetailReducer from 'containers/CMS/PermintaanDataForm/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -28,6 +30,8 @@ export default function createReducer(injectedReducers) {
     tentang: tentangReducer,
     perminataan: perminataanReducer,
     struktur: strukturReducer,
+    permintaanData: permintaanDataReducer,
+    permintaanDataDetail: permintaanDataDetailReducer,
     router: connectRouter(history),
     ...injectedReducers,
   });

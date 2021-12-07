@@ -54,7 +54,7 @@ export const uploadFile = createAsyncThunk('cms/uploadFile', async (params) => {
 });
 
 export const getListBerita = createAsyncThunk('cms/getListBerita', async (params) => {
-  const response = await get(apiUrls.cmsBeritaData, { data: { size: 10, page: params.page } });
+  const response = await get(apiUrls.cmsBeritaData, { query: { size: 10, page: params.page } });
   return response?.data?.content;
 });
 

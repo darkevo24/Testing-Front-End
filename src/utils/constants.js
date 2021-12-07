@@ -38,6 +38,7 @@ export const apiUrls = {
   sdgPillers: getV1Endpoint('settings/key/SDGS'),
   rkpPN: getV1Endpoint('settings/key/RKP'),
   strukturData: getApiEndpoint('cms/v1/bidang'),
+  cmsBeritaData: getApiEndpoint('cms/v1/berita'),
 };
 
 export const TOPIC_LIST = [

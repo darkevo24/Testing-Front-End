@@ -107,7 +107,7 @@ const Forum = () => {
       <Row className="ml-200 mr-200 mt-48 border-gray-stroke br-4">
         <Col
           xs={12}
-          className="sdp-table-title p-24 border-bottom-gray-stroke d-flex align-items-center"
+          className="sdp-table-title p-24 border-bottom-gray-stroke d-flex align-items-center cursor-pointer"
           onClick={handleBackButton}>
           <BackArrow props={{ variant: 'dark' }} /> <span className="ml-10">Formulir Permintaan Data</span>
         </Col>

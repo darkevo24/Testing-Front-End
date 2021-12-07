@@ -106,7 +106,7 @@ export const Header = () => {
           { title: 'Permintaan Data', link: '/permintaan-data' },
           { title: 'Bimtek', link: '/bimtek-summary' },
           { title: 'Komunitas Ahli', link: '/komunitas-ahli' },
-          { title: 'Forum SDI', link: '/forum' },
+          { title: 'Forum SDI', link: '/forum-sdi' },
         ],
       },
       {

@@ -37,11 +37,12 @@
 }
 
 .permintaan-data-form-success{
-    background-color: palegreen;
     width: 97%;
     padding-top: 10px;
     padding-bottom: 10px;
-    color: green;
+    font-weight: 600;
+    color: #15A55F;
+    background-color: #E3F4EC;;
   }
   
   .permintaan-data-form-terkirim{
@@ -49,14 +50,15 @@
     width: 97%;
     padding-top: 10px;
     padding-bottom: 10px;
-    color: rebeccapurple;
+    color:#6848C3;
+    font-weight: 600;
   }
   
   .permintaan-data-form-terproses{
-    background-color: orange;
-    width: 97%;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    color: darkorange;
+      width: 97%;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      color: #DE8813;
+      background-color: #FBF1E3;
   }
   

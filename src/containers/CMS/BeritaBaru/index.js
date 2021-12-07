@@ -34,6 +34,7 @@ const CMSBeritaBaru = () => {
               </div>
             ),
             icon: 'check',
+            onClose: history.goBack(),
           })
         : Notification.show({
             message: (

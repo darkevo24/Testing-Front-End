@@ -36,8 +36,13 @@
     }
 }
 
+.icon-box {
+    width: 3rem !important;
+    height: 3rem !important;
+}
+
 .permintaan-data-form-success{
-    width: 97%;
+    width: 100%;
     padding-top: 10px;
     padding-bottom: 10px;
     font-weight: 600;
@@ -47,7 +52,7 @@
   
   .permintaan-data-form-terkirim{
     background-color: mediumpurple;
-    width: 97%;
+    width: 100%;
     padding-top: 10px;
     padding-bottom: 10px;
     color:#6848C3;
@@ -55,7 +60,7 @@
   }
   
   .permintaan-data-form-terproses{
-      width: 97%;
+      width: 100%;
       padding-top: 10px;
       padding-bottom: 10px;
       color: #DE8813;

@@ -38,12 +38,12 @@ const SuccessText = () => {
     history.push('/permintaan-data');
   };
   return (
-    <Row className="d-flex">
+    <div className="d-flex">
       <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
         <LeftChevron></LeftChevron>
       </div>
       <Row className="permintaan-data-form-success fw-bold justify-content-center align-items-center">Selesai</Row>
-    </Row>
+    </div>
   );
 };
 
@@ -234,12 +234,12 @@ const CMSPermintaanDataView = () => {
               </div>
             </div>
             <Form className="sdp-form" noValidate>
-              <Input isDisabled group label="Deskripsi Data" name="deskripsi" control={control} />
-              <Input isDisabled group label="Tujuan Permintaan data" name="tujuanPermintaan" control={control} />
-              <Input isDisabled group label="Target Waktu" name="tanggalTarget" control={control} />
-              <Input isDisabled group label="Produsen Data" name="produsen" control={control} />
-              <Input isDisabled group label="Jenis Data" name="jenisData" control={control} />
-              <Input isDisabled group isLink label="URL Dataset" name="urlDataset" control={control} />
+              <Input isDisabled={true} group label="Deskripsi Data" name="deskripsi" control={control} />
+              <Input isDisabled={true} group label="Tujuan Permintaan data" name="tujuanPermintaan" control={control} />
+              <Input isDisabled={true} group label="Target Waktu" name="tanggalTarget" control={control} />
+              <Input isDisabled={true} group label="Produsen Data" name="produsen" control={control} />
+              <Input isDisabled={true} group label="Jenis Data" name="jenisData" control={control} />
+              <Input isDisabled={true} group isLink label="URL Dataset" name="urlDataset" control={control} />
             </Form>
             <div>
               <h5 className="fw-bold mb-3 border-bottom-gray-stroke py-2">Informasi Peminta Data</h5>

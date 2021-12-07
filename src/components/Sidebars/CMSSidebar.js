@@ -85,9 +85,18 @@ export const CMSSidebar = () => {
           <SidebarDataIcon className="mr-10" />
           Dashboard Management
         </div>
-        <SidebarItem title="Data Analytics" pathname="/cms/data-analytic" />
+        {/* <SidebarItem title="Data Analytics" pathname="/cms/data-analytic" />
         <SidebarItem title="Kesiapan SDI" pathname="/cms/kesiapan-sdi" />
-        <SidebarItem title="Dashboard Executive" pathname="/cms/dashboard-eksekutif" />
+        <SidebarItem title="Dashboard Executive" pathname="/cms/dashboard-eksekutif" /> */}
+        <div className={cx(bem.e('item'))} onClick={() => window.open('http://103.170.104.187:8088/login/')}>
+          Data Analytics
+        </div>
+        <div className={cx(bem.e('item'))} onClick={() => window.open('http://103.170.104.187:8088/login/')}>
+          Kesiapan SDI
+        </div>
+        <div className={cx(bem.e('item'))} onClick={() => window.open('http://103.170.104.187:8088/login/')}>
+          Dashboard Executive
+        </div>
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>

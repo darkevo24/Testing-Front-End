@@ -36,6 +36,7 @@ export const apiUrls = {
   dataindukData: getV1Endpoint('katalog/datainduk'),
   katalogData: getV1Endpoint('katalog'),
   strukturData: getApiEndpoint('cms/v1/bidang'),
+  cmsBeritaData: getApiEndpoint('cms/v1/berita'),
 };
 
 export const TOPIC_LIST = [

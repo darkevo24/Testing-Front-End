@@ -40,7 +40,7 @@ export default class CreatableSelectDropDown extends React.Component {
       <CreatableSelect
         value={!isEmpty(selectedValues) ? selectedValues : null}
         options={data}
-        className="basic-single"
+        className="basic-single-creatable"
         classNamePrefix="select"
         onChange={this.handleOnChange}
         placeholder={placeHolder}

@@ -33,6 +33,7 @@ const CMSForm = ({ data, style, onSubmit }) => {
         control={control}
         rules={{ required: true }}
         error={errors.thumbnail?.message}
+        uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
       />
       <Input group label="Judul" name="title" control={control} rules={{ required: true }} error={errors.title?.message} />
       <Dropdown

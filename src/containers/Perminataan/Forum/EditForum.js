@@ -12,14 +12,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema, DROPDOWN_LIST } from './index';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getInstansiData,
-  instansiiDatasetSelector,
-  perminataanDatasetSelector,
-  perminataanForumErrorSelector,
-  putPerminataanData,
-  updateResult,
-} from '../reducer';
+import { perminataanDatasetSelector, perminataanForumErrorSelector, putPerminataanData, updateResult } from '../reducer';
+import { getInstansiData, instansiiDatasetSelector } from 'containers/App/reducer';
 import isEmpty from 'lodash/isEmpty';
 import { usePrevious } from 'utils/hooks';
 import moment from 'moment';

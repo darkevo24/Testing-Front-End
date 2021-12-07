@@ -94,7 +94,9 @@ export async function request(url, { method = 'GET', headers: optionHeaders = {}
   if (['GET', 'DELETE'].includes(method)) {
     url += `?${generateQueryString(data)}`;
   }
-
+  if (!headers['Content-Type']) {
+    delete headers['Content-Type'];
+  }
   const fetchResponse = await fetch(url, options);
   const response = checkStatus(fetchResponse);
   return parseResponse(response);

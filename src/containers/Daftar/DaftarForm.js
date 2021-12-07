@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
@@ -161,6 +161,9 @@ const DaftarForm = ({ data, onSubmit }) => {
             control={control}
             rules={{ required: true }}
             error={errors.link?.message}
+            leftIconClass="border-right-0"
+            rightIconClass="cursor-pointer"
+            className="border-left-0"
           />
           <Button className="invisible" type="submit" />
         </Form>

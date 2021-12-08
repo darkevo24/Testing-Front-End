@@ -3,6 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Search, ModalAlertDanger } from 'components/Icons';
 import Button from 'react-bootstrap/Button';
+import { CMSTable } from 'components';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -147,32 +148,17 @@ const LogActivity = () => {
             </InputGroup>
           </div>
         </div>
-        <div className="management-table pt-0">
-          <table>
-            <thead className="head-table-border">
-              <th width="20%">ID Pengguna</th>
-              <th width="20%">Alamat IP</th>
-              <th width="20%">Waktu</th>
-              <th width="25%">Aktivitas</th>
-              <th width="15%">Status</th>
-            </thead>
-            <tbody>
-              {LIST_TABLE.map((data, index) => {
-                return (
-                  <tr>
-                    <td className="data-description">{data.id_user}</td>
-                    <td className="data-description">{data.ip}</td>
-                    <td className="data-description">{data.time}</td>
-                    <td className="data-description">{data.activity}</td>
-                    <td className={data.status === 'Berhasil' ? 'data-description' : 'data-description text-danger'}>
-                      {data.status}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <CMSTable
+          customWidth={[20, 20, 20, 25, 15]}
+          header={['ID Pengguna', 'Alamat IP', 'Waktu', 'Aktivitas']}
+          data={LIST_TABLE.map((item) => {
+            let value = {
+              data: [item.id_user, item.ip, item.time, item.activity],
+              action: '',
+            };
+            return value;
+          })}
+        />
         <div className="wrapper-pagination pt-25">
           <ul className="pagination">
             <li className="page-item">

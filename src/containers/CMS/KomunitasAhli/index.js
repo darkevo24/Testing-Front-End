@@ -34,7 +34,7 @@ const KomunitasAhli = () => {
   }, []);
 
   const redirectToDetail = (data) => {
-    console.log(data);
+    history.push(`/cms/komunitas-ahli-detail/${data.id}`);
   };
 
   const handleAPICall = (params) => {
@@ -52,15 +52,15 @@ const KomunitasAhli = () => {
   const columns = [
     {
       Header: 'Kode Ahli',
-      accessor: 'kode_ahli',
+      accessor: 'kode',
     },
     {
       Header: 'Nama Ahli',
-      accessor: 'name_ahli',
+      accessor: 'nama',
     },
     {
       Header: 'Keahlian',
-      accessor: 'keahlian',
+      accessor: 'bidangKeahlian',
     },
     {
       Header: 'Level',

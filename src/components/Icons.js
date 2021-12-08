@@ -10,6 +10,7 @@ const types = {
   blue: 'blue',
   orange: 'orange',
   green: 'green',
+  white: 'white',
 };
 
 const getColor = (details, defaultColor) => types[details.variant] || (defaultColor ?? types.dim);

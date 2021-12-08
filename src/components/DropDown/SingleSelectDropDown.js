@@ -66,7 +66,7 @@ export const SingleSelectDropdown = ({
           return (
             <Component
               closeMenuOnSelect={true}
-              defaultValue={field.value}
+              value={field.value}
               options={data}
               onChange={field.onChange}
               className={cx(className, 'basic-single')}

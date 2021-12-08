@@ -32,7 +32,7 @@ const BoxFlex = styled.div`
   display: flex;
 `;
 
-export const Topic = () => {
+export const BerandaTopic = () => {
   const list = chunk(TOPIC_LIST, 5);
   const history = useHistory();
 

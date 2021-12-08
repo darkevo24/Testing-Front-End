@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, defaultNumberOfRows, get, post, deleteRequest } from 'utils/request';
+import { apiUrls, defaultNumberOfRows, get } from 'utils/request';
 
 export const initialState = {
   loading: false,
@@ -13,28 +13,33 @@ export const initialState = {
     size: defaultNumberOfRows,
     totalRecords: null,
   },
+  detaildataSet: {
+    loading: false,
+    error: '',
+    record: {},
+  },
+  logdataset: {
+    loading: false,
+    error: '',
+    record: [],
+  },
   error: null,
 };
 
 export const CMS_KOMUNITAS_AHLI_SLICE = 'CMS_KOMUNITAS_AHLI_SLICE';
 
 export const getCMSKomunitasAhliData = createAsyncThunk('cms/getCMSKomunitasAhliData', async ({ page, q, status }) => {
-  const response = await get(apiUrls.cmsKomunitasAhliData, { data: { page: page + 1, size: 10, q, status } });
+  const response = await get(apiUrls.cmsKomunitasAhliData, { query: { page: page + 1, size: 10, q, status } });
   return response?.data?.content;
 });
 
-export const setCMSKomunitasAhliData = createAsyncThunk('cms/setCMSKomunitasAhliData', async (params) => {
-  const response = await get(apiUrls.cmsKomunitasAhliData, params);
+export const getCMSKomunitasAhliDataById = createAsyncThunk('cms/getCMSKomunitasAhliDataById', async (param) => {
+  const response = await get(`${apiUrls.cmsKomunitasAhliData}/${param}`);
   return response?.data?.content;
 });
 
-export const putCMSKomunitasAhliData = createAsyncThunk('cms/putCMSKomunitasAhliData', async (params) => {
-  const response = await get(`apiUrls.cmsKomunitasAhliData/${params.id}`, params);
-  return response?.data?.content;
-});
-
-export const removeCMSKomunitasAhliData = createAsyncThunk('cms/removeCMSKomunitasAhliData', async (id) => {
-  const response = await get(`apiUrls.cmsKomunitasAhliData/${id}`);
+export const getCMSKomunitasAhliLogById = createAsyncThunk('cms/getCMSKomunitasAhliLogById', async (param) => {
+  const response = await get(`${apiUrls.cmsKomunitasAhliData}/${param}/logs`);
   return response?.data?.content;
 });
 
@@ -59,19 +64,32 @@ const cmsKomunitasAhliSlice = createSlice({
       state.dataset.loading = false;
       state.dataset.error = 'Error in fetching komunitas ahli data!';
     });
-    builder.addCase(removeCMSKomunitasAhliData.pending, (state, action) => {
-      state.dataset.loading = true;
+    builder.addCase(getCMSKomunitasAhliDataById.pending, (state, action) => {
+      state.detaildataSet.loading = true;
     });
-    builder.addCase(removeCMSKomunitasAhliData.fulfilled, (state, action) => {
-      state.dataset.loading = false;
+    builder.addCase(getCMSKomunitasAhliDataById.fulfilled, (state, action) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.record = action.payload;
     });
-    builder.addCase(removeCMSKomunitasAhliData.rejected, (state) => {
-      state.dataset.loading = false;
-      state.dataset.error = 'Failed to delete the data!';
+    builder.addCase(getCMSKomunitasAhliDataById.rejected, (state, action) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.error = action.error.message;
+    });
+    builder.addCase(getCMSKomunitasAhliLogById.pending, (state, action) => {
+      state.logdataset.loading = true;
+    });
+    builder.addCase(getCMSKomunitasAhliLogById.fulfilled, (state, action) => {
+      state.logdataset.loading = false;
+      state.logdataset.record = action.payload.reverse();
+    });
+    builder.addCase(getCMSKomunitasAhliLogById.rejected, (state, action) => {
+      state.logdataset.loading = false;
+      state.logdataset.error = action.error.message;
     });
   },
 });
 
 export const cmsKomunitasAhliDatasetSelector = (state) => state.cmsKomunitasAhli?.dataset;
-
+export const cmsKomunitasAhliDetailDatasetSelector = (state) => state.cmsKomunitasAhli?.detaildataSet;
+export const cmsKomunitasAhliLogDatasetSelector = (state) => state.cmsKomunitasAhli?.logdataset;
 export default cmsKomunitasAhliSlice.reducer;

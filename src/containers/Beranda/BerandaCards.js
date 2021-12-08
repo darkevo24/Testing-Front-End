@@ -38,7 +38,7 @@ const TitleBox = styled.div`
   line-height: 23px;
 `;
 
-export const Cards = ({ isLoggedIn, trendingData = [], popularData = [] }) => {
+export const BerandaCards = ({ isLoggedIn, trendingData = [], popularData = [] }) => {
   const linkToRedirect = isLoggedIn ? '/dataset' : '/topic-detail';
   const renderDataSet = (group) => (data) => {
     const dataSetUrl = `/data/dataset/${data.name}`;

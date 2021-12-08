@@ -4,6 +4,7 @@ import { CMSLayout, PrivateRoute } from 'layouts/AdminLayout';
 
 const DashboardPage = lazy(() => import('containers/CMS/Dashboard'));
 const KomunitasAhliPage = lazy(() => import('containers/CMS/KomunitasAhli'));
+const KomunitasAhliDetailPage = lazy(() => import('containers/CMS/KomunitasAhli/KomunitasAhliDetail'));
 const ManageKomunitasAhliPage = lazy(() => import('containers/CMS/KomunitasAhli/ManageKomunitasAhli'));
 const BeritaLayout = lazy(() => import('containers/CMS/BeritaLayout'));
 const BeritaPage = lazy(() => import('containers/CMS/Berita'));
@@ -33,6 +34,7 @@ function CMSRoutes() {
     <CMSLayout>
       <Switch>
         <PrivateRoute exact path="/cms/manage-komunitas-ahli" component={ManageKomunitasAhliPage} />
+        <PrivateRoute exact path="/cms/komunitas-ahli-detail/:id" component={KomunitasAhliDetailPage} />
         <PrivateRoute exact path="/cms/komunitas-ahli" component={KomunitasAhliPage} />
         <PrivateRoute exact path="/cms/dashboard" component={DashboardPage} />
         <PrivateRoute exact path="/cms/about-us" component={AboutUsPage} />

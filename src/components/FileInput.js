@@ -30,12 +30,12 @@ export const FileInput = ({
         name={name}
         control={control}
         rules={rules}
-        render={({ field: { onBlur, value } }) => {
+        render={({ field: { onChange, value } }) => {
           return (
             <div className="sdp-input-wrapper">
               <Form.Control
                 type="file"
-                onBlur={(e) => onBlur(handleOnChange(e.target.files[0]))}
+                onChange={(e) => onChange(handleOnChange(e.target.files[0]))}
                 {...rest}
                 className={finalClassName}
                 custom="true"

@@ -9,6 +9,13 @@ $customBoldSizes: 600;
   .lh-#{$size} {
     line-height: #{$size}px !important;
   }
+  .svg-#{$size} {
+    &svg,
+    svg {
+      height: #{$size}px;
+      width: #{$size}px;
+    }
+  }
 }
 
 @each $size in $customBoldSizes {

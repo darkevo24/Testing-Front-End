@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
-import isEqual from 'lodash/isEqual';
 import { useDispatch } from 'react-redux';
 import debounce from 'lodash/debounce';
 import Form from 'react-bootstrap/Form';
@@ -12,7 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-// import Modal from 'components/Modal';
+import Modal from 'components/Modal';
 import {
   CMS_KOMUNITAS_LEVEL,
   CMS_KOMUNITAS_LEVEL_DAERAH,
@@ -24,7 +23,8 @@ import { apiUrls, get, post } from 'utils/request';
 import { getInstansiData, instansiiDatasetSelector } from 'containers/App/reducer';
 import { useSelector } from 'react-redux';
 import { FileInput, Input } from 'components';
-import { usePrevious } from '../../../utils/hooks';
+import { usePrevious } from 'utils/hooks';
+import Spinner from 'react-bootstrap/Spinner';
 
 const schema = yup
   .object({
@@ -40,7 +40,9 @@ const schema = yup
   .required();
 
 const KomunitasAhli = () => {
-  const [showKontakModal, setShowKontakModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [formData, setFormData] = useState({});
   const [bidangKeahlianData, setBidangKeahlianData] = useState([]);
   const [daerahData, setDaerahData] = useState([]);
   const [foto, setFoto] = useState(null);
@@ -85,7 +87,7 @@ const KomunitasAhli = () => {
 
   useEffect(() => {
     if (values?.level?.value !== prevValues?.level?.value) {
-      setValue('penyelenggara', {});
+      setValue('penyelenggara', null);
     }
   }, [values]);
 
@@ -110,7 +112,7 @@ const KomunitasAhli = () => {
 
   const getDaerahData = async (q = 'a') => {
     try {
-      const { data: { content: dData = [] } = {} } = await get(apiUrls.daerahData, { data: { q } });
+      const { data: { content: dData = [] } = {} } = await get(apiUrls.daerahData, { query: { q } });
       setDaerahData(dData?.length ? dData : list);
     } catch (e) {}
   };
@@ -172,7 +174,7 @@ const KomunitasAhli = () => {
     }
   };
 
-  const onSubmit = async (data) => {
+  const handleDataSubmit = (data) => {
     const clone = { ...errorInfo };
     if (!foto) clone['foto'] = 'foto is required';
     if (!cv) clone['cv'] = 'cv is required';
@@ -180,42 +182,49 @@ const KomunitasAhli = () => {
       setErrorInfo(clone);
       return;
     }
+    setShowModal(true);
+    setFormData(data);
+  };
+  const onSubmit = async () => {
     const fotoLink = await uplodFoto();
     const cvLink = await uplodCV();
     try {
+      setLoader(true);
       const response = await post(apiUrls.cmsKomunitasAhliData, {
-        nama: data.nama,
-        bidangKeahlian: data?.bidangKeahlian?.value || '',
+        nama: formData.nama,
+        bidangKeahlian: formData?.bidangKeahlian?.value || '',
         daerah: {
-          id: data?.daerah?.value,
+          id: formData?.daerah?.value,
         },
         instansi: {
-          id: data?.instansi?.value,
+          id: formData?.instansi?.value,
         },
-        level: data?.level?.value || '',
-        penyelenggara: data?.penyelenggara?.value || '',
-        pendidikan: data?.pendidikan?.value || '',
-        riwayat: data.riwayat,
+        level: formData?.level?.value || '',
+        penyelenggara: formData?.penyelenggara?.value || '',
+        pendidikan: formData?.pendidikan?.value || '',
+        riwayat: formData.riwayat,
         foto: fotoLink || {},
         cv: cvLink || {},
         kontak: [
-          { title: 'No Handphone', image: '', tipe: 'handphone', value: data?.handphone || '' },
-          { title: 'Email', image: '', tipe: 'email', value: data?.email || '' },
-          { title: '', image: '', tipe: 'facebook', value: data?.facebook || '' },
-          { title: '', image: '', tipe: 'twitter', value: data?.twitter || '' },
-          { title: '', image: '', tipe: 'instagram', value: data?.instagram || '' },
-          { title: '', image: '', tipe: 'youtube', value: data?.youtube || '' },
+          { title: 'No Handphone', image: '', tipe: 'handphone', value: formData?.handphone || '' },
+          { title: 'Email', image: '', tipe: 'email', value: formData?.email || '' },
+          { title: '', image: '', tipe: 'facebook', value: formData?.facebook || '' },
+          { title: '', image: '', tipe: 'twitter', value: formData?.twitter || '' },
+          { title: '', image: '', tipe: 'instagram', value: formData?.instagram || '' },
+          { title: '', image: '', tipe: 'youtube', value: formData?.youtube || '' },
         ],
       });
       goBack();
     } catch (e) {
+      setLoader(false);
+      setShowModal(false);
       setAPIError(e.message);
     }
   };
 
   return (
     <div className="sdp-manage-komunitas-container">
-      <Form noValidate onSubmit={handleSubmit(onSubmit)}>
+      <Form noValidate onSubmit={handleSubmit(handleDataSubmit)}>
         <div className="d-flex justify-content-between border-bottom-gray-stroke">
           <div className="d-flex align-items-center">
             <label className="fw-bold fs-24 lh-29 p-32">Profil Ahli Baru</label>
@@ -233,14 +242,7 @@ const KomunitasAhli = () => {
               className="mr-16 bg-gray sdp-text-grey-dark br-4 py-13 px-32 border-0">
               Simpan
             </Button>
-            {/*<Button key="kirim" className="mr-16 bg-info sdp-text-white br-4 py-13 px-40 border-0">*/}
-            {/*  kirim*/}
-            {/*</Button>*/}
           </div>
-          {/*<div className="sdp-left-wrapper d-flex align-items-center mr-32">*/}
-          {/*  <lable className="mr-12 sdp-text-disable">Saved 1 minutes ago</lable>*/}
-          {/*  <label className="sdp-text-orange-light">Draft</label>*/}
-          {/*</div>*/}
         </div>
         <div className="bg-gray-lighter p-32">
           <Row className="mb-3 px-24">
@@ -465,28 +467,19 @@ const KomunitasAhli = () => {
             ))}
           </Row>
         </div>
-        {/*{showKontakModal && (*/}
-        {/*  <Modal*/}
-        {/*    Visible={showKontakModal}*/}
-        {/*    onClose={() => setShowKontakModal(false)}*/}
-        {/*    title="Tambah Kontak"*/}
-        {/*    actions={[*/}
-        {/*      { variant: 'secondary', text: 'Batal', onClick: () => setShowKontakModal(false) },*/}
-        {/*      { text: 'Konfirmasi', type: 'submit' },*/}
-        {/*    ]}>*/}
-        {/*    <Form noValidate onSubmit={handleList}>*/}
-        {/*      <Form.Group as={Col} md="8" className="mb-16">*/}
-        {/*        <label className="sdp-form-label py-8">Logo Sosmed</label>*/}
-        {/*        <Form.Control type="file" name="logo" rules={{ required: true }} />*/}
-        {/*      </Form.Group>*/}
-        {/*      <Form.Group as={Col} md="8" className="mb-16">*/}
-        {/*        <label className="sdp-form-label py-8">Link Tautan</label>*/}
-        {/*        <Form.Control type="text" name="link" rules={{ required: true }} />*/}
-        {/*      </Form.Group>*/}
-        {/*    </Form>*/}
-        {/*  </Modal>*/}
-        {/*)}*/}
       </Form>
+      <Modal visible={showModal} onClose={() => setShowModal(false)} title="" showHeader={false}>
+        <label className="p-24">Simpan Perubahan Data?</label>
+        <div className="d-flex justify-content-end mt-50">
+          <Button className="br-4 mr-8 px-57 py-13 bg-transparent" variant="light" onClick={() => setShowModal(false)}>
+            Batal
+          </Button>
+          <Button className="br-4 px-39 py-13" variant="info" onClick={onSubmit}>
+            {loader && <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="mr-10" />}
+            Konfirmasi
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 };

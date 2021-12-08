@@ -85,7 +85,7 @@ export const EditForum = ({ onClose, data, initialCall }) => {
   };
 
   return (
-    <Modal size="lg" visible={true} onClose={onClose} title="Formulir Permintaan Data">
+    <Modal size="lg" visible={true} onClose={onClose} title="Ubah Permintaan Data">
       <Form noValidate onSubmit={handleSubmit(onSubmit)}>
         <Row className="mb-3 px-24">
           <Input
@@ -178,12 +178,6 @@ export const EditForum = ({ onClose, data, initialCall }) => {
               />
             )}
             Simpan
-          </Button>
-          <Button type="submit" className="br-40 mb-12 px-54 py-12">
-            {loading && (
-              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="mr-10" />
-            )}
-            Kirim
           </Button>
         </div>
       </Form>

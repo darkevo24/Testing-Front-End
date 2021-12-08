@@ -5,10 +5,10 @@ import take from 'lodash/take';
 import { Loader } from 'components';
 import { tokenSelector } from 'containers/Login/reducer';
 import { datasetSelector, getDataSet, getInitialParams } from './reducer';
-import { Top } from './Top';
-import { Search } from './Search';
-import { Topic } from './Topic';
-import { Cards } from './Cards';
+import { BerandaTop } from './BerandaTop';
+import { SearchBeranda } from './SearchBeranda';
+import { BerandaTopic } from './BerandaTopic';
+import { BerandaCards } from './BerandaCards';
 
 const Container = styled.div`
   width: 1280px;
@@ -29,11 +29,11 @@ const BerandaPage = () => {
   const popularData = take(data, 4);
   return (
     <>
-      <Top />
+      <BerandaTop />
       <Container>
-        <Search />
-        <Topic />
-        <Cards isLoggedIn={isLoggedIn} trendingData={trendingData} popularData={popularData} />
+        <SearchBeranda />
+        <BerandaTopic />
+        <BerandaCards isLoggedIn={isLoggedIn} trendingData={trendingData} popularData={popularData} />
         {loading && <Loader fullscreen />}
       </Container>
     </>

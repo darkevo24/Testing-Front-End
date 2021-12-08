@@ -100,9 +100,13 @@ export async function request(url, { method = 'GET', headers: optionHeaders = {}
     delete headers['Content-Type'];
   }
 
+  const controller = new AbortController();
+  options.signal = controller.signal;
+  const timeout = setTimeout(() => controller.abort(), 10 * 1000); // Timeout in 10 seconds
   let fetchResponse;
   try {
     fetchResponse = await fetch(url, options);
+    clearTimeout(timeout);
   } catch (error) {
     fetchResponse = error.response;
   }

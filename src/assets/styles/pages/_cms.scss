@@ -7,10 +7,20 @@
       button svg {
         width: 18px;
       }
+
+      .input-group {
+        position: relative;
+
+        svg {
+          position: absolute;
+          right: 12px;
+          top: 12px;
+        }
+      }
     }
 
     &__title {
-       
+
       font-size: 32px;
       font-style: normal;
       font-weight: 700;

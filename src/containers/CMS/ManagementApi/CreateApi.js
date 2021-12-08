@@ -1,5 +1,6 @@
 import { useHistory, useLocation } from 'react-router-dom';
 import LogoBappenas from 'assets/Logo_Bappenas_Indonesia.png';
+import Button from 'react-bootstrap/Button';
 import { ReactComponent as Search } from 'assets/search-api.svg';
 import { ReactComponent as Prev } from 'assets/prev.svg';
 import { ReactComponent as Next } from 'assets/next.svg';
@@ -86,9 +87,9 @@ const CreateApi = () => {
           <div className="row">
             <div className="col-md-6 pl-0">
               <div className="wrapper-left">
-                <button className="btn btn-info" onClick={() => history.push('api/form')}>
-                  Tambah API
-                </button>
+                <Button onClick={() => history.push('api/form')} variant="info">
+                  Tambah Api
+                </Button>
               </div>
             </div>
             <div className="col-md-6 d-flex align-bottom">
@@ -107,52 +108,50 @@ const CreateApi = () => {
         </div>
       </div>
       <div className="container">
-        <div className="management-table pt-20">
-          <CMSTable
-            customWidth={[20, 50, 20, 20, 10]}
-            header={['Judul API', 'Deskripsi', 'Output JSON', 'Detail']}
-            data={LIST_TABLE.map((item) => {
-              let value = {
-                data: [item.title, item.description, item.json],
-                action: '/cms/api-detail/' + item.id,
-              };
-              return value;
-            })}
-          />
-          <div className="wrapper-pagination">
-            <ul className="pagination">
-              <li className="page-item">
-                <a className="page-link prev" href="#">
-                  <Prev />
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link active" href="#">
-                  1
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  2
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  3
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  4
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link next" href="#">
-                  <Next />
-                </a>
-              </li>
-            </ul>
-          </div>
+        <CMSTable
+          customWidth={[20, 50, 20, 20, 10]}
+          header={['Judul API', 'Deskripsi', 'Output JSON', 'Detail']}
+          data={LIST_TABLE.map((item) => {
+            let value = {
+              data: [item.title, item.description, item.json],
+              action: '/cms/api-detail/' + item.id,
+            };
+            return value;
+          })}
+        />
+        <div className="wrapper-pagination">
+          <ul className="pagination">
+            <li className="page-item">
+              <a className="page-link prev" href="#">
+                <Prev />
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link active" href="#">
+                1
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" href="#">
+                2
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" href="#">
+                3
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link" href="#">
+                4
+              </a>
+            </li>
+            <li className="page-item">
+              <a className="page-link next" href="#">
+                <Next />
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>

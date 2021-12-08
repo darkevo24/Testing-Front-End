@@ -1,3 +1,4 @@
+import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { Row, Col } from 'react-bootstrap';
@@ -66,12 +67,12 @@ const EditApi = () => {
             <div className="header-log">
               <h1>Detail API</h1>
               <div className="wrapper-icon">
-                <button className="btn btn-secondary ml-50" style={{ width: '112px' }} onClick={() => history.goBack()}>
+                <Button className="ml-50" variant="secondary" style={{ width: '112px' }} onClick={() => history.goBack()}>
                   Batal
-                </button>
-                <button className="btn btn-info ml-10" style={{ width: '112px' }}>
+                </Button>
+                <Button className="ml-10" variant="info" style={{ width: '112px' }}>
                   Simpan
-                </button>
+                </Button>
               </div>
             </div>
             <div className="wrapper-input">
@@ -99,7 +100,9 @@ const EditApi = () => {
                   <input type="text" placeholder="Dinas Kesehatan DKI Jakarta" />
                 </div>
               </div>
-              <button className="btn btn-success mt-0">Import</button>
+              <Button className="mt-10" variant="success" style={{ width: '112px' }}>
+                Import
+              </Button>
             </div>
             <div className="wrapper-result">
               <div className="wrapper-data">
@@ -186,20 +189,24 @@ const EditApi = () => {
                   </table>
                 </div>
                 <div className="wrapper-generate">
-                  <button className="btn btn-success mb-30 mt-20">Generate Output</button>
+                  <Button className="mt-20 mb-20" variant="success">
+                    Generate Output
+                  </Button>
                 </div>
               </div>
               <div className="wrapper-json">
                 <span> Output </span>
                 <div className="input-group">
                   <input type="text" placeholder="https://bappenas.go.id/data.json" />
-                  <div class="input-group-append">
-                    <span class="input-group-text">
+                  <div className="input-group-append">
+                    <span className="input-group-text">
                       <CopyJson />
                     </span>
                   </div>
                 </div>
-                <button className="btn btn-json">Download JSON</button>
+                <Button variant="json" style={{ width: '180px' }}>
+                  Download Json
+                </Button>
               </div>
             </div>
           </Col>

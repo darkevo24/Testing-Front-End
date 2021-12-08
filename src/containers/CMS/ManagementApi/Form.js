@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 import { ReactComponent as Union } from 'assets/union.svg';
 import { ReactComponent as CopyJson } from 'assets/copy-json.svg';
 import { Dropdown } from 'components';
@@ -63,12 +64,12 @@ const ApiForm = () => {
     <div className="management-api form">
       <div className="header-form">
         <h1>Buat API Baru</h1>
-        <button className="btn btn-secondary ml-50" style={{ width: '112px' }} onClick={() => history.goBack()}>
+        <Button className="ml-50" variant="secondary" style={{ width: '112px' }} onClick={() => history.goBack()}>
           Batal
-        </button>
-        <button className="btn btn-info ml-10" style={{ width: '112px' }}>
+        </Button>
+        <Button className="ml-10" variant="info" style={{ width: '112px' }}>
           Simpan
-        </button>
+        </Button>
       </div>
       <Row className="wrapper-input-row">
         <Col md={8}>
@@ -135,9 +136,9 @@ const ApiForm = () => {
                 </div>
               </div>
             </div>
-            <button className="btn btn-success" onClick={() => setDetailImport(true)}>
+            <Button variant="success" style={{ width: '112px' }} onClick={() => setDetailImport(true)}>
               Import
-            </button>
+            </Button>
           </div>
         </Col>
       </Row>
@@ -233,9 +234,9 @@ const ApiForm = () => {
                   </table>
                 </div>
                 <div className="wrapper-generate">
-                  <button className="btn btn-success my-5" onClick={() => setGenerateOutput(true)}>
+                  <Button variant="success" onClick={() => setGenerateOutput(true)}>
                     Generate Output
-                  </button>
+                  </Button>
                 </div>
               </div>
               {generateOutput && (
@@ -249,7 +250,9 @@ const ApiForm = () => {
                       </span>
                     </div>
                   </div>
-                  <button className="btn btn-json">Download JSON</button>
+                  <Button variant="json" style={{ width: '180px' }}>
+                    Download Json
+                  </Button>
                 </div>
               )}
             </div>

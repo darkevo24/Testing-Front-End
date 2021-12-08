@@ -1,4 +1,6 @@
 import { useHistory, useLocation } from 'react-router-dom';
+import { Row, Col } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 import LogoBappenas from 'assets/Logo_Bappenas_Indonesia.png';
 import { ReactComponent as Edit } from 'assets/edit.svg';
 import { ReactComponent as Search } from 'assets/search-api.svg';
@@ -50,8 +52,8 @@ const ManagementApi = () => {
     <div className="management-api">
       <div className="container">
         <div className="card-api">
-          <div className="row">
-            <div className="col-md-6">
+          <Row>
+            <Col md={6}>
               <div className="wrapper-left">
                 <div className="card-logo">
                   <img src={LogoBappenas} alt="logo" height="60px" width="60px" />
@@ -69,12 +71,12 @@ const ManagementApi = () => {
                   <p>3 Files</p>
                 </div>
               </div>
-            </div>
-            <div className="col-md-6">
+            </Col>
+            <Col Md={6}>
               <div className="wrapper-right">
-                <button className="btn btn-info" onClick={() => history.push('/api/form')}>
+                <Button variant="info" onClick={() => history.push('/api/form')}>
                   Tambah API
-                </button>
+                </Button>
                 <div className="input-group">
                   <input type="text" placeholder="Cari..." />
                   <div class="input-group-append">
@@ -84,8 +86,8 @@ const ManagementApi = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </Col>
+          </Row>
         </div>
         <div className="management-table bappenas">
           <table>

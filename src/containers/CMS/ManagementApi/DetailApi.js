@@ -3,14 +3,34 @@ import { useHistory } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Row, Col } from 'react-bootstrap';
-import { Modal } from 'components';
+import { Modal, Dropdown } from 'components';
 import { ReactComponent as CopyJson } from 'assets/copy-json.svg';
 import { ReactComponent as IconEdit } from 'assets/cms-api-edit.svg';
 import { ReactComponent as IconDelete } from 'assets/cms-api-delete.svg';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import './index.scss';
 
 const DetailApi = () => {
+  const schema = yup
+    .object({
+      nama: yup.string().required(),
+      kode: yup.string().required(),
+      level: yup.mixed().required(),
+    })
+    .required();
+
+  const {
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const level = [1, 2, 3, 4, 5];
+
   const history = useHistory();
   const [modalProfile, setModalProfile] = useState(false);
   const LIST_TABLE = [
@@ -185,9 +205,13 @@ const DetailApi = () => {
                             <td className="data-description">{data.property}</td>
                             <td className="data-description">{data.equlvalent}</td>
                             <td className="data-description select">
-                              <Form.Select>
-                                <option key={index}>{data.source}</option>
-                              </Form.Select>
+                              <Dropdown
+                                group
+                                control={control}
+                                placeholder={data.property}
+                                error={errors.level?.message}
+                                options={level.map((lvl) => ({ value: lvl, label: lvl }))}
+                              />
                             </td>
                           </tr>
                         );
@@ -206,7 +230,9 @@ const DetailApi = () => {
                     </span>
                   </div>
                 </div>
-                <button className="btn btn-json">Download JSON</button>
+                <Button variant="json" style={{ width: '180px' }}>
+                  Download Json
+                </Button>
               </div>
             </div>
           </Col>

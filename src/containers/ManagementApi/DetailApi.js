@@ -135,12 +135,12 @@ const ApiDetail = () => {
             <p> Detail Api </p>
           </div>
           <div className="header-right">
-            <button className="btn btn-secondary mr-10" onClick={() => setModalProfile(true)}>
+            <Button variant="secondary" className="mr-10" onClick={() => setModalProfile(true)}>
               Hapus
-            </button>
-            <button className="btn btn-info" onClick={() => history.push('/api/edit/api-1')}>
+            </Button>
+            <Button variant="info" onClick={() => history.push('/api/edit/api-1')}>
               Perbarui
-            </button>
+            </Button>
           </div>
         </div>
         <div className="wrapper-input">
@@ -332,7 +332,9 @@ const ApiDetail = () => {
                   </span>
                 </div>
               </div>
-              <button className="btn btn-json">Download JSON</button>
+              <Button variant="json" style={{ width: '180px;' }}>
+                Download JSON
+              </Button>
             </div>
           </div>
         </div>

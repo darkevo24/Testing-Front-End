@@ -1,5 +1,6 @@
 import { useHistory } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
+import { Row, Col } from 'react-bootstrap';
 import LogoBappenas from 'assets/Logo_Bappenas_Indonesia.png';
 import { ReactComponent as Search } from 'assets/search-api.svg';
 import { ReactComponent as Prev } from 'assets/prev.svg';

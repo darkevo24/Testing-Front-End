@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 import { Row, Col } from 'react-bootstrap';
 import { ReactComponent as CopyJson } from 'assets/copy-json.svg';
 import { ReactComponent as Arrow } from 'assets/arrow-left-add.svg';
@@ -142,16 +143,16 @@ const FormApi = () => {
           </div>
           {detailImport ? (
             <div className="header-right">
-              <button className="btn btn-secondary mr-10" onClick={() => setDetailImport(false)}>
+              <Button variant="secondary" className="mr-10" onClick={() => setDetailImport(false)}>
                 Batal
-              </button>
-              <button className="btn btn-info">Simpan</button>
+              </Button>
+              <Button variant="info">Simpan</Button>
             </div>
           ) : (
             <div className="header-right">
-              <button className="btn btn-secondary" disabled>
+              <Button variant="secondary" disabled>
                 Simpan
-              </button>
+              </Button>
             </div>
           )}
         </div>
@@ -207,9 +208,9 @@ const FormApi = () => {
             </label>
             <input type="text" placeholder="1000" />
           </div>
-          <button className="btn btn-success" onClick={handleImport}>
+          <Button variant="success" style={{ width: '112px;' }} onClick={handleImport}>
             Import
-          </button>
+          </Button>
         </div>
         {detailImport && (
           <div className="wrapper-result">
@@ -335,9 +336,9 @@ const FormApi = () => {
                 </table>
               </div>
               <div className="wrapper-generate">
-                <button className="btn btn-success my-5" onClick={() => setGenerateOutput(true)}>
+                <Button variant="success" className="my-5" onClick={() => setGenerateOutput(true)}>
                   Generate Output
-                </button>
+                </Button>
               </div>
               {generateOutput && (
                 <div className="wrapper-json">
@@ -350,7 +351,7 @@ const FormApi = () => {
                       </span>
                     </div>
                   </div>
-                  <button className="btn btn-json">Download JSON</button>
+                  <Button variant="json">Download JSON</Button>
                 </div>
               )}
             </div>

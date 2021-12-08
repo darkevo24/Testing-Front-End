@@ -1,6 +1,6 @@
 import { useHistory, useLocation } from 'react-router-dom';
-import Form from 'react-bootstrap/Form';
 import { Row, Col } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 import { ReactComponent as CopyJson } from 'assets/copy-json.svg';
 import { ReactComponent as Arrow } from 'assets/arrow-left-add.svg';
 import { ReactComponent as Union } from 'assets/union.svg';
@@ -132,10 +132,10 @@ const ApiDetail = () => {
             <p> Perbarui Api </p>
           </div>
           <div className="header-right">
-            <button className="btn btn-secondary mr-10" onClick={() => history.push('/api')}>
+            <Button variant="secondary" className="mr-10" onClick={() => history.push('/api')}>
               Batal
-            </button>
-            <button className="btn btn-info">Simpan</button>
+            </Button>
+            <Button variant="info">Simpan</Button>
           </div>
         </div>
         <div className="wrapper-input">
@@ -194,7 +194,9 @@ const ApiDetail = () => {
             </label>
             <input type="text" placeholder="10000" />
           </div>
-          <button className="btn btn-success">Import</button>
+          <Button variant="success" style={{ width: '112px;' }}>
+            Import
+          </Button>
         </div>
         <div className="wrapper-result">
           <div className="wrapper-data">
@@ -319,7 +321,9 @@ const ApiDetail = () => {
               </table>
             </div>
             <div className="wrapper-generate">
-              <button className="btn btn-success my-5">Generate Output</button>
+              <Button variant="success" className="my-5">
+                Generate Output
+              </Button>
             </div>
             <div className="wrapper-json">
               <span> Output </span>
@@ -331,7 +335,7 @@ const ApiDetail = () => {
                   </span>
                 </div>
               </div>
-              <button className="btn btn-json">Download JSON</button>
+              <Button variant="json">Download JSON</Button>
             </div>
           </div>
         </div>

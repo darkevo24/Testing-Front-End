@@ -1,10 +1,12 @@
+@import '../../../assets/styles/variables';
+
 .management-api {
     min-height: 100vh;
     padding: 50px 0;
 
     .form-group {
         input:disabled {
-            background: #F5F6FA;
+            background: $gray-bg;
         }
     }
 
@@ -19,9 +21,9 @@
             border-radius: 4px;
             outline: none;
             width: 85%;
-            border: 1px solid #E2E6E9;
+            border: 1px solid $stroke-button;
             border-right: none;
-            color: #858A8F;
+            color: $gray;
             &:focus {
                 outline: none;
             }
@@ -31,13 +33,13 @@
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
             background: transparent;
-            border: 1px solid #E2E6E9;
+            border: 1px solid $stroke-button;
             border-left: none;
         }
     }
 
     .header-api {
-        background: #FFFFFF;
+        background: $white;
         padding-bottom: 20px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
@@ -75,18 +77,18 @@
     }
 
     .main-content {
-        background: #FAFAFA;
+        background: $gray-lighter;
         padding-top: 30px;
         .card-list {
             display: flex;
-            background: #FFFFFF;
-            border: 1px solid #E1E2EA;
+            background: $white;
+            border: 1px solid $stroke;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             border-radius: 4px;
             position: relative;
             cursor:pointer;
             .card-logo {
-                background: #F5F6FA;
+                background: $gray-bg;
                 padding: 10px;
                 display: flex;
                 justify-content: center;
@@ -97,13 +99,13 @@
                 h3 {
                     font-size: 18px;
                     font-weight: 600;
-                    color: #313B44;
+                    color: $black-light;
                     margin: 0;
                 }
                 p {
                     word-break: break-word;
                     font-size: 13px;
-                    color: #858A8F;
+                    color: $gray;
                     padding-top: 10px;
                     margin: 0;
                 }
@@ -111,7 +113,7 @@
                     position: absolute;
                     width: 64px;
                     height: 24px;
-                    background: #F5F6FA;
+                    background: $gray-bg;
                     top: 0;
                     right: 0;
                     display: flex;
@@ -126,9 +128,9 @@
     .wrapper-json {
         width: 100%;
         display: flex;
-        background: #FFFFFF;
+        background: $white;
         align-items: center;
-        border: 1px solid #E1E2EA;
+        border: 1px solid $stroke;
         height: 74px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         border-radius: 4px;
@@ -136,13 +138,13 @@
         .input-group {
             margin: 0 15px;
             // width: 830px;
-            background: #F5F6FA;
+            background: $gray-bg;
             height: 50px;
             .input-group-text {
                 border: none;
             }
             input {
-                background: #F5F6FA;
+                background: $gray-bg;
                 border: none;
                 width: 100%;
             }
@@ -150,15 +152,6 @@
         span {
             font-weight: 600;
             font-size: 16px;
-        }
-
-        .btn-json {
-            background: #FFFFFF;
-            border: 1px solid #E1E2EA;
-            width: 157px;
-            height: 50px;
-            border-radius: 4px;
-            font-size: 14px;
         }
 
     }
@@ -169,24 +162,13 @@
             align-items: center;
             .count {
                 margin: 0;
-                color: #858A8F;
+                color: $gray;
                 font-size: 14px;
                 font-weight: normal;
             }
         }
     }
 
-    .btn-success {
-        &:hover {
-            color: #fff;
-        }
-        &:focus {
-            color: #fff;
-        }
-        &:active {
-            color: #fff;
-        }
-    }
 
     // ============ CreateAPI Pages =================
     .management-table {
@@ -197,7 +179,7 @@
             border-spacing: 0 15px;
             .head-table-border {
                 th {
-                    border-bottom: 2px solid #858A8F;
+                    border-bottom: 2px solid $gray;
                 }
             }
             th {
@@ -210,23 +192,23 @@
                     border-radius: 4px;
                     padding: 10px;
                     font-size: 14px;
-                    color: #2D2627;
+                    color:$black-dark-10;
                     margin: 5px 0;
-                    border-top: 1px solid #eee;
-                    border-bottom: 1px solid #eee;
+                    border-top: 1px solid $stroke;
+                    border-bottom: 1px solid $stroke;
                     &:first-child {
-                        border-left: 1px solid #eee;
+                        border-left: 1px solid $stroke;
                     }
                     &:last-child {
-                        border-right: 1px solid #eee;
+                        border-right: 1px solid $stroke;
                     }
                 }
 
                 .data-description {
-                    color: #515154;
+                    color: $gray-dark;
                     &.select {
                         select {
-                            background: #F5F6FA;
+                            background: $gray-bg;
                             border-radius: 2px;
                             border: none;
                         }
@@ -248,7 +230,7 @@
             p {
                 padding-left: 10px;
                 margin: 0;
-                color: #2D2627;
+                color:$black-dark-10;
                 font-size: 24px;
                 font-weight: bold;
             }
@@ -262,8 +244,8 @@
                 width: 160px;
                 height: 40px;
                 border-radius: 40px;
-                background: #F5F6FA;
-                color: #858A8F;
+                background: $gray-bg;
+                color: $gray;
                 outline: none;
                 border: none;
             }
@@ -276,8 +258,8 @@
         input {
             height: 50px;
             width: 100%;
-            background: #FFFFFF;
-            border: 1px solid #E1E2EA;
+            background: $white;
+            border: 1px solid $stroke;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
             border-radius: 4px;
             outline: none;
@@ -287,11 +269,11 @@
         .form-group {
             margin-bottom: 25px;
             label {
-                color: #515154;
+                color: $gray-dark;
                 margin: 0;
                 padding-right: 10px;
                 font-size: 14px;
-                color: #515154;
+                color: $gray-dark;
             }
             &.optional {
                 padding-top: 21px;
@@ -316,7 +298,7 @@
             .wrapper-desc {
                 padding: 10px;
                 line-height: 22px;
-                color: #2D2627;
+                color:$black-dark-10;
                 font-size: 14px;
                 transition: all 0.7s ease-in-out;
                 display: none;
@@ -324,11 +306,11 @@
                 position: absolute;
                 width: 400px;
                 min-height: 88px;
-                background: #F5F6FA;
+                background: $gray-bg;
                 left: calc(100% + 10px);
                 top: 0;
                 z-index: 2;
-                border: 1px solid #E1E2EA;
+                border: 1px solid $stroke;
                 box-sizing: border-box;
                 box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
             }
@@ -341,7 +323,7 @@
                 &::before {
                     content: '';
                     position: absolute;
-                    background: #fff;
+                    background: $white;
                     width: 100%;
                     height: 100%;
                     right: 0;
@@ -349,7 +331,7 @@
                 }
             }
             .input-group-append {
-                background: #F5F6FA;
+                background: $gray-bg;
                 border-radius: 6px;
                 position: absolute;
                 padding: 9px 16px;
@@ -360,17 +342,7 @@
                 z-index: 2;
             }
         }
-        .btn-success {
-            background: #23BD73;
-            height: 40px;
-            width: 112px;
-            border-radius: 4px;
-            border: none;
-            margin-top: 20px;
-            &:hover {
-                color: #fff;
-            }
-        }
+
     }
 
     &.add {
@@ -379,8 +351,8 @@
 
         .card-bappenas {
             padding: 24px;
-            background: #FFFFFF;
-            border: 1px solid #E1E2EA;
+            background: $white;
+            border: 1px solid $stroke;
             border-bottom: none;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
             border-radius: 4px;
@@ -388,7 +360,7 @@
             .wrapper-left {
                 display: flex;
                 .card-logo {
-                    border: 1px solid #E1E2EA;
+                    border: 1px solid $stroke;
                     padding: 10px;
                     display: flex;
                     justify-content: center;
@@ -407,17 +379,17 @@
                     }
                     p {
                         font-size: 14px;
-                        color: #858A8F;
+                        color: $gray;
                     }
                     .input-group {
                         flex-wrap: nowrap;
                         margin: 10px 0;
                         height: 40px;
                         input {
-                            background: #F5F6FA;
+                            background: $gray-bg;
                             padding-left: 20px;
                             border-radius: 4px;
-                            color: #858A8F;
+                            color: $gray;
                             outline: none;
                             border: none;
                             width: 100%;
@@ -426,7 +398,7 @@
                             }
                         }
                         .input-group-text {
-                            background: #F5F6FA;
+                            background: $gray-bg;
                             border-top-left-radius: 0;
                             border-bottom-left-radius: 0;
                             border: none;
@@ -439,7 +411,7 @@
         }
 
         .header-api {
-            border: 1px solid #E1E2EA;
+            border: 1px solid $stroke;
             padding: 24px;
             .wrapper-left {
                 width: 161px;
@@ -487,7 +459,8 @@
     }
 
     .sdp-content-table__body {
-        padding: 0 !important;
+        padding: 10px !important;
+        padding-top: 20px !important;
     }
     // ============ End CreateAPI Pages ==============
 
@@ -503,7 +476,7 @@
             padding: 30px 0;
             display: flex;
             align-items: center;
-            background: #FFFFFF;
+            background: $white;
             h1 {
                 font-weight: bold;
                 font-size: 24px;
@@ -519,7 +492,7 @@
             background: #FAFAFA;
         }
         .wrapper-result {
-            background: #FFFFFF;
+            background: $white;
             padding-top: 50px;
             .wrapper-title {
                 display: flex;
@@ -539,7 +512,7 @@
                     th {
                         font-weight: 600;
                         font-size: 14px;
-                        color: #515154;
+                        color: $gray-dark;
                     }
                 }
             }
@@ -547,7 +520,7 @@
                 padding: 50px 0;
                 .wrapper-input {
                     input:disabled {
-                        background: #F5F6FA;
+                        background: $gray-bg;
                     }
                 }
             }
@@ -565,7 +538,7 @@
             padding-bottom: 30px;
             display: flex;
             align-items: center;
-            background: #FFFFFF;
+            background: $white;
             h1 {
                 font-weight: bold;
                 font-size: 24px;
@@ -587,7 +560,7 @@
             .card-log {
                 .date {
                     display: block;
-                    color: #515154;
+                    color: $gray-dark;
                     font-size: 14px;
                     width: 115px;
                     margin: 0;
@@ -600,11 +573,11 @@
                         // right: 110px;
                         left: 100%;
                         bottom: 8px;
-                        background-color: #E1E2EA;
+                        background-color: $stroke;
                     }
                 }
                 .description {
-                    color: #858A8F;
+                    color: $gray;
                     margin: 0;
                     padding-left: 10px;
                     max-width: 200px;
@@ -623,9 +596,9 @@
                     display: block;
                     min-width: 50px;
                     min-height: 17px;
-                    color: #858A8F;
+                    color: $gray;
                     padding: 4px 6px;
-                    background: #F5F6FA;
+                    background: $gray-bg;
                     border-radius: 2px;
                     margin: 0;
                 }
@@ -651,15 +624,16 @@
 
 }
 
-   .modal-dialog {
-        .modal-header {
-            display: none;
-        }
-        max-width: 430px;
-        display: flex;
-        align-items: center;
-        min-height: 100vh;
-        .font-weight-bold{
-            font-weight: bold;
-        }
+// Set Modal Dialog
+.modal-dialog {
+    .modal-header {
+        display: none;
     }
+    max-width: 430px;
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    .font-weight-bold{
+        font-weight: bold;
+    }
+}

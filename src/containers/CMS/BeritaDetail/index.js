@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 // import { useHistory } from 'react-router-dom';
+import { setDetailBerita, detailDataSelector } from '../BeritaBaru/reducer';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
 import { LogStatus } from 'components/Sidebars/LogStatus';
-import { CMSForm } from 'components';
+import { CMSForm, Loader } from 'components';
 import bn from 'utils/bemNames';
 
 const bem = bn('content-detail');
@@ -14,35 +16,22 @@ const bem = bn('content-detail');
 const CMSBeritaDetail = (props) => {
   const idBerita = props.match.params.id;
   // const history = useHistory();
-  const dataLog = [
-    {
-      date: '12 Desember 2021',
-      status: 'Selesai',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '10 Desember 2021',
-      status: 'Diproses',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '08 Desember 2021',
-      status: 'Terkirim',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '08 Desember 2021',
-      status: 'Dibuat',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-  ];
+  const dispatch = useDispatch();
+  const { loading, record } = useSelector(detailDataSelector);
+  const fetchData = (params) => {
+    dispatch(setDetailBerita(params));
+  };
+
+  useEffect(() => {
+    fetchData({ id: idBerita });
+  }, [idBerita]);
 
   return (
     <Row className={bem.e('section')}>
       <Col sm={8}>
         <div>
-          <div className="d-flex justify-content-between mb-4">
-            <div className={bem.e('title')}>Edit Detail {idBerita}</div>
+          <div className="d-flex justify-content-between mb-3">
+            <div className={bem.e('title')}>Edit Berita</div>
             <div>
               <Button variant="secondary">
                 <DeleteIcon />
@@ -55,12 +44,13 @@ const CMSBeritaDetail = (props) => {
               </Button>
             </div>
           </div>
-          <CMSForm data={[]} />
+          {!loading ? <CMSForm data={record} /> : null}
         </div>
       </Col>
       <Col sm={3}>
-        <LogStatus data={dataLog} />
+        <LogStatus data={[]} />
       </Col>
+      {loading && <Loader fullscreen={true} />}
     </Row>
   );
 };

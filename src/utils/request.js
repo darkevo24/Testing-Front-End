@@ -96,6 +96,10 @@ export async function request(url, { method = 'GET', headers: optionHeaders = {}
     url += `?${generateQueryString(query)}`;
   }
 
+  if (!headers['Content-Type']) {
+    delete headers['Content-Type'];
+  }
+
   let fetchResponse;
   try {
     fetchResponse = await fetch(url, options);

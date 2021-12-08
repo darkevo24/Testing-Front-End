@@ -16,13 +16,8 @@ import { DatePicker } from 'components';
 import { useSelector, useDispatch } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
 import Input from 'components/Input';
-import {
-  instansiiDatasetSelector,
-  getInstansiData,
-  setPerminataanData,
-  perminataanDatasetSelector,
-  perminataanForumErrorSelector,
-} from '../reducer';
+import { getInstansiData, instansiiDatasetSelector } from 'containers/App/reducer';
+import { setPerminataanData, perminataanDatasetSelector, perminataanForumErrorSelector } from '../reducer';
 
 export const schema = yup.object({
   deskripsi: yup.string().required(),

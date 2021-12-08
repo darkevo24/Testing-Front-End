@@ -27,8 +27,6 @@ export const initialState = {
     error: '',
     record: [],
   },
-  instansiData: [],
-  instansiLoading: false,
   user: null,
   error: null,
 };
@@ -53,11 +51,6 @@ export const putPerminataanData = createAsyncThunk('portal/putPerminataanData', 
 export const setKirimPerminataanData = createAsyncThunk('portal/setKirimPerminataanData', async (params) => {
   const response = await post(`${apiUrls.perminataanData}/${params.id}/${params.url}`, params.payload);
   return response?.data;
-});
-
-export const getInstansiData = createAsyncThunk('portal/getInstansiData', async (params) => {
-  const response = await get(apiUrls.instansiData);
-  return response?.data?.content?.records;
 });
 
 export const getPerminataanDataById = createAsyncThunk('portal/getPerminataanDataById', async (params) => {
@@ -95,16 +88,6 @@ const perminataanSlice = createSlice({
     builder.addCase(getPerminataanData.rejected, (state) => {
       state.dataset.loading = false;
       state.dataset.error = 'Error in fetching perminataan data!';
-    });
-    builder.addCase(getInstansiData.pending, (state, action) => {
-      state.instansiLoading = true;
-    });
-    builder.addCase(getInstansiData.fulfilled, (state, action) => {
-      state.instansiLoading = false;
-      state.instansiData = action.payload;
-    });
-    builder.addCase(getInstansiData.rejected, (state) => {
-      state.instansiLoading = false;
     });
     builder.addCase(setPerminataanData.pending, (state, action) => {
       state.dataset.loading = true;
@@ -168,10 +151,6 @@ export const kirimsetSelector = (state) => state.perminataan?.kirimset;
 export const detailDatasetSelector = (state) => state.perminataan?.detaildataSet;
 export const logDatasetSelector = (state) => state.perminataan?.logdataset;
 export const perminataanForumErrorSelector = (state) => state.perminataan?.error;
-export const instansiiDatasetSelector = (state) => ({
-  instansiData: state.perminataan?.instansiData,
-  loading: state.perminataan?.instansiLoading,
-});
 export const { updateResult, updateStatus } = perminataanSlice.actions;
 
 export default perminataanSlice.reducer;

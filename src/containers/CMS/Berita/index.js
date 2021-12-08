@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { filterBerita } from './reducer';
+import { getListBerita, beritaCmsListSelector } from '../BeritaBaru/reducer';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -18,11 +18,36 @@ import cx from 'classnames';
 const bem = bn('content-table');
 
 const CMSBerita = () => {
-  let dispatch = useDispatch();
+  const dispatch = useDispatch();
   const history = useHistory();
 
-  useEffect(() => dispatch(filterBerita({ page: 1, size: 100 })), []);
-  const dataBerita = useSelector((state) => state.cms.berita.dataset.records);
+  const [searchQuery, setSearch] = useState('');
+  const { page, records } = useSelector(beritaCmsListSelector);
+  const fetchData = (params) => {
+    return dispatch(getListBerita(params));
+  };
+
+  useEffect(() => {
+    fetchData({
+      page: page,
+      judul: searchQuery,
+    });
+  }, [searchQuery]);
+
+  const setStatus = (status) => {
+    switch (status) {
+      case 0:
+        return 'DRAFT';
+      case 1:
+        return 'MENUNGGU_PERSETUJUAN';
+      case 2:
+        return 'DISETUJUI';
+      case 3:
+        return 'DITOLAK';
+      default:
+        return '';
+    }
+  };
 
   return (
     <div className={bem.e('section')}>
@@ -36,19 +61,20 @@ const CMSBerita = () => {
           </Col>
           <Col xs={4}>
             <InputGroup>
-              <Form.Control variant="normal" type="text" placeholder="Cari Berita" />
+              <Form.Control onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Cari Berita" />
               <Search />
             </InputGroup>
           </Col>
         </Row>
       </div>
       <CMSTable
-        customWidth={[50, 12, 9, 11, 11, 7]}
+        customWidth={[45, 14, 12, 11, 11, 7]}
         header={['Judul Berita', 'Tanggal Publish', 'Status', 'Author', 'Editor']}
-        data={dataBerita.map((item) => {
+        data={records.map((item) => {
           let value = {
-            data: [item.title, item.datePublish, item.status, item.createBy, item.createBy],
+            data: [item.judul, item.publishDate, setStatus(item.status), item.createBy, item.editorBy],
             action: '/cms/berita-detail/' + item.id,
+            classValue: [null, null, setStatus(item.status).toLowerCase(), null, null],
           };
           return value;
         })}

@@ -66,7 +66,7 @@ export const CardWithDetail = ({ title, dataSetUrl, description, date, views, fo
       border: '1px solid #E1E2EA',
       width: '308px',
     }}>
-    <Box>
+    <Box style={{ height: '127px' }}>
       <a title="dataset" href={dataSetUrl} className="sdp-link">
         <Box
           style={{
@@ -77,6 +77,9 @@ export const CardWithDetail = ({ title, dataSetUrl, description, date, views, fo
             color: '#2D2627',
             margin: '5px 0',
             height: 37,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
           }}>
           {title}
         </Box>

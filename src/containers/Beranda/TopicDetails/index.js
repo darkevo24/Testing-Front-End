@@ -126,7 +126,10 @@ const TopicDetail = () => {
   useEffect(() => {
     const id = generateSlug(selectedGroup);
     if (id) {
-      fetchDataset({ groups: [{ id }], resetFilter: true }, true);
+      const groups = id.toLowerCase() === 'all' ? [] : [{ id }];
+      fetchDataset({ groups, resetFilter: true }, true);
+    } else if (topic === get(TOPIC_LIST, '0.title')) {
+      fetchDataset({ groups: [], resetFilter: true }, true);
     }
   }, [selectedGroup]);
 

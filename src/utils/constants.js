@@ -16,6 +16,7 @@ import {
   KonfigurasiIcon,
   UserManagementIcon,
 } from 'assets/icons';
+import { SplitCircle } from 'components/Icons';
 import React from 'react';
 
 export const apiUrl = '/api-be';
@@ -48,6 +49,7 @@ export const apiUrls = {
 };
 
 export const TOPIC_LIST = [
+  { title: 'Semua', items: [], icon: <SplitCircle /> },
   { title: 'Pertahanan dan Luar Negeri', items: ['Pertahanan', 'Luar Negeri'], icon: <EkonomiSvg /> },
   {
     title: 'Ekonomi dan Industri',

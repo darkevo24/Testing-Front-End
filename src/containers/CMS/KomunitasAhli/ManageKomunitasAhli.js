@@ -20,7 +20,7 @@ import {
   Kontak_list,
 } from 'utils/constants';
 import { apiUrls, get, post } from 'utils/request';
-import { getInstansiData, instansiiDatasetSelector } from 'containers/App/reducer';
+import { getInstansiData, instansiDataSelector } from 'containers/App/reducer';
 import { useSelector } from 'react-redux';
 import { FileInput, Input } from 'components';
 import { usePrevious } from 'utils/hooks';
@@ -50,7 +50,7 @@ const KomunitasAhli = () => {
   const [errorInfo, setErrorInfo] = useState({});
   const [apiError, setAPIError] = useState('');
 
-  const instansiDetail = useSelector(instansiiDatasetSelector);
+  const instansiData = useSelector(instansiDataSelector);
   const history = useHistory();
   const dispatch = useDispatch();
   const list = [{ value: '', label: 'No data', isDisabled: true }];
@@ -92,7 +92,7 @@ const KomunitasAhli = () => {
   }, [values]);
 
   useEffect(() => {
-    if (!instansiDetail?.instansiData?.length) dispatch(getInstansiData());
+    if (!instansiData?.result?.length) dispatch(getInstansiData());
     getBidangData();
     getDaerahData();
   }, []);
@@ -308,9 +308,9 @@ const KomunitasAhli = () => {
               label="Instansi / Lembaga"
               labelClass="sdp-form-label  fw-normal"
               error={errors?.instansi?.message ? 'Instansi is required' : ''}
-              data={instansiDetail?.instansiData.map((item) => ({ value: item.id, label: item.nama }))}
+              data={instansiData?.result.map((item) => ({ value: item.id, label: item.nama }))}
               placeholder=""
-              isLoading={instansiDetail?.loading}
+              isLoading={instansiData?.loading}
               rules={{ required: true }}
             />
             <SingleSelectDropDown

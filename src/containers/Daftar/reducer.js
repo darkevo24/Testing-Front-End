@@ -23,32 +23,12 @@ const defaultDaftarBodyParams = {
 };
 
 export const initialState = {
-  instansi: {
-    loading: false,
-    error: null,
-    result: null,
-  },
   produen: {
     loading: false,
     error: null,
     result: null,
   },
-  datainduk: {
-    loading: false,
-    error: null,
-    result: null,
-  },
-  sdgPillers: {
-    loading: false,
-    error: null,
-    result: null,
-  },
   tujuanSDGPillers: {
-    loading: false,
-    error: null,
-    result: null,
-  },
-  rkpPN: {
     loading: false,
     error: null,
     result: null,
@@ -104,18 +84,8 @@ export const initialState = {
 
 export const DAFTAR_REDUCER = 'DAFTAR_REDUCER';
 
-export const getInstansi = createAsyncThunk('daftar/getInstansi', async () => {
-  const response = await get(apiUrls.instansiData);
-  return response?.data?.content?.records;
-});
-
 export const getProduen = createAsyncThunk('daftar/getProduen', async () => {
   const response = await get(apiUrls.produenData);
-  return response?.data?.content?.records;
-});
-
-export const getDatainduk = createAsyncThunk('daftar/getDatainduk', async () => {
-  const response = await get(apiUrls.dataindukData);
   return response?.data?.content?.records;
 });
 
@@ -139,18 +109,8 @@ export const addDaftarData = createAsyncThunk('daftarData/addDaftarData', async 
   return response;
 });
 
-export const getSDGPillers = createAsyncThunk('daftarData/getSDGPillers', async () => {
-  const response = await get(apiUrls.sdgPillers);
-  return response?.data?.content;
-});
-
 export const getSDGTujuan = createAsyncThunk('daftarData/getSDGTujuan', async (id) => {
   const response = await get(`${apiUrls.sdgPillers}/parent/${id}`);
-  return response?.data?.content;
-});
-
-export const getRKPpn = createAsyncThunk('daftarData/getRKPpn', async () => {
-  const response = await get(apiUrls.rkpPN);
   return response?.data?.content;
 });
 
@@ -178,17 +138,6 @@ const daftarSlice = createSlice({
       state.daftarData.loading = false;
       state.daftarData.error = 'Error in fetching daftarData details!';
     });
-    builder.addCase(getInstansi.pending, (state) => {
-      state.instansi.loading = true;
-    });
-    builder.addCase(getInstansi.fulfilled, (state, action) => {
-      state.instansi.loading = false;
-      state.instansi.result = action.payload;
-    });
-    builder.addCase(getInstansi.rejected, (state) => {
-      state.instansi.loading = false;
-      state.instansi.error = 'Error in getting instansi data';
-    });
     builder.addCase(getProduen.pending, (state) => {
       state.produen.loading = true;
     });
@@ -200,28 +149,6 @@ const daftarSlice = createSlice({
       state.produen.loading = false;
       state.produen.error = 'Error in getting produen data';
     });
-    builder.addCase(getDatainduk.pending, (state) => {
-      state.datainduk.loading = true;
-    });
-    builder.addCase(getDatainduk.fulfilled, (state, action) => {
-      state.datainduk.loading = false;
-      state.datainduk.result = action.payload;
-    });
-    builder.addCase(getDatainduk.rejected, (state) => {
-      state.datainduk.loading = false;
-      state.datainduk.error = 'Error in getting datainduk data';
-    });
-    builder.addCase(getSDGPillers.pending, (state) => {
-      state.sdgPillers.loading = true;
-    });
-    builder.addCase(getSDGPillers.fulfilled, (state, action) => {
-      state.sdgPillers.loading = false;
-      state.sdgPillers.result = action.payload;
-    });
-    builder.addCase(getSDGPillers.rejected, (state) => {
-      state.sdgPillers.loading = false;
-      state.sdgPillers.error = 'Error in getting sdg pillers data';
-    });
     builder.addCase(getSDGTujuan.pending, (state) => {
       state.tujuanSDGPillers.loading = true;
     });
@@ -232,17 +159,6 @@ const daftarSlice = createSlice({
     builder.addCase(getSDGTujuan.rejected, (state) => {
       state.tujuanSDGPillers.loading = false;
       state.tujuanSDGPillers.error = 'Error in getting sdg tujuan data';
-    });
-    builder.addCase(getRKPpn.pending, (state) => {
-      state.rkpPN.loading = true;
-    });
-    builder.addCase(getRKPpn.fulfilled, (state, action) => {
-      state.rkpPN.loading = false;
-      state.rkpPN.result = action.payload;
-    });
-    builder.addCase(getRKPpn.rejected, (state) => {
-      state.rkpPN.loading = false;
-      state.rkpPN.error = 'Error in getting rkp pn data';
     });
     builder.addCase(getRKPpp.pending, (state) => {
       state.rkpPP.loading = true;
@@ -291,15 +207,11 @@ const daftarSlice = createSlice({
   },
 });
 
-export const instansiDataSelector = (state) => state.daftar.instansi;
 export const produenDataSelector = (state) => state.daftar.produen;
-export const dataindukDataSelector = (state) => state.daftar.datainduk;
 export const daftarDataSelector = (state) => state.daftar.daftarData;
 export const updateDaftarDataSelector = (state) => state.daftar.updateDaftarData;
 export const addDaftarDataSelector = (state) => state.daftar.addDaftarData;
-export const sdgPillersSelector = (state) => state.daftar.sdgPillers;
 export const tujuanSDGPillersSelector = (state) => state.daftar.tujuanSDGPillers;
-export const rkpPNSelector = (state) => state.daftar.rkpPN;
 export const rkpPPSelector = (state) => state.daftar.rkpPP;
 
 export default daftarSlice.reducer;

@@ -2,11 +2,33 @@ import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { Row, Col } from 'react-bootstrap';
+import { LogStatus } from 'components/Sidebars/LogStatus';
+import { Dropdown } from 'components';
 import { ReactComponent as CopyJson } from 'assets/copy-json.svg';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import './index.scss';
 
 const EditApi = () => {
+  const schema = yup
+    .object({
+      nama: yup.string().required(),
+      kode: yup.string().required(),
+      level: yup.mixed().required(),
+    })
+    .required();
+
+  const {
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const level = [1, 2, 3, 4, 5];
+
   const history = useHistory();
   const LIST_TABLE = [
     {
@@ -36,26 +58,36 @@ const EditApi = () => {
     },
   ];
 
-  const LIST_LOG = [
+  const dataLog = [
     {
-      date: '12 Desember 2021',
-      status: 'Perbarui',
-      description: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '10 Desember 2021',
-      status: 'Perbarui',
-      description: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
+      createdAt: new Date().getDate(),
       date: '08 Desember 2021',
-      status: 'Perbarui',
-      description: 'Dataset sudah dapat di akses di portal data.go.id',
+      status: 'Selesai',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
     },
     {
+      createdAt: new Date().getDate(),
+      date: '08 Desember 2021',
+      status: 'Selesai',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
+    },
+    {
+      createdAt: new Date().getDate(),
+      date: '08 Desember 2021',
+      status: 'Terkirim',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
+    },
+    {
+      createdAt: new Date().getDate(),
+      date: '08 Desember 2021',
+      status: 'Diproses',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
+    },
+    {
+      createdAt: new Date().getDate(),
       date: '08 Desember 2021',
       status: 'Dibuat',
-      description: 'Dataset sudah dapat di akses di portal data.go.id',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
     },
   ];
 
@@ -178,9 +210,13 @@ const EditApi = () => {
                             <td className="data-description">{data.property}</td>
                             <td className="data-description">{data.equlvalent}</td>
                             <td className="data-description select">
-                              <Form.Select>
-                                <option key={index}>{data.source}</option>
-                              </Form.Select>
+                              <Dropdown
+                                group
+                                control={control}
+                                placeholder={data.property}
+                                error={errors.level?.message}
+                                options={level.map((lvl) => ({ value: lvl, label: lvl }))}
+                              />
                             </td>
                           </tr>
                         );
@@ -211,20 +247,7 @@ const EditApi = () => {
             </div>
           </Col>
           <Col md={4}>
-            <div className="wrapper-log">
-              <h1>Log Status</h1>
-              {LIST_LOG.map((data, index) => {
-                return (
-                  <div key={index} className="card-log mb-20">
-                    <p className="date">{data.date}</p>
-                    <div className="d-flex align-items-center pt-15">
-                      <span className={data.status === 'Perbarui' ? 'status-update' : 'status-create'}>{data.status}</span>
-                      <span className="description">{data.description}</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            <LogStatus data={dataLog} />
           </Col>
         </Row>
       </div>

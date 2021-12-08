@@ -68,6 +68,66 @@
     }
   }
 
+  .sdp-log {
+    &__title {
+       
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 25px;
+      margin-bottom: 2.5rem;
+    }
+
+    &__date {
+       
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 17px;
+      color: $gray-dark;
+
+      &-line {
+        background: $stroke;
+        margin-left: 10px;
+        height: 2px;
+        width: 50%;
+      }
+    }
+
+    &__status {
+      border-radius: 2px;
+      padding: 4px 6px;
+      margin-right: 8px;
+      height: 28px;
+
+      &.selesai {
+        background: rgba(21, 165, 95, 0.12);
+        color: #15A55F;
+      }
+      &.diproses {
+        background: rgba(222, 136, 19, 0.12);
+        color: #DE8813;
+      }
+      &.terkirim {
+        background: rgba(104, 72, 195, 0.12);
+        color: #6848C4;
+      }
+      &.dibuat {
+        background: #F5F6FA;
+        color: #858A8F;
+      }
+    }
+
+    &__content {
+       
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 21px;
+      color: #858A8F;
+    }
+  }
+
   .sdp-content-detail {
     &__section {
       padding: 32px;

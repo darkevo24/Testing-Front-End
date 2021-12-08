@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Row, Col } from 'react-bootstrap';
 import { Modal, Dropdown } from 'components';
+import { LogStatus } from 'components/Sidebars/LogStatus';
 import { ReactComponent as CopyJson } from 'assets/copy-json.svg';
 import { ReactComponent as IconEdit } from 'assets/cms-api-edit.svg';
 import { ReactComponent as IconDelete } from 'assets/cms-api-delete.svg';
@@ -61,26 +62,36 @@ const DetailApi = () => {
     },
   ];
 
-  const LIST_LOG = [
+  const dataLog = [
     {
-      date: '12 Desember 2021',
-      status: 'Perbarui',
-      description: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '10 Desember 2021',
-      status: 'Perbarui',
-      description: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
+      createdAt: new Date().getDate(),
       date: '08 Desember 2021',
-      status: 'Perbarui',
-      description: 'Dataset sudah dapat di akses di portal data.go.id',
+      status: 'Selesai',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
     },
     {
+      createdAt: new Date().getDate(),
+      date: '08 Desember 2021',
+      status: 'Selesai',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
+    },
+    {
+      createdAt: new Date().getDate(),
+      date: '08 Desember 2021',
+      status: 'Terkirim',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
+    },
+    {
+      createdAt: new Date().getDate(),
+      date: '08 Desember 2021',
+      status: 'Diproses',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
+    },
+    {
+      createdAt: new Date().getDate(),
       date: '08 Desember 2021',
       status: 'Dibuat',
-      description: 'Dataset sudah dapat di akses di portal data.go.id',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
     },
   ];
 
@@ -237,20 +248,7 @@ const DetailApi = () => {
             </div>
           </Col>
           <Col md={4}>
-            <div className="wrapper-log">
-              <h1>Log Status</h1>
-              {LIST_LOG.map((data, index) => {
-                return (
-                  <div key={index} className="card-log mb-20">
-                    <p className="date">{data.date}</p>
-                    <div className="d-flex align-items-center pt-15">
-                      <span className={data.status === 'Perbarui' ? 'status-update' : 'status-create'}>{data.status}</span>
-                      <span className="description">{data.description}</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            <LogStatus data={dataLog} />
           </Col>
         </Row>
       </div>

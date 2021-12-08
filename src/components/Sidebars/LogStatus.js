@@ -12,13 +12,13 @@ export const LogStatus = ({ data }) => (
       ? 'Tidak ada log'
       : data.map((item, key) => (
           <div key={key} className="mb-3">
-            <div className="d-flex justify-content-between align-items-center mb-2">
+            <div className="d-flex align-items-center mb-2">
               <div className={bem.e('date')}>{formatDate(item.createdAt)}</div>
-              <div className={bem.e('date-line')}></div>
+              <div className={bem.e('date-line')}>{}</div>
             </div>
-            <div className="d-flex align-items-center flex-wrap">
-              <div className={cx(bem.e('status'), item?.data?.status.toLowerCase())}>{item.data?.status}</div>
-              <div className={bem.e('content')}>{item.remark}</div>
+            <div className="d-flex align-items-center">
+              <div className={cx(bem.e('status'), item.status.toLowerCase())}>{item?.status}</div>
+              <div className={bem.e('content')}>{item.content}</div>
             </div>
           </div>
         ))}

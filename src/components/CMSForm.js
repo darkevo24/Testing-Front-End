@@ -85,7 +85,7 @@ const CMSForm = ({ data, style, onSubmit }) => {
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Isi Berita</Form.Label>
-        <TextEditor onChange={(e) => setValue('content', e)} />
+        <TextEditor defaultValue={data.content} onChange={(e) => setValue('content', e)} />
       </Form.Group>
       <Input
         group
@@ -100,10 +100,10 @@ const CMSForm = ({ data, style, onSubmit }) => {
           <DatePicker
             group
             label="Tanggal Publish"
-            name="publishedDate"
+            name="publishDate"
             control={control}
             rules={{ required: false }}
-            error={errors.publishedDate?.message}
+            error={errors.publishDate?.message}
           />
         </Col>
         <Col>
@@ -111,10 +111,10 @@ const CMSForm = ({ data, style, onSubmit }) => {
             group
             type="time"
             label="Jam Publish"
-            name="publishedTime"
+            name="publishTime"
             control={control}
             rules={{ required: false }}
-            error={errors.publishedTime?.message}
+            error={errors.publishTime?.message}
           />
         </Col>
       </Row>

@@ -6,7 +6,7 @@ export const initialState = {
   dataset: {
     loading: false,
     error: null,
-    page: 0,
+    page: 1,
     status: '',
     records: [],
     size: defaultNumberOfRows,
@@ -54,13 +54,18 @@ export const uploadFile = createAsyncThunk('cms/uploadFile', async (params) => {
 });
 
 export const getListBerita = createAsyncThunk('cms/getListBerita', async (params) => {
-  const response = await get(apiUrls.cmsBeritaData, { data: { size: 10, page: params.page } });
+  const response = await post(`${apiUrls.cmsBeritaData}/list?size=10&page=${params.page}`, { judul: params.judul });
   return response?.data?.content;
 });
 
 export const setNewBerita = createAsyncThunk('cms/setNewBerita', async (params) => {
   const response = await post(apiUrls.cmsBeritaData, params.payload);
   return response?.data;
+});
+
+export const setDetailBerita = createAsyncThunk('cms/setDetailBerita', async (params) => {
+  const response = await post(`${apiUrls.cmsBeritaData}/${params.id}`, {});
+  return response?.data?.content;
 });
 
 const beritaCmsSlice = createSlice({
@@ -73,12 +78,11 @@ const beritaCmsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getListBerita.pending, (state, action) => {
-      state.dataset.page = action.meta.arg.page;
-      state.dataset.status = action.meta.arg.status;
       state.dataset.loading = true;
     });
     builder.addCase(getListBerita.fulfilled, (state, action) => {
       state.dataset.loading = false;
+      state.dataset.page = action.payload.page;
       state.dataset.records = action.payload.records;
       state.dataset.totalRecords = action.payload.totalRecords;
     });
@@ -97,6 +101,18 @@ const beritaCmsSlice = createSlice({
     builder.addCase(setNewBerita.rejected, (state) => {
       state.detaildataSet.loading = false;
       state.detaildataSet.error = 'Error in fetching create berita data!';
+    });
+
+    builder.addCase(setDetailBerita.pending, (state, action) => {
+      state.detaildataSet.loading = true;
+    });
+    builder.addCase(setDetailBerita.fulfilled, (state, action) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.record = action.payload;
+    });
+    builder.addCase(setDetailBerita.rejected, (state) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.error = 'Error in fetching detail berita data!';
     });
 
     builder.addCase(getListKategori.pending, (state, action) => {

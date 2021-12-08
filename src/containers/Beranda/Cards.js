@@ -40,7 +40,7 @@ const TitleBox = styled.div`
 
 export const Cards = ({ isLoggedIn, trendingData = [], popularData = [] }) => {
   const linkToRedirect = isLoggedIn ? '/dataset' : '/topic-detail';
-  const renderDataSet = (data) => {
+  const renderDataSet = (group) => (data) => {
     const dataSetUrl = `/data/dataset/${data.name}`;
     const numberOfMaxFormats = 2;
     const uniqFormats =
@@ -52,6 +52,7 @@ export const Cards = ({ isLoggedIn, trendingData = [], popularData = [] }) => {
     const hiddenFormats = uniqFormats.length - formatesToShow.length;
     return (
       <CardWithDetail
+        key={`${group}-${data.id}`}
         dataSetUrl={dataSetUrl}
         title={truncate(data.title, { length: 60 })}
         description={truncate(data.notes, { length: 80 })}
@@ -74,7 +75,7 @@ export const Cards = ({ isLoggedIn, trendingData = [], popularData = [] }) => {
           <RightBox>Lihat Semua</RightBox>
         </a>
       </FlexBox>
-      <FlexBox>{trendingData.map(renderDataSet)}</FlexBox>
+      <FlexBox>{trendingData.map(renderDataSet('trending'))}</FlexBox>
       <FlexBox style={{ marginTop: '40px' }}>
         <LeftBox>
           <PopulerSvg style={{ margin: '0 10px' }} />
@@ -84,7 +85,7 @@ export const Cards = ({ isLoggedIn, trendingData = [], popularData = [] }) => {
           <RightBox>Lihat Semua</RightBox>
         </a>
       </FlexBox>
-      <FlexBox>{popularData.map(renderDataSet)}</FlexBox>
+      <FlexBox>{popularData.map(renderDataSet('popular'))}</FlexBox>
     </Box>
   );
 };

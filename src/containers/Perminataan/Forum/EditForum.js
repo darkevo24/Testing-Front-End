@@ -133,7 +133,7 @@ export const EditForum = ({ onClose, data, initialCall }) => {
           <Form.Group as={Col} md="12" className="mb-16">
             <label className="sdp-form-label py-8">Instansi Sumber Data</label>
             <SingleDropDown
-              data={instansiDetail?.instansiData.map((item) => ({ value: item.id, label: item.nama }))}
+              data={(instansiDetail?.result || []).map((item) => ({ value: item.id, label: item.nama }))}
               isLoading={instansiDetail?.loading || false}
               onChange={(data = {}) => {
                 setInstansiSumber(data);

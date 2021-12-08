@@ -13,7 +13,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { schema, DROPDOWN_LIST } from './index';
 import { useDispatch, useSelector } from 'react-redux';
 import { perminataanDatasetSelector, perminataanForumErrorSelector, putPerminataanData, updateResult } from '../reducer';
-import { getInstansiData, instansiiDatasetSelector } from 'containers/App/reducer';
+import { getInstansiData, instansiDataSelector } from 'containers/App/reducer';
 import isEmpty from 'lodash/isEmpty';
 import { usePrevious } from 'utils/hooks';
 import moment from 'moment';
@@ -27,7 +27,7 @@ export const EditForum = ({ onClose, data, initialCall }) => {
   const [errorDetail, setErrorDetail] = useState({});
   const dispatch = useDispatch();
   const { newRecord, records, loading } = useSelector(perminataanDatasetSelector);
-  const instansiDetail = useSelector(instansiiDatasetSelector);
+  const instansiDetail = useSelector(instansiDataSelector);
   const apiError = useSelector(perminataanForumErrorSelector);
   const prevRecord = usePrevious(newRecord) || {};
   const {
@@ -45,7 +45,7 @@ export const EditForum = ({ onClose, data, initialCall }) => {
   });
 
   useEffect(() => {
-    if (!instansiDetail?.instansiData?.length) dispatch(getInstansiData());
+    if (!instansiDetail?.result?.length) dispatch(getInstansiData());
   }, []);
 
   useEffect(() => {

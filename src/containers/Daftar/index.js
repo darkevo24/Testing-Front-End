@@ -21,22 +21,24 @@ import DaftarDataSayaTable from './DaftarDataSayaTable';
 import bn from 'utils/bemNames';
 import {
   addDaftarData,
-  getDatainduk,
-  getInstansi,
   getProduen,
-  getSDGPillers,
   getSDGTujuan,
-  getRKPpn,
   getRKPpp,
-  dataindukDataSelector,
   produenDataSelector,
-  instansiDataSelector,
   addDaftarDataSelector,
-  sdgPillersSelector,
   tujuanSDGPillersSelector,
-  rkpPNSelector,
   rkpPPSelector,
 } from './reducer';
+import {
+  dataindukSelector,
+  instansiDataSelector,
+  rkpPNSelector,
+  sdgPillersSelector,
+  getDatainduk,
+  getInstansiData,
+  getSDGPillers,
+  getRKPpn,
+} from 'containers/App/reducer';
 
 const bem = bn('daftar');
 
@@ -47,13 +49,21 @@ const Daftar = () => {
   const [activeTab, setActiveTab] = useState(t('sandbox.daftar.tabs.daftar.key'));
   const activeTitle = t(`sandbox.daftar.tabs.${activeTab}.title`);
   const { result } = useSelector(addDaftarDataSelector);
-  const dataindukData = useSelector(dataindukDataSelector);
+  const dataindukData = useSelector(dataindukSelector);
   const instansiData = useSelector(instansiDataSelector);
   const produenData = useSelector(produenDataSelector);
   const sdgPillersData = useSelector(sdgPillersSelector);
   const tujuanSDGPillersData = useSelector(tujuanSDGPillersSelector);
   const rkpPNData = useSelector(rkpPNSelector);
   const rkpPPData = useSelector(rkpPPSelector);
+
+  useEffect(() => {
+    dispatch(getInstansiData());
+    dispatch(getProduen());
+    dispatch(getDatainduk());
+    dispatch(getSDGPillers());
+    dispatch(getRKPpn());
+  }, []);
 
   const instansiOptions =
     instansiData?.result?.map((instansi) => ({
@@ -196,13 +206,6 @@ const Daftar = () => {
     ],
     [activeTab, t],
   );
-  useEffect(() => {
-    dispatch(getInstansi());
-    dispatch(getProduen());
-    dispatch(getDatainduk());
-    dispatch(getSDGPillers());
-    dispatch(getRKPpn());
-  }, []);
   const isSayaData = activeTab === t('sandbox.daftar.tabs.daftarSafa.key');
   return (
     <div className="daftar-page pb-100">

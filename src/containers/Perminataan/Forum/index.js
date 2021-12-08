@@ -16,7 +16,7 @@ import { DatePicker } from 'components';
 import { useSelector, useDispatch } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
 import Input from 'components/Input';
-import { getInstansiData, instansiiDatasetSelector } from 'containers/App/reducer';
+import { getInstansiData, instansiDataSelector } from 'containers/App/reducer';
 import { setPerminataanData, perminataanDatasetSelector, perminataanForumErrorSelector } from '../reducer';
 
 export const schema = yup.object({
@@ -52,7 +52,7 @@ const Forum = () => {
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
   const { loading } = useSelector(perminataanDatasetSelector);
-  const instansiDetail = useSelector(instansiiDatasetSelector);
+  const instansiDetail = useSelector(instansiDataSelector);
   const apiError = useSelector(perminataanForumErrorSelector);
 
   const handleBackButton = () => {
@@ -68,7 +68,7 @@ const Forum = () => {
   });
 
   useEffect(() => {
-    if (!instansiDetail?.instansiData?.length) dispatch(getInstansiData());
+    if (!instansiDetail?.result?.length) dispatch(getInstansiData());
   }, []);
 
   const onSubmit = (detail) => {

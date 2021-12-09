@@ -2,9 +2,8 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Form from 'react-bootstrap/Form';
 // import { useHistory } from 'react-router-dom';
-import { CMSBimtekForm, TextEditor } from 'components';
+import { CMSBimtekForm } from 'components';
 
 import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
 import { LogStatus } from 'components/Sidebars/LogStatus';
@@ -53,11 +52,7 @@ const CMSDokumentasiDetail = (props) => {
               </Button>
             </div>
           </div>
-          <CMSBimtekForm disabled={true} />
-          <Form.Group controlId="content">
-            <Form.Label>Isi Berita</Form.Label>
-            <TextEditor />
-          </Form.Group>
+          <CMSBimtekForm disabled={true} isDocumentation={true} />
         </div>
       </Col>
       <Col sm={3}>

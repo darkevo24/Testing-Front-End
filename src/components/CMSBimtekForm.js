@@ -1,7 +1,9 @@
+import React, { useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
-import { DatePicker, Input } from 'components';
+import Form from 'react-bootstrap/Form';
+import { DatePicker, Input, TextEditor } from 'components';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -42,16 +44,43 @@ const BimtekTable = ({ modal, headers, label }) => (
   </div>
 );
 
-const CMSBimtekForm = ({ data, disabled = false, modalAction = false }) => {
+const CMSBimtekForm = ({ data, disabled = false, modalAction = false, isDocumentation = false, onSubmit }) => {
   const schema = yup
     .object({
       name: yup.string().required(),
     })
     .required();
 
-  const { control } = useForm({
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    setValue,
+  } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      ...data,
+    },
   });
+
+  const [listFoto, setListFoto] = useState([]);
+  const addFoto = (e) => {
+    let fileData = {
+      file: e.target.files[0],
+      preview: URL.createObjectURL(e.target.files[0]),
+    };
+
+    setListFoto([...listFoto, fileData]);
+    e.target.value = '';
+  };
+  const removeFoto = (index) => {
+    let selected = listFoto[index];
+    setListFoto(listFoto.filter((item) => item !== selected));
+  };
+  const openUploadForm = (id) => {
+    const elmButton = document.getElementById(id);
+    elmButton.click();
+  };
 
   return (
     <div className="sdp-form">
@@ -87,6 +116,35 @@ const CMSBimtekForm = ({ data, disabled = false, modalAction = false }) => {
       <Input disabled={disabled} group label="Tempat" name="place" control={control} />
       <BimtekTable modal={modalAction} label="Pembicara" headers={['Nama Pembicara', 'Tanggal', 'Sesi', '']} />
       <BimtekTable modal={modalAction} label="Materi" headers={['Materi', 'Lampiran', '']} />
+      {isDocumentation ? (
+        <>
+          <div className={bem.e('section')}>
+            <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
+              <div className={bem.e('header-title')}>Foto dan Video Kegiatan</div>
+              <div className={bem.e('header-add')} onClick={() => openUploadForm('sdp-upload-fle')}>
+                <Plus /> Upload Foto
+              </div>
+            </div>
+            <Row>
+              {listFoto.map((foto, index) => (
+                <Col key={index} sm={4} className="mb-12">
+                  <div className={bem.e('doc-foto')} style={{ backgroundImage: "url('" + foto.preview + "')" }}>
+                    <button className="sdp-text-white" onClick={() => removeFoto(index)}>
+                      Hapus Foto
+                    </button>
+                  </div>
+                </Col>
+              ))}
+            </Row>
+            <input id="sdp-upload-fle" type="file" style={{ display: 'none' }} onChange={addFoto} />
+          </div>
+          <Input group label="Link Video" name="url_video" control={control} />
+          <Form.Group>
+            <Form.Label>Isi Berita</Form.Label>
+            <TextEditor />
+          </Form.Group>
+        </>
+      ) : null}
     </div>
   );
 };

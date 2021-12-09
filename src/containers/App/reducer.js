@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, get } from 'utils/request';
+import { apiUrls, get, post } from 'utils/request';
 
 const defaultNotification = {
   showClose: true,
@@ -28,6 +28,21 @@ export const initialState = {
     error: null,
     result: null,
   },
+  tagline: {
+    loading: false,
+    error: '',
+    records: [],
+  },
+  kategori: {
+    loading: false,
+    error: '',
+    records: [],
+  },
+  file: {
+    loading: false,
+    error: '',
+    record: {},
+  },
   notificationOptions: {
     ...defaultNotification,
   },
@@ -53,6 +68,21 @@ export const getSDGPillers = createAsyncThunk('portal/getSDGPillers', async () =
 export const getRKPpn = createAsyncThunk('portal/getRKPpn', async () => {
   const response = await get(apiUrls.rkpPN);
   return response?.data?.content;
+});
+
+export const getListKategori = createAsyncThunk('cms/getListKategori', async () => {
+  const response = await get(apiUrls.kategoriData);
+  return response?.data?.content;
+});
+
+export const getListTagline = createAsyncThunk('cms/getListTagline', async () => {
+  const response = await get(apiUrls.taglineData);
+  return response?.data?.content;
+});
+
+export const uploadFoto = createAsyncThunk('cms/uploadFoto', async (formData) => {
+  const response = await post(apiUrls.uploadFoto, formData);
+  return response?.data;
 });
 
 const AppSlice = createSlice({
@@ -110,6 +140,42 @@ const AppSlice = createSlice({
       state.rkpPN.loading = false;
       state.rkpPN.error = 'Error in getting rkp pn data';
     });
+
+    builder.addCase(getListKategori.pending, (state) => {
+      state.kategori.loading = true;
+    });
+    builder.addCase(getListKategori.fulfilled, (state, action) => {
+      state.kategori.loading = false;
+      state.kategori.records = action.payload;
+    });
+    builder.addCase(getListKategori.rejected, (state) => {
+      state.kategori.loading = false;
+      state.kategori.error = 'Error in fetching kategori!';
+    });
+
+    builder.addCase(getListTagline.pending, (state) => {
+      state.tagline.loading = true;
+    });
+    builder.addCase(getListTagline.fulfilled, (state, action) => {
+      state.tagline.loading = false;
+      state.tagline.records = action.payload.records;
+    });
+    builder.addCase(getListTagline.rejected, (state) => {
+      state.tagline.loading = false;
+      state.tagline.error = 'Error in fetching tagline!';
+    });
+
+    builder.addCase(uploadFoto.pending, (state) => {
+      state.file.loading = true;
+    });
+    builder.addCase(uploadFoto.fulfilled, (state, action) => {
+      state.file.loading = false;
+      state.file.record = action.payload;
+    });
+    builder.addCase(uploadFoto.rejected, (state) => {
+      state.file.loading = false;
+      state.file.error = 'Error in upload file!';
+    });
   },
 });
 
@@ -118,5 +184,8 @@ export const instansiDataSelector = (state) => state.global.instansi;
 export const dataindukSelector = (state) => state.global.datainduk;
 export const sdgPillersSelector = (state) => state.global.sdgPillers;
 export const rkpPNSelector = (state) => state.global.rkpPN;
+export const kategoriSelector = (state) => state.global?.kategori;
+export const taglineSelector = (state) => state.global?.tagline;
+export const fotoSelector = (state) => state.global?.file;
 
 export default AppSlice.reducer;

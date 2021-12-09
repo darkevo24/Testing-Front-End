@@ -6,8 +6,9 @@ import { ReactComponent as Edit } from 'assets/edit.svg';
 import { ReactComponent as Search } from 'assets/search-api.svg';
 import { ReactComponent as Prev } from 'assets/prev.svg';
 import { ReactComponent as Next } from 'assets/next.svg';
+import bn from 'utils/bemNames';
 
-import './index.scss';
+const bem = bn('management-api');
 
 const ManagementApi = () => {
   const history = useHistory();
@@ -49,9 +50,9 @@ const ManagementApi = () => {
     },
   ];
   return (
-    <div className="management-api">
+    <div className="sdp-management-api">
       <div className="container">
-        <div className="card-api">
+        <div className={bem.e('card-api')}>
           <Row>
             <Col md={6}>
               <div className="wrapper-left">
@@ -89,7 +90,7 @@ const ManagementApi = () => {
             </Col>
           </Row>
         </div>
-        <div className="management-table bappenas">
+        <div className={bem.e('management-table bappenas')}>
           <table>
             <thead>
               <th width="25%">Judul API</th>

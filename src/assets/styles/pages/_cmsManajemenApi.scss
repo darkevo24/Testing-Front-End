@@ -1,6 +1,6 @@
 .sdp-cms-api {
     min-height: 100vh;
-    padding: 50px 0;
+    padding: 50px 10px;
 
     &__header-api {
         background: $white;
@@ -171,7 +171,6 @@
         padding: 0px !important;
     }
 
-    // ============ CreateAPI Pages =================
     &__management-table {
         padding-top: 40px;
         table {
@@ -225,6 +224,7 @@
         }
     }
 
+    // ============ CreateAPI Pages =================
     &__header-add {
         width: 100%;
         display: flex;
@@ -540,14 +540,10 @@
     
     }
 
-
 }
 
 // Set Modal Dialog
 .modal-dialog {
-    .modal-header {
-        display: none;
-    }
     max-width: 430px;
     display: flex;
     align-items: center;

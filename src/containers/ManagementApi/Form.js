@@ -11,8 +11,9 @@ import { Dropdown } from 'components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import bn from 'utils/bemNames';
 
-import './index.scss';
+const bem = bn('management-api');
 
 const FormApi = () => {
   const schema = yup
@@ -134,9 +135,9 @@ const FormApi = () => {
     setDetailImport(true);
   };
   return (
-    <div className="management-api add">
+    <div className="sdp-management-api add">
       <div className="container">
-        <div className="header-add">
+        <div className={bem.e('header-add')}>
           <div className="header-left">
             <Arrow onClick={() => history.push('/api')} />
             <p> Tambah Api </p>
@@ -156,7 +157,7 @@ const FormApi = () => {
             </div>
           )}
         </div>
-        <div className="wrapper-input">
+        <div className={bem.e('wrapper-input')}>
           <div className="form-group">
             <label for="Judul">
               <div className="wrapper-union">
@@ -213,13 +214,13 @@ const FormApi = () => {
           </Button>
         </div>
         {detailImport && (
-          <div className="wrapper-result">
+          <div className={bem.e('wrapper-result')}>
             <div className="wrapper-data">
               <div className="wrapper-title">
                 <h1>Data</h1>
                 <a href="#">(data-ckan-api.json)</a>
               </div>
-              <div className="management-table">
+              <div className={bem.e('management-table pt-0')}>
                 <table>
                   <thead className="head-table-border">
                     <th width="25%">Field</th>
@@ -276,7 +277,7 @@ const FormApi = () => {
               <div className="wrapper-title">
                 <h1>Mapping DCAT</h1>
               </div>
-              <div className="wrapper-input">
+              <div className={bem.e('wrapper-input')}>
                 <Row>
                   <Col md={12}>
                     <div className="form-group">
@@ -305,7 +306,7 @@ const FormApi = () => {
                   </Col>
                 </Row>
               </div>
-              <div className="management-table">
+              <div className={bem.e('management-table')}>
                 <table>
                   <thead className="head-table-border">
                     <th width="20%">No</th>
@@ -341,7 +342,7 @@ const FormApi = () => {
                 </Button>
               </div>
               {generateOutput && (
-                <div className="wrapper-json">
+                <div className={bem.e('wrapper-json')}>
                   <span> Output </span>
                   <div className="input-group">
                     <input type="text" placeholder="https://bappenas.go.id/data.json" />

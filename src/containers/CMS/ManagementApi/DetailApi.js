@@ -244,7 +244,7 @@ const DetailApi = () => {
           </Col>
         </Row>
       </div>
-      <Modal visible={modalProfile} onClose={() => setModalProfile(false)}>
+      <Modal showHeader={false} visible={modalProfile} onClose={() => setModalProfile(false)}>
         <div>
           <p className="mt-20">
             Apakah anda yakin ingin

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, defaultNumberOfRows, get, post } from 'utils/request';
+import { apiUrls, defaultNumberOfRows, post } from 'utils/request';
 
 export const initialState = {
   loading: false,
@@ -10,7 +10,8 @@ export const initialState = {
     status: '',
     records: [],
     size: defaultNumberOfRows,
-    totalRecords: null,
+    totalRecords: 0,
+    totalPages: 1,
   },
   detaildataSet: {
     loading: false,
@@ -37,21 +38,6 @@ export const initialState = {
 };
 
 export const BERITA_CMS_SLICE = 'BERITA_CMS_SLICE';
-
-export const getListKategori = createAsyncThunk('cms/getListKategori', async (params) => {
-  const response = await get('/api-be/v1/settings/key/' + params);
-  return response?.data?.content;
-});
-
-export const getListTagline = createAsyncThunk('cms/getListTagline', async () => {
-  const response = await get('/api-be/v1/tagline');
-  return response?.data?.content;
-});
-
-export const uploadFile = createAsyncThunk('cms/uploadFile', async (params) => {
-  const response = await post('/api-be/file/public-upload', params);
-  return response?.data;
-});
 
 export const getListBerita = createAsyncThunk('cms/getListBerita', async (params) => {
   const response = await post(`${apiUrls.cmsBeritaData}/list?size=10&page=${params.page}`, { judul: params.judul });
@@ -85,6 +71,7 @@ const beritaCmsSlice = createSlice({
       state.dataset.page = action.payload.page;
       state.dataset.records = action.payload.records;
       state.dataset.totalRecords = action.payload.totalRecords;
+      state.dataset.totalPages = action.payload.totalPages;
     });
     builder.addCase(getListBerita.rejected, (state) => {
       state.dataset.loading = false;
@@ -114,51 +101,11 @@ const beritaCmsSlice = createSlice({
       state.detaildataSet.loading = false;
       state.detaildataSet.error = 'Error in fetching detail berita data!';
     });
-
-    builder.addCase(getListKategori.pending, (state, action) => {
-      state.kategori.loading = true;
-    });
-    builder.addCase(getListKategori.fulfilled, (state, action) => {
-      state.kategori.loading = false;
-      state.kategori.records = action.payload;
-    });
-    builder.addCase(getListKategori.rejected, (state) => {
-      state.kategori.loading = false;
-      state.kategori.error = 'Error in fetching kategori!';
-    });
-
-    builder.addCase(getListTagline.pending, (state, action) => {
-      state.tagline.loading = true;
-    });
-    builder.addCase(getListTagline.fulfilled, (state, action) => {
-      state.tagline.loading = false;
-      state.tagline.records = action.payload.records;
-    });
-    builder.addCase(getListTagline.rejected, (state) => {
-      state.tagline.loading = false;
-      state.tagline.error = 'Error in fetching tagline!';
-    });
-
-    builder.addCase(uploadFile.pending, (state, action) => {
-      state.file.loading = true;
-    });
-    builder.addCase(uploadFile.fulfilled, (state, action) => {
-      state.file.loading = false;
-      state.file.record = action.payload;
-    });
-    builder.addCase(uploadFile.rejected, (state) => {
-      state.file.loading = false;
-      state.file.error = 'Error in upload file!';
-    });
   },
 });
 
 export const beritaCmsListSelector = (state) => state.cmsBerita?.dataset;
 export const detailDataSelector = (state) => state.cmsBerita?.detaildataSet;
-
-export const kategoriSelector = (state) => state.cmsBerita?.kategori;
-export const taglineSelector = (state) => state.cmsBerita?.tagline;
-export const fileSelector = (state) => state.cmsBerita?.file;
 
 export const { updateResult } = beritaCmsSlice.actions;
 export default beritaCmsSlice.reducer;

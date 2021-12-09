@@ -11,7 +11,7 @@ import MultiDropDown from 'components/DropDown/MultiDropDown';
 import { submitForm } from 'utils/helper';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getListKategori, getListTagline, kategoriSelector, taglineSelector } from 'containers/CMS/BeritaBaru/reducer';
+import { getListKategori, getListTagline, kategoriSelector, taglineSelector } from 'containers/App/reducer';
 
 export const beritaFormId = 'berita-form-id';
 export const submitBeritaForm = submitForm(beritaFormId);

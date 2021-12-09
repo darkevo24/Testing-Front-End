@@ -42,10 +42,12 @@ export const apiUrls = {
   produenData: getV1Endpoint('katalog/produsendata'),
   dataindukData: getV1Endpoint('katalog/datainduk'),
   daftarData: getV1Endpoint('katalog'),
+  taglineData: getV1Endpoint('tagline'),
+  kategoriData: getV1Endpoint('settings/key/BERITA'),
   sdgPillers: getV1Endpoint('settings/key/SDGS'),
   rkpPN: getV1Endpoint('settings/key/RKP'),
-  strukturData: getApiEndpoint('cms/v1/bidang'),
-  cmsBeritaData: getApiEndpoint('cms/v1/berita'),
+  strukturData: getCMSEndpoint('bidang'),
+  cmsBeritaData: getCMSEndpoint('berita'),
 };
 
 export const TOPIC_LIST = [

@@ -138,11 +138,11 @@ const EditApi = () => {
             </div>
             <div className="wrapper-result">
               <div className="wrapper-data">
-                <div className="wrapper-title">
+                <div className="wrapper-title pt-0 pb-20">
                   <h1>Source API</h1>
                   <a href="#">(data-ckan-api.json)</a>
                 </div>
-                <div className={bem.e('management-table')}>
+                <div className={bem.e('management-table pt-0')}>
                   <table>
                     <thead className="head-table-border">
                       <th width="25%">Field</th>
@@ -165,7 +165,7 @@ const EditApi = () => {
                 <div className="wrapper-title">
                   <h1>Mapping DCAT</h1>
                 </div>
-                <div className={bem.e('wrapper-input')}>
+                <div className={bem.e('wrapper-input pt-0')}>
                   <Row>
                     <Col md={6}>
                       <div className="form-group">
@@ -194,7 +194,7 @@ const EditApi = () => {
                     </Col>
                   </Row>
                 </div>
-                <div className={bem.e('management-table')}>
+                <div className={bem.e('management-table pt-0')}>
                   <table>
                     <thead className="head-table-border">
                       <th width="20%">No</th>

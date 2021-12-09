@@ -30,7 +30,7 @@ const KomunitasAhli = () => {
   const [loader, setLoader] = useState(false);
   const [apiError, setAPIError] = useState('');
   const [notes, setNotes] = useState('');
-  const { loading, record } = useSelector(cmsKomunitasAhliDetailDatasetSelector);
+  const { loading, record, error } = useSelector(cmsKomunitasAhliDetailDatasetSelector);
   const { loading: logLoading, record: logRecord } = useSelector(cmsKomunitasAhliLogDatasetSelector);
   const status = (record?.status || '').toLowerCase();
   const dispatch = useDispatch();
@@ -189,7 +189,7 @@ const KomunitasAhli = () => {
             )}
           </div>
           <div className="mb-3 px-24">
-            {apiError ? <label className="sdp-error mb-20">{apiError}</label> : null}
+            {apiError || error ? <label className="sdp-error mb-20">{apiError || error}</label> : null}
             {list.map((item) =>
               loading ? (
                 <RowLoader />

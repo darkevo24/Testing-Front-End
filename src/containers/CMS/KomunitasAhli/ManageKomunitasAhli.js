@@ -160,7 +160,7 @@ const KomunitasAhli = () => {
       const response = await post(apiUrls.uploadFoto, fotoFormData, { headers: { 'Content-Type': undefined } });
       return response?.data || {};
     } catch (e) {
-      setAPIError(e.message);
+      setErrorInfo({ ...errorInfo, all: (errorInfo?.all || '') + ' Foto upload: ' + e.message });
     }
   };
 
@@ -171,7 +171,7 @@ const KomunitasAhli = () => {
       const response = await post(apiUrls.fileUpload, cvFormData, { headers: { 'Content-Type': undefined } });
       return response?.data || {};
     } catch (e) {
-      setAPIError(e.message);
+      setErrorInfo({ ...errorInfo, all: (errorInfo?.all || '') + ' CV upload: ' + e.message });
     }
   };
 
@@ -189,37 +189,42 @@ const KomunitasAhli = () => {
   const onSubmit = async () => {
     const fotoLink = await uplodFoto();
     const cvLink = await uplodCV();
-    try {
-      setLoader(true);
-      const response = await post(apiUrls.cmsKomunitasAhliData, {
-        nama: formData.nama,
-        bidangKeahlian: formData?.bidangKeahlian?.value || '',
-        daerah: {
-          id: formData?.daerah?.value,
-        },
-        instansi: {
-          id: formData?.instansi?.value,
-        },
-        level: formData?.level?.value || '',
-        penyelenggara: formData?.penyelenggara?.value || '',
-        pendidikan: formData?.pendidikan?.value || '',
-        riwayat: formData.riwayat,
-        foto: fotoLink || {},
-        cv: cvLink || {},
-        kontak: [
-          { title: 'No Handphone', image: '', tipe: 'handphone', value: formData?.handphone || '' },
-          { title: 'Email', image: '', tipe: 'email', value: formData?.email || '' },
-          { title: '', image: '', tipe: 'facebook', value: formData?.facebook || '' },
-          { title: '', image: '', tipe: 'twitter', value: formData?.twitter || '' },
-          { title: '', image: '', tipe: 'instagram', value: formData?.instagram || '' },
-          { title: '', image: '', tipe: 'youtube', value: formData?.youtube || '' },
-        ],
-      });
-      goBack();
-    } catch (e) {
-      setLoader(false);
+    if (!isEmpty(errorInfo) || !fotoLink || !cvLink) {
       setShowModal(false);
-      setAPIError(e.message);
+    } else {
+      debugger;
+      try {
+        setLoader(true);
+        const response = await post(apiUrls.cmsKomunitasAhliData, {
+          nama: formData.nama,
+          bidangKeahlian: formData?.bidangKeahlian?.value || '',
+          daerah: {
+            id: formData?.daerah?.value,
+          },
+          instansi: {
+            id: formData?.instansi?.value,
+          },
+          level: formData?.level?.value || '',
+          penyelenggara: formData?.penyelenggara?.value || '',
+          pendidikan: formData?.pendidikan?.value || '',
+          riwayat: formData.riwayat,
+          foto: fotoLink || {},
+          cv: cvLink || {},
+          kontak: [
+            { title: 'No Handphone', image: '', tipe: 'handphone', value: formData?.handphone || '' },
+            { title: 'Email', image: '', tipe: 'email', value: formData?.email || '' },
+            { title: '', image: '', tipe: 'facebook', value: formData?.facebook || '' },
+            { title: '', image: '', tipe: 'twitter', value: formData?.twitter || '' },
+            { title: '', image: '', tipe: 'instagram', value: formData?.instagram || '' },
+            { title: '', image: '', tipe: 'youtube', value: formData?.youtube || '' },
+          ],
+        });
+        goBack();
+      } catch (e) {
+        setLoader(false);
+        setShowModal(false);
+        setAPIError(e.message);
+      }
     }
   };
 
@@ -247,7 +252,7 @@ const KomunitasAhli = () => {
         </div>
         <div className="bg-gray-lighter p-32">
           <Row className="mb-3 px-24">
-            {apiError ? <label className="sdp-error mb-20">{apiError}</label> : null}
+            {apiError || errorInfo?.all ? <label className="sdp-error mb-20">{apiError || errorInfo.all}</label> : null}
             <Input
               group
               groupClass="mb-16"

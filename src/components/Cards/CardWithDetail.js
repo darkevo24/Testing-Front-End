@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import truncate from 'lodash/truncate';
 
 const Box = styled.div`
   background: #ffffff;

@@ -287,10 +287,10 @@ export const InstagramSvg = (props) => (
         r="1"
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(5.31231 21.5404) rotate(-90) scale(19.8215 18.4348)">
-        <stop stop-color="#FFDD55" />
-        <stop offset="0.1" stop-color="#FFDD55" />
-        <stop offset="0.5" stop-color="#FF543E" />
-        <stop offset="1" stop-color="#C837AB" />
+        <stop stopColor="#FFDD55" />
+        <stop offset="0.1" stopColor="#FFDD55" />
+        <stop offset="0.5" stopColor="#FF543E" />
+        <stop offset="1" stopColor="#C837AB" />
       </radialGradient>
       <radialGradient
         id="paint1_radial_1694_39224"
@@ -299,9 +299,9 @@ export const InstagramSvg = (props) => (
         r="1"
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(-3.34997 1.44077) rotate(78.6811) scale(8.86027 36.521)">
-        <stop stop-color="#3771C8" />
-        <stop offset="0.128" stop-color="#3771C8" />
-        <stop offset="1" stop-color="#6600FF" stop-opacity="0" />
+        <stop stopColor="#3771C8" />
+        <stop offset="0.128" stopColor="#3771C8" />
+        <stop offset="1" stopColor="#6600FF" stopOpacity="0" />
       </radialGradient>
     </defs>
   </svg>
@@ -314,6 +314,15 @@ export const YoutubeSvg = (props) => (
       fill="#FF0000"
     />
     <path d="M8.00684 9.88535L13.2127 6.88701L8.00684 3.88867V9.88535Z" fill="white" />
+  </svg>
+);
+
+export const MailSvg = (props) => (
+  <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M13.3636 0H0.636364C0.467589 0 0.305728 0.0670452 0.186387 0.186387C0.0670452 0.305728 0 0.467589 0 0.636364V10.8182C0 10.987 0.0670452 11.1488 0.186387 11.2682C0.305728 11.3875 0.467589 11.4545 0.636364 11.4545H13.3636C13.5324 11.4545 13.6943 11.3875 13.8136 11.2682C13.933 11.1488 14 10.987 14 10.8182V0.636364C14 0.467589 13.933 0.305728 13.8136 0.186387C13.6943 0.0670452 13.5324 0 13.3636 0ZM12.7273 10.1818H1.27273V4.12173L6.76327 6.31845C6.91534 6.3787 7.08466 6.3787 7.23673 6.31845L12.7273 4.12173V10.1818ZM12.7273 2.751L7 5.04191L1.27273 2.751V1.27273H12.7273V2.751Z"
+      fill={`var(--${getColor(props, types.dark)})`}
+    />
   </svg>
 );
 
@@ -344,4 +353,5 @@ export const icons = {
   twitterSvg: TwitterSvg,
   instgramSvg: InstagramSvg,
   youtubeSvg: YoutubeSvg,
+  mailSvg: MailSvg,
 };

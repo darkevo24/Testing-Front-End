@@ -16,6 +16,7 @@ import perminataanReducer from 'containers/Perminataan/reducer';
 import strukturReducer from 'containers/CMS/StrukturOrganisasi/reducer';
 import beritaCmsReducer from 'containers/CMS/BeritaBaru/reducer';
 import cmsKomunitasAhliReducer from 'containers/CMS/KomunitasAhli/reducer';
+import komunitasAhliReducer from 'containers/Komunitas/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -32,6 +33,7 @@ export default function createReducer(injectedReducers) {
     struktur: strukturReducer,
     cmsBerita: beritaCmsReducer,
     cmsKomunitasAhli: cmsKomunitasAhliReducer,
+    komunitasAhli: komunitasAhliReducer,
     router: connectRouter(history),
     ...injectedReducers,
   });

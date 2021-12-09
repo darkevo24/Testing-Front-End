@@ -1,24 +1,54 @@
 .sdp-komunitas-wrapper {
+  .sdp-info-wrapper {
+    flex: 1;
+  }
+
+  .sdp-table__header-wrapper {
+    position: relative;
+
+    .sdp-button {
+      width: 170px !important;
+      max-width: 170px !important;
+      box-shadow: none;
+    }
+
+    .sdp-filter {
+      &.added-filters {
+        position: relative;
+        padding: 0;
+        z-index: 1;
+      }
+      position: absolute;
+      z-index: 10;
+      background: var(--white);
+      padding: 16px;
+      top: 0;
+      left: 0;
+      right: 0;
+
+      .basic-single {
+        .select__control {
+          background-color: var(--gray-bg);
+        }
+      }
+    }
+  }
+
   .sdp-table tbody tr td {
     border-bottom-color: var(--white) !important;
   }
 
   .sdp-rating-wrapper {
-    .star-ratings {
-      display: flex !important;
+    .sdp-kontak {
+      height: 40px;
+      width: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-      .star-container {
-        padding-right: 0 !important;
-
-        svg {
-          height: 14px !important;
-          width: 14px !important;
-        }
+      svg {
+        font-size: 20px;
       }
-    }
-
-    .sdp-rate-button {
-      width: max-content;
     }
   }
 }

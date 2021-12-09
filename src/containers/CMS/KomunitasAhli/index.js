@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import cx from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Table, { FilterSearchInput } from 'components/Table';
 import SingleDropDown from 'components/DropDown/SingleDropDown';
 import { getCMSKomunitasAhliData, cmsKomunitasAhliDatasetSelector } from './reducer';
-import { perminataanDatasetSelector } from 'containers/Perminataan/reducer';
 import TableLoader from 'components/Loader/TableLoader';
 
 const DROPDOWN_LIST = [
@@ -14,11 +13,11 @@ const DROPDOWN_LIST = [
     label: 'All',
   },
   {
-    value: 'Approved',
+    value: 'SETUJUI',
     label: 'Approved',
   },
   {
-    value: 'Rejected',
+    value: 'TOLAK',
     label: 'Rejected',
   },
 ];
@@ -45,8 +44,8 @@ const KomunitasAhli = () => {
     handleAPICall({ page: 0, q: value.trim(), status });
   };
 
-  const handleStatusChange = ({ selected: { value = '' } }) => {
-    handleAPICall({ page: 0, q: value.trim(), status: value });
+  const handleStatusChange = (selected) => {
+    handleAPICall({ page: 0, q, status: selected.value });
   };
 
   const columns = [

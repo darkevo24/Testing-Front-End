@@ -52,10 +52,10 @@ const KomunitasAhli = () => {
     dispatch(getCMSKomunitasAhliLogById(id));
   };
 
-  const handleAPICall = async (url, params) => {
+  const handleAPICall = async (method, url, params) => {
     try {
       setLoader(true);
-      const response = await post(url, {}, params);
+      await method(url, {}, params);
       hanleCloseModal();
       initialCall();
     } catch (e) {
@@ -64,19 +64,19 @@ const KomunitasAhli = () => {
     }
   };
   const onKirim = async () => {
-    handleAPICall(`${apiUrls.cmsKomunitasAhliData}/${record.id}/kirim`);
+    handleAPICall(post, `${apiUrls.cmsKomunitasAhliData}/${record.id}/kirim`);
   };
 
   const onDelete = async () => {
-    handleAPICall(`${apiUrls.cmsKomunitasAhliData}/${record.id}/`);
+    handleAPICall(deleteRequest, `${apiUrls.cmsKomunitasAhliData}/${record.id}/`);
   };
 
   const onSetujui = async () => {
-    handleAPICall(`${apiUrls.cmsKomunitasAhliData}/${record.id}/setujui`);
+    handleAPICall(post, `${apiUrls.cmsKomunitasAhliData}/${record.id}/setujui`);
   };
 
   const onTolak = async () => {
-    handleAPICall(`${apiUrls.cmsKomunitasAhliData}/${record.id}/tolak`, { query: { notes } });
+    handleAPICall(post, `${apiUrls.cmsKomunitasAhliData}/${record.id}/tolak`, { query: { notes } });
   };
 
   const hanleCloseModal = () => {

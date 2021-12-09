@@ -57,8 +57,8 @@ export const SingleSelectDropdown = ({
         render={({ field }) => {
           const handleInputChange = (newValue) => {
             const inputValue = newValue.replace(/\W/g, '');
-            if (isFunction(onInputChange)) {
-              onInputChange(inputValue);
+            if (isFunction(onInputChange?.current)) {
+              onInputChange.current(inputValue);
             }
             return inputValue;
           };

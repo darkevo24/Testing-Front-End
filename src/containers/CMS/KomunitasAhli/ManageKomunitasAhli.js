@@ -101,7 +101,7 @@ const KomunitasAhli = () => {
   const debounceSearch = useRef(
     debounce((searchTerm = 'a') => {
       getDaerahData(searchTerm.trim());
-    }, 100),
+    }, 300),
   );
 
   const getBidangData = async () => {

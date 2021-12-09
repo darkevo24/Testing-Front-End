@@ -21,4 +21,17 @@
 }
 .btn-success {
   color: $white;
+  &:hover,
+  &:focus,
+  &:active {
+    color: $white;
+  }
+}
+.btn-json {
+  background: $white;
+  border: 1px solid $stroke;
+  // width: 157px;
+  height: 50px;
+  border-radius: 4px;
+  font-size: 14px;
 }

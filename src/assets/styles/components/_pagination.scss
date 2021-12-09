@@ -1,0 +1,47 @@
+// Wrapper Pagination
+.wrapper-pagination {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 40px;
+    padding-bottom: 70px;
+}
+
+// Pagination
+.pagination {
+    .page-link {
+        color: #858A8F;
+        background: $gray-bg;
+        border-radius: 2px;
+        margin:0 10px;
+        border: none;
+        width: 32px;
+        height: 32px;
+        &:hover {
+            background: $black-darker;
+            color: $white;
+        }
+
+        &.active {
+            background: $black-darker;
+            color: $white;
+        }
+
+        &.next,
+        &.prev {
+            background: $white;
+            border: 1px solid $stroke;
+            vertical-align: middle;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        &.next {
+            margin-right: 0;
+            margin-left: 12px;
+        }
+        &.prev {
+            margin-left: 0;
+            margin-right: 22px;
+        }
+    }
+}

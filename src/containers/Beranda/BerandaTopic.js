@@ -33,7 +33,9 @@ const BoxFlex = styled.div`
 `;
 
 export const BerandaTopic = () => {
-  const list = chunk(TOPIC_LIST, 5);
+  const topicList = [...TOPIC_LIST];
+  topicList.shift();
+  const list = chunk(topicList, 5);
   const history = useHistory();
 
   const handleGoNext = (item) => {

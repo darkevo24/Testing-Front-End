@@ -11,8 +11,9 @@ import { ReactComponent as IconDelete } from 'assets/cms-api-delete.svg';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import bn from 'utils/bemNames';
 
-import './index.scss';
+const bem = bn('cms-api');
 
 const DetailApi = () => {
   const schema = yup
@@ -96,7 +97,7 @@ const DetailApi = () => {
   ];
 
   return (
-    <div className="management-api log">
+    <div className="sdp-cms-api log">
       <div className="container">
         <Row>
           <Col md={8}>
@@ -107,7 +108,7 @@ const DetailApi = () => {
                 <IconEdit onClick={() => history.push('/cms/api/edit/api-1')} />
               </div>
             </div>
-            <div className="wrapper-input pb-10">
+            <div className={bem.e('wrapper-input pb-10')}>
               <div className="form-group">
                 <label for="Judul">Judul</label>
                 <div className="box-input">
@@ -126,15 +127,6 @@ const DetailApi = () => {
                   <input type="text" placeholder="data.go.id/api/data" disabled />
                 </div>
               </div>
-              {/* <div className="form-group">
-                <label for="Judul">Source Api</label>
-                <div className="box-input">
-                  <div className="input-group">
-                    <input className="custom-file-input" type="file" />
-                    <div class="input-group-append">Upload</div>
-                  </div>
-                </div>
-              </div> */}
               <div className="form-group">
                 <label for="Judul">Max Data Parameter</label>
                 <div className="box-input">
@@ -148,7 +140,7 @@ const DetailApi = () => {
                   <h1>Source API</h1>
                   <a href="#">(data-ckan-api.json)</a>
                 </div>
-                <div className="management-table">
+                <div className={bem.e('management-table')}>
                   <table>
                     <thead className="head-table-border">
                       <th width="25%">Field</th>
@@ -171,7 +163,7 @@ const DetailApi = () => {
                 <div className="wrapper-title pt-20 pb-0">
                   <h1>Mapping DCAT</h1>
                 </div>
-                <div className="wrapper-input pb-0">
+                <div className={bem.e('wrapper-input pb-0')}>
                   <Row>
                     <Col md={6}>
                       <div className="form-group">
@@ -200,7 +192,7 @@ const DetailApi = () => {
                     </Col>
                   </Row>
                 </div>
-                <div className="management-table pt-0">
+                <div className={bem.e('management-table')}>
                   <table>
                     <thead className="head-table-border">
                       <th width="20%">No</th>
@@ -231,7 +223,7 @@ const DetailApi = () => {
                   </table>
                 </div>
               </div>
-              <div className="wrapper-json">
+              <div className="sdp-cms-api__wrapper-json">
                 <span> Output </span>
                 <div className="input-group">
                   <input type="text" placeholder="https://bappenas.go.id/data.json" />

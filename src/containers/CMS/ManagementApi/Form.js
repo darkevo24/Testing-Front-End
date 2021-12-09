@@ -8,8 +8,9 @@ import { Dropdown } from 'components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import bn from 'utils/bemNames';
 
-import './index.scss';
+const bem = bn('cms-api');
 
 const ApiForm = () => {
   const schema = yup
@@ -61,7 +62,7 @@ const ApiForm = () => {
     },
   ];
   return (
-    <div className="management-api form">
+    <div className="sdp-cms-api form">
       <div className="header-form">
         <h1>Buat API Baru</h1>
         <Button className="ml-50" variant="secondary" style={{ width: '112px' }} onClick={() => history.goBack()}>
@@ -71,9 +72,9 @@ const ApiForm = () => {
           Simpan
         </Button>
       </div>
-      <Row className="wrapper-input-row">
+      <Row className={bem.e('wrapper-input row')}>
         <Col md={8}>
-          <div className="wrapper-input">
+          <div className={bem.e('wrapper-input pb-0')}>
             <div className="form-group">
               <label for="Judul">Judul</label>
               <div className="box-input">
@@ -151,7 +152,7 @@ const ApiForm = () => {
                   <h1>Source API</h1>
                   <a href="#">(data-ckan-api.json)</a>
                 </div>
-                <div className="management-table">
+                <div className={bem.e('management-table')}>
                   <table>
                     <thead className="head-table-border">
                       <th width="25%">Field</th>
@@ -174,7 +175,7 @@ const ApiForm = () => {
                 <div className="wrapper-title">
                   <h1>Mapping DCAT</h1>
                 </div>
-                <div className="wrapper-input">
+                <div className={bem.e('wrapper-input')}>
                   <Row>
                     <Col md={6}>
                       <div className="form-group">
@@ -203,7 +204,7 @@ const ApiForm = () => {
                     </Col>
                   </Row>
                 </div>
-                <div className="management-table">
+                <div className={bem.e('management-table')}>
                   <table>
                     <thead className="head-table-border">
                       <th width="20%">No</th>
@@ -240,7 +241,7 @@ const ApiForm = () => {
                 </div>
               </div>
               {generateOutput && (
-                <div className="wrapper-json">
+                <div className={bem.e('wrapper-json')}>
                   <span> Output </span>
                   <div className="input-group">
                     <input type="text" placeholder="https://bappenas.go.id/data.json" />

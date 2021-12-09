@@ -1,12 +1,12 @@
 import { useHistory } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
-import { Row, Col } from 'react-bootstrap';
 import LogoBappenas from 'assets/Logo_Bappenas_Indonesia.png';
 import { ReactComponent as Search } from 'assets/search-api.svg';
 import { ReactComponent as Prev } from 'assets/prev.svg';
 import { ReactComponent as Next } from 'assets/next.svg';
+import bn from 'utils/bemNames';
 
-import './index.scss';
+const bem = bn('cms-api');
 
 const ManagementApi = () => {
   const history = useHistory();
@@ -110,9 +110,9 @@ const ManagementApi = () => {
   ];
 
   return (
-    <div className="management-api main">
+    <div className="sdp-cms-api">
       <div className="container">
-        <div className="header-api">
+        <div className={bem.e('header-api')}>
           <div className="row">
             <div className="col-md-6">
               <div className="wrapper-left">
@@ -137,7 +137,7 @@ const ManagementApi = () => {
           </div>
         </div>
       </div>
-      <div className="main-content">
+      <div className={bem.e('main-content')}>
         <div className="container">
           <div className="row">
             {LIST_CARD.map((data, index) => {
@@ -159,7 +159,7 @@ const ManagementApi = () => {
               );
             })}
           </div>
-          <div className="wrapper-pagination">
+          <div className="wrapper-pagination main">
             <span className="count">Display 1-24</span>
             <ul className="pagination">
               <li className="page-item">

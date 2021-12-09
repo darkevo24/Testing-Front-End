@@ -1,44 +1,8 @@
-@import '../../../assets/styles/variables';
-
-.management-api {
+.sdp-cms-api {
     min-height: 100vh;
     padding: 50px 0;
 
-    .form-group {
-        input:disabled {
-            background: $gray-bg;
-        }
-    }
-
-    .input-group {
-        height: 40px;
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-        flex-wrap: nowrap;
-        input {
-            padding-left: 15px;
-            border-radius: 4px;
-            outline: none;
-            width: 85%;
-            border: 1px solid $stroke-button;
-            border-right: none;
-            color: $gray;
-            &:focus {
-                outline: none;
-            }
-        }
-        .input-group-text {
-            height: 40px;
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-            background: transparent;
-            border: 1px solid $stroke-button;
-            border-left: none;
-        }
-    }
-
-    .header-api {
+    &__header-api {
         background: $white;
         padding-bottom: 20px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -76,7 +40,7 @@
         }
     }
 
-    .main-content {
+    &__main-content {
         background: $gray-lighter;
         padding-top: 30px;
         .card-list {
@@ -124,8 +88,8 @@
             }
         }
     }
-
-    .wrapper-json {
+    
+    &__wrapper-json {
         width: 100%;
         display: flex;
         background: $white;
@@ -156,8 +120,8 @@
 
     }
 
-    &.main {
-        .wrapper-pagination {
+    .wrapper-pagination {
+        &.main {
             justify-content: space-between;
             align-items: center;
             .count {
@@ -169,9 +133,46 @@
         }
     }
 
+    .form-group {
+        input:disabled {
+            background: $gray-bg;
+        }
+    }
+
+    .input-group {
+        height: 40px;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: nowrap;
+        input {
+            padding-left: 15px;
+            border-radius: 4px;
+            outline: none;
+            width: 85%;
+            border: 1px solid $stroke-button;
+            border-right: none;
+            color: $gray;
+            &:focus {
+                outline: none;
+            }
+        }
+        .input-group-text {
+            height: 40px;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            background: transparent;
+            border: 1px solid $stroke-button;
+            border-left: none;
+        }
+    }
+
+    .sdp-content-table__body {
+        padding: 0px !important;
+    }
 
     // ============ CreateAPI Pages =================
-    .management-table {
+    &__management-table {
         padding-top: 40px;
         table {
             width: 100%;
@@ -224,7 +225,7 @@
         }
     }
 
-    .header-add {
+    &__header-add {
         width: 100%;
         display: flex;
         justify-content: space-between;
@@ -258,7 +259,7 @@
         }
 
     }
-    .wrapper-input {
+    &__wrapper-input {
         padding-top: 20px;
         padding-bottom: 40px;
         input {
@@ -326,6 +327,7 @@
                 position: relative;
                 overflow: hidden;
                 cursor: pointer;
+                width: 100%;
                 &::before {
                     content: '';
                     position: absolute;
@@ -334,6 +336,7 @@
                     height: 100%;
                     right: 0;
                     z-index: 1;
+                    border-right: 1px solid $stroke;
                 }
             }
             .input-group-append {
@@ -352,7 +355,6 @@
     }
 
     &.add {
-
         padding-bottom: 50px;
 
         .card-bappenas {
@@ -422,51 +424,15 @@
             .wrapper-left {
                 width: 161px;
                 height: 40px;
+                padding-left: 10px;
+                button {
+                    width: 100%;
+                }
+            }
+            .wrapper-right {
+                width: 380px;
             }
         }
-
-        .wrapper-result {
-            .wrapper-title {
-                display: flex;
-                padding-top: 30px;
-                padding-bottom: 35px;
-                align-items: center;
-                h1 {
-                    font-size: 15px;
-                    margin: 0;
-                    font-weight: bold;
-                    padding-right: 3px;
-                }
-                a {
-                    margin: 0;
-                    font-size: 15px;
-                    text-decoration: none;
-                    &:hover {
-                        text-decoration: underline;
-                    }
-                }
-            }
-            .wrapper-dcat {
-                .wrapper-title {
-                    padding: 0;
-                }
-                .wrapper-input {
-                    padding-top: 20px;
-                }
-            }
-            .management-table {
-                padding-top: 0;
-                padding-bottom: 0;
-            }
-        }
-
-
-
-    }
-
-    .sdp-content-table__body {
-        padding: 10px !important;
-        padding-top: 20px !important;
     }
     // ============ End CreateAPI Pages ==============
 
@@ -499,7 +465,6 @@
         }
         .wrapper-result {
             background: $white;
-            padding-top: 50px;
             .wrapper-title {
                 display: flex;
                 align-items: center;
@@ -574,6 +539,7 @@
         // Set Modal to Center
     
     }
+
 
 }
 

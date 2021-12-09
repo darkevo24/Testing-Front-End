@@ -6,8 +6,9 @@ import { ReactComponent as Prev } from 'assets/prev.svg';
 import { ReactComponent as Next } from 'assets/next.svg';
 import { ReactComponent as Edit } from 'assets/edit.svg';
 import { CMSTable } from 'components';
+import bn from 'utils/bemNames';
 
-import './index.scss';
+const bem = bn('cms-api');
 
 const CreateApi = () => {
   const history = useHistory();
@@ -56,7 +57,7 @@ const CreateApi = () => {
     },
   ];
   return (
-    <div className="management-api add">
+    <div className="sdp-cms-api add">
       <div className="card-bappenas">
         <div className="container">
           <div className="row">
@@ -92,7 +93,7 @@ const CreateApi = () => {
                 </Button>
               </div>
             </div>
-            <div className="col-md-6 d-flex align-bottom">
+            <div className="col-md-6 d-flex justify-content-end">
               <div className="wrapper-right">
                 <div className="input-group">
                   <input type="text" placeholder="Cari..." />

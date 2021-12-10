@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Search, ModalAlertDanger } from 'components/Icons';
 import Button from 'react-bootstrap/Button';
@@ -11,9 +10,11 @@ import * as yup from 'yup';
 import { DatePicker } from 'components';
 import { ReactComponent as Prev } from 'assets/prev.svg';
 import { ReactComponent as Next } from 'assets/next.svg';
-import { ModalDelete } from 'components';
+import { Modal } from 'components';
+import bn from 'utils/bemNames';
 
-import './index.scss';
+const bem = bn('log-activity');
+
 const schema = yup
   .object({
     title: yup.string().required(),
@@ -31,7 +32,6 @@ const LogActivity = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const history = useHistory();
   const LIST_TABLE = [
     {
       id_user: 'ibrohim@gmail.com',
@@ -105,9 +105,9 @@ const LogActivity = () => {
     },
   ];
   return (
-    <div className="log-activity">
+    <div className="sdp-log-activity">
       <div className="container">
-        <div className="header-log">
+        <div className={bem.e('header-log')}>
           <div className="wrapper-left">
             <h1> Log Aktivitas </h1>
             <Button className="" variant="info" style={{ width: '112px' }} onClick={() => setModalProfile(true)}>
@@ -194,7 +194,7 @@ const LogActivity = () => {
           </ul>
         </div>
       </div>
-      <ModalDelete visible={modalProfile} onClose={() => setModalProfile(false)}>
+      <Modal showHeader={false} visible={modalProfile} onClose={() => setModalProfile(false)}>
         <div className="alert">
           <ModalAlertDanger />
           <p className="text-danger pt-15">
@@ -220,7 +220,7 @@ const LogActivity = () => {
             </Button>
           </div>
         </div>
-      </ModalDelete>
+      </Modal>
     </div>
   );
 };

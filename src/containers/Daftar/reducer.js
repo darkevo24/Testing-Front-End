@@ -295,6 +295,8 @@ const daftarSlice = createSlice({
 export const produenDataSelector = (state) => state.daftar.produen;
 export const daftarDataSelector = (state) => state.daftar.daftarData;
 export const sdgsDataSelector = (state) => state.daftar.sdgs;
+export const rkpDataSelector = (state) => state.daftar.rkp;
+export const sayaDataSelector = (state) => state.daftar.sayaDaftarData;
 export const updateDaftarDataSelector = (state) => state.daftar.updateDaftarData;
 export const addDaftarDataSelector = (state) => state.daftar.addDaftarData;
 export const tujuanSDGPillersSelector = (state) => state.daftar.tujuanSDGPillers;

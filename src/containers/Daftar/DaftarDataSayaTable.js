@@ -1,14 +1,15 @@
-import { useMemo, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import truncate from 'lodash/truncate';
+import cloneDeep from 'lodash/cloneDeep';
 import Modal from 'components/Modal';
 import Notification from 'components/Notification';
 import Table from 'components/Table';
-import { makeData } from 'utils/dataConfig/daftar';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import DaftarForm, { submitDaftarForm } from './DaftarForm';
 import { Check } from 'components/Icons';
-import { deleteDaftarData, putDaftarData } from './reducer';
+import { JADWAL_PERMUTAKHIRAN } from 'utils/constants';
+import { getSayaDaftarData, sayaDataSelector, deleteDaftarData, putDaftarData } from './reducer';
 
 const DaftarDataSayaTable = ({
   bem,
@@ -21,7 +22,35 @@ const DaftarDataSayaTable = ({
   const [isDaftarFormVisible, setIsDaftarFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const dispatch = useDispatch();
+  const { pageSize, loading, params, bodyParams, result } = useSelector(sayaDataSelector);
 
+  const fetchSayaData = (filterOverride = {}, reset = false) => {
+    const { params: paramsOverride = {}, bodyParams: bodyParamsOverride = {} } = filterOverride;
+    const filterParams = {
+      ...cloneDeep(params),
+      ...cloneDeep(paramsOverride),
+    };
+    if (reset) {
+      filterParams.start = 0;
+      filterParams.currentPage = 0;
+    }
+    const filterBodyParams = {
+      ...cloneDeep(bodyParams),
+      ...cloneDeep(bodyParamsOverride),
+    };
+    const filters = { params: filterParams, bodyParams: filterBodyParams };
+    return dispatch(getSayaDaftarData(filters));
+  };
+
+  useEffect(() => {
+    fetchSayaData();
+  }, []);
+
+  const handleDropdownFilter = (filter) => (selectedValue) => {
+    fetchSayaData({ bodyParams: { [filter]: selectedValue.value } });
+  };
+
+  const data = useMemo(() => result?.content?.records || [], [result]);
   const showDeleteModal = (data) => {
     setSelectedRecord(data);
     setIsDeleteModalVisible(true);
@@ -97,24 +126,25 @@ const DaftarDataSayaTable = ({
       },
       {
         Header: 'Nama Data',
-        accessor: 'name',
+        accessor: 'nama',
         Cell: (data) => truncate(data.cell.value, { length: 20 }),
       },
       {
         Header: 'Jadwal Pemutakhiran',
-        accessor: 'jadwal',
+        accessor: 'jadwalPemutakhiran',
+        Cell: (data) => JADWAL_PERMUTAKHIRAN[data.cell.value],
       },
       {
         Header: 'Dibuat',
-        accessor: 'dibuat',
+        accessor: 'tanggalDibuat',
       },
       {
         Header: 'Diperbarui',
-        accessor: 'diper',
+        accessor: 'tanggalDiperbaharui',
       },
       {
         Header: 'Produsen Data',
-        accessor: 'produsen',
+        accessor: 'produsenData',
       },
       {
         Header: 'Label',
@@ -151,13 +181,26 @@ const DaftarDataSayaTable = ({
     ],
     [],
   );
-  const data = useMemo(() => makeData(200), []);
   const tableConfig = {
     columns,
     data,
+    totalCount: result?.content?.totalRecords || null,
+    pageSize,
+    manualPagination: true,
+    currentPage: params.currentPage,
     showSearch: false,
     highlightOnHover: true,
     variant: 'spaced',
+    onPageIndexChange: (currentPage) => {
+      const start = currentPage * pageSize;
+      if (params.start !== start) {
+        const params = {
+          start,
+          currentPage,
+        };
+        fetchSayaData({ params });
+      }
+    },
   };
 
   return (

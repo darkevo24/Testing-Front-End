@@ -52,6 +52,18 @@ export const apiUrls = {
   cmsBeritaData: getCMSEndpoint('berita'),
 };
 
+export const JADWAL_PERMUTAKHIRAN = [
+  'Harian',
+  'Mingguan',
+  'Bulanan',
+  'Triwulanan',
+  'Empat Bulanan',
+  'Semesteran',
+  'Tahunan',
+  'Dua Tahunan',
+  'Ad-hoc',
+];
+
 export const TOPIC_LIST = [
   { title: 'Semua', items: [], icon: <SplitCircle /> },
   { title: 'Pertahanan dan Luar Negeri', items: ['Pertahanan', 'Luar Negeri'], icon: <EkonomiSvg /> },

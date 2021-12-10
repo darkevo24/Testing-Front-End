@@ -10,6 +10,7 @@ import Popover from 'components/Popover';
 import { Check } from 'components/Icons';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import cloneDeep from 'lodash/cloneDeep';
+import { JADWAL_PERMUTAKHIRAN } from 'utils/constants';
 import { getDaftarData, daftarDataSelector } from './reducer';
 
 const DaftarTable = ({
@@ -42,8 +43,6 @@ const DaftarTable = ({
     const filters = { params: filterParams, bodyParams: filterBodyParams };
     return dispatch(getDaftarData(filters));
   };
-
-  const katlogData = useMemo(() => result || [], [result]);
 
   useEffect(() => {
     fetchDaftarData();
@@ -104,6 +103,7 @@ const DaftarTable = ({
       {
         Header: 'Jadwal Pemutakhiran',
         accessor: 'jadwalPemutakhiran',
+        Cell: (data) => JADWAL_PERMUTAKHIRAN[data.cell.value],
       },
       {
         Header: 'Dibuat',
@@ -153,7 +153,7 @@ const DaftarTable = ({
     return items;
   }, [cms]);
 
-  const data = useMemo(() => katlogData?.content?.records || [], [katlogData]);
+  const data = useMemo(() => result?.content?.records || [], [result]);
 
   const tableConfig = {
     columns,

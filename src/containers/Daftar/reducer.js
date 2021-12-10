@@ -78,6 +78,34 @@ export const initialState = {
       tab: 1,
     },
   },
+  rkp: {
+    loading: false,
+    error: null,
+    result: null,
+    pageSize: defaultNumberOfRows,
+    params: {
+      currentPage: null,
+      ...paginationParams,
+    },
+    bodyParams: {
+      ...defaultDaftarBodyParams,
+      tab: 2,
+    },
+  },
+  sayaDaftarData: {
+    loading: false,
+    error: null,
+    result: null,
+    pageSize: defaultNumberOfRows,
+    params: {
+      currentPage: null,
+      ...paginationParams,
+    },
+    bodyParams: {
+      ...defaultDaftarBodyParams,
+      tab: 3,
+    },
+  },
   loading: false,
   error: null,
 };
@@ -90,6 +118,21 @@ export const getProduen = createAsyncThunk('daftar/getProduen', async () => {
 });
 
 export const getDaftarData = createAsyncThunk('daftar/getDaftarData', async (filters = {}) => {
+  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query: filters.params });
+  return response?.data;
+});
+
+export const getSdgDaftarData = createAsyncThunk('daftar/getSdgDaftarData', async (filters = {}) => {
+  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query: filters.params });
+  return response?.data;
+});
+
+export const getRkpDaftarData = createAsyncThunk('daftar/getRkpDaftarData', async (filters = {}) => {
+  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query: filters.params });
+  return response?.data;
+});
+
+export const getSayaDaftarData = createAsyncThunk('daftar/getSayaDaftarData', async (filters = {}) => {
   const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query: filters.params });
   return response?.data;
 });
@@ -137,6 +180,48 @@ const daftarSlice = createSlice({
     builder.addCase(getDaftarData.rejected, (state) => {
       state.daftarData.loading = false;
       state.daftarData.error = 'Error in fetching daftarData details!';
+    });
+    builder.addCase(getSdgDaftarData.pending, (state, action) => {
+      const { bodyParams, params } = action.meta.arg;
+      state.sdgs.params = params;
+      state.sdgs.bodyParams = bodyParams;
+      state.sdgs.loading = true;
+    });
+    builder.addCase(getSdgDaftarData.fulfilled, (state, action) => {
+      state.sdgs.loading = false;
+      state.sdgs.result = action.payload;
+    });
+    builder.addCase(getSdgDaftarData.rejected, (state) => {
+      state.sdgs.loading = false;
+      state.sdgs.error = 'Error in fetching sdg daftar data details!';
+    });
+    builder.addCase(getRkpDaftarData.pending, (state, action) => {
+      const { bodyParams, params } = action.meta.arg;
+      state.rkp.params = params;
+      state.rkp.bodyParams = bodyParams;
+      state.rkp.loading = true;
+    });
+    builder.addCase(getRkpDaftarData.fulfilled, (state, action) => {
+      state.rkp.loading = false;
+      state.rkp.result = action.payload;
+    });
+    builder.addCase(getRkpDaftarData.rejected, (state) => {
+      state.rkp.loading = false;
+      state.rkp.error = 'Error in fetching sdg daftar data details!';
+    });
+    builder.addCase(getSayaDaftarData.pending, (state, action) => {
+      const { bodyParams, params } = action.meta.arg;
+      state.sayaDaftarData.params = params;
+      state.sayaDaftarData.bodyParams = bodyParams;
+      state.sayaDaftarData.loading = true;
+    });
+    builder.addCase(getSayaDaftarData.fulfilled, (state, action) => {
+      state.sayaDaftarData.loading = false;
+      state.sayaDaftarData.result = action.payload;
+    });
+    builder.addCase(getSayaDaftarData.rejected, (state) => {
+      state.sayaDaftarData.loading = false;
+      state.sayaDaftarData.error = 'Error in fetching sdg daftar data details!';
     });
     builder.addCase(getProduen.pending, (state) => {
       state.produen.loading = true;
@@ -209,6 +294,7 @@ const daftarSlice = createSlice({
 
 export const produenDataSelector = (state) => state.daftar.produen;
 export const daftarDataSelector = (state) => state.daftar.daftarData;
+export const sdgsDataSelector = (state) => state.daftar.sdgs;
 export const updateDaftarDataSelector = (state) => state.daftar.updateDaftarData;
 export const addDaftarDataSelector = (state) => state.daftar.addDaftarData;
 export const tujuanSDGPillersSelector = (state) => state.daftar.tujuanSDGPillers;

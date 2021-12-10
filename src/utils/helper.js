@@ -3,6 +3,7 @@ import isObject from 'lodash/isObject';
 import isString from 'lodash/isString';
 import map from 'lodash/map';
 import pick from 'lodash/pick';
+import { katalogUrl } from './constants';
 
 export const safeParse = (value) => {
   try {
@@ -204,3 +205,5 @@ export const getStatusClass = (status) => {
       return {};
   }
 };
+
+export const getDatasetUrl = (name) => `${katalogUrl}/dataset/${name}`;

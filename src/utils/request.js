@@ -85,7 +85,10 @@ export async function request(url, { method = 'GET', headers: optionHeaders = {}
     defaultHeaders.Authorization = `Bearer ${token}`;
   }
   const headers = Object.assign({}, defaultHeaders, optionHeaders);
-  const options = { method, headers };
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10 * 1000); // Timeout in 10 seconds
+  const options = { method, headers, signal: controller.signal };
 
   // Checking if body has data.
   if (!isEmpty(data)) {
@@ -100,9 +103,6 @@ export async function request(url, { method = 'GET', headers: optionHeaders = {}
     delete headers['Content-Type'];
   }
 
-  const controller = new AbortController();
-  options.signal = controller.signal;
-  const timeout = setTimeout(() => controller.abort(), 10 * 1000); // Timeout in 10 seconds
   let fetchResponse;
   try {
     fetchResponse = await fetch(url, options);

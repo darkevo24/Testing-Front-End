@@ -6,6 +6,7 @@ import truncate from 'lodash/truncate';
 import { ReactComponent as TrendingSvg } from 'assets/trending.svg';
 import { ReactComponent as PopulerSvg } from 'assets/populer.svg';
 import { CardWithDetail } from 'components/Cards/CardWithDetail';
+import { getDatasetUrl } from 'utils/helper';
 
 const Box = styled.div`
   margin: 80px 0;
@@ -41,7 +42,7 @@ const TitleBox = styled.div`
 export const BerandaCards = ({ isLoggedIn, trendingData = [], popularData = [] }) => {
   const linkToRedirect = isLoggedIn ? '/dataset' : '/topic-detail';
   const renderDataSet = (group) => (data) => {
-    const dataSetUrl = `/data/dataset/${data.name}`;
+    const dataSetUrl = getDatasetUrl(data.name);
     const numberOfMaxFormats = 2;
     const uniqFormats =
       uniqBy(

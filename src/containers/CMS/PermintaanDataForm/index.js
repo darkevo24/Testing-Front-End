@@ -22,7 +22,6 @@ import { LogStatus } from 'components/Sidebars/LogStatus';
 import { LeftChevron } from 'components/Icons';
 import Modal from 'components/Modal';
 import { submitForm } from 'utils/helper';
-import './index.scss';
 
 const bem = bn('content-detail');
 export const tolakFormId = 'tolak-form-id';
@@ -53,12 +52,12 @@ const TerkirimText = () => {
     history.push('/permintaan-data');
   };
   return (
-    <Row className="d-flex">
+    <div className="d-flex">
       <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
         <LeftChevron></LeftChevron>
       </div>
       <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Terkirim</Row>
-    </Row>
+    </div>
   );
 };
 
@@ -68,12 +67,12 @@ const DiprosesText = () => {
     history.push('/permintaan-data');
   };
   return (
-    <Row className="d-flex">
+    <div className="d-flex">
       <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
         <LeftChevron></LeftChevron>
       </div>
       <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">Terproses</Row>
-    </Row>
+    </div>
   );
 };
 
@@ -361,7 +360,7 @@ const CMSPermintaanDataView = () => {
         <Modal
           visible={showSelesaiModal}
           onClose={() => hideSelesaiModal()}
-          title="Apakah anda ingin menyelesaikan Permintaan Data?"
+          title=""
           actions={[
             { variant: 'secondary', text: 'Batal', onClick: () => hideSelesaiModal() },
             { text: 'Konfirmasi', type: 'submit', onClick: () => onSubmitSelesai() },

@@ -77,8 +77,8 @@ const Daftar = () => {
     })) || [];
   const dataindukOptions =
     dataindukData?.result?.map((datainduk) => ({
-      value: datainduk,
-      label: datainduk,
+      value: datainduk.id,
+      label: datainduk.nama,
     })) || [];
   const sdgPillerOptions =
     sdgPillersData?.result?.map((sdgPiller) => ({
@@ -208,7 +208,7 @@ const Daftar = () => {
   );
   const isSayaData = activeTab === t('sandbox.daftar.tabs.daftarSafa.key');
   return (
-    <div className="daftar-page pb-100">
+    <div className={cx('daftar-page pb-100', bem.b())}>
       <Breadcrumb breadcrumbsList={breadcrumbsList} />
       <Row>
         <Col sm={{ span: 10, offset: 1 }}>

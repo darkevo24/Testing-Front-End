@@ -56,7 +56,7 @@ export const getInstansiData = createAsyncThunk('portal/getInstansiData', async 
 });
 
 export const getDatainduk = createAsyncThunk('daftar/getDatainduk', async () => {
-  const response = await get(apiUrls.dataindukData);
+  const response = await post(apiUrls.dataindukData);
   return response?.data?.content?.records;
 });
 

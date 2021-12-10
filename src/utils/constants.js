@@ -43,6 +43,7 @@ export const apiUrls = {
   produenData: getV1Endpoint('katalog/produsendata'),
   dataindukData: getV1Endpoint('katalog/datainduk'),
   daftarData: getV1Endpoint('katalog'),
+  daftarDataList: getV1Endpoint('katalog/list'),
   taglineData: getV1Endpoint('tagline'),
   kategoriData: getV1Endpoint('settings/key/BERITA'),
   sdgPillers: getV1Endpoint('settings/key/SDGS'),

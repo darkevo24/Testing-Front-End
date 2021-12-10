@@ -89,7 +89,7 @@ const DaftarTable = ({
               variant="highlight"
               className={bem.e('popover')}
               triggerOn="hover"
-              trigger={<span className="cursor-pointer">{item.instansi.nama}</span>}
+              trigger={<div className="cursor-pointer h-100 d-flex align-items-center">{item.nama}</div>}
               header="Detail Data Cakupan Wilayah Internet">
               <ColumnData items={items} />
             </Popover>
@@ -107,11 +107,11 @@ const DaftarTable = ({
       },
       {
         Header: 'Dibuat',
-        accessor: 'createdDate',
+        accessor: 'tanggalDibuat',
       },
       {
         Header: 'Diperbarui',
-        accessor: 'lastModifiedDate',
+        accessor: 'tanggalDiperbaharui',
       },
       {
         Header: 'Produsen Data',
@@ -173,7 +173,7 @@ const DaftarTable = ({
           start,
           currentPage,
         };
-        fetchDaftarData(params);
+        fetchDaftarData({ params });
       }
     },
   };
@@ -189,21 +189,43 @@ const DaftarTable = ({
     { label: 'Option 4', value: 'Option 4' },
   ];
 
+  const handleDropdownFilter = (filter) => (selectedValue) => {
+    fetchDaftarData({ bodyParams: { [filter]: selectedValue.value } });
+  };
+
   return (
     <>
       <div className={cx(cms ? 'mb-30' : 'bg-gray-lighter mb-40 p-24 mt-32')}>
         <div className="row">
           <div className="col">
             <label className="sdp-form-label py-8">Instansi</label>
-            <SingleSelectDropdown data={instansiOptions} placeHolder="Semua" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('instansi')}
+              data={instansiOptions}
+              placeHolder="Semua"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
           <div className="col">
             <label className="sdp-form-label py-8">Produsen Data</label>
-            <SingleSelectDropdown data={produenOptions} placeHolder="Semua" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('produsenData')}
+              data={produenOptions}
+              placeHolder="Semua"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
           <div className="col">
             <label className="sdp-form-label py-8">Data Induk</label>
-            <SingleSelectDropdown data={dataindukOptions} placeHolder="Semua" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('dataInduk')}
+              data={dataindukOptions}
+              placeHolder="Semua"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
           {cms ? (
             <>
@@ -227,7 +249,13 @@ const DaftarTable = ({
           ) : (
             <div className="col">
               <label className="sdp-form-label py-8">Prioritas</label>
-              <SingleSelectDropdown data={priorityOptions} placeHolder="Ya" isLoading={false} noValue={true} />
+              <SingleSelectDropdown
+                onChange={handleDropdownFilter('prioritas')}
+                data={priorityOptions}
+                placeHolder="Ya"
+                isLoading={false}
+                noValue={true}
+              />
             </div>
           )}
         </div>

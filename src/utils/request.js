@@ -88,7 +88,7 @@ export async function request(url, { method = 'GET', headers: optionHeaders = {}
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 10 * 1000); // Timeout in 10 seconds
-  const options = { method, headers, signal: controller.signal };
+  const options = { method, headers, credentials: 'include', signal: controller.signal };
 
   // Checking if body has data.
   if (!isEmpty(data)) {

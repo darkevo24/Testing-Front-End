@@ -90,7 +90,7 @@ export const getProduen = createAsyncThunk('daftar/getProduen', async () => {
 });
 
 export const getDaftarData = createAsyncThunk('daftar/getDaftarData', async (filters = {}) => {
-  const response = await get(apiUrls.daftarData, { data: filters.bodyParams, query: filters.params });
+  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query: filters.params });
   return response?.data;
 });
 

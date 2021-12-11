@@ -13,6 +13,7 @@ import { getSayaDaftarData, sayaDataSelector, deleteDaftarData, putDaftarData } 
 
 const DaftarDataSayaTable = ({
   bem,
+  textSearch,
   dataindukOptions = [],
   instansiOptions = [],
   priorityOptions = [],
@@ -45,6 +46,10 @@ const DaftarDataSayaTable = ({
   useEffect(() => {
     fetchSayaData();
   }, []);
+
+  useEffect(() => {
+    fetchSayaData({ bodyParams: { textSearch } });
+  }, [textSearch]);
 
   const handleDropdownFilter = (filter) => (selectedValue) => {
     fetchSayaData({ bodyParams: { [filter]: selectedValue.value } });

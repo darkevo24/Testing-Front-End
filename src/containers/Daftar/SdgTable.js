@@ -10,6 +10,7 @@ import { getSdgDaftarData, sdgsDataSelector } from './reducer';
 
 const SdgTable = ({
   bem,
+  textSearch,
   dataindukOptions = [],
   instansiOptions = [],
   priorityOptions = [],
@@ -41,6 +42,10 @@ const SdgTable = ({
   useEffect(() => {
     fetchSdgsData();
   }, []);
+
+  useEffect(() => {
+    fetchSdgsData({ bodyParams: { textSearch } });
+  }, [textSearch]);
 
   const handleDropdownFilter = (filter) => (selectedValue) => {
     fetchSdgsData({ bodyParams: { [filter]: selectedValue.value } });

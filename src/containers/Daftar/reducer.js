@@ -1,14 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import {
-  apiUrls,
-  defaultNumberOfRows,
-  deleteRequest,
-  get,
-  apiPaginationParams,
-  paginationParams,
-  put,
-  post,
-} from 'utils/request';
+import { apiPaginationParams, apiUrls, defaultNumberOfRows, deleteRequest, get, post, put } from 'utils/request';
 
 const defaultDaftarBodyParams = {
   instansi: null,
@@ -70,8 +61,7 @@ export const initialState = {
     result: null,
     pageSize: defaultNumberOfRows,
     params: {
-      currentPage: null,
-      ...paginationParams,
+      ...apiPaginationParams,
     },
     bodyParams: {
       ...defaultDaftarBodyParams,
@@ -84,8 +74,7 @@ export const initialState = {
     result: null,
     pageSize: defaultNumberOfRows,
     params: {
-      currentPage: null,
-      ...paginationParams,
+      ...apiPaginationParams,
     },
     bodyParams: {
       ...defaultDaftarBodyParams,
@@ -98,8 +87,7 @@ export const initialState = {
     result: null,
     pageSize: defaultNumberOfRows,
     params: {
-      currentPage: null,
-      ...paginationParams,
+      ...apiPaginationParams,
     },
     bodyParams: {
       ...defaultDaftarBodyParams,

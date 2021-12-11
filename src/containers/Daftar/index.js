@@ -19,6 +19,7 @@ import SdgTable from './SdgTable';
 import RkpTable from './RkpTable';
 import DaftarDataSayaTable from './DaftarDataSayaTable';
 import bn from 'utils/bemNames';
+import { useThrottle } from 'utils/hooks';
 import {
   addDaftarData,
   getProduen,
@@ -44,6 +45,8 @@ const bem = bn('daftar');
 
 const Daftar = () => {
   const { t } = useTranslation();
+  const [searchText, setSearchText] = useState('');
+  const [debouncedSearchText, setDebouncedSearchText] = useState('');
   const [isTambahModalVisible, setIsTambahModalVisble] = useState(false);
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(t('sandbox.daftar.tabs.daftar.key'));
@@ -56,6 +59,9 @@ const Daftar = () => {
   const tujuanSDGPillersData = useSelector(tujuanSDGPillersSelector);
   const rkpPNData = useSelector(rkpPNSelector);
   const rkpPPData = useSelector(rkpPPSelector);
+
+  const invokeDebounced = useThrottle(() => setDebouncedSearchText(searchText));
+  useEffect(invokeDebounced, [searchText]);
 
   useEffect(() => {
     dispatch(getInstansiData());
@@ -70,41 +76,53 @@ const Daftar = () => {
       value: instansi.id,
       label: instansi.nama,
     })) || [];
+
   const produenOptions =
     produenData?.result?.map((produen) => ({
       value: produen,
       label: produen,
     })) || [];
+
   const dataindukOptions =
     dataindukData?.result?.map((datainduk) => ({
       value: datainduk.id,
       label: datainduk.nama,
     })) || [];
+
   const sdgPillerOptions =
     sdgPillersData?.result?.map((sdgPiller) => ({
       value: sdgPiller.id,
       label: sdgPiller.keterangan,
     })) || [];
+
   const tujuanSDGPillerOptions =
     tujuanSDGPillersData?.result?.map((tujuanSDGPiller) => ({
       value: tujuanSDGPiller.id,
       label: tujuanSDGPiller.keterangan,
     })) || [];
+
   const rkpPNOptions =
     rkpPNData?.result?.map((rkpPN) => ({
       value: rkpPN.id,
       label: rkpPN.keterangan,
     })) || [];
+
   const rkpPPOptions =
     rkpPPData?.result?.map((rkpPP) => ({
       value: rkpPP.id,
       label: rkpPP.keterangan,
     })) || [];
+
   const priorityOptions = [
     { value: 1, label: 'Semua' },
     { value: 2, label: 'Ya' },
     { value: 3, label: 'Tidak' },
   ];
+
+  const handleSearchTextChange = (e) => {
+    setSearchText(e.target.value);
+  };
+
   const stats = useMemo(
     () => [
       { title: 'Jumlah Data pada Daftar Data', value: 35798 },
@@ -114,7 +132,9 @@ const Daftar = () => {
     ],
     [],
   );
+
   const tableProps = {
+    textSearch: debouncedSearchText,
     bem,
     dataindukOptions,
     instansiOptions,
@@ -125,6 +145,7 @@ const Daftar = () => {
     rkpPNOptions,
     rkpPPOptions,
   };
+
   const tabs = useMemo(
     () => [
       {
@@ -206,7 +227,9 @@ const Daftar = () => {
     ],
     [activeTab, t],
   );
+
   const isSayaData = activeTab === t('sandbox.daftar.tabs.daftarSafa.key');
+
   return (
     <div className={cx('daftar-page pb-100', bem.b())}>
       <Breadcrumb breadcrumbsList={breadcrumbsList} />
@@ -220,8 +243,8 @@ const Daftar = () => {
                   variant="normal"
                   type="text"
                   placeholder={t('sandbox.daftar.searchPlaceholder')}
-                  value={''}
-                  onChange={() => {}}
+                  value={searchText}
+                  onChange={handleSearchTextChange}
                 />
                 <div className="icon-container">
                   <Search />

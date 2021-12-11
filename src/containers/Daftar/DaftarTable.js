@@ -15,6 +15,7 @@ import { getDaftarData, daftarDataSelector } from './reducer';
 
 const DaftarTable = ({
   bem,
+  textSearch,
   dataindukOptions = [],
   instansiOptions = [],
   priorityOptions = [],
@@ -47,6 +48,10 @@ const DaftarTable = ({
   useEffect(() => {
     fetchDaftarData();
   }, []);
+
+  useEffect(() => {
+    fetchDaftarData({ bodyParams: { textSearch } });
+  }, [textSearch]);
 
   const showDaftarDetailPage = (data) => {
     // TODO: handle the detail page for daftar cms

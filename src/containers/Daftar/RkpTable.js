@@ -10,6 +10,7 @@ import { getRkpDaftarData, rkpDataSelector } from './reducer';
 
 const RkpTable = ({
   bem,
+  textSearch,
   dataindukOptions = [],
   instansiOptions = [],
   priorityOptions = [],
@@ -41,6 +42,10 @@ const RkpTable = ({
   useEffect(() => {
     fetchRkpData();
   }, []);
+
+  useEffect(() => {
+    fetchRkpData({ bodyParams: { textSearch } });
+  }, [textSearch]);
 
   const handleDropdownFilter = (filter) => (selectedValue) => {
     fetchRkpData({ bodyParams: { [filter]: selectedValue.value } });

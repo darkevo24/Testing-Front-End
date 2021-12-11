@@ -19,10 +19,12 @@ import {
 import { SplitCircle } from 'components/Icons';
 import React from 'react';
 
+export const analyticsUrl = 'https://analitik.data.go.id';
 export const katalogUrl = 'https://katalog.satudata.go.id';
 export const apiUrl = '/api-be';
 export const dataUrl = `${katalogUrl}/api`;
 
+export const getAnalyticsUrl = (path) => `${analyticsUrl}/${path}`;
 export const getApiEndpoint = (path) => `${apiUrl}/${path}`;
 export const getDataEndpoint = (path) => `${dataUrl}/${path}`;
 export const getPortalEndpoint = (path) => `${apiUrl}/portal/${path}`;

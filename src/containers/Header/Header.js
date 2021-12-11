@@ -12,7 +12,7 @@ import Container from 'react-bootstrap/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { logout, tokenSelector, userSelector } from 'containers/Login/reducer';
-import { TOPIC_LIST } from 'utils/constants';
+import { TOPIC_LIST, getAnalyticsUrl } from 'utils/constants';
 
 import Logo from 'assets/logo-satu.jpg';
 
@@ -20,7 +20,7 @@ const getPathnameFromRoute = (route) => get(route, 'link.pathname', route.link);
 
 const getNavDropDown = (tab, pathname, goTo) => {
   const id = `${tab.title}-nav-dropdown`;
-  const loginSuperset = () => window.open('http://103.170.104.187:8088/login/');
+  const loginSuperset = () => window.open(getAnalyticsUrl('login'));
   return (
     <NavDropdown
       className={cx({

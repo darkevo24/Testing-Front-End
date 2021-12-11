@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 import { Row, Col } from 'react-bootstrap';
 import { ReactComponent as CopyJson } from 'assets/copy-json.svg';
 import { ReactComponent as Arrow } from 'assets/arrow-left-add.svg';
@@ -10,8 +11,9 @@ import { Dropdown } from 'components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import bn from 'utils/bemNames';
 
-import './index.scss';
+const bem = bn('management-api');
 
 const FormApi = () => {
   const schema = yup
@@ -133,29 +135,29 @@ const FormApi = () => {
     setDetailImport(true);
   };
   return (
-    <div className="management-api add">
+    <div className="sdp-management-api add">
       <div className="container">
-        <div className="header-add">
+        <div className={bem.e('header-add')}>
           <div className="header-left">
             <Arrow onClick={() => history.push('/api')} />
             <p> Tambah Api </p>
           </div>
           {detailImport ? (
             <div className="header-right">
-              <button className="btn btn-secondary mr-10" onClick={() => setDetailImport(false)}>
+              <Button variant="secondary" className="mr-10" onClick={() => setDetailImport(false)}>
                 Batal
-              </button>
-              <button className="btn blue-primary">Simpan</button>
+              </Button>
+              <Button variant="info">Simpan</Button>
             </div>
           ) : (
             <div className="header-right">
-              <button className="btn btn-secondary" disabled>
+              <Button variant="secondary" disabled>
                 Simpan
-              </button>
+              </Button>
             </div>
           )}
         </div>
-        <div className="wrapper-input">
+        <div className={bem.e('wrapper-input')}>
           <div className="form-group">
             <label for="Judul">
               <div className="wrapper-union">
@@ -207,18 +209,18 @@ const FormApi = () => {
             </label>
             <input type="text" placeholder="1000" />
           </div>
-          <button className="btn btn-success" onClick={handleImport}>
+          <Button variant="success" style={{ width: '112px;' }} onClick={handleImport}>
             Import
-          </button>
+          </Button>
         </div>
         {detailImport && (
-          <div className="wrapper-result">
+          <div className={bem.e('wrapper-result')}>
             <div className="wrapper-data">
               <div className="wrapper-title">
                 <h1>Data</h1>
                 <a href="#">(data-ckan-api.json)</a>
               </div>
-              <div className="management-table">
+              <div className={bem.e('management-table pt-0')}>
                 <table>
                   <thead className="head-table-border">
                     <th width="25%">Field</th>
@@ -275,7 +277,7 @@ const FormApi = () => {
               <div className="wrapper-title">
                 <h1>Mapping DCAT</h1>
               </div>
-              <div className="wrapper-input">
+              <div className={bem.e('wrapper-input')}>
                 <Row>
                   <Col md={12}>
                     <div className="form-group">
@@ -304,7 +306,7 @@ const FormApi = () => {
                   </Col>
                 </Row>
               </div>
-              <div className="management-table">
+              <div className={bem.e('management-table')}>
                 <table>
                   <thead className="head-table-border">
                     <th width="20%">No</th>
@@ -335,12 +337,12 @@ const FormApi = () => {
                 </table>
               </div>
               <div className="wrapper-generate">
-                <button className="btn btn-success my-5" onClick={() => setGenerateOutput(true)}>
+                <Button variant="success" className="my-5" onClick={() => setGenerateOutput(true)}>
                   Generate Output
-                </button>
+                </Button>
               </div>
               {generateOutput && (
-                <div className="wrapper-json">
+                <div className={bem.e('wrapper-json')}>
                   <span> Output </span>
                   <div className="input-group">
                     <input type="text" placeholder="https://bappenas.go.id/data.json" />
@@ -350,7 +352,7 @@ const FormApi = () => {
                       </span>
                     </div>
                   </div>
-                  <button className="btn btn-json">Download JSON</button>
+                  <Button variant="json">Download JSON</Button>
                 </div>
               )}
             </div>

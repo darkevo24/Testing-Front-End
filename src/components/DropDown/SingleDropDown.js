@@ -74,7 +74,7 @@ export default class SingleSelectDropdown extends React.Component {
     return (
       <Select
         closeMenuOnSelect={true}
-        value={noValue ? null : !isEmpty(selectedValues) ? selectedValues : null}
+        defaultValue={noValue ? null : !isEmpty(selectedValues) ? selectedValues : null}
         options={data}
         className={cx(className, 'basic-single')}
         classNamePrefix="select"

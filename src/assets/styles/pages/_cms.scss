@@ -7,10 +7,20 @@
       button svg {
         width: 18px;
       }
+
+      .input-group {
+        position: relative;
+
+        svg {
+          position: absolute;
+          right: 12px;
+          top: 12px;
+        }
+      }
     }
 
     &__title {
-       
+
       font-size: 32px;
       font-style: normal;
       font-weight: 700;
@@ -40,11 +50,91 @@
         box-sizing: border-box;
         border-radius: 4px;
         margin-bottom: 8px;
+
+        .sdp-log {
+          &__status {
+            &.ditayangkan {
+              color: var(--green-light);
+            }
+            &.menunggu_persetujuan {
+              color: var(--dark-orange);
+            }
+            &.diarsipkan, &.draft, &.tidak_ditayangkan {
+              color: $gray;
+            }
+            &.dibatalkan, &.ditolak {
+              color: $red
+            }
+            &.disetujui {
+              color: $blue
+            }
+          }
+        }
       }
 
       span {
         padding: 0 8px;
       }
+    }
+  }
+
+  .sdp-log {
+    &__title {
+       
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 25px;
+      margin-bottom: 2.5rem;
+    }
+
+    &__date {
+       
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 17px;
+      color: $gray-dark;
+
+      &-line {
+        background: $stroke;
+        margin-left: 10px;
+        height: 2px;
+        width: 50%;
+      }
+    }
+
+    &__status {
+      border-radius: 2px;
+      padding: 4px 6px;
+      margin-right: 8px;
+      height: 28px;
+
+      &.selesai {
+        background: rgba(21, 165, 95, 0.12);
+        color: #15A55F;
+      }
+      &.diproses {
+        background: rgba(222, 136, 19, 0.12);
+        color: #DE8813;
+      }
+      &.terkirim {
+        background: rgba(104, 72, 195, 0.12);
+        color: #6848C4;
+      }
+      &.dibuat {
+        background: #F5F6FA;
+        color: #858A8F;
+      }
+    }
+
+    &__content {
+       
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 21px;
+      color: #858A8F;
     }
   }
 
@@ -83,26 +173,30 @@
           margin-right: 8px;
           height: 28px;
 
-          &.selesai {
+          &.ditayangkan {
             background: rgba(21, 165, 95, 0.12);
-            color: #15A55F;
+            color: var(--green-light);
           }
-          &.diproses {
+          &.menunggu_persetujuan {
             background: rgba(222, 136, 19, 0.12);
-            color: #DE8813;
+            color: var(--dark-orange);
           }
-          &.terkirim {
-            background: rgba(104, 72, 195, 0.12);
-            color: #6848C4;
+          &.diarsipkan, &.draft, &.tidak_ditayangkan {
+            background: $gray-bg;
+            color: $gray;
           }
-          &.dibuat {
-            background: #F5F6FA;
-            color: #858A8F;
+          &.dibatalkan, &.ditolak {
+            background: rgba(255, 0, 0, 0.12);
+            color: $red
+          }
+          &.disetujui {
+            background: $blue-bg-light;
+            color: $blue
           }
         }
 
         &__content {
-           
+
           font-size: 14px;
           font-style: normal;
           font-weight: 400;

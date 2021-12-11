@@ -17,3 +17,62 @@
   line-height: 17px !important;
   color: var(--gray-dark) !important;
 }
+
+
+.sdp-forum-sdi-container {
+  .sdp-forum-sdi-bottom {
+    margin-left: 320px;
+    margin-right: 320px;
+
+    .sdp-forum-search-container {
+      display: flex;
+      border: 1px solid var(--stroke);
+      border-radius: 56px;
+      height: 56px;
+      margin-top: -30px;
+      overflow: hidden;
+
+      .sdp-breadcrumbs {
+        padding-left: 32px !important;
+        background-color: var(--white) !important;
+        border: 0;
+      }
+
+      .basic-single {
+        width: 100%;
+        border-left: 1px solid #e1e2ea;
+        .select__control {
+          height: 100%;
+          border: 0;
+          border-radius:0;
+        }
+      }
+
+      .input-search {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-left: 1px solid #e1e2ea;
+        &:focus {
+          outline: none;
+        }
+        ::placeholder {
+          font-size: 14px;
+          line-height: 17px;
+          color: #858a8f;
+        }
+      }
+
+      .search-button {
+        margin-right: 10px;
+        border-radius: 50%;
+        height: 45px;
+        width: 45px;
+
+        svg {
+          color: red;
+        }
+      }
+    }
+  }
+}

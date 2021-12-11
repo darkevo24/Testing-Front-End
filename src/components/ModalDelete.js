@@ -2,7 +2,7 @@ import cx from 'classnames';
 import Button from 'react-bootstrap/Button';
 import RBModal from 'react-bootstrap/Modal';
 
-import { Close, modalIcons } from 'components/Icons';
+// import { Close, modalIcons } from 'components/Icons';
 import bn from 'utils/bemNames';
 
 const bem = bn('modal');
@@ -13,13 +13,13 @@ const ModalDelete = ({
   visible,
   children,
   onClose,
-  icon,
+  // icon,
   title = 'Modal title',
   subtitle,
   showHeader = true,
   centered = false,
 }) => {
-  const Icon = modalIcons[icon];
+  // const Icon = modalIcons[icon];
   return (
     <RBModal
       show={visible}

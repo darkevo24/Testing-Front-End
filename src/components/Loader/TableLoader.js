@@ -2,14 +2,8 @@ import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { commonColorProps } from './commonProps';
 
-const PROPS = {
-  speed: 2,
-  width: '100%',
-  height: 550,
-};
-
-const TableLoader = () => (
-  <ContentLoader viewBox="50 90 1000 550" {...PROPS} {...commonColorProps}>
+const TableLoader = ({ props }) => (
+  <ContentLoader viewBox="50 40 1000 550" {...props} {...commonColorProps}>
     <rect x="51" y="45" rx="3" ry="3" width="906" height="17" />
     <circle cx="879" cy="123" r="11" />
     <circle cx="914" cy="123" r="11" />

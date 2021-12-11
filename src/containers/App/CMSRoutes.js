@@ -4,6 +4,7 @@ import { CMSLayout, PrivateRoute } from 'layouts/AdminLayout';
 
 const DashboardPage = lazy(() => import('containers/CMS/Dashboard'));
 const KomunitasAhliPage = lazy(() => import('containers/CMS/KomunitasAhli'));
+const KomunitasAhliDetailPage = lazy(() => import('containers/CMS/KomunitasAhli/KomunitasAhliDetail'));
 const ManageKomunitasAhliPage = lazy(() => import('containers/CMS/KomunitasAhli/ManageKomunitasAhli'));
 const BeritaLayout = lazy(() => import('containers/CMS/BeritaLayout'));
 const BeritaPage = lazy(() => import('containers/CMS/Berita'));
@@ -22,10 +23,11 @@ const BimtekJadwalDetailPage = lazy(() => import('containers/CMS/BimtekJadwal/De
 const BimtekDokumentasiPage = lazy(() => import('containers/CMS/BimtekDokumentasi'));
 const BimtekDokumentasiBaruPage = lazy(() => import('containers/CMS/BimtekDokumentasi/Create'));
 const BimtekDokumentasiDetailPage = lazy(() => import('containers/CMS/BimtekDokumentasi/Detail'));
-const KesiapanSDI = lazy(() => import('containers/CMS/KesiapanSDI/index'));
+const KesiapanSDI = lazy(() => import('containers/CMS/DashboardManage/KesiapanSDI'));
 const DashboardEksekutifPage = lazy(() => import('containers/CMS/DashboardManage/DashboardEksekutif'));
 const DataAnalyticPage = lazy(() => import('containers/CMS/DashboardManage/DataAnalytic'));
 const DaftarPage = lazy(() => import('containers/CMS/Daftar'));
+const DaftarDetailPage = lazy(() => import('containers/CMS/Daftar/CMSDaftarDetail'));
 const ManagementApi = lazy(() => import('containers/CMS/ManagementApi'));
 const ManagementApiBaru = lazy(() => import('containers/CMS/ManagementApi/CreateApi'));
 const ManagementApiForm = lazy(() => import('containers/CMS/ManagementApi/Form'));
@@ -44,6 +46,7 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/api-baru" component={ManagementApiBaru} />
         <PrivateRoute exact path="/cms/api" component={ManagementApi} />
         <PrivateRoute exact path="/cms/manage-komunitas-ahli" component={ManageKomunitasAhliPage} />
+        <PrivateRoute exact path="/cms/komunitas-ahli-detail/:id" component={KomunitasAhliDetailPage} />
         <PrivateRoute exact path="/cms/komunitas-ahli" component={KomunitasAhliPage} />
         <PrivateRoute exact path="/cms/dashboard" component={DashboardPage} />
         <PrivateRoute exact path="/cms/about-us" component={AboutUsPage} />
@@ -67,6 +70,7 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/dashboard-eksekutif" component={DashboardEksekutifPage} />
         <PrivateRoute exact path="/cms/data-analytic" component={DataAnalyticPage} />
         <PrivateRoute exact path="/cms/daftar" component={DaftarPage} />
+        <PrivateRoute exact path="/cms/daftar-detail/:id" component={DaftarDetailPage} />
         <Route exact path="/cms" render={() => <Redirect to="/cms/dashboard" />} />
       </Switch>
     </CMSLayout>

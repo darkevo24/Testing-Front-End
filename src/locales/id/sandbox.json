@@ -1,11 +1,11 @@
 {
   "sandbox": {
     "title": "Sandbox",
-    "dafter": {
+    "daftar": {
       "tabs": {
-        "dafter": {
-          "key": "dafter",
-          "title": "Dafter Data"
+        "daftar": {
+          "key": "daftar",
+          "title": "Daftar Data"
         },
         "sdg": {
           "key": "sdg",
@@ -15,8 +15,8 @@
           "key": "rkp",
           "title": "RKP 2022"
         },
-        "dafterSafa": {
-          "key": "dafterSafa",
+        "daftarSafa": {
+          "key": "daftarSafa",
           "title": "Daftar Data Saya"
         }
       },

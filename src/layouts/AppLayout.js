@@ -26,7 +26,7 @@ export const AppLayout = ({ children }) => {
 
 export const PrivateRoute = ({ component: Component, ...rest }) => {
   const token = useSelector(tokenSelector);
-  return <Route {...rest} render={(props) => (token ? <Component {...props} /> : <Redirect to="/login" />)} />;
+  return <Route {...rest} render={(props) => (token ? <Component {...props} /> : <Redirect to="/home" />)} />;
 };
 
 export const PublicRoute = ({ component: Component, ...rest }) => {

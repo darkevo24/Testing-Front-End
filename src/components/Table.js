@@ -9,7 +9,7 @@ import isFunction from 'lodash/isFunction';
 import isString from 'lodash/isString';
 import { useAsyncDebounce, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 
-import { LeftChevron, RightChevron, Search, actionIcons } from 'components/Icons';
+import { LeftChevron, RightChevron, Search, icons } from 'components/Icons';
 import bn from 'utils/bemNames';
 
 const bem = bn('table');
@@ -255,11 +255,13 @@ Table.Actions = ({ cell, ...rest }) => {
   return (
     <div className="d-flex action-icon-wrapper">
       {actions.map(({ icon, type, variant, title, callback, classes }) => {
-        const Icon = icon || actionIcons[type];
+        const isDelete = ['cross', 'delete', 'trash'].includes(type);
+        const iconBoxVarient = isDelete ? 'bg-red-light' : 'bg-secondary';
+        const Icon = icon || icons[type];
         if (!Icon && !title) return null;
         return Icon ? (
-          <div key={`${id}-${type}`} className="icon-box" onClick={() => callback(row.original)}>
-            <Icon variant={variant || (type === 'trash' && 'danger')} />
+          <div key={`${id}-${type}`} className={cx('icon-box', iconBoxVarient)} onClick={() => callback(row.original)}>
+            <Icon variant={variant || (isDelete && 'danger')} />
           </div>
         ) : (
           <button key={`${id}-${type}`} className={classes} onClick={() => callback(row.original)}>

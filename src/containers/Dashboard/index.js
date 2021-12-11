@@ -25,9 +25,9 @@ const Dashboard = (props) => {
   ];
 
   return (
-    <div className="kesiapan-sd-pusat-wrapper">
+    <div className="kesiapan-sd-pusat-wrapper dashboard">
       <Breadcrumbs breadcrumbsList={breadcrumbsList} />
-      <Container fluid className="bimtek-container">
+      <div className="p-32">
         <div className="bimtek-header">{props.title}</div>
         <Row>
           <Col>
@@ -53,20 +53,14 @@ const Dashboard = (props) => {
                 </Col>
               </Row>
             </div>
-            <Row className="kesiapan-sdi-iframe-container mb-3">
-              <Col className="justify-content-center align-items-center just">
-                <iframe
-                  width="1000"
-                  height="1000"
-                  frameBorder="0"
-                  seamless
-                  title={props.title}
-                  src={currentDashboard.url}></iframe>
+            <Row className="mb-3">
+              <Col className="justify-content-center align-items-center">
+                <iframe frameBorder="0" seamless title={currentDashboard.title} src={currentDashboard.url}></iframe>
               </Col>
             </Row>
           </Col>
         </Row>
-      </Container>
+      </div>
     </div>
   );
 };

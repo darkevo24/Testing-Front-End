@@ -3,14 +3,36 @@ import { useHistory } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Row, Col } from 'react-bootstrap';
-import { ModalDelete } from 'components';
+import { Modal, Dropdown } from 'components';
+import { LogStatus } from 'components/Sidebars/LogStatus';
 import { ReactComponent as CopyJson } from 'assets/copy-json.svg';
 import { ReactComponent as IconEdit } from 'assets/cms-api-edit.svg';
 import { ReactComponent as IconDelete } from 'assets/cms-api-delete.svg';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import bn from 'utils/bemNames';
 
-import './index.scss';
+const bem = bn('cms-api');
 
 const DetailApi = () => {
+  const schema = yup
+    .object({
+      nama: yup.string().required(),
+      kode: yup.string().required(),
+      level: yup.mixed().required(),
+    })
+    .required();
+
+  const {
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const level = [1, 2, 3, 4, 5];
+
   const history = useHistory();
   const [modalProfile, setModalProfile] = useState(false);
   const LIST_TABLE = [
@@ -41,31 +63,41 @@ const DetailApi = () => {
     },
   ];
 
-  const LIST_LOG = [
+  const dataLog = [
     {
-      date: '12 Desember 2021',
-      status: 'Perbarui',
-      description: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '10 Desember 2021',
-      status: 'Perbarui',
-      description: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
+      createdAt: new Date().getDate(),
       date: '08 Desember 2021',
-      status: 'Perbarui',
-      description: 'Dataset sudah dapat di akses di portal data.go.id',
+      status: 'Selesai',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
     },
     {
+      createdAt: new Date().getDate(),
+      date: '08 Desember 2021',
+      status: 'Selesai',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
+    },
+    {
+      createdAt: new Date().getDate(),
+      date: '08 Desember 2021',
+      status: 'Terkirim',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
+    },
+    {
+      createdAt: new Date().getDate(),
+      date: '08 Desember 2021',
+      status: 'Diproses',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
+    },
+    {
+      createdAt: new Date().getDate(),
       date: '08 Desember 2021',
       status: 'Dibuat',
-      description: 'Dataset sudah dapat di akses di portal data.go.id',
+      content: 'Dataset sudah dapat di akses di portal data.go.id',
     },
   ];
 
   return (
-    <div className="management-api log">
+    <div className="sdp-cms-api log">
       <div className="container">
         <Row>
           <Col md={8}>
@@ -76,7 +108,7 @@ const DetailApi = () => {
                 <IconEdit onClick={() => history.push('/cms/api/edit/api-1')} />
               </div>
             </div>
-            <div className="wrapper-input pb-10">
+            <div className={bem.e('wrapper-input pb-10')}>
               <div className="form-group">
                 <label for="Judul">Judul</label>
                 <div className="box-input">
@@ -95,15 +127,6 @@ const DetailApi = () => {
                   <input type="text" placeholder="data.go.id/api/data" disabled />
                 </div>
               </div>
-              {/* <div className="form-group">
-                <label for="Judul">Source Api</label>
-                <div className="box-input">
-                  <div className="input-group">
-                    <input className="custom-file-input" type="file" />
-                    <div class="input-group-append">Upload</div>
-                  </div>
-                </div>
-              </div> */}
               <div className="form-group">
                 <label for="Judul">Max Data Parameter</label>
                 <div className="box-input">
@@ -117,7 +140,7 @@ const DetailApi = () => {
                   <h1>Source API</h1>
                   <a href="#">(data-ckan-api.json)</a>
                 </div>
-                <div className="management-table">
+                <div className={bem.e('management-table')}>
                   <table>
                     <thead className="head-table-border">
                       <th width="25%">Field</th>
@@ -140,7 +163,7 @@ const DetailApi = () => {
                 <div className="wrapper-title pt-20 pb-0">
                   <h1>Mapping DCAT</h1>
                 </div>
-                <div className="wrapper-input pb-0">
+                <div className={bem.e('wrapper-input pb-0')}>
                   <Row>
                     <Col md={6}>
                       <div className="form-group">
@@ -169,7 +192,7 @@ const DetailApi = () => {
                     </Col>
                   </Row>
                 </div>
-                <div className="management-table pt-0">
+                <div className={bem.e('management-table')}>
                   <table>
                     <thead className="head-table-border">
                       <th width="20%">No</th>
@@ -185,9 +208,13 @@ const DetailApi = () => {
                             <td className="data-description">{data.property}</td>
                             <td className="data-description">{data.equlvalent}</td>
                             <td className="data-description select">
-                              <Form.Select>
-                                <option key={index}>{data.source}</option>
-                              </Form.Select>
+                              <Dropdown
+                                group
+                                control={control}
+                                placeholder={data.property}
+                                error={errors.level?.message}
+                                options={level.map((lvl) => ({ value: lvl, label: lvl }))}
+                              />
                             </td>
                           </tr>
                         );
@@ -196,7 +223,7 @@ const DetailApi = () => {
                   </table>
                 </div>
               </div>
-              <div className="wrapper-json">
+              <div className="sdp-cms-api__wrapper-json">
                 <span> Output </span>
                 <div className="input-group">
                   <input type="text" placeholder="https://bappenas.go.id/data.json" />
@@ -206,29 +233,18 @@ const DetailApi = () => {
                     </span>
                   </div>
                 </div>
-                <button className="btn btn-json">Download JSON</button>
+                <Button variant="json" style={{ width: '180px' }}>
+                  Download Json
+                </Button>
               </div>
             </div>
           </Col>
           <Col md={4}>
-            <div className="wrapper-log">
-              <h1>Log Status</h1>
-              {LIST_LOG.map((data, index) => {
-                return (
-                  <div key={index} className="card-log mb-20">
-                    <p className="date">{data.date}</p>
-                    <div className="d-flex align-items-center pt-15">
-                      <span className={data.status === 'Perbarui' ? 'status-update' : 'status-create'}>{data.status}</span>
-                      <span className="description">{data.description}</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            <LogStatus data={dataLog} />
           </Col>
         </Row>
       </div>
-      <ModalDelete visible={modalProfile} onClose={() => setModalProfile(false)}>
+      <Modal showHeader={false} visible={modalProfile} onClose={() => setModalProfile(false)}>
         <div>
           <p className="mt-20">
             Apakah anda yakin ingin
@@ -251,7 +267,7 @@ const DetailApi = () => {
             </Button>
           </div>
         </div>
-      </ModalDelete>
+      </Modal>
     </div>
   );
 };

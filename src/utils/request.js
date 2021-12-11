@@ -1,6 +1,7 @@
+import isEmpty from 'lodash/isEmpty';
 import { apiUrls as appApiUrls } from './constants';
 import { generateQueryString, safeParse } from './helper';
-import { cookieKeys, getCookieByName } from './cookie';
+import { cookieKeys, getCookieByName, removeAllCookie } from './cookie';
 
 export const typeJSON = 'application/json';
 export const typePlain = 'text/plain';
@@ -74,7 +75,7 @@ function checkStatus(response) {
  *
  * @return {object}           The response data
  */
-export async function request(url, { method = 'GET', headers: optionHeaders = {}, data = {} }) {
+export async function request(url, { method = 'GET', headers: optionHeaders = {}, data = {}, query = {} }) {
   const defaultHeaders = {
     Accept: typeJSON,
     'Content-Type': typeJSON,
@@ -84,19 +85,36 @@ export async function request(url, { method = 'GET', headers: optionHeaders = {}
     defaultHeaders.Authorization = `Bearer ${token}`;
   }
   const headers = Object.assign({}, defaultHeaders, optionHeaders);
-  const options = { method, headers };
 
-  // Checking if we need to add body or not.
-  if (['POST', 'PUT'].includes(method)) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10 * 1000); // Timeout in 10 seconds
+  const options = { method, headers, credentials: 'include', signal: controller.signal };
+
+  // Checking if body has data.
+  if (!isEmpty(data)) {
     options.body = headers['Content-Type'] === typeJSON ? JSON.stringify(data) : data;
   }
   // Checking if we need to add query string or not.
-  if (['GET', 'DELETE'].includes(method)) {
-    url += `?${generateQueryString(data)}`;
+  if (!isEmpty(query)) {
+    url += `?${generateQueryString(query)}`;
   }
 
-  const fetchResponse = await fetch(url, options);
+  if (!headers['Content-Type']) {
+    delete headers['Content-Type'];
+  }
+
+  let fetchResponse;
+  try {
+    fetchResponse = await fetch(url, options);
+    clearTimeout(timeout);
+  } catch (error) {
+    fetchResponse = error.response;
+  }
   const response = checkStatus(fetchResponse);
+  if ([401].includes(response.status)) {
+    removeAllCookie();
+    window.location.reload();
+  }
   return parseResponse(response);
 }
 
@@ -126,7 +144,7 @@ export function post(url, data, options) {
  * @param options - Options that are to be sent with the request.
  */
 export function put(url, data, options) {
-  return request(Object.assign(url, { method: 'PUT', data }, options));
+  return request(url, Object.assign({ method: 'PUT', data }, options));
 }
 
 /**
@@ -145,4 +163,9 @@ export const defaultNumberOfRows = 10;
 export const paginationParams = {
   start: 0,
   rows: defaultNumberOfRows,
+};
+
+export const apiPaginationParams = {
+  page: 1,
+  size: defaultNumberOfRows,
 };

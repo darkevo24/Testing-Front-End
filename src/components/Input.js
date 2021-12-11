@@ -1,7 +1,10 @@
 import Form from 'react-bootstrap/Form';
+import cx from 'classnames';
 import { Controller } from 'react-hook-form';
 import { icons } from './Icons';
 import { copyToClipboard } from 'utils/helper';
+import InputGroup from 'react-bootstrap/InputGroup';
+import React from 'react';
 
 export const Input = ({
   name,
@@ -14,9 +17,13 @@ export const Input = ({
   groupClass = 'mb-3',
   groupProps,
   className,
+  wrapperClass = '',
+  leftIconClass = '',
+  rightIconClass = '',
   leftIcon,
   rightIcon,
   isLink,
+  maxLength = '800',
   ...rest
 }) => {
   let { as: inputAs } = rest;
@@ -32,20 +39,9 @@ export const Input = ({
       copyToClipboard(field.value);
     }
   };
-  const maxLength = inputAs === 'textarea' ? 800 : 200;
+  const maxLengthNumber = inputAs === 'textarea' ? maxLength : 200;
   const LeftIconNode = leftIcon && icons[leftIcon];
   const RightIconNode = rightIcon && icons[rightIcon];
-  const inputClassnames = [];
-  if (LeftIconNode) {
-    inputClassnames.push('has-left-icon');
-  }
-  if (RightIconNode) {
-    inputClassnames.push('has-right-icon');
-  }
-  if (className) {
-    inputClassnames.push(className);
-  }
-  let finalClassName = inputClassnames.length ? inputClassnames.join(' ') : '';
 
   const inputNode = (
     <>
@@ -55,19 +51,19 @@ export const Input = ({
         control={control}
         rules={rules}
         render={({ field }) => (
-          <div className="sdp-input-wrapper">
+          <InputGroup className={cx('sdp-input-wrapper', wrapperClass)}>
             {LeftIconNode && (
-              <div className="icon-box">
+              <InputGroup.Text className={cx('input-icon bg-white', leftIconClass)}>
                 <LeftIconNode />
-              </div>
+              </InputGroup.Text>
             )}
-            <Form.Control maxLength={maxLength} {...rest} {...field} value={field.value || ''} className={finalClassName} />
+            <Form.Control maxLength={maxLengthNumber} {...rest} {...field} value={field.value || ''} className={className} />
             {RightIconNode && (
-              <div className="icon-box" onClick={handleIconClick(field)}>
+              <InputGroup.Text className={cx('input-icon bg-white', rightIconClass)} onClick={handleIconClick(field)}>
                 <RightIconNode />
-              </div>
+              </InputGroup.Text>
             )}
-          </div>
+          </InputGroup>
         )}
       />
       <div className="sdp-error">{error}</div>

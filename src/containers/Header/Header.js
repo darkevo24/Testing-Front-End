@@ -6,6 +6,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import isArray from 'lodash/isArray';
 import get from 'lodash/get';
 import map from 'lodash/map';
+import { useTranslation } from 'react-i18next';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,6 +20,7 @@ const getPathnameFromRoute = (route) => get(route, 'link.pathname', route.link);
 
 const getNavDropDown = (tab, pathname, goTo) => {
   const id = `${tab.title}-nav-dropdown`;
+  const loginSuperset = () => window.open('http://103.170.104.187:8088/login/');
   return (
     <NavDropdown
       className={cx({
@@ -28,7 +30,9 @@ const getNavDropDown = (tab, pathname, goTo) => {
       key={id}
       id={id}>
       {map(tab.links, (route) => (
-        <NavDropdown.Item key={getPathnameFromRoute(route)} onClick={goTo(route.link)}>
+        <NavDropdown.Item
+          key={getPathnameFromRoute(route)}
+          onClick={route.link === '/dashboard-saya' ? loginSuperset : goTo(route.link)}>
           {route.title}
         </NavDropdown.Item>
       ))}
@@ -60,6 +64,7 @@ export const Header = () => {
   const location = useLocation();
   const token = useSelector(tokenSelector);
   const user = useSelector(userSelector);
+  const { t } = useTranslation();
 
   const isLoggedIn = !!token;
 
@@ -101,21 +106,22 @@ export const Header = () => {
           { title: 'Permintaan Data', link: '/permintaan-data' },
           { title: 'Bimtek', link: '/bimtek-summary' },
           { title: 'Komunitas Ahli', link: '/komunitas-ahli' },
-          { title: 'Forum SDI', link: '/forum' },
+          { title: 'Forum SDI', link: '/forum-sdi' },
         ],
       },
       {
         title: 'Dashboard',
         links: [
           { title: 'Kesiapan SDI', link: '/kesiapan-sdi' },
-          { title: 'Eksekutif', link: '/eksekutif' },
+          { title: 'Eksekutif', link: '/dashboard-eksekutif' },
           { title: 'Data Analytic', link: '/data-analytic' },
+          { title: 'Dashboard Saya', link: '/dashboard-saya' },
         ],
       },
       {
         title: 'Sandbox',
         links: [
-          { title: 'Daftar Data', link: '/dafter' },
+          { title: 'Daftar Data', link: '/daftar' },
           { title: 'Metadata Registry', link: '/sdmx' },
         ],
       },
@@ -142,7 +148,10 @@ export const Header = () => {
       <Nav className="h-100 d-flex align-items-center">
         {getNavLinks(MEMBER_ROUTES, location.pathname, goTo)}
         <NavDropdown title={user?.name || 'Achmad Adam'} id="user-nav-dropdown" className="user-nav h-100">
-          <NavDropdown.Item onClick={handleLogout}>Sign Out</NavDropdown.Item>
+          <NavDropdown.Item>{t('header.userNav.changePassword')}</NavDropdown.Item>
+          <NavDropdown.Item onClick={goTo('/cms')}>{t('header.userNav.cmsApplication')}</NavDropdown.Item>
+          <NavDropdown.Item>{t('header.userNav.privacyPolicy')}</NavDropdown.Item>
+          <NavDropdown.Item onClick={handleLogout}>{t('header.userNav.signOut')}</NavDropdown.Item>
         </NavDropdown>
       </Nav>
     );

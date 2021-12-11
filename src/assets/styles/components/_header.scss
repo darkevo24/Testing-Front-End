@@ -31,6 +31,10 @@
       display: none;
     }
   }
+  .dropdown-menu {
+    left: unset;
+    right: 0;
+  }
 }
 
 .sdp-cms-header {

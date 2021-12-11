@@ -8,12 +8,13 @@ import { ReactComponent as Arrow } from 'assets/arrow-left-add.svg';
 import { ReactComponent as Union } from 'assets/union.svg';
 import { ReactComponent as Prev } from 'assets/prev.svg';
 import { ReactComponent as Next } from 'assets/next.svg';
-import { ModalDelete, Dropdown } from 'components';
+import { Modal, Dropdown } from 'components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import bn from 'utils/bemNames';
 
-import './index.scss';
+const bem = bn('management-api');
 
 const ApiDetail = () => {
   const schema = yup
@@ -127,23 +128,23 @@ const ApiDetail = () => {
   ];
 
   return (
-    <div className="management-api add">
+    <div className="sdp-management-api add">
       <div className="container">
-        <div className="header-add">
+        <div className={bem.e('header-add')}>
           <div className="header-left">
             <Arrow onClick={() => history.push('/api')} />
             <p> Detail Api </p>
           </div>
           <div className="header-right">
-            <button className="btn btn-secondary mr-10" onClick={() => setModalProfile(true)}>
+            <Button variant="secondary" className="mr-10" onClick={() => setModalProfile(true)}>
               Hapus
-            </button>
-            <button className="btn blue-primary" onClick={() => history.push('/api/edit/api-1')}>
+            </Button>
+            <Button variant="info" onClick={() => history.push('/api/edit/api-1')}>
               Perbarui
-            </button>
+            </Button>
           </div>
         </div>
-        <div className="wrapper-input">
+        <div className={bem.e('wrapper-input')}>
           <div className="form-group">
             <label for="Judul">
               <div className="wrapper-union">
@@ -200,13 +201,13 @@ const ApiDetail = () => {
             <input type="text" value="10000" disabled />
           </div>
         </div>
-        <div className="wrapper-result">
+        <div className={bem.e('wrapper-result')}>
           <div className="wrapper-data">
             <div className="wrapper-title">
               <h1>Data</h1>
               <a href="#">(data-ckan-api.json)</a>
             </div>
-            <div className="management-table">
+            <div className={bem.e('management-table')}>
               <table>
                 <thead className="head-table-border">
                   <th width="25%">Field</th>
@@ -263,7 +264,7 @@ const ApiDetail = () => {
             <div className="wrapper-title">
               <h1>Mapping DCAT</h1>
             </div>
-            <div className="wrapper-input">
+            <div className={bem.e('wrapper-input')}>
               <Row>
                 <Col md={12}>
                   <div className="form-group">
@@ -292,7 +293,7 @@ const ApiDetail = () => {
                 </Col>
               </Row>
             </div>
-            <div className="management-table">
+            <div className={bem.e('management-table')}>
               <table>
                 <thead className="head-table-border">
                   <th width="20%">No</th>
@@ -322,7 +323,7 @@ const ApiDetail = () => {
                 </tbody>
               </table>
             </div>
-            <div className="wrapper-json">
+            <div className={bem.e('wrapper-json')}>
               <span> Output </span>
               <div className="input-group">
                 <input type="text" placeholder="https://bappenas.go.id/data.json" />
@@ -332,12 +333,14 @@ const ApiDetail = () => {
                   </span>
                 </div>
               </div>
-              <button className="btn btn-json">Download JSON</button>
+              <Button variant="json" style={{ width: '180px;' }}>
+                Download JSON
+              </Button>
             </div>
           </div>
         </div>
       </div>
-      <ModalDelete visible={modalProfile} onClose={() => setModalProfile(false)}>
+      <Modal showHeader={false} visible={modalProfile} onClose={() => setModalProfile(false)}>
         <div>
           <p className="mt-20">
             Apakah anda yakin ingin
@@ -360,7 +363,7 @@ const ApiDetail = () => {
             </Button>
           </div>
         </div>
-      </ModalDelete>
+      </Modal>
     </div>
   );
 };

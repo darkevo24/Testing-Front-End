@@ -1,7 +1,7 @@
 import { forwardRef, useImperativeHandle, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cx from 'classnames';
-import { Close, alertIcons } from '../Icons';
+import { Close, icons } from '../Icons';
 import { setNotificationOptions } from 'containers/App/reducer';
 
 import bn from 'utils/bemNames';
@@ -42,7 +42,7 @@ const Notification = (props) => {
     return null;
   }
 
-  const Icon = alertIcons[icon];
+  const Icon = icons[icon];
   return (
     <div className={cx(bem.b(), { visible })}>
       <div className={cx('p-16', bem.e('wrapper'), bem.e(type))}>

@@ -10,26 +10,26 @@
 .pagination {
     .page-link {
         color: #858A8F;
-        background: #F5F6FA;
+        background: $gray-bg;
         border-radius: 2px;
         margin:0 10px;
         border: none;
         width: 32px;
         height: 32px;
         &:hover {
-            background: #2B333A;
-            color: #fff;
+            background: $black-darker;
+            color: $white;
         }
 
         &.active {
-            background: #2B333A;
-            color: #fff;
+            background: $black-darker;
+            color: $white;
         }
 
         &.next,
         &.prev {
-            background: #fff;
-            border: 1px solid #E1E2EA;
+            background: $white;
+            border: 1px solid $stroke;
             vertical-align: middle;
             display: flex;
             justify-content: center;

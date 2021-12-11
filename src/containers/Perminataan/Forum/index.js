@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
 import Row from 'react-bootstrap/Row';
@@ -15,13 +16,8 @@ import { DatePicker } from 'components';
 import { useSelector, useDispatch } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
 import Input from 'components/Input';
-import {
-  instansiiDatasetSelector,
-  getInstansiData,
-  setPerminataanData,
-  perminataanDatasetSelector,
-  perminataanForumErrorSelector,
-} from '../slice';
+import { getInstansiData, instansiDataSelector } from 'containers/App/reducer';
+import { setPerminataanData, perminataanDatasetSelector, perminataanForumErrorSelector } from '../reducer';
 
 export const schema = yup.object({
   deskripsi: yup.string().required(),
@@ -56,7 +52,7 @@ const Forum = () => {
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
   const { loading } = useSelector(perminataanDatasetSelector);
-  const instansiDetail = useSelector(instansiiDatasetSelector);
+  const instansiDetail = useSelector(instansiDataSelector);
   const apiError = useSelector(perminataanForumErrorSelector);
 
   const handleBackButton = () => {
@@ -72,7 +68,7 @@ const Forum = () => {
   });
 
   useEffect(() => {
-    if (!instansiDetail?.instansiData?.length) dispatch(getInstansiData());
+    if (!instansiDetail?.result?.length) dispatch(getInstansiData());
   }, []);
 
   const onSubmit = (detail) => {
@@ -89,13 +85,14 @@ const Forum = () => {
       setPerminataanData({
         deskripsi: detail.deskripsi,
         tujuanPermintaan: detail.tujuanPermintaan,
-        tanggalTarget: detail.tanggalTarget,
+        tanggalTarget: moment(detail.tanggalTarget).format('YYYY-MM-DD'),
         instansi: {
           id: instansiSumber.value,
         },
         jenisData: tipeData?.value !== 'Lainnya' ? tipeData.value : detail.tipeDataText,
       }),
-    ).then(() => {
+    ).then((e) => {
+      if (e?.error?.message) return;
       handleBackButton();
     });
   };
@@ -105,7 +102,7 @@ const Forum = () => {
       <Row className="ml-200 mr-200 mt-48 border-gray-stroke br-4">
         <Col
           xs={12}
-          className="sdp-table-title p-24 border-bottom-gray-stroke d-flex align-items-center"
+          className="sdp-table-title p-24 border-bottom-gray-stroke d-flex align-items-center cursor-pointer"
           onClick={handleBackButton}>
           <BackArrow props={{ variant: 'dark' }} /> <span className="ml-10">Formulir Permintaan Data</span>
         </Col>
@@ -188,7 +185,7 @@ const Forum = () => {
             <Form.Group as={Col} md="6" className="mb-16">
               <label className="sdp-form-label py-8">Instansi Sumber Data</label>
               <SingleDropDown
-                data={instansiDetail?.instansiData.map((item) => ({ value: item.id, label: item.nama }))}
+                data={(instansiDetail?.result || []).map((item) => ({ value: item.id, label: item.nama }))}
                 isLoading={instansiDetail?.loading || false}
                 onChange={(data = {}) => {
                   setInstansiSumber(data);
@@ -229,7 +226,7 @@ const Forum = () => {
           </Row>
           <div className="d-flex justify-content-end px-24">
             <Button variant="light" className="br-40 mr-12 mb-12 px-62 py-12 bg-transparent" onClick={handleBackButton}>
-              Betal
+              Batal
             </Button>
             <Button type="submit" variant="info" className="br-40  mb-12 px-54 py-12">
               {loading && (

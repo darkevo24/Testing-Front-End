@@ -158,6 +158,24 @@
       }
     }
   }
+  &--cms-outline {
+    table {
+      thead {
+        tr {
+          background-color: $white !important;
+          border-bottom: 2px solid $red !important;
+          th {
+            font-weight: 600;
+          }
+        }
+      }
+      tbody {
+        tr {
+          border-bottom: 1px solid $stroke;
+        }
+      }
+    }
+  }
   thead {
     tr {
       background-color: $light-bg;
@@ -182,6 +200,7 @@
   .action-icon-wrapper {
     .icon-box {
       margin-right: 4px;
+      border-radius: $border-radius;
       &:last-child {
         margin-right: 0;
       }

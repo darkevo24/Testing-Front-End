@@ -15,22 +15,23 @@
     color: $gray-dark;
   }
 }
-
-.blue-primary {
-  background: $blue;
-  color: $white;
-
-  &:hover {
-      background: $blue-hover;
-      color: $white;
-  }
+.btn-outline-secondary {
+  border: 1px solid $stroke-button;
+  color: $black-light;
 }
-
 .btn-success {
   color: $white;
   &:hover,
-  &:focus {
+  &:focus,
+  &:active {
     color: $white;
   }
 }
-
+.btn-json {
+  background: $white;
+  border: 1px solid $stroke;
+  // width: 157px;
+  height: 50px;
+  border-radius: 4px;
+  font-size: 14px;
+}

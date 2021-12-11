@@ -16,27 +16,56 @@ import {
   KonfigurasiIcon,
   UserManagementIcon,
 } from 'assets/icons';
-import { FaceBookIcon, InstagramIcon, TwitterIcon, YouTubeIcon } from '../assets/icons/SocialMedia';
+import { SplitCircle } from 'components/Icons';
 import React from 'react';
 
-export const apiUrl = '/api';
-export const dataUrl = '/data/api';
-export const portalUrl = '/portal';
-export const v1Url = '/v1';
+export const katalogUrl = 'https://katalog.satudata.go.id';
+export const apiUrl = '/api-be';
+export const dataUrl = `${katalogUrl}/api`;
 
 export const getApiEndpoint = (path) => `${apiUrl}/${path}`;
 export const getDataEndpoint = (path) => `${dataUrl}/${path}`;
-export const getPortalEndpoint = (path) => `${apiUrl + portalUrl}/${path}`;
-export const getV1Endpoint = (path) => `${apiUrl + v1Url}/${path}`;
+export const getPortalEndpoint = (path) => `${apiUrl}/portal/${path}`;
+export const getV1Endpoint = (path) => `${apiUrl}/v1/${path}`;
+export const getCMSEndpoint = (path) => `${apiUrl}/cms/v1/${path}`;
 
 export const apiUrls = {
   login: getApiEndpoint('login'),
   dataset: getDataEndpoint('3/action/package_search'),
   perminataanData: getPortalEndpoint('permintaan-data'),
   instansiData: getV1Endpoint('instansi'),
+  cmsKomunitasAhliData: getCMSEndpoint('komunitas-ahli'),
+  portalKomunitasAhliData: getPortalEndpoint('komunitas-ahli'),
+  fileUpload: getApiEndpoint('file/upload'),
+  uploadFoto: getApiEndpoint('file/public-image-upload'),
+  bidangData: getCMSEndpoint('komunitas-ahli/bidang-keahlian'),
+  daerahData: getV1Endpoint('kabupatenkota/search'),
+  produenData: getV1Endpoint('katalog/produsendata'),
+  dataindukData: getV1Endpoint('katalog/datainduk'),
+  daftarData: getV1Endpoint('katalog'),
+  daftarDataList: getV1Endpoint('katalog/list'),
+  taglineData: getV1Endpoint('tagline'),
+  kategoriData: getV1Endpoint('settings/key/BERITA'),
+  sdgPillers: getV1Endpoint('settings/key/SDGS'),
+  rkpPN: getV1Endpoint('settings/key/RKP'),
+  strukturData: getCMSEndpoint('bidang'),
+  cmsBeritaData: getCMSEndpoint('berita'),
 };
 
+export const JADWAL_PERMUTAKHIRAN = [
+  'Harian',
+  'Mingguan',
+  'Bulanan',
+  'Triwulanan',
+  'Empat Bulanan',
+  'Semesteran',
+  'Tahunan',
+  'Dua Tahunan',
+  'Ad-hoc',
+];
+
 export const TOPIC_LIST = [
+  { title: 'Semua', items: [], icon: <SplitCircle /> },
   { title: 'Pertahanan dan Luar Negeri', items: ['Pertahanan', 'Luar Negeri'], icon: <EkonomiSvg /> },
   {
     title: 'Ekonomi dan Industri',
@@ -145,18 +174,23 @@ export const CMS_DASHBOARD = [
 export const Kontak_list = [
   {
     name: 'facebook',
-    icon: <FaceBookIcon />,
+    icon: 'facebookSvg',
   },
   {
     name: 'twitter',
-    icon: <TwitterIcon />,
+    icon: 'twitterSvg',
   },
   {
     name: 'instagram',
-    icon: <InstagramIcon />,
+    icon: 'instgramSvg',
   },
   {
     name: 'youtube',
-    icon: <YouTubeIcon />,
+    icon: 'youtubeSvg',
   },
 ];
+
+export const CMS_KOMUNITAS_LEVEL = ['Pusat', 'Daerah'];
+export const CMS_KOMUNITAS_LEVEL_PUSAT = ['Walidata', 'Sekretariat SDI'];
+export const CMS_KOMUNITAS_LEVEL_DAERAH = ['Walidata', 'Walidata Pendukung', 'Koordinator Forum SDI', 'Sekretariat'];
+export const CMS_KOMUNITAS_PENDIDIKAN = ['S3', 'S2', 'S1/Sederajat', 'Diploma', 'SMA/SMK/Sederajat'];

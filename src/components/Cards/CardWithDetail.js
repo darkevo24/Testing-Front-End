@@ -46,15 +46,14 @@ const Button = styled.div`
   font-size: 13px;
   line-height: 13px;
   color: #007aff;
-  width: 47px;
   height: 25px;
   background: rgba(0, 122, 255, 0.12);
   border-radius: 25px;
   padding: 6px 12px;
-  margin: -1px 10px;
+  margin-left: 10px;
 `;
 
-export const CardWithDetail = ({ title, description, date, views, onClick }) => (
+export const CardWithDetail = ({ title, dataSetUrl, description, date, views, formats = ['PDF'], count = 1, onClick }) => (
   <FlexBox
     onClick={onClick}
     style={{
@@ -66,35 +65,44 @@ export const CardWithDetail = ({ title, description, date, views, onClick }) => 
       border: '1px solid #E1E2EA',
       width: '308px',
     }}>
-    <Box
-      style={{
-        fontStyle: 'normal',
-        fontWeight: 600,
-        fontSize: '16px',
-        lineHeight: '19px',
-        color: '#2D2627',
-        margin: '5px 0',
-        height: 37,
-      }}>
-      {title}
-    </Box>
-    <Box
-      style={{
-        color: '#515154',
-        fontStyle: 'normal',
-        fontWeight: 'normal',
-        fontSize: '14px',
-        lineHeight: '20px',
-        margin: '10px 0px 0',
-      }}>
-      <Box>{description}</Box>
-      <Box>{date}</Box>
+    <Box style={{ height: '127px' }}>
+      <a title="dataset" href={dataSetUrl} className="sdp-link">
+        <Box
+          style={{
+            fontStyle: 'normal',
+            fontWeight: 600,
+            fontSize: '16px',
+            lineHeight: '19px',
+            color: '#2D2627',
+            margin: '5px 0',
+            height: 37,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}>
+          {title}
+        </Box>
+      </a>
+      <Box
+        style={{
+          color: '#515154',
+          fontStyle: 'normal',
+          fontWeight: 'normal',
+          fontSize: '14px',
+          lineHeight: '20px',
+          margin: '10px 0px 0',
+        }}>
+        <Box style={{ marginTop: '15px' }}>{description}</Box>
+        <Box style={{ marginTop: '10px' }}>{date}</Box>
+      </Box>
     </Box>
     <Divider />
     <FlexBoxContent>
       <LeftBox style={{ display: 'flex', alignItems: 'center' }}>
-        <h6>1 File</h6>
-        <Button>PDF</Button>
+        <h6>{count} File</h6>
+        {formats.map((format) => (
+          <Button key={`${title}-${format.id}`}>{format.format}</Button>
+        ))}
       </LeftBox>
       <RightBox>{views} Views</RightBox>
     </FlexBoxContent>

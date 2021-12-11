@@ -12,37 +12,40 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema, DROPDOWN_LIST } from './index';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getInstansiData,
-  instansiiDatasetSelector,
-  perminataanDatasetSelector,
-  perminataanForumErrorSelector,
-  setPerminataanData,
-  updateResult,
-} from '../slice';
+import { perminataanDatasetSelector, perminataanForumErrorSelector, putPerminataanData, updateResult } from '../reducer';
+import { getInstansiData, instansiDataSelector } from 'containers/App/reducer';
 import isEmpty from 'lodash/isEmpty';
 import { usePrevious } from 'utils/hooks';
+import moment from 'moment';
 
-export const EditForum = ({ onClose, data }) => {
-  const [tipeData, setTipeData] = useState({});
-  const [instansiSumber, setInstansiSumber] = useState({});
+export const EditForum = ({ onClose, data, initialCall }) => {
+  const [tipeData, setTipeData] = useState({ value: data?.jenisData || '', label: data?.jenisData || '' });
+  const [instansiSumber, setInstansiSumber] = useState({
+    value: data?.instansi?.id || '',
+    label: data?.instansi?.nama || '',
+  });
   const [errorDetail, setErrorDetail] = useState({});
   const dispatch = useDispatch();
   const { newRecord, records, loading } = useSelector(perminataanDatasetSelector);
-  const instansiDetail = useSelector(instansiiDatasetSelector);
+  const instansiDetail = useSelector(instansiDataSelector);
   const apiError = useSelector(perminataanForumErrorSelector);
   const prevRecord = usePrevious(newRecord) || {};
-
   const {
     control,
     formState: { errors },
     handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      deskripsi: data.deskripsi,
+      tujuanPermintaan: data.tujuanPermintaan,
+      tanggalTarget: new Date(data.tanggalTarget),
+      tipeDataText: data?.tipeData,
+    },
   });
 
   useEffect(() => {
-    if (!instansiDetail?.instansiData?.length) dispatch(getInstansiData());
+    if (!instansiDetail?.result?.length) dispatch(getInstansiData());
   }, []);
 
   useEffect(() => {
@@ -63,22 +66,26 @@ export const EditForum = ({ onClose, data }) => {
       setErrorDetail(errorClone);
       return;
     }
-
     dispatch(
-      setPerminataanData({
+      putPerminataanData({
+        id: data.id,
         deskripsi: detail.deskripsi,
         tujuanPermintaan: detail.tujuanPermintaan,
-        tanggalTarget: detail.tanggalTarget,
+        tanggalTarget: moment(detail.tanggalTarget).format('YYYY-MM-DD'),
         instansi: {
           id: instansiSumber.value,
         },
         jenisData: tipeData?.value !== 'Lainnya' ? tipeData.value : detail.tipeDataText,
       }),
-    );
+    ).then((e) => {
+      if (e?.error?.message) return;
+      initialCall();
+      onClose();
+    });
   };
 
   return (
-    <Modal size="lg" visible={true} onClose={onClose} title="Formulir Permintaan Data">
+    <Modal size="lg" visible={true} onClose={onClose} title="Ubah Permintaan Data">
       <Form noValidate onSubmit={handleSubmit(onSubmit)}>
         <Row className="mb-3 px-24">
           <Input
@@ -108,6 +115,7 @@ export const EditForum = ({ onClose, data }) => {
                 delete errorDetail.tipeData;
               }}
               placeHolder=""
+              defaultData={tipeData}
             />
             {errorDetail?.tipeData && <label className="sdp-text-red py-8">Tipe Data is required</label>}
           </Form.Group>
@@ -125,13 +133,14 @@ export const EditForum = ({ onClose, data }) => {
           <Form.Group as={Col} md="12" className="mb-16">
             <label className="sdp-form-label py-8">Instansi Sumber Data</label>
             <SingleDropDown
-              data={instansiDetail?.instansiData.map((item) => ({ value: item.id, label: item.nama }))}
+              data={(instansiDetail?.result || []).map((item) => ({ value: item.id, label: item.nama }))}
               isLoading={instansiDetail?.loading || false}
               onChange={(data = {}) => {
                 setInstansiSumber(data);
                 delete errorDetail.instansiData;
               }}
               placeHolder=""
+              defaultData={instansiSumber}
             />
             {errorDetail?.instansiSumber && <label className="sdp-text-red py-8">Instansi Sumber Data is required</label>}
           </Form.Group>
@@ -154,7 +163,7 @@ export const EditForum = ({ onClose, data }) => {
         </Row>
         <div className="d-flex justify-content-end px-24">
           <Button variant="light" className="border-0 mr-12 mb-12 px-62 py-12 bg-transparent sdp-text-red" onClick={onClose}>
-            Betal
+            Batal
           </Button>
           <Button type="submit" variant="outline-primary" className="br-40 mb-12 mr-12 px-54 py-12">
             {loading && (
@@ -169,12 +178,6 @@ export const EditForum = ({ onClose, data }) => {
               />
             )}
             Simpan
-          </Button>
-          <Button type="submit" className="br-40 mb-12 px-54 py-12">
-            {loading && (
-              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="mr-10" />
-            )}
-            Kirim
           </Button>
         </div>
       </Form>

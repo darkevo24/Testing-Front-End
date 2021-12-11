@@ -16,11 +16,11 @@ import {
   kirimsetSelector,
   setKirimPerminataanData,
   getPerminataanData,
-} from './slice';
+} from './reducer';
 import { BackArrow, PencilSvg } from 'components/Icons';
-import { prefixID, getPerminataanInfo, getUserInfo, getClass } from './constant';
+import { getPerminataanInfo, getUserInfo } from './constant';
+import { prefixID, getStatusClass } from 'utils/helper';
 import { userSelector } from '../Login/reducer';
-import { usePrevious } from 'utils/hooks';
 import { Loader } from 'components';
 import { EditForum } from './Forum/EditForum';
 
@@ -67,7 +67,7 @@ export const PerminataanDetail = () => {
     });
   };
 
-  const divClass = getClass(status);
+  const divClass = getStatusClass(status);
 
   return (
     <div className="sdp-perminataan-detail-container my-40 mx-400">
@@ -76,22 +76,22 @@ export const PerminataanDetail = () => {
           <div className="">
             <div className="d-flex p-16 br-4 border-gray-stroke justify-content-between br-box br-box-shadow">
               <div className="d-flex align-items-center">
-                <div className="d-flex align-items-center" onClick={goBack}>
+                <div className="d-flex align-items-center cursor-pointer" onClick={goBack}>
                   <BackArrow variant="blue" />
                   <span className="sdp-text-blue mx-12">List Permintaan Data</span>
                 </div>
 
                 <span className="sdp-text-grey-dark mr-12"> / </span>
-                <spn className="sdp-text-black-dark">{prefixID(id)}</spn>
+                <spn className="sdp-text-black-dark">{prefixID(id, 'PD')}</spn>
               </div>
               {status === 'draft' && (
                 <div className="d-flex">
-                  {/*<Button*/}
-                  {/*  variant="light"*/}
-                  {/*  className="bg-transparent mr-8 border-gray-stroke br-4"*/}
-                  {/*  onClick={() => setShowEditModal(true)}>*/}
-                  {/*  <PencilSvg />*/}
-                  {/*</Button>*/}
+                  <Button
+                    variant="light"
+                    className="bg-transparent mr-8 border-gray-stroke br-4"
+                    onClick={() => setShowEditModal(true)}>
+                    <PencilSvg />
+                  </Button>
                   <Button onClick={() => setShowConfirmModal(true)}>Kirim Permintaan</Button>
                 </div>
               )}
@@ -139,7 +139,7 @@ export const PerminataanDetail = () => {
           <div className="d-flex flex-column mt-24">
             {logRecord.map((item) => {
               const status = (item?.data?.status || '').toLowerCase();
-              const classDetail = getClass(status);
+              const classDetail = getStatusClass(status);
               return (
                 <div className="mb-24">
                   <div className="d-flex align-items-center">
@@ -169,7 +169,7 @@ export const PerminataanDetail = () => {
       {showConfirmModal && (
         <Modal visible={true} onClose={() => setShowConfirmModal(false)} title="" showHeader={false} centered={true}>
           Apakah anda yakin ingin {status === 'diproses' ? <span className="sdp-text-red">membatalkan</span> : 'mengirim'}{' '}
-          permintaan data <b>{prefixID(id)}</b>
+          permintaan data <b>{prefixID(id, 'PD')}</b>
           <textarea
             placeholder="Tulis Catatan"
             name="catatan"
@@ -184,7 +184,7 @@ export const PerminataanDetail = () => {
               className="br-4 mr-8 px-57 py-13 bg-transparent"
               variant="light"
               onClick={() => setShowConfirmModal(false)}>
-              Betal
+              Batal
             </Button>
             <Button className="br-4 px-39 py-13" variant="info" onClick={confirmSubmit}>
               {kirimLoading && (
@@ -195,7 +195,7 @@ export const PerminataanDetail = () => {
           </div>
         </Modal>
       )}
-      {showEditModal && <EditForum data={record} onClose={() => setShowEditModal(false)} />}
+      {showEditModal && <EditForum data={record} onClose={() => setShowEditModal(false)} initialCall={initialCall} />}
       {(loading || logLoading) && <Loader fullscreen={true} />}
     </div>
   );

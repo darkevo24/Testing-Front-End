@@ -39,6 +39,9 @@
             .input-group {
                 width: 250px;
                 svg {
+                    position: absolute;
+                    right: 12px;
+                    top: 12px;
                     path {
                         fill: $red;
                     }

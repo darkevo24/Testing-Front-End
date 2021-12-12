@@ -10,31 +10,6 @@
   }
 }
 
-
-.permintaan-data-form-success{
-  background-color: palegreen;
-  width: 97%;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  color: green;
-}
-
-.permintaan-data-form-terkirim{
-  background-color: mediumpurple;
-  width: 97%;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  color: rebeccapurple;
-}
-
-.permintaan-data-form-terproses{
-  background-color: orange;
-  width: 97%;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  color: darkorange;
-}
-
 .modal-dialog {
   max-width: 430px;
   display: flex;
@@ -44,13 +19,13 @@
       font-weight: bold;
   }
   .text-blue {
-      color : #007AFF;
+      color : $blue;
       font-weight: bold;
   }
   .alert {
       text-align: center;
       background: rgba(255, 0, 0, 0.12);
-      color :#FF0000;
+      color :$red;
       margin: 1rem -1rem;
   }
   .input-group {
@@ -59,9 +34,9 @@
           height: 100%;
           position: absolute;
           left: 0;
-          border: 1px solid #E1E2EA;
+          border: 1px solid $stroke;
           z-index: 9999;
-          background: #fff;
+          background: $white;
       }
       input {
           padding-left: 35px;
@@ -80,24 +55,24 @@
   padding-top: 10px;
   padding-bottom: 10px;
   font-weight: 600;
-  color: #15A55F;
-  background-color: #E3F4EC;;
+  color: $green-light;
+  background-color: rgb(226, 244, 235);
 }
 
 .permintaan-data-form-terkirim{
-  background-color: mediumpurple;
   width: 100%;
   padding-top: 10px;
   padding-bottom: 10px;
-  color:#6848C3;
+  color:$purple;
   font-weight: 600;
+  background-color: rgb(147, 112, 216);
 }
 
 .permintaan-data-form-terproses{
     width: 100%;
     padding-top: 10px;
     padding-bottom: 10px;
-    color: #DE8813;
-    background-color: #FBF1E3;
+    color: $dark-orange;
+    background-color: rgb(251, 241, 227);
 }
 

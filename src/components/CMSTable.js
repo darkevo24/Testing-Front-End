@@ -1,7 +1,9 @@
 import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
+import { LeftChevron, RightChevron } from 'components/Icons';
 
-const CMSTable = ({ customWidth, header, data, tableState = 'idle' }) => {
+const CMSTable = ({ customWidth, pageCount, onPageIndexChange, header, data, tableState = 'idle' }) => {
   const history = useHistory();
   return (
     <div className="sdp-content-table__body">
@@ -55,6 +57,20 @@ const CMSTable = ({ customWidth, header, data, tableState = 'idle' }) => {
           </span>
         </div>
       ))}
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel={<RightChevron />}
+        className="pagination float-end pt-20"
+        pageClassName="pagination-page"
+        nextClassName="pagination-next"
+        previousClassName="pagination-prev"
+        activeClassName="active"
+        onPageChange={onPageIndexChange}
+        pageRangeDisplayed={5}
+        pageCount={pageCount}
+        previousLabel={<LeftChevron />}
+        renderOnZeroPageCount={null}
+      />
     </div>
   );
 };

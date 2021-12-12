@@ -21,15 +21,11 @@ import bn from 'utils/bemNames';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import { LeftChevron } from 'components/Icons';
 import Modal from 'components/Modal';
-import { submitForm } from 'utils/helper';
 
 const bem = bn('content-detail');
 export const tolakFormId = 'tolak-form-id';
 export const prosesFormId = 'proses-form-id';
 export const selesaiFormId = 'selesai-form-id';
-// export const submitTolakForm = submitForm(tolakFormId);
-// export const submitProsesForm = submitForm(prosesFormId);
-// export const submitSelesaiForm = submitForm(selesaiFormId);
 
 const SuccessText = () => {
   const history = useHistory();
@@ -290,7 +286,7 @@ const CMSPermintaanDataView = () => {
         <Col sm={3} className="my-5">
           <LogStatus data={dataLog} />
         </Col>
-        <Modal visible={showTolakModal} onClose={() => hideTolakModal()}>
+        <Modal showHeader={false} visible={showTolakModal} onClose={() => hideTolakModal()}>
           <div className="mt-20 mb-20">
             <p className="font-weight-bold mb-0">
               Apakah anda yakin ingin
@@ -321,7 +317,7 @@ const CMSPermintaanDataView = () => {
             </div>
           </Form>
         </Modal>
-        <Modal visible={showProsesModal} onClose={() => hideProsesModal(false)}>
+        <Modal showHeader={false} visible={showProsesModal} onClose={() => hideProsesModal(false)}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
@@ -358,6 +354,7 @@ const CMSPermintaanDataView = () => {
           </Form>
         </Modal>
         <Modal
+          showHeader={false}
           visible={showSelesaiModal}
           onClose={() => hideSelesaiModal()}
           title=""

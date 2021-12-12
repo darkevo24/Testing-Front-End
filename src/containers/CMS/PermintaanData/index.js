@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import * as _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -8,8 +9,6 @@ import { getPermintaanData, permintaanDataSelector } from './reducer';
 import { Search } from '../../../components/Icons';
 import { CMSTable } from '../../../components';
 import bn from '../../../utils/bemNames';
-import * as _ from 'lodash';
-import ReactPaginate from 'react-paginate';
 
 const bem = bn('content-table');
 
@@ -19,6 +18,7 @@ const CMSPermintaanData = () => {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const result = useSelector(permintaanDataSelector);
+  const pageCount = Math.ceil(result?.totalPages);
   const fetchDataset = () => {
     let obj = {
       size: 10,
@@ -40,10 +40,6 @@ const CMSPermintaanData = () => {
   const updateQuery = _.debounce((val) => {
     setQuery(val);
   }, 1000);
-
-  const handlePageClick = (event) => {
-    setPage(event.selected + 1);
-  };
 
   return (
     <div className={bem.e('section')}>
@@ -104,23 +100,9 @@ const CMSPermintaanData = () => {
           };
           return value;
         })}
+        pageCount={pageCount}
+        onPageIndexChange={(event) => setPage(event.selected + 1)}
       />
-      <div className="wrapper-pagination">
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel=">"
-          className="pagination"
-          pageClassName="page-link"
-          nextClassName="page-link next"
-          previousClassName="page-link prev"
-          activeClassName="active"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={5}
-          pageCount={Math.ceil(result?.totalPages)}
-          previousLabel="<"
-          renderOnZeroPageCount={null}
-        />
-      </div>
     </div>
   );
 };

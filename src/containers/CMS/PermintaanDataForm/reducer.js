@@ -11,27 +11,25 @@ export const initialState = {
 
 export const PERMINTAAN_DATA_DETAIL = 'PERMINTAAN_DATA_DETAIL';
 
-export const getPermintaanDataDetail = createAsyncThunk('permintaan-data/detail', async (params) => {
+export const getPermintaanDataDetail = createAsyncThunk('/permintaan-data/detail', async (params) => {
   let data = cloneDeep(params);
-  const response = await get(apiUrls.detailPermintaanData + data);
+  const response = await get(apiUrls.detailPermintaanData + '/' + data);
   console.log('response', response);
   return response?.data.content;
 });
 
-export const postPermintaanDataTolak = createAsyncThunk('permintaan-data/tolak', async (params) => {
-  const response = await post(apiUrls.detailPermintaanData + params + '/tolak', { catatan: 'tolak' });
+export const postPermintaanDataTolak = createAsyncThunk('/permintaan-data/tolak', async (params) => {
+  const response = await post(`${apiUrls.detailPermintaanData}/${params}/tolak`, { catatan: 'tolak' });
   return response?.result;
 });
 
-export const postPermintaanDataProses = createAsyncThunk('permintaan-data/proses', async (params) => {
-  // console.log(params);
-  // console.log(id);
-  const response = await post(apiUrls.detailPermintaanData + params + '/proses', { catatan: 'tolak' });
+export const postPermintaanDataProses = createAsyncThunk('/permintaan-data/proses', async (params) => {
+  const response = await post(`${apiUrls.detailPermintaanData}/${params}'/proses`, { catatan: 'tolak' });
   return response?.result;
 });
 
 export const postPermintaanDataSelesai = createAsyncThunk('permintaan-data/selesai', async (params) => {
-  const response = await post(apiUrls.detailPermintaanData + params + '/selesai', {
+  const response = await post(`${apiUrls.detailPermintaanData}/${params}/selesai`, {
     catatan: 'selesai',
     urlDataset: 'http://test.go.id/dataset1',
   });

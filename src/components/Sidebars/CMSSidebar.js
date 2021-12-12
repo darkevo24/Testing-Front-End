@@ -103,7 +103,7 @@ export const CMSSidebar = () => {
           <SidebarDataIcon className="mr-10" />
           Data Management
         </div>
-        <SidebarItem title="Daftar Data" pathname="#" />
+        <SidebarItem title="Daftar Data" pathname="/cms/daftar" />
         <SidebarItem title="Permintaan Data" pathname="/cms/permintaan-data" />
         <SidebarItem title="Sandbox" pathname="#" />
       </div>

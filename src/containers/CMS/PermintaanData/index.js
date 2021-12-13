@@ -143,7 +143,7 @@ const CMSPermintaanData = () => {
               </Form.Select>
             </Form.Group>
             <Form.Group className="d-flex align-items-center mr-10">
-              <Form.Label className="mb-0 pr-10">Unit Kerja</Form.Label>
+              <Form.Label className="unit-kerja">Unit Kerja</Form.Label>
               <Form.Select aria-label="Default select example" onChange={(e) => updateInstansi(e.target.value)}>
                 <option value="0">Kosong</option>
                 <option value="1">Badan Pusat</option>

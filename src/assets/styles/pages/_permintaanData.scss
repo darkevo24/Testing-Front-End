@@ -117,6 +117,11 @@
 .sdp-content-table__section {
   &.cms-permintaan-data {
     .sdp-content-table__header {
+      .unit-kerja {
+        margin-bottom: 0;
+        padding-right: 10px;
+        width: 110px;
+      }
       .form-select {
         background-color: $gray-bg;
       }

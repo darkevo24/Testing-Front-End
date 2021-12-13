@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, defaultNumberOfRows, post } from 'utils/request';
+import { apiUrls, defaultNumberOfRows, post, put } from 'utils/request';
 
 export const initialState = {
   loading: false,
@@ -54,6 +54,11 @@ export const setDetailBerita = createAsyncThunk('cms/setDetailBerita', async (pa
   return response?.data?.content;
 });
 
+export const setEditBerita = createAsyncThunk('cms/setEditBerita', async (params) => {
+  const response = await put(`${apiUrls.cmsBeritaData}/${params.id}`, params.payload);
+  return response?.data?.content;
+});
+
 const beritaCmsSlice = createSlice({
   name: BERITA_CMS_SLICE,
   initialState,
@@ -100,6 +105,18 @@ const beritaCmsSlice = createSlice({
     builder.addCase(setDetailBerita.rejected, (state) => {
       state.detaildataSet.loading = false;
       state.detaildataSet.error = 'Error in fetching detail berita data!';
+    });
+
+    builder.addCase(setEditBerita.pending, (state, action) => {
+      state.detaildataSet.loading = true;
+    });
+    builder.addCase(setEditBerita.fulfilled, (state, action) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.record = action.payload;
+    });
+    builder.addCase(setEditBerita.rejected, (state) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.error = 'Error in fetching edit berita!';
     });
   },
 });

@@ -11,6 +11,7 @@ import { getSdgDaftarData, sdgsDataSelector } from './reducer';
 const SdgTable = ({
   bem,
   textSearch,
+  onPilarSdgChange,
   dataindukOptions = [],
   instansiOptions = [],
   priorityOptions = [],
@@ -49,6 +50,9 @@ const SdgTable = ({
 
   const handleDropdownFilter = (filter) => (selectedValue) => {
     fetchSdgsData({ bodyParams: { [filter]: selectedValue.value } });
+    if (filter === 'pilarSDGS') {
+      onPilarSdgChange(selectedValue.value);
+    }
   };
 
   const data = useMemo(() => result?.content?.records || [], [result]);
@@ -172,11 +176,23 @@ const SdgTable = ({
         <div className="row pt-24">
           <div className="col-3">
             <label className="sdp-form-label py-8">Pilar SDGs</label>
-            <SingleSelectDropdown data={sdgPillerOptions} placeHolder="-" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('pilarSDGS')}
+              data={sdgPillerOptions}
+              placeHolder="-"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
           <div className="col-3">
             <label className="sdp-form-label py-8">Tujuan SDGs</label>
-            <SingleSelectDropdown data={tujuanSDGPillerOptions} placeHolder="-" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('tujuanSDGS')}
+              data={tujuanSDGPillerOptions}
+              placeHolder="-"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
         </div>
       </div>

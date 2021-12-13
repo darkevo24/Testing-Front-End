@@ -133,6 +133,14 @@ const Daftar = () => {
     [],
   );
 
+  const onPilarSdgChange = (pilarSDG) => {
+    dispatch(getSDGTujuan(pilarSDG));
+  };
+
+  const onPnRKPChange = (pnRKP) => {
+    dispatch(getRKPpp(pnRKP));
+  };
+
   const tableProps = {
     textSearch: debouncedSearchText,
     bem,
@@ -144,6 +152,8 @@ const Daftar = () => {
     tujuanSDGPillerOptions,
     rkpPNOptions,
     rkpPPOptions,
+    onPilarSdgChange,
+    onPnRKPChange,
   };
 
   const tabs = useMemo(

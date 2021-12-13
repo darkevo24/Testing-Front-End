@@ -11,6 +11,7 @@ import { getRkpDaftarData, rkpDataSelector } from './reducer';
 const RkpTable = ({
   bem,
   textSearch,
+  onPnRKPChange,
   dataindukOptions = [],
   instansiOptions = [],
   priorityOptions = [],
@@ -49,6 +50,10 @@ const RkpTable = ({
 
   const handleDropdownFilter = (filter) => (selectedValue) => {
     fetchRkpData({ bodyParams: { [filter]: selectedValue.value } });
+
+    if (filter === 'pnRKP') {
+      onPnRKPChange(selectedValue.value);
+    }
   };
 
   const data = useMemo(() => result?.content?.records || [], [result]);
@@ -171,11 +176,23 @@ const RkpTable = ({
         <div className="row pt-24">
           <div className="col-3">
             <label className="sdp-form-label py-8">PN RKP</label>
-            <SingleSelectDropdown data={rkpPNOptions} placeHolder="-" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('pnRKP')}
+              data={rkpPNOptions}
+              placeHolder="-"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
           <div className="col-3">
             <label className="sdp-form-label py-8">PP RKP</label>
-            <SingleSelectDropdown data={rkpPPOptions} placeHolder="-" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('ppRKP')}
+              data={rkpPPOptions}
+              placeHolder="-"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
         </div>
       </div>

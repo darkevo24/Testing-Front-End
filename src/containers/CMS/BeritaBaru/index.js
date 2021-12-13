@@ -19,7 +19,7 @@ const CMSBeritaBaru = () => {
   const onSubmit = (data) => {
     data.mainImage = 'https://rembangkab.go.id/haribawana/uploads/pemerintah-kabupaten-rembang-no-image.jpg';
     data.mainImageTitle = '';
-    data.publishedDate = data.publishedDate ? formatDate(data.publishedDate) : '';
+    data.publishDate = data.publishDate ? data.publishDate + ' ' + data.publishTime : '';
     data.kategori = data.kategori.value;
     data.status = 0;
 

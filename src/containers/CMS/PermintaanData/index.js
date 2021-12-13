@@ -89,6 +89,9 @@ const CMSPermintaanData = () => {
     {
       Header: 'Status',
       accessor: 'status',
+      Cell: ({ ...rest }) => (
+        <span className={`status ${rest?.row?.original?.status.toLowerCase()}`}> {rest?.row?.original?.status} </span>
+      ),
     },
     {
       Header: '',

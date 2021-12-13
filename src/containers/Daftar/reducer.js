@@ -55,6 +55,11 @@ export const initialState = {
       ...defaultDaftarBodyParams,
     },
   },
+  daftarDataSummary: {
+    loading: false,
+    error: null,
+    result: null,
+  },
   sdgs: {
     loading: false,
     error: null,
@@ -103,6 +108,11 @@ export const DAFTAR_REDUCER = 'DAFTAR_REDUCER';
 export const getProduen = createAsyncThunk('daftar/getProduen', async () => {
   const response = await get(apiUrls.produenData);
   return response?.data?.content?.records;
+});
+
+export const getDaftarDataSummary = createAsyncThunk('daftar/getDaftarDataSummary', async (filters = {}) => {
+  const response = await get(apiUrls.daftarDataSummary);
+  return response?.data?.content;
 });
 
 export const getDaftarData = createAsyncThunk('daftar/getDaftarData', async (filters = {}) => {
@@ -155,6 +165,17 @@ const daftarSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(getDaftarDataSummary.pending, (state) => {
+      state.daftarDataSummary.loading = true;
+    });
+    builder.addCase(getDaftarDataSummary.fulfilled, (state, action) => {
+      state.daftarDataSummary.loading = false;
+      state.daftarDataSummary.result = action.payload;
+    });
+    builder.addCase(getDaftarDataSummary.rejected, (state) => {
+      state.daftarDataSummary.loading = false;
+      state.daftarDataSummary.error = 'Error in fetching daftar data summary details!';
+    });
     builder.addCase(getDaftarData.pending, (state, action) => {
       const { bodyParams, params } = action.meta.arg;
       state.daftarData.params = params;
@@ -282,6 +303,7 @@ const daftarSlice = createSlice({
 
 export const produenDataSelector = (state) => state.daftar.produen;
 export const daftarDataSelector = (state) => state.daftar.daftarData;
+export const daftarDataSummarySelector = (state) => state.daftar.daftarDataSummary;
 export const sdgsDataSelector = (state) => state.daftar.sdgs;
 export const rkpDataSelector = (state) => state.daftar.rkp;
 export const sayaDataSelector = (state) => state.daftar.sayaDaftarData;

@@ -22,9 +22,11 @@ import bn from 'utils/bemNames';
 import { useThrottle } from 'utils/hooks';
 import {
   addDaftarData,
+  getDaftarDataSummary,
   getProduen,
   getSDGTujuan,
   getRKPpp,
+  daftarDataSummarySelector,
   produenDataSelector,
   addDaftarDataSelector,
   tujuanSDGPillersSelector,
@@ -52,6 +54,7 @@ const Daftar = () => {
   const [activeTab, setActiveTab] = useState(t('sandbox.daftar.tabs.daftar.key'));
   const activeTitle = t(`sandbox.daftar.tabs.${activeTab}.title`);
   const { result } = useSelector(addDaftarDataSelector);
+  const daftarSummaryData = useSelector(daftarDataSummarySelector);
   const dataindukData = useSelector(dataindukSelector);
   const instansiData = useSelector(instansiDataSelector);
   const produenData = useSelector(produenDataSelector);
@@ -64,6 +67,7 @@ const Daftar = () => {
   useEffect(invokeDebounced, [searchText]);
 
   useEffect(() => {
+    dispatch(getDaftarDataSummary());
     dispatch(getInstansiData());
     dispatch(getProduen());
     dispatch(getDatainduk());
@@ -125,12 +129,12 @@ const Daftar = () => {
 
   const stats = useMemo(
     () => [
-      { title: 'Jumlah Data pada Daftar Data', value: 35798 },
-      { title: 'Jumlah Instansi pada Daftar Data', value: 70 },
+      { title: 'Jumlah Data pada Daftar Data', value: daftarSummaryData.result.data },
+      { title: 'Jumlah Instansi pada Daftar Data', value: daftarSummaryData.result.instansi },
       { title: 'Jumlah Dataset Terharvest', value: 35798 },
       { title: 'Jumlah Instansi Terharvest', value: 50 },
     ],
-    [],
+    [daftarSummaryData],
   );
 
   const onPilarSdgChange = (pilarSDG) => {

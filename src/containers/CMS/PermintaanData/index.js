@@ -9,9 +9,9 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'components/Table';
-import bn from '../../../utils/bemNames';
-import { prefixID } from '../../Perminataan/constant';
-import { Search } from '../../../components/Icons';
+import bn from 'utils/bemNames';
+import { prefixID } from './constant';
+import { Search } from 'components/Icons';
 import { getPermintaanData, permintaanDataSelector } from './reducer';
 
 const bem = bn('content-table');

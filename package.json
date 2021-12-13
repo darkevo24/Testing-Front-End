@@ -10,7 +10,7 @@
   "scripts": {
     "prerequisite": "yarn compile:locale",
     "prebuild": "yarn prerequisite",
-    "start": "FORCE_COLOR=1 npm-run-all -l -p run:*",
+    "start": "npm-run-all -l -p run:*",
     "run:app": "react-scripts start",
     "run:locle-watcher": "nodemon --exec \"yarn compile:locale\" --watch src/locales --ignore src/locales/*/translation.json",
     "build": "react-scripts build",

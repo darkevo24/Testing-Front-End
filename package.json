@@ -73,6 +73,7 @@
     "formik": "2.2.9",
     "framer-motion": "^4",
     "history": "4.10.1",
+    "html-react-parser": "1.4.3",
     "http-proxy-middleware": "^2.0.1",
     "husky": "7.0.0",
     "i18next": "21.4.0",

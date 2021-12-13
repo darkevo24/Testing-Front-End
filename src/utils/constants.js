@@ -23,6 +23,7 @@ export const analyticsUrl = 'https://analitik.data.go.id';
 export const katalogUrl = 'https://katalog.satudata.go.id';
 export const apiUrl = '/api-be';
 export const dataUrl = `${katalogUrl}/api`;
+export const userBeritaPortalURl = `http://34.101.103.9/api`;
 
 export const getAnalyticsUrl = (path) => `${analyticsUrl}/${path}`;
 export const getApiEndpoint = (path) => `${apiUrl}/${path}`;
@@ -30,6 +31,7 @@ export const getDataEndpoint = (path) => `${dataUrl}/${path}`;
 export const getPortalEndpoint = (path) => `${apiUrl}/portal/${path}`;
 export const getV1Endpoint = (path) => `${apiUrl}/v1/${path}`;
 export const getCMSEndpoint = (path) => `${apiUrl}/cms/v1/${path}`;
+export const getUserBeritaPortal = (path) => `${apiUrl}/public/v1/${path}`;
 
 export const apiUrls = {
   login: getApiEndpoint('login'),
@@ -52,6 +54,7 @@ export const apiUrls = {
   rkpPN: getV1Endpoint('settings/key/RKP'),
   strukturData: getCMSEndpoint('bidang'),
   cmsBeritaData: getCMSEndpoint('berita'),
+  userBeritaPortal: getUserBeritaPortal('berita'),
 };
 
 export const JADWAL_PERMUTAKHIRAN = [

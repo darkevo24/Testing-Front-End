@@ -57,6 +57,7 @@ export const FilterSearchInput = ({
 
 const Table = ({
   className,
+  headerClassName,
   columns,
   cms = false,
   data,
@@ -156,7 +157,7 @@ const Table = ({
     <div className={cx(bem.b(), bem.m(variant), className, tableWrapperClasses)}>
       {title ? <div className={bem.e('header')}>{title}</div> : null}
       {showSearch ? (
-        <div className={cx(bem.e('header-wrapper'), 'd-flex justify-content-between align-items-center mb-30')}>
+        <div className={cx('flex-center', bem.e('header-wrapper'), headerClassName || 'mb-30')}>
           {searchLeftComponent && searchLeftComponent}
           <FilterSearchInput
             searchPlaceholder={searchPlaceholder}

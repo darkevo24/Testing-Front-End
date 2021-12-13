@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPermintaanData, permintaanDataSelector } from './reducer';
 import * as _ from 'lodash';
 import moment from 'moment';
 import Button from 'react-bootstrap/Button';
@@ -10,11 +9,10 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'components/Table';
-import cx from 'classnames';
 import bn from '../../../utils/bemNames';
 import { prefixID } from '../../Perminataan/constant';
 import { Search } from '../../../components/Icons';
-import { CMSTable } from '../../../components';
+import { getPermintaanData, permintaanDataSelector } from './reducer';
 
 const bem = bn('content-table');
 
@@ -101,7 +99,6 @@ const CMSPermintaanData = () => {
   ];
 
   const rowClick = (data) => {
-    // if ((data?.status || '').toLowerCase() === 'ditolak') return;
     history.push(`/cms/permintaan-data/${data.id}`);
   };
 

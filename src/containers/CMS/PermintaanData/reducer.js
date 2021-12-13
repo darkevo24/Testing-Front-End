@@ -35,7 +35,6 @@ const permintaanDataDetailSlice = createSlice({
       state.dataset.page = action.payload.data.content.page;
       state.dataset.totalPages = action.payload.data.content.totalPages;
       state.dataset.totalRecords = action.payload.data.content.totalRecords;
-      // console.log(action.payload);
     });
     builder.addCase(getPermintaanData.rejected, (state, action) => {
       state.loading = false;

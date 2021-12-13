@@ -45,10 +45,7 @@ export const Perminataan = () => {
   const [activeTab, setActiveTab] = useState('semua');
   const dispatch = useDispatch();
 
-  const result = useSelector(perminataanDatasetSelector);
   const { size, loading, page, status, records, totalRecords } = useSelector(perminataanDatasetSelector);
-
-  console.log(result);
 
   const fetchPerminataanDataset = (params) => {
     return dispatch(getPerminataanData(params));

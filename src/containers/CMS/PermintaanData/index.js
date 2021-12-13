@@ -10,8 +10,8 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'components/Table';
 import bn from 'utils/bemNames';
-import { prefixID } from './constant';
 import { Search } from 'components/Icons';
+import { prefixID } from './constant';
 import { getPermintaanData, permintaanDataSelector } from './reducer';
 
 const bem = bn('content-table');

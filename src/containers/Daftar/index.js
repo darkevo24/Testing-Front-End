@@ -129,8 +129,8 @@ const Daftar = () => {
 
   const stats = useMemo(
     () => [
-      { title: 'Jumlah Data pada Daftar Data', value: daftarSummaryData.result.data },
-      { title: 'Jumlah Instansi pada Daftar Data', value: daftarSummaryData.result.instansi },
+      { title: 'Jumlah Data pada Daftar Data', value: daftarSummaryData?.result?.data || '-' },
+      { title: 'Jumlah Instansi pada Daftar Data', value: daftarSummaryData?.result?.instansi || '-' },
       { title: 'Jumlah Dataset Terharvest', value: 35798 },
       { title: 'Jumlah Instansi Terharvest', value: 50 },
     ],

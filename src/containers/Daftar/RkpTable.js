@@ -112,17 +112,13 @@ const RkpTable = ({
     totalCount: result?.content?.totalRecords || null,
     pageSize,
     manualPagination: true,
-    currentPage: params.currentPage,
+    currentPage: params.page,
     showSearch: false,
     highlightOnHover: true,
     variant: 'spaced',
-    onPageIndexChange: (currentPage) => {
-      const start = currentPage * pageSize;
-      if (params.start !== start) {
-        const params = {
-          start,
-          currentPage,
-        };
+    onPageIndexChange: (page) => {
+      if (params.page !== page) {
+        const params = { page };
         fetchRkpData({ params });
       }
     },

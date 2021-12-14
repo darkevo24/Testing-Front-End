@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
+import { dataOptionsMapperCurry, idKeteranganOptionsMapper, idNameOptionsMapper } from 'utils/helper';
 import { apiUrls, get, post } from 'utils/request';
 
 const defaultNotification = {
@@ -187,5 +188,13 @@ export const rkpPNSelector = (state) => state.global.rkpPN;
 export const kategoriSelector = (state) => state.global?.kategori;
 export const taglineSelector = (state) => state.global?.tagline;
 export const fotoSelector = (state) => state.global?.file;
+
+export const instansiOptionsSelector = createSelector(instansiDataSelector, dataOptionsMapperCurry(idNameOptionsMapper));
+export const dataindukOptionsSelector = createSelector(dataindukSelector, dataOptionsMapperCurry(idNameOptionsMapper));
+export const sdgPillerOptionsSelector = createSelector(
+  sdgPillersSelector,
+  dataOptionsMapperCurry(idKeteranganOptionsMapper),
+);
+export const rkpPNOptionsSelector = createSelector(rkpPNSelector, dataOptionsMapperCurry(idKeteranganOptionsMapper));
 
 export default AppSlice.reducer;

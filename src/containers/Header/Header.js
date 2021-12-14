@@ -85,7 +85,6 @@ export const Header = () => {
           ? '/dataset'
           : {
               pathname: '/topic-detail',
-              state: get(TOPIC_LIST, '0.title'),
             },
       },
     ],

@@ -1,8 +1,13 @@
+import cloneDeep from 'lodash/cloneDeep';
 import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
 import isString from 'lodash/isString';
+import isFunction from 'lodash/isFunction';
+import get from 'lodash/get';
 import map from 'lodash/map';
+import set from 'lodash/set';
 import pick from 'lodash/pick';
+import moment from 'moment';
 import { katalogUrl } from './constants';
 
 export const safeParse = (value) => {
@@ -207,3 +212,59 @@ export const getStatusClass = (status) => {
 };
 
 export const getDatasetUrl = (name) => `${katalogUrl}/dataset/${name}`;
+
+export const arrayToOptionsMapper = (array, mapper, indexValue) => {
+  if (!mapper || !isFunction(mapper)) {
+    mapper = (label, value) => ({
+      label,
+      value: indexValue ? value : label,
+    });
+  }
+  return map(array || [], mapper);
+};
+
+export const dataToOptionsMapper = (data, mapper) => {
+  if (data.result) {
+    return arrayToOptionsMapper(data.result, mapper);
+  }
+  return [];
+};
+
+export const dataOptionsMapperCurry = (mapper) => (data) => dataToOptionsMapper(data, mapper);
+
+export const idNameOptionsMapper = (data) => ({
+  value: data.id,
+  label: data.nama,
+});
+
+export const idKeteranganOptionsMapper = (data) => ({
+  value: data.id,
+  label: data.keterangan,
+});
+
+export const prepareFormPayload = (data, fieldsMap) => {
+  const payload = cloneDeep(data);
+  if (fieldsMap.dropdowns && isArray(fieldsMap.dropdowns)) {
+    map(fieldsMap.dropdowns, (field) => {
+      set(payload, field, get(payload, `${field}.value`));
+    });
+  }
+  if (fieldsMap.toArray && isArray(fieldsMap.toArray)) {
+    map(fieldsMap.toArray, (field) => {
+      set(payload, field, [get(payload, field)]);
+    });
+  }
+  if (fieldsMap.dates && isArray(fieldsMap.dates)) {
+    map(fieldsMap.dates, (field) => {
+      set(payload, field, moment(new Date(get(payload, field)), 'YYYY-MM-DD'));
+    });
+  }
+  return payload;
+};
+
+export const incrementPageParams = (params) => {
+  return {
+    ...params,
+    page: params.page + 1,
+  };
+};

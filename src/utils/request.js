@@ -166,6 +166,6 @@ export const paginationParams = {
 };
 
 export const apiPaginationParams = {
-  page: 1,
+  page: 0,
   size: defaultNumberOfRows,
 };

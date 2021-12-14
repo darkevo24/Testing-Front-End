@@ -19,6 +19,7 @@ import SdgTable from './SdgTable';
 import RkpTable from './RkpTable';
 import DaftarDataSayaTable from './DaftarDataSayaTable';
 import bn from 'utils/bemNames';
+import { priorityOptions } from 'utils/constants';
 import { useThrottle } from 'utils/hooks';
 import {
   addDaftarData,
@@ -27,21 +28,22 @@ import {
   getSDGTujuan,
   getRKPpp,
   daftarDataSummarySelector,
-  produenDataSelector,
+  produenOptionsSelector,
   addDaftarDataSelector,
-  tujuanSDGPillersSelector,
-  rkpPPSelector,
+  tujuanSDGPillerOptionsSelector,
+  rkpPPOptionsSelector,
 } from './reducer';
 import {
-  dataindukSelector,
-  instansiDataSelector,
-  rkpPNSelector,
-  sdgPillersSelector,
+  dataindukOptionsSelector,
+  instansiOptionsSelector,
+  sdgPillerOptionsSelector,
+  rkpPNOptionsSelector,
   getDatainduk,
   getInstansiData,
   getSDGPillers,
   getRKPpn,
 } from 'containers/App/reducer';
+import { prepareFormPayload } from 'utils/helper';
 
 const bem = bn('daftar');
 
@@ -55,13 +57,15 @@ const Daftar = () => {
   const activeTitle = t(`sandbox.daftar.tabs.${activeTab}.title`);
   const { result } = useSelector(addDaftarDataSelector);
   const daftarSummaryData = useSelector(daftarDataSummarySelector);
-  const dataindukData = useSelector(dataindukSelector);
-  const instansiData = useSelector(instansiDataSelector);
-  const produenData = useSelector(produenDataSelector);
-  const sdgPillersData = useSelector(sdgPillersSelector);
-  const tujuanSDGPillersData = useSelector(tujuanSDGPillersSelector);
-  const rkpPNData = useSelector(rkpPNSelector);
-  const rkpPPData = useSelector(rkpPPSelector);
+  const produenOptions = useSelector(produenOptionsSelector);
+
+  const dataindukOptions = useSelector(dataindukOptionsSelector);
+  const instansiOptions = useSelector(instansiOptionsSelector);
+  const sdgPillerOptions = useSelector(sdgPillerOptionsSelector);
+  const rkpPNOptions = useSelector(rkpPNOptionsSelector);
+
+  const rkpPPOptions = useSelector(rkpPPOptionsSelector);
+  const tujuanSDGPillerOptions = useSelector(tujuanSDGPillerOptionsSelector);
 
   const invokeDebounced = useThrottle(() => setDebouncedSearchText(searchText));
   useEffect(invokeDebounced, [searchText]);
@@ -74,54 +78,6 @@ const Daftar = () => {
     dispatch(getSDGPillers());
     dispatch(getRKPpn());
   }, []);
-
-  const instansiOptions =
-    instansiData?.result?.map((instansi) => ({
-      value: instansi.id,
-      label: instansi.nama,
-    })) || [];
-
-  const produenOptions =
-    produenData?.result?.map((produen) => ({
-      value: produen,
-      label: produen,
-    })) || [];
-
-  const dataindukOptions =
-    dataindukData?.result?.map((datainduk) => ({
-      value: datainduk.id,
-      label: datainduk.nama,
-    })) || [];
-
-  const sdgPillerOptions =
-    sdgPillersData?.result?.map((sdgPiller) => ({
-      value: sdgPiller.id,
-      label: sdgPiller.keterangan,
-    })) || [];
-
-  const tujuanSDGPillerOptions =
-    tujuanSDGPillersData?.result?.map((tujuanSDGPiller) => ({
-      value: tujuanSDGPiller.id,
-      label: tujuanSDGPiller.keterangan,
-    })) || [];
-
-  const rkpPNOptions =
-    rkpPNData?.result?.map((rkpPN) => ({
-      value: rkpPN.id,
-      label: rkpPN.keterangan,
-    })) || [];
-
-  const rkpPPOptions =
-    rkpPPData?.result?.map((rkpPP) => ({
-      value: rkpPP.id,
-      label: rkpPP.keterangan,
-    })) || [];
-
-  const priorityOptions = [
-    { value: 1, label: 'Semua' },
-    { value: 2, label: 'Ya' },
-    { value: 3, label: 'Tidak' },
-  ];
 
   const handleSearchTextChange = (e) => {
     setSearchText(e.target.value);
@@ -194,33 +150,46 @@ const Daftar = () => {
     setIsTambahModalVisble(false);
   };
 
-  const handleTambahFromSubmit = (payload) => {
-    // TODO: handle the data posted to server
-    payload.instansi = payload.instansi.value;
-    payload.jadwalPemutakhiran = payload.jadwalPemutakhiran.value;
-    payload.indukData = [payload.indukData.value];
-    payload.format = 'png';
+  const handleTambahFromSubmit = (data) => {
+    const payload = prepareFormPayload(data, {
+      dropdowns: [
+        'instansi',
+        'jadwalPemutakhiran',
+        'kodePNRKP',
+        'kodePPRKP',
+        'kodePilar',
+        'kodeTujuan',
+        'format',
+        'indukData',
+      ],
+      toArray: ['indukData'],
+      dates: ['tanggalDibuat', 'tanggalDiperbaharui'],
+    });
 
     dispatch(addDaftarData(payload)).then((res) => {
+      const hasError = res.type.includes('rejected');
+      if (hasError) {
+        Notification.show({
+          message: (
+            <div>
+              Error <span className="fw-bold">{res.error.message}</span> Data Tidak Ditambahkan
+            </div>
+          ),
+          icon: 'cross',
+        });
+        return;
+      }
       hideTambahModal();
-      res?.payload
-        ? Notification.show({
-            type: 'secondary',
-            message: (
-              <div>
-                Daftar <span className="fw-bold">{res.meta.arg.name}</span> Berhasil Ditambahkan
-              </div>
-            ),
-            icon: 'check',
-          })
-        : Notification.show({
-            message: (
-              <div>
-                Error <span className="fw-bold">{res.error.message}</span> Data Tidak Ditambahkan
-              </div>
-            ),
-            icon: 'cross',
-          });
+      Notification.show({
+        type: 'secondary',
+        message: (
+          <div>
+            Daftar <span className="fw-bold">{payload.nama}</span> Berhasil Ditambahkan
+          </div>
+        ),
+        icon: 'check',
+      });
+      setDebouncedSearchText(debouncedSearchText);
     });
   };
 
@@ -298,7 +267,13 @@ const Daftar = () => {
           { variant: 'secondary', text: 'Batal', onClick: hideTambahModal },
           { text: 'Tambah', onClick: submitDaftarForm },
         ]}>
-        <DaftarForm instansiOptions={instansiOptions} onSubmit={handleTambahFromSubmit} />
+        <DaftarForm
+          instansiOptions={instansiOptions}
+          rkpPNOptions={rkpPNOptions}
+          sdgPillerOptions={sdgPillerOptions}
+          dataindukOptions={dataindukOptions}
+          onSubmit={handleTambahFromSubmit}
+        />
       </Modal>
     </div>
   );

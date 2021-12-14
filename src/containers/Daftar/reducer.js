@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
+import { dataToOptionsMapper, dataOptionsMapperCurry, idKeteranganOptionsMapper, incrementPageParams } from 'utils/helper';
 import { apiPaginationParams, apiUrls, defaultNumberOfRows, deleteRequest, get, post, put } from 'utils/request';
 
 const defaultDaftarBodyParams = {
@@ -30,6 +31,16 @@ export const initialState = {
     result: null,
   },
   addDaftarData: {
+    loading: false,
+    error: null,
+    result: null,
+  },
+  addDaftarTujuanSDG: {
+    loading: false,
+    error: null,
+    result: null,
+  },
+  addDaftarRkpPP: {
     loading: false,
     error: null,
     result: null,
@@ -116,22 +127,26 @@ export const getDaftarDataSummary = createAsyncThunk('daftar/getDaftarDataSummar
 });
 
 export const getDaftarData = createAsyncThunk('daftar/getDaftarData', async (filters = {}) => {
-  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query: filters.params });
+  const query = incrementPageParams(filters.params);
+  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query });
   return response?.data;
 });
 
 export const getSdgDaftarData = createAsyncThunk('daftar/getSdgDaftarData', async (filters = {}) => {
-  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query: filters.params });
+  const query = incrementPageParams(filters.params);
+  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query });
   return response?.data;
 });
 
 export const getRkpDaftarData = createAsyncThunk('daftar/getRkpDaftarData', async (filters = {}) => {
-  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query: filters.params });
+  const query = incrementPageParams(filters.params);
+  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query });
   return response?.data;
 });
 
 export const getSayaDaftarData = createAsyncThunk('daftar/getSayaDaftarData', async (filters = {}) => {
-  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query: filters.params });
+  const query = incrementPageParams(filters.params);
+  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query });
   return response?.data;
 });
 
@@ -145,8 +160,8 @@ export const deleteDaftarData = createAsyncThunk('daftar/deleteDaftarData', asyn
   return response;
 });
 
-export const addDaftarData = createAsyncThunk('daftarData/addDaftarData', async (params) => {
-  const response = await post(apiUrls.daftarData, params);
+export const addDaftarData = createAsyncThunk('daftarData/addDaftarData', async (payload) => {
+  const response = await post(apiUrls.daftarData, payload);
   return response;
 });
 
@@ -156,6 +171,16 @@ export const getSDGTujuan = createAsyncThunk('daftarData/getSDGTujuan', async (i
 });
 
 export const getRKPpp = createAsyncThunk('daftarData/getRKPpp', async (id) => {
+  const response = await get(`${apiUrls.rkpPN}/parent/${id}`);
+  return response?.data?.content;
+});
+
+export const getAddDaftarSDGTujuan = createAsyncThunk('daftarData/getAddDaftarSDGTujuan', async (id) => {
+  const response = await get(`${apiUrls.sdgPillers}/parent/${id}`);
+  return response?.data?.content;
+});
+
+export const getAddDaftarRKPpp = createAsyncThunk('daftarData/getAddDaftarRKPpp', async (id) => {
   const response = await get(`${apiUrls.rkpPN}/parent/${id}`);
   return response?.data?.content;
 });
@@ -268,13 +293,35 @@ const daftarSlice = createSlice({
     builder.addCase(addDaftarData.pending, (state) => {
       state.addDaftarData.loading = true;
     });
-    builder.addCase(addDaftarData.fulfilled, (state) => {
+    builder.addCase(addDaftarData.fulfilled, (state, action) => {
       state.addDaftarData.loading = false;
-      state.addDaftarData.error = '';
+      state.addDaftarData.result = action.payload;
     });
     builder.addCase(addDaftarData.rejected, (state) => {
       state.addDaftarData.loading = false;
       state.addDaftarData.error = 'Error while adding data';
+    });
+    builder.addCase(getAddDaftarSDGTujuan.pending, (state) => {
+      state.addDaftarTujuanSDG.loading = true;
+    });
+    builder.addCase(getAddDaftarSDGTujuan.fulfilled, (state, action) => {
+      state.addDaftarTujuanSDG.loading = false;
+      state.addDaftarTujuanSDG.result = action.payload;
+    });
+    builder.addCase(getAddDaftarSDGTujuan.rejected, (state) => {
+      state.addDaftarTujuanSDG.loading = false;
+      state.addDaftarTujuanSDG.error = 'Error while fetching daftar tijuan sdg data';
+    });
+    builder.addCase(getAddDaftarRKPpp.pending, (state) => {
+      state.addDaftarRkpPP.loading = true;
+    });
+    builder.addCase(getAddDaftarRKPpp.fulfilled, (state, action) => {
+      state.addDaftarRkpPP.loading = false;
+      state.addDaftarRkpPP.result = action.payload;
+    });
+    builder.addCase(getAddDaftarRKPpp.rejected, (state) => {
+      state.addDaftarRkpPP.loading = false;
+      state.addDaftarRkpPP.error = 'Error while fetching daftar rkp pp data';
     });
     builder.addCase(putDaftarData.pending, (state) => {
       state.updateDaftarData.loading = true;
@@ -309,7 +356,25 @@ export const rkpDataSelector = (state) => state.daftar.rkp;
 export const sayaDataSelector = (state) => state.daftar.sayaDaftarData;
 export const updateDaftarDataSelector = (state) => state.daftar.updateDaftarData;
 export const addDaftarDataSelector = (state) => state.daftar.addDaftarData;
+export const addDaftarTujuanSDGSelector = (state) => state.daftar.addDaftarTujuanSDG;
+export const addDaftarRkpPPSelector = (state) => state.daftar.addDaftarRkpPP;
 export const tujuanSDGPillersSelector = (state) => state.daftar.tujuanSDGPillers;
 export const rkpPPSelector = (state) => state.daftar.rkpPP;
+
+export const produenOptionsSelector = createSelector(produenDataSelector, dataToOptionsMapper);
+export const tujuanSDGPillerOptionsSelector = createSelector(
+  tujuanSDGPillersSelector,
+  dataOptionsMapperCurry(idKeteranganOptionsMapper),
+);
+export const rkpPPOptionsSelector = createSelector(rkpPPSelector, dataOptionsMapperCurry(idKeteranganOptionsMapper));
+
+export const addTujuanSDGPillerOptionsSelector = createSelector(
+  addDaftarTujuanSDGSelector,
+  dataOptionsMapperCurry(idKeteranganOptionsMapper),
+);
+export const addRkpPPOptionsSelector = createSelector(
+  addDaftarRkpPPSelector,
+  dataOptionsMapperCurry(idKeteranganOptionsMapper),
+);
 
 export default daftarSlice.reducer;

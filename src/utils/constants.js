@@ -17,7 +17,6 @@ import {
   UserManagementIcon,
 } from 'assets/icons';
 import { SplitCircle } from 'components/Icons';
-import React from 'react';
 
 export const analyticsUrl = 'https://analitik.data.go.id';
 export const katalogUrl = 'https://katalog.satudata.go.id';
@@ -55,6 +54,17 @@ export const apiUrls = {
   cmsBeritaData: getCMSEndpoint('berita'),
 };
 
+export const priorityOptions = [
+  { value: 1, label: 'Semua' },
+  { value: 2, label: 'Ya' },
+  { value: 3, label: 'Tidak' },
+];
+
+const arrayToOptionsMapper = (indexValue) => (label, value) => ({
+  label,
+  value: indexValue ? value : label,
+});
+
 export const JADWAL_PERMUTAKHIRAN = [
   'Harian',
   'Mingguan',
@@ -66,6 +76,12 @@ export const JADWAL_PERMUTAKHIRAN = [
   'Dua Tahunan',
   'Ad-hoc',
 ];
+
+export const jadwalPermutakhiranOptions = JADWAL_PERMUTAKHIRAN.map(arrayToOptionsMapper(true));
+
+export const FORMATS = ['csv', 'xlsx', 'pdf', 'png/jpg/jpeg', 'docx', 'json', 'xml'];
+
+export const formatOptions = FORMATS.map(arrayToOptionsMapper());
 
 export const TOPIC_LIST = [
   { title: 'Semua', items: [], icon: <SplitCircle /> },

@@ -24,7 +24,7 @@ export const CMSHeader = () => {
       <div className="container-fluid pr-0 hpx-56">
         <img src={Logo} alt="brand-logo" />
         <ul className="nav d-flex align-items-center justify-content-end h-100">
-          <Button outline onClick={goTo('/home')} variant="outline-secondary" className="br-6 hpx-35">
+          <Button onClick={goTo('/home')} variant="outline-secondary" className="br-6 hpx-35">
             {t('header.userNav.sdiPortal')}
           </Button>
           <li className="d-flex justify-content-end flex-row align-items-center h-100">

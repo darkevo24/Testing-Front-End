@@ -23,7 +23,7 @@ const MediumTitle = styled.p`
   line-height: 17px;
 `;
 
-export const Top = () => (
+export const BerandaTop = () => (
   <BoxImage>
     <LargeTitle>Data Indonesia, Dalam Satu Portal</LargeTitle>
     <MediumTitle>Temukan data-data Pemerintah dengan mudah!</MediumTitle>

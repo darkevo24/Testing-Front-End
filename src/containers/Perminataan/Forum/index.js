@@ -16,13 +16,8 @@ import { DatePicker } from 'components';
 import { useSelector, useDispatch } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
 import Input from 'components/Input';
-import {
-  instansiiDatasetSelector,
-  getInstansiData,
-  setPerminataanData,
-  perminataanDatasetSelector,
-  perminataanForumErrorSelector,
-} from '../reducer';
+import { getInstansiData, instansiDataSelector } from 'containers/App/reducer';
+import { setPerminataanData, perminataanDatasetSelector, perminataanForumErrorSelector } from '../reducer';
 
 export const schema = yup.object({
   deskripsi: yup.string().required(),
@@ -57,7 +52,7 @@ const Forum = () => {
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
   const { loading } = useSelector(perminataanDatasetSelector);
-  const instansiDetail = useSelector(instansiiDatasetSelector);
+  const instansiDetail = useSelector(instansiDataSelector);
   const apiError = useSelector(perminataanForumErrorSelector);
 
   const handleBackButton = () => {
@@ -73,7 +68,7 @@ const Forum = () => {
   });
 
   useEffect(() => {
-    if (!instansiDetail?.instansiData?.length) dispatch(getInstansiData());
+    if (!instansiDetail?.result?.length) dispatch(getInstansiData());
   }, []);
 
   const onSubmit = (detail) => {
@@ -190,7 +185,7 @@ const Forum = () => {
             <Form.Group as={Col} md="6" className="mb-16">
               <label className="sdp-form-label py-8">Instansi Sumber Data</label>
               <SingleDropDown
-                data={instansiDetail?.instansiData.map((item) => ({ value: item.id, label: item.nama }))}
+                data={(instansiDetail?.result || []).map((item) => ({ value: item.id, label: item.nama }))}
                 isLoading={instansiDetail?.loading || false}
                 onChange={(data = {}) => {
                   setInstansiSumber(data);

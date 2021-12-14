@@ -1,8 +1,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
-import Form from 'react-bootstrap/Form';
-import { CMSBimtekForm, TextEditor } from 'components';
+import { CMSBimtekForm } from 'components';
 
 import bn from 'utils/bemNames';
 import cx from 'classnames';
@@ -27,13 +26,7 @@ const CMSJadwalBaru = () => {
         <div>Saved 1 minutes ago Draft</div>
       </div>
       <div className={bem.e('body')}>
-        <CMSBimtekForm disabled={true} />
-        <Form className="sdp-form">
-          <Form.Group controlId="content">
-            <Form.Label>Isi Berita</Form.Label>
-            <TextEditor />
-          </Form.Group>
-        </Form>
+        <CMSBimtekForm disabled={true} isDocumentation={true} />
       </div>
     </div>
   );

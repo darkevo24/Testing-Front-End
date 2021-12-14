@@ -27,6 +27,10 @@ const DashboardSaya = lazy(() => import('containers/Dashboard/DashboardSaya'));
 const DataAnalytic = lazy(() => import('containers/Dashboard/DataAnalytic'));
 const DaftarPage = lazy(() => import('containers/Daftar'));
 const DataVariablePage = lazy(() => import('containers/DataVariable'));
+const ManagementApiPage = lazy(() => import('containers/ManagementApi'));
+const ManagementApiAddPage = lazy(() => import('containers/ManagementApi/Form'));
+const ManagementApiDetailPage = lazy(() => import('containers/ManagementApi/DetailApi'));
+const ManagementApiUpdatePage = lazy(() => import('containers/ManagementApi/UpdateApi'));
 // const NotFoundPage = lazy(() => import('containers/NotFound'));
 
 function AppRoutes(props) {
@@ -34,6 +38,10 @@ function AppRoutes(props) {
     <Switch>
       <PublicRoute exact path="/login" component={Login} />
       <AppLayout>
+        <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
+        <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
+        <Route exact path="/api/form" component={ManagementApiAddPage} />
+        <Route exact path="/api" component={ManagementApiPage} />
         <PrivateRoute exact path="/permintaan-data-detail/:id" component={PerminataanDetail} />
         <PrivateRoute exact path="/permintaan-data" component={Perminataan} />
         <PrivateRoute exact path="/forum-sdi" component={ForumSDI} />

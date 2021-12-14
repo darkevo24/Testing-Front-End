@@ -1,15 +1,20 @@
-import { useMemo } from 'react';
+import { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { DatePicker, Dropdown, Input } from 'components';
-import { formatData, jadwalData, nameData } from 'utils/dataConfig/daftar';
+import { jadwalPermutakhiranOptions, formatOptions } from 'utils/constants';
 import { submitForm } from 'utils/helper';
-import { instansiDataSelector } from './reducer';
+import {
+  getAddDaftarSDGTujuan,
+  getAddDaftarRKPpp,
+  addTujuanSDGPillerOptionsSelector,
+  addRkpPPOptionsSelector,
+} from './reducer';
 
 export const daftarFormId = 'daftar-form-id';
 export const submitDaftarForm = submitForm(daftarFormId);
@@ -30,18 +35,44 @@ const schema = yup
   })
   .required();
 
-const DaftarForm = ({ data, onSubmit, instansiOptions = [] }) => {
+const DaftarForm = ({
+  data,
+  onSubmit,
+  dataindukOptions = [],
+  instansiOptions = [],
+  sdgPillerOptions = [],
+  rkpPNOptions = [],
+}) => {
   const {
     control,
     formState: { errors },
     handleSubmit,
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       ...data,
     },
   });
+  const dispatch = useDispatch();
 
+  const tujuanSDGPillerOptions = useSelector(addTujuanSDGPillerOptionsSelector);
+  const rkpPPOptions = useSelector(addRkpPPOptionsSelector);
+
+  const watchKodePilar = watch('kodePilar', false);
+  const watchKodePNRKP = watch('kodePNRKP', false);
+
+  useEffect(() => {
+    if (watchKodePilar) {
+      dispatch(getAddDaftarSDGTujuan(watchKodePilar.value));
+    }
+  }, [watchKodePilar]);
+
+  useEffect(() => {
+    if (watchKodePNRKP) {
+      dispatch(getAddDaftarRKPpp(watchKodePNRKP.value));
+    }
+  }, [watchKodePNRKP]);
   return (
     <div className="daftar-form">
       <Row>
@@ -96,7 +127,7 @@ const DaftarForm = ({ data, onSubmit, instansiOptions = [] }) => {
             control={control}
             rules={{ required: true }}
             placeholder="Select"
-            options={jadwalData.map((jadwal) => ({ value: jadwal, label: jadwal }))}
+            options={jadwalPermutakhiranOptions}
             error={errors.jadwal?.message}
           />
           <DatePicker
@@ -130,7 +161,7 @@ const DaftarForm = ({ data, onSubmit, instansiOptions = [] }) => {
             control={control}
             rules={{ required: true }}
             placeholder="Select"
-            options={nameData.map((name) => ({ value: name, label: name }))}
+            options={dataindukOptions}
             error={errors.induk?.message}
           />
           <Dropdown
@@ -141,7 +172,7 @@ const DaftarForm = ({ data, onSubmit, instansiOptions = [] }) => {
             control={control}
             rules={{ required: true }}
             placeholder="Select"
-            options={formatData.map((format) => ({ value: format, label: format }))}
+            options={formatOptions}
             error={errors.format?.message}
           />
           <Input
@@ -152,6 +183,49 @@ const DaftarForm = ({ data, onSubmit, instansiOptions = [] }) => {
             control={control}
             rules={{ required: true }}
             error={errors.link?.message}
+            leftIconClass="border-right-0"
+            rightIconClass="cursor-pointer"
+            className="border-left-0"
+          />
+          <Dropdown
+            group
+            label="Pilar SDGs"
+            name="kodePilar"
+            control={control}
+            rules={{ required: true }}
+            placeholder="Select"
+            options={sdgPillerOptions}
+            error={errors.pilarSDGs?.message}
+          />
+          <Dropdown
+            group
+            label="Tujuan SDGs"
+            name="kodeTujuan"
+            control={control}
+            rules={{ required: true }}
+            placeholder="Select"
+            options={tujuanSDGPillerOptions}
+            error={errors.tujuanSDGs?.message}
+          />
+          <Dropdown
+            group
+            label="PN RKP"
+            name="kodePNRKP"
+            control={control}
+            rules={{ required: true }}
+            placeholder="Select"
+            options={rkpPNOptions}
+            error={errors.pnRKP?.message}
+          />
+          <Dropdown
+            group
+            label="PP RKP"
+            name="kodePPRKP"
+            control={control}
+            rules={{ required: true }}
+            placeholder="Select"
+            options={rkpPPOptions}
+            error={errors.ppRKP?.message}
           />
           <Button className="invisible" type="submit" />
         </Form>

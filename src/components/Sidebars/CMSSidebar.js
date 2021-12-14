@@ -2,6 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
 import Accordion from 'react-bootstrap/Accordion';
+import { getAnalyticsUrl } from 'utils/constants';
 
 import { SidebarApiIcon, SidebarConfigIcon, SidebarContentIcon, SidebarDataIcon, SidebarUserIcon } from 'assets/icons';
 import bn from 'utils/bemNames';
@@ -21,6 +22,10 @@ const SidebarItem = ({ title, pathname }) => {
       {title}
     </div>
   );
+};
+
+const openAnalyticsLogin = () => {
+  window.open(getAnalyticsUrl('login'));
 };
 
 export const CMSSidebar = () => {
@@ -88,13 +93,13 @@ export const CMSSidebar = () => {
         {/* <SidebarItem title="Data Analytics" pathname="/cms/data-analytic" />
         <SidebarItem title="Kesiapan SDI" pathname="/cms/kesiapan-sdi" />
         <SidebarItem title="Dashboard Executive" pathname="/cms/dashboard-eksekutif" /> */}
-        <div className={cx(bem.e('item'))} onClick={() => window.open('http://103.170.104.187:8088/login/')}>
+        <div className={cx(bem.e('item'))} onClick={openAnalyticsLogin}>
           Data Analytics
         </div>
-        <div className={cx(bem.e('item'))} onClick={() => window.open('http://103.170.104.187:8088/login/')}>
+        <div className={cx(bem.e('item'))} onClick={openAnalyticsLogin}>
           Kesiapan SDI
         </div>
-        <div className={cx(bem.e('item'))} onClick={() => window.open('http://103.170.104.187:8088/login/')}>
+        <div className={cx(bem.e('item'))} onClick={openAnalyticsLogin}>
           Dashboard Executive
         </div>
       </div>
@@ -112,7 +117,7 @@ export const CMSSidebar = () => {
           <SidebarApiIcon className="mr-10" />
           API
         </div>
-        <SidebarItem title="API Management" pathname="#" />
+        <SidebarItem title="API Management" pathname="/cms/api" />
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>

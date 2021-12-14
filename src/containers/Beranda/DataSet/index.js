@@ -17,7 +17,7 @@ import { Breadcrumb, Loader, MapTile, SectionList, Table, Tags } from 'component
 import { Circle, Close } from 'components/Icons';
 import { datasetSelector, getDataSet } from '../reducer';
 import bn from 'utils/bemNames';
-import { parseQueryString } from 'utils/helper';
+import { getDatasetUrl, parseQueryString } from 'utils/helper';
 
 const bem = bn('dataset');
 
@@ -119,7 +119,7 @@ const DataSet = () => {
         id: 'card',
         Header: 'Card',
         Cell: ({ cell: { row: { original: item } = {} } = {} }) => {
-          const dataSetUrl = `/data/dataset/${item.name}`;
+          const dataSetUrl = getDatasetUrl(item.name);
           const numberOfMaxFormats = 4;
           const uniqFormats =
             uniqBy(

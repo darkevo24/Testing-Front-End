@@ -7,14 +7,8 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from 'components/Icons';
 import DaftarTable from 'containers/Daftar/DaftarTable';
-import {
-  getDatainduk,
-  getInstansi,
-  getProduen,
-  dataindukDataSelector,
-  produenDataSelector,
-  instansiDataSelector,
-} from '../../Daftar/reducer';
+import { getProduen, produenDataSelector } from '../../Daftar/reducer';
+import { dataindukSelector, getDatainduk, getInstansiData, instansiDataSelector } from 'containers/App/reducer';
 import bn from 'utils/bemNames';
 
 const bem = bn('daftar');
@@ -23,7 +17,7 @@ const DaftarPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const dataindukData = useSelector(dataindukDataSelector);
+  const dataindukData = useSelector(dataindukSelector);
   const instansiData = useSelector(instansiDataSelector);
   const produenData = useSelector(produenDataSelector);
 
@@ -48,7 +42,7 @@ const DaftarPage = () => {
     { value: 3, label: 'Tidak' },
   ];
   useEffect(() => {
-    dispatch(getInstansi());
+    dispatch(getInstansiData());
     dispatch(getProduen());
     dispatch(getDatainduk());
   }, []);

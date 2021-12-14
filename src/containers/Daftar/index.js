@@ -19,66 +19,103 @@ import SdgTable from './SdgTable';
 import RkpTable from './RkpTable';
 import DaftarDataSayaTable from './DaftarDataSayaTable';
 import bn from 'utils/bemNames';
+import { priorityOptions } from 'utils/constants';
+import { useThrottle } from 'utils/hooks';
 import {
-  addKatalog,
-  getDatainduk,
-  getInstansi,
+  addDaftarData,
+  getDaftarDataSummary,
   getProduen,
-  dataindukDataSelector,
-  produenDataSelector,
-  instansiDataSelector,
-  addKatalogSelector,
+  getSDGTujuan,
+  getRKPpp,
+  daftarDataSummarySelector,
+  produenOptionsSelector,
+  addDaftarDataSelector,
+  tujuanSDGPillerOptionsSelector,
+  rkpPPOptionsSelector,
 } from './reducer';
+import {
+  dataindukOptionsSelector,
+  instansiOptionsSelector,
+  sdgPillerOptionsSelector,
+  rkpPNOptionsSelector,
+  getDatainduk,
+  getInstansiData,
+  getSDGPillers,
+  getRKPpn,
+} from 'containers/App/reducer';
+import { prepareFormPayload } from 'utils/helper';
 
 const bem = bn('daftar');
 
 const Daftar = () => {
   const { t } = useTranslation();
+  const [searchText, setSearchText] = useState('');
+  const [debouncedSearchText, setDebouncedSearchText] = useState('');
   const [isTambahModalVisible, setIsTambahModalVisble] = useState(false);
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(t('sandbox.daftar.tabs.daftar.key'));
   const activeTitle = t(`sandbox.daftar.tabs.${activeTab}.title`);
-  const { result } = useSelector(addKatalogSelector);
-  const dataindukData = useSelector(dataindukDataSelector);
-  const instansiData = useSelector(instansiDataSelector);
-  const produenData = useSelector(produenDataSelector);
+  const { result } = useSelector(addDaftarDataSelector);
+  const daftarSummaryData = useSelector(daftarDataSummarySelector);
+  const produenOptions = useSelector(produenOptionsSelector);
 
-  const instansiOptions =
-    instansiData?.result?.map((instansi) => ({
-      value: instansi.id,
-      label: instansi.nama,
-    })) || [];
-  const produenOptions =
-    produenData?.result?.map((produen) => ({
-      value: produen,
-      label: produen,
-    })) || [];
-  const dataindukOptions =
-    dataindukData?.result?.map((datainduk) => ({
-      value: datainduk,
-      label: datainduk,
-    })) || [];
-  const priorityOptions = [
-    { value: 1, label: 'Semua' },
-    { value: 2, label: 'Ya' },
-    { value: 3, label: 'Tidak' },
-  ];
+  const dataindukOptions = useSelector(dataindukOptionsSelector);
+  const instansiOptions = useSelector(instansiOptionsSelector);
+  const sdgPillerOptions = useSelector(sdgPillerOptionsSelector);
+  const rkpPNOptions = useSelector(rkpPNOptionsSelector);
+
+  const rkpPPOptions = useSelector(rkpPPOptionsSelector);
+  const tujuanSDGPillerOptions = useSelector(tujuanSDGPillerOptionsSelector);
+
+  const invokeDebounced = useThrottle(() => setDebouncedSearchText(searchText));
+  useEffect(invokeDebounced, [searchText]);
+
+  useEffect(() => {
+    dispatch(getDaftarDataSummary());
+    dispatch(getInstansiData());
+    dispatch(getProduen());
+    dispatch(getDatainduk());
+    dispatch(getSDGPillers());
+    dispatch(getRKPpn());
+  }, []);
+
+  const handleSearchTextChange = (e) => {
+    setSearchText(e.target.value);
+  };
+
   const stats = useMemo(
     () => [
-      { title: 'Jumlah Data pada Daftar Data', value: 35798 },
-      { title: 'Jumlah Instansi pada Daftar Data', value: 70 },
+      { title: 'Jumlah Data pada Daftar Data', value: daftarSummaryData?.result?.data || '-' },
+      { title: 'Jumlah Instansi pada Daftar Data', value: daftarSummaryData?.result?.instansi || '-' },
       { title: 'Jumlah Dataset Terharvest', value: 35798 },
       { title: 'Jumlah Instansi Terharvest', value: 50 },
     ],
-    [],
+    [daftarSummaryData],
   );
+
+  const onPilarSdgChange = (pilarSDG) => {
+    dispatch(getSDGTujuan(pilarSDG));
+  };
+
+  const onPnRKPChange = (pnRKP) => {
+    dispatch(getRKPpp(pnRKP));
+  };
+
   const tableProps = {
+    textSearch: debouncedSearchText,
     bem,
     dataindukOptions,
     instansiOptions,
     priorityOptions,
     produenOptions,
+    sdgPillerOptions,
+    tujuanSDGPillerOptions,
+    rkpPNOptions,
+    rkpPPOptions,
+    onPilarSdgChange,
+    onPnRKPChange,
   };
+
   const tabs = useMemo(
     () => [
       {
@@ -113,33 +150,46 @@ const Daftar = () => {
     setIsTambahModalVisble(false);
   };
 
-  const handleTambahFromSubmit = (payload) => {
-    // TODO: handle the data posted to server
-    payload.instansi = payload.instansi.value;
-    payload.jadwalPemutakhiran = payload.jadwalPemutakhiran.value;
-    payload.indukData = [payload.indukData.value];
-    payload.format = 'png';
+  const handleTambahFromSubmit = (data) => {
+    const payload = prepareFormPayload(data, {
+      dropdowns: [
+        'instansi',
+        'jadwalPemutakhiran',
+        'kodePNRKP',
+        'kodePPRKP',
+        'kodePilar',
+        'kodeTujuan',
+        'format',
+        'indukData',
+      ],
+      toArray: ['indukData'],
+      dates: ['tanggalDibuat', 'tanggalDiperbaharui'],
+    });
 
-    dispatch(addKatalog(payload)).then((res) => {
+    dispatch(addDaftarData(payload)).then((res) => {
+      const hasError = res.type.includes('rejected');
+      if (hasError) {
+        Notification.show({
+          message: (
+            <div>
+              Error <span className="fw-bold">{res.error.message}</span> Data Tidak Ditambahkan
+            </div>
+          ),
+          icon: 'cross',
+        });
+        return;
+      }
       hideTambahModal();
-      res?.payload
-        ? Notification.show({
-            type: 'secondary',
-            message: (
-              <div>
-                Daftar <span className="fw-bold">{res.meta.arg.name}</span> Berhasil Ditambahkan
-              </div>
-            ),
-            icon: 'check',
-          })
-        : Notification.show({
-            message: (
-              <div>
-                Error <span className="fw-bold">{res.error.message}</span> Data Tidak Ditambahkan
-              </div>
-            ),
-            icon: 'cross',
-          });
+      Notification.show({
+        type: 'secondary',
+        message: (
+          <div>
+            Daftar <span className="fw-bold">{payload.nama}</span> Berhasil Ditambahkan
+          </div>
+        ),
+        icon: 'check',
+      });
+      setDebouncedSearchText(debouncedSearchText);
     });
   };
 
@@ -160,14 +210,11 @@ const Daftar = () => {
     ],
     [activeTab, t],
   );
-  useEffect(() => {
-    dispatch(getInstansi());
-    dispatch(getProduen());
-    dispatch(getDatainduk());
-  }, []);
+
   const isSayaData = activeTab === t('sandbox.daftar.tabs.daftarSafa.key');
+
   return (
-    <div className="daftar-page pb-100">
+    <div className={cx('daftar-page pb-100', bem.b())}>
       <Breadcrumb breadcrumbsList={breadcrumbsList} />
       <Row>
         <Col sm={{ span: 10, offset: 1 }}>
@@ -179,8 +226,8 @@ const Daftar = () => {
                   variant="normal"
                   type="text"
                   placeholder={t('sandbox.daftar.searchPlaceholder')}
-                  value={''}
-                  onChange={() => {}}
+                  value={searchText}
+                  onChange={handleSearchTextChange}
                 />
                 <div className="icon-container">
                   <Search />
@@ -220,7 +267,13 @@ const Daftar = () => {
           { variant: 'secondary', text: 'Batal', onClick: hideTambahModal },
           { text: 'Tambah', onClick: submitDaftarForm },
         ]}>
-        <DaftarForm instansiOptions={instansiOptions} onSubmit={handleTambahFromSubmit} />
+        <DaftarForm
+          instansiOptions={instansiOptions}
+          rkpPNOptions={rkpPNOptions}
+          sdgPillerOptions={sdgPillerOptions}
+          dataindukOptions={dataindukOptions}
+          onSubmit={handleTambahFromSubmit}
+        />
       </Modal>
     </div>
   );

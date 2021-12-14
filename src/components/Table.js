@@ -57,6 +57,7 @@ export const FilterSearchInput = ({
 
 const Table = ({
   className,
+  headerClassName,
   columns,
   cms = false,
   data,
@@ -83,6 +84,7 @@ const Table = ({
   highlightSearchInput = false,
   onRowClick,
   rowClass,
+  startFromOne = false,
 }) => {
   const tableOptions = {
     columns,
@@ -118,15 +120,16 @@ const Table = ({
   }, [pageIndex]);
 
   const totalPages = pageOptions.length;
+  const startPageIndex = startFromOne ? 1 : 0;
   let startPage, endPage;
   if (totalPages <= 10) {
     // less than 10 total pages so show all
-    startPage = 0;
+    startPage = startPageIndex;
     endPage = totalPages;
   } else {
     // more than 10 total pages so calculate start and end pages
     if (pageIndex <= 6) {
-      startPage = 0;
+      startPage = startPageIndex;
       endPage = 9;
     } else if (pageIndex + 4 >= totalPages) {
       startPage = totalPages - 9;
@@ -156,7 +159,7 @@ const Table = ({
     <div className={cx(bem.b(), bem.m(variant), className, tableWrapperClasses)}>
       {title ? <div className={bem.e('header')}>{title}</div> : null}
       {showSearch ? (
-        <div className={cx(bem.e('header-wrapper'), 'd-flex justify-content-between align-items-center mb-30')}>
+        <div className={cx('flex-center', bem.e('header-wrapper'), headerClassName || 'mb-30')}>
           {searchLeftComponent && searchLeftComponent}
           <FilterSearchInput
             searchPlaceholder={searchPlaceholder}

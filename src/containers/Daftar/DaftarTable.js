@@ -10,10 +10,12 @@ import Popover from 'components/Popover';
 import { Check } from 'components/Icons';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import cloneDeep from 'lodash/cloneDeep';
-import { getKatalog, katalogSelector } from './reducer';
+import { JADWAL_PERMUTAKHIRAN } from 'utils/constants';
+import { getDaftarData, daftarDataSelector } from './reducer';
 
 const DaftarTable = ({
   bem,
+  textSearch,
   dataindukOptions = [],
   instansiOptions = [],
   priorityOptions = [],
@@ -22,24 +24,34 @@ const DaftarTable = ({
 }) => {
   const history = useHistory();
   const [selectedRecord, setSelectedRecord] = useState(null);
-  const { pageSize, loading, params, result } = useSelector(katalogSelector);
+  const { pageSize, loading, params, bodyParams, result } = useSelector(daftarDataSelector);
   const dispatch = useDispatch();
 
-  const fetchKatalog = (override, reset = false) => {
+  const fetchDaftarData = (filterOverride = {}, reset = false) => {
+    const { params: paramsOverride = {}, bodyParams: bodyParamsOverride = {} } = filterOverride;
     const filterParams = {
       ...cloneDeep(params),
-      ...cloneDeep(override),
+      ...cloneDeep(paramsOverride),
     };
     if (reset) {
       filterParams.start = 0;
       filterParams.currentPage = 0;
     }
-    return dispatch(getKatalog(filterParams));
+    const filterBodyParams = {
+      ...cloneDeep(bodyParams),
+      ...cloneDeep(bodyParamsOverride),
+    };
+    const filters = { params: filterParams, bodyParams: filterBodyParams };
+    return dispatch(getDaftarData(filters));
   };
-  const katlogData = useMemo(() => result || [], [result]);
+
   useEffect(() => {
-    fetchKatalog();
+    fetchDaftarData();
   }, []);
+
+  useEffect(() => {
+    fetchDaftarData({ bodyParams: { textSearch } });
+  }, [textSearch]);
 
   const showDaftarDetailPage = (data) => {
     // TODO: handle the detail page for daftar cms
@@ -81,7 +93,7 @@ const DaftarTable = ({
               variant="highlight"
               className={bem.e('popover')}
               triggerOn="hover"
-              trigger={<span className="cursor-pointer">{item.instansi.nama}</span>}
+              trigger={<div className="cursor-pointer h-100 d-flex align-items-center">{item.instansi}</div>}
               header="Detail Data Cakupan Wilayah Internet">
               <ColumnData items={items} />
             </Popover>
@@ -96,14 +108,15 @@ const DaftarTable = ({
       {
         Header: 'Jadwal Pemutakhiran',
         accessor: 'jadwalPemutakhiran',
+        Cell: (data) => JADWAL_PERMUTAKHIRAN[data.cell.value],
       },
       {
         Header: 'Dibuat',
-        accessor: 'createdDate',
+        accessor: 'tanggalDibuat',
       },
       {
         Header: 'Diperbarui',
-        accessor: 'lastModifiedDate',
+        accessor: 'tanggalDiperbaharui',
       },
       {
         Header: 'Produsen Data',
@@ -145,7 +158,7 @@ const DaftarTable = ({
     return items;
   }, [cms]);
 
-  const data = useMemo(() => katlogData?.content?.records || [], [katlogData]);
+  const data = useMemo(() => result?.content?.records || [], [result]);
 
   const tableConfig = {
     columns,
@@ -154,18 +167,14 @@ const DaftarTable = ({
     cms,
     pageSize,
     manualPagination: true,
-    currentPage: params.currentPage,
+    currentPage: params.page,
     showSearch: false,
     highlightOnHover: true,
     variant: 'spaced',
-    onPageIndexChange: (currentPage) => {
-      const start = currentPage * pageSize;
-      if (params.start !== start) {
-        const params = {
-          start,
-          currentPage,
-        };
-        fetchKatalog(params);
+    onPageIndexChange: (page) => {
+      if (params.page !== page) {
+        const params = { page };
+        fetchDaftarData({ params });
       }
     },
   };
@@ -181,21 +190,43 @@ const DaftarTable = ({
     { label: 'Option 4', value: 'Option 4' },
   ];
 
+  const handleDropdownFilter = (filter) => (selectedValue) => {
+    fetchDaftarData({ bodyParams: { [filter]: selectedValue.value } });
+  };
+
   return (
     <>
       <div className={cx(cms ? 'mb-30' : 'bg-gray-lighter mb-40 p-24 mt-32')}>
         <div className="row">
           <div className="col">
             <label className="sdp-form-label py-8">Instansi</label>
-            <SingleSelectDropdown data={instansiOptions} placeHolder="Semua" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('instansi')}
+              data={instansiOptions}
+              placeHolder="Semua"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
           <div className="col">
             <label className="sdp-form-label py-8">Produsen Data</label>
-            <SingleSelectDropdown data={produenOptions} placeHolder="Semua" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('produsenData')}
+              data={produenOptions}
+              placeHolder="Semua"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
           <div className="col">
             <label className="sdp-form-label py-8">Data Induk</label>
-            <SingleSelectDropdown data={dataindukOptions} placeHolder="Semua" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('dataInduk')}
+              data={dataindukOptions}
+              placeHolder="Semua"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
           {cms ? (
             <>
@@ -219,7 +250,13 @@ const DaftarTable = ({
           ) : (
             <div className="col">
               <label className="sdp-form-label py-8">Prioritas</label>
-              <SingleSelectDropdown data={priorityOptions} placeHolder="Ya" isLoading={false} noValue={true} />
+              <SingleSelectDropdown
+                onChange={handleDropdownFilter('prioritas')}
+                data={priorityOptions}
+                placeHolder="Ya"
+                isLoading={false}
+                noValue={true}
+              />
             </div>
           )}
         </div>

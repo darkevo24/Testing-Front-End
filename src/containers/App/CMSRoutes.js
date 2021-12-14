@@ -26,7 +26,7 @@ const BimtekDokumentasiDetailPage = lazy(() => import('containers/CMS/BimtekDoku
 const KesiapanSDI = lazy(() => import('containers/CMS/DashboardManage/KesiapanSDI'));
 const DashboardEksekutifPage = lazy(() => import('containers/CMS/DashboardManage/DashboardEksekutif'));
 const DataAnalyticPage = lazy(() => import('containers/CMS/DashboardManage/DataAnalytic'));
-const DaftarPage = lazy(() => import('containers/CMS/Daftar'));
+const CMSDaftarPage = lazy(() => import('containers/CMS/Daftar'));
 const DaftarDetailPage = lazy(() => import('containers/CMS/Daftar/CMSDaftarDetail'));
 const ManagementApi = lazy(() => import('containers/CMS/ManagementApi'));
 const ManagementApiBaru = lazy(() => import('containers/CMS/ManagementApi/CreateApi'));
@@ -69,7 +69,7 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/kesiapan-sdi" component={KesiapanSDI} />
         <PrivateRoute exact path="/cms/dashboard-eksekutif" component={DashboardEksekutifPage} />
         <PrivateRoute exact path="/cms/data-analytic" component={DataAnalyticPage} />
-        <PrivateRoute exact path="/cms/daftar" component={DaftarPage} />
+        <PrivateRoute exact path="/cms/daftar" component={CMSDaftarPage} />
         <PrivateRoute exact path="/cms/daftar-detail/:id" component={DaftarDetailPage} />
         <Route exact path="/cms" render={() => <Redirect to="/cms/dashboard" />} />
       </Switch>

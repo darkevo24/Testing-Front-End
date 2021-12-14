@@ -20,7 +20,13 @@ const DaftarTable = ({
   instansiOptions = [],
   priorityOptions = [],
   produenOptions = [],
+  sdgPillerOptions = [],
+  tujuanSDGPillerOptions = [],
+  rkpPNOptions = [],
+  rkpPPOptions = [],
   cms = false,
+  onPnRKPChange,
+  onPilarSdgChange,
 }) => {
   const history = useHistory();
   const [selectedRecord, setSelectedRecord] = useState(null);
@@ -183,15 +189,15 @@ const DaftarTable = ({
       history.push('/data-variable');
     };
   }
-  const dropdownFilters = [
-    { label: 'Option 1', value: 'Option 1' },
-    { label: 'Option 2', value: 'Option 2' },
-    { label: 'Option 3', value: 'Option 3' },
-    { label: 'Option 4', value: 'Option 4' },
-  ];
 
   const handleDropdownFilter = (filter) => (selectedValue) => {
     fetchDaftarData({ bodyParams: { [filter]: selectedValue.value } });
+    if (filter === 'pnRKP') {
+      onPnRKPChange(selectedValue.value);
+    }
+    if (filter === 'pilarSDGS') {
+      onPilarSdgChange(selectedValue.value);
+    }
   };
 
   return (
@@ -232,19 +238,43 @@ const DaftarTable = ({
             <>
               <div className="col">
                 <label className="sdp-form-label py-8">Pilar SDGs</label>
-                <SingleSelectDropdown data={dropdownFilters} placeHolder="Ya" isLoading={false} noValue={true} />
+                <SingleSelectDropdown
+                  onChange={handleDropdownFilter('pilarSDGS')}
+                  data={sdgPillerOptions}
+                  placeHolder="-"
+                  isLoading={false}
+                  noValue={true}
+                />
               </div>
               <div className="col">
                 <label className="sdp-form-label py-8">Tujuan SDGs</label>
-                <SingleSelectDropdown data={dropdownFilters} placeHolder="Ya" isLoading={false} noValue={true} />
+                <SingleSelectDropdown
+                  onChange={handleDropdownFilter('tujuanSDGS')}
+                  data={tujuanSDGPillerOptions}
+                  placeHolder="-"
+                  isLoading={false}
+                  noValue={true}
+                />
               </div>
               <div className="col">
                 <label className="sdp-form-label py-8">PN RKP</label>
-                <SingleSelectDropdown data={dropdownFilters} placeHolder="Ya" isLoading={false} noValue={true} />
+                <SingleSelectDropdown
+                  onChange={handleDropdownFilter('pnRKP')}
+                  data={rkpPNOptions}
+                  placeHolder="-"
+                  isLoading={false}
+                  noValue={true}
+                />
               </div>
               <div className="col">
                 <label className="sdp-form-label py-8">PP RKP</label>
-                <SingleSelectDropdown data={dropdownFilters} placeHolder="Ya" isLoading={false} noValue={true} />
+                <SingleSelectDropdown
+                  onChange={handleDropdownFilter('ppRKP')}
+                  data={rkpPPOptions}
+                  placeHolder="-"
+                  isLoading={false}
+                  noValue={true}
+                />
               </div>
             </>
           ) : (

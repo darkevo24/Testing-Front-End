@@ -1,4 +1,5 @@
-import React from 'react';
+import RBRow from 'react-bootstrap/Row';
+import RBCol from 'react-bootstrap/Col';
 import { ReactComponent as CallIcon } from 'assets/call.svg';
 import { ReactComponent as PrinterIcon } from 'assets/printer.svg';
 import LogoBappenas from 'assets/Logo_Bappenas_Indonesia.png';
@@ -41,106 +42,107 @@ const FooterLink = styled.a`
   font-weight: normal;
 `;
 
-const List = [
-  {
-    title: 'Layanan',
-    linkList: [
-      {
-        title: 'Unduhan',
-        link: '/unduhan',
-      },
-      {
-        title: 'Data Requests',
-        link: '/data-requests',
-      },
-      {
-        title: 'Developer',
-        link: '/developer',
-      },
-      {
-        title: 'FAQ',
-        link: '/faq',
-      },
-    ],
-  },
-  {
-    title: 'Indeks',
-    linkList: [
-      {
-        title: 'Brenda',
-        link: '/brenda',
-      },
-      {
-        title: 'Dataset',
-        link: '/dataset',
-      },
-      {
-        title: 'Dashboard',
-        link: '/dashboard',
-      },
-      {
-        title: 'Berita',
-        link: '/berita',
-      },
-      {
-        title: 'Tentang',
-        link: '/tentang',
-      },
-    ],
-  },
-  {
-    title: 'Links',
-    linkList: [
-      {
-        title: 'Kontak Kami',
-        link: '/kontak-kami',
-      },
-      {
-        title: 'Open Project SDI',
-        link: '/open-project-sdi',
-      },
-      {
-        title: 'Chat',
-        link: '/chat',
-      },
-    ],
-  },
-];
+export const Top = ({ history, token }) => {
+  const List = [
+    {
+      title: 'Indeks',
+      linkList: [
+        {
+          title: 'Beranda',
+          link: '/home',
+        },
+        {
+          title: 'Dataset',
+          link: !!token ? '/dataset' : '/topic-detail',
+        },
+        {
+          title: 'Dashboard',
+          link: '/kesiapan-sdi',
+        },
+        {
+          title: 'Berita',
+          link: '/berita',
+        },
+        {
+          title: 'Tentang',
+          link: '/tentang',
+        },
+      ],
+    },
+    {
+      title: 'Links',
+      linkList: [
+        {
+          title: 'Kontak Kami',
+          link: '/kontak-kami',
+        },
+        {
+          title: 'FAQ',
+          link: '/faq',
+        },
+      ],
+    },
+  ];
 
-export const Top = () => (
-  <Box>
-    <Container>
-      <Row>
-        <Column>
-          <img src={LogoBappenas} alt="logo" height="96px" width="96px" />
-        </Column>
+  const handleClick = (e) => {
+    const href = e.target.dataset?.href;
+    if (!href) {
+      return;
+    }
+    e.stopPropogation();
+    e.preventDefault();
+    history.push(href);
+    return false;
+  };
 
-        <Column>
-          <Titles>Kementerian PPN/Bappenas</Titles>
-          <FooterLink>
-            Sekretariat Satu Data Indonesia
-            <br />
-            Jalan Taman Suropati No.2 Jakarta 10310
-          </FooterLink>
-          <FooterLink>
-            <CallIcon /> 021-31936207
-          </FooterLink>
-          <FooterLink>
-            <PrinterIcon /> 021-3145374
-          </FooterLink>
-        </Column>
+  return (
+    <Box className="mt-80 mb-55">
+      <Container>
+        <RBRow>
+          <RBCol sm={{ span: 10, offset: 1 }}>
+            <div className="d-flex justify-content-between">
+              <Row>
+                <Column>
+                  <img src={LogoBappenas} alt="logo" height="96px" width="96px" />
+                </Column>
+                <Column>
+                  <Titles>Kementerian PPN/Bappenas</Titles>
+                  <FooterLink>
+                    Sekretariat Satu Data Indonesia
+                    <br />
+                    Jalan Taman Suropati No.2 Jakarta 10310
+                  </FooterLink>
+                  <FooterLink>
+                    <CallIcon /> 021-31936207
+                  </FooterLink>
+                  <FooterLink>
+                    <PrinterIcon /> 021-3145374
+                  </FooterLink>
+                </Column>
+              </Row>
 
-        {List.map((item, index) => (
-          <Column key={index + item.title}>
-            <Titles>{item.title}</Titles>
-            {item.linkList.map((linkItem) => (
-              <FooterLink href="#" key={linkItem.title}>
-                {linkItem.title}
-              </FooterLink>
-            ))}
-          </Column>
-        ))}
-      </Row>
-    </Container>
-  </Box>
-);
+              <Column>
+                <Row>
+                  {List.map((item, index) => (
+                    <Column key={index + item.title} className={!index ? 'mr-200' : ''}>
+                      <Titles>{item.title}</Titles>
+                      {item.linkList.map((linkItem) => (
+                        <FooterLink
+                          href={linkItem.link}
+                          data-href={linkItem.link}
+                          onClick={handleClick}
+                          key={linkItem.title}>
+                          {linkItem.title}
+                        </FooterLink>
+                      ))}
+                    </Column>
+                  ))}
+                </Row>
+              </Column>
+            </div>
+          </RBCol>
+        </RBRow>
+      </Container>
+    </Box>
+  );
+};

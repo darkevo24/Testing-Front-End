@@ -10,7 +10,8 @@ const TopicDetailPage = lazy(() => import('containers/Beranda/TopicDetails'));
 const DataSetPage = lazy(() => import('containers/Beranda/DataSet'));
 const { Perminataan } = lazily(() => import('containers/Perminataan'));
 const { PerminataanDetail } = lazily(() => import('containers/Perminataan/detail'));
-const ForumPage = lazy(() => import('containers/Perminataan/Forum'));
+const PerminataanForumPage = lazy(() => import('containers/Perminataan/Forum'));
+const { ForumSDI } = lazily(() => import('containers/ForumSDI'));
 const BimTekSummaryPage = lazy(() => import('containers/BimTekSummary'));
 const BimTekFormPage = lazy(() => import('containers/BimTekForm'));
 const BimTekJadwalPage = lazy(() => import('containers/BimTekJadwal'));
@@ -35,7 +36,8 @@ function AppRoutes(props) {
       <AppLayout>
         <PrivateRoute exact path="/permintaan-data-detail/:id" component={PerminataanDetail} />
         <PrivateRoute exact path="/permintaan-data" component={Perminataan} />
-        <PrivateRoute exact path="/forum" component={ForumPage} />
+        <PrivateRoute exact path="/forum-sdi" component={ForumSDI} />
+        <PrivateRoute exact path="/forum" component={PerminataanForumPage} />
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
         <PrivateRoute exact path="/dataset" component={DataSetPage} />

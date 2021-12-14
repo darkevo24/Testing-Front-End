@@ -40,6 +40,8 @@ export const submitForm = (id) => () => {
   if (formNode) {
     const submitButton = formNode.querySelector('button[type="submit"]');
     submitButton.click();
+    console.log(formNode);
+    console.log(submitButton);
   }
 };
 

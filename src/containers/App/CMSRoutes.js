@@ -28,6 +28,8 @@ const DashboardEksekutifPage = lazy(() => import('containers/CMS/DashboardManage
 const DataAnalyticPage = lazy(() => import('containers/CMS/DashboardManage/DataAnalytic'));
 const CMSDaftarPage = lazy(() => import('containers/CMS/Daftar'));
 const DaftarDetailPage = lazy(() => import('containers/CMS/Daftar/CMSDaftarDetail'));
+const PermintaanData = lazy(() => import('containers/CMS/PermintaanData/index'));
+const PermintaanDataDetail = lazy(() => import('containers/CMS/PermintaanDataForm/index'));
 const ManagementApi = lazy(() => import('containers/CMS/ManagementApi'));
 const ManagementApiBaru = lazy(() => import('containers/CMS/ManagementApi/CreateApi'));
 const ManagementApiForm = lazy(() => import('containers/CMS/ManagementApi/Form'));
@@ -71,6 +73,8 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/data-analytic" component={DataAnalyticPage} />
         <PrivateRoute exact path="/cms/daftar" component={CMSDaftarPage} />
         <PrivateRoute exact path="/cms/daftar-detail/:id" component={DaftarDetailPage} />
+        <PrivateRoute exact path="/cms/permintaan-data" component={PermintaanData} />
+        <PrivateRoute exact path="/cms/permintaan-data/:id" component={PermintaanDataDetail} />
         <Route exact path="/cms" render={() => <Redirect to="/cms/dashboard" />} />
       </Switch>
     </CMSLayout>

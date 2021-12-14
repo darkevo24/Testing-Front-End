@@ -11,6 +11,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'components/Table';
 import bn from 'utils/bemNames';
 import { Search } from 'components/Icons';
+import { Loader } from 'components';
 import { prefixID } from './constant';
 import { getPermintaanData, permintaanDataSelector } from './reducer';
 
@@ -172,7 +173,7 @@ const CMSPermintaanData = () => {
           </Col>
         </Row>
       </div>
-      <div className="p-30"> {!loading && <Table {...tableConfig} />} </div>
+      <div className="p-30"> {loading ? <Loader fullscreen={true} /> : <Table {...tableConfig} />} </div>
     </div>
   );
 };

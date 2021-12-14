@@ -60,9 +60,8 @@ const DaftarTable = ({
   }, [textSearch]);
 
   const showDaftarDetailPage = (data) => {
-    // TODO: handle the detail page for daftar cms
     setSelectedRecord(data);
-    // setIsDaftarFormVisible(true);
+    history.push(`/cms/daftar/${data.id}`);
   };
 
   const columns = useMemo(() => {

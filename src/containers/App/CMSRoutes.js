@@ -72,7 +72,7 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/dashboard-eksekutif" component={DashboardEksekutifPage} />
         <PrivateRoute exact path="/cms/data-analytic" component={DataAnalyticPage} />
         <PrivateRoute exact path="/cms/daftar" component={CMSDaftarPage} />
-        <PrivateRoute exact path="/cms/daftar-detail/:id" component={DaftarDetailPage} />
+        <PrivateRoute exact path="/cms/daftar/:id" component={DaftarDetailPage} />
         <PrivateRoute exact path="/cms/permintaan-data" component={PermintaanData} />
         <PrivateRoute exact path="/cms/permintaan-data/:id" component={PermintaanDataDetail} />
         <Route exact path="/cms" render={() => <Redirect to="/cms/dashboard" />} />

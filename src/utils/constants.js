@@ -151,44 +151,41 @@ export const TOPIC_LIST = [
   },
 ];
 
-const Text =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.';
-
 export const CMS_DASHBOARD = [
   {
     title: 'Content Management',
-    description: Text,
+    description: 'Manajemen About Us, Struktur Organisasi, Contact Us, Berita, Bimbingan Teknis, Komunitas Ahli, Forum SDI',
     icon: <ContentManagementIcon />,
     iconColor: 'sdp-text-blue',
     link: '/cms/about-us',
   },
   {
     title: 'Data Management',
-    description: Text,
+    description: 'Manajemen Data',
     icon: <DataManagementIcon />,
     iconColor: 'sdp-text-red-dark',
   },
   {
     title: 'User Management',
-    description: Text,
+    description: 'Manajemen Pengguna, Instansi, Unit Kerja, dan Hak Akses',
     icon: <UserManagementIcon />,
     iconColor: 'sdp-text-teal',
   },
   {
     title: 'Dashboard Management',
-    description: Text,
+    description: 'Manajemen Dashboard',
     icon: <DashboardManagementIcon />,
     iconColor: 'sdp-text-blue',
   },
   {
     title: 'API Management',
-    description: Text,
+    description: 'Manajmen API',
     icon: <APIManagementIcon />,
     iconColor: 'sdp-text-orange',
   },
   {
     title: 'Konfigurasi',
-    description: Text,
+    description: 'Konfigurasi Log Aktivitas, Sekuriti, Aset, Media Sosial',
     icon: <KonfigurasiIcon />,
     iconColor: 'sdp-text-teal',
   },

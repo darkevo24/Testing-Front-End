@@ -169,8 +169,23 @@ export const getStatusClass = (status) => {
       return {
         divBG: 'bg-gray',
         textColor: 'sdp-text-disable',
-        text: 'Dibuat',
+        text: 'Draft',
         divText: 'Draft',
+      };
+    case 'diarsipkan': {
+      return {
+        divBG: 'bg-gray',
+        textColor: 'sdp-text-disable',
+        text: 'Diarsipkan',
+        divText: 'Diarsipkan',
+      };
+    }
+    case 'tidak_ditayangkan':
+      return {
+        divBG: 'bg-orange-light',
+        textColor: 'sdp-text-orange-dark',
+        text: 'Tidak ditayangkan',
+        divText: '',
       };
     case 'menunggu_persetujuan':
       return {
@@ -187,6 +202,12 @@ export const getStatusClass = (status) => {
         divText: 'Permintaan sedang Diproses',
       };
     case 'dibatalkan':
+      return {
+        divBG: 'bg-red-light',
+        textColor: 'sdp-text-red',
+        text: 'Dibatalkan',
+        divText: 'Dibatalkan',
+      };
     case 'ditolak':
       return {
         divBG: 'bg-red-light',
@@ -201,11 +222,25 @@ export const getStatusClass = (status) => {
         text: 'Terkirim',
         divText: 'Terkirim',
       };
-    case 'selesai':
+    case 'disetujui':
       return {
         divBG: 'bg-green-light',
         textColor: 'sdp-text-green-light',
         text: 'Disetujui',
+        divText: 'Disetujui',
+      };
+    case 'ditayangkan':
+      return {
+        divBG: 'bg-green-light',
+        textColor: 'sdp-text-green-light',
+        text: 'Ditayangkan',
+        divText: 'Ditayangkan',
+      };
+    case 'selesai':
+      return {
+        divBG: 'bg-green-light',
+        textColor: 'sdp-text-green-light',
+        text: 'Selesai',
         divText: 'Selesai',
       };
     default:

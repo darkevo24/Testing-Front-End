@@ -91,7 +91,7 @@ export async function request(url, { method = 'GET', headers: optionHeaders = {}
   const options = { method, headers, credentials: 'include', signal: controller.signal };
 
   // Checking if body has data.
-  if (!isEmpty(data)) {
+  if (!isEmpty(data) || data instanceof FormData) {
     options.body = headers['Content-Type'] === typeJSON ? JSON.stringify(data) : data;
   }
   // Checking if we need to add query string or not.

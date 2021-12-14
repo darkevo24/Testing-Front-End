@@ -41,6 +41,8 @@ function CMSRoutes() {
   return (
     <CMSLayout>
       <Switch>
+        <PrivateRoute exact path="/cms/manage-komunitas-ahli/:id" component={ManageKomunitasAhliPage} />
+        <PrivateRoute exact path="/cms/manage-komunitas-ahli/" component={ManageKomunitasAhliPage} />
         {/* <PrivateRoute exact path="/cms/log-activity" component={LogActivity} /> */}
         <PrivateRoute exact path="/cms/api/edit/:id?" component={ManagementApiEdit} />
         <PrivateRoute exact path="/cms/api-detail/:id" component={ManagementApiDetail} />

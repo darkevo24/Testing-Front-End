@@ -74,11 +74,12 @@ export const Top = ({ history, token }) => {
       linkList: [
         {
           title: 'Kontak Kami',
-          link: '/kontak-kami',
+          link: '/tentang#tentang-form',
         },
         {
           title: 'FAQ',
-          link: '/faq',
+          link: '',
+          disabled: true,
         },
       ],
     },
@@ -89,7 +90,7 @@ export const Top = ({ history, token }) => {
     if (!href) {
       return;
     }
-    e.stopPropogation();
+    e.stopPropagation();
     e.preventDefault();
     history.push(href);
     return false;
@@ -128,6 +129,7 @@ export const Top = ({ history, token }) => {
                       <Titles>{item.title}</Titles>
                       {item.linkList.map((linkItem) => (
                         <FooterLink
+                          className={linkItem.disabled && 'disabled pe-none'}
                           href={linkItem.link}
                           data-href={linkItem.link}
                           onClick={handleClick}

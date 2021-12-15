@@ -305,3 +305,26 @@ export const incrementPageParams = (params) => {
     page: params.page + 1,
   };
 };
+
+export const fileTypes = {
+  excel: {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;',
+    extension: 'xslx',
+  },
+};
+
+export const createFileAndDownload = (data, fileType = fileTypes.excel, filename) => {
+  const extension = fileType.extension;
+  const fullFilename = `${filename}.${extension}`;
+  const blob = new Blob([data], { type: fileType.type });
+  if (window.navigator.msSaveOrOpenBlob) {
+    window.navigator.msSaveBlob(blob, fullFilename);
+  } else {
+    const elem = window.document.createElement('a');
+    elem.href = window.URL.createObjectURL(blob);
+    elem.download = filename;
+    document.body.appendChild(elem);
+    elem.click();
+    document.body.removeChild(elem);
+  }
+};

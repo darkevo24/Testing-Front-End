@@ -19,7 +19,7 @@ import SdgTable from './SdgTable';
 import RkpTable from './RkpTable';
 import DaftarDataSayaTable from './DaftarDataSayaTable';
 import { useThrottle } from 'utils/hooks';
-import { getDaftarDataSummary, daftarDataSummarySelector, addDaftarDataSelector } from './reducer';
+import { getDaftarDataSummary, daftarDataSummarySelector } from './reducer';
 
 const Daftar = (props) => {
   const {
@@ -34,6 +34,7 @@ const Daftar = (props) => {
     rkpPPOptions,
     onPilarSdgChange,
     onPnRKPChange,
+    onDownloadData,
     handleTambahFromSubmit,
   } = props;
   const { t } = useTranslation();
@@ -43,7 +44,7 @@ const Daftar = (props) => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(t('sandbox.daftar.tabs.daftar.key'));
   const activeTitle = t(`sandbox.daftar.tabs.${activeTab}.title`);
-  const { result } = useSelector(addDaftarDataSelector);
+  const fullDaftarData = useSelector((state) => state.daftar);
   const daftarSummaryData = useSelector(daftarDataSummarySelector);
 
   const invokeDebounced = useThrottle(() => setDebouncedSearchText(searchText));
@@ -142,6 +143,27 @@ const Daftar = (props) => {
     });
   };
 
+  const handleDownloadData = () => {
+    let params = {};
+    switch (activeTab) {
+      case t('sandbox.daftar.tabs.daftar.key'):
+        params = fullDaftarData.daftarData.bodyParams;
+        break;
+      case t('sandbox.daftar.tabs.sdg.key'):
+        params = fullDaftarData.sdgs.bodyParams;
+        break;
+      case t('sandbox.daftar.tabs.rkp.key'):
+        params = fullDaftarData.rkp.bodyParams;
+        break;
+      case t('sandbox.daftar.tabs.daftarSafa.key'):
+        params = fullDaftarData.sayaDaftarData.bodyParams;
+        break;
+      default:
+        break;
+    }
+    onDownloadData(params);
+  };
+
   return (
     <div className={cx('daftar-page pb-100', bem.b())}>
       <Breadcrumb breadcrumbsList={breadcrumbsList} />
@@ -162,7 +184,9 @@ const Daftar = (props) => {
                   <Search />
                 </div>
               </InputGroup>
-              <Button className="btn-rounded ml-16 px-32 text-nowrap" onClick={showTambahFormModal}>
+              <Button
+                className="btn-rounded ml-16 px-32 text-nowrap"
+                onClick={isSayaData ? showTambahFormModal : handleDownloadData}>
                 {isSayaData ? t('common.addData') : t('common.download')}
               </Button>
             </div>

@@ -54,6 +54,10 @@ export const initialState = {
     loading: false,
     error: null,
   },
+  downloadDaftarData: {
+    loading: false,
+    error: null,
+  },
   daftarData: {
     loading: false,
     error: null,
@@ -183,6 +187,11 @@ export const getAddDaftarSDGTujuan = createAsyncThunk('daftarData/getAddDaftarSD
 export const getAddDaftarRKPpp = createAsyncThunk('daftarData/getAddDaftarRKPpp', async (id) => {
   const response = await get(`${apiUrls.rkpPN}/parent/${id}`);
   return response?.data?.content;
+});
+
+export const downloadDaftarData = createAsyncThunk('daftarData/downloadDaftarData', async (params) => {
+  const response = await post(apiUrls.daftarDataDownload, params);
+  return response?.data;
 });
 
 const daftarSlice = createSlice({
@@ -344,6 +353,17 @@ const daftarSlice = createSlice({
     builder.addCase(deleteDaftarData.rejected, (state) => {
       state.deleteDaftarData.loading = false;
       state.deleteDaftarData.error = 'Error while updating data';
+    });
+    builder.addCase(downloadDaftarData.pending, (state) => {
+      state.downloadDaftarData.loading = true;
+    });
+    builder.addCase(downloadDaftarData.fulfilled, (state) => {
+      state.downloadDaftarData.loading = false;
+      state.downloadDaftarData.error = '';
+    });
+    builder.addCase(downloadDaftarData.rejected, (state) => {
+      state.downloadDaftarData.loading = false;
+      state.downloadDaftarData.error = 'Error while downloading daftar data';
     });
   },
 });

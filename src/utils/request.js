@@ -37,8 +37,24 @@ async function parseResponse(response) {
     });
     let data = {};
     const responseType = response.headers.get('Content-Type');
+    const disposition = response.headers.get('Content-Disposition');
     if (responseType && responseType.includes('json')) {
       data = await response.json();
+    } else if (
+      (responseType && responseType.includes('application/force-download')) ||
+      (disposition && disposition.includes('attachment;'))
+    ) {
+      data = await response.blob();
+      if (disposition && disposition.includes('filename=')) {
+        const filename = disposition.split('filename=')[1];
+        const url = window.URL.createObjectURL(data);
+        const aNode = document.createElement('a');
+        aNode.href = url;
+        aNode.download = filename;
+        document.body.appendChild(aNode);
+        aNode.click();
+        aNode.remove();
+      }
     } else {
       const textData = await response.text();
       data = textData ? safeParse(textData) : textData;

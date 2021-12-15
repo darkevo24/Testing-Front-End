@@ -50,6 +50,7 @@ export const apiUrls = {
   daftarData: getV1Endpoint('katalog'),
   daftarDataList: getV1Endpoint('katalog/list'),
   daftarDataSummary: getV1Endpoint('katalog/summary'),
+  daftarDataDownload: getV1Endpoint('katalog/file/download'),
   taglineData: getV1Endpoint('tagline'),
   kategoriData: getV1Endpoint('settings/key/BERITA'),
   sdgPillers: getV1Endpoint('settings/key/SDGS'),

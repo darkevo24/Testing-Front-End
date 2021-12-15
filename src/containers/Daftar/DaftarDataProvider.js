@@ -9,6 +9,7 @@ import {
   getProduen,
   getSDGTujuan,
   getRKPpp,
+  downloadDaftarData,
   produenOptionsSelector,
   tujuanSDGPillerOptionsSelector,
   rkpPPOptionsSelector,
@@ -23,7 +24,7 @@ import {
   getSDGPillers,
   getRKPpn,
 } from 'containers/App/reducer';
-import { prepareFormPayload } from 'utils/helper';
+import { createFileAndDownload, fileTypes, prepareFormPayload } from 'utils/helper';
 
 const bem = bn('daftar');
 
@@ -53,6 +54,16 @@ const DaftarDataProvider = ({ children }) => {
 
   const onPnRKPChange = (pnRKP) => {
     dispatch(getRKPpp(pnRKP));
+  };
+
+  const onDownloadData = async (params) => {
+    try {
+      const downloadResponse = await dispatch(downloadDaftarData(params));
+      // This is directly handled in the fetch response to make it worth!!
+      // createFileAndDownload(downloadResponse.payload, fileTypes.excel, new Date().getTime());
+    } catch (error) {
+      console.log('error: ', error);
+    }
   };
 
   const handleTambahFromSubmit = (data, cb) => {
@@ -111,6 +122,7 @@ const DaftarDataProvider = ({ children }) => {
     rkpPPOptions,
     onPilarSdgChange,
     onPnRKPChange,
+    onDownloadData,
     handleTambahFromSubmit,
   };
 

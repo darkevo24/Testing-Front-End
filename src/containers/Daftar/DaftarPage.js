@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
+import get from 'lodash/get';
 import Breadcrumb from 'components/Breadcrumb';
 import HighlightWords from 'components/HighlightWords';
 import { Search } from 'components/Icons';
@@ -58,10 +59,10 @@ const Daftar = (props) => {
 
   const stats = useMemo(
     () => [
-      { title: 'Jumlah Data pada Daftar Data', value: daftarSummaryData?.result?.data || '-' },
-      { title: 'Jumlah Instansi pada Daftar Data', value: daftarSummaryData?.result?.instansi || '-' },
-      { title: 'Jumlah Dataset Terharvest', value: 35798 },
-      { title: 'Jumlah Instansi Terharvest', value: 50 },
+      { title: 'Jumlah Data pada Daftar Data', value: get(daftarSummaryData, 'result.data', '-') },
+      { title: 'Jumlah Instansi pada Daftar Data', value: get(daftarSummaryData, 'result.instansi', '-') },
+      { title: 'Jumlah Dataset Terharvest', value: get(daftarSummaryData, 'result.dataset_harverts', '-') },
+      { title: 'Jumlah Instansi Terharvest', value: get(daftarSummaryData, 'result.instansi_harverts', '-') },
     ],
     [daftarSummaryData],
   );

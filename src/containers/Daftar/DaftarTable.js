@@ -72,28 +72,6 @@ const DaftarTable = ({
         id: 'instansi',
         sortId: 0,
         Cell: ({ cell: { row: { original: item } = {} } = {} }) => {
-          const items = [
-            { label: 'ID Konsep', value: 'CPCL' },
-            { label: 'KONSEP', value: 'CPCL' },
-            {
-              label: 'DEFINISI',
-              value:
-                'CPCL adalah calon petani penerima bantuan dan calon lokasi lahan yang akan menerima bantuan pemerintah	',
-            },
-            {
-              label: 'sumber definisi',
-              value:
-                'Keputusan Direktur Jenderal Tanaman Pangan Nomor 218/HK/310/12/2029 tentang Petunjuk Teknis Bantuan Pemerintah Program Peningkatan Produksi, Produktivitas dan Mutu Hasil Tanaman Pangan Tahun Anggaran 2020',
-            },
-            { label: 'dATA INDUK', value: 'PKKU; RDKK;CPCL' },
-            { label: 'fORMAT', value: 'CSV' },
-            { label: 'LINK AKSES', value: 'https://umkm.depkop.go.id', variant: 'link' },
-            { label: 'PILAR SDGS', value: 'Sosial' },
-            { label: 'Tujuan sdgs', value: '1. Mengakhiri kemiskinan dalam segala bentuk dimanapun' },
-            { label: 'PN RKP', value: '-' },
-            { label: 'PP RKP', value: '-' },
-            { label: 'PRIORITAS', value: 'Ya' },
-          ];
           return (
             <Popover
               placement="bottom-start"

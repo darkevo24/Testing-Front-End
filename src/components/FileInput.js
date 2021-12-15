@@ -11,6 +11,7 @@ export const FileInput = ({
   groupClass = 'mb-3',
   groupProps,
   className,
+  disabled,
   labelClass = '',
   isLink,
   uploadInfo = '',
@@ -36,6 +37,7 @@ export const FileInput = ({
               <Form.Control
                 type="file"
                 onChange={(e) => onChange(handleOnChange(e.target.files[0]))}
+                disabled={disabled}
                 {...rest}
                 className={finalClassName}
                 custom="true"

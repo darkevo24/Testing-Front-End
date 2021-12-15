@@ -58,6 +58,7 @@ export const apiUrls = {
   strukturData: getCMSEndpoint('bidang'),
   cmsBeritaData: getCMSEndpoint('berita'),
   cmsAboutUs: getCMSEndpoint('tentang'),
+  cmsForumSdi: getCMSEndpoint('forum-sdi'),
 };
 
 export const priorityOptions = [

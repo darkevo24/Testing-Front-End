@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
 import { AboutUs } from 'services/CMS';
 
 export const getAboutUs = createAsyncThunk('cms/aboutUs/getDetail', async (id) => {

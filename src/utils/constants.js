@@ -44,7 +44,6 @@ export const apiUrls = {
   produenData: getV1Endpoint('katalog/produsendata'),
   dataindukData: getV1Endpoint('katalog/datainduk'),
   katalogData: getV1Endpoint('katalog'),
-  strukturData: getApiEndpoint('cms/v1/bidang'),
   listPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
   detailPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
   daftarData: getV1Endpoint('katalog'),
@@ -217,3 +216,13 @@ export const CMS_KOMUNITAS_LEVEL = ['Pusat', 'Daerah'];
 export const CMS_KOMUNITAS_LEVEL_PUSAT = ['Walidata', 'Sekretariat SDI'];
 export const CMS_KOMUNITAS_LEVEL_DAERAH = ['Walidata', 'Walidata Pendukung', 'Koordinator Forum SDI', 'Sekretariat'];
 export const CMS_KOMUNITAS_PENDIDIKAN = ['S3', 'S2', 'S1/Sederajat', 'Diploma', 'SMA/SMK/Sederajat'];
+
+export const STATUS_DATA = {
+  draft: 'DRAFT',
+  waitingApproval: 'MENUNGGU_PERSETUJUAN',
+  approved: 'DISETUJUI',
+  rejected: 'DITOLAK',
+  canceled: 'DIBATALKAN',
+  published: 'DITAYANGKAN',
+  unpublished: 'TIDAK_DITAYANGKAN',
+};

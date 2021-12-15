@@ -24,19 +24,19 @@ const TentangSDI = () => {
     {
       name: 'Oktorialdi, Ph.D',
       position: 'Kordinator SDI',
-      url_photo: 'https://i.ibb.co/b1ZKBwW/Pak-Oktorialdi.jpg',
+      url_photo: 'https://i.ibb.co/hgvr24T/Pak-Oktorialdi.jpg',
       level: 1,
     },
     {
       name: 'Hari Dwi Korianto, S.Kom, MSi',
       position: 'Sekretaris SDI',
-      url_photo: 'https://i.ibb.co/R3crV3d/Pak-Hari2.jpg',
+      url_photo: 'https://i.ibb.co/PNCK5RB/Pak-Hari2.jpg',
       level: 2,
     },
     {
       name: 'Ervan Maksum, ST, M.Sc,',
       position: 'Wakil Kordinator SDI',
-      url_photo: 'https://i.ibb.co/nMkKYbJ/Pak-Ervan2.jpg',
+      url_photo: 'https://i.ibb.co/gjHSpmh/Pak-Ervan2.jpg',
       level: 2,
     },
   ];

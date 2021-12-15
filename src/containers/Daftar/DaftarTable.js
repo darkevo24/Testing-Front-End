@@ -30,6 +30,7 @@ const DaftarTable = ({
 }) => {
   const history = useHistory();
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const [sortBy, setSortBy] = useState(null);
   const { pageSize, loading, params, bodyParams, result } = useSelector(daftarDataSelector);
   const dispatch = useDispatch();
 
@@ -69,6 +70,7 @@ const DaftarTable = ({
       {
         Header: 'Instansi',
         id: 'instansi',
+        sortId: 0,
         Cell: ({ cell: { row: { original: item } = {} } = {} }) => {
           const items = [
             { label: 'ID Konsep', value: 'CPCL' },
@@ -108,24 +110,29 @@ const DaftarTable = ({
       {
         Header: 'Nama Data',
         accessor: 'nama',
+        sortId: 1,
         Cell: (data) => truncate(data.cell.value, { length: 20 }),
       },
       {
         Header: 'Jadwal Pemutakhiran',
         accessor: 'jadwalPemutakhiran',
+        sortId: 2,
         Cell: (data) => JADWAL_PERMUTAKHIRAN[data.cell.value],
       },
       {
         Header: 'Dibuat',
         accessor: 'tanggalDibuat',
+        sortId: 3,
       },
       {
         Header: 'Diperbarui',
         accessor: 'tanggalDiperbaharui',
+        sortId: 4,
       },
       {
         Header: 'Produsen Data',
         accessor: 'produsenData',
+        sortId: 5,
       },
       {
         Header: 'Label',
@@ -164,12 +171,20 @@ const DaftarTable = ({
 
   const data = useMemo(() => result?.content?.records || [], [result]);
 
+  const onSortChange = ({ id, sortId, isSortedDesc }) => {
+    const desc = isSortedDesc === undefined ? false : !isSortedDesc;
+    setSortBy({ id, sortId, desc });
+    fetchDaftarData({ params: { sortBy: sortId, sortDirection: desc ? 'DESC' : 'ASC' } });
+  };
+
   const tableConfig = {
     columns,
     data,
     totalCount: result?.content?.totalRecords || null,
     cms,
     pageSize,
+    sortBy,
+    onSortChange,
     manualPagination: true,
     currentPage: params.page,
     showSearch: false,

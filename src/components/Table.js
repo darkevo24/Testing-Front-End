@@ -7,6 +7,8 @@ import RBTable from 'react-bootstrap/Table';
 import cx from 'classnames';
 import isFunction from 'lodash/isFunction';
 import isString from 'lodash/isString';
+import findIndex from 'lodash/findIndex';
+import set from 'lodash/set';
 import { useAsyncDebounce, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 
 import { LeftChevron, RightChevron, Search, icons } from 'components/Icons';
@@ -74,6 +76,8 @@ const Table = ({
   showSearch = true,
   variant = 'default',
   highlightOnHover,
+  sortBy = null,
+  onSortChange = () => null,
   manualPagination = false,
   renderFilters = () => null,
   totalCount,
@@ -86,6 +90,8 @@ const Table = ({
   rowClass,
   startFromOne = false,
 }) => {
+  const { t } = useTranslation();
+
   const tableOptions = {
     columns,
     data,
@@ -95,7 +101,19 @@ const Table = ({
     tableOptions.pageCount = Math.ceil(totalCount / pageSize);
     tableOptions.initialState = { pageIndex: currentPage };
   }
-  const { t } = useTranslation();
+  if (sortBy) {
+    tableOptions.manualSortBy = true;
+    const sortedColumnIndex = findIndex(tableOptions.columns, { sortId: sortBy.sortId });
+    const sortedColumn = tableOptions.columns[sortedColumnIndex];
+    sortedColumn.isSorted = true;
+    sortedColumn.isSortedDesc = sortBy.desc;
+    const tableSortBy = [{ id: sortBy.id, desc: sortBy.desc }];
+    if (tableOptions.initialState) {
+      tableOptions.initialState.sortBy = tableSortBy;
+    } else {
+      tableOptions.initialState = { sortBy: tableSortBy };
+    }
+  }
   const {
     getTableProps,
     getTableBodyProps,
@@ -110,6 +128,7 @@ const Table = ({
     nextPage,
     previousPage,
     // setPageSize,
+    setSortBy,
     preGlobalFilteredRows,
     setGlobalFilter,
     state: { globalFilter, pageIndex },
@@ -118,6 +137,12 @@ const Table = ({
   useEffect(() => {
     onPageIndexChange(pageIndex);
   }, [pageIndex]);
+
+  useEffect(() => {
+    if (sortBy) {
+      setSortBy(tableOptions?.initialState?.sortBy);
+    }
+  }, [sortBy]);
 
   const totalPages = pageOptions.length;
   const startPageIndex = startFromOne ? 1 : 0;
@@ -153,6 +178,10 @@ const Table = ({
     if (isString(rowClass)) return rowClass;
     if (isFunction(rowClass)) return rowClass(data.original);
     return '';
+  };
+
+  const handleSortHeader = (column) => () => {
+    onSortChange(column);
   };
 
   return (
@@ -191,7 +220,7 @@ const Table = ({
                   {headerGroup.headers.map((column) => (
                     // Add the sorting props to control sorting. For this example
                     // we can add them into the header props
-                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())} onClick={handleSortHeader(column)}>
                       {column.render('Header')}
                       {/* Add a sort direction indicator */}
                       <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>

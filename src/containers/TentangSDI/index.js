@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,16 +9,15 @@ import TentangProfile from './profile.js';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 
-import { getTentang } from './reducer';
+import { getTentang, tentangPublicSelector } from './reducer';
 import { useEffect } from 'react';
-import { AboutUs } from 'services/CMS';
 
 const bem = bn('tentang');
 
 const TentangSDI = () => {
   let dispatch = useDispatch();
-  let listContent = useSelector((state) => state.tentang.tentang_list);
-  let componentState = useSelector((state) => state.tentang.status);
+  const { dataset, error } = useSelector(tentangPublicSelector);
+
   useEffect(() => dispatch(getTentang()), []);
 
   let strukturOrganisasi = [
@@ -64,22 +62,24 @@ const TentangSDI = () => {
         <div className={bem.e('logo')}>
           <img src={Logo} alt="" />
         </div>
-        {listContent.map((data, key) => (
-          <div key={key}>
+        {!dataset ? (
+          <div className="text-center">{error}</div>
+        ) : (
+          <div>
             <iframe
               width="100%"
               height="500"
               title="sample"
-              src={data.video_url}
+              src={dataset.video}
               frameborder="0"
               allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen></iframe>
-            <div className="mt-5">
-              <div className={cx(bem.e('title'), 'mb-3')}>{data.title}</div>
-              <p className={bem.e('description')} dangerouslySetInnerHTML={{ __html: unescape(data.content) }}></p>
+            <div className="mt-24">
+              <div className={cx(bem.e('title'), 'mb-3')}>{dataset.judul}</div>
+              <p className={bem.e('description')} dangerouslySetInnerHTML={{ __html: unescape(dataset.isi) }}></p>
             </div>
           </div>
-        ))}
+        )}
         <div className="mt-100">
           <Row className="align-items-center mb-5">
             <Col>

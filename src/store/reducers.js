@@ -18,6 +18,7 @@ import permintaanDataReducer from 'containers/CMS/PermintaanData/reducer';
 import permintaanDataDetailReducer from 'containers/CMS/PermintaanDataForm/reducer';
 import beritaCmsReducer from 'containers/CMS/BeritaBaru/reducer';
 import cmsKomunitasAhliReducer from 'containers/CMS/KomunitasAhli/reducer';
+import cmsBimtekPermintaanDataReducer from 'containers/CMS/BimtekPermintaan/reducer';
 import komunitasAhliReducer from 'containers/Komunitas/reducer';
 
 /**
@@ -37,6 +38,7 @@ export default function createReducer(injectedReducers) {
     permintaanDataDetail: permintaanDataDetailReducer,
     cmsBerita: beritaCmsReducer,
     cmsKomunitasAhli: cmsKomunitasAhliReducer,
+    cmsBimtekPermintaan: cmsBimtekPermintaanDataReducer,
     komunitasAhli: komunitasAhliReducer,
     router: connectRouter(history),
     ...injectedReducers,

@@ -56,6 +56,7 @@ export const apiUrls = {
   rkpPN: getV1Endpoint('settings/key/RKP'),
   strukturData: getCMSEndpoint('bidang'),
   cmsBeritaData: getCMSEndpoint('berita'),
+  cmsBimtekPermintaanData: getCMSEndpoint('bimtek/permintaan'),
 };
 
 export const priorityOptions = [

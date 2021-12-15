@@ -3,7 +3,6 @@ import cx from 'classnames';
 import truncate from 'lodash/truncate';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import ColumnData from 'components/ColumnData';
 import Loader from 'components/Loader';
 import Table from 'components/Table';
 import Popover from 'components/Popover';
@@ -11,6 +10,7 @@ import { Check } from 'components/Icons';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import cloneDeep from 'lodash/cloneDeep';
 import { JADWAL_PERMUTAKHIRAN } from 'utils/constants';
+import DaftarPopoverContent from './DaftarPopoverContent';
 import { getDaftarData, daftarDataSelector } from './reducer';
 
 const DaftarTable = ({
@@ -102,7 +102,7 @@ const DaftarTable = ({
               triggerOn="hover"
               trigger={<div className="cursor-pointer h-100 d-flex align-items-center">{item.instansi}</div>}
               header="Detail Data Cakupan Wilayah Internet">
-              <ColumnData items={items} />
+              <DaftarPopoverContent daftarId={item.id} />
             </Popover>
           );
         },

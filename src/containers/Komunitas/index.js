@@ -155,7 +155,8 @@ const KomunitasAhliPage = () => {
                     className="sdp-rate-button justify-content-end"
                     onClick={() =>
                       window.open(
-                        'https://drive.google.com/file/d/1YKu5bPdkXsuAb-dojIm5cy_To8FC0BRI/view?usp=sharing',
+                        item.cv.location ||
+                          'https://drive.google.com/file/d/1YKu5bPdkXsuAb-dojIm5cy_To8FC0BRI/view?usp=sharing',
                         '_blank',
                       )
                     }>

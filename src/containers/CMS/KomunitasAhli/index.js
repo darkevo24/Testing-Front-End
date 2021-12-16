@@ -13,12 +13,36 @@ const DROPDOWN_LIST = [
     label: 'All',
   },
   {
-    value: 'SETUJUI',
-    label: 'Approved',
+    value: 'DRAFT',
+    label: 'Draft',
   },
   {
-    value: 'TOLAK',
-    label: 'Rejected',
+    value: 'MENUNGGU_PERSETUJUAN',
+    label: 'Menunggu Persetujuan',
+  },
+  {
+    value: 'DISETUJUI',
+    label: 'Disetujui',
+  },
+  {
+    value: 'DITAYANGKAN',
+    label: 'Ditayangkan',
+  },
+  {
+    value: 'TIDAK_DITAYANGKAN',
+    label: 'Tidak Ditayangkan',
+  },
+  {
+    value: 'DIBATALKAN',
+    label: 'Dibatalkan',
+  },
+  {
+    value: 'DITOLAK',
+    label: 'Ditolak',
+  },
+  {
+    value: 'DIARSIPKAN',
+    label: 'Diarsipkan',
   },
 ];
 

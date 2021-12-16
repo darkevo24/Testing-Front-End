@@ -1,0 +1,10 @@
+.sdp-beranda {
+  @include screen-tablet {
+    width: 100% !important;
+  }
+  &__card-box {
+    @include screen-tablet {
+      margin-top: 16px;
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, defaultNumberOfRows, post, put } from 'utils/request';
+import { apiUrls, defaultNumberOfRows, post, put, get } from 'utils/request';
 
 export const initialState = {
   loading: false,
@@ -50,7 +50,7 @@ export const setNewBerita = createAsyncThunk('cms/setNewBerita', async (params) 
 });
 
 export const setDetailBerita = createAsyncThunk('cms/setDetailBerita', async (params) => {
-  const response = await post(`${apiUrls.cmsBeritaData}/${params.id}`, {});
+  const response = await get(`${apiUrls.cmsBeritaData}/${params.id}`, {});
   return response?.data?.content;
 });
 

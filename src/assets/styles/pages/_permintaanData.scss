@@ -8,6 +8,10 @@
       background: var(--secondary);
     }
   }
+  .icon-box {
+    width: 3rem !important;
+    height: 3rem !important;
+  }
 }
 
 .modal-dialog {
@@ -44,12 +48,7 @@
   }
 }
 
-.icon-box {
-  width: 3rem !important;
-  height: 3rem !important;
-}
-
-.permintaan-data-form-success{
+.permintaan-data-form-success {
   width: 100%;
   padding-top: 10px;
   padding-bottom: 10px;

@@ -81,7 +81,8 @@ const Table = ({
   manualPagination = false,
   renderFilters = () => null,
   totalCount,
-  pageSize,
+  pageCount,
+  pageSize = null,
   currentPage,
   onPageIndexChange = () => null,
   searchValue = '',
@@ -98,7 +99,7 @@ const Table = ({
     manualPagination,
   };
   if (manualPagination && totalCount && pageSize) {
-    tableOptions.pageCount = Math.ceil(totalCount / pageSize);
+    tableOptions.pageCount = pageCount || Math.ceil(totalCount / pageSize);
     tableOptions.initialState = { pageIndex: currentPage };
   }
   if (sortBy) {

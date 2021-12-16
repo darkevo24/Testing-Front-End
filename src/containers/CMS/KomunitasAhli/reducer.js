@@ -12,6 +12,7 @@ export const initialState = {
     records: [],
     size: defaultNumberOfRows,
     totalRecords: null,
+    totalPages: null,
   },
   detaildataSet: {
     loading: false,
@@ -59,6 +60,7 @@ const cmsKomunitasAhliSlice = createSlice({
       state.dataset.loading = false;
       state.dataset.records = action.payload.records;
       state.dataset.totalRecords = action.payload.totalRecords;
+      state.dataset.totalPages = action.payload.totalPages;
     });
     builder.addCase(getCMSKomunitasAhliData.rejected, (state) => {
       state.dataset.loading = false;

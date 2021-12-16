@@ -58,6 +58,7 @@ export const apiUrls = {
   strukturData: getCMSEndpoint('bidang'),
   cmsBeritaData: getCMSEndpoint('berita'),
   cmsAboutUs: getCMSEndpoint('tentang'),
+  aboutUs: getApiEndpoint('public/tentang'),
   userBeritaPortal: getPublicV1Endpoint('berita'),
 };
 
@@ -159,38 +160,38 @@ export const CMS_DASHBOARD = [
     title: 'Content Management',
     description: 'Manajemen About Us, Struktur Organisasi, Contact Us, Berita, Bimbingan Teknis, Komunitas Ahli, Forum SDI',
     icon: <ContentManagementIcon />,
-    iconColor: 'sdp-text-blue',
+    iconColor: 'bg-blue',
     link: '/cms/about-us',
   },
   {
     title: 'Data Management',
     description: 'Manajemen Data',
     icon: <DataManagementIcon />,
-    iconColor: 'sdp-text-red-dark',
+    iconColor: 'bg-red',
   },
   {
     title: 'User Management',
     description: 'Manajemen Pengguna, Instansi, Unit Kerja, dan Hak Akses',
     icon: <UserManagementIcon />,
-    iconColor: 'sdp-text-teal',
-  },
-  {
-    title: 'Dashboard Management',
-    description: 'Manajemen Dashboard',
-    icon: <DashboardManagementIcon />,
-    iconColor: 'sdp-text-blue',
+    iconColor: 'bg-teal',
   },
   {
     title: 'API Management',
     description: 'Manajmen API',
     icon: <APIManagementIcon />,
-    iconColor: 'sdp-text-orange',
+    iconColor: 'bg-orange',
   },
   {
     title: 'Konfigurasi',
     description: 'Konfigurasi Log Aktivitas, Sekuriti, Aset, Media Sosial',
     icon: <KonfigurasiIcon />,
-    iconColor: 'sdp-text-teal',
+    iconColor: 'bg-teal',
+  },
+  {
+    title: 'Dashboard Management',
+    description: 'Manajemen Dashboard',
+    icon: <DashboardManagementIcon />,
+    iconColor: 'bg-blue',
   },
 ];
 
@@ -217,3 +218,13 @@ export const CMS_KOMUNITAS_LEVEL = ['Pusat', 'Daerah'];
 export const CMS_KOMUNITAS_LEVEL_PUSAT = ['Walidata', 'Sekretariat SDI'];
 export const CMS_KOMUNITAS_LEVEL_DAERAH = ['Walidata', 'Walidata Pendukung', 'Koordinator Forum SDI', 'Sekretariat'];
 export const CMS_KOMUNITAS_PENDIDIKAN = ['S3', 'S2', 'S1/Sederajat', 'Diploma', 'SMA/SMK/Sederajat'];
+
+export const STATUS_DATA = {
+  draft: 'DRAFT',
+  waitingApproval: 'MENUNGGU_PERSETUJUAN',
+  approved: 'DISETUJUI',
+  rejected: 'DITOLAK',
+  canceled: 'DIBATALKAN',
+  published: 'DITAYANGKAN',
+  unpublished: 'TIDAK_DITAYANGKAN',
+};

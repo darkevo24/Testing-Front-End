@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -11,6 +11,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   getPermintaanDataDetail,
+  getPermintaanDataDetailLog,
   permintaanDataDetailSelector,
   postPermintaanDataProses,
   postPermintaanDataSelesai,
@@ -27,79 +28,82 @@ export const tolakFormId = 'tolak-form-id';
 export const prosesFormId = 'proses-form-id';
 export const selesaiFormId = 'selesai-form-id';
 
-const SuccessText = () => {
-  const history = useHistory();
-  const backToTable = () => {
-    history.push('/permintaan-data');
-  };
-  return (
-    <div className="d-flex">
-      <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
-        <LeftChevron></LeftChevron>
-      </div>
-      <Row className="permintaan-data-form-success fw-bold justify-content-center align-items-center">Selesai</Row>
-    </div>
-  );
-};
-
-const TerkirimText = () => {
-  const history = useHistory();
-  const backToTable = () => {
-    history.push('/permintaan-data');
-  };
-  return (
-    <div className="d-flex">
-      <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
-        <LeftChevron></LeftChevron>
-      </div>
-      <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Terkirim</Row>
-    </div>
-  );
-};
-
-const DiprosesText = () => {
-  const history = useHistory();
-  const backToTable = () => {
-    history.push('/permintaan-data');
-  };
-  return (
-    <div className="d-flex">
-      <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
-        <LeftChevron></LeftChevron>
-      </div>
-      <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">Terproses</Row>
-    </div>
-  );
-};
-
-const TerkirimButton = ({ onTolak, onProses }) => {
-  return (
-    <div>
-      <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={onTolak}>
-        Tolak
-      </Button>
-      <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={onProses}>
-        Proses
-      </Button>
-    </div>
-  );
-};
-
-const DiprosesButton = ({ onSelesai }) => {
-  return (
-    <div>
-      <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={onSelesai}>
-        Selesai
-      </Button>
-    </div>
-  );
-};
-
 const CMSPermintaanDataView = () => {
   const [showTolakModal, isSetShowTolakModal] = useState(false);
   const [showProsesModal, isSetShowProsesModal] = useState(false);
   const [showSelesaiModal, isSetShowSelesaiModal] = useState(false);
   const [trigger, setTrigger] = useState(false);
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { result, dataLog } = useSelector(permintaanDataDetailSelector);
+
+  const SuccessText = () => {
+    const history = useHistory();
+    const backToTable = () => {
+      history.push('/cms/permintaan-data');
+    };
+    return (
+      <div className="d-flex">
+        <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
+          <LeftChevron></LeftChevron>
+        </div>
+        <Row className="permintaan-data-form-success fw-bold justify-content-center align-items-center">Selesai</Row>
+      </div>
+    );
+  };
+
+  const TerkirimText = () => {
+    const history = useHistory();
+    const backToTable = () => {
+      history.push('/cms/permintaan-data');
+    };
+    return (
+      <div className="d-flex">
+        <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
+          <LeftChevron></LeftChevron>
+        </div>
+        <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Terkirim</Row>
+      </div>
+    );
+  };
+
+  const DiprosesText = () => {
+    const history = useHistory();
+    const backToTable = () => {
+      history.push('/cms/permintaan-data');
+    };
+    return (
+      <div className="d-flex">
+        <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
+          <LeftChevron></LeftChevron>
+        </div>
+        <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">Terproses</Row>
+      </div>
+    );
+  };
+
+  const TerkirimButton = ({ onTolak, onProses }) => {
+    return (
+      <div>
+        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={onTolak}>
+          Tolak
+        </Button>
+        <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={onProses}>
+          Proses
+        </Button>
+      </div>
+    );
+  };
+
+  const DiprosesButton = ({ onSelesai }) => {
+    return (
+      <div>
+        <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={onSelesai}>
+          Selesai
+        </Button>
+      </div>
+    );
+  };
 
   const setShowTolakModal = () => {
     isSetShowTolakModal(true);
@@ -125,28 +129,6 @@ const CMSPermintaanDataView = () => {
     isSetShowSelesaiModal(false);
   };
 
-  const dataLog = [
-    {
-      date: '12 Desember 2021',
-      status: 'Selesai',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '10 Desember 2021',
-      status: 'Diproses',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '08 Desember 2021',
-      status: 'Terkirim',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '08 Desember 2021',
-      status: 'Dibuat',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-  ];
   const schema = yup
     .object({
       id: yup.mixed().required(),
@@ -164,40 +146,35 @@ const CMSPermintaanDataView = () => {
     })
     .required();
 
-  const dispatch = useDispatch();
-  const result = useSelector(permintaanDataDetailSelector);
   const fetchDataset = () => {
-    const url = window.location.pathname;
-    const id = url.split('/')[3];
     return dispatch(getPermintaanDataDetail(id));
   };
+  const fetchDatasetLog = () => {
+    return dispatch(getPermintaanDataDetailLog(id));
+  };
+
   const onSubmitTolak = (data) => {
-    const url = window.location.pathname;
-    const id = url.split('/')[3];
     dispatch(postPermintaanDataTolak(id));
-    window.location.reload();
     hideTolakModal();
   };
 
   const onSubmitProses = (data) => {
-    const url = window.location.pathname;
-    const id = url.split('/')[3];
     dispatch(postPermintaanDataProses(id));
-    window.location.reload();
   };
 
   const onSubmitSelesai = (data) => {
-    const url = window.location.pathname;
-    const id = url.split('/')[3];
     dispatch(postPermintaanDataSelesai(id));
-    window.location.reload();
   };
 
   const data = useMemo(() => result || {}, [result]);
   useEffect(() => {
     fetchDataset();
+    fetchDatasetLog();
+  }, []);
+
+  useEffect(() => {
     reset(data);
-  }, [trigger]);
+  }, [data]);
 
   const {
     control,
@@ -207,9 +184,13 @@ const CMSPermintaanDataView = () => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      ...data,
+      if(data) {
+        return data;
+      },
     },
   });
+
+  console.log(data);
 
   return (
     <div>
@@ -228,13 +209,14 @@ const CMSPermintaanDataView = () => {
                 {data.status === 'DIPROSES' ? <DiprosesButton onSelesai={setShowSelesaiModal} /> : null}
               </div>
             </div>
+
             <Form className="sdp-form" noValidate>
-              <Input isDisabled={true} group label="Deskripsi Data" name="deskripsi" control={control} />
-              <Input isDisabled={true} group label="Tujuan Permintaan data" name="tujuanPermintaan" control={control} />
-              <Input isDisabled={true} group label="Target Waktu" name="tanggalTarget" control={control} />
-              <Input isDisabled={true} group label="Produsen Data" name="produsen" control={control} />
-              <Input isDisabled={true} group label="Jenis Data" name="jenisData" control={control} />
-              <Input isDisabled={true} group isLink label="URL Dataset" name="urlDataset" control={control} />
+              <Input disabled group label="Deskripsi Data" name="deskripsi" control={control} />
+              <Input disabled group label="Tujuan Permintaan data" name="tujuanPermintaan" control={control} />
+              <Input disabled group label="Target Waktu" name="tanggalTarget" control={control} />
+              <Input disabled group label="Produsen Data" name="produsen" control={control} />
+              <Input disabled group label="Jenis Data" name="jenisData" control={control} />
+              <Input disabled group isLink label="URL Dataset" name="urlDataset" control={control} />
             </Form>
             <div>
               <h5 className="fw-bold mb-3 border-bottom-gray-stroke py-2">Informasi Peminta Data</h5>

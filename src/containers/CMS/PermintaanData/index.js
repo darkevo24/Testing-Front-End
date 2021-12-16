@@ -12,17 +12,16 @@ import Table from 'components/Table';
 import bn from 'utils/bemNames';
 import { Search } from 'components/Icons';
 import { prefixID } from './constant';
-import { getPermintaanData, permintaanDataSelector } from './reducer';
+import { getInstansi, getUnitkerja, getPermintaanData, permintaanDataSelector } from './reducer';
 
 const bem = bn('content-table');
 
 const CMSPermintaanData = () => {
   const history = useHistory();
-  const [instansiId, setIntansiId] = useState();
+  const [instansiId, setIntansiId] = useState(0);
   const [query, setQuery] = useState('');
   const dispatch = useDispatch();
-  const { size, loading, page, records, totalRecords, totalPages } = useSelector(permintaanDataSelector);
-
+  const { size, loading, page, records, totalRecords, instansi } = useSelector(permintaanDataSelector);
   const fetchDataset = (params) => {
     let obj = {
       page: params.page,
@@ -31,9 +30,23 @@ const CMSPermintaanData = () => {
     return dispatch(getPermintaanData(obj));
   };
 
+  const fetchInstansiData = () => {
+    return dispatch(getInstansi());
+  };
+
+  const fetchUnitKerja = () => {
+    return dispatch(getUnitkerja(instansiId));
+  };
+
   useEffect(() => {
     fetchDataset({ page: page || 0 });
+    fetchInstansiData();
   }, [query]);
+
+  useEffect(() => {
+    fetchUnitKerja();
+  }, [instansiId]);
+
   const updateInstansi = (val) => {
     setIntansiId(val);
   };
@@ -138,8 +151,14 @@ const CMSPermintaanData = () => {
               <Form.Label className="mb-0 pr-10">Instansi</Form.Label>
               <Form.Select aria-label="Default select example" onChange={(e) => updateInstansi(e.target.value)}>
                 <option value="0">Kosong</option>
-                <option value="1">Badan Pusat</option>
-                <option value="2">Badan Pusat 2</option>
+                {instansi &&
+                  instansi.map((data, index) => {
+                    return (
+                      <option key={index} value={data.id}>
+                        {data.nama}
+                      </option>
+                    );
+                  })}
               </Form.Select>
             </Form.Group>
             <Form.Group className="d-flex align-items-center mr-10">

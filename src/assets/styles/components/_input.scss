@@ -17,6 +17,9 @@
   }
 
   .input-icon {
+    &.copy-link {
+      cursor: pointer;
+    }
     svg {
       height: 20px;
       width: 20px;

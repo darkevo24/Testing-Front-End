@@ -1,10 +1,11 @@
+import React from 'react';
 import Form from 'react-bootstrap/Form';
 import cx from 'classnames';
-import { Controller } from 'react-hook-form';
-import { icons } from './Icons';
-import { copyToClipboard } from 'utils/helper';
 import InputGroup from 'react-bootstrap/InputGroup';
-import React from 'react';
+import Notification from 'components/Notification';
+import { Controller } from 'react-hook-form';
+import { copyToClipboard } from 'utils/helper';
+import { icons } from './Icons';
 
 export const Input = ({
   name,
@@ -34,9 +35,14 @@ export const Input = ({
     rightIcon = 'copy';
   }
 
-  const handleIconClick = (field) => () => {
+  const handleIconClick = (field) => {
     if (rightIcon === 'copy') {
       copyToClipboard(field.value);
+      Notification.show({
+        type: 'secondary',
+        message: <div> Link berhasil dicopy </div>,
+        icon: 'check',
+      });
     }
   };
   const maxLengthNumber = inputAs === 'textarea' ? maxLength : 200;
@@ -59,7 +65,9 @@ export const Input = ({
             )}
             <Form.Control maxLength={maxLengthNumber} {...rest} {...field} value={field.value || ''} className={className} />
             {RightIconNode && (
-              <InputGroup.Text className={cx('input-icon bg-white', rightIconClass)} onClick={handleIconClick(field)}>
+              <InputGroup.Text
+                className={cx('input-icon bg-white copy-link', rightIconClass)}
+                onClick={() => handleIconClick(field)}>
                 <RightIconNode />
               </InputGroup.Text>
             )}

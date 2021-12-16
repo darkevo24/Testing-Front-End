@@ -22,7 +22,6 @@ export const analyticsUrl = 'https://analitik.data.go.id';
 export const katalogUrl = 'https://katalog.satudata.go.id';
 export const apiUrl = '/api-be';
 export const dataUrl = `${katalogUrl}/api`;
-export const userBeritaPortalURl = `http://34.101.103.9/api`;
 
 export const getAnalyticsUrl = (path) => `${analyticsUrl}/${path}`;
 export const getApiEndpoint = (path) => `${apiUrl}/${path}`;

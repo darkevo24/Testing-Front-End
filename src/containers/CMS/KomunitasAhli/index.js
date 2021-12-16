@@ -124,7 +124,7 @@ const KomunitasAhli = () => {
           + Ahli Baru
         </button>
         <div className="sdp-left-wrapper d-flex align-items-center">
-          <lable className="mr-12">Status</lable>
+          <label className="mr-12">Status</label>
           <SingleDropDown data={DROPDOWN_LIST} defaultData={status} onChange={handleStatusChange} />
           <FilterSearchInput searchPlaceholder="Cari..." globalFilter={q} setGlobalFilter={handleSearch} />
         </div>

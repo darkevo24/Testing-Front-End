@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
+import { dataToOptionsMapper, dataOptionsMapperCurry, idKeteranganOptionsMapper, incrementPageParams } from 'utils/helper';
 import { apiPaginationParams, apiUrls, defaultNumberOfRows, deleteRequest, get, post, put } from 'utils/request';
 
 const defaultDaftarBodyParams = {
@@ -34,12 +35,31 @@ export const initialState = {
     error: null,
     result: null,
   },
+  addDaftarTujuanSDG: {
+    loading: false,
+    error: null,
+    result: null,
+  },
+  addDaftarRkpPP: {
+    loading: false,
+    error: null,
+    result: null,
+  },
   updateDaftarData: {
     loading: false,
     error: null,
     result: null,
   },
   deleteDaftarData: {
+    loading: false,
+    error: null,
+  },
+  daftarDetails: {
+    error: null,
+    loading: null,
+    result: {},
+  },
+  downloadDaftarData: {
     loading: false,
     error: null,
   },
@@ -54,6 +74,11 @@ export const initialState = {
     bodyParams: {
       ...defaultDaftarBodyParams,
     },
+  },
+  daftarDataSummary: {
+    loading: false,
+    error: null,
+    result: null,
   },
   sdgs: {
     loading: false,
@@ -105,23 +130,37 @@ export const getProduen = createAsyncThunk('daftar/getProduen', async () => {
   return response?.data?.content?.records;
 });
 
+export const getDaftarDataSummary = createAsyncThunk('daftar/getDaftarDataSummary', async (filters = {}) => {
+  const response = await get(apiUrls.daftarDataSummary);
+  return response?.data?.content;
+});
+
+export const getDaftarDetail = createAsyncThunk('daftar/getDaftarDetail', async (id) => {
+  const response = await get(`${apiUrls.katalogData}/${id}`);
+  return response?.data?.content;
+});
+
 export const getDaftarData = createAsyncThunk('daftar/getDaftarData', async (filters = {}) => {
-  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query: filters.params });
+  const query = incrementPageParams(filters.params);
+  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query });
   return response?.data;
 });
 
 export const getSdgDaftarData = createAsyncThunk('daftar/getSdgDaftarData', async (filters = {}) => {
-  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query: filters.params });
+  const query = incrementPageParams(filters.params);
+  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query });
   return response?.data;
 });
 
 export const getRkpDaftarData = createAsyncThunk('daftar/getRkpDaftarData', async (filters = {}) => {
-  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query: filters.params });
+  const query = incrementPageParams(filters.params);
+  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query });
   return response?.data;
 });
 
 export const getSayaDaftarData = createAsyncThunk('daftar/getSayaDaftarData', async (filters = {}) => {
-  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query: filters.params });
+  const query = incrementPageParams(filters.params);
+  const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query });
   return response?.data;
 });
 
@@ -135,8 +174,8 @@ export const deleteDaftarData = createAsyncThunk('daftar/deleteDaftarData', asyn
   return response;
 });
 
-export const addDaftarData = createAsyncThunk('daftarData/addDaftarData', async (params) => {
-  const response = await post(apiUrls.daftarData, params);
+export const addDaftarData = createAsyncThunk('daftarData/addDaftarData', async (payload) => {
+  const response = await post(apiUrls.daftarData, payload);
   return response;
 });
 
@@ -150,11 +189,49 @@ export const getRKPpp = createAsyncThunk('daftarData/getRKPpp', async (id) => {
   return response?.data?.content;
 });
 
+export const getAddDaftarSDGTujuan = createAsyncThunk('daftarData/getAddDaftarSDGTujuan', async (id) => {
+  const response = await get(`${apiUrls.sdgPillers}/parent/${id}`);
+  return response?.data?.content;
+});
+
+export const getAddDaftarRKPpp = createAsyncThunk('daftarData/getAddDaftarRKPpp', async (id) => {
+  const response = await get(`${apiUrls.rkpPN}/parent/${id}`);
+  return response?.data?.content;
+});
+
+export const downloadDaftarData = createAsyncThunk('daftarData/downloadDaftarData', async (params) => {
+  const response = await post(apiUrls.daftarDataDownload, params);
+  return response?.data;
+});
+
 const daftarSlice = createSlice({
   name: DAFTAR_REDUCER,
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(getDaftarDataSummary.pending, (state) => {
+      state.daftarDataSummary.loading = true;
+    });
+    builder.addCase(getDaftarDataSummary.fulfilled, (state, action) => {
+      state.daftarDataSummary.loading = false;
+      state.daftarDataSummary.result = action.payload;
+    });
+    builder.addCase(getDaftarDataSummary.rejected, (state) => {
+      state.daftarDataSummary.loading = false;
+      state.daftarDataSummary.error = 'Error in fetching daftar data summary details!';
+    });
+    builder.addCase(getDaftarDetail.pending, (state, action) => {
+      state.daftarDetails.loading = true;
+    });
+    builder.addCase(getDaftarDetail.fulfilled, (state, action) => {
+      state.daftarDetails.loading = false;
+      state.daftarDetails.result[action.payload.id] = action.payload;
+      state.daftarData.error = null;
+    });
+    builder.addCase(getDaftarDetail.rejected, (state) => {
+      state.daftarData.loading = false;
+      state.daftarData.error = 'Error in fetching daftar Data details!';
+    });
     builder.addCase(getDaftarData.pending, (state, action) => {
       const { bodyParams, params } = action.meta.arg;
       state.daftarData.params = params;
@@ -247,13 +324,35 @@ const daftarSlice = createSlice({
     builder.addCase(addDaftarData.pending, (state) => {
       state.addDaftarData.loading = true;
     });
-    builder.addCase(addDaftarData.fulfilled, (state) => {
+    builder.addCase(addDaftarData.fulfilled, (state, action) => {
       state.addDaftarData.loading = false;
-      state.addDaftarData.error = '';
+      state.addDaftarData.result = action.payload;
     });
     builder.addCase(addDaftarData.rejected, (state) => {
       state.addDaftarData.loading = false;
       state.addDaftarData.error = 'Error while adding data';
+    });
+    builder.addCase(getAddDaftarSDGTujuan.pending, (state) => {
+      state.addDaftarTujuanSDG.loading = true;
+    });
+    builder.addCase(getAddDaftarSDGTujuan.fulfilled, (state, action) => {
+      state.addDaftarTujuanSDG.loading = false;
+      state.addDaftarTujuanSDG.result = action.payload;
+    });
+    builder.addCase(getAddDaftarSDGTujuan.rejected, (state) => {
+      state.addDaftarTujuanSDG.loading = false;
+      state.addDaftarTujuanSDG.error = 'Error while fetching daftar tijuan sdg data';
+    });
+    builder.addCase(getAddDaftarRKPpp.pending, (state) => {
+      state.addDaftarRkpPP.loading = true;
+    });
+    builder.addCase(getAddDaftarRKPpp.fulfilled, (state, action) => {
+      state.addDaftarRkpPP.loading = false;
+      state.addDaftarRkpPP.result = action.payload;
+    });
+    builder.addCase(getAddDaftarRKPpp.rejected, (state) => {
+      state.addDaftarRkpPP.loading = false;
+      state.addDaftarRkpPP.error = 'Error while fetching daftar rkp pp data';
     });
     builder.addCase(putDaftarData.pending, (state) => {
       state.updateDaftarData.loading = true;
@@ -277,17 +376,48 @@ const daftarSlice = createSlice({
       state.deleteDaftarData.loading = false;
       state.deleteDaftarData.error = 'Error while updating data';
     });
+    builder.addCase(downloadDaftarData.pending, (state) => {
+      state.downloadDaftarData.loading = true;
+    });
+    builder.addCase(downloadDaftarData.fulfilled, (state) => {
+      state.downloadDaftarData.loading = false;
+      state.downloadDaftarData.error = '';
+    });
+    builder.addCase(downloadDaftarData.rejected, (state) => {
+      state.downloadDaftarData.loading = false;
+      state.downloadDaftarData.error = 'Error while downloading daftar data';
+    });
   },
 });
 
 export const produenDataSelector = (state) => state.daftar.produen;
+export const daftarDetailsDataSelector = (state) => state.daftar.daftarDetails;
 export const daftarDataSelector = (state) => state.daftar.daftarData;
+export const daftarDataSummarySelector = (state) => state.daftar.daftarDataSummary;
 export const sdgsDataSelector = (state) => state.daftar.sdgs;
 export const rkpDataSelector = (state) => state.daftar.rkp;
 export const sayaDataSelector = (state) => state.daftar.sayaDaftarData;
 export const updateDaftarDataSelector = (state) => state.daftar.updateDaftarData;
 export const addDaftarDataSelector = (state) => state.daftar.addDaftarData;
+export const addDaftarTujuanSDGSelector = (state) => state.daftar.addDaftarTujuanSDG;
+export const addDaftarRkpPPSelector = (state) => state.daftar.addDaftarRkpPP;
 export const tujuanSDGPillersSelector = (state) => state.daftar.tujuanSDGPillers;
 export const rkpPPSelector = (state) => state.daftar.rkpPP;
+
+export const produenOptionsSelector = createSelector(produenDataSelector, dataToOptionsMapper);
+export const tujuanSDGPillerOptionsSelector = createSelector(
+  tujuanSDGPillersSelector,
+  dataOptionsMapperCurry(idKeteranganOptionsMapper),
+);
+export const rkpPPOptionsSelector = createSelector(rkpPPSelector, dataOptionsMapperCurry(idKeteranganOptionsMapper));
+
+export const addTujuanSDGPillerOptionsSelector = createSelector(
+  addDaftarTujuanSDGSelector,
+  dataOptionsMapperCurry(idKeteranganOptionsMapper),
+);
+export const addRkpPPOptionsSelector = createSelector(
+  addDaftarRkpPPSelector,
+  dataOptionsMapperCurry(idKeteranganOptionsMapper),
+);
 
 export default daftarSlice.reducer;

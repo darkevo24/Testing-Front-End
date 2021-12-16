@@ -8,7 +8,7 @@ import {
   pickValidDatasetPaginationParams,
 } from 'utils/helper';
 
-const facetFields = ['organization', 'groups', 'tags', 'res_format'];
+const facetFields = ['organization', 'kategori', 'tags', 'res_format'];
 
 export const getInitialParams = () => ({
   currentPage: 0,

@@ -7,6 +7,8 @@ import RBTable from 'react-bootstrap/Table';
 import cx from 'classnames';
 import isFunction from 'lodash/isFunction';
 import isString from 'lodash/isString';
+import findIndex from 'lodash/findIndex';
+import set from 'lodash/set';
 import { useAsyncDebounce, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 
 import { LeftChevron, RightChevron, Search, icons } from 'components/Icons';
@@ -57,6 +59,7 @@ export const FilterSearchInput = ({
 
 const Table = ({
   className,
+  headerClassName,
   columns,
   cms = false,
   data,
@@ -73,6 +76,8 @@ const Table = ({
   showSearch = true,
   variant = 'default',
   highlightOnHover,
+  sortBy = null,
+  onSortChange = () => null,
   manualPagination = false,
   renderFilters = () => null,
   totalCount,
@@ -83,7 +88,10 @@ const Table = ({
   highlightSearchInput = false,
   onRowClick,
   rowClass,
+  startFromOne = false,
 }) => {
+  const { t } = useTranslation();
+
   const tableOptions = {
     columns,
     data,
@@ -93,7 +101,19 @@ const Table = ({
     tableOptions.pageCount = Math.ceil(totalCount / pageSize);
     tableOptions.initialState = { pageIndex: currentPage };
   }
-  const { t } = useTranslation();
+  if (sortBy) {
+    tableOptions.manualSortBy = true;
+    const sortedColumnIndex = findIndex(tableOptions.columns, { sortId: sortBy.sortId });
+    const sortedColumn = tableOptions.columns[sortedColumnIndex];
+    sortedColumn.isSorted = true;
+    sortedColumn.isSortedDesc = sortBy.desc;
+    const tableSortBy = [{ id: sortBy.id, desc: sortBy.desc }];
+    if (tableOptions.initialState) {
+      tableOptions.initialState.sortBy = tableSortBy;
+    } else {
+      tableOptions.initialState = { sortBy: tableSortBy };
+    }
+  }
   const {
     getTableProps,
     getTableBodyProps,
@@ -108,6 +128,7 @@ const Table = ({
     nextPage,
     previousPage,
     // setPageSize,
+    setSortBy,
     preGlobalFilteredRows,
     setGlobalFilter,
     state: { globalFilter, pageIndex },
@@ -117,16 +138,23 @@ const Table = ({
     onPageIndexChange(pageIndex);
   }, [pageIndex]);
 
+  useEffect(() => {
+    if (sortBy) {
+      setSortBy(tableOptions?.initialState?.sortBy);
+    }
+  }, [sortBy]);
+
   const totalPages = pageOptions.length;
+  const startPageIndex = startFromOne ? 1 : 0;
   let startPage, endPage;
   if (totalPages <= 10) {
     // less than 10 total pages so show all
-    startPage = 0;
+    startPage = startPageIndex;
     endPage = totalPages;
   } else {
     // more than 10 total pages so calculate start and end pages
     if (pageIndex <= 6) {
-      startPage = 0;
+      startPage = startPageIndex;
       endPage = 9;
     } else if (pageIndex + 4 >= totalPages) {
       startPage = totalPages - 9;
@@ -152,11 +180,15 @@ const Table = ({
     return '';
   };
 
+  const handleSortHeader = (column) => () => {
+    onSortChange(column);
+  };
+
   return (
     <div className={cx(bem.b(), bem.m(variant), className, tableWrapperClasses)}>
       {title ? <div className={bem.e('header')}>{title}</div> : null}
       {showSearch ? (
-        <div className={cx(bem.e('header-wrapper'), 'd-flex justify-content-between align-items-center mb-30')}>
+        <div className={cx('flex-center', bem.e('header-wrapper'), headerClassName || 'mb-30')}>
           {searchLeftComponent && searchLeftComponent}
           <FilterSearchInput
             searchPlaceholder={searchPlaceholder}
@@ -188,7 +220,7 @@ const Table = ({
                   {headerGroup.headers.map((column) => (
                     // Add the sorting props to control sorting. For this example
                     // we can add them into the header props
-                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())} onClick={handleSortHeader(column)}>
                       {column.render('Header')}
                       {/* Add a sort direction indicator */}
                       <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>

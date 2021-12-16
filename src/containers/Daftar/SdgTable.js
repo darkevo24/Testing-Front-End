@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import truncate from 'lodash/truncate';
 import cloneDeep from 'lodash/cloneDeep';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +11,7 @@ import { getSdgDaftarData, sdgsDataSelector } from './reducer';
 const SdgTable = ({
   bem,
   textSearch,
+  onPilarSdgChange,
   dataindukOptions = [],
   instansiOptions = [],
   priorityOptions = [],
@@ -19,6 +20,7 @@ const SdgTable = ({
   tujuanSDGPillerOptions = [],
 }) => {
   const dispatch = useDispatch();
+  const [sortBy, setSortBy] = useState(null);
   const { pageSize, loading, params, bodyParams, result } = useSelector(sdgsDataSelector);
 
   const fetchSdgsData = (filterOverride = {}, reset = false) => {
@@ -47,8 +49,17 @@ const SdgTable = ({
     fetchSdgsData({ bodyParams: { textSearch } });
   }, [textSearch]);
 
+  const onSortChange = ({ id, sortId, isSortedDesc }) => {
+    const desc = isSortedDesc === undefined ? false : !isSortedDesc;
+    setSortBy({ id, sortId, desc });
+    fetchSdgsData({ params: { sortBy: sortId, sortDirection: desc ? 'DESC' : 'ASC' } });
+  };
+
   const handleDropdownFilter = (filter) => (selectedValue) => {
     fetchSdgsData({ bodyParams: { [filter]: selectedValue.value } });
+    if (filter === 'pilarSDGS') {
+      onPilarSdgChange(selectedValue.value);
+    }
   };
 
   const data = useMemo(() => result?.content?.records || [], [result]);
@@ -58,36 +69,42 @@ const SdgTable = ({
       {
         Header: 'Instansi',
         accessor: 'instansi',
+        sortId: 0,
       },
       {
         Header: 'Nama Data',
         accessor: 'nama',
+        sortId: 1,
         Cell: (data) => truncate(data.cell.value, { length: 20 }),
       },
       {
         Header: 'Jadwal Pemutakhiran',
         accessor: 'jadwalPemutakhiran',
+        sortId: 2,
         Cell: (data) => JADWAL_PERMUTAKHIRAN[data.cell.value],
       },
       {
         Header: 'Dibuat',
         accessor: 'tanggalDibuat',
+        sortId: 3,
       },
       {
         Header: 'Diperbarui',
         accessor: 'tanggalDiperbaharui',
+        sortId: 4,
       },
       {
         Header: 'Produsen Data',
         accessor: 'produsenData',
+        sortId: 5,
       },
       {
         Header: 'Label',
         accessor: 'label',
-        Cell: ({ cell: { row, value = [] } }) => (
+        Cell: ({ cell: { row: { id: rowId, original: item } = {} } = {} }) => (
           <div className={bem.e('tag-wrapper')}>
-            {value.map((label) => (
-              <div key={`${row.id}-${label}`} className={bem.e('tag')}>
+            {[item.labelKodePilar, item.labelKodePnrkp].filter(Boolean).map((label) => (
+              <div key={`${rowId}-${label}`} className={bem.e('tag')}>
                 {label}
               </div>
             ))}
@@ -107,18 +124,16 @@ const SdgTable = ({
     data,
     totalCount: result?.content?.totalRecords || null,
     pageSize,
+    sortBy,
+    onSortChange,
     manualPagination: true,
-    currentPage: params.currentPage,
+    currentPage: params.page,
     showSearch: false,
     highlightOnHover: true,
     variant: 'spaced',
-    onPageIndexChange: (currentPage) => {
-      const start = currentPage * pageSize;
-      if (params.start !== start) {
-        const params = {
-          start,
-          currentPage,
-        };
+    onPageIndexChange: (page) => {
+      if (params.page !== page) {
+        const params = { page };
         fetchSdgsData({ params });
       }
     },
@@ -172,11 +187,23 @@ const SdgTable = ({
         <div className="row pt-24">
           <div className="col-3">
             <label className="sdp-form-label py-8">Pilar SDGs</label>
-            <SingleSelectDropdown data={sdgPillerOptions} placeHolder="-" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('pilarSDGS')}
+              data={sdgPillerOptions}
+              placeHolder="-"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
           <div className="col-3">
             <label className="sdp-form-label py-8">Tujuan SDGs</label>
-            <SingleSelectDropdown data={tujuanSDGPillerOptions} placeHolder="-" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('tujuanSDGS')}
+              data={tujuanSDGPillerOptions}
+              placeHolder="-"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
         </div>
       </div>

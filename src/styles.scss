@@ -1,5 +1,8 @@
 @import 'assets/styles/global';
 
+body {
+  overflow: hidden;
+}
 #root {
   overflow: overlay;
   overflow-x: hidden;
@@ -17,4 +20,8 @@
   .sdp-container {
     flex: 1
   }
+}
+
+.w-fit-content {
+  width: fit-content;
 }

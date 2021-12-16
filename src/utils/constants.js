@@ -17,7 +17,6 @@ import {
   UserManagementIcon,
 } from 'assets/icons';
 import { SplitCircle } from 'components/Icons';
-import React from 'react';
 
 export const analyticsUrl = 'https://analitik.data.go.id';
 export const katalogUrl = 'https://katalog.satudata.go.id';
@@ -46,16 +45,34 @@ export const apiUrls = {
   daerahData: getV1Endpoint('kabupatenkota/search'),
   produenData: getV1Endpoint('katalog/produsendata'),
   dataindukData: getV1Endpoint('katalog/datainduk'),
+  katalogData: getV1Endpoint('katalog'),
+  strukturData: getApiEndpoint('cms/v1/bidang'),
+  listPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
+  detailPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
   daftarData: getV1Endpoint('katalog'),
   daftarDataList: getV1Endpoint('katalog/list'),
+  daftarDataSummary: getV1Endpoint('katalog/summary'),
+  daftarDataDownload: getV1Endpoint('katalog/file/download'),
   taglineData: getV1Endpoint('tagline'),
   kategoriData: getV1Endpoint('settings/key/BERITA'),
   sdgPillers: getV1Endpoint('settings/key/SDGS'),
   rkpPN: getV1Endpoint('settings/key/RKP'),
   strukturData: getCMSEndpoint('bidang'),
   cmsBeritaData: getCMSEndpoint('berita'),
+  cmsAboutUs: getCMSEndpoint('tentang'),
   userBeritaPortal: getUserBeritaPortal('berita'),
 };
+
+export const priorityOptions = [
+  { value: 1, label: 'Semua' },
+  { value: 2, label: 'Ya' },
+  { value: 3, label: 'Tidak' },
+];
+
+const arrayToOptionsMapper = (indexValue) => (label, value) => ({
+  label,
+  value: indexValue ? value : label,
+});
 
 export const JADWAL_PERMUTAKHIRAN = [
   'Harian',
@@ -68,6 +85,12 @@ export const JADWAL_PERMUTAKHIRAN = [
   'Dua Tahunan',
   'Ad-hoc',
 ];
+
+export const jadwalPermutakhiranOptions = JADWAL_PERMUTAKHIRAN.map(arrayToOptionsMapper(true));
+
+export const FORMATS = ['csv', 'xlsx', 'pdf', 'png/jpg/jpeg', 'docx', 'json', 'xml'];
+
+export const formatOptions = FORMATS.map(arrayToOptionsMapper());
 
 export const TOPIC_LIST = [
   { title: 'Semua', items: [], icon: <SplitCircle /> },
@@ -133,44 +156,41 @@ export const TOPIC_LIST = [
   },
 ];
 
-const Text =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.';
-
 export const CMS_DASHBOARD = [
   {
     title: 'Content Management',
-    description: Text,
+    description: 'Manajemen About Us, Struktur Organisasi, Contact Us, Berita, Bimbingan Teknis, Komunitas Ahli, Forum SDI',
     icon: <ContentManagementIcon />,
     iconColor: 'sdp-text-blue',
     link: '/cms/about-us',
   },
   {
     title: 'Data Management',
-    description: Text,
+    description: 'Manajemen Data',
     icon: <DataManagementIcon />,
     iconColor: 'sdp-text-red-dark',
   },
   {
     title: 'User Management',
-    description: Text,
+    description: 'Manajemen Pengguna, Instansi, Unit Kerja, dan Hak Akses',
     icon: <UserManagementIcon />,
     iconColor: 'sdp-text-teal',
   },
   {
     title: 'Dashboard Management',
-    description: Text,
+    description: 'Manajemen Dashboard',
     icon: <DashboardManagementIcon />,
     iconColor: 'sdp-text-blue',
   },
   {
     title: 'API Management',
-    description: Text,
+    description: 'Manajmen API',
     icon: <APIManagementIcon />,
     iconColor: 'sdp-text-orange',
   },
   {
     title: 'Konfigurasi',
-    description: Text,
+    description: 'Konfigurasi Log Aktivitas, Sekuriti, Aset, Media Sosial',
     icon: <KonfigurasiIcon />,
     iconColor: 'sdp-text-teal',
   },

@@ -17,59 +17,6 @@ import { useForm } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
 
-const getElem = (data) => {
-  const cards = [];
-  data.forEach((item) => {
-    cards.push({
-      card: (
-        <div key={item.id} className="d-flex br-4 border-gray-stroke">
-          <div className="br-12 m-16">
-            <img src={item?.foto?.location} alt="" className="br-120" height="120px" width="120px" />
-          </div>
-          <div className="sdp-info-wrapper m-16">
-            <label className="sdp-title">{item?.nama}</label>
-            <div className="mt-16 d-flex mb-12">
-              {/*{item.tags.map((tag) => (*/}
-              {/*  <div className="br-2 border-gray-stroke px-6 py-5 sdp-text-grey-dark mr-8 bg-gray">{tag}</div>*/}
-              {/*))}*/}
-            </div>
-            <p>{item.riwayat}</p>
-            <div className="sdp-rating-wrapper d-flex justify-content-between">
-              <div className="d-flex">
-                <div className="sdp-kontak br-5 border-gray-stroke p-10 sdp-text-grey-dark mr-8 cursor-pointer">
-                  <MailSvg variant="danger" />
-                </div>
-                {item.kontak.map((kontak_item) => {
-                  const kontakDetail = Kontak_list.find((kontak) => kontak.name === kontak_item.tipe);
-                  if (!kontakDetail) return null;
-                  const Icon = icons[kontakDetail.icon];
-                  return (
-                    <div
-                      key={kontakDetail.tipe}
-                      className=" sdp-kontak br-5 border-gray-stroke p-10 sdp-text-grey-dark mr-8 cursor-pointer"
-                      onClick={() => window.open(kontak_item.value, '_blank')}>
-                      <Icon />
-                    </div>
-                  );
-                })}
-              </div>
-              <Button
-                variant="primary"
-                className="sdp-rate-button justify-content-end"
-                onClick={() =>
-                  window.open('https://drive.google.com/file/d/1YKu5bPdkXsuAb-dojIm5cy_To8FC0BRI/view?usp=sharing', '_blank')
-                }>
-                Lihat CV
-              </Button>
-            </div>
-          </div>
-        </div>
-      ),
-    });
-  });
-  return cards;
-};
-
 const KomunitasAhliPage = () => {
   const dispatch = useDispatch();
   const [showFilter, setShowFilter] = useState(false);
@@ -170,9 +117,58 @@ const KomunitasAhliPage = () => {
       {
         accessor: 'card',
         Header: 'Card',
+        Cell: ({ cell: { row: { original: item } = {} } = {} }) => {
+          return (
+            <div key={item.id} className="d-flex br-4 border-gray-stroke">
+              <div key={'img-' + item.id} className="br-12 m-16">
+                <img src={item?.foto?.location} alt="" className="brp-50" height="120px" width="120px" />
+              </div>
+              <div key={'wrapper-' + item.id} className="sdp-info-wrapper m-16">
+                <label className="sdp-title">{item?.nama}</label>
+                <div className="mt-16 d-flex mb-12">
+                  {/*{item.tags.map((tag) => (*/}
+                  {/*  <div className="br-2 border-gray-stroke px-6 py-5 sdp-text-grey-dark mr-8 bg-gray">{tag}</div>*/}
+                  {/*))}*/}
+                </div>
+                <p>{item.riwayat}</p>
+                <div className="sdp-rating-wrapper d-flex justify-content-between">
+                  <div className="d-flex">
+                    <div className="sdp-kontak br-5 border-gray-stroke p-10 sdp-text-grey-dark mr-8 cursor-pointer">
+                      <MailSvg variant="danger" />
+                    </div>
+                    {item.kontak.map((kontak_item) => {
+                      const kontakDetail = Kontak_list.find((kontak) => kontak.name === kontak_item.tipe);
+                      if (!kontakDetail) return null;
+                      const Icon = icons[kontakDetail.icon];
+                      return (
+                        <div
+                          key={kontak_item.tipe + item.id}
+                          className=" sdp-kontak br-5 border-gray-stroke p-10 sdp-text-grey-dark mr-8 cursor-pointer"
+                          onClick={() => window.open(kontak_item.value, '_blank')}>
+                          <Icon />
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <Button
+                    variant="primary"
+                    className="sdp-rate-button justify-content-end"
+                    onClick={() =>
+                      window.open(
+                        'https://drive.google.com/file/d/1YKu5bPdkXsuAb-dojIm5cy_To8FC0BRI/view?usp=sharing',
+                        '_blank',
+                      )
+                    }>
+                    Lihat CV
+                  </Button>
+                </div>
+              </div>
+            </div>
+          );
+        },
       },
     ],
-    data: getElem(records, loading),
+    data: records,
     subTitle: 'Komunitas Ahli',
     search: true,
     searchValue: payload.q,

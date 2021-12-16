@@ -37,8 +37,24 @@ async function parseResponse(response) {
     });
     let data = {};
     const responseType = response.headers.get('Content-Type');
+    const disposition = response.headers.get('Content-Disposition');
     if (responseType && responseType.includes('json')) {
       data = await response.json();
+    } else if (
+      (responseType && responseType.includes('application/force-download')) ||
+      (disposition && disposition.includes('attachment;'))
+    ) {
+      data = await response.blob();
+      if (disposition && disposition.includes('filename=')) {
+        const filename = disposition.split('filename=')[1];
+        const url = window.URL.createObjectURL(data);
+        const aNode = document.createElement('a');
+        aNode.href = url;
+        aNode.download = filename;
+        document.body.appendChild(aNode);
+        aNode.click();
+        aNode.remove();
+      }
     } else {
       const textData = await response.text();
       data = textData ? safeParse(textData) : textData;
@@ -91,7 +107,7 @@ export async function request(url, { method = 'GET', headers: optionHeaders = {}
   const options = { method, headers, credentials: 'include', signal: controller.signal };
 
   // Checking if body has data.
-  if (!isEmpty(data)) {
+  if (!isEmpty(data) || data instanceof FormData) {
     options.body = headers['Content-Type'] === typeJSON ? JSON.stringify(data) : data;
   }
   // Checking if we need to add query string or not.
@@ -166,6 +182,6 @@ export const paginationParams = {
 };
 
 export const apiPaginationParams = {
-  page: 1,
+  page: 0,
   size: defaultNumberOfRows,
 };

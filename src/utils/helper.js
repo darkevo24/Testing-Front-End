@@ -1,8 +1,13 @@
+import cloneDeep from 'lodash/cloneDeep';
 import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
 import isString from 'lodash/isString';
+import isFunction from 'lodash/isFunction';
+import get from 'lodash/get';
 import map from 'lodash/map';
+import set from 'lodash/set';
 import pick from 'lodash/pick';
+import moment from 'moment';
 import { katalogUrl } from './constants';
 
 export const safeParse = (value) => {
@@ -35,6 +40,8 @@ export const submitForm = (id) => () => {
   if (formNode) {
     const submitButton = formNode.querySelector('button[type="submit"]');
     submitButton.click();
+    console.log(formNode);
+    console.log(submitButton);
   }
 };
 
@@ -162,8 +169,23 @@ export const getStatusClass = (status) => {
       return {
         divBG: 'bg-gray',
         textColor: 'sdp-text-disable',
-        text: 'Dibuat',
+        text: 'Draft',
         divText: 'Draft',
+      };
+    case 'diarsipkan': {
+      return {
+        divBG: 'bg-gray',
+        textColor: 'sdp-text-disable',
+        text: 'Diarsipkan',
+        divText: 'Diarsipkan',
+      };
+    }
+    case 'tidak_ditayangkan':
+      return {
+        divBG: 'bg-orange-light',
+        textColor: 'sdp-text-orange-dark',
+        text: 'Tidak ditayangkan',
+        divText: '',
       };
     case 'menunggu_persetujuan':
       return {
@@ -180,6 +202,12 @@ export const getStatusClass = (status) => {
         divText: 'Permintaan sedang Diproses',
       };
     case 'dibatalkan':
+      return {
+        divBG: 'bg-red-light',
+        textColor: 'sdp-text-red',
+        text: 'Dibatalkan',
+        divText: 'Dibatalkan',
+      };
     case 'ditolak':
       return {
         divBG: 'bg-red-light',
@@ -194,11 +222,25 @@ export const getStatusClass = (status) => {
         text: 'Terkirim',
         divText: 'Terkirim',
       };
-    case 'selesai':
+    case 'disetujui':
       return {
         divBG: 'bg-green-light',
         textColor: 'sdp-text-green-light',
         text: 'Disetujui',
+        divText: 'Disetujui',
+      };
+    case 'ditayangkan':
+      return {
+        divBG: 'bg-green-light',
+        textColor: 'sdp-text-green-light',
+        text: 'Ditayangkan',
+        divText: 'Ditayangkan',
+      };
+    case 'selesai':
+      return {
+        divBG: 'bg-green-light',
+        textColor: 'sdp-text-green-light',
+        text: 'Selesai',
         divText: 'Selesai',
       };
     default:
@@ -207,3 +249,82 @@ export const getStatusClass = (status) => {
 };
 
 export const getDatasetUrl = (name) => `${katalogUrl}/dataset/${name}`;
+
+export const arrayToOptionsMapper = (array, mapper, indexValue) => {
+  if (!mapper || !isFunction(mapper)) {
+    mapper = (label, value) => ({
+      label,
+      value: indexValue ? value : label,
+    });
+  }
+  return map(array || [], mapper);
+};
+
+export const dataToOptionsMapper = (data, mapper) => {
+  if (data.result) {
+    return arrayToOptionsMapper(data.result, mapper);
+  }
+  return [];
+};
+
+export const dataOptionsMapperCurry = (mapper) => (data) => dataToOptionsMapper(data, mapper);
+
+export const idNameOptionsMapper = (data) => ({
+  value: data.id,
+  label: data.nama,
+});
+
+export const idKeteranganOptionsMapper = (data) => ({
+  value: data.id,
+  label: data.keterangan,
+});
+
+export const prepareFormPayload = (data, fieldsMap) => {
+  const payload = cloneDeep(data);
+  if (fieldsMap.dropdowns && isArray(fieldsMap.dropdowns)) {
+    map(fieldsMap.dropdowns, (field) => {
+      set(payload, field, get(payload, `${field}.value`));
+    });
+  }
+  if (fieldsMap.toArray && isArray(fieldsMap.toArray)) {
+    map(fieldsMap.toArray, (field) => {
+      set(payload, field, [get(payload, field)]);
+    });
+  }
+  if (fieldsMap.dates && isArray(fieldsMap.dates)) {
+    map(fieldsMap.dates, (field) => {
+      set(payload, field, moment(new Date(get(payload, field)), 'YYYY-MM-DD'));
+    });
+  }
+  return payload;
+};
+
+export const incrementPageParams = (params) => {
+  return {
+    ...params,
+    page: params.page + 1,
+  };
+};
+
+export const fileTypes = {
+  excel: {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;',
+    extension: 'xslx',
+  },
+};
+
+export const createFileAndDownload = (data, fileType = fileTypes.excel, filename) => {
+  const extension = fileType.extension;
+  const fullFilename = `${filename}.${extension}`;
+  const blob = new Blob([data], { type: fileType.type });
+  if (window.navigator.msSaveOrOpenBlob) {
+    window.navigator.msSaveBlob(blob, fullFilename);
+  } else {
+    const elem = window.document.createElement('a');
+    elem.href = window.URL.createObjectURL(blob);
+    elem.download = filename;
+    document.body.appendChild(elem);
+    elem.click();
+    document.body.removeChild(elem);
+  }
+};

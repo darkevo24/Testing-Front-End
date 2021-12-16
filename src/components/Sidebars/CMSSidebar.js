@@ -109,7 +109,7 @@ export const CMSSidebar = () => {
           Data Management
         </div>
         <SidebarItem title="Daftar Data" pathname="/cms/daftar" />
-        <SidebarItem title="Permintaan Data" pathname="#" />
+        <SidebarItem title="Permintaan Data" pathname="/cms/permintaan-data" />
         <SidebarItem title="Sandbox" pathname="#" />
       </div>
       <div className="mt-3">
@@ -117,7 +117,7 @@ export const CMSSidebar = () => {
           <SidebarApiIcon className="mr-10" />
           API
         </div>
-        <SidebarItem title="API Management" pathname="#" />
+        <SidebarItem title="API Management" pathname="/cms/api" />
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>

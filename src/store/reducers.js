@@ -20,12 +20,13 @@ import beritaCmsReducer from 'containers/CMS/BeritaBaru/reducer';
 import cmsKomunitasAhliReducer from 'containers/CMS/KomunitasAhli/reducer';
 import cmsAboutUsReducer from 'containers/CMS/AboutUs/reducer';
 import komunitasAhliReducer from 'containers/Komunitas/reducer';
+import userPortalBeritaReducer from 'containers/Berita/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
  */
 export default function createReducer(injectedReducers) {
-  const rootReducer = combineReducers({
+  return combineReducers({
     global: appReducer,
     auth: authReducer,
     beranda: berandaReducer,
@@ -40,9 +41,8 @@ export default function createReducer(injectedReducers) {
     cmsBerita: beritaCmsReducer,
     cmsKomunitasAhli: cmsKomunitasAhliReducer,
     komunitasAhli: komunitasAhliReducer,
+    userPortalBerita: userPortalBeritaReducer,
     router: connectRouter(history),
     ...injectedReducers,
   });
-
-  return rootReducer;
 }

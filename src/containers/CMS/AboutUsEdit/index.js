@@ -24,6 +24,7 @@ import {
 } from '../AboutUs/reducer';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { formatDate } from 'utils/helper';
+import { STATUS_DATA } from 'utils/constants';
 
 const bem = bn('content-detail');
 
@@ -101,10 +102,10 @@ const CMSAboutUsEdit = (props) => {
                   </>
                 ) : (
                   <>
-                    {data.status === 'DRAFT' ||
-                    data.status === 'MENUNGGU_PERSETUJUAN' ||
-                    data.status === 'TIDAK_DITAYANGKAN' ||
-                    data.status === 'DITOLAK' ? (
+                    {data.status === STATUS_DATA.draft ||
+                    data.status === STATUS_DATA.waitingApproval ||
+                    data.status === STATUS_DATA.unpublished ||
+                    data.status === STATUS_DATA.rejected ? (
                       <Button variant="secondary" onClick={(e) => setCanEdit(true)}>
                         <EditIcon />
                       </Button>
@@ -112,7 +113,7 @@ const CMSAboutUsEdit = (props) => {
                       ''
                     )}
 
-                    {data.status === 'DRAFT' || data.status === 'DITOLAK' ? (
+                    {data.status === STATUS_DATA.draft || data.status === STATUS_DATA.rejected ? (
                       <Button
                         className="ml-10"
                         variant="info"
@@ -127,7 +128,7 @@ const CMSAboutUsEdit = (props) => {
                     ) : (
                       ''
                     )}
-                    {data.status === 'MENUNGGU_PERSETUJUAN' ? (
+                    {data.status === STATUS_DATA.waitingApproval ? (
                       <>
                         <Button
                           className="ml-10"
@@ -155,7 +156,7 @@ const CMSAboutUsEdit = (props) => {
                     ) : (
                       ''
                     )}
-                    {data.status === 'DISETUJUI' || data.status === 'TIDAK_DITAYANGKAN' ? (
+                    {data.status === STATUS_DATA.approved || data.status === STATUS_DATA.unpublished ? (
                       <>
                         <Button
                           className="ml-10"
@@ -172,7 +173,7 @@ const CMSAboutUsEdit = (props) => {
                     ) : (
                       ''
                     )}
-                    {data.status === 'DITAYANGKAN' ? (
+                    {data.status === STATUS_DATA.published ? (
                       <>
                         <Button
                           className="ml-10"

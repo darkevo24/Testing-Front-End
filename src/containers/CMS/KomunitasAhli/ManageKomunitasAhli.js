@@ -199,6 +199,7 @@ const KomunitasAhli = () => {
       return response?.data || {};
     } catch (e) {
       setErrorInfo({ ...errorInfo, all: (errorInfo?.all || '') + ' Foto upload: ' + e.message });
+      setLoader(false);
     }
   };
 
@@ -210,6 +211,7 @@ const KomunitasAhli = () => {
       return response?.data || {};
     } catch (e) {
       setErrorInfo({ ...errorInfo, all: (errorInfo?.all || '') + ' CV upload: ' + e.message });
+      setLoader(false);
     }
   };
 
@@ -224,7 +226,9 @@ const KomunitasAhli = () => {
     setShowModal(true);
     setFormData(data);
   };
+
   const onSubmit = async () => {
+    setLoader(true);
     let fotoLink, cvLink;
     if (!id || (id && foto && cv)) {
       fotoLink = await uplodFoto();
@@ -232,9 +236,9 @@ const KomunitasAhli = () => {
     }
     if ((foto && !fotoLink) || (cv && !cvLink)) {
       setShowModal(false);
+      setLoader(false);
     } else {
       try {
-        setLoader(true);
         const method = id ? put : post;
         const url = id ? `${apiUrls.cmsKomunitasAhliData}/${+id}` : apiUrls.cmsKomunitasAhliData;
         await method(url, {
@@ -321,9 +325,7 @@ const KomunitasAhli = () => {
               control={control}
               label="Bidang Keahlian"
               labelClass="sdp-form-label  fw-normal"
-              data={bidangKeahlianData
-                .filter((item) => item.bidangKeahlian)
-                .map((item) => ({ value: item.bidangKeahlian, label: item.bidangKeahlian }))}
+              data={bidangKeahlianData.map((item) => ({ value: item.id, label: item.nama }))}
               placeholder=""
               rules={{ required: true }}
               error={errors?.bidangKeahlian?.message ? 'Bidang Keahlian is required' : ''}

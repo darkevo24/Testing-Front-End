@@ -26,7 +26,8 @@ const KomunitasAhli = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { q, status, error, size, loading, page, records, totalRecords } = useSelector(cmsKomunitasAhliDatasetSelector);
+  const { q, status, error, size, loading, page, records, totalRecords, totalPages } =
+    useSelector(cmsKomunitasAhliDatasetSelector);
 
   useEffect(() => {
     handleAPICall({ page: 0, q: '', status: '' });
@@ -105,12 +106,13 @@ const KomunitasAhli = () => {
     onSearch: () => {},
     variant: 'spaced',
     totalCount: totalRecords || null,
+    pageCount: totalPages || null,
     pageSize: size,
     currentPage: page,
     manualPagination: true,
     onPageIndexChange: (currentPage) => {
       if (currentPage !== page) {
-        handleAPICall({});
+        handleAPICall({ page: currentPage, q, status });
       }
     },
   };

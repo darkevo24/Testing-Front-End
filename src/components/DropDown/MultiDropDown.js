@@ -33,7 +33,7 @@ export default class CreatableSelectDropDown extends React.Component {
   };
 
   render() {
-    const { data, placeHolder, isLoading = false, isDisabled = false } = this.props;
+    const { data, placeHolder, isLoading = false, isDisabled = false, defaultValue } = this.props;
     const { selectedValues } = this.state;
     return (
       <CreatableSelect
@@ -46,6 +46,7 @@ export default class CreatableSelectDropDown extends React.Component {
         isDisabled={isDisabled}
         isMulti={true}
         isValidNewOption={() => false}
+        defaultValue={defaultValue}
       />
     );
   }

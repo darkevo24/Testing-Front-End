@@ -13,12 +13,36 @@ const DROPDOWN_LIST = [
     label: 'All',
   },
   {
-    value: 'SETUJUI',
-    label: 'Approved',
+    value: 'DRAFT',
+    label: 'Draft',
   },
   {
-    value: 'TOLAK',
-    label: 'Rejected',
+    value: 'MENUNGGU_PERSETUJUAN',
+    label: 'Menunggu Persetujuan',
+  },
+  {
+    value: 'DISETUJUI',
+    label: 'Disetujui',
+  },
+  {
+    value: 'DITAYANGKAN',
+    label: 'Ditayangkan',
+  },
+  {
+    value: 'TIDAK_DITAYANGKAN',
+    label: 'Tidak Ditayangkan',
+  },
+  {
+    value: 'DIBATALKAN',
+    label: 'Dibatalkan',
+  },
+  {
+    value: 'DITOLAK',
+    label: 'Ditolak',
+  },
+  {
+    value: 'DIARSIPKAN',
+    label: 'Diarsipkan',
   },
 ];
 
@@ -26,7 +50,8 @@ const KomunitasAhli = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { q, status, error, size, loading, page, records, totalRecords } = useSelector(cmsKomunitasAhliDatasetSelector);
+  const { q, status, error, size, loading, page, records, totalRecords, totalPages } =
+    useSelector(cmsKomunitasAhliDatasetSelector);
 
   useEffect(() => {
     handleAPICall({ page: 0, q: '', status: '' });
@@ -105,12 +130,13 @@ const KomunitasAhli = () => {
     onSearch: () => {},
     variant: 'spaced',
     totalCount: totalRecords || null,
+    pageCount: totalPages || null,
     pageSize: size,
     currentPage: page,
     manualPagination: true,
     onPageIndexChange: (currentPage) => {
       if (currentPage !== page) {
-        handleAPICall({});
+        handleAPICall({ page: currentPage, q, status });
       }
     },
   };
@@ -124,7 +150,7 @@ const KomunitasAhli = () => {
           + Ahli Baru
         </button>
         <div className="sdp-left-wrapper d-flex align-items-center">
-          <lable className="mr-12">Status</lable>
+          <label className="mr-12">Status</label>
           <SingleDropDown data={DROPDOWN_LIST} defaultData={status} onChange={handleStatusChange} />
           <FilterSearchInput searchPlaceholder="Cari..." globalFilter={q} setGlobalFilter={handleSearch} />
         </div>

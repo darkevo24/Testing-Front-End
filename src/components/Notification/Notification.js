@@ -2,7 +2,7 @@ import { forwardRef, useImperativeHandle, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cx from 'classnames';
 import { Close, icons } from '../Icons';
-import { setNotificationOptions } from 'containers/App/reducer';
+import { notificationsSelector, setNotificationOptions } from 'containers/App/reducer';
 
 import bn from 'utils/bemNames';
 
@@ -11,7 +11,7 @@ const bem = bn('notification');
 const Notification = (props) => {
   const { forwardedRef, options: propOptions, visible: propVisible = false } = props;
   const [isVisible, setIsVisible] = useState(false);
-  const options = useSelector((state) => state?.global?.notificationOptions);
+  const options = useSelector(notificationsSelector);
   const dispatch = useDispatch();
 
   const { showClose = true, type = 'warning', icon, onClose = () => {}, message } = propOptions || options;

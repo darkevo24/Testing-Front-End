@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 
 import CMSForm, { submitBeritaForm } from 'components/CMSForm';
 import Notification from 'components/Notification';
-import { formatDate } from 'utils/helper';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 import { setNewBerita } from './reducer';
@@ -19,7 +18,7 @@ const CMSBeritaBaru = () => {
   const onSubmit = (data) => {
     data.mainImage = 'https://rembangkab.go.id/haribawana/uploads/pemerintah-kabupaten-rembang-no-image.jpg';
     data.mainImageTitle = '';
-    data.publishedDate = data.publishedDate ? formatDate(data.publishedDate) : '';
+    data.publishDate = data.publishDate ? data.publishDate + ' ' + data.publishTime : '';
     data.kategori = data.kategori.value;
     data.status = 0;
 

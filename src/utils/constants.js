@@ -17,17 +17,19 @@ import {
   UserManagementIcon,
 } from 'assets/icons';
 import { SplitCircle } from 'components/Icons';
-import React from 'react';
 
+export const analyticsUrl = 'https://analitik.data.go.id';
 export const katalogUrl = 'https://katalog.satudata.go.id';
 export const apiUrl = '/api-be';
 export const dataUrl = `${katalogUrl}/api`;
 
+export const getAnalyticsUrl = (path) => `${analyticsUrl}/${path}`;
 export const getApiEndpoint = (path) => `${apiUrl}/${path}`;
 export const getDataEndpoint = (path) => `${dataUrl}/${path}`;
 export const getPortalEndpoint = (path) => `${apiUrl}/portal/${path}`;
 export const getV1Endpoint = (path) => `${apiUrl}/v1/${path}`;
 export const getCMSEndpoint = (path) => `${apiUrl}/cms/v1/${path}`;
+export const getPublicV1Endpoint = (path) => `${apiUrl}/public/v1/${path}`;
 
 export const apiUrls = {
   login: getApiEndpoint('login'),
@@ -42,15 +44,38 @@ export const apiUrls = {
   daerahData: getV1Endpoint('kabupatenkota/search'),
   produenData: getV1Endpoint('katalog/produsendata'),
   dataindukData: getV1Endpoint('katalog/datainduk'),
+  katalogData: getV1Endpoint('katalog'),
+  listPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
+  detailPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
   daftarData: getV1Endpoint('katalog'),
   daftarDataList: getV1Endpoint('katalog/list'),
+  daftarDataSummary: getV1Endpoint('katalog/summary'),
+  daftarDataDownload: getV1Endpoint('katalog/file/download'),
   taglineData: getV1Endpoint('tagline'),
   kategoriData: getV1Endpoint('settings/key/BERITA'),
   sdgPillers: getV1Endpoint('settings/key/SDGS'),
   rkpPN: getV1Endpoint('settings/key/RKP'),
   strukturData: getCMSEndpoint('bidang'),
   cmsBeritaData: getCMSEndpoint('berita'),
+  cmsAboutUs: getCMSEndpoint('tentang'),
+  aboutUs: getApiEndpoint('public/tentang'),
+  userBeritaPortal: getPublicV1Endpoint('berita'),
+  bimtekSummaryMateriTerdekat: getPortalEndpoint('v1/bimtek/materi-terdekat'),
+  bimtekSummaryJadwalTerdekat: getPortalEndpoint('v1/bimtek/jadwal-terdekat'),
+  bimtekJadwal: getPortalEndpoint('v1/bimtek/jadwal'),
+  bimtekJadwalTags: getCMSEndpoint('bimtek/tags'),
 };
+
+export const priorityOptions = [
+  { value: 1, label: 'Semua' },
+  { value: 2, label: 'Ya' },
+  { value: 3, label: 'Tidak' },
+];
+
+const arrayToOptionsMapper = (indexValue) => (label, value) => ({
+  label,
+  value: indexValue ? value : label,
+});
 
 export const JADWAL_PERMUTAKHIRAN = [
   'Harian',
@@ -63,6 +88,12 @@ export const JADWAL_PERMUTAKHIRAN = [
   'Dua Tahunan',
   'Ad-hoc',
 ];
+
+export const jadwalPermutakhiranOptions = JADWAL_PERMUTAKHIRAN.map(arrayToOptionsMapper(true));
+
+export const FORMATS = ['csv', 'xlsx', 'pdf', 'png/jpg/jpeg', 'docx', 'json', 'xml'];
+
+export const formatOptions = FORMATS.map(arrayToOptionsMapper());
 
 export const TOPIC_LIST = [
   { title: 'Semua', items: [], icon: <SplitCircle /> },
@@ -128,46 +159,43 @@ export const TOPIC_LIST = [
   },
 ];
 
-const Text =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.';
-
 export const CMS_DASHBOARD = [
   {
     title: 'Content Management',
-    description: Text,
+    description: 'Manajemen About Us, Struktur Organisasi, Contact Us, Berita, Bimbingan Teknis, Komunitas Ahli, Forum SDI',
     icon: <ContentManagementIcon />,
-    iconColor: 'sdp-text-blue',
+    iconColor: 'bg-blue',
     link: '/cms/about-us',
   },
   {
     title: 'Data Management',
-    description: Text,
+    description: 'Manajemen Data',
     icon: <DataManagementIcon />,
-    iconColor: 'sdp-text-red-dark',
+    iconColor: 'bg-red',
   },
   {
     title: 'User Management',
-    description: Text,
+    description: 'Manajemen Pengguna, Instansi, Unit Kerja, dan Hak Akses',
     icon: <UserManagementIcon />,
-    iconColor: 'sdp-text-teal',
-  },
-  {
-    title: 'Dashboard Management',
-    description: Text,
-    icon: <DashboardManagementIcon />,
-    iconColor: 'sdp-text-blue',
+    iconColor: 'bg-teal',
   },
   {
     title: 'API Management',
-    description: Text,
+    description: 'Manajmen API',
     icon: <APIManagementIcon />,
-    iconColor: 'sdp-text-orange',
+    iconColor: 'bg-orange',
   },
   {
     title: 'Konfigurasi',
-    description: Text,
+    description: 'Konfigurasi Log Aktivitas, Sekuriti, Aset, Media Sosial',
     icon: <KonfigurasiIcon />,
-    iconColor: 'sdp-text-teal',
+    iconColor: 'bg-teal',
+  },
+  {
+    title: 'Dashboard Management',
+    description: 'Manajemen Dashboard',
+    icon: <DashboardManagementIcon />,
+    iconColor: 'bg-blue',
   },
 ];
 
@@ -194,3 +222,13 @@ export const CMS_KOMUNITAS_LEVEL = ['Pusat', 'Daerah'];
 export const CMS_KOMUNITAS_LEVEL_PUSAT = ['Walidata', 'Sekretariat SDI'];
 export const CMS_KOMUNITAS_LEVEL_DAERAH = ['Walidata', 'Walidata Pendukung', 'Koordinator Forum SDI', 'Sekretariat'];
 export const CMS_KOMUNITAS_PENDIDIKAN = ['S3', 'S2', 'S1/Sederajat', 'Diploma', 'SMA/SMK/Sederajat'];
+
+export const STATUS_DATA = {
+  draft: 'DRAFT',
+  waitingApproval: 'MENUNGGU_PERSETUJUAN',
+  approved: 'DISETUJUI',
+  rejected: 'DITOLAK',
+  canceled: 'DIBATALKAN',
+  published: 'DITAYANGKAN',
+  unpublished: 'TIDAK_DITAYANGKAN',
+};

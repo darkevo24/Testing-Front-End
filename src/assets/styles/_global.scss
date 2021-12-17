@@ -9,10 +9,11 @@
 @import './utilities/border';
 @import './utilities/flex';
 @import './utilities/font';
+@import './utilities/pointer';
+@import './utilities/responsive';
 @import './utilities/scrollbar';
 @import './utilities/spacing';
 @import './utilities/text';
-@import './utilities/pointer';
 
 // All component styles goes here
 @import './components/button';
@@ -39,6 +40,7 @@
 @import './components/pagination';
 
 // All pages styles goes here
+@import './pages/beranda';
 @import './pages/bimtek';
 @import './pages/bimtek-dokumentasi';
 @import './pages/bimtek-kota';
@@ -53,7 +55,7 @@
 @import './pages/komunitas';
 @import './pages/login';
 @import './pages/notFound';
-@import './pages/perminataanData';
+@import './pages/permintaanData';
 @import './pages/tentangsdi';
 @import './pages/topicDetail';
 @import './pages/manajemenApi';

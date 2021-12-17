@@ -19,7 +19,10 @@ export const initialState = {
 export const PERMINTAAN_DATA = 'PERMINTAAN_DATA';
 
 export const getPermintaanData = createAsyncThunk('permintaan-data/list', async (params) => {
-  const response = await get(apiUrls.listPermintaanData, { query: { page: params.page + 1, size: 10, q: params.q } });
+  const response = await get(apiUrls.listPermintaanData, {
+    query: { page: params.page + 1, size: 10, unitKerja: params.unitKerja, status: params.status, q: params.q },
+  });
+  console.log(params.unitKerja);
   return response;
 });
 
@@ -30,7 +33,6 @@ export const getInstansi = createAsyncThunk('permintaan-data/instansi', async (p
 
 export const getUnitkerja = createAsyncThunk('permintaan-data/unitkerja', async (params) => {
   const response = await get(`${apiUrls.instansiData}/${params}/unitkerja`);
-  console.log(response);
   return response?.data.content;
 });
 

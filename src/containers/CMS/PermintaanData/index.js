@@ -20,12 +20,15 @@ const CMSPermintaanData = () => {
   const history = useHistory();
   const [instansiId, setIntansiId] = useState(0);
   const [query, setQuery] = useState('');
+  const [unitKerjaId, setUnitKerja] = useState('');
+  const [status, setStatus] = useState('');
   const dispatch = useDispatch();
   const { size, loading, page, records, totalRecords, instansi, unitKerja } = useSelector(permintaanDataSelector);
-  console.log(unitKerja);
   const fetchDataset = (params) => {
     let obj = {
       page: params.page,
+      unitKerja: unitKerjaId,
+      status,
       q: query,
     };
     return dispatch(getPermintaanData(obj));
@@ -42,21 +45,17 @@ const CMSPermintaanData = () => {
   useEffect(() => {
     fetchDataset({ page: page || 0 });
     fetchInstansiData();
-  }, [query]);
+  }, [query, unitKerjaId, status]);
 
   useEffect(() => {
     fetchUnitKerja();
   }, [instansiId]);
 
-  const updateInstansi = (val) => {
-    setIntansiId(val);
-  };
-
   const updateQuery = _.debounce((val) => {
     setQuery(val);
   }, 500);
 
-  const status = [
+  const statusList = [
     {
       id: 1,
       status: 'DRAFT',
@@ -177,8 +176,8 @@ const CMSPermintaanData = () => {
           <Col className="option" md={8}>
             <Form.Group className="d-flex align-items-center mr-10">
               <Form.Label className="mb-0 pr-10">Instansi</Form.Label>
-              <Form.Select aria-label="Default select example" onChange={(e) => updateInstansi(e.target.value)}>
-                <option value="0">-PILIH-</option>
+              <Form.Select aria-label="Default select example" onChange={(e) => setIntansiId(e.target.value)}>
+                <option value="">SEMUA</option>
                 {instansi &&
                   instansi.map((data, index) => {
                     return (
@@ -191,13 +190,13 @@ const CMSPermintaanData = () => {
             </Form.Group>
             <Form.Group className="d-flex align-items-center mr-10">
               <Form.Label className="unit-kerja">Unit Kerja</Form.Label>
-              <Form.Select aria-label="Default select example">
-                <option value="0">-PILIH-</option>
+              <Form.Select aria-label="Default select example" onChange={(e) => setUnitKerja(e.target.value)}>
+                <option value="">SEMUA</option>
                 {unitKerja &&
                   unitKerja.map((data, index) => {
                     return (
                       <option key={index} value={data?.id}>
-                        {data?.content}
+                        {data?.nama}
                       </option>
                     );
                   })}
@@ -205,12 +204,12 @@ const CMSPermintaanData = () => {
             </Form.Group>
             <Form.Group className="d-flex align-items-center mr-10">
               <Form.Label className="mb-0 pr-10">Status</Form.Label>
-              <Form.Select aria-label="Default select example">
-                <option value="0">-PILIH-</option>
-                {status &&
-                  status.map((data, index) => {
+              <Form.Select aria-label="Default select example" onChange={(e) => setStatus(e.target.value)}>
+                <option value="">SEMUA</option>
+                {statusList &&
+                  statusList.map((data, index) => {
                     return (
-                      <option key={index} value={data.id}>
+                      <option key={index} value={data.status}>
                         {data.status}
                       </option>
                     );
@@ -231,7 +230,7 @@ const CMSPermintaanData = () => {
           </Col>
         </Row>
       </div>
-      <div className="p-30"> {!loading && <Table {...tableConfig} />} </div>
+      <div className="px-30 pt-0"> {!loading && <Table {...tableConfig} />} </div>
     </div>
   );
 };

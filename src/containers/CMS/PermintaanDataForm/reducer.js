@@ -14,6 +14,7 @@ export const PERMINTAAN_DATA_DETAIL = 'PERMINTAAN_DATA_DETAIL';
 
 export const getPermintaanDataDetail = createAsyncThunk('/permintaan-data/detail', async (params) => {
   const response = await get(`${apiUrls.detailPermintaanData}/${params}`);
+  console.log(response);
   return response?.data.content;
 });
 
@@ -28,14 +29,14 @@ export const postPermintaanDataTolak = createAsyncThunk('/permintaan-data/tolak'
 });
 
 export const postPermintaanDataProses = createAsyncThunk('/permintaan-data/proses', async (params) => {
-  const response = await post(`${apiUrls.detailPermintaanData}/${params}'/proses`, { catatan: 'tolak' });
+  const response = await post(`${apiUrls.detailPermintaanData}/${params.id}/proses`, { catatan: params.catatan });
   return response?.result;
 });
 
 export const postPermintaanDataSelesai = createAsyncThunk('permintaan-data/selesai', async (params) => {
-  const response = await post(`${apiUrls.detailPermintaanData}/${params}/selesai`, {
-    catatan: 'selesai',
-    urlDataset: 'http://test.go.id/dataset1',
+  const response = await post(`${apiUrls.detailPermintaanData}/${params.id}/selesai`, {
+    catatan: params.catatan,
+    urlDataset: params.url,
   });
   return response?.result;
 });

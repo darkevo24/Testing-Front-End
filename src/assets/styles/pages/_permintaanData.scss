@@ -10,41 +10,6 @@
   }
 }
 
-.modal-dialog {
-  max-width: 430px;
-  display: flex;
-  align-items: center;
-  min-height: 100vh;
-  .font-weight-bold{
-      font-weight: bold;
-  }
-  .text-blue {
-      color : $blue;
-      font-weight: bold;
-  }
-  .alert {
-      text-align: center;
-      background: rgba(255, 0, 0, 0.12);
-      color :$red;
-      margin: 1rem -1rem;
-  }
-  .input-group {
-      .url {
-          padding: 10px;
-          height: 100%;
-          position: absolute;
-          left: 0;
-          border: 1px solid $stroke;
-          z-index: 9999;
-          background: $white;
-      }
-      input {
-          padding-left: 35px;
-          position: relative;
-      }
-  }
-}
-
 .icon-box {
   width: 3rem !important;
   height: 3rem !important;
@@ -144,7 +109,7 @@
 }
 
 .sdp-modal {
-  &.modal-tolak {
+  &.modal-permintaan-detail {
     .modal-dialog {
         width: 382px;
       .modal-body {
@@ -159,6 +124,52 @@
           color: $gray;
           font-size: 14px;
         }
+      }
+    }
+  }
+  &.modal-permintaan-data-proses {
+    .modal-dialog {
+      max-width: 400px;
+      display: flex;
+      align-items: center;
+      min-height: 100vh;
+      .font-weight-bold{
+          font-weight: bold;
+      }
+      .text-blue {
+          color : $blue;
+          font-weight: bold;
+      }
+      .alert {
+          text-align: center;
+          background: rgba(255, 0, 0, 0.12);
+          color :$red;
+          margin: 1rem -1rem;
+      }
+      .sdp-input-wrapper {
+        position: relative;
+      }
+      .length{
+        position: absolute;
+        right: 23px;
+        bottom: 74px;
+        color: $gray;
+        font-size: 14px;
+      }
+      .input-group {
+          .url {
+              padding: 10px;
+              height: 100%;
+              position: absolute;
+              left: 0;
+              border: 1px solid $stroke;
+              z-index: 9999;
+              background: $white;
+          }
+          input {
+              padding-left: 55px;
+              position: relative;
+          }
       }
     }
   }

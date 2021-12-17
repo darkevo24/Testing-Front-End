@@ -21,6 +21,7 @@ import cmsKomunitasAhliReducer from 'containers/CMS/KomunitasAhli/reducer';
 import cmsAboutUsReducer from 'containers/CMS/AboutUs/reducer';
 import komunitasAhliReducer from 'containers/Komunitas/reducer';
 import userPortalBeritaReducer from 'containers/Berita/reducer';
+import bimtekSummaryReducer from 'containers/BimTekSummary/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -42,6 +43,7 @@ export default function createReducer(injectedReducers) {
     cmsKomunitasAhli: cmsKomunitasAhliReducer,
     komunitasAhli: komunitasAhliReducer,
     userPortalBerita: userPortalBeritaReducer,
+    bimtekSummary: bimtekSummaryReducer,
     router: connectRouter(history),
     ...injectedReducers,
   });

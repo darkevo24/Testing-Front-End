@@ -135,7 +135,7 @@ const LogActivity = () => {
   ];
 
   const tableConfig = {
-    className: 'cms-permintaan-data',
+    className: 'cms-table-log',
     columns,
     data: LIST_TABLE,
     title: '',
@@ -201,54 +201,7 @@ const LogActivity = () => {
             </InputGroup>
           </div>
         </div>
-        {/* <CMSTable
-          customWidth={[20, 20, 20, 25, 15]}
-          header={['ID Pengguna', 'Alamat IP', 'Waktu', 'Aktivitas']}
-          data={LIST_TABLE.map((item) => {
-            let value = {
-              data: [item.id_user, item.ip, item.time, item.activity],
-              action: '',
-            };
-            return value;
-          })}
-        /> */}
-        <div className="p-30">
-          <Table {...tableConfig} />
-        </div>
-        {/* <div className="wrapper-pagination pt-25">
-          <ul className="pagination">
-            <li className="page-item">
-              <a className="page-link prev" href="#">
-                <Prev />
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link active" href="#">
-                1
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                2
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                3
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                4
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link next" href="#">
-                <Next />
-              </a>
-            </li>
-          </ul>
-        </div> */}
+        <Table {...tableConfig} />
       </div>
       <Modal className="cms-log-activity" showHeader={false} visible={modalProfile} onClose={() => setModalProfile(false)}>
         <div className="alert">

@@ -8,6 +8,7 @@ import bn from 'utils/bemNames';
 const bem = bn('modal');
 
 const Modal = ({
+  className,
   actions,
   size,
   visible,
@@ -27,7 +28,7 @@ const Modal = ({
       onHide={onClose}
       backdrop
       backdropClassName={bem.e('backdrop')}
-      className={bem.b()}
+      className={className && bem.b(className)}
       centered={centered}>
       <div className={bem.e('section')}>
         {showHeader && (

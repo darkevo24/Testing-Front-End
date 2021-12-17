@@ -125,6 +125,7 @@ const LogActivity = () => {
             <div className="date">
               <p>Awal</p>
               <DatePicker
+                className="cms-log-activity"
                 name="publishedDate"
                 control={control}
                 rules={{ required: false }}
@@ -135,6 +136,7 @@ const LogActivity = () => {
             <div className="date">
               <p>Akhir</p>
               <DatePicker
+                className="cms-log-activity"
                 name="publishedDate"
                 control={control}
                 rules={{ required: false }}
@@ -194,7 +196,7 @@ const LogActivity = () => {
           </ul>
         </div>
       </div>
-      <Modal showHeader={false} visible={modalProfile} onClose={() => setModalProfile(false)}>
+      <Modal className="cms-log-activity" showHeader={false} visible={modalProfile} onClose={() => setModalProfile(false)}>
         <div className="alert">
           <ModalAlertDanger />
           <p className="text-danger pt-15">

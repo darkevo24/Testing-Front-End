@@ -45,7 +45,7 @@ export const DatePicker = ({
         render={({ field }) => {
           const { onChange } = field;
           return (
-            <div className={cx('sdp-input-wrapper', bem.b())}>
+            <div className={cx('sdp-input-wrapper', bem.b(className))}>
               <div
                 className="icon-box"
                 onClick={() => {

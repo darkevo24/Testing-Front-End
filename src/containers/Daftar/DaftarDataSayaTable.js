@@ -45,10 +45,6 @@ const DaftarDataSayaTable = ({
   };
 
   useEffect(() => {
-    fetchSayaData();
-  }, []);
-
-  useEffect(() => {
     fetchSayaData({ bodyParams: { textSearch } });
   }, [textSearch]);
 

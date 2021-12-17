@@ -53,10 +53,6 @@ const DaftarTable = ({
   };
 
   useEffect(() => {
-    fetchDaftarData();
-  }, []);
-
-  useEffect(() => {
     fetchDaftarData({ bodyParams: { textSearch } });
   }, [textSearch]);
 

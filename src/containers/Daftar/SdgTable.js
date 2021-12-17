@@ -42,10 +42,6 @@ const SdgTable = ({
   };
 
   useEffect(() => {
-    fetchSdgsData();
-  }, []);
-
-  useEffect(() => {
     fetchSdgsData({ bodyParams: { textSearch } });
   }, [textSearch]);
 

@@ -42,10 +42,6 @@ const RkpTable = ({
   };
 
   useEffect(() => {
-    fetchRkpData();
-  }, []);
-
-  useEffect(() => {
     fetchRkpData({ bodyParams: { textSearch } });
   }, [textSearch]);
 

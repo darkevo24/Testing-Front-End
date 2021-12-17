@@ -268,13 +268,13 @@ const ApiDetail = () => {
               <Row>
                 <Col md={12}>
                   <div className="form-group">
-                    <label for="Judul"> Nama </label>
+                    <label for="Judul"> Nama Walidata Instansi </label>
                     <input type="text" value="API 1" disabled />
                   </div>
                 </Col>
                 <Col md={12}>
                   <div className="form-group">
-                    <label for="Judul"> Email </label>
+                    <label for="Judul"> Email Walidata Instansi</label>
                     <input type="text" value="debbie.baker@example.com" disabled />
                   </div>
                 </Col>
@@ -282,7 +282,7 @@ const ApiDetail = () => {
               <Row>
                 <Col md={6}>
                   <div className="form-group">
-                    <label for="Judul"> File Download URL </label>
+                    <label for="Judul"> URL akses file resource (csv/xlx/json) </label>
                     <input type="text" value="data.go.id/api/data" disabled />
                   </div>
                 </Col>

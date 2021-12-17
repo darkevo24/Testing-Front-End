@@ -30,6 +30,7 @@ export const getPortalEndpoint = (path) => `${apiUrl}/portal/${path}`;
 export const getV1Endpoint = (path) => `${apiUrl}/v1/${path}`;
 export const getCMSEndpoint = (path) => `${apiUrl}/cms/v1/${path}`;
 export const getPublicV1Endpoint = (path) => `${apiUrl}/public/v1/${path}`;
+export const getBimtekSummaryEndpoint = (path) => `${apiUrl}/portal/v1/bimtek/${path}`;
 
 export const apiUrls = {
   login: getApiEndpoint('login'),
@@ -60,6 +61,8 @@ export const apiUrls = {
   cmsAboutUs: getCMSEndpoint('tentang'),
   aboutUs: getApiEndpoint('public/tentang'),
   userBeritaPortal: getPublicV1Endpoint('berita'),
+  bimtekSummaryMateriTerdekat: getBimtekSummaryEndpoint('materi-terdekat'),
+  bimtekSummaryJadwalTerdekat: getBimtekSummaryEndpoint('jadwal-terdekat'),
 };
 
 export const priorityOptions = [

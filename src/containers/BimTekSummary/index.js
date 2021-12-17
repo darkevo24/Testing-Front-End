@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -7,8 +9,20 @@ import BimTekSumCarousel from './carousel.js';
 import { ReactComponent as Download } from 'assets/download.svg';
 import { ReactComponent as ArrowRIght } from 'assets/arrow-right-white.svg';
 import './bimteksummary.scss';
+import {
+  getBimtekSummaryMateriTerdekat,
+  getBimtekSummaryJadwalTerdekat,
+  bimtekSummaryMateriTerdekatDatasetSelector,
+  bimtekSummaryJadwalTerdekatDatasetSelector,
+} from './reducer';
+import moment from 'moment';
+import 'moment/locale/id';
+
+moment.locale('id');
 
 const BimtekSummary = () => {
+  const dispatch = useDispatch();
+
   const MateriItem = styled.div`
     border-top: 1px solid #e1e2ea;
     padding: 12px 16px;
@@ -43,39 +57,6 @@ const BimtekSummary = () => {
     z-index: 2;
   `;
 
-  let responseJadwal = [
-    {
-      title: 'Perencanaan dan Program Bimbingan Teknis Tahap 1',
-      startDate: '09 Agustus 2021',
-      endDate: '12 Agustus 2021',
-      city: 'Jakarta',
-      location: 'Grand Ball Room, Hotel Mulia Senayan,  Senayan, Kebayoran Baru, Jakarta Selatan,  DKI Jakarta',
-      speaker: 'Dr. Amelia Suganda',
-      materi:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    },
-    {
-      title: 'Perencanaan dan Program Bimbingan Teknis Tahap 2',
-      startDate: '13 Agustus 2021',
-      endDate: '15 Agustus 2021',
-      city: 'Jakarta',
-      location: 'Grand Ball Room, Hotel Mulia Senayan,  Senayan, Kebayoran Baru, Jakarta Selatan,  DKI Jakarta',
-      speaker: 'Dr. Amelia Suganda',
-      materi:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    },
-  ];
-  let dataJadwal = responseJadwal.slice(0, 3);
-
-  let responseMateri = [
-    { title: 'Bimtek Keuangan' },
-    { title: 'Bimtek Perencanaan dan Program' },
-    { title: 'Bimtek Kepegawaian' },
-    { title: 'Bimtek Pendidikan dan Pelatihan' },
-    { title: 'test2' },
-  ];
-  let dataMateri = responseMateri.slice(0, 4);
-
   let responseThumbnail = [
     {
       title: 'Kemenhub Berbagi Pengalaman Penanganan Covid-19 Sektor Transportasi Di Forum ASEAN-Republik Korea ke-11',
@@ -96,6 +77,15 @@ const BimtekSummary = () => {
 
   const history = useHistory();
   const gotoJadwal = () => history.push('/bimtek-jadwal');
+
+  useEffect(() => {
+    dispatch(getBimtekSummaryMateriTerdekat());
+    dispatch(getBimtekSummaryJadwalTerdekat());
+  }, []);
+
+  const { records: materiRecords } = useSelector(bimtekSummaryMateriTerdekatDatasetSelector);
+  const { records: jadwalRecords } = useSelector(bimtekSummaryJadwalTerdekatDatasetSelector);
+  const dataJadwal = jadwalRecords.slice(0, 3);
 
   return (
     <BimtekLayout>
@@ -130,10 +120,10 @@ const BimtekSummary = () => {
           {dataJadwal.map((item, key) => (
             <BimTekSumJadwal
               key={key}
-              title={item.title}
-              startDate={item.startDate}
-              endDate={item.endDate}
-              city={item.city}
+              title={item.namaBimtek}
+              startDate={moment(item.tanggalMulaiDisetujui).format('D MMMM YYYY')}
+              endDate={moment(item.tanggalSelesaiDisetujui).format('D MMMM YYYY')}
+              city={item.kota}
             />
           ))}
         </div>
@@ -145,9 +135,9 @@ const BimtekSummary = () => {
             </div>
             <div className="bimteksum-viewall">Lihat Semua</div>
           </div>
-          {dataMateri.map((item, key) => (
+          {materiRecords.map((item, key) => (
             <MateriItem key={key}>
-              {item.title}
+              {item.nama}
               <Button>
                 <Download />
               </Button>

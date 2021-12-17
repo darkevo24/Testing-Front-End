@@ -8,89 +8,86 @@ import Form from 'react-bootstrap/Form';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 
-import { Modal } from 'components';
+import { Input, Dropdown } from 'components';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import CMSStrukturProfile from './FormProfile';
+import { submitForm } from 'utils/helper';
 
 const bem = bn('bimtek-form');
 
+export const formStrukturId = 'form-struktur-id';
+export const submitStrukturForm = submitForm(formStrukturId);
+
 const CMSStrukturForm = ({ disabled = false, dataValue, handleData = () => {} }) => {
-  const [modalProfile, setModalProfile] = useState(false);
+  const [modalAdd, setModalAdd] = useState(false);
+  const [modalEdit, setModalEdit] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState(null);
   const [listProfile, setListProfile] = useState([]);
-  const [isEdit, setIsEdit] = useState(-1);
 
   const schema = yup
     .object({
       nama: yup.string().required(),
-      jabatan: yup.string().required(),
+      kode: yup.string().required(),
+      level: yup.string().required(),
     })
     .required();
 
   const {
-    register,
+    control,
     formState: { errors },
     handleSubmit,
     setValue,
-    getValues,
     clearErrors,
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      ...dataValue,
+    },
   });
 
-  const submitProfile = (data) => {
-    if (isEdit < 0) {
-      // add state
-      setListProfile([...listProfile, data]);
-    } else {
-      // edit state
-      let edit = [...listProfile];
-      edit[isEdit] = data;
-      setListProfile(edit);
-    }
-
-    handleData({
-      ...dataValue,
-      profil: listProfile,
-    });
-    setModalProfile(false);
+  const handleInput = (e) => {
+    clearErrors(e.target.name);
+    setValue(e.target.name, e.target.value);
+  };
+  const submitStruktur = (data) => {
+    data.profil = [...listProfile];
+    handleData(data);
   };
 
   const removeProfile = (index) => {
     let selected = listProfile[index];
     setListProfile(listProfile.filter((item) => item !== selected));
-    handleData({
-      ...dataValue,
-      profil: listProfile,
-    });
   };
 
   const openModal = (index = -1) => {
-    clearErrors();
     if (index < 0) {
       // modal add
-      setValue('nama', '');
-      setValue('jabatan', '');
-      setValue('foto', null);
+      setModalAdd(true);
     } else {
       // modal edit
-      var selected = listProfile[index];
-      setValue('nama', selected.nama ? selected.nama : '');
-      setValue('jabatan', selected.jabatan ? selected.jabatan : '');
-      setValue('foto', selected.foto ? selected.foto : '');
+      let selected = {
+        ...listProfile[index],
+        index: index,
+      };
+      setSelectedProfile(selected);
+      setModalEdit(true);
     }
-
-    setIsEdit(index);
-    setModalProfile(true);
   };
 
-  const inputBidangHandler = () => (event) => {
-    handleData({
-      ...dataValue,
-      [event.target.name]: event.target.value,
-    });
+  const addProfile = (data) => {
+    setListProfile([...listProfile, data]);
+    setModalAdd(false);
+  };
+
+  const editProfile = (data) => {
+    let edit = [...listProfile];
+    edit[data.index] = data;
+    setListProfile(edit);
+    setModalEdit(false);
   };
 
   useEffect(() => {
@@ -98,35 +95,30 @@ const CMSStrukturForm = ({ disabled = false, dataValue, handleData = () => {} })
   }, [dataValue]);
 
   return (
-    <div>
+    <Form id={formStrukturId} onSubmit={handleSubmit(submitStruktur)}>
       <Row>
         <Col>
-          <Form.Group>
-            <Form.Label>Kode Bidang</Form.Label>
-            <Form.Control onChange={inputBidangHandler()} defaultValue={dataValue?.kode} type="text" name="kode" />
-          </Form.Group>
+          <Input group label="Kode Bidang" name="kode" control={control} error={errors.kode?.message} disabled={disabled} />
         </Col>
         <Col>
           <Form.Group>
             <Form.Label>Level</Form.Label>
-            <Form.Select onChange={inputBidangHandler()} defaultValue={dataValue?.level} name="level">
-              <option disabled>Pilih Level</option>
+            <Form.Select onChange={(e) => handleInput(e)} defaultValue={dataValue?.level} name="level" disabled={disabled}>
+              <option value="">Pilih Level</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
               <option value="5">5</option>
             </Form.Select>
+            <div className="sdp-error">{errors.level?.message}</div>
           </Form.Group>
         </Col>
       </Row>
-      <Form.Group className="mb-24 mt-24">
-        <Form.Label>Nama Bidang</Form.Label>
-        <Form.Control onChange={inputBidangHandler()} defaultValue={dataValue?.nama} type="text" name="nama" />
-      </Form.Group>
+      <Input group label="Nama Bidang" name="nama" control={control} error={errors.nama?.message} disabled={disabled} />
       <div className={cx(bem.e('header'), ' d-flex justify-content-between mt-5 ')}>
         <div className={bem.e('header-title')}>Profil</div>
-        <div className={bem.e('header-add')} onClick={() => openModal()}>
+        <div className={cx(bem.e('header-add'), { invisible: disabled })} onClick={() => openModal()}>
           <Plus />
           Tambah Profil
         </div>
@@ -159,10 +151,10 @@ const CMSStrukturForm = ({ disabled = false, dataValue, handleData = () => {} })
                   <td>{row.nama ? row.nama : ''}</td>
                   <td>{row.jabatan ? row.jabatan : ''}</td>
                   <td>
-                    <span className="sdp-text-blue mr-12" onClick={() => openModal(key)}>
+                    <span className="cursor-pointer sdp-text-blue mr-12" onClick={() => openModal(key)}>
                       Edit
                     </span>
-                    <span className="sdp-text-disable" onClick={() => removeProfile(key)}>
+                    <span className="cursor-pointer sdp-text-disable" onClick={() => removeProfile(key)}>
                       Delete
                     </span>
                   </td>
@@ -172,41 +164,25 @@ const CMSStrukturForm = ({ disabled = false, dataValue, handleData = () => {} })
           </tbody>
         </Table>
       </div>
-      <Modal
-        visible={modalProfile}
-        onClose={() => setModalProfile(false)}
-        title={isEdit >= 0 ? 'Edit Profil' : 'Tambah Profil'}>
-        <div>
-          <Form.Group className="mb-8 sdp-input-wrapper">
-            <Form.Label>Nama</Form.Label>
-            <Form.Control defaultValue={getValues('nama')} type="text" name="nama" {...register('nama')} />
-            <div className="sdp-error">{errors.nama?.message}</div>
-          </Form.Group>
-          <Form.Group className="mb-8">
-            <Form.Label>Jabatan</Form.Label>
-            <Form.Control defaultValue={getValues('jabatan')} type="text" name="jabatan" {...register('jabatan')} />
-            <div className="sdp-error">{errors.jabatan?.message}</div>
-          </Form.Group>
-          <Form.Group className="mb-24">
-            <Form.Label>Foto</Form.Label>
-            <Form.Control type="file" name="file" />
-            <input className="invisible" type="text" name="foto" {...register('foto')} />
-          </Form.Group>
-          <div className="d-flex justify-content-end mb-12">
-            <Button
-              onClick={() => setModalProfile(false)}
-              className="ml-24 bg-white sdp-text-grey-dark border-gray-stroke"
-              variant="secondary"
-              style={{ width: '112px' }}>
-              Batal
-            </Button>
-            <Button onClick={handleSubmit(submitProfile)} className="ml-10" variant="info" style={{ width: '112px' }}>
-              Simpan
-            </Button>
-          </div>
-        </div>
-      </Modal>
-    </div>
+      {modalAdd ? (
+        <CMSStrukturProfile
+          show={modalAdd}
+          handleClose={() => setModalAdd(false)}
+          title="Tambah Profil"
+          onSubmit={addProfile}
+        />
+      ) : null}
+      {modalEdit ? (
+        <CMSStrukturProfile
+          show={modalEdit}
+          handleClose={() => setModalEdit(false)}
+          title="Edit Profil"
+          data={selectedProfile}
+          onSubmit={editProfile}
+        />
+      ) : null}
+      <Button className="invisible" type="submit" />
+    </Form>
   );
 };
 

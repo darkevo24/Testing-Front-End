@@ -6,48 +6,51 @@ import Col from 'react-bootstrap/Col';
 import { BimtekLayout } from 'layouts/BimtekLayout';
 import BimTekJadwalItem from './item.js';
 import './bimtekjadwal.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import {
+  bimtekJadwalDatasetSelector,
+  bimtekJadwalTagsDatasetSelector,
+  getBimtekJadwalData,
+  getBimtekJadwalTagsData,
+} from './reducer.js';
+import moment from 'moment';
+import 'moment/locale/id';
+
+moment.locale('id');
 
 const BimTekJadwal = () => {
   let currentYear = new Date().getFullYear();
-  let filterCategory = [];
   let filterCity = [];
   let filterYear = [];
-  let dataJadwal = [
-    {
-      title: 'Perencanaan dan Program Bimbingan Teknis Tahap 1',
-      startDate: '09 Agustus 2021',
-      endDate: '12 Agustus 2021',
-      city: 'Jakarta',
-      location: 'Grand Ball Room, Hotel Mulia Senayan,  Senayan, Kebayoran Baru, Jakarta Selatan,  DKI Jakarta',
-      speaker: 'Dr. Amelia Suganda',
-      materi:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    },
-    {
-      title: 'Perencanaan dan Program Bimbingan Teknis Tahap 2',
-      startDate: '13 Agustus 2021',
-      endDate: '15 Agustus 2021',
-      city: 'Jakarta',
-      location: 'Grand Ball Room, Hotel Mulia Senayan,  Senayan, Kebayoran Baru, Jakarta Selatan,  DKI Jakarta',
-      speaker: 'Dr. Amelia Suganda',
-      materi:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    },
-  ];
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getBimtekJadwalData());
+    dispatch(getBimtekJadwalTagsData());
+  }, []);
+
+  const { records: jadwalData } = useSelector(bimtekJadwalDatasetSelector);
+  const filterCategory = useSelector(bimtekJadwalTagsDatasetSelector);
+
+  const filterCategoryData = (e) => {
+    dispatch(getBimtekJadwalData({ tags: e.target.value }));
+  };
   for (var i = 0; i < 10; i++) {
     filterYear.push(currentYear - i);
   }
-
   return (
     <BimtekLayout>
       <div>
         <Row className="bimtek-filter mb-3">
           <Col xs={4}>
-            <Form.Select>
+            <Form.Select onChange={(e) => filterCategoryData(e)}>
               <option>Kategori Bimtek</option>
               {filterCategory.map((category, key) => (
-                <option key={key}>{category}</option>
+                <option key={key} value={category}>
+                  {category}
+                </option>
               ))}
             </Form.Select>
           </Col>
@@ -67,15 +70,15 @@ const BimTekJadwal = () => {
             </Form.Select>
           </Col>
         </Row>
-        {dataJadwal.map((item, key) => (
+        {jadwalData.map((item, key) => (
           <BimTekJadwalItem
             key={key}
-            title={item.title}
-            startDate={item.startDate}
-            endDate={item.endDate}
-            city={item.city}
-            location={item.location}
-            speaker={item.speaker}
+            title={item.namaBimtek}
+            startDate={moment(item.tanggalMulaiDisetujui).format('D MMMM YYYY')}
+            endDate={moment(item.tanggalSelesaiDisetujui).format('D MMMM YYYY')}
+            city={item.kota}
+            location={item.tempat}
+            speaker={item.pembicara}
             materi={item.materi}
           />
         ))}

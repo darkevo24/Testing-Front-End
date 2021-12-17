@@ -83,6 +83,15 @@ const CMSPermintaanData = () => {
     },
   ];
 
+  const rowClick = (data) => {
+    history.push(`/cms/permintaan-data/${data.id}`);
+  };
+
+  const getRowClass = (data) => {
+    if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
+    return 'bg-gray';
+  };
+
   const columns = [
     {
       Header: 'Id',
@@ -138,15 +147,6 @@ const CMSPermintaanData = () => {
       Cell: ({ ...rest }) => <Button variant="info"> Detail </Button>,
     },
   ];
-
-  const rowClick = (data) => {
-    history.push(`/cms/permintaan-data/${data.id}`);
-  };
-
-  const getRowClass = (data) => {
-    if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
-    return 'bg-gray';
-  };
 
   const tableConfig = {
     className: 'cms-permintaan-data',

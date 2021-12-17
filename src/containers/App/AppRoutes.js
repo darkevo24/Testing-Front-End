@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import AppLayout, { PrivateRoute, PublicRoute } from 'layouts/AppLayout';
 import lazily from 'utils/lazily';

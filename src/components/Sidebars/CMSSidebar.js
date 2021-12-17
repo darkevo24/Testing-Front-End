@@ -67,7 +67,7 @@ export const CMSSidebar = () => {
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
-        <SidebarItem title="Forum" pathname="#" />
+        <SidebarItem title="Forum" pathname="/cms/forum-sdi" />
         <SidebarItem title="Komunitas Ahli" pathname="/cms/komunitas-ahli" />
         <Accordion defaultActiveKey="0">
           <Accordion.Item>

@@ -24,7 +24,7 @@ const DaftarDataSayaTable = ({
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [sortBy, setSortBy] = useState(null);
   const dispatch = useDispatch();
-  const { pageSize, loading, params, bodyParams, result } = useSelector(sayaDataSelector);
+  const { pageSize, params, bodyParams, result } = useSelector(sayaDataSelector);
 
   const fetchSayaData = (filterOverride = {}, reset = false) => {
     const { params: paramsOverride = {}, bodyParams: bodyParamsOverride = {} } = filterOverride;
@@ -58,9 +58,9 @@ const DaftarDataSayaTable = ({
     fetchSayaData({ params: { sortBy: sortId, sortDirection: desc ? 'DESC' : 'ASC' } });
   };
 
-  const handleDropdownFilter = (filter) => (selectedValue) => {
-    fetchSayaData({ bodyParams: { [filter]: selectedValue.value } });
-  };
+  // const handleDropdownFilter = (filter) => (selectedValue) => {
+  //   fetchSayaData({ bodyParams: { [filter]: selectedValue.value } });
+  // };
 
   const data = useMemo(() => result?.content?.records || [], [result]);
   const showDeleteModal = (data) => {

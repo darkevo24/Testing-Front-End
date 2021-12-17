@@ -3,13 +3,13 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+// import { useForm } from 'react-hook-form';
+// import { yupResolver } from '@hookform/resolvers/yup';
+// import * as yup from 'yup';
 // import { useHistory } from 'react-router-dom';
 
 import { LogStatus } from 'components/Sidebars/LogStatus';
-import { Input, TextEditor, Loader } from 'components';
+import { TextEditor, Loader } from 'components';
 import bn from 'utils/bemNames';
 import { ReactComponent as EditIcon } from 'assets/pencil.svg';
 
@@ -23,18 +23,18 @@ import {
   logDatasetSelector,
 } from '../AboutUs/reducer';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { formatDate } from 'utils/helper';
+// import { formatDate } from 'utils/helper';
 import { STATUS_DATA } from 'utils/constants';
 
 const bem = bn('content-detail');
-
-const schema = yup
-  .object({
-    title: yup.string().required(),
-    category: yup.mixed().required(),
-    thumbnail: yup.mixed().required(),
-  })
-  .required();
+//
+// const schema = yup
+//   .object({
+//     title: yup.string().required(),
+//     category: yup.mixed().required(),
+//     thumbnail: yup.mixed().required(),
+//   })
+//   .required();
 
 const CMSAboutUsEdit = (props) => {
   let dispatch = useDispatch();
@@ -60,12 +60,12 @@ const CMSAboutUsEdit = (props) => {
 
   const history = useHistory();
 
-  const {
-    control,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  // const {
+  //   // control,
+  //   // formState: { errors },
+  // } = useForm({
+  //   resolver: yupResolver(schema),
+  // });
 
   const askConfirmation = (message) => {
     return window.confirm(message);

@@ -9,5 +9,5 @@ export default combineReducers({
   aboutUs: aboutUsReducer,
   aboutUsDetail: aboutUsDetailReducer,
   berita: beritaReducer,
-  forumSdi: forumSdiReducer,
+  cmsForumSdi: forumSdiReducer,
 });

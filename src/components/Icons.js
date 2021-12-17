@@ -1,4 +1,4 @@
-import { Facebook } from 'react-content-loader';
+// import { Facebook } from 'react-content-loader';
 
 const types = {
   danger: 'red',

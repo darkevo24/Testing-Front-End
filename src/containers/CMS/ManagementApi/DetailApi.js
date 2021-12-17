@@ -110,25 +110,25 @@ const DetailApi = () => {
             </div>
             <div className={bem.e('wrapper-input pb-10')}>
               <div className="form-group">
-                <label for="Judul">Judul</label>
+                <label htmlFor="Judul">Judul</label>
                 <div className="box-input">
                   <input type="text" placeholder="Lorem Ipsum" disabled />
                 </div>
               </div>
               <div className="form-group">
-                <label for="Judul">Deskripsi</label>
+                <label htmlFor="Judul">Deskripsi</label>
                 <div className="box-input">
                   <input type="text" placeholder="Lorem Ipsum" disabled />
                 </div>
               </div>
               <div className="form-group">
-                <label for="Judul">Source API</label>
+                <label htmlFor="Judul">Source API</label>
                 <div className="box-input">
                   <input type="text" placeholder="data.go.id/api/data" disabled />
                 </div>
               </div>
               <div className="form-group">
-                <label for="Judul">Max Data Parameter</label>
+                <label htmlFor="Judul">Max Data Parameter</label>
                 <div className="box-input">
                   <input type="text" placeholder="Dinas Kesehatan DKI Jakarta" disabled />
                 </div>
@@ -138,7 +138,7 @@ const DetailApi = () => {
               <div className="wrapper-data pt-0">
                 <div className="wrapper-title p-0">
                   <h1>Source API</h1>
-                  <a href="#">(data-ckan-api.json)</a>
+                  <button>(data-ckan-api.json)</button>
                 </div>
                 <div className={bem.e('management-table')}>
                   <table>
@@ -167,13 +167,13 @@ const DetailApi = () => {
                   <Row>
                     <Col md={6}>
                       <div className="form-group">
-                        <label for="Judul"> Nama </label>
+                        <label htmlFor="Judul"> Nama </label>
                         <input type="text" placeholder="" />
                       </div>
                     </Col>
                     <Col md={6}>
                       <div className="form-group">
-                        <label for="Judul"> Email </label>
+                        <label htmlFor="Judul"> Email </label>
                         <input type="text" placeholder="example@mail.com" disabled />
                       </div>
                     </Col>
@@ -181,7 +181,7 @@ const DetailApi = () => {
                   <Row>
                     <Col md={6}>
                       <div className="form-group">
-                        <label for="Judul"> File Download URL </label>
+                        <label htmlFor="Judul"> File Download URL </label>
                         <input type="text" placeholder="data.go.id/api/data" />
                       </div>
                     </Col>

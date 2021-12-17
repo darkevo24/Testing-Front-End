@@ -35,7 +35,7 @@ export const getPublicTentang = () => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       return Promise.resolve([]);
     });
 };
@@ -63,7 +63,7 @@ export const createTentang = (title, content, videourl) => {
       };
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       return null;
     });
 };
@@ -159,7 +159,7 @@ export const doTentangWorkflow = (id, action) => {
       return Promise.resolve({ success: true, message: message });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       return Promise.resolve({ success: false, message: err.message });
     });
 };

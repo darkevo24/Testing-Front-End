@@ -34,7 +34,7 @@ export default class CreatableSelectDropDown extends React.Component {
 
   render() {
     const { data, placeHolder, isLoading = false, isDisabled = false, defaultValue } = this.props;
-    const { selectedValues } = this.state;
+    // const { selectedValues } = this.state;
     return (
       <CreatableSelect
         options={data}

@@ -1,64 +1,68 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import cx from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 import SingleDropDown from 'components/DropDown/SingleDropDown';
 import Table, { FilterSearchInput } from 'components/Table';
-import { getCMSForumSDIData, cmsForumSdiGetListSelector } from './reducer';
-
-const DROPDOWN_LIST = [
-  {
-    value: 'All',
-    label: 'All',
-  },
-  {
-    value: 'Approved',
-    label: 'Approved',
-  },
-  {
-    value: 'Rejected',
-    label: 'Rejected',
-  },
-];
+import {
+  getCMSForumSDITags,
+  getCMSForumSDIStatus,
+  getCMSForumSDIListData,
+  cmsForumSDIGetListSelector,
+  cmsForumSDIGetStatusSelector,
+  cmsForumSDIGetTagsSelector,
+} from './reducer';
+import TableLoader from 'components/Loader/TableLoader';
 
 const CMSForumSDI = () => {
-  const [status, setStatus] = useState(DROPDOWN_LIST[0]);
-  const [searchText, setSearchText] = useState('');
   const dispatch = useDispatch();
+  const history = useHistory();
 
-  const { result, loading } = useSelector(cmsForumSdiGetListSelector);
+  const { payload, size, loading, page, records, totalRecords, totalPages } = useSelector(cmsForumSDIGetListSelector);
+  const { statusResult, statusLoading } = useSelector(cmsForumSDIGetStatusSelector);
+  const { tagsResult, tagsLoading } = useSelector(cmsForumSDIGetTagsSelector);
+
+  const gotoFormPage = () => {
+    history.push('/cms/forum-sdi/manage-forum-sdi');
+  };
 
   useEffect(() => {
-    dispatch(getCMSForumSDIData());
+    dispatch(getCMSForumSDITags());
+    dispatch(getCMSForumSDIStatus());
+    handleAPICall({ page: 0, payload: { q: '', status: '', tag: '' } });
   }, []);
+
   const redirectToDetail = (data) => {
-    console.log(data);
+    history.push(`/cms/forum-sdi-detail/${data.id}`);
   };
-  const getData = () => {
-    let data = [
-      {
-        judul_forum: '001',
-        topik: 'Komputer dan Jaringan',
-        author: 'Davis Geidt',
-        tanggaldibuat: '21-2-2020',
-        status: 'Published',
+
+  const handleAPICall = (params) => {
+    dispatch(getCMSForumSDIListData(params));
+  };
+
+  const handleTagChange = (selected) => {
+    handleAPICall({ page: 0, payload: { ...payload, tag: selected?.value || '' } });
+  };
+
+  const handleSearch = (value) => {
+    handleAPICall({ page: 0, payload: { ...payload, q: value } });
+  };
+
+  const handleStatusChange = (selected) => {
+    handleAPICall({
+      page: 0,
+      payload: {
+        ...payload,
+        status: selected?.value || '',
       },
-      {
-        judul_forum: '002',
-        topik: 'Matematika dan Statistik',
-        author: 'Erin Dias',
-        tanggaldibuat: '3-8-2021',
-        status: 'Archived',
-      },
-    ];
-    if (searchText) data = data.filter((item) => item.topik.toLowerCase().includes(searchText.toLowerCase()));
-    if (status.value === 'All') return data;
-    return data.filter((item) => item.status === status.value);
+    });
   };
 
   const columns = [
     {
       Header: 'Judul Forum',
-      accessor: 'judul_forum',
+      accessor: 'judul',
     },
     {
       Header: 'Topik',
@@ -66,11 +70,11 @@ const CMSForumSDI = () => {
     },
     {
       Header: 'Author',
-      accessor: 'author',
+      accessor: 'creator',
     },
     {
       Header: 'Tanggal Dibuat',
-      accessor: 'tanggaldibuat',
+      accessor: 'tanggalDibuat',
     },
     {
       Header: 'Status',
@@ -103,38 +107,57 @@ const CMSForumSDI = () => {
 
   const tableConfig = {
     columns,
-    data: getData(),
+    data: records || [],
     title: '',
-    search: true,
-    searchPlaceholder: 'Cari Forum',
-    searchButtonText: 'Search',
+    totalCount: totalRecords || null,
+    pageCount: totalPages || null,
+    pageSize: size,
+    currentPage: page,
+    manualPagination: true,
     showSearch: false,
     onSearch: () => {},
     variant: 'spaced',
+    onPageIndexChange: (currentPage) => {
+      if (currentPage !== page) {
+        handleAPICall({ page: currentPage, payload });
+      }
+    },
   };
+
+  const tagsResultList = (tagsResult?.content || []).map((tag) => ({ value: tag, label: tag }));
+  const statusResultList = (statusResult || [])?.map((status) => ({ value: status, label: status }));
+
   return (
-    <>
+    <div className="sdp-cms-forum-sdi-container">
       <label className="fw-bold fs-32 lh-32 p-32">Forum SDI</label>
       <div className="d-flex mx-32">
-        <button className="bg-info sdp-text-white br-4 border-0">+ Forum Baru</button>
+        <Button onClick={gotoFormPage} className="bg-info sdp-text-white br-4 border-0">
+          + Forum Baru
+        </Button>
         <div className="d-flex flex-grow-1 align-items-center justify-content-end">
           <div className="d-flex align-items-center">
-            <lable className="mr-12">Topik</lable>
-            <SingleDropDown data={DROPDOWN_LIST} defaultData={status} onChange={(data) => setStatus(data)} />
+            <label className="mr-12">Topik</label>
+            <SingleDropDown
+              isLoading={tagsLoading}
+              data={[{ value: '', label: 'All' }, ...tagsResultList]}
+              onChange={handleTagChange}
+            />
           </div>
           <div className="d-flex align-items-center ml-16">
-            <lable className="mr-12">Status</lable>
-            <SingleDropDown data={DROPDOWN_LIST} defaultData={status} onChange={(data) => setStatus(data)} />
+            <label className="mr-12">Status</label>
+            <SingleDropDown
+              isLoading={statusLoading}
+              data={[{ value: '', label: 'All' }, ...statusResultList]}
+              onChange={handleStatusChange}
+            />
           </div>
           <div className="ml-16">
-            <FilterSearchInput searchPlaceholder="Cari Forum" setGlobalFilter={(value) => setSearchText(value)} />
+            <FilterSearchInput searchPlaceholder="Cari Forum" setGlobalFilter={handleSearch} />
           </div>
         </div>
       </div>
-      <div className="p-32">
-        <Table {...tableConfig} />
-      </div>
-    </>
+      <div className="p-32">{loading ? <TableLoader /> : <Table {...tableConfig} />}</div>
+    </div>
   );
 };
 

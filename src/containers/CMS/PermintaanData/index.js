@@ -18,10 +18,10 @@ const bem = bn('content-table');
 
 const CMSPermintaanData = () => {
   const history = useHistory();
-  const [instansiId, setIntansiId] = useState();
+  // const [instansiId, setIntansiId] = useState();
   const [query, setQuery] = useState('');
   const dispatch = useDispatch();
-  const { size, loading, page, records, totalRecords, totalPages } = useSelector(permintaanDataSelector);
+  const { size, loading, page, records, totalRecords } = useSelector(permintaanDataSelector);
 
   const fetchDataset = (params) => {
     let obj = {
@@ -35,7 +35,7 @@ const CMSPermintaanData = () => {
     fetchDataset({ page: page || 0 });
   }, [query]);
   const updateInstansi = (val) => {
-    setIntansiId(val);
+    // setIntansiId(val);
   };
 
   const updateQuery = _.debounce((val) => {

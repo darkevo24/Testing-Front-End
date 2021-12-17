@@ -50,8 +50,7 @@ const KomunitasAhli = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { q, status, error, size, loading, page, records, totalRecords, totalPages } =
-    useSelector(cmsKomunitasAhliDatasetSelector);
+  const { q, status, size, loading, page, records, totalRecords, totalPages } = useSelector(cmsKomunitasAhliDatasetSelector);
 
   useEffect(() => {
     handleAPICall({ page: 0, q: '', status: '' });

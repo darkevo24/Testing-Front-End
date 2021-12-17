@@ -76,28 +76,62 @@
   }
 }
 
+.cms-forum-sdi-detail-wrapper {
+  .forum-sdi-detail-wrapper {
+    .cms-forum-sdi-input{
+      .input-data {
+        label {
+          background-color: $white;
+          border-radius: 32px;
+          width: auto;
+          height: 35px;
+          padding: 6px 20px;
+        }
+      }
+    }
+    .cms-forum-sdi-tag {
+      .tag-data{
+        label {
+          background-color: $white;
+          border-radius: 32px;
+          width: auto;
+          height: 35px;
+          padding: 6px 20px;
+        }
+      }
+    }
+  }
+}
+
 .cms-forum-sdi-forum-wrapper {
   .forum-sdi-wrapper {
     .basic-multi-select {
       .select-multi {
         &__multi-value {
+          justify-content: space-between;
+          background: rgba(0, 122, 255, 0.12);
           border-radius: 32px;
           width: 106px;
           height: 35px;
           align-items: center;
           padding: 8px 16px;
           &__label {
-            height: 22px;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 17px;
+            color: var(--info);
           }
         }
         &__value-container {
           padding-left: 16px;
           padding-top: 8px;
-          padding-bottom: 8px;.cms-forum-sdi-detail-wrapper {
+          padding-bottom: 8px;
+          .cms-forum-sdi-detail-wrapper {
             .forum-sdi-wrapper {
               .basic-multi-select {
                 .select-multi {
                   &__multi-value {
+                    justify-content: space-between;
                     border-radius: 32px;
                     width: 106px;
                     height: 35px;
@@ -118,6 +152,29 @@
           }
         }
       }
+    }
+    .cms-forum-sdi-input {
+      .input-data {
+        label {
+          padding: 6px 16px;
+          width: auto;
+          height: 34px;
+          border: 1px solid $stroke;
+          border-radius: 30px;
+        }
+      }
+    }
+  }
+
+  .tox-statusbar {
+    display: none;
+  }
+}
+
+.sdp-cms-forum-sdi-container {
+  .basic-single {
+    .select__control {
+      min-width: 180px;
     }
   }
 }

@@ -80,9 +80,10 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/daftar/:id" component={DaftarDetailPage} />
         <PrivateRoute exact path="/cms/permintaan-data" component={PermintaanData} />
         <PrivateRoute exact path="/cms/permintaan-data/:id" component={PermintaanDataDetail} />
-        <PrivateRoute exact path="/cms/forum-sdi" component={ForumSDIPage} />
-        <PrivateRoute exact path="/cms/forum-sdi/new" component={ForumSDIFormPage} />
+        <PrivateRoute exact path="/cms/forum-sdi/manage-forum-sdi/:id" component={ForumSDIFormPage} />
+        <PrivateRoute exact path="/cms/forum-sdi/manage-forum-sdi" component={ForumSDIFormPage} />
         <PrivateRoute exact path="/cms/forum-sdi-detail/:id" component={CMSForumSDIDetailPage} />
+        <PrivateRoute exact path="/cms/forum-sdi" component={ForumSDIPage} />
         <Route exact path="/cms" render={() => <Redirect to="/cms/dashboard" />} />
       </Switch>
     </CMSLayout>

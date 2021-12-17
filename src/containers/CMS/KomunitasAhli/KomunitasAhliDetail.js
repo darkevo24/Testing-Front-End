@@ -20,7 +20,7 @@ import RowLoader from 'components/Loader/RowLoader';
 import Spinner from 'react-bootstrap/Spinner';
 import Modal from 'components/Modal';
 import { apiUrls, deleteRequest, post } from 'utils/request';
-import { CMSModal } from './CMSModals';
+import { CMSModal } from '../../../components/CMSStatusModals';
 import { DetailHeader } from './detailHeader';
 
 export const getValue = (record, key) => {

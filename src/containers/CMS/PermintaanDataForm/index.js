@@ -35,7 +35,7 @@ const SuccessText = () => {
   return (
     <div className="d-flex">
       <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
-        <LeftChevron></LeftChevron>
+        <LeftChevron />
       </div>
       <Row className="permintaan-data-form-success fw-bold justify-content-center align-items-center">Selesai</Row>
     </div>
@@ -50,7 +50,7 @@ const TerkirimText = () => {
   return (
     <div className="d-flex">
       <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
-        <LeftChevron></LeftChevron>
+        <LeftChevron />
       </div>
       <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Terkirim</Row>
     </div>
@@ -65,7 +65,7 @@ const DiprosesText = () => {
   return (
     <div className="d-flex">
       <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
-        <LeftChevron></LeftChevron>
+        <LeftChevron />
       </div>
       <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">Terproses</Row>
     </div>
@@ -99,8 +99,8 @@ const CMSPermintaanDataView = () => {
   const [showTolakModal, isSetShowTolakModal] = useState(false);
   const [showProsesModal, isSetShowProsesModal] = useState(false);
   const [showSelesaiModal, isSetShowSelesaiModal] = useState(false);
-  const [trigger, setTrigger] = useState(false);
-
+  // const [trigger, setTrigger] = useState(false);
+  const trigger = false;
   const setShowTolakModal = () => {
     isSetShowTolakModal(true);
   };

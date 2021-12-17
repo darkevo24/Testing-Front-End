@@ -30,17 +30,17 @@ export default class MultiSelectDropdown extends React.Component {
     }
   }
 
-  handleOnChange = (selected, { action, removedValue }) => {
-    if (['remove-value', 'pop-value'].includes(action)) {
-      if (removedValue?.isFixed) {
-        return;
-      }
-    }
-
-    this.setState({ selectedValues: selected });
-    typeof this.props.onChange === 'function' && this.props.onChange(selected, this.props.type);
-    // this.props.on(selected, this.props.type);
-  };
+  // handleOnChange = (selected, { action, removedValue }) => {
+  //   if (['remove-value', 'pop-value'].includes(action)) {
+  //     if (removedValue?.isFixed) {
+  //       return;
+  //     }
+  //   }
+  //
+  //   this.setState({ selectedValues: selected });
+  //   typeof this.props.onChange === 'function' && this.props.onChange(selected, this.props.type);
+  //   // this.props.on(selected, this.props.type);
+  // };
 
   render() {
     const {
@@ -53,7 +53,7 @@ export default class MultiSelectDropdown extends React.Component {
       group,
       groupClass = 'mb-3',
       groupProps,
-      className,
+      // className,
       type = '',
       styles = {},
       isMulti = true,
@@ -62,7 +62,7 @@ export default class MultiSelectDropdown extends React.Component {
       disabled = false,
       data,
       onInputChange,
-      ...rest
+      // ...rest
     } = this.props;
     // const { type = '', placeHolder, data, isMulti = true, disabled = false, isClearable = true, styles = {} } = this.props;
     const dropdownNode = (

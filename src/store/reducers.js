@@ -20,6 +20,7 @@ import beritaCmsReducer from 'containers/CMS/BeritaBaru/reducer';
 import cmsKomunitasAhliReducer from 'containers/CMS/KomunitasAhli/reducer';
 import cmsAboutUsReducer from 'containers/CMS/AboutUs/reducer';
 import komunitasAhliReducer from 'containers/Komunitas/reducer';
+import forumSDIReducer from 'containers/ForumSDI/reducer';
 import userPortalBeritaReducer from 'containers/Berita/reducer';
 
 /**
@@ -42,6 +43,7 @@ export default function createReducer(injectedReducers) {
     cmsKomunitasAhli: cmsKomunitasAhliReducer,
     komunitasAhli: komunitasAhliReducer,
     userPortalBerita: userPortalBeritaReducer,
+    forumSDI: forumSDIReducer,
     router: connectRouter(history),
     ...injectedReducers,
   });

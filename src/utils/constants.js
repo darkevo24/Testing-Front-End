@@ -39,6 +39,7 @@ export const apiUrls = {
   cmsKomunitasAhliData: getCMSEndpoint('komunitas-ahli'),
   portalKomunitasAhliData: getPortalEndpoint('komunitas-ahli'),
   fileUpload: getApiEndpoint('file/upload'),
+  publiFileUpload: getApiEndpoint('file/public-upload'),
   uploadFoto: getApiEndpoint('file/public-image-upload'),
   bidangData: getCMSEndpoint('komunitas-ahli/bidang-keahlian'),
   daerahData: getV1Endpoint('kabupatenkota/search'),
@@ -60,7 +61,8 @@ export const apiUrls = {
   cmsAboutUs: getCMSEndpoint('tentang'),
   aboutUs: getApiEndpoint('public/tentang'),
   userBeritaPortal: getPublicV1Endpoint('berita'),
-  cmsForumSdi: getCMSEndpoint('forum-sdi'),
+  portalForumSDI: getPortalEndpoint('v1/forum-sdi'),
+  cmsForumSDI: getCMSEndpoint('forum-sdi'),
 };
 
 export const priorityOptions = [

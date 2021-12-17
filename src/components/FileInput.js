@@ -24,6 +24,10 @@ export const FileInput = ({
   }
   let finalClassName = inputClassnames.length ? inputClassnames.join(' ') : '';
 
+  const onFileChange = (files) => {
+    handleOnChange(rest.multiple ? files : files[0]);
+  };
+
   const inputNode = (
     <>
       {label && <Form.Label className={labelClass}>{label}</Form.Label>}
@@ -36,7 +40,7 @@ export const FileInput = ({
             <div className="sdp-input-wrapper">
               <Form.Control
                 type="file"
-                onChange={(e) => onChange(handleOnChange(e.target.files[0]))}
+                onChange={(e) => onChange(onFileChange(e.target.files))}
                 disabled={disabled}
                 {...rest}
                 className={finalClassName}

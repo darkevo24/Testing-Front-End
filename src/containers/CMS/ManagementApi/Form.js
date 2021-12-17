@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { ReactComponent as Union } from 'assets/union.svg';
@@ -104,11 +104,11 @@ const ApiForm = () => {
               </div>
             </div>
             <div className="form-group">
-              <label for="Judul">Source Api</label>
+              <label htmlFor="Judul">Source Api</label>
               <div className="box-input">
                 <div className="input-group">
                   <input className="custom-file-input" type="file" />
-                  <div class="input-group-append">Upload</div>
+                  <div className="input-group-append">Upload</div>
                 </div>
                 <div className="wrapper-union">
                   <Union />
@@ -121,7 +121,7 @@ const ApiForm = () => {
               </div>
             </div>
             <div className="form-group">
-              <label for="Judul">Max Data Parameter</label>
+              <label htmlFor="Judul">Max Data Parameter</label>
               <div className="box-input">
                 <input
                   type="text"
@@ -150,7 +150,7 @@ const ApiForm = () => {
               <div className="wrapper-data">
                 <div className="wrapper-title">
                   <h1>Source API</h1>
-                  <a href="#">(data-ckan-api.json)</a>
+                  <button>(data-ckan-api.json)</button>
                 </div>
                 <div className={bem.e('management-table')}>
                   <table>
@@ -179,13 +179,13 @@ const ApiForm = () => {
                   <Row>
                     <Col md={6}>
                       <div className="form-group">
-                        <label for="Judul"> Nama </label>
+                        <label htmlFor="Judul"> Nama </label>
                         <input type="text" placeholder="" />
                       </div>
                     </Col>
                     <Col md={6}>
                       <div className="form-group">
-                        <label for="Judul"> Email </label>
+                        <label htmlFor="Judul"> Email </label>
                         <input type="text" placeholder="example@mail.com" disabled />
                       </div>
                     </Col>
@@ -193,7 +193,7 @@ const ApiForm = () => {
                   <Row>
                     <Col md={6}>
                       <div className="form-group">
-                        <label for="Judul"> File Download URL </label>
+                        <label htmlFor="Judul"> File Download URL </label>
                         <input type="text" placeholder="data.go.id/api/data" />
                       </div>
                     </Col>
@@ -245,8 +245,8 @@ const ApiForm = () => {
                   <span> Output </span>
                   <div className="input-group">
                     <input type="text" placeholder="https://bappenas.go.id/data.json" />
-                    <div class="input-group-append">
-                      <span class="input-group-text">
+                    <div className="input-group-append">
+                      <span className="input-group-text">
                         <CopyJson />
                       </span>
                     </div>

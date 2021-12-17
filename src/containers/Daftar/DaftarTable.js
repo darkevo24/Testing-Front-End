@@ -29,7 +29,7 @@ const DaftarTable = ({
   onPilarSdgChange,
 }) => {
   const history = useHistory();
-  const [selectedRecord, setSelectedRecord] = useState(null);
+  // const [selectedRecord, setSelectedRecord] = useState(null);
   const [sortBy, setSortBy] = useState(null);
   const { pageSize, loading, params, bodyParams, result } = useSelector(daftarDataSelector);
   const dispatch = useDispatch();
@@ -61,7 +61,7 @@ const DaftarTable = ({
   }, [textSearch]);
 
   const showDaftarDetailPage = (data) => {
-    setSelectedRecord(data);
+    // setSelectedRecord(data);
     history.push(`/cms/daftar/${data.id}`);
   };
 

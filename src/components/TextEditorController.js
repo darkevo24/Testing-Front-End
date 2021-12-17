@@ -1,11 +1,11 @@
-import Select, { components } from 'react-select';
+// import Select, { components } from 'react-select';
 import { Editor } from '@tinymce/tinymce-react';
-import CreatableSelect from 'react-select/creatable';
+// import CreatableSelect from 'react-select/creatable';
 import Form from 'react-bootstrap/Form';
 import { Controller } from 'react-hook-form';
 import React from 'react';
-import cx from 'classnames';
-import isFunction from 'lodash/isFunction';
+// import cx from 'classnames';
+// import isFunction from 'lodash/isFunction';
 
 const EditorConfig = {
   height: 500,
@@ -35,13 +35,13 @@ export const TextEditorController = ({
   label,
   defaultValue,
   disabled,
-  onChange = () => {},
+  // onChange = () => {},
   group,
   groupClass = 'mb-3',
   groupProps,
   onInputChange,
   isCreatable = false,
-  ...rest
+  // ...rest
 }) => {
   const dropdownNode = (
     <>

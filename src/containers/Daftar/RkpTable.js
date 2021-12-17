@@ -21,7 +21,7 @@ const RkpTable = ({
 }) => {
   const dispatch = useDispatch();
   const [sortBy, setSortBy] = useState(null);
-  const { pageSize, loading, params, bodyParams, result } = useSelector(rkpDataSelector);
+  const { pageSize, params, bodyParams, result } = useSelector(rkpDataSelector);
 
   const fetchRkpData = (filterOverride = {}, reset = false) => {
     const { params: paramsOverride = {}, bodyParams: bodyParamsOverride = {} } = filterOverride;

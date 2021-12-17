@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { apiUrls, get } from 'utils/request';
 
-export const getBimtekSummaryMateriTerdekat = createAsyncThunk('portal/v1/bimtek/materi-terdekat', async (params) => {
+export const getBimtekSummaryMateriTerdekat = createAsyncThunk('getBimtekSummaryMateriTerdekat', async (params) => {
   const response = await get(apiUrls.bimtekSummaryMateriTerdekat);
   return response?.data?.content;
 });
-export const getBimtekSummaryJadwalTerdekat = createAsyncThunk('portal/v1/bimtek/jadwal-terdekat', async (params) => {
+export const getBimtekSummaryJadwalTerdekat = createAsyncThunk('getBimtekSummaryJadwalTerdekat', async (params) => {
   const response = await get(apiUrls.bimtekSummaryJadwalTerdekat);
   return response?.data?.content;
 });

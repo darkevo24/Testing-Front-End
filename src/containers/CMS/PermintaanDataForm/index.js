@@ -17,6 +17,7 @@ import {
   postPermintaanDataSelesai,
   postPermintaanDataTolak,
 } from './reducer';
+import Notification from 'components/Notification';
 import { Input } from 'components';
 import bn from 'utils/bemNames';
 import { LogStatus } from 'components/Sidebars/LogStatus';
@@ -131,18 +132,18 @@ const CMSPermintaanDataView = () => {
 
   const schema = yup
     .object({
-      id: yup.mixed().required(),
-      namaPeminta: yup.mixed().required(),
-      deskripsi: yup.mixed().required(),
-      jenisData: yup.string().required(),
-      tanggaltarget: yup.string().required(),
-      produsen: yup.mixed().required(),
-      tipe: yup.mixed().required(),
-      tanggalPermintaan: yup.string().required(),
-      tujuanPermintaan: yup.string().required(),
-      status: yup.mixed().required(),
-      catatan: yup.mixed().required(),
-      urlDataset: yup.string().required(),
+      // id: yup.mixed().required(),
+      // namaPeminta: yup.mixed().required(),
+      // deskripsi: yup.mixed().required(),
+      // jenisData: yup.string().required(),
+      // tanggaltarget: yup.string().required(),
+      // produsen: yup.mixed().required(),
+      // tipe: yup.mixed().required(),
+      // tanggalPermintaan: yup.string().required(),
+      // tujuanPermintaan: yup.string().required(),
+      // status: yup.mixed().required(),
+      catatan: yup.string().required(),
+      // urlDataset: yup.string().required(),
     })
     .required();
 
@@ -154,7 +155,18 @@ const CMSPermintaanDataView = () => {
   };
 
   const onSubmitTolak = (data) => {
-    dispatch(postPermintaanDataTolak(id));
+    // alert('ok');
+    let obj = {
+      id,
+      catatan: data.catatan,
+    };
+    dispatch(postPermintaanDataTolak(obj)).then((res) => {
+      Notification.show({
+        type: 'secondary',
+        message: <div> Permintaan Data Berhasil Ditolak </div>,
+        icon: 'check',
+      });
+    });
     hideTolakModal();
   };
 
@@ -189,8 +201,6 @@ const CMSPermintaanDataView = () => {
       },
     },
   });
-
-  console.log(data);
 
   return (
     <div>
@@ -268,7 +278,7 @@ const CMSPermintaanDataView = () => {
         <Col sm={3} className="my-5">
           <LogStatus data={dataLog} />
         </Col>
-        <Modal showHeader={false} visible={showTolakModal} onClose={() => hideTolakModal()}>
+        <Modal className="modal-tolak" showHeader={false} visible={showTolakModal} onClose={() => hideTolakModal()}>
           <div className="mt-20 mb-20">
             <p className="font-weight-bold mb-0">
               Apakah anda yakin ingin
@@ -277,7 +287,7 @@ const CMSPermintaanDataView = () => {
             </p>
             PD00013?
           </div>
-          <Form id={tolakFormId} onSubmit={handleSubmit(onSubmitTolak)} noValidate>
+          <Form onSubmit={handleSubmit(onSubmitTolak)} noValidate>
             <Form.Group as={Col} md="12" className="mb-16">
               <Input
                 name="catatan"
@@ -288,12 +298,13 @@ const CMSPermintaanDataView = () => {
                 type="text"
                 error={errors.catatan?.message}
               />
+              <span className="length">0/140</span>
             </Form.Group>
             <div className="d-flex justify-content-end">
               <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => hideTolakModal()}>
                 Batal
               </Button>
-              <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => onSubmitTolak()}>
+              <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
                 proses
               </Button>
             </div>
@@ -329,7 +340,7 @@ const CMSPermintaanDataView = () => {
               <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => hideProsesModal()}>
                 Batal
               </Button>
-              <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => onSubmitProses()}>
+              <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
                 proses
               </Button>
             </div>

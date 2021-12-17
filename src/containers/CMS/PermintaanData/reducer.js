@@ -31,7 +31,7 @@ export const getInstansi = createAsyncThunk('permintaan-data/instansi', async (p
 export const getUnitkerja = createAsyncThunk('permintaan-data/unitkerja', async (params) => {
   const response = await get(`${apiUrls.instansiData}/${params}/unitkerja`);
   console.log(response);
-  // return response?.data.content?.records;
+  return response?.data.content;
 });
 
 const permintaanDataDetailSlice = createSlice({

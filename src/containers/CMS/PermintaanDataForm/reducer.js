@@ -23,7 +23,7 @@ export const getPermintaanDataDetailLog = createAsyncThunk('/permintaan-data/det
 });
 
 export const postPermintaanDataTolak = createAsyncThunk('/permintaan-data/tolak', async (params) => {
-  const response = await post(`${apiUrls.detailPermintaanData}/${params}/tolak`, { catatan: 'tolak' });
+  const response = await post(`${apiUrls.detailPermintaanData}/${params.id}/tolak`, { catatan: params.catatan });
   return response?.result;
 });
 

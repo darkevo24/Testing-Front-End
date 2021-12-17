@@ -21,7 +21,8 @@ const CMSPermintaanData = () => {
   const [instansiId, setIntansiId] = useState(0);
   const [query, setQuery] = useState('');
   const dispatch = useDispatch();
-  const { size, loading, page, records, totalRecords, instansi } = useSelector(permintaanDataSelector);
+  const { size, loading, page, records, totalRecords, instansi, unitKerja } = useSelector(permintaanDataSelector);
+  console.log(unitKerja);
   const fetchDataset = (params) => {
     let obj = {
       page: params.page,
@@ -55,23 +56,50 @@ const CMSPermintaanData = () => {
     setQuery(val);
   }, 500);
 
+  const status = [
+    {
+      id: 1,
+      status: 'DRAFT',
+    },
+    {
+      id: 2,
+      status: 'TERKIRIM',
+    },
+    {
+      id: 3,
+      status: 'DIPROSES',
+    },
+    {
+      id: 4,
+      status: 'SELESAI',
+    },
+    {
+      id: 5,
+      status: 'DIBATALKAN',
+    },
+    {
+      id: 6,
+      status: 'DITOLAK',
+    },
+  ];
+
   const columns = [
     {
       Header: 'Id',
-      accessor: 'perminataanID',
+      accessor: 'id',
       Cell: ({ ...rest }) => <span>{prefixID(rest?.row?.original?.id || '')}</span>,
     },
     {
       Header: 'Nama Peminta',
-      accessor: 'user.name',
+      accessor: 'user?.name',
     },
     {
       Header: 'Instansi',
-      accessor: 'instansi.nama',
+      accessor: 'instansi?.id',
     },
     {
       Header: 'Unit Kerja',
-      accessor: 'instansi.unitKerja[0]',
+      accessor: 'instansi?.unitKerja[0]',
     },
     {
       Header: 'Deskripsi Data',
@@ -82,7 +110,7 @@ const CMSPermintaanData = () => {
       accessor: 'tanggalTarget',
       Cell: ({ ...rest }) => (
         <span>
-          {rest.row.original?.tanggalTarget ? moment(rest.row.original.tanggalTarget).format('DD MMMM YYYY') : '---'}
+          {rest.row.original?.tanggalTarget ? moment(rest.row.original?.tanggalTarget).format('DD MMMM YYYY') : '---'}
         </span>
       ),
     },
@@ -94,7 +122,7 @@ const CMSPermintaanData = () => {
       Header: 'Tanggal Permintaan',
       accessor: 'tanggalPermintaan',
       Cell: ({ ...rest }) => (
-        <span> {rest.row.original?.createdAt ? moment(rest.row.original.createdAt).format('DD MMMM YYYY') : '---'} </span>
+        <span> {rest.row.original?.createdAt ? moment(rest.row.original?.createdAt).format('DD MMMM YYYY') : '---'} </span>
       ),
     },
     {
@@ -146,11 +174,11 @@ const CMSPermintaanData = () => {
       <div className={bem.e('header')}>
         <div className={bem.e('title pb-20')}>Permintaan Data</div>
         <Row className="justify-content-between">
-          <Col className="d-flex align-items-center" md={8}>
+          <Col className="option" md={8}>
             <Form.Group className="d-flex align-items-center mr-10">
               <Form.Label className="mb-0 pr-10">Instansi</Form.Label>
               <Form.Select aria-label="Default select example" onChange={(e) => updateInstansi(e.target.value)}>
-                <option value="0">Kosong</option>
+                <option value="0">-PILIH-</option>
                 {instansi &&
                   instansi.map((data, index) => {
                     return (
@@ -163,18 +191,30 @@ const CMSPermintaanData = () => {
             </Form.Group>
             <Form.Group className="d-flex align-items-center mr-10">
               <Form.Label className="unit-kerja">Unit Kerja</Form.Label>
-              <Form.Select aria-label="Default select example" onChange={(e) => updateInstansi(e.target.value)}>
-                <option value="0">Kosong</option>
-                <option value="1">Badan Pusat</option>
-                <option value="2">Badan Pusat 2</option>
+              <Form.Select aria-label="Default select example">
+                <option value="0">-PILIH-</option>
+                {unitKerja &&
+                  unitKerja.map((data, index) => {
+                    return (
+                      <option key={index} value={data?.id}>
+                        {data?.content}
+                      </option>
+                    );
+                  })}
               </Form.Select>
             </Form.Group>
             <Form.Group className="d-flex align-items-center mr-10">
               <Form.Label className="mb-0 pr-10">Status</Form.Label>
-              <Form.Select aria-label="Default select example" onChange={(e) => updateInstansi(e.target.value)}>
-                <option value="0">Menunggu Persetujuan</option>
-                <option value="1">Badan Pusat</option>
-                <option value="2">Badan Pusat 2</option>
+              <Form.Select aria-label="Default select example">
+                <option value="0">-PILIH-</option>
+                {status &&
+                  status.map((data, index) => {
+                    return (
+                      <option key={index} value={data.id}>
+                        {data.status}
+                      </option>
+                    );
+                  })}
               </Form.Select>
             </Form.Group>
           </Col>

@@ -128,13 +128,37 @@
 .sdp-content-table__section {
   &.cms-permintaan-data {
     .sdp-content-table__header {
-      .unit-kerja {
-        margin-bottom: 0;
-        padding-right: 10px;
-        width: 110px;
+      .option {
+        display: grid;
+        grid-template-columns: 33% 33% 33%;
+        .unit-kerja {
+          width:120px;
+          margin:0px;
+        }
       }
       .form-select {
         background-color: $gray-bg;
+      }
+    }
+  }
+}
+
+.sdp-modal {
+  &.modal-tolak {
+    .modal-dialog {
+        width: 382px;
+      .modal-body {
+        width: 382px;
+        .sdp-input-wrapper {
+          position: relative;
+        }
+        .length{
+          position: absolute;
+          right: 23px;
+          bottom: 74px;
+          color: $gray;
+          font-size: 14px;
+        }
       }
     }
   }

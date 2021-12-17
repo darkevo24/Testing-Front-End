@@ -62,6 +62,8 @@ export const apiUrls = {
   userBeritaPortal: getPublicV1Endpoint('berita'),
   bimtekSummaryMateriTerdekat: getPortalEndpoint('v1/bimtek/materi-terdekat'),
   bimtekSummaryJadwalTerdekat: getPortalEndpoint('v1/bimtek/jadwal-terdekat'),
+  bimtekJadwal: getPortalEndpoint('v1/bimtek/jadwal'),
+  bimtekJadwalTags: getCMSEndpoint('bimtek/tags'),
 };
 
 export const priorityOptions = [

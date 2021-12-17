@@ -6,6 +6,8 @@ import Table, { FilterSearchInput } from 'components/Table';
 import SingleDropDown from 'components/DropDown/SingleDropDown';
 import { getCMSKomunitasAhliData, cmsKomunitasAhliDatasetSelector } from './reducer';
 import TableLoader from 'components/Loader/TableLoader';
+import { ComponentAccessibility } from 'components/ComponentAccess';
+import { USER_ROLES } from 'utils/constants';
 
 const DROPDOWN_LIST = [
   {
@@ -143,12 +145,17 @@ const KomunitasAhli = () => {
     <div className="sdp-komunitas-container">
       <label className="fw-bold fs-32 lh-32 p-32">Komunitas Ahli</label>
       <div className="d-flex mx-32 justify-content-between">
-        <button
-          className="bg-info sdp-text-white  br-4 py-13 px-16 border-0"
-          onClick={() => history.push('/cms/manage-komunitas-ahli')}>
-          + Ahli Baru
-        </button>
-        <div className="sdp-left-wrapper d-flex align-items-center">
+        <div>
+          <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR, USER_ROLES.CONTENT_CREATOR]}>
+            <button
+              className="bg-info sdp-text-white  br-4 py-13 px-16 border-0"
+              onClick={() => history.push('/cms/manage-komunitas-ahli')}>
+              + Ahli Baru
+            </button>
+          </ComponentAccessibility>
+        </div>
+
+        <div className="sdp-left-wrapper d-flex align-items-center justify-content-end">
           <label className="mr-12">Status</label>
           <SingleDropDown data={DROPDOWN_LIST} defaultData={status} onChange={handleStatusChange} />
           <FilterSearchInput searchPlaceholder="Cari..." globalFilter={q} setGlobalFilter={handleSearch} />

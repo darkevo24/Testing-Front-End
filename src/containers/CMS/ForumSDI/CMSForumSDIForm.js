@@ -104,7 +104,6 @@ const CMSForumSDIForm = () => {
   const isValidFile = (size, file, key, message) => {
     const clone = { ...errorInfo };
     const isValid = file?.size < size;
-    debugger;
     if (!isValid) {
       setErrorInfo({
         ...errorInfo,

@@ -43,31 +43,36 @@ const FooterLink = styled.a`
 `;
 
 export const Top = ({ history, token }) => {
+  const indexes = [
+    {
+      title: 'Beranda',
+      link: '/home',
+    },
+    {
+      title: 'Dataset',
+      link: !!token ? '/dataset' : '/topic-detail',
+    },
+  ];
+  if (token) {
+    indexes.push({
+      title: 'Dashboard',
+      link: '/kesiapan-sdi',
+    });
+  }
+  indexes.push(
+    {
+      title: 'Berita',
+      link: '/berita',
+    },
+    {
+      title: 'Tentang',
+      link: '/tentang',
+    },
+  );
   const List = [
     {
       title: 'Indeks',
-      linkList: [
-        {
-          title: 'Beranda',
-          link: '/home',
-        },
-        {
-          title: 'Dataset',
-          link: !!token ? '/dataset' : '/topic-detail',
-        },
-        {
-          title: 'Dashboard',
-          link: '/kesiapan-sdi',
-        },
-        {
-          title: 'Berita',
-          link: '/berita',
-        },
-        {
-          title: 'Tentang',
-          link: '/tentang',
-        },
-      ],
+      linkList: indexes,
     },
     {
       title: 'Links',

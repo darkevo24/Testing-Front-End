@@ -78,6 +78,10 @@ function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
+  if ([401].includes(response.status)) {
+    removeAllCookie();
+    window.location.reload();
+  }
   const error = new ResponseError(response);
   error.response = response;
   throw error;
@@ -127,10 +131,6 @@ export async function request(url, { method = 'GET', headers: optionHeaders = {}
     fetchResponse = error.response;
   }
   const response = checkStatus(fetchResponse);
-  if ([401].includes(response.status)) {
-    removeAllCookie();
-    window.location.reload();
-  }
   return parseResponse(response);
 }
 

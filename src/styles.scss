@@ -1,5 +1,8 @@
 @import 'assets/styles/global';
 
+body {
+  overflow: hidden;
+}
 #root {
   overflow: overlay;
   overflow-x: hidden;
@@ -21,4 +24,8 @@
 
 .w-fit-content {
   width: fit-content;
+}
+
+.box-shadow-none {
+  box-shadow: none;
 }

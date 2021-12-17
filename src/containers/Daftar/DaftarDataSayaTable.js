@@ -22,6 +22,7 @@ const DaftarDataSayaTable = ({
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDaftarFormVisible, setIsDaftarFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const [sortBy, setSortBy] = useState(null);
   const dispatch = useDispatch();
   const { pageSize, loading, params, bodyParams, result } = useSelector(sayaDataSelector);
 
@@ -50,6 +51,12 @@ const DaftarDataSayaTable = ({
   useEffect(() => {
     fetchSayaData({ bodyParams: { textSearch } });
   }, [textSearch]);
+
+  const onSortChange = ({ id, sortId, isSortedDesc }) => {
+    const desc = isSortedDesc === undefined ? false : !isSortedDesc;
+    setSortBy({ id, sortId, desc });
+    fetchSayaData({ params: { sortBy: sortId, sortDirection: desc ? 'DESC' : 'ASC' } });
+  };
 
   const handleDropdownFilter = (filter) => (selectedValue) => {
     fetchSayaData({ bodyParams: { [filter]: selectedValue.value } });
@@ -128,36 +135,42 @@ const DaftarDataSayaTable = ({
       {
         Header: 'Instansi',
         accessor: 'instansi',
+        sortId: 0,
       },
       {
         Header: 'Nama Data',
         accessor: 'nama',
+        sortId: 1,
         Cell: (data) => truncate(data.cell.value, { length: 20 }),
       },
       {
         Header: 'Jadwal Pemutakhiran',
         accessor: 'jadwalPemutakhiran',
+        sortId: 2,
         Cell: (data) => JADWAL_PERMUTAKHIRAN[data.cell.value],
       },
       {
         Header: 'Dibuat',
         accessor: 'tanggalDibuat',
+        sortId: 3,
       },
       {
         Header: 'Diperbarui',
         accessor: 'tanggalDiperbaharui',
+        sortId: 4,
       },
       {
         Header: 'Produsen Data',
         accessor: 'produsenData',
+        sortId: 5,
       },
       {
         Header: 'Label',
         accessor: 'label',
-        Cell: ({ cell: { row, value = [] } }) => (
+        Cell: ({ cell: { row: { id: rowId, original: item } = {} } = {} }) => (
           <div className={bem.e('tag-wrapper')}>
-            {value.map((label) => (
-              <div key={`${row.id}-${label}`} className={bem.e('tag')}>
+            {[item.labelKodePilar, item.labelKodePnrkp].filter(Boolean).map((label) => (
+              <div key={`${rowId}-${label}`} className={bem.e('tag')}>
                 {label}
               </div>
             ))}
@@ -191,6 +204,8 @@ const DaftarDataSayaTable = ({
     data,
     totalCount: result?.content?.totalRecords || null,
     pageSize,
+    sortBy,
+    onSortChange,
     manualPagination: true,
     currentPage: params.page,
     showSearch: false,

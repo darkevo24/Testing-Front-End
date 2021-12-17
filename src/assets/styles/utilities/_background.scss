@@ -34,6 +34,14 @@
 
 @include bg-variant(".bg-blue-light", rgba(0, 122, 255, 0.12));
 
+@include bg-variant(".bg-blue", #007AFF);
+
+@include bg-variant(".bg-orange", #FF912C);
+
+@include bg-variant(".bg-red", #E91D28);
+
+@include bg-variant(".bg-teal", #35D0DA);
+
 .bg-secondary-translucent {
   background-color: rgba($color: $secondary, $alpha: 0.5);
 }

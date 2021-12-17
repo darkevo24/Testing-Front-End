@@ -1,16 +1,14 @@
 import { useState } from 'react';
+import moment from 'moment';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { Search, ModalAlertDanger } from 'components/Icons';
 import Button from 'react-bootstrap/Button';
-import { CMSTable } from 'components';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { DatePicker } from 'components';
-import { ReactComponent as Prev } from 'assets/prev.svg';
-import { ReactComponent as Next } from 'assets/next.svg';
-import { Modal } from 'components';
+import { Search, ModalAlertDanger } from 'components/Icons';
+import { Modal, Table } from 'components';
 import bn from 'utils/bemNames';
 
 const bem = bn('log-activity');
@@ -32,6 +30,15 @@ const LogActivity = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const rowClick = (data) => {
+    // history.push(`/cms/permintaan-data/${data.id}`);
+  };
+
+  const getRowClass = (data) => {
+    // if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
+    // return 'bg-gray';
+  };
+
   const LIST_TABLE = [
     {
       id_user: 'ibrohim@gmail.com',
@@ -57,53 +64,97 @@ const LogActivity = () => {
     {
       id_user: 'ibrohim@gmail.com',
       ip: '120.722.322',
-      time: '22/10/2021',
+      time: new Date().getTime(),
       activity: 'Membuat permintaan data baru PD00021',
       status: 'Berhasil',
     },
     {
       id_user: 'ibrohim@gmail.com',
       ip: '120.722.322',
-      time: '22/10/2021',
+      time: new Date().getTime(),
       activity: 'Membuat permintaan data baru PD00021',
       status: 'Berhasil',
     },
     {
       id_user: 'ibrohim@gmail.com',
       ip: '120.722.322',
-      time: '22/10/2021',
+      time: new Date().getTime(),
       activity: 'Membuat permintaan data baru PD00021',
       status: 'Berhasil',
     },
     {
       id_user: 'ibrohim@gmail.com',
       ip: '120.722.322',
-      time: '22/10/2021',
+      time: new Date().getTime(),
       activity: 'Membuat permintaan data baru PD00021',
       status: 'Error',
     },
     {
       id_user: 'ibrohim@gmail.com',
       ip: '120.722.322',
-      time: '22/10/2021',
+      time: new Date().getTime(),
       activity: 'Membuat permintaan data baru PD00021',
       status: 'Gagal',
     },
     {
       id_user: 'ibrohim@gmail.com',
       ip: '120.722.322',
-      time: '22/10/2021',
+      time: new Date().getTime(),
       activity: 'Membuat permintaan data baru PD00021',
       status: 'Error',
     },
     {
       id_user: 'ibrohim@gmail.com',
       ip: '120.722.322',
-      time: '22/10/2021',
+      time: new Date().getTime(),
       activity: 'Membuat permintaan data baru PD00021',
       status: 'Gagal',
     },
   ];
+
+  const columns = [
+    {
+      Header: 'ID Pengguna',
+      accessor: 'id_user',
+    },
+    {
+      Header: 'Alamat IP',
+      accessor: 'ip',
+    },
+    {
+      Header: 'Waktu',
+      accessor: 'tanggalTarget',
+      Cell: ({ ...rest }) => (
+        <span> {rest.row.original?.tanggalTarget ? moment(rest.row.original?.time).format('DD MMMM YYYY') : '---'} </span>
+      ),
+    },
+    {
+      Header: 'Activity',
+      accessor: 'activity',
+    },
+  ];
+
+  const tableConfig = {
+    className: 'cms-permintaan-data',
+    columns,
+    data: LIST_TABLE,
+    title: '',
+    showSearch: false,
+    onSearch: () => {},
+    variant: 'link',
+    totalCount: 10,
+    pageSize: 10,
+    currentPage: 1,
+    manualPagination: true,
+    onRowClick: rowClick,
+    rowClass: getRowClass,
+    onPageIndexChange: (currentPage) => {
+      if (currentPage !== 1) {
+        // fetchDataset({ page: currentPage });
+      }
+    },
+  };
+
   return (
     <div className="sdp-log-activity">
       <div className="container">
@@ -150,7 +201,7 @@ const LogActivity = () => {
             </InputGroup>
           </div>
         </div>
-        <CMSTable
+        {/* <CMSTable
           customWidth={[20, 20, 20, 25, 15]}
           header={['ID Pengguna', 'Alamat IP', 'Waktu', 'Aktivitas']}
           data={LIST_TABLE.map((item) => {
@@ -160,8 +211,11 @@ const LogActivity = () => {
             };
             return value;
           })}
-        />
-        <div className="wrapper-pagination pt-25">
+        /> */}
+        <div className="p-30">
+          <Table {...tableConfig} />
+        </div>
+        {/* <div className="wrapper-pagination pt-25">
           <ul className="pagination">
             <li className="page-item">
               <a className="page-link prev" href="#">
@@ -194,7 +248,7 @@ const LogActivity = () => {
               </a>
             </li>
           </ul>
-        </div>
+        </div> */}
       </div>
       <Modal className="cms-log-activity" showHeader={false} visible={modalProfile} onClose={() => setModalProfile(false)}>
         <div className="alert">

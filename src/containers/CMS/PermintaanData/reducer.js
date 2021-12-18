@@ -22,7 +22,6 @@ export const getPermintaanData = createAsyncThunk('permintaan-data/list', async 
   const response = await get(apiUrls.listPermintaanData, {
     query: { page: params.page + 1, size: 10, unitKerja: params.unitKerja, status: params.status, q: params.q },
   });
-  console.log(params.unitKerja);
   return response;
 });
 
@@ -52,8 +51,8 @@ const permintaanDataDetailSlice = createSlice({
       state.dataset.totalRecords = action.payload.data.content.totalRecords;
     });
     builder.addCase(getPermintaanData.rejected, (state, action) => {
-      state.loading = false;
-      state.error = 'Invalid data';
+      state.dataset.loading = false;
+      state.dataset.error = 'Invalid data';
     });
     builder.addCase(getInstansi.pending, (state, action) => {
       state.dataset.loading = true;

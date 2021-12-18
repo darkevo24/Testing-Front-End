@@ -231,7 +231,7 @@ const CMSPermintaanData = () => {
           </Col>
         </Row>
       </div>
-      <div className="px-30 pt-0"> {!loading && <Table {...tableConfig} />} </div>
+      <div className="px-30 pt-0"> {!loading ? <Table {...tableConfig} /> : <Loader fullscreen={true} />} </div>
     </div>
   );
 };

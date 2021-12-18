@@ -11,6 +11,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'components/Table';
 import bn from 'utils/bemNames';
 import { Search } from 'components/Icons';
+import { Loader } from 'components';
 import { prefixID } from './constant';
 import { getInstansi, getUnitkerja, getPermintaanData, permintaanDataSelector } from './reducer';
 

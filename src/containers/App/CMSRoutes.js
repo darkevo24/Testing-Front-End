@@ -26,7 +26,7 @@ const BimtekDokumentasiDetailPage = lazy(() => import('containers/CMS/BimtekDoku
 const KesiapanSDI = lazy(() => import('containers/CMS/DashboardManage/KesiapanSDI'));
 const DashboardEksekutifPage = lazy(() => import('containers/CMS/DashboardManage/DashboardEksekutif'));
 const DataAnalyticPage = lazy(() => import('containers/CMS/DashboardManage/DataAnalytic'));
-const DaftarPage = lazy(() => import('containers/CMS/Daftar'));
+const CMSDaftarPage = lazy(() => import('containers/CMS/Daftar'));
 const DaftarDetailPage = lazy(() => import('containers/CMS/Daftar/CMSDaftarDetail'));
 const PermintaanData = lazy(() => import('containers/CMS/PermintaanData/index'));
 const PermintaanDataDetail = lazy(() => import('containers/CMS/PermintaanDataForm/index'));
@@ -36,11 +36,16 @@ const ManagementApiForm = lazy(() => import('containers/CMS/ManagementApi/Form')
 const ManagementApiDetail = lazy(() => import('containers/CMS/ManagementApi/DetailApi'));
 const ManagementApiEdit = lazy(() => import('containers/CMS/ManagementApi/EditApi'));
 // const LogActivity = lazy(() => import('containers/CMS/LogAktifitas'));
+const ForumSDIPage = lazy(() => import('containers/CMS/ForumSDI'));
+const ForumSDIFormPage = lazy(() => import('containers/CMS/ForumSDI/CMSForumSDIForm'));
+const CMSForumSDIDetailPage = lazy(() => import('containers/CMS/ForumSDI/CMSForumSDIDetail'));
 
 function CMSRoutes() {
   return (
     <CMSLayout>
       <Switch>
+        <PrivateRoute exact path="/cms/manage-komunitas-ahli/:id" component={ManageKomunitasAhliPage} />
+        <PrivateRoute exact path="/cms/manage-komunitas-ahli/" component={ManageKomunitasAhliPage} />
         {/* <PrivateRoute exact path="/cms/log-activity" component={LogActivity} /> */}
         <PrivateRoute exact path="/cms/api/edit/:id?" component={ManagementApiEdit} />
         <PrivateRoute exact path="/cms/api-detail/:id" component={ManagementApiDetail} />
@@ -71,10 +76,14 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/kesiapan-sdi" component={KesiapanSDI} />
         <PrivateRoute exact path="/cms/dashboard-eksekutif" component={DashboardEksekutifPage} />
         <PrivateRoute exact path="/cms/data-analytic" component={DataAnalyticPage} />
-        <PrivateRoute exact path="/cms/daftar" component={DaftarPage} />
-        <PrivateRoute exact path="/cms/daftar-detail/:id" component={DaftarDetailPage} />
+        <PrivateRoute exact path="/cms/daftar" component={CMSDaftarPage} />
+        <PrivateRoute exact path="/cms/daftar/:id" component={DaftarDetailPage} />
         <PrivateRoute exact path="/cms/permintaan-data" component={PermintaanData} />
         <PrivateRoute exact path="/cms/permintaan-data/:id" component={PermintaanDataDetail} />
+        <PrivateRoute exact path="/cms/forum-sdi/manage-forum-sdi/:id" component={ForumSDIFormPage} />
+        <PrivateRoute exact path="/cms/forum-sdi/manage-forum-sdi" component={ForumSDIFormPage} />
+        <PrivateRoute exact path="/cms/forum-sdi-detail/:id" component={CMSForumSDIDetailPage} />
+        <PrivateRoute exact path="/cms/forum-sdi" component={ForumSDIPage} />
         <Route exact path="/cms" render={() => <Redirect to="/cms/dashboard" />} />
       </Switch>
     </CMSLayout>

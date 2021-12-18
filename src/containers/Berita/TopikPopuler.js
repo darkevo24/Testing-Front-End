@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { ReactComponent as StarRed } from 'assets/star-red.svg';
 import { ReactComponent as ArrowRightRed } from 'assets/arrow-right-red.svg';
 import styled from 'styled-components';
+import { getPopularTopic, popularTopicSelector } from './reducer';
 
 const Wrapper = styled.div`
   margin-bottom: 40px;
@@ -25,21 +28,28 @@ const Title = styled.span`
   margin-left: 12px;
 `;
 
-const topics = ['Satu Data MKG', 'Rumah Data Riau', 'Data Geospasial'];
+const TopikPopuler = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getPopularTopic('populer/tagline'));
+  }, []);
+  const { records: dataPopularTopic } = useSelector(popularTopicSelector);
 
-const TopikPopuler = (props) => {
   return (
     <Wrapper>
       <TopikItem>
         <StarRed />
         <Title>Topik Populer</Title>
       </TopikItem>
-      {Array.apply(null, { length: props.jumlah }).map((e, i) => (
-        <TopikItem className="child" key={'tp' + i}>
-          <span>{topics[i % 3]}</span>
-          <ArrowRightRed />
-        </TopikItem>
-      ))}
+      {dataPopularTopic.length > 0 &&
+        dataPopularTopic.map((value, index) => {
+          return (
+            <TopikItem className="child" key={index}>
+              <span>{value.keterangan}</span>
+              <ArrowRightRed />
+            </TopikItem>
+          );
+        })}
     </Wrapper>
   );
 };

@@ -12,7 +12,7 @@ import Container from 'react-bootstrap/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { logout, tokenSelector, userSelector } from 'containers/Login/reducer';
-import { TOPIC_LIST, getAnalyticsUrl } from 'utils/constants';
+import { getAnalyticsUrl } from 'utils/constants';
 
 import Logo from 'assets/logo-satu.jpg';
 

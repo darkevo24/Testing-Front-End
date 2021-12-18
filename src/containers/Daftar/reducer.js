@@ -54,6 +54,15 @@ export const initialState = {
     loading: false,
     error: null,
   },
+  daftarDetails: {
+    error: null,
+    loading: null,
+    result: {},
+  },
+  downloadDaftarData: {
+    loading: false,
+    error: null,
+  },
   daftarData: {
     loading: false,
     error: null,
@@ -126,6 +135,11 @@ export const getDaftarDataSummary = createAsyncThunk('daftar/getDaftarDataSummar
   return response?.data?.content;
 });
 
+export const getDaftarDetail = createAsyncThunk('daftar/getDaftarDetail', async (id) => {
+  const response = await get(`${apiUrls.katalogData}/${id}`);
+  return response?.data?.content;
+});
+
 export const getDaftarData = createAsyncThunk('daftar/getDaftarData', async (filters = {}) => {
   const query = incrementPageParams(filters.params);
   const response = await post(apiUrls.daftarDataList, filters.bodyParams, { query });
@@ -185,6 +199,11 @@ export const getAddDaftarRKPpp = createAsyncThunk('daftarData/getAddDaftarRKPpp'
   return response?.data?.content;
 });
 
+export const downloadDaftarData = createAsyncThunk('daftarData/downloadDaftarData', async (params) => {
+  const response = await post(apiUrls.daftarDataDownload, params);
+  return response?.data;
+});
+
 const daftarSlice = createSlice({
   name: DAFTAR_REDUCER,
   initialState,
@@ -200,6 +219,18 @@ const daftarSlice = createSlice({
     builder.addCase(getDaftarDataSummary.rejected, (state) => {
       state.daftarDataSummary.loading = false;
       state.daftarDataSummary.error = 'Error in fetching daftar data summary details!';
+    });
+    builder.addCase(getDaftarDetail.pending, (state, action) => {
+      state.daftarDetails.loading = true;
+    });
+    builder.addCase(getDaftarDetail.fulfilled, (state, action) => {
+      state.daftarDetails.loading = false;
+      state.daftarDetails.result[action.payload.id] = action.payload;
+      state.daftarData.error = null;
+    });
+    builder.addCase(getDaftarDetail.rejected, (state) => {
+      state.daftarData.loading = false;
+      state.daftarData.error = 'Error in fetching daftar Data details!';
     });
     builder.addCase(getDaftarData.pending, (state, action) => {
       const { bodyParams, params } = action.meta.arg;
@@ -345,10 +376,22 @@ const daftarSlice = createSlice({
       state.deleteDaftarData.loading = false;
       state.deleteDaftarData.error = 'Error while updating data';
     });
+    builder.addCase(downloadDaftarData.pending, (state) => {
+      state.downloadDaftarData.loading = true;
+    });
+    builder.addCase(downloadDaftarData.fulfilled, (state) => {
+      state.downloadDaftarData.loading = false;
+      state.downloadDaftarData.error = '';
+    });
+    builder.addCase(downloadDaftarData.rejected, (state) => {
+      state.downloadDaftarData.loading = false;
+      state.downloadDaftarData.error = 'Error while downloading daftar data';
+    });
   },
 });
 
 export const produenDataSelector = (state) => state.daftar.produen;
+export const daftarDetailsDataSelector = (state) => state.daftar.daftarDetails;
 export const daftarDataSelector = (state) => state.daftar.daftarData;
 export const daftarDataSummarySelector = (state) => state.daftar.daftarDataSummary;
 export const sdgsDataSelector = (state) => state.daftar.sdgs;

@@ -1,4 +1,4 @@
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import LogoBappenas from 'assets/Logo_Bappenas_Indonesia.png';
@@ -63,8 +63,8 @@ const ManagementApi = () => {
                   <h3>Bappenas</h3>
                   <div className="input-group">
                     <input type="text" placeholder="https://bappenas.go.id/data.json/123456789/01112131415" />
-                    <div class="input-group-append">
-                      <span class="input-group-text">
+                    <div className="input-group-append">
+                      <span className="input-group-text">
                         <Edit />
                       </span>
                     </div>
@@ -80,8 +80,8 @@ const ManagementApi = () => {
                 </Button>
                 <div className="input-group">
                   <input type="text" placeholder="Cari..." />
-                  <div class="input-group-append">
-                    <span class="input-group-text">
+                  <div className="input-group-append">
+                    <span className="input-group-text">
                       <Search />
                     </span>
                   </div>
@@ -112,34 +112,26 @@ const ManagementApi = () => {
           <div className="wrapper-pagination">
             <ul className="pagination">
               <li className="page-item">
-                <a className="page-link prev" href="#">
+                <button className="page-link prev">
                   <Prev />
-                </a>
+                </button>
               </li>
               <li className="page-item">
-                <a className="page-link active" href="#">
-                  1
-                </a>
+                <button className="page-link active">1</button>
               </li>
               <li className="page-item">
-                <a className="page-link" href="#">
-                  2
-                </a>
+                <button className="page-link">2</button>
               </li>
               <li className="page-item">
-                <a className="page-link" href="#">
-                  3
-                </a>
+                <button className="page-link">3</button>
               </li>
               <li className="page-item">
-                <a className="page-link" href="#">
-                  4
-                </a>
+                <button className="page-link">4</button>
               </li>
               <li className="page-item">
-                <a className="page-link next" href="#">
+                <button className="page-link next">
                   <Next />
-                </a>
+                </button>
               </li>
             </ul>
           </div>

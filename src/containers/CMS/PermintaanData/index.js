@@ -18,7 +18,7 @@ const bem = bn('content-table');
 
 const CMSPermintaanData = () => {
   const history = useHistory();
-  const [instansiId, setIntansiId] = useState(0);
+  const [instansiId, setIntansiId] = useState('');
   const [query, setQuery] = useState('');
   const [unitKerjaId, setUnitKerja] = useState('');
   const [status, setStatus] = useState('');

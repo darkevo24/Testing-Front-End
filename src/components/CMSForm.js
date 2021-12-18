@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { DatePicker, Dropdown, Input, FileInput, TextEditor } from 'components';
+import { Input, FileInput, TextEditor } from 'components';
 import MultiDropDown from 'components/DropDown/MultiDropDown';
 import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
 import { submitForm } from 'utils/helper';

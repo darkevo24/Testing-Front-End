@@ -1,5 +1,8 @@
 import React from 'react';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import styled from 'styled-components';
+import cx from 'classnames';
 import moment from 'moment';
 import uniqBy from 'lodash/uniqBy';
 import truncate from 'lodash/truncate';
@@ -39,7 +42,7 @@ const TitleBox = styled.div`
   line-height: 23px;
 `;
 
-export const BerandaCards = ({ isLoggedIn, trendingData = [], popularData = [] }) => {
+export const BerandaCards = ({ bem, isLoggedIn, trendingData = [], popularData = [] }) => {
   const linkToRedirect = isLoggedIn ? '/dataset' : '/topic-detail';
   const renderDataSet = (group) => (data) => {
     const dataSetUrl = getDatasetUrl(data.name);
@@ -52,41 +55,43 @@ export const BerandaCards = ({ isLoggedIn, trendingData = [], popularData = [] }
     const formatesToShow = uniqFormats.slice(0, numberOfMaxFormats);
     const hiddenFormats = uniqFormats.length - formatesToShow.length;
     return (
-      <CardWithDetail
-        key={`${group}-${data.id}`}
-        dataSetUrl={dataSetUrl}
-        title={truncate(data.title, { length: 60 })}
-        description={truncate(data.notes, { length: 80 })}
-        count={data.num_resources}
-        formats={formatesToShow}
-        hiddenFormats={hiddenFormats}
-        date={moment(new Date(data.metadata_created)).format('DD MMM YYYY')}
-        views={232}
-      />
+      <Col xs={12} sm={6} lg={3} className={cx('d-flex justify-content-center', bem.e('card-box'))}>
+        <CardWithDetail
+          key={`${group}-${data.id}`}
+          dataSetUrl={dataSetUrl}
+          title={truncate(data.title, { length: 60 })}
+          description={truncate(data.notes, { length: 80 })}
+          count={data.num_resources}
+          formats={formatesToShow}
+          hiddenFormats={hiddenFormats}
+          date={moment(new Date(data.metadata_created)).format('DD MMM YYYY')}
+          views={232}
+        />
+      </Col>
     );
   };
   return (
-    <Box>
-      <FlexBox>
+    <Box className={bem.e('cards-wrapper')}>
+      <FlexBox className="px-16">
         <LeftBox>
-          <TrendingSvg style={{ margin: '0 10px' }} />
+          <TrendingSvg style={{ marginRight: '10px' }} />
           <TitleBox>Dataset Trending</TitleBox>
         </LeftBox>
         <a title="Lihat Semua" href={linkToRedirect} className="sdp-link-blue">
           <RightBox>Lihat Semua</RightBox>
         </a>
       </FlexBox>
-      <FlexBox>{trendingData.map(renderDataSet('trending'))}</FlexBox>
-      <FlexBox style={{ marginTop: '40px' }}>
+      <Row>{trendingData.map(renderDataSet('trending'))}</Row>
+      <FlexBox className="px-16 mt-40">
         <LeftBox>
-          <PopulerSvg style={{ margin: '0 10px' }} />
+          <PopulerSvg style={{ marginRight: '10px' }} />
           <TitleBox>Dataset populer</TitleBox>
         </LeftBox>
         <a title="Lihat Semua" href={linkToRedirect} className="sdp-link-blue">
           <RightBox>Lihat Semua</RightBox>
         </a>
       </FlexBox>
-      <FlexBox>{popularData.map(renderDataSet('popular'))}</FlexBox>
+      <Row>{popularData.map(renderDataSet('popular'))}</Row>
     </Box>
   );
 };

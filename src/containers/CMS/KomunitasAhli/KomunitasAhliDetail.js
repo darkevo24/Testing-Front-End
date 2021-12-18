@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { Kontak_list } from 'utils/constants';
 import { ReadOnlyInputs } from 'components';
-import { LeftChevron, PencilSvg, Trash } from 'components/Icons';
+import { LeftChevron } from 'components/Icons';
 import { getStatusClass, prefixID } from 'utils/helper';
 import moment from 'moment';
 import {
@@ -20,13 +20,16 @@ import RowLoader from 'components/Loader/RowLoader';
 import Spinner from 'react-bootstrap/Spinner';
 import Modal from 'components/Modal';
 import { apiUrls, deleteRequest, post } from 'utils/request';
-import { CMSModal } from './CMSModals';
+import { CMSModal } from '../../../components/CMSStatusModals';
+import { DetailHeader } from './detailHeader';
+
+export const getValue = (record, key) => {
+  const rec = (record.kontak || []).find((item) => item.tipe === key);
+  return rec?.value || '';
+};
 
 const KomunitasAhli = () => {
-  const [showKirimModal, setShowKirimModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showTolakModal, setShowTolakModal] = useState(false);
-  const [showSetujuiModal, setShowSetujuiModal] = useState(false);
+  const [showModal, setModal] = useState('');
   const [loader, setLoader] = useState(false);
   const [apiError, setAPIError] = useState('');
   const [notes, setNotes] = useState('');
@@ -56,10 +59,10 @@ const KomunitasAhli = () => {
     try {
       setLoader(true);
       await method(url, {}, params);
-      hanleCloseModal();
+      handleCloseModal();
       initialCall();
     } catch (e) {
-      hanleCloseModal();
+      handleCloseModal();
       setAPIError(e.message);
     }
   };
@@ -75,14 +78,25 @@ const KomunitasAhli = () => {
     handleAPICall(post, `${apiUrls.cmsKomunitasAhliData}/${record.id}/setujui`);
   };
 
+  const onPublish = async () => {
+    handleAPICall(post, `${apiUrls.cmsKomunitasAhliData}/${record.id}/publish`);
+  };
+
+  const onUnPublish = async () => {
+    handleAPICall(post, `${apiUrls.cmsKomunitasAhliData}/${record.id}/unpublish`);
+  };
+
+  const onArchieve = async () => {
+    handleAPICall(post, `${apiUrls.cmsKomunitasAhliData}/${record.id}/arsipkan`);
+  };
+
   const onTolak = async () => {
     handleAPICall(post, `${apiUrls.cmsKomunitasAhliData}/${record.id}/tolak`, { query: { notes } });
   };
 
-  const hanleCloseModal = () => {
-    setShowKirimModal(false);
+  const handleCloseModal = () => {
     setLoader(false);
-    setShowDeleteModal(false);
+    setModal('');
   };
 
   const list = [
@@ -121,10 +135,6 @@ const KomunitasAhli = () => {
   ];
 
   const divClass = getStatusClass(status);
-  const getValue = (key) => {
-    const rec = (record.kontak || []).find((item) => item.tipe === key);
-    return rec?.value || '';
-  };
 
   return (
     <div className="sdp-komunitas-detail-container">
@@ -141,51 +151,7 @@ const KomunitasAhli = () => {
           <div className="d-flex align-items-center justify-content-between">
             <label className="fw-bold fs-24 lh-29 p-32">Profil Ahli</label>
             {!loading && (
-              <div>
-                <Button
-                  key="edit"
-                  variant="light"
-                  className="mr-16 br-4 bg-gray border-0"
-                  onClick={() => setShowDeleteModal(true)}>
-                  <Trash />
-                </Button>
-                {status === 'draft' ? (
-                  <>
-                    <Button
-                      key="edit"
-                      variant="outline-light"
-                      className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
-                      onClick={() => history.push('/cms/manage-komunitas-ahli')}>
-                      <PencilSvg />
-                    </Button>
-                    <Button
-                      key="kirim"
-                      variant="info"
-                      className="mr-16 br-4 px-40 border-0"
-                      onClick={() => setShowKirimModal(true)}>
-                      Kirim
-                    </Button>
-                  </>
-                ) : null}
-                {status === 'menunggu_persetujuan' ? (
-                  <>
-                    <Button
-                      key="tolak"
-                      variant="outline-light"
-                      className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4 px-40"
-                      onClick={() => setShowTolakModal(true)}>
-                      Tolak
-                    </Button>
-                    <Button
-                      key="Setujui"
-                      variant="info"
-                      className="mr-16 br-4 px-40 border-0"
-                      onClick={() => setShowSetujuiModal(true)}>
-                      Setujui
-                    </Button>
-                  </>
-                ) : null}
-              </div>
+              <DetailHeader status={status} loading={loading} history={history} handleModal={(type) => setModal(type)} />
             )}
           </div>
           <div className="mb-3 px-24">
@@ -216,7 +182,26 @@ const KomunitasAhli = () => {
                 value={record?.riwayat || ''}
               />
             )}
-            <Form.Group as={Col} className="d-flex justify-content-between mt-5" md="12">
+            <Form.Group as={Col} className="mt-5" md="12">
+              <label className="sdp-form-label">foto profil</label>
+              <div className="d-flex align-items-center bg-gray border-gray-stroke p-9 br-4">
+                <div className="px-16 py-9">
+                  <img src={record?.foto?.location} alt="no foto" height="128px" width="128px" className="brp-50" />
+                </div>
+                <label className="sdp-text-blue">{record?.foto?.fileName}</label>
+              </div>
+            </Form.Group>
+            <Form.Group as={Col} className="mt-5" md="12">
+              <label className="sdp-form-label">CV</label>
+              <div className="bg-gray border-gray-stroke p-9 br-4">
+                <div
+                  className="bg-white sdp-text-blue px-16 py-9 br-120 border-gray-stroke w-fit-content"
+                  onClick={() => window.open(record?.cv?.location, '_blank')}>
+                  {record?.cv?.fileName}
+                </div>
+              </div>
+            </Form.Group>
+            <Form.Group as={Col} className="d-flex justify-content-between my-20" md="12">
               <Col className="sdp-table-sub-title" md="12">
                 Kontak
               </Col>
@@ -244,7 +229,7 @@ const KomunitasAhli = () => {
                       label=""
                       labelClass="sdp-form-label fw-normal"
                       type="text"
-                      value={getValue('handphone')}
+                      value={getValue(record, 'handphone')}
                     />
                   </div>
                 </Form.Group>
@@ -269,7 +254,12 @@ const KomunitasAhli = () => {
 
                 <Form.Group md="6" as={Col} className="mb-16 d-flex flex-column justify-content-end pr-0">
                   <div className="d-flex">
-                    <ReadOnlyInputs label="" labelClass="sdp-form-label fw-normal" type="text" value={getValue('email')} />
+                    <ReadOnlyInputs
+                      label=""
+                      labelClass="sdp-form-label fw-normal"
+                      type="text"
+                      value={getValue(record, 'email')}
+                    />
                   </div>
                 </Form.Group>
               </div>
@@ -288,7 +278,7 @@ const KomunitasAhli = () => {
                       leftIcon={kontak.icon}
                       leftIconClass="py-15 px-20"
                       className="h-auto"
-                      value={getValue(kontak.name)}
+                      value={getValue(record, kontak.name)}
                     />
                   )}
                 </Col>
@@ -296,7 +286,7 @@ const KomunitasAhli = () => {
             ))}
           </div>
         </Col>
-        <Col xs={6} md={3} className="">
+        <Col xs={4} md={2} className="">
           <label className="fs-20 lh-25 pt-32 fw-bold">Log Status</label>
           <div className="d-flex flex-column mt-24">
             {logLoading ? (
@@ -319,11 +309,7 @@ const KomunitasAhli = () => {
                           {classDetail?.text || item.data.status}
                         </span>
                       </div>
-                      <span className="sdp-text-disable">
-                        {status === 'selesai'
-                          ? 'Data Pengguna Sudah dapat digunakan.'
-                          : 'Dataset sudah dapat di akses di portal data.go.id'}
-                      </span>
+                      <span className="sdp-text-disable">{item.remark}</span>
                     </div>
                   </div>
                 );
@@ -332,51 +318,76 @@ const KomunitasAhli = () => {
           </div>
         </Col>
       </Row>
-      {showKirimModal && (
-        <CMSModal
-          visible={showKirimModal}
-          onClose={() => setShowKirimModal(false)}
-          label="Kirim Profil Ahli?"
-          cancelButtonText="Batal"
-          loader={loader}
-          confirmButtonText="Konfirmasi"
-          confirmButtonAction={onKirim}
-        />
+      {showModal === 'kirim' && (
+        <CMSModal onClose={handleCloseModal} label="Kirim Profil Ahli?" loader={loader} confirmButtonAction={onKirim} />
       )}
-      {showSetujuiModal && (
+      {showModal === 'setujui' && (
         <CMSModal
-          visible={showSetujuiModal}
-          onClose={() => setShowSetujuiModal(false)}
+          onClose={handleCloseModal}
           label={
             <>
               Apakah anda yakin ingin <span className="sdp-text-blue">menyetujui</span> Profil Ahli{' '}
               <b>{prefixID(record.id, 'KA')}</b>?
             </>
           }
-          cancelButtonText="Batal"
           loader={loader}
-          confirmButtonText="Konfirmasi"
           confirmButtonAction={onSetujui}
         />
       )}
-      {showDeleteModal && (
+      {showModal === 'delete' && (
         <CMSModal
-          visible={showDeleteModal}
-          onClose={() => setShowDeleteModal(false)}
+          onClose={handleCloseModal}
           label={
             <>
               Apakah anda yakin ingin <span className="sdp-error">menghapus</span> Jadwal Bimbingan Teknis{' '}
               <b>{prefixID(record.id, 'KA')}</b>?
             </>
           }
-          cancelButtonText="Batal"
           loader={loader}
-          confirmButtonText="Konfirmasi"
           confirmButtonAction={onDelete}
         />
       )}
-      {showTolakModal && (
-        <Modal visible={true} onClose={() => setShowTolakModal(false)} title="" showHeader={false} centered={true}>
+      {showModal === 'publish' && (
+        <CMSModal
+          onClose={handleCloseModal}
+          label={
+            <>
+              Apakah anda yakin ingin <span className="sdp-text-blue">mempublikasikan</span> Jadwal Bimbingan Teknis{' '}
+              <b>{prefixID(record.id, 'KA')}</b>?
+            </>
+          }
+          loader={loader}
+          confirmButtonAction={onPublish}
+        />
+      )}
+      {showModal === 'unPublish' && (
+        <CMSModal
+          onClose={handleCloseModal}
+          label={
+            <>
+              Apakah anda yakin ingin <span className="sdp-text-blue">membatalkan</span> Jadwal Bimbingan Teknis{' '}
+              <b>{prefixID(record.id, 'KA')}</b>?
+            </>
+          }
+          loader={loader}
+          confirmButtonAction={onUnPublish}
+        />
+      )}
+      {showModal === 'archieve' && (
+        <CMSModal
+          onClose={handleCloseModal}
+          label={
+            <>
+              Apakah anda yakin ingin <span className="sdp-text-blue">mengarsipkan</span> Jadwal Bimbingan Teknis{' '}
+              <b>{prefixID(record.id, 'KA')}</b>?
+            </>
+          }
+          loader={loader}
+          confirmButtonAction={onArchieve}
+        />
+      )}
+      {showModal === 'tolak' && (
+        <Modal visible={true} onClose={handleCloseModal} title="" showHeader={false} centered={true}>
           Apakah anda yakin ingin <span className="sdp-text-red">menolak</span> Profil Ahli <b>{prefixID(id, 'PD')}</b>?
           <textarea
             placeholder="Tulis Catatan"
@@ -387,10 +398,7 @@ const KomunitasAhli = () => {
             required
           />
           <div className="d-flex justify-content-end">
-            <Button
-              className="br-4 mr-8 px-57 py-13 bg-transparent"
-              variant="light"
-              onClick={() => setShowTolakModal(false)}>
+            <Button className="br-4 mr-8 px-57 py-13 bg-transparent" variant="light" onClick={handleCloseModal}>
               Batal
             </Button>
             <Button className="br-4 px-39 py-13" variant="info" disabled={!notes.trim()} onClick={onTolak}>

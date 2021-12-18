@@ -97,6 +97,14 @@ const DaftarForm = ({
           />
           <Input
             group
+            label="ID Konsep"
+            name="idKonsep"
+            control={control}
+            rules={{ required: true }}
+            error={errors.idKonsep?.message}
+          />
+          <Input
+            group
             label="Konsep"
             name="konsep"
             control={control}

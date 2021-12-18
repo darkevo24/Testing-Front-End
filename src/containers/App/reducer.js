@@ -181,6 +181,7 @@ const AppSlice = createSlice({
 });
 
 export const { setLoader, setNotificationOptions } = AppSlice.actions;
+export const notificationsSelector = (state) => state.global.notificationOptions;
 export const instansiDataSelector = (state) => state.global.instansi;
 export const dataindukSelector = (state) => state.global.datainduk;
 export const sdgPillersSelector = (state) => state.global.sdgPillers;

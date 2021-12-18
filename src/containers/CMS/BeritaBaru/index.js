@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 
 import CMSForm, { submitBeritaForm } from 'components/CMSForm';
 import Notification from 'components/Notification';
-import { formatDate } from 'utils/helper';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 import { setNewBerita } from './reducer';

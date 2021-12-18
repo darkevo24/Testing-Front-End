@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 
 const ContactUs = () => {
   return (
-    <div className="contactus-container">
+    <div id="tentang-form" className="contactus-container">
       <div className="contactus-wrapper">
         <div className="contactus-title mb-4">Hubungi Kami</div>
         <Form>

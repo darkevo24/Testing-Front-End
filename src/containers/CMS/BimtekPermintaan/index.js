@@ -29,6 +29,7 @@ const CMSBimtekPermintaan = () => {
       q: query,
     };
     console.log(obj.page);
+    console.log(page);
     return dispatch(getPermintaanData(obj));
   };
 
@@ -41,12 +42,12 @@ const CMSBimtekPermintaan = () => {
   }, 500);
 
   const rowClick = (data) => {
-    history.push(`/cms/permintaan-data/${data.id}`);
+    // history.push(`/cms/permintaan-data/${data.id}`);
   };
 
   const getRowClass = (data) => {
-    if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
-    return 'bg-gray';
+    // if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
+    // return 'bg-gray';
   };
 
   const columns = [
@@ -138,18 +139,7 @@ const CMSBimtekPermintaan = () => {
           </Col>
         </Row>
       </div>
-      <div className="p-30"> {loading ? <Loader fullscreen={true} /> : <Table {...tableConfig} />} </div>
-      {/* <CMSTable
-        customWidth={[18, 18, 18, 22, 18, 7]}
-        header={['Nama', 'Instansi', 'Tanggal Permintaan', 'Tanggal Pelaksanaan Disetujui', 'Status']}
-        data={dataBimtek.map((item) => {
-          let value = {
-            data: [item.name, item.instance, item.dateRequest, item.dateImplement, item.status],
-            action: '/cms/bimtek-permintaan/' + item.id,
-          };
-          return value;
-        })}
-      /> */}
+      <div className="p-30"> {<Table {...tableConfig} />} </div>
     </div>
   );
 };

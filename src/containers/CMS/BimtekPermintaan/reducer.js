@@ -16,7 +16,7 @@ export const initialState = {
 
 export const BIMTEK_PERMINTAAN_DATA = 'BIMTEK_PERMINTAAN_DATA';
 
-export const getPermintaanData = createAsyncThunk('permintaan-data/list', async (params) => {
+export const getPermintaanData = createAsyncThunk('permintaan-data/bimtek', async (params) => {
   const response = await get(apiUrls.cmsBimtekPermintaanData, { query: { page: params.page + 1, size: 10, q: params.q } });
   console.log(response);
   return response;

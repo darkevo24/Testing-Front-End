@@ -34,7 +34,7 @@ const CMSPermintaanData = () => {
     };
     return dispatch(getPermintaanData(obj));
   };
-
+  console.log(records);
   const fetchInstansiData = () => {
     return dispatch(getInstansi());
   };
@@ -100,11 +100,11 @@ const CMSPermintaanData = () => {
     },
     {
       Header: 'Nama Peminta',
-      accessor: 'user?.name',
+      accessor: 'user.name',
     },
     {
       Header: 'Instansi',
-      accessor: 'instansi?.id',
+      accessor: 'instansi.nama',
     },
     {
       Header: 'Unit Kerja',
@@ -116,7 +116,7 @@ const CMSPermintaanData = () => {
     },
     {
       Header: 'Target Waktu',
-      accessor: 'tanggalTarget',
+      accessor: 'tanggalTarget?',
       Cell: ({ ...rest }) => (
         <span>
           {rest.row.original?.tanggalTarget ? moment(rest.row.original?.tanggalTarget).format('DD MMMM YYYY') : '---'}
@@ -125,11 +125,11 @@ const CMSPermintaanData = () => {
     },
     {
       Header: 'Jenis Data',
-      accessor: 'jenisData',
+      accessor: 'jenisData?',
     },
     {
       Header: 'Tanggal Permintaan',
-      accessor: 'tanggalPermintaan',
+      accessor: 'tanggalPermintaan?',
       Cell: ({ ...rest }) => (
         <span> {rest.row.original?.createdAt ? moment(rest.row.original?.createdAt).format('DD MMMM YYYY') : '---'} </span>
       ),

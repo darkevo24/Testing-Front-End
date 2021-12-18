@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 
-import { Input, Dropdown } from 'components';
+import { Input } from 'components';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 
 import { useForm } from 'react-hook-form';

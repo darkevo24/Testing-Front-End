@@ -153,19 +153,7 @@ const CMSStrukturDetail = (props) => {
           ) : null}
         </div>
       </Col>
-      <Col sm={3}>
-        {logLoading ? null : (
-          <LogStatus
-            data={logRecord.map((item) => {
-              return {
-                createdAt: item.createdAt,
-                status: item.data.status,
-                content: item.remark,
-              };
-            })}
-          />
-        )}
-      </Col>
+      <Col sm={3}>{logLoading ? null : <LogStatus data={logRecord} />}</Col>
       {(loading || logLoading) && <Loader fullscreen={true} />}
     </Row>
   );

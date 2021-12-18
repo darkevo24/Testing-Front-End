@@ -27,7 +27,6 @@ const CMSStrukturProfile = ({ handleClose, show, title, data = null, idBidang = 
     },
   });
 
-  const profileFormId = 'profile-form-id';
   const simpanData = (data) => {
     if (idBidang && data.id) {
       //  action edit profile
@@ -55,7 +54,7 @@ const CMSStrukturProfile = ({ handleClose, show, title, data = null, idBidang = 
         setValue('foto', res.data.location);
       });
     } catch (e) {
-      console.log(e);
+      errors.foto.message = e?.error?.message;
     }
   };
 

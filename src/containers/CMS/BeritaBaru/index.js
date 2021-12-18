@@ -21,8 +21,6 @@ const CMSBeritaBaru = () => {
     data.publishDate = data.publishDate ? data.publishDate + ' ' + data.publishTime : '';
     data.kategori = data.kategori.value;
     data.status = 0;
-
-    // console.log(data);
     dispatch(setNewBerita({ payload: data })).then((res) => {
       res?.payload
         ? Notification.show({

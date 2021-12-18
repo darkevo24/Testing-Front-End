@@ -11,54 +11,104 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'components/Table';
 import bn from 'utils/bemNames';
 import { Search } from 'components/Icons';
+import { Loader } from 'components';
 import { prefixID } from './constant';
-import { getPermintaanData, permintaanDataSelector } from './reducer';
+import { getInstansi, getUnitkerja, getPermintaanData, permintaanDataSelector } from './reducer';
 
 const bem = bn('content-table');
 
 const CMSPermintaanData = () => {
   const history = useHistory();
-  // const [instansiId, setIntansiId] = useState();
+  const [instansiId, setIntansiId] = useState('');
   const [query, setQuery] = useState('');
+  const [unitKerjaId, setUnitKerja] = useState('');
+  const [status, setStatus] = useState('');
   const dispatch = useDispatch();
-  const { size, loading, page, records, totalRecords } = useSelector(permintaanDataSelector);
-
+  const { size, loading, page, records, totalRecords, instansi, unitKerja } = useSelector(permintaanDataSelector);
   const fetchDataset = (params) => {
     let obj = {
       page: params.page,
+      unitKerja: unitKerjaId,
+      status,
       q: query,
     };
     return dispatch(getPermintaanData(obj));
   };
 
+  const fetchInstansiData = () => {
+    return dispatch(getInstansi());
+  };
+
+  const fetchUnitKerja = () => {
+    return dispatch(getUnitkerja(instansiId));
+  };
+
   useEffect(() => {
     fetchDataset({ page: page || 0 });
-  }, [query]);
-  const updateInstansi = (val) => {
-    // setIntansiId(val);
-  };
+    fetchInstansiData();
+  }, [query, unitKerjaId, status]);
+
+  useEffect(() => {
+    fetchUnitKerja();
+  }, [instansiId]);
 
   const updateQuery = _.debounce((val) => {
     setQuery(val);
   }, 500);
 
+  const statusList = [
+    {
+      id: 1,
+      status: 'DRAFT',
+    },
+    {
+      id: 2,
+      status: 'TERKIRIM',
+    },
+    {
+      id: 3,
+      status: 'DIPROSES',
+    },
+    {
+      id: 4,
+      status: 'SELESAI',
+    },
+    {
+      id: 5,
+      status: 'DIBATALKAN',
+    },
+    {
+      id: 6,
+      status: 'DITOLAK',
+    },
+  ];
+
+  const rowClick = (data) => {
+    history.push(`/cms/permintaan-data/${data.id}`);
+  };
+
+  const getRowClass = (data) => {
+    if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
+    return 'bg-gray';
+  };
+
   const columns = [
     {
       Header: 'Id',
-      accessor: 'perminataanID',
+      accessor: 'id',
       Cell: ({ ...rest }) => <span>{prefixID(rest?.row?.original?.id || '')}</span>,
     },
     {
       Header: 'Nama Peminta',
-      accessor: 'user.name',
+      accessor: 'user?.name',
     },
     {
       Header: 'Instansi',
-      accessor: 'instansi.nama',
+      accessor: 'instansi?.id',
     },
     {
       Header: 'Unit Kerja',
-      accessor: 'instansi.unitKerja[0]',
+      accessor: 'instansi?.unitKerja[0]',
     },
     {
       Header: 'Deskripsi Data',
@@ -69,7 +119,7 @@ const CMSPermintaanData = () => {
       accessor: 'tanggalTarget',
       Cell: ({ ...rest }) => (
         <span>
-          {rest.row.original?.tanggalTarget ? moment(rest.row.original.tanggalTarget).format('DD MMMM YYYY') : '---'}
+          {rest.row.original?.tanggalTarget ? moment(rest.row.original?.tanggalTarget).format('DD MMMM YYYY') : '---'}
         </span>
       ),
     },
@@ -81,7 +131,7 @@ const CMSPermintaanData = () => {
       Header: 'Tanggal Permintaan',
       accessor: 'tanggalPermintaan',
       Cell: ({ ...rest }) => (
-        <span> {rest.row.original?.createdAt ? moment(rest.row.original.createdAt).format('DD MMMM YYYY') : '---'} </span>
+        <span> {rest.row.original?.createdAt ? moment(rest.row.original?.createdAt).format('DD MMMM YYYY') : '---'} </span>
       ),
     },
     {
@@ -97,15 +147,6 @@ const CMSPermintaanData = () => {
       Cell: ({ ...rest }) => <Button variant="info"> Detail </Button>,
     },
   ];
-
-  const rowClick = (data) => {
-    history.push(`/cms/permintaan-data/${data.id}`);
-  };
-
-  const getRowClass = (data) => {
-    if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
-    return 'bg-gray';
-  };
 
   const tableConfig = {
     className: 'cms-permintaan-data',
@@ -133,29 +174,47 @@ const CMSPermintaanData = () => {
       <div className={bem.e('header')}>
         <div className={bem.e('title pb-20')}>Permintaan Data</div>
         <Row className="justify-content-between">
-          <Col className="d-flex align-items-center" md={8}>
+          <Col className="option" md={8}>
             <Form.Group className="d-flex align-items-center mr-10">
               <Form.Label className="mb-0 pr-10">Instansi</Form.Label>
-              <Form.Select aria-label="Default select example" onChange={(e) => updateInstansi(e.target.value)}>
-                <option value="0">Kosong</option>
-                <option value="1">Badan Pusat</option>
-                <option value="2">Badan Pusat 2</option>
+              <Form.Select aria-label="Default select example" onChange={(e) => setIntansiId(e.target.value)}>
+                <option value="">SEMUA</option>
+                {instansi &&
+                  instansi.map((data, index) => {
+                    return (
+                      <option key={index} value={data.id}>
+                        {data.nama}
+                      </option>
+                    );
+                  })}
               </Form.Select>
             </Form.Group>
             <Form.Group className="d-flex align-items-center mr-10">
               <Form.Label className="unit-kerja">Unit Kerja</Form.Label>
-              <Form.Select aria-label="Default select example" onChange={(e) => updateInstansi(e.target.value)}>
-                <option value="0">Kosong</option>
-                <option value="1">Badan Pusat</option>
-                <option value="2">Badan Pusat 2</option>
+              <Form.Select aria-label="Default select example" onChange={(e) => setUnitKerja(e.target.value)}>
+                <option value="">SEMUA</option>
+                {unitKerja &&
+                  unitKerja.map((data, index) => {
+                    return (
+                      <option key={index} value={data?.id}>
+                        {data?.nama}
+                      </option>
+                    );
+                  })}
               </Form.Select>
             </Form.Group>
             <Form.Group className="d-flex align-items-center mr-10">
               <Form.Label className="mb-0 pr-10">Status</Form.Label>
-              <Form.Select aria-label="Default select example" onChange={(e) => updateInstansi(e.target.value)}>
-                <option value="0">Menunggu Persetujuan</option>
-                <option value="1">Badan Pusat</option>
-                <option value="2">Badan Pusat 2</option>
+              <Form.Select aria-label="Default select example" onChange={(e) => setStatus(e.target.value)}>
+                <option value="">SEMUA</option>
+                {statusList &&
+                  statusList.map((data, index) => {
+                    return (
+                      <option key={index} value={data.status}>
+                        {data.status}
+                      </option>
+                    );
+                  })}
               </Form.Select>
             </Form.Group>
           </Col>
@@ -172,7 +231,7 @@ const CMSPermintaanData = () => {
           </Col>
         </Row>
       </div>
-      <div className="p-30"> {!loading && <Table {...tableConfig} />} </div>
+      <div className="px-30 pt-0"> {!loading && <Table {...tableConfig} />} </div>
     </div>
   );
 };

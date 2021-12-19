@@ -18,7 +18,8 @@ import {
   getPerminataanData,
 } from './reducer';
 import { BackArrow, PencilSvg } from 'components/Icons';
-import { prefixID, getPerminataanInfo, getUserInfo, getClass } from './constant';
+import { getPerminataanInfo, getUserInfo } from './constant';
+import { prefixID, getStatusClass } from 'utils/helper';
 import { userSelector } from '../Login/reducer';
 import { Loader } from 'components';
 import { EditForum } from './Forum/EditForum';
@@ -66,7 +67,7 @@ export const PerminataanDetail = () => {
     });
   };
 
-  const divClass = getClass(status);
+  const divClass = getStatusClass(status);
 
   return (
     <div className="sdp-perminataan-detail-container my-40 mx-400">
@@ -81,7 +82,7 @@ export const PerminataanDetail = () => {
                 </div>
 
                 <span className="sdp-text-grey-dark mr-12"> / </span>
-                <spn className="sdp-text-black-dark">{prefixID(id)}</spn>
+                <spn className="sdp-text-black-dark">{prefixID(id, 'PD')}</spn>
               </div>
               {status === 'draft' && (
                 <div className="d-flex">
@@ -138,7 +139,7 @@ export const PerminataanDetail = () => {
           <div className="d-flex flex-column mt-24">
             {logRecord.map((item) => {
               const status = (item?.data?.status || '').toLowerCase();
-              const classDetail = getClass(status);
+              const classDetail = getStatusClass(status);
               return (
                 <div className="mb-24">
                   <div className="d-flex align-items-center">
@@ -168,7 +169,7 @@ export const PerminataanDetail = () => {
       {showConfirmModal && (
         <Modal visible={true} onClose={() => setShowConfirmModal(false)} title="" showHeader={false} centered={true}>
           Apakah anda yakin ingin {status === 'diproses' ? <span className="sdp-text-red">membatalkan</span> : 'mengirim'}{' '}
-          permintaan data <b>{prefixID(id)}</b>
+          permintaan data <b>{prefixID(id, 'PD')}</b>
           <textarea
             placeholder="Tulis Catatan"
             name="catatan"

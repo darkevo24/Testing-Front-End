@@ -5,13 +5,21 @@ import youtube from 'assets/youtube.png';
 import facebook from 'assets/facebook.png';
 import './footer.scss';
 
+const socialLinks = [
+  { key: 'fb', link: 'https://www.facebook.com/datagoid', icon: facebook },
+  { key: 'ig', link: 'https://www.instagram.com/data.go.id', icon: instagram },
+  { key: 'yt', link: 'https://www.youtube.com/channel/UCTeFgXSoFZH3AkjK2b22X_w', icon: youtube },
+];
+
 export const Bottom = () => (
   <div className="sdp-bottom-line w-100 d-flex justify-content-around align-items-center bg-gray">
     <Anchor className="sdp-anchor">Copyright © 2021 Kementerian PPN/Bappenas.</Anchor>
-    <Anchor className="sdp-anchor justify-content-around">
-      <img src={facebook} alt="fb" className="m-18" />
-      <img src={instagram} alt="ig" className="m-18" />
-      <img src={youtube} alt="yt" className="m-18" />
-    </Anchor>
+    <div>
+      {socialLinks.map((item) => (
+        <Anchor key={item.key} className="sdp-anchor justify-content-around" href={item.link} target="_blank">
+          <img src={item.icon} alt={item.key} className="m-18" />
+        </Anchor>
+      ))}
+    </div>
   </div>
 );

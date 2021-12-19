@@ -1,17 +1,19 @@
-import { useMemo, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import truncate from 'lodash/truncate';
+import cloneDeep from 'lodash/cloneDeep';
 import Modal from 'components/Modal';
 import Notification from 'components/Notification';
 import Table from 'components/Table';
-import { makeData } from 'utils/dataConfig/daftar';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import DaftarForm, { submitDaftarForm } from './DaftarForm';
 import { Check } from 'components/Icons';
-import { deleteKatalog, putKatalog } from './reducer';
+import { JADWAL_PERMUTAKHIRAN } from 'utils/constants';
+import { getSayaDaftarData, sayaDataSelector, deleteDaftarData, putDaftarData } from './reducer';
 
 const DaftarDataSayaTable = ({
   bem,
+  textSearch,
   dataindukOptions = [],
   instansiOptions = [],
   priorityOptions = [],
@@ -20,8 +22,43 @@ const DaftarDataSayaTable = ({
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDaftarFormVisible, setIsDaftarFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const [sortBy, setSortBy] = useState(null);
   const dispatch = useDispatch();
+  const { pageSize, params, bodyParams, result } = useSelector(sayaDataSelector);
 
+  const fetchSayaData = (filterOverride = {}, reset = false) => {
+    const { params: paramsOverride = {}, bodyParams: bodyParamsOverride = {} } = filterOverride;
+    const filterParams = {
+      ...cloneDeep(params),
+      ...cloneDeep(paramsOverride),
+    };
+    if (reset) {
+      filterParams.start = 0;
+      filterParams.currentPage = 0;
+    }
+    const filterBodyParams = {
+      ...cloneDeep(bodyParams),
+      ...cloneDeep(bodyParamsOverride),
+    };
+    const filters = { params: filterParams, bodyParams: filterBodyParams };
+    return dispatch(getSayaDaftarData(filters));
+  };
+
+  useEffect(() => {
+    fetchSayaData({ bodyParams: { textSearch } });
+  }, [textSearch]);
+
+  const onSortChange = ({ id, sortId, isSortedDesc }) => {
+    const desc = isSortedDesc === undefined ? false : !isSortedDesc;
+    setSortBy({ id, sortId, desc });
+    fetchSayaData({ params: { sortBy: sortId, sortDirection: desc ? 'DESC' : 'ASC' } });
+  };
+
+  // const handleDropdownFilter = (filter) => (selectedValue) => {
+  //   fetchSayaData({ bodyParams: { [filter]: selectedValue.value } });
+  // };
+
+  const data = useMemo(() => result?.content?.records || [], [result]);
   const showDeleteModal = (data) => {
     setSelectedRecord(data);
     setIsDeleteModalVisible(true);
@@ -35,7 +72,7 @@ const DaftarDataSayaTable = ({
   const handleDelete = () => {
     // TODO: handle actual delete of the data.
 
-    dispatch(deleteKatalog(selectedRecord)).then((res) => {
+    dispatch(deleteDaftarData(selectedRecord)).then((res) => {
       setIsDeleteModalVisible(false);
     });
     Notification.show({
@@ -66,7 +103,7 @@ const DaftarDataSayaTable = ({
     data.indukData = [data.indukData.value];
     data.format = 'png';
 
-    dispatch(putKatalog(data)).then((res) => {
+    dispatch(putDaftarData(data)).then((res) => {
       hideDaftarFormModal();
       res.payload
         ? Notification.show({
@@ -94,35 +131,42 @@ const DaftarDataSayaTable = ({
       {
         Header: 'Instansi',
         accessor: 'instansi',
+        sortId: 0,
       },
       {
         Header: 'Nama Data',
-        accessor: 'name',
+        accessor: 'nama',
+        sortId: 1,
         Cell: (data) => truncate(data.cell.value, { length: 20 }),
       },
       {
         Header: 'Jadwal Pemutakhiran',
-        accessor: 'jadwal',
+        accessor: 'jadwalPemutakhiran',
+        sortId: 2,
+        Cell: (data) => JADWAL_PERMUTAKHIRAN[data.cell.value],
       },
       {
         Header: 'Dibuat',
-        accessor: 'dibuat',
+        accessor: 'tanggalDibuat',
+        sortId: 3,
       },
       {
         Header: 'Diperbarui',
-        accessor: 'diper',
+        accessor: 'tanggalDiperbaharui',
+        sortId: 4,
       },
       {
         Header: 'Produsen Data',
-        accessor: 'produsen',
+        accessor: 'produsenData',
+        sortId: 5,
       },
       {
         Header: 'Label',
         accessor: 'label',
-        Cell: ({ cell: { row, value = [] } }) => (
+        Cell: ({ cell: { row: { id: rowId, original: item } = {} } = {} }) => (
           <div className={bem.e('tag-wrapper')}>
-            {value.map((label) => (
-              <div key={`${row.id}-${label}`} className={bem.e('tag')}>
+            {[item.labelKodePilar, item.labelKodePnrkp].filter(Boolean).map((label) => (
+              <div key={`${rowId}-${label}`} className={bem.e('tag')}>
                 {label}
               </div>
             ))}
@@ -151,13 +195,24 @@ const DaftarDataSayaTable = ({
     ],
     [],
   );
-  const data = useMemo(() => makeData(200), []);
   const tableConfig = {
     columns,
     data,
+    totalCount: result?.content?.totalRecords || null,
+    pageSize,
+    sortBy,
+    onSortChange,
+    manualPagination: true,
+    currentPage: params.page,
     showSearch: false,
     highlightOnHover: true,
     variant: 'spaced',
+    onPageIndexChange: (page) => {
+      if (params.page !== page) {
+        const params = { page };
+        fetchSayaData({ params });
+      }
+    },
   };
 
   return (

@@ -27,8 +27,6 @@ export const initialState = {
     error: '',
     record: [],
   },
-  instansiData: [],
-  instansiLoading: false,
   user: null,
   error: null,
 };
@@ -36,7 +34,7 @@ export const initialState = {
 export const PERMINATAAN_DATA_SLICE = 'PERMINATAAN_DATA_SLICE';
 
 export const getPerminataanData = createAsyncThunk('portal/getPerminataanData', async (params) => {
-  const response = await get(apiUrls.perminataanData, { data: { page: params.page + 1, size: 10, status: params.status } });
+  const response = await get(apiUrls.perminataanData, { query: { page: params.page + 1, size: 10, status: params.status } });
   return response?.data?.content;
 });
 
@@ -55,18 +53,13 @@ export const setKirimPerminataanData = createAsyncThunk('portal/setKirimPerminat
   return response?.data;
 });
 
-export const getInstansiData = createAsyncThunk('portal/getInstansiData', async (params) => {
-  const response = await get(apiUrls.instansiData);
-  return response?.data?.content?.records;
-});
-
 export const getPerminataanDataById = createAsyncThunk('portal/getPerminataanDataById', async (params) => {
   const response = await get(`${apiUrls.perminataanData}/${params}`);
   return response?.data?.content;
 });
 
 export const getPerminataanLogDataById = createAsyncThunk('portal/getPerminataanLogDataById', async (params) => {
-  const response = await get(`${apiUrls.perminataanData}/${params}/logs`, params);
+  const response = await get(`${apiUrls.perminataanData}/${params}/logs`);
   return response?.data?.content;
 });
 
@@ -95,16 +88,6 @@ const perminataanSlice = createSlice({
     builder.addCase(getPerminataanData.rejected, (state) => {
       state.dataset.loading = false;
       state.dataset.error = 'Error in fetching perminataan data!';
-    });
-    builder.addCase(getInstansiData.pending, (state, action) => {
-      state.instansiLoading = true;
-    });
-    builder.addCase(getInstansiData.fulfilled, (state, action) => {
-      state.instansiLoading = false;
-      state.instansiData = action.payload;
-    });
-    builder.addCase(getInstansiData.rejected, (state) => {
-      state.instansiLoading = false;
     });
     builder.addCase(setPerminataanData.pending, (state, action) => {
       state.dataset.loading = true;
@@ -168,10 +151,6 @@ export const kirimsetSelector = (state) => state.perminataan?.kirimset;
 export const detailDatasetSelector = (state) => state.perminataan?.detaildataSet;
 export const logDatasetSelector = (state) => state.perminataan?.logdataset;
 export const perminataanForumErrorSelector = (state) => state.perminataan?.error;
-export const instansiiDatasetSelector = (state) => ({
-  instansiData: state.perminataan?.instansiData,
-  loading: state.perminataan?.instansiLoading,
-});
 export const { updateResult, updateStatus } = perminataanSlice.actions;
 
 export default perminataanSlice.reducer;

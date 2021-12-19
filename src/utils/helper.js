@@ -1,8 +1,14 @@
+import cloneDeep from 'lodash/cloneDeep';
 import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
 import isString from 'lodash/isString';
+import isFunction from 'lodash/isFunction';
+import get from 'lodash/get';
 import map from 'lodash/map';
+import set from 'lodash/set';
 import pick from 'lodash/pick';
+import moment from 'moment';
+import { katalogUrl } from './constants';
 
 export const safeParse = (value) => {
   try {
@@ -145,4 +151,178 @@ export const formatDate = (date) => {
 
   // format: dd Mon yyyy
   return [currDate.getDate(), monthList[currDate.getMonth()], currDate.getFullYear()].join(' ');
+};
+
+export const prefixID = (id, text) => {
+  if (id < 10) return text + `0000${id}`;
+  else if (id < 100) return text + `000${id}`;
+  else if (id < 1000) return text + `00${id}`;
+  else if (id < 10000) return text + `0${id}`;
+  else return text + `${id}`;
+};
+
+export const getStatusClass = (status) => {
+  switch (status) {
+    case 'draft':
+      return {
+        divBG: 'bg-gray',
+        textColor: 'sdp-text-disable',
+        text: 'Draft',
+        divText: 'Draft',
+      };
+    case 'diarsipkan': {
+      return {
+        divBG: 'bg-gray',
+        textColor: 'sdp-text-disable',
+        text: 'Diarsipkan',
+        divText: 'Diarsipkan',
+      };
+    }
+    case 'tidak_ditayangkan':
+      return {
+        divBG: 'bg-orange-light',
+        textColor: 'sdp-text-orange-dark',
+        text: 'Tidak ditayangkan',
+        divText: '',
+      };
+    case 'menunggu_persetujuan':
+      return {
+        divBG: 'bg-orange-light',
+        textColor: 'sdp-text-orange-dark',
+        text: 'Waiting for approval',
+        divText: '',
+      };
+    case 'diproses':
+      return {
+        divBG: 'bg-orange-light',
+        textColor: 'sdp-text-orange-dark',
+        text: 'Diprosses',
+        divText: 'Permintaan sedang Diproses',
+      };
+    case 'dibatalkan':
+      return {
+        divBG: 'bg-red-light',
+        textColor: 'sdp-text-red',
+        text: 'Dibatalkan',
+        divText: 'Dibatalkan',
+      };
+    case 'ditolak':
+      return {
+        divBG: 'bg-red-light',
+        textColor: 'sdp-text-red',
+        text: 'Ditolak',
+        divText: 'Ditolak',
+      };
+    case 'terkirim':
+      return {
+        divBG: 'bg-purple-light',
+        textColor: 'sdp-text-purple',
+        text: 'Terkirim',
+        divText: 'Terkirim',
+      };
+    case 'disetujui':
+      return {
+        divBG: 'bg-green-light',
+        textColor: 'sdp-text-green-light',
+        text: 'Disetujui',
+        divText: 'Disetujui',
+      };
+    case 'ditayangkan':
+      return {
+        divBG: 'bg-green-light',
+        textColor: 'sdp-text-green-light',
+        text: 'Ditayangkan',
+        divText: 'Ditayangkan',
+      };
+    case 'selesai':
+      return {
+        divBG: 'bg-green-light',
+        textColor: 'sdp-text-green-light',
+        text: 'Selesai',
+        divText: 'Selesai',
+      };
+    default:
+      return {};
+  }
+};
+
+export const getDatasetUrl = (name) => `${katalogUrl}/dataset/${name}`;
+
+export const arrayToOptionsMapper = (array, mapper, indexValue) => {
+  if (!mapper || !isFunction(mapper)) {
+    mapper = (label, value) => ({
+      label,
+      value: indexValue ? value : label,
+    });
+  }
+  return map(array || [], mapper);
+};
+
+export const dataToOptionsMapper = (data, mapper) => {
+  if (data.result) {
+    return arrayToOptionsMapper(data.result, mapper);
+  }
+  return [];
+};
+
+export const dataOptionsMapperCurry = (mapper) => (data) => dataToOptionsMapper(data, mapper);
+
+export const idNameOptionsMapper = (data) => ({
+  value: data.id,
+  label: data.nama,
+});
+
+export const idKeteranganOptionsMapper = (data) => ({
+  value: data.id,
+  label: data.keterangan,
+});
+
+export const prepareFormPayload = (data, fieldsMap) => {
+  const payload = cloneDeep(data);
+  if (fieldsMap.dropdowns && isArray(fieldsMap.dropdowns)) {
+    map(fieldsMap.dropdowns, (field) => {
+      set(payload, field, get(payload, `${field}.value`));
+    });
+  }
+  if (fieldsMap.toArray && isArray(fieldsMap.toArray)) {
+    map(fieldsMap.toArray, (field) => {
+      set(payload, field, [get(payload, field)]);
+    });
+  }
+  if (fieldsMap.dates && isArray(fieldsMap.dates)) {
+    map(fieldsMap.dates, (field) => {
+      set(payload, field, moment(new Date(get(payload, field)), 'YYYY-MM-DD'));
+    });
+  }
+  return payload;
+};
+
+export const incrementPageParams = (params) => {
+  return {
+    ...params,
+    page: params.page + 1,
+  };
+};
+
+export const fileTypes = {
+  excel: {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;',
+    extension: 'xslx',
+  },
+};
+
+export const createFileAndDownload = (data, fileType = fileTypes.excel, filename) => {
+  const extension = fileType.extension;
+  const fullFilename = `${filename}.${extension}`;
+  const blob = new Blob([data], { type: fileType.type });
+  if (window.navigator.msSaveOrOpenBlob) {
+    window.navigator.msSaveBlob(blob, fullFilename);
+  } else {
+    const elem = window.document.createElement('a');
+    elem.href = window.URL.createObjectURL(blob);
+    elem.download = filename;
+    document.body.appendChild(elem);
+    elem.click();
+    document.body.removeChild(elem);
+  }
 };

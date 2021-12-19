@@ -7,10 +7,20 @@
       button svg {
         width: 18px;
       }
+
+      .input-group {
+        position: relative;
+
+        svg {
+          position: absolute;
+          right: 12px;
+          top: 12px;
+        }
+      }
     }
 
     &__title {
-       
+
       font-size: 32px;
       font-style: normal;
       font-weight: 700;
@@ -234,4 +244,30 @@
       }
     }
   }
+
+  .pagination {
+    align-items: center;
+    &-prev,
+    &-next {
+      @extend .sdp-table-pagination-box;
+      cursor: pointer;
+      &.disabled {
+        cursor: not-allowed;
+      }
+    }
+    &-page {
+      @extend .sdp-table-pagination-box;
+      color: $gray-light;
+      font-size: 14px;
+      text-align: center;
+      cursor: pointer;
+      &.active {
+        color: $white;
+        background: $black-dark;
+      }
+    }
+  }
 }
+
+
+

@@ -2,16 +2,15 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { CMSTable } from 'components';
 
-import { filterAboutUs } from './reducer';
+import { getListTentang, tentangDatasetSelector } from './reducer';
 import bn from 'utils/bemNames';
-import { Edit } from 'components/Icons';
 
 const bem = bn('content-table');
 
 const CMSAboutUs = () => {
   let dispatch = useDispatch();
-  let listContent = useSelector((state) => state.cms.aboutUs.dataset.records);
-  let componentState = useSelector((state) => state.cms.aboutUs.dataset.status);
+  const { records } = useSelector(tentangDatasetSelector);
+
   const statusStyle = {
     DRAFT: {
       color: '#858A8F',
@@ -27,7 +26,7 @@ const CMSAboutUs = () => {
     },
   };
   // called only once
-  useEffect(() => dispatch(filterAboutUs({ page: 1, size: 10 })), []);
+  useEffect(() => dispatch(getListTentang({ page: 1 })), []);
 
   return (
     <div className={bem.e('section')}>
@@ -37,13 +36,13 @@ const CMSAboutUs = () => {
       <CMSTable
         customWidth={[18, 18, 18, 18, 18, 7]}
         header={['Penjelasan', 'Creator', 'Tanggal Dibuat', 'Tanggal Approve', 'Status']}
-        data={listContent.map((item) => {
+        data={records.map((item) => {
           let value = {
             data: [
-              item.title,
-              item.creator,
-              item.created_at.toISOString().split('T')[0].split('-').reverse().join('-'),
-              item.updated_at.toISOString().split('T')[0].split('-').reverse().join('-'),
+              item.judul,
+              item.user.name,
+              item.createdAt.split('T')[0].split('-').reverse().join('-'),
+              item.updatedAt.split('T')[0].split('-').reverse().join('-'),
               item.status,
             ],
             dataStyle: [null, null, null, null, statusStyle[item.status]],
@@ -57,7 +56,6 @@ const CMSAboutUs = () => {
           };
           return value;
         })}
-        tableState={componentState}
       />
     </div>
   );

@@ -128,9 +128,7 @@ const FormApi = () => {
     },
   ];
 
-  const handleImport = (e) => {
-    console.log(e);
-
+  const handleImport = () => {
     // If Success Import
     setDetailImport(true);
   };
@@ -159,7 +157,7 @@ const FormApi = () => {
         </div>
         <div className={bem.e('wrapper-input')}>
           <div className="form-group">
-            <label for="Judul">
+            <label htmlFor="Judul">
               <div className="wrapper-union">
                 <p> Judul </p> <Union />
                 <div className="wrapper-desc"> Judul API yang akan disesuaikan dengan field DCAT. </div>
@@ -168,7 +166,7 @@ const FormApi = () => {
             <input type="text" placeholder="" />
           </div>
           <div className="form-group">
-            <label for="Judul">
+            <label htmlFor="Judul">
               <div className="wrapper-union">
                 <p> Deskripsi </p> <Union />
                 <div className="wrapper-desc"> Deskripsi API, penjelasan mengenai data yang akan diintegrasikan. </div>
@@ -177,7 +175,7 @@ const FormApi = () => {
             <input type="text" placeholder="" />
           </div>
           <div className="form-group">
-            <label for="Judul">
+            <label htmlFor="Judul">
               <div className="wrapper-union">
                 <p> Source API </p> <Union />
                 <div className="wrapper-desc"> URL link endpoint json </div>
@@ -186,7 +184,7 @@ const FormApi = () => {
             <input type="text" />
           </div>
           <div className="form-group">
-            <label for="Judul">
+            <label htmlFor="Judul">
               <div className="wrapper-union">
                 <p> Max Data Parameter </p> <Union />
                 <div className="wrapper-desc"> Nilai maksimum data per page, misal: 1000 </div>
@@ -203,7 +201,7 @@ const FormApi = () => {
             <div className="wrapper-data">
               <div className="wrapper-title">
                 <h1>Data</h1>
-                <a href="#">(data-ckan-api.json)</a>
+                <button>(data-ckan-api.json)</button>
               </div>
               <div className={bem.e('management-table pt-0')}>
                 <table>
@@ -225,34 +223,26 @@ const FormApi = () => {
                 <div className="wrapper-pagination">
                   <ul className="pagination">
                     <li className="page-item">
-                      <a className="page-link prev" href="#">
+                      <button className="page-link prev">
                         <Prev />
-                      </a>
+                      </button>
                     </li>
                     <li className="page-item">
-                      <a className="page-link active" href="#">
-                        1
-                      </a>
+                      <button className="page-link active">1</button>
                     </li>
                     <li className="page-item">
-                      <a className="page-link" href="#">
-                        2
-                      </a>
+                      <button className="page-link">2</button>
                     </li>
                     <li className="page-item">
-                      <a className="page-link" href="#">
-                        3
-                      </a>
+                      <button className="page-link">3</button>
                     </li>
                     <li className="page-item">
-                      <a className="page-link" href="#">
-                        4
-                      </a>
+                      <button className="page-link">4</button>
                     </li>
                     <li className="page-item">
-                      <a className="page-link next" href="#">
+                      <button className="page-link next">
                         <Next />
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </div>
@@ -266,13 +256,13 @@ const FormApi = () => {
                 <Row>
                   <Col md={12}>
                     <div className="form-group">
-                      <label for="Judul"> Nama </label>
+                      <label htmlFor="Judul"> Nama </label>
                       <input type="text" placeholder="" />
                     </div>
                   </Col>
                   <Col md={12}>
                     <div className="form-group">
-                      <label for="Judul"> Email </label>
+                      <label htmlFor="Judul"> Email </label>
                       <input type="text" placeholder="" />
                     </div>
                   </Col>
@@ -280,7 +270,7 @@ const FormApi = () => {
                 <Row>
                   <Col md={6}>
                     <div className="form-group">
-                      <label for="Judul"> File Download URL </label>
+                      <label htmlFor="Judul"> File Download URL </label>
                       <input type="text" placeholder="data.go.id/api/data" />
                     </div>
                   </Col>
@@ -331,8 +321,8 @@ const FormApi = () => {
                   <span> Output </span>
                   <div className="input-group">
                     <input type="text" placeholder="https://bappenas.go.id/data.json" />
-                    <div class="input-group-append">
-                      <span class="input-group-text">
+                    <div className="input-group-append">
+                      <span className="input-group-text">
                         <CopyJson />
                       </span>
                     </div>

@@ -9,7 +9,7 @@ import Button from 'react-bootstrap/Button';
 import { NoPerminataanData, StatusSvg } from 'components/Icons';
 import { perminataanDatasetSelector, getPerminataanData } from './reducer';
 import Table from 'components/Table';
-import { prefixID } from './constant';
+import { prefixID } from 'utils/helper';
 import SideBarLoader from 'components/Loader/Sidebar';
 import TableLoader from 'components/Loader/TableLoader';
 
@@ -78,7 +78,7 @@ export const Perminataan = () => {
     {
       Header: '',
       accessor: 'perminataanID',
-      Cell: ({ ...rest }) => <span>{prefixID(rest?.row?.original?.id || '')}</span>,
+      Cell: ({ ...rest }) => <span>{prefixID(rest?.row?.original?.id || '', 'PD')}</span>,
     },
     {
       Header: '',
@@ -107,6 +107,7 @@ export const Perminataan = () => {
           diproses: 'orange',
           selesai: 'green',
           ditolak: 'danger',
+          dibatalkan: 'danger',
         };
         return (
           <div className="d-flex align-items-center">

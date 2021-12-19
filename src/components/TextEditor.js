@@ -14,7 +14,7 @@ const EditorConfig = {
     'bold italic underline | \
     alignleft aligncenter alignright alignjustify | \
     numlist bullist outdent indent | \
-    image',
+    image preview',
   images_upload_url: process.env.REACT_APP_API_URL + '/file/public-upload',
   file_picker_types: 'image media',
 };

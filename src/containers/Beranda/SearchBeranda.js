@@ -3,10 +3,10 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { ReactComponent as CircleSplitSvg } from 'assets/circle-split.svg';
-import { ReactComponent as SearchSvg } from 'assets/search.svg';
 import GroupedDropdown from 'components/DropDown/GroupedDropDown';
 import { tokenSelector } from 'containers/Login/reducer';
 import { TOPIC_LIST } from 'utils/constants';
+import { Search } from 'components/Icons';
 
 const Box = styled.div`
   background: #f2f2f2;
@@ -53,7 +53,7 @@ const DropDownList = TOPIC_LIST.map((item) => ({
   })),
 }));
 
-export const Search = () => {
+export const SearchBeranda = () => {
   const [searchText, setSearchText] = useState('');
   const [selectedItem, setSelectedItem] = useState({ value: '', label: '' });
   const history = useHistory();
@@ -68,6 +68,12 @@ export const Search = () => {
   const handleSearch = () => {
     const datasetRoute = isLoggedIn ? 'dataset' : 'topic-detail';
     history.push(`/${datasetRoute}?q=${searchText}`);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   return (
@@ -86,9 +92,10 @@ export const Search = () => {
           value={searchText}
           placeholder="Cari Data Publik Indonesia"
           onChange={(e) => setSearchText(e.target.value)}
+          onKeyPress={handleKeyPress}
         />
-        <button type="button" className="btn-search" onClick={handleSearch}>
-          <SearchSvg />
+        <button type="button" className="btn-search svg-20" onClick={handleSearch}>
+          <Search variant="white" />
         </button>
       </InputSearch>
     </Box>

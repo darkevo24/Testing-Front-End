@@ -1,4 +1,4 @@
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import LogoBappenas from 'assets/Logo_Bappenas_Indonesia.png';
 import Button from 'react-bootstrap/Button';
 import { ReactComponent as Search } from 'assets/search-api.svg';
@@ -6,9 +6,9 @@ import { ReactComponent as Prev } from 'assets/prev.svg';
 import { ReactComponent as Next } from 'assets/next.svg';
 import { ReactComponent as Edit } from 'assets/edit.svg';
 import { CMSTable } from 'components';
-import bn from 'utils/bemNames';
+// import bn from 'utils/bemNames';
 
-const bem = bn('cms-api');
+// const bem = bn('cms-api');
 
 const CreateApi = () => {
   const history = useHistory();
@@ -70,8 +70,8 @@ const CreateApi = () => {
                   <h3>Bappenas</h3>
                   <div className="input-group">
                     <input type="text" placeholder="https://bappenas.go.id/data.json/123456789/01112131415" />
-                    <div class="input-group-append">
-                      <span class="input-group-text">
+                    <div className="input-group-append">
+                      <span className="input-group-text">
                         <Edit />
                       </span>
                     </div>
@@ -97,8 +97,8 @@ const CreateApi = () => {
               <div className="wrapper-right">
                 <div className="input-group">
                   <input type="text" placeholder="Cari..." />
-                  <div class="input-group-append">
-                    <span class="input-group-text">
+                  <div className="input-group-append">
+                    <span className="input-group-text">
                       <Search />
                     </span>
                   </div>
@@ -113,44 +113,35 @@ const CreateApi = () => {
           customWidth={[20, 50, 20, 20, 10]}
           header={['Judul API', 'Deskripsi', 'Output JSON', 'Detail']}
           data={LIST_TABLE.map((item) => {
-            let value = {
+            return {
               data: [item.title, item.description, item.json],
               action: '/cms/api-detail/' + item.id,
             };
-            return value;
           })}
         />
         <div className="wrapper-pagination">
           <ul className="pagination">
             <li className="page-item">
-              <a className="page-link prev" href="#">
+              <button className="page-link prev">
                 <Prev />
-              </a>
+              </button>
             </li>
             <li className="page-item">
-              <a className="page-link active" href="#">
-                1
-              </a>
+              <button className="page-link active">1</button>
             </li>
             <li className="page-item">
-              <a className="page-link" href="#">
-                2
-              </a>
+              <button className="page-link">2</button>
             </li>
             <li className="page-item">
-              <a className="page-link" href="#">
-                3
-              </a>
+              <button className="page-link">3</button>
             </li>
             <li className="page-item">
-              <a className="page-link" href="#">
-                4
-              </a>
+              <button className="page-link">4</button>
             </li>
             <li className="page-item">
-              <a className="page-link next" href="#">
+              <button className="page-link next">
                 <Next />
-              </a>
+              </button>
             </li>
           </ul>
         </div>

@@ -1,68 +1,91 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import cx from 'classnames';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Table, { FilterSearchInput } from 'components/Table';
 import SingleDropDown from 'components/DropDown/SingleDropDown';
+import { getCMSKomunitasAhliData, cmsKomunitasAhliDatasetSelector } from './reducer';
+import TableLoader from 'components/Loader/TableLoader';
+import { ComponentAccessibility } from 'components/ComponentAccess';
+import { USER_ROLES } from 'utils/constants';
 
 const DROPDOWN_LIST = [
   {
-    value: 'All',
+    value: '',
     label: 'All',
   },
   {
-    value: 'Approved',
-    label: 'Approved',
+    value: 'DRAFT',
+    label: 'Draft',
   },
   {
-    value: 'Rejected',
-    label: 'Rejected',
+    value: 'MENUNGGU_PERSETUJUAN',
+    label: 'Menunggu Persetujuan',
+  },
+  {
+    value: 'DISETUJUI',
+    label: 'Disetujui',
+  },
+  {
+    value: 'DITAYANGKAN',
+    label: 'Ditayangkan',
+  },
+  {
+    value: 'TIDAK_DITAYANGKAN',
+    label: 'Tidak Ditayangkan',
+  },
+  {
+    value: 'DIBATALKAN',
+    label: 'Dibatalkan',
+  },
+  {
+    value: 'DITOLAK',
+    label: 'Ditolak',
+  },
+  {
+    value: 'DIARSIPKAN',
+    label: 'Diarsipkan',
   },
 ];
 
 const KomunitasAhli = () => {
-  const [searchText, setSearchText] = useState('');
-  const [status, setStatus] = useState(DROPDOWN_LIST[0]);
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  const { q, status, size, loading, page, records, totalRecords, totalPages } = useSelector(cmsKomunitasAhliDatasetSelector);
+
+  useEffect(() => {
+    handleAPICall({ page: 0, q: '', status: '' });
+  }, []);
+
   const redirectToDetail = (data) => {
-    console.log(data);
+    history.push(`/cms/komunitas-ahli-detail/${data.id}`);
   };
 
-  const getData = () => {
-    let data = [
-      {
-        kode_ahli: '001',
-        name_ahli: 'Davis Geidt',
-        keahlian: 'Komputer dan Jaringan',
-        level: 'Pusat',
-        penyelenggara: 'Wali Data',
-        status: 'Approved',
-      },
-      {
-        kode_ahli: '002',
-        name_ahli: 'Erin Dias',
-        keahlian: 'Matematika dan Statistik',
-        level: 'Pusat',
-        penyelenggara: 'Wali Data',
-        status: 'Rejected',
-      },
-    ];
-    if (searchText) data = data.filter((item) => item.name_ahli.toLowerCase().includes(searchText.toLowerCase()));
-    if (status.value === 'All') return data;
-    return data.filter((item) => item.status === status.value);
+  const handleAPICall = (params) => {
+    dispatch(getCMSKomunitasAhliData(params));
+  };
+
+  const handleSearch = (value = '') => {
+    handleAPICall({ page: 0, q: value.trim(), status });
+  };
+
+  const handleStatusChange = (selected) => {
+    handleAPICall({ page: 0, q, status: selected.value });
   };
 
   const columns = [
     {
       Header: 'Kode Ahli',
-      accessor: 'kode_ahli',
+      accessor: 'kode',
     },
     {
       Header: 'Nama Ahli',
-      accessor: 'name_ahli',
+      accessor: 'nama',
     },
     {
       Header: 'Keahlian',
-      accessor: 'keahlian',
+      accessor: 'bidangKeahlian',
     },
     {
       Header: 'Level',
@@ -102,36 +125,44 @@ const KomunitasAhli = () => {
   ];
   const tableConfig = {
     columns,
-    data: getData(),
+    data: records,
     title: '',
-    search: true,
-    searchPlaceholder: 'Cari...',
-    searchButtonText: 'Search',
     showSearch: false,
     onSearch: () => {},
     variant: 'spaced',
+    totalCount: totalRecords || null,
+    pageCount: totalPages || null,
+    pageSize: size,
+    currentPage: page,
+    manualPagination: true,
+    onPageIndexChange: (currentPage) => {
+      if (currentPage !== page) {
+        handleAPICall({ page: currentPage, q, status });
+      }
+    },
   };
   return (
     <div className="sdp-komunitas-container">
       <label className="fw-bold fs-32 lh-32 p-32">Komunitas Ahli</label>
       <div className="d-flex mx-32 justify-content-between">
-        <button
-          className="bg-info sdp-text-white  br-4 py-13 px-16 border-0"
-          onClick={() => history.push('/cms/manage-komunitas-ahli')}>
-          + Ahli Baru
-        </button>
-        <div className="sdp-left-wrapper d-flex align-items-center">
-          <lable className="mr-12">Status</lable>
-          <SingleDropDown data={DROPDOWN_LIST} defaultData={status} onChange={(data) => setStatus(data)} />
-          <FilterSearchInput
-            searchPlaceholder="Cari..."
-            globalFilter={searchText}
-            setGlobalFilter={(value) => setSearchText(value)}
-          />
+        <div>
+          <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR, USER_ROLES.CONTENT_CREATOR]}>
+            <button
+              className="bg-info sdp-text-white  br-4 py-13 px-16 border-0"
+              onClick={() => history.push('/cms/manage-komunitas-ahli')}>
+              + Ahli Baru
+            </button>
+          </ComponentAccessibility>
+        </div>
+
+        <div className="sdp-left-wrapper d-flex align-items-center justify-content-end">
+          <label className="mr-12">Status</label>
+          <SingleDropDown data={DROPDOWN_LIST} defaultData={status} onChange={handleStatusChange} />
+          <FilterSearchInput searchPlaceholder="Cari..." globalFilter={q} setGlobalFilter={handleSearch} />
         </div>
       </div>
       <div className="p-32">
-        <Table {...tableConfig} />
+        {loading ? <TableLoader speed={2} width={'100%'} height={550} /> : <Table {...tableConfig} />}
       </div>
     </div>
   );

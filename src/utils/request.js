@@ -1,3 +1,4 @@
+import isEmpty from 'lodash/isEmpty';
 import { apiUrls as appApiUrls } from './constants';
 import { generateQueryString, safeParse } from './helper';
 import { cookieKeys, getCookieByName, removeAllCookie } from './cookie';
@@ -36,8 +37,24 @@ async function parseResponse(response) {
     });
     let data = {};
     const responseType = response.headers.get('Content-Type');
+    const disposition = response.headers.get('Content-Disposition');
     if (responseType && responseType.includes('json')) {
       data = await response.json();
+    } else if (
+      (responseType && responseType.includes('application/force-download')) ||
+      (disposition && disposition.includes('attachment;'))
+    ) {
+      data = await response.blob();
+      if (disposition && disposition.includes('filename=')) {
+        const filename = disposition.split('filename=')[1];
+        const url = window.URL.createObjectURL(data);
+        const aNode = document.createElement('a');
+        aNode.href = url;
+        aNode.download = filename;
+        document.body.appendChild(aNode);
+        aNode.click();
+        aNode.remove();
+      }
     } else {
       const textData = await response.text();
       data = textData ? safeParse(textData) : textData;
@@ -61,6 +78,10 @@ function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
+  if ([401].includes(response.status)) {
+    removeAllCookie();
+    window.location.reload();
+  }
   const error = new ResponseError(response);
   error.response = response;
   throw error;
@@ -74,7 +95,7 @@ function checkStatus(response) {
  *
  * @return {object}           The response data
  */
-export async function request(url, { method = 'GET', headers: optionHeaders = {}, data = {} }) {
+export async function request(url, { method = 'GET', headers: optionHeaders = {}, data = {}, query = {} }) {
   const defaultHeaders = {
     Accept: typeJSON,
     'Content-Type': typeJSON,
@@ -84,28 +105,32 @@ export async function request(url, { method = 'GET', headers: optionHeaders = {}
     defaultHeaders.Authorization = `Bearer ${token}`;
   }
   const headers = Object.assign({}, defaultHeaders, optionHeaders);
-  const options = { method, headers };
 
-  // Checking if we need to add body or not.
-  if (['POST', 'PUT'].includes(method)) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10 * 1000); // Timeout in 10 seconds
+  const options = { method, headers, credentials: 'include', signal: controller.signal };
+
+  // Checking if body has data.
+  if (!isEmpty(data) || data instanceof FormData) {
     options.body = headers['Content-Type'] === typeJSON ? JSON.stringify(data) : data;
   }
   // Checking if we need to add query string or not.
-  if (['GET', 'DELETE'].includes(method)) {
-    url += `?${generateQueryString(data)}`;
+  if (!isEmpty(query)) {
+    url += `?${generateQueryString(query)}`;
+  }
+
+  if (!headers['Content-Type']) {
+    delete headers['Content-Type'];
   }
 
   let fetchResponse;
   try {
     fetchResponse = await fetch(url, options);
+    clearTimeout(timeout);
   } catch (error) {
     fetchResponse = error.response;
   }
   const response = checkStatus(fetchResponse);
-  if ([401].includes(response.status)) {
-    removeAllCookie();
-    window.location.reload();
-  }
   return parseResponse(response);
 }
 
@@ -154,4 +179,9 @@ export const defaultNumberOfRows = 10;
 export const paginationParams = {
   start: 0,
   rows: defaultNumberOfRows,
+};
+
+export const apiPaginationParams = {
+  page: 0,
+  size: defaultNumberOfRows,
 };

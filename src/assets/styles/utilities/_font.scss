@@ -1,4 +1,4 @@
-$customSizes: 6, 7, 8, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24, 27, 29, 30, 32, 35, 38, 40, 42, 48, 50, 80, 97;
+$customSizes: 6, 7, 8, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 27, 29, 30, 32, 35, 38, 40, 42, 48, 50, 80, 97;
 $customBoldSizes: 600;
 
 @each $size in $customSizes {
@@ -8,6 +8,13 @@ $customBoldSizes: 600;
   }
   .lh-#{$size} {
     line-height: #{$size}px !important;
+  }
+  .svg-#{$size} {
+    &svg,
+    svg {
+      height: #{$size}px;
+      width: #{$size}px;
+    }
   }
 }
 

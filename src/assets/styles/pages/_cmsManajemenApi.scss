@@ -88,7 +88,7 @@
             }
         }
     }
-    
+
     &__wrapper-json {
         width: 100%;
         display: flex;
@@ -196,7 +196,7 @@
                     border-top: 1px solid $stroke;
                     border-bottom: 1px solid $stroke;
                     &:first-child {
-                        border-left: 1px solid $stroke; 
+                        border-left: 1px solid $stroke;
                         border-top-left-radius: 4px;
                         border-bottom-left-radius: 4px;
                     }
@@ -537,14 +537,13 @@
             }
         }
         // Set Modal to Center
-    
+
     }
 
 }
 
 // Set Modal Dialog
 .modal-dialog {
-    max-width: 430px;
     display: flex;
     align-items: center;
     min-height: 100vh;

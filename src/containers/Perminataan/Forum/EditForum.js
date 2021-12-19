@@ -12,14 +12,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema, DROPDOWN_LIST } from './index';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getInstansiData,
-  instansiiDatasetSelector,
-  perminataanDatasetSelector,
-  perminataanForumErrorSelector,
-  putPerminataanData,
-  updateResult,
-} from '../reducer';
+import { perminataanDatasetSelector, perminataanForumErrorSelector, putPerminataanData, updateResult } from '../reducer';
+import { getInstansiData, instansiDataSelector } from 'containers/App/reducer';
 import isEmpty from 'lodash/isEmpty';
 import { usePrevious } from 'utils/hooks';
 import moment from 'moment';
@@ -33,7 +27,7 @@ export const EditForum = ({ onClose, data, initialCall }) => {
   const [errorDetail, setErrorDetail] = useState({});
   const dispatch = useDispatch();
   const { newRecord, records, loading } = useSelector(perminataanDatasetSelector);
-  const instansiDetail = useSelector(instansiiDatasetSelector);
+  const instansiDetail = useSelector(instansiDataSelector);
   const apiError = useSelector(perminataanForumErrorSelector);
   const prevRecord = usePrevious(newRecord) || {};
   const {
@@ -51,7 +45,7 @@ export const EditForum = ({ onClose, data, initialCall }) => {
   });
 
   useEffect(() => {
-    if (!instansiDetail?.instansiData?.length) dispatch(getInstansiData());
+    if (!instansiDetail?.result?.length) dispatch(getInstansiData());
   }, []);
 
   useEffect(() => {
@@ -91,7 +85,7 @@ export const EditForum = ({ onClose, data, initialCall }) => {
   };
 
   return (
-    <Modal size="lg" visible={true} onClose={onClose} title="Formulir Permintaan Data">
+    <Modal size="lg" visible={true} onClose={onClose} title="Ubah Permintaan Data">
       <Form noValidate onSubmit={handleSubmit(onSubmit)}>
         <Row className="mb-3 px-24">
           <Input
@@ -139,7 +133,7 @@ export const EditForum = ({ onClose, data, initialCall }) => {
           <Form.Group as={Col} md="12" className="mb-16">
             <label className="sdp-form-label py-8">Instansi Sumber Data</label>
             <SingleDropDown
-              data={instansiDetail?.instansiData.map((item) => ({ value: item.id, label: item.nama }))}
+              data={(instansiDetail?.result || []).map((item) => ({ value: item.id, label: item.nama }))}
               isLoading={instansiDetail?.loading || false}
               onChange={(data = {}) => {
                 setInstansiSumber(data);
@@ -184,12 +178,6 @@ export const EditForum = ({ onClose, data, initialCall }) => {
               />
             )}
             Simpan
-          </Button>
-          <Button type="submit" className="br-40 mb-12 px-54 py-12">
-            {loading && (
-              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="mr-10" />
-            )}
-            Kirim
           </Button>
         </div>
       </Form>

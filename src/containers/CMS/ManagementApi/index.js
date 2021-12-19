@@ -126,8 +126,8 @@ const ManagementApi = () => {
               <div className="wrapper-right">
                 <div className="input-group">
                   <input type="text" placeholder="Cari Instansi" />
-                  <div class="input-group-append">
-                    <span class="input-group-text">
+                  <div className="input-group-append">
+                    <span className="input-group-text">
                       <Search />
                     </span>
                   </div>
@@ -145,7 +145,7 @@ const ManagementApi = () => {
                 <div key={index} className="col-md-3 px-8 mb-15">
                   <div className="card-list" onClick={() => history.push('api-baru')}>
                     <div className="card-logo">
-                      <img src={LogoBappenas} width="60px" />
+                      <img src={LogoBappenas} width="60px" alt={''} />
                     </div>
                     <div className="card-description">
                       <h3>{data.title}</h3>
@@ -163,34 +163,26 @@ const ManagementApi = () => {
             <span className="count">Display 1-24</span>
             <ul className="pagination">
               <li className="page-item">
-                <a className="page-link prev" href="#">
+                <button className="page-link prev">
                   <Prev />
-                </a>
+                </button>
               </li>
               <li className="page-item">
-                <a className="page-link active" href="#">
-                  1
-                </a>
+                <button className="page-link active">1</button>
               </li>
               <li className="page-item">
-                <a className="page-link" href="#">
-                  2
-                </a>
+                <button className="page-link">2</button>
               </li>
               <li className="page-item">
-                <a className="page-link" href="#">
-                  3
-                </a>
+                <button className="page-link">3</button>
               </li>
               <li className="page-item">
-                <a className="page-link" href="#">
-                  4
-                </a>
+                <button className="page-link">4</button>
               </li>
               <li className="page-item">
-                <a className="page-link next" href="#">
+                <button className="page-link next">
                   <Next />
-                </a>
+                </button>
               </li>
             </ul>
           </div>

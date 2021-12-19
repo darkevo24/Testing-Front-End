@@ -5,10 +5,13 @@ import take from 'lodash/take';
 import { Loader } from 'components';
 import { tokenSelector } from 'containers/Login/reducer';
 import { datasetSelector, getDataSet, getInitialParams } from './reducer';
-import { Top } from './Top';
-import { Search } from './Search';
-import { Topic } from './Topic';
-import { Cards } from './Cards';
+import { BerandaTop } from './BerandaTop';
+import { SearchBeranda } from './SearchBeranda';
+import { BerandaTopic } from './BerandaTopic';
+import { BerandaCards } from './BerandaCards';
+import bn from 'utils/bemNames';
+
+const bem = bn('beranda');
 
 const Container = styled.div`
   width: 1280px;
@@ -29,11 +32,11 @@ const BerandaPage = () => {
   const popularData = take(data, 4);
   return (
     <>
-      <Top />
-      <Container>
-        <Search />
-        <Topic />
-        <Cards isLoggedIn={isLoggedIn} trendingData={trendingData} popularData={popularData} />
+      <BerandaTop />
+      <Container className={bem.b()}>
+        <SearchBeranda />
+        <BerandaTopic />
+        <BerandaCards bem={bem} isLoggedIn={isLoggedIn} trendingData={trendingData} popularData={popularData} />
         {loading && <Loader fullscreen />}
       </Container>
     </>

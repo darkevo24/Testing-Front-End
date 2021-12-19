@@ -17,15 +17,15 @@ import uniqBy from 'lodash/uniqBy';
 import { ReactComponent as DropDownArrawSvg } from 'assets/drop-down-arraw.svg';
 import { ReactComponent as SearchSvg } from 'assets/search.svg';
 import { TOPIC_LIST } from 'utils/constants';
+import { Loader } from 'components';
 import { Breadcrumbs } from 'components/Breadcrumb';
+import { Search } from 'components/Icons';
 import Table from 'components/Table';
 import { Tags } from 'components/Tags';
-import { Loader } from 'components';
-import { parseQueryString } from 'utils/helper';
-import { datasetSelector, getDataSet } from '../reducer';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
-import { Search } from 'components/Icons';
+import { getDatasetUrl, parseQueryString } from 'utils/helper';
 import { useOnClickOutside } from 'utils/hooks';
+import { datasetSelector, getDataSet } from '../reducer';
 
 const getTextClass = (type) => {
   switch (type.toLowerCase()) {
@@ -126,7 +126,10 @@ const TopicDetail = () => {
   useEffect(() => {
     const id = generateSlug(selectedGroup);
     if (id) {
-      fetchDataset({ groups: [{ id }], resetFilter: true }, true);
+      const kategori = id.toLowerCase() === 'all' ? [] : [{ id }];
+      fetchDataset({ kategori, resetFilter: true }, true);
+    } else if (topic === get(TOPIC_LIST, '0.title')) {
+      fetchDataset({ kategori: [], resetFilter: true }, true);
     }
   }, [selectedGroup]);
 
@@ -165,12 +168,26 @@ const TopicDetail = () => {
 
   useOnClickOutside(ref, closeFilterModal);
 
+  const handleEnterOnFilter = (event) => {
+    const { keyCode } = event;
+    if (keyCode === 13) {
+      applyInstansiFilter();
+    }
+  };
+  useEffect(() => {
+    document.addEventListener('keyup', handleEnterOnFilter);
+    return () => {
+      document.removeEventListener('keyup', handleEnterOnFilter);
+    };
+  }, []);
+
   const tableConfig = {
     columns: [
       {
         id: 'card',
         Header: 'Card',
         Cell: ({ cell: { row: { original: item } = {} } = {} }) => {
+          const dataSetUrl = getDatasetUrl(item.name);
           const numberOfMaxFormats = 3;
           const uniqFormats =
             uniqBy(
@@ -183,7 +200,9 @@ const TopicDetail = () => {
             <div className="row sdp-card-wrapped d-flex py-8 justify-content-between" key={item.id}>
               <div className="col-8 flex-column">
                 <div className="sdp-left-wrapper mb-27">
-                  <div className="mb-8 fs-16 fw-600 lh-19 sdp-text-black-dark">{item.title}</div>
+                  <a title="dataset" href={dataSetUrl} className="sdp-link">
+                    <div className="mb-8 fs-16 fw-600 lh-19 sdp-text-black-dark">{item.title}</div>
+                  </a>
                   <div className="fs-14 lh-17 sdp-text-black-dark">{item.notes}</div>
                 </div>
                 <div className="fw-600 fs-13 lh-13 text-nowrap sdp-text-disable invisible invisible">
@@ -220,6 +239,7 @@ const TopicDetail = () => {
     data,
     title: '',
     search: true,
+    variant: 'card',
     searchPlaceholder: t('beranda.topic.searchPlaceholder'),
     searchButtonText: <SearchSvg />,
     highlightSearchInput: true,
@@ -320,15 +340,17 @@ const TopicDetail = () => {
         )}
       </>
     ),
+    headerClassName: selectedOrginization.length ? 'mb-16' : '',
+    selectedOrginization,
     renderFilters: () => {
       return (
         <div className="sdp-instansi-filter added-filters">
-          <div className="sdp-instansi-filter-header d-flex">
+          <div className="sdp-instansi-filter-header d-flex flex-wrap">
             {selectedOrginization.map((item) => (
               <Badge
                 pill
                 key={item.value}
-                className="sdp-instansi-filter-tags-item border-gray-stroke d-flex align-items-center br-40 px-16 py-9 bg-white m-10"
+                className="sdp-instansi-filter-tags-item border-gray-stroke d-flex align-items-center br-40 px-16 py-9 bg-white mb-10 mr-10"
                 bg="light"
                 text="dark">
                 {item.icon && <img src={item.icon} alt={item.label} width="20px" height="20px" />}

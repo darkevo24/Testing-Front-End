@@ -1,120 +1,267 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import cx from 'classnames';
 import { Row, Col, Button } from 'react-bootstrap';
-import { ReactComponent as SearchSvg } from 'assets/search.svg';
 import Table from 'components/Table';
-import Image1 from './images/image1.png';
-import Image2 from './images/image2.png';
-import Image3 from './images/image3.png';
+import { icons, MailSvg } from 'components/Icons';
+import sortBy from 'lodash/sortBy';
 import { Kontak_list } from 'utils/constants';
-
-const tempData = [
-  {
-    id: 1,
-    name: 'Dr. Amelia Suganda',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vulputate lorem ut nisi aliquet condimentum. Pellentesque fringilla sagittis ante, eu ornare nisi bibendum nec.',
-    rate: 3,
-    icon: Image1,
-    tags: ['Ahli Statistik', 'Komunitas Ekonomi Indonesia', 'DKI Jakarta'],
-    kontak: [
-      { name: 'facebook', link: '' },
-      { name: 'twitter', link: '' },
-      { name: 'instagram', link: '' },
-      { name: 'youtube', link: '' },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Corey Korsgaard',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vulputate lorem ut nisi aliquet condimentum. Pellentesque fringilla sagittis ante, eu ornare nisi bibendum nec.',
-    rate: 5,
-    icon: Image2,
-    tags: ['Ahli Statistik', 'Komunitas Ekonomi Indonesia', 'DKI Jakarta'],
-    kontak: [
-      { name: 'facebook', link: '' },
-      { name: 'twitter', link: '' },
-      { name: 'instagram', link: '' },
-      { name: 'youtube', link: '' },
-    ],
-  },
-  {
-    id: 3,
-    name: 'Kadin Bator',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vulputate lorem ut nisi aliquet condimentum. Pellentesque fringilla sagittis ante, eu ornare nisi bibendum nec.',
-    rate: 0,
-    icon: Image3,
-    tags: ['Ahli Statistik', 'Komunitas Ekonomi Indonesia', 'DKI Jakarta'],
-    kontak: [
-      { name: 'facebook', link: '' },
-      { name: 'twitter', link: '' },
-      { name: 'instagram', link: '' },
-      { name: 'youtube', link: '' },
-    ],
-  },
-];
-
-const getElem = (data) => {
-  const cards = [];
-  data.forEach((item) => {
-    cards.push({
-      card: (
-        <div key={item.id} className="d-flex br-4 border-gray-stroke">
-          <div className="br-12 m-16">
-            <img src={item.icon} alt="" className="br-120" />
-          </div>
-          <div className="sdp-info-wrapper m-16">
-            <label className="sdp-title">{item.name}</label>
-            <div className="mt-16 d-flex mb-12">
-              {item.tags.map((tag) => (
-                <div className="br-2 border-gray-stroke px-6 py-5 sdp-text-grey-dark mr-8 bg-gray">{tag}</div>
-              ))}
-            </div>
-            <p>{item.description}</p>
-            <div className="sdp-rating-wrapper d-flex justify-content-between">
-              <div className="d-flex">
-                {item.kontak.map((kontak_item) => {
-                  const kontakDetail = Kontak_list.find((kontak) => kontak.name === kontak_item.name);
-                  return <div className="br-5 border-gray-stroke p-10 sdp-text-grey-dark mr-8">{kontakDetail.icon}</div>;
-                })}
-              </div>
-              <Button variant="primary" className="sdp-rate-button justify-content-end">
-                Lihat CV
-              </Button>
-            </div>
-          </div>
-        </div>
-      ),
-    });
-  });
-  return cards;
-};
+import { useDispatch, useSelector } from 'react-redux';
+import { komunitasAhliDatasetSelector, getKomunitasAhliData } from './reducer';
+import { useOnClickOutside } from 'utils/hooks';
+import AvtarWithTextCardLoader from 'components/Loader/AvtarWithTextCardLoader';
+import { getInstansiData, instansiDataSelector } from '../App/reducer';
+import debounce from 'lodash/debounce';
+import { apiUrls, get } from 'utils/request';
+import { Input } from 'components';
+import { useForm } from 'react-hook-form';
+import Form from 'react-bootstrap/Form';
+import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
 
 const KomunitasAhliPage = () => {
+  const dispatch = useDispatch();
+  const [showFilter, setShowFilter] = useState(false);
+  const [bidangKeahlianData, setBidangKeahlianData] = useState([]);
+  const [daerahData, setDaerahData] = useState([]);
+  const ref = useRef();
+  const instansiData = useSelector(instansiDataSelector);
+
+  const { payload, size, loading, page, records, totalRecords } = useSelector(komunitasAhliDatasetSelector);
+
+  const { control, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      daerahId: payload?.daerahId || null,
+      instansiId: payload?.instansiId || null,
+      bidangKeahlian: payload?.bidangKeahlian || null,
+      nama: payload?.nama || '',
+    },
+  });
+
+  useEffect(() => {
+    if (!instansiData?.result?.length) dispatch(getInstansiData());
+    getBidangData();
+    getDaerahData();
+  }, []);
+
+  const debounceSearch = useRef(
+    debounce((searchTerm = 'a') => {
+      getDaerahData(searchTerm.trim());
+    }, 300),
+  );
+
+  const getBidangData = async () => {
+    try {
+      const { data: { content: cData = [] } = {} } = await get(apiUrls.bidangData);
+      setBidangKeahlianData(cData?.length ? cData : []);
+    } catch (e) {}
+  };
+
+  const getDaerahData = async (q = 'a') => {
+    try {
+      const { data: { content: dData = [] } = {} } = await get(apiUrls.daerahData, { query: { q } });
+      setDaerahData(dData?.length ? dData : []);
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    handleAPICall({ page: 0, q: '', status: '' });
+  }, []);
+
+  const handleAPICall = (params) => {
+    dispatch(getKomunitasAhliData(params));
+  };
+
+  const handleSearch = (value = '') => {
+    handleAPICall({ page: 0, q: value.trim() });
+  };
+
+  const handleFilterChange = (data) => {
+    let params = {
+      page: 0,
+      ...payload,
+    };
+    if (data.nama.trim()) params = { ...params, nama: data.nama };
+    if (data.bidangKeahlian?.value) params = { ...params, bidangKeahlian: data.bidangKeahlian.value };
+    if (data.instansiId?.value) params = { ...params, instansiId: data.instansiId.value };
+    if (data.daerahId?.value) params = { ...params, daerahId: data.daerahId.value };
+    handleAPICall(params);
+    setShowFilter(false);
+  };
+
+  const handleOutSideClick = () => {
+    setShowFilter(false);
+    setValue('nama', payload?.nama || '');
+    if (payload?.bidangKeahlian) {
+      const rec = bidangKeahlianData.forEach((item) => item.bidangKeahlian === payload.bidangKeahlian);
+      setValue('bidangKeahlian', { value: rec.bidangKeahlian, label: rec.bidangKeahlian });
+    } else {
+      setValue('bidangKeahlian', null);
+    }
+    if (payload?.instansiId) {
+      const rec = instansiData.forEach((item) => item.bidangKeahlian === payload.bidangKeahlian);
+      setValue('instansiId', { value: rec.id, label: rec.nama });
+    } else {
+      setValue('instansiId', null);
+    }
+    if (payload?.daerahId) {
+      const rec = daerahData.forEach((item) => +item.id === +payload.daerahId);
+      setValue('daerahId', { value: rec.id, label: rec.nama });
+    } else {
+      setValue('daerahId', null);
+    }
+  };
+
+  useOnClickOutside(ref, handleOutSideClick);
+
   const tableConfig = {
     columns: [
       {
         accessor: 'card',
         Header: 'Card',
+        Cell: ({ cell: { row: { original: item } = {} } = {} }) => {
+          return (
+            <div key={item.id} className="d-flex br-4 border-gray-stroke">
+              <div key={'img-' + item.id} className="br-12 m-16">
+                <img src={item?.foto?.location} alt="" className="brp-50" height="120px" width="120px" />
+              </div>
+              <div key={'wrapper-' + item.id} className="sdp-info-wrapper m-16">
+                <label className="sdp-title">{item?.nama}</label>
+                <div className="mt-16 d-flex mb-12">
+                  {/*{item.tags.map((tag) => (*/}
+                  {/*  <div className="br-2 border-gray-stroke px-6 py-5 sdp-text-grey-dark mr-8 bg-gray">{tag}</div>*/}
+                  {/*))}*/}
+                </div>
+                <p>{item.riwayat}</p>
+                <div className="sdp-rating-wrapper d-flex justify-content-between">
+                  <div className="d-flex">
+                    {sortBy(item.kontak, ['tipe']).map((kontak_item) => {
+                      const kontakDetail = Kontak_list.find((kontak) => kontak.name === kontak_item.tipe);
+                      if ((!kontakDetail && kontak_item.tipe !== 'email') || !kontak_item?.value) return null;
+                      if (!kontakDetail && kontak_item.tipe === 'email') {
+                        return (
+                          <div
+                            className="sdp-kontak br-5 border-gray-stroke p-10 sdp-text-grey-dark mr-8 cursor-pointer"
+                            onClick={() => window.open(`mailto:${kontak_item.value}`, '_blank')}>
+                            <MailSvg variant="danger" />
+                          </div>
+                        );
+                      }
+                      const Icon = icons[kontakDetail.icon];
+                      return (
+                        <div
+                          key={kontak_item.tipe + item.id}
+                          className=" sdp-kontak br-5 border-gray-stroke p-10 sdp-text-grey-dark mr-8 cursor-pointer"
+                          onClick={() => window.open(kontak_item.value, '_blank')}>
+                          <Icon />
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <Button
+                    variant="primary"
+                    className="sdp-rate-button justify-content-end"
+                    onClick={() =>
+                      window.open(
+                        item.cv.location ||
+                          'https://drive.google.com/file/d/1YKu5bPdkXsuAb-dojIm5cy_To8FC0BRI/view?usp=sharing',
+                        '_blank',
+                      )
+                    }>
+                    Lihat CV
+                  </Button>
+                </div>
+              </div>
+            </div>
+          );
+        },
       },
     ],
-    data: getElem(tempData),
+    data: records,
     subTitle: 'Komunitas Ahli',
     search: true,
+    searchValue: payload.q,
     searchPlaceholder: 'Cari Ahli Berdasarkan Nama',
-    searchButtonText: <SearchSvg />,
-    onSearch: (searchText) => {
-      // Todo: handle Search
+    searchRightComponent: (
+      <>
+        <Button
+          className="sdp-button border-gray-stroke br-4 bg-white ml-10"
+          variant="light"
+          onClick={() => setShowFilter(true)}>
+          Advanced Search
+        </Button>
+        {showFilter && (
+          <div ref={ref} className="sdp-filter border-gray-stroke">
+            <Form noValidate onSubmit={handleSubmit(handleFilterChange)}>
+              <div className="sdp-filter-header d-flex flex-column">
+                <Input control={control} name="nama" className="mb-15" />
+                <SingleSelectDropDown
+                  key="bidangKeahlian"
+                  name="bidangKeahlian"
+                  control={control}
+                  data={bidangKeahlianData
+                    .filter((item) => item.bidangKeahlian)
+                    .map((item) => ({ value: item.bidangKeahlian, label: item.bidangKeahlian }))}
+                  placeholder="Bidang Keahlian"
+                  className="mb-15 bg-gray"
+                />
+                <SingleSelectDropDown
+                  key="daerahId"
+                  name="daerahId"
+                  control={control}
+                  data={daerahData.map((item) => ({ label: item.nama, value: item.id }))}
+                  placeholder="Daerah"
+                  onInputChange={debounceSearch}
+                  className="mb-15"
+                />
+                <SingleSelectDropDown
+                  key="instansiId"
+                  name="instansiId"
+                  control={control}
+                  data={(instansiData?.result || []).map((item) => ({ value: item.id, label: item.nama }))}
+                  placeholder="Instansi / Lembaga"
+                  isLoading={instansiData?.loading}
+                  className="mb-15"
+                />
+              </div>
+
+              <div className="sdp-filter-footer d-flex justify-content-end border-top-gray-stroke pt-10">
+                <Button type="submit" className="sdp-button border-gray-stroke br-34 py-9 px-30" variant="primary">
+                  Cari
+                </Button>
+              </div>
+            </Form>
+          </div>
+        )}
+      </>
+    ),
+    onSearch: (searchText) => handleSearch(searchText),
+    totalCount: totalRecords || null,
+    pageSize: size,
+    currentPage: page,
+    manualPagination: true,
+    onPageIndexChange: (currentPage) => {
+      if (currentPage !== page) {
+        handleAPICall({});
+      }
     },
     showHeader: false,
   };
 
+  let marginClass = window.screen.width <= 1024 ? 'mx-200' : window.screen.width <= 1440 ? 'mx-300' : 'mx-500';
+
   return (
     <div className="sdp-komunitas-wrapper">
-      <Row className="mx-500 mt-48">
+      <Row className={cx('mt-48', marginClass)}>
         <Col>
-          <Table {...tableConfig} />
+          {loading ? (
+            <>
+              <label className="sdp-heading mb-10">Komunitas Ahli</label>
+              <div className="d-flex br-4 border-gray-stroke p-10">
+                <AvtarWithTextCardLoader />
+              </div>
+            </>
+          ) : (
+            <Table {...tableConfig} />
+          )}
         </Col>
       </Row>
     </div>

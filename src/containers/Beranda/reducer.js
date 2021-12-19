@@ -8,7 +8,7 @@ import {
   pickValidDatasetPaginationParams,
 } from 'utils/helper';
 
-const facetFields = ['organization', 'groups', 'tags', 'res_format'];
+const facetFields = ['organization', 'kategori', 'tags', 'res_format'];
 
 export const getInitialParams = () => ({
   currentPage: 0,
@@ -37,7 +37,7 @@ export const getDataSet = createAsyncThunk('beranda/getDataset', async (params) 
   data = mapParamsToJsonString(data, ['facet.field']);
   data = mapParamsToOrString(data, facetFields);
   data = mapOrStringsToFq(data, facetFields);
-  const response = await get(apiUrls.dataset, { data: pickValidDatasetPaginationParams(data) });
+  const response = await get(apiUrls.dataset, { query: pickValidDatasetPaginationParams(data) });
   return response?.data?.result;
 });
 

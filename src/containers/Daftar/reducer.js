@@ -169,8 +169,23 @@ export const putDaftarData = createAsyncThunk('daftar/putDaftarData', async (par
   return response;
 });
 
-export const deleteDaftarData = createAsyncThunk('daftar/deleteDaftarData', async (params) => {
+const makeDaftarDataActionCall = (dispatch, action, state) => {
+  const { params, bodyParams } = state;
+  const filters = { params, bodyParams };
+  return dispatch(action(filters));
+};
+
+export const refetchDaftarData = createAsyncThunk('daftarData/refetchDaftarData', async (_, { dispatch, getState }) => {
+  const state = getState()?.daftar;
+  makeDaftarDataActionCall(dispatch, getDaftarData, state.daftarData);
+  makeDaftarDataActionCall(dispatch, getRkpDaftarData, state.rkp);
+  makeDaftarDataActionCall(dispatch, getSdgDaftarData, state.sdgs);
+  makeDaftarDataActionCall(dispatch, getSayaDaftarData, state.sayaDaftarData);
+});
+
+export const deleteDaftarData = createAsyncThunk('daftar/deleteDaftarData', async (params, { dispatch }) => {
   const response = await deleteRequest(`${apiUrls.daftarData}/${params.id}`);
+  dispatch(refetchDaftarData());
   return response;
 });
 

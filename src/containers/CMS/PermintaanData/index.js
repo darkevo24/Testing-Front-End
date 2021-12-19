@@ -28,7 +28,6 @@ const CMSPermintaanData = () => {
       page: params.page,
       q: query,
     };
-    console.log(obj.page);
     return dispatch(getPermintaanData(obj));
   };
 

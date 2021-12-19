@@ -1,0 +1,50 @@
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { apiUrls, defaultNumberOfRows, get } from 'utils/request';
+
+export const initialState = {
+  dataset: {
+    loading: false,
+    error: null,
+    page: 0,
+    status: '',
+    records: [],
+    size: defaultNumberOfRows,
+    totalPages: null,
+    totalRecords: null,
+  },
+};
+
+export const BIMTEK_DOKUMENTASI = 'BIMTEK_DOKUMENTASI';
+
+export const getDokumentasi = createAsyncThunk('permintaan-data/bimtek', async (params) => {
+  const response = await get(apiUrls.cmsBimtekDokumentasi, { query: { page: params.page + 1, size: 10, q: params.q } });
+  console.log(response);
+  return response;
+});
+
+const BimtekDokumentasiSlice = createSlice({
+  name: BIMTEK_DOKUMENTASI,
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(getDokumentasi.pending, (state, action) => {
+      state.dataset.loading = true;
+    });
+    builder.addCase(getDokumentasi.fulfilled, (state, action) => {
+      console.log(action.payload);
+      state.dataset.loading = false;
+      state.dataset.records = action.payload.data.content.records;
+      state.dataset.page = action.payload.data.content.page;
+      state.dataset.totalPages = action.payload.data.content.totalPages;
+      state.dataset.totalRecords = action.payload.data.content.totalRecords;
+    });
+    builder.addCase(getDokumentasi.rejected, (state, action) => {
+      state.loading = false;
+      state.error = 'Invalid data';
+    });
+  },
+});
+
+export const BimtekDokumentasiSelector = (state) => state.cmsBimtekDokumentasi.dataset;
+
+export default BimtekDokumentasiSlice.reducer;

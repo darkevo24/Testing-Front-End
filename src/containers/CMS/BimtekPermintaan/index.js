@@ -28,8 +28,6 @@ const CMSBimtekPermintaan = () => {
       page: params.page,
       q: query,
     };
-    console.log(obj.page);
-    console.log(page);
     return dispatch(getPermintaanData(obj));
   };
 
@@ -53,7 +51,7 @@ const CMSBimtekPermintaan = () => {
   const columns = [
     {
       Header: 'Nama Peminta',
-      accessor: 'namaLengkap',
+      accessor: 'namaLengkap?.',
     },
     {
       Header: 'Instansi',
@@ -83,7 +81,7 @@ const CMSBimtekPermintaan = () => {
       Header: 'Status',
       accessor: 'status',
       Cell: ({ ...rest }) => (
-        <span className={`status ${rest?.row?.original?.status.toLowerCase()}`}> {rest?.row?.original?.status} </span>
+        <span className={`status ${rest?.row?.original?.status?.toLowerCase()}`}> {rest?.row?.original?.status} </span>
       ),
     },
     {

@@ -57,6 +57,7 @@ export const apiUrls = {
   strukturData: getCMSEndpoint('bidang'),
   cmsBeritaData: getCMSEndpoint('berita'),
   cmsBimtekPermintaanData: getCMSEndpoint('bimtek/permintaan'),
+  cmsBimtekDokumentasi: getCMSEndpoint('bimtek/dokumentasi'),
 };
 
 export const priorityOptions = [

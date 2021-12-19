@@ -252,6 +252,17 @@ export const getStatusClass = (status) => {
   }
 };
 
+export const dateTransform = (_, originalValue) => {
+  return moment(originalValue, 'DD/MM/YYY').toDate();
+};
+
+export const findOption = (options, value) => {
+  if (isArray(value)) {
+    return value.map((nestedItem) => findOption(options, nestedItem));
+  }
+  return options.find((option) => option.value === value);
+};
+
 export const getDatasetUrl = (name) => `${katalogUrl}/dataset/${name}`;
 
 export const arrayToOptionsMapper = (array, mapper, indexValue) => {

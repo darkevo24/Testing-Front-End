@@ -6,10 +6,9 @@ import Modal from 'components/Modal';
 import Notification from 'components/Notification';
 import Table from 'components/Table';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
-import DaftarForm, { submitDaftarForm } from './DaftarForm';
 import { Check } from 'components/Icons';
 import { JADWAL_PERMUTAKHIRAN } from 'utils/constants';
-import { getSayaDaftarData, sayaDataSelector, deleteDaftarData, putDaftarData } from './reducer';
+import { getSayaDaftarData, sayaDataSelector, deleteDaftarData } from './reducer';
 
 const DaftarDataSayaTable = ({
   bem,
@@ -18,9 +17,9 @@ const DaftarDataSayaTable = ({
   instansiOptions = [],
   priorityOptions = [],
   produenOptions = [],
+  showDaftarFormModal,
 }) => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [isDaftarFormVisible, setIsDaftarFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [sortBy, setSortBy] = useState(null);
   const dispatch = useDispatch();
@@ -93,47 +92,6 @@ const DaftarDataSayaTable = ({
         });
       }
       setIsDeleteModalVisible(false);
-    });
-  };
-
-  const showDaftarFormModal = (data) => {
-    setSelectedRecord(data);
-    setIsDaftarFormVisible(true);
-  };
-
-  const hideDaftarFormModal = () => {
-    setSelectedRecord(null);
-    setIsDaftarFormVisible(false);
-  };
-
-  const handleDaftarFromSubmit = (data) => {
-    // TODO: handle the data posted to server
-
-    data.instansi = data.instansi.value;
-    data.jadwalPemutakhiran = data.jadwalPemutakhiran.value;
-    data.indukData = [data.indukData.value];
-    data.format = 'png';
-
-    dispatch(putDaftarData(data)).then((res) => {
-      hideDaftarFormModal();
-      res.payload
-        ? Notification.show({
-            type: 'secondary',
-            message: (
-              <div>
-                Daftar <span className="fw-bold">{data.name}</span> Berhasil Ditambahkan
-              </div>
-            ),
-            icon: 'check',
-          })
-        : Notification.show({
-            message: (
-              <div>
-                Daftar <span className="fw-bold">{data.name}</span> Berhasil Ditambahkan
-              </div>
-            ),
-            icon: 'cross',
-          });
     });
   };
 
@@ -283,19 +241,6 @@ const DaftarDataSayaTable = ({
           { text: 'Hapus', onClick: handleDelete },
         ]}>
         Apakah anda yakin untuk menghapus <span className="fw-bold">Data UMKM?</span>
-      </Modal>
-      <Modal
-        size="lg"
-        visible={isDaftarFormVisible}
-        onClose={hideDaftarFormModal}
-        icon="splitCircle"
-        title={selectedRecord ? 'Edit Data' : 'Tambah Data'}
-        subtitle="Isi form dibawah untuk menambah data"
-        actions={[
-          { variant: 'secondary', text: 'Batal', onClick: hideDaftarFormModal },
-          { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDaftarForm },
-        ]}>
-        <DaftarForm instansiOptions={instansiOptions} data={selectedRecord} onSubmit={handleDaftarFromSubmit} />
       </Modal>
     </>
   );

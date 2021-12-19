@@ -14,7 +14,6 @@ export const PERMINTAAN_DATA_DETAIL = 'PERMINTAAN_DATA_DETAIL';
 
 export const getPermintaanDataDetail = createAsyncThunk('/permintaan-data/detail', async (params) => {
   const response = await get(`${apiUrls.detailPermintaanData}/${params}`);
-  // console.log(response);
   return response?.data.content;
 });
 

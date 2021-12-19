@@ -117,6 +117,10 @@
     .modal-dialog {
         width: 382px;
       .modal-body {
+        .text-blue {
+          color : $blue;
+          font-weight: bold;
+        }
         width: 382px;
         .sdp-input-wrapper {
           position: relative;

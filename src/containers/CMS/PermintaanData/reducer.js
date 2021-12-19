@@ -19,9 +19,10 @@ export const initialState = {
 export const PERMINTAAN_DATA = 'PERMINTAAN_DATA';
 
 export const getPermintaanData = createAsyncThunk('permintaan-data/list', async (params) => {
-  return await get(apiUrls.listPermintaanData, {
+  const response = await get(apiUrls.listPermintaanData, {
     query: { page: params.page + 1, size: 10, unitKerja: params.unitKerja, status: params.status, q: params.q },
   });
+  return response;
 });
 
 export const getInstansi = createAsyncThunk('permintaan-data/instansi', async (params) => {
@@ -50,8 +51,8 @@ const permintaanDataDetailSlice = createSlice({
       state.dataset.totalRecords = action.payload.data.content.totalRecords;
     });
     builder.addCase(getPermintaanData.rejected, (state, action) => {
-      state.loading = false;
-      state.error = 'Invalid data';
+      state.dataset.loading = false;
+      state.dataset.error = 'Invalid data';
     });
     builder.addCase(getInstansi.pending, (state, action) => {
       state.dataset.loading = true;

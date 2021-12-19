@@ -160,16 +160,16 @@ const CMSPermintaanDataView = () => {
       catatan: data.catatan,
     };
     dispatch(postPermintaanDataTolak(obj)).then((res) => {
-      !res?.name === 'error'
+      res?.name === 'error'
         ? Notification.show({
-            type: 'secondary',
-            message: <div> Permintaan Data Berhasil Ditolak </div>,
-            icon: 'check',
-          })
-        : Notification.show({
             type: 'secondary',
             message: <div> Permintaan Data Gagal Ditolak </div>,
             icon: 'cross',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Permintaan Data Berhasil Ditolak </div>,
+            icon: 'check',
           });
     });
     hideTolakModal();
@@ -181,16 +181,16 @@ const CMSPermintaanDataView = () => {
       catatan: data.catatan,
     };
     dispatch(postPermintaanDataProses(obj)).then((res) => {
-      !res?.name === 'error'
+      res?.name === 'error'
         ? Notification.show({
-            type: 'secondary',
-            message: <div> Permintaan Data Berhasil Diproses </div>,
-            icon: 'check',
-          })
-        : Notification.show({
             type: 'secondary',
             message: <div> Permintaan Data Gagal Diproses </div>,
             icon: 'cross',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Permintaan Data Berhasil Diproses </div>,
+            icon: 'check',
           });
     });
     hideProsesModal();
@@ -203,16 +203,16 @@ const CMSPermintaanDataView = () => {
       url: data.urlDataset,
     };
     dispatch(postPermintaanDataSelesai(obj)).then((res) => {
-      !res?.name === 'error'
+      res?.name === 'error'
         ? Notification.show({
-            type: 'secondary',
-            message: <div> Permintaan Data Berhasil Diselesaikan </div>,
-            icon: 'check',
-          })
-        : Notification.show({
             type: 'secondary',
             message: <div> Permintaan Data Gagal Diselesaikan </div>,
             icon: 'cross',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Permintaan Data Berhasil Diselesaikan </div>,
+            icon: 'check',
           });
     });
     hideSelesaiModal();
@@ -240,7 +240,6 @@ const CMSPermintaanDataView = () => {
     },
   });
 
-  console.log(data);
   return (
     <div>
       {data.status === 'SELESAI' ? <SuccessText /> : null}
@@ -283,7 +282,7 @@ const CMSPermintaanDataView = () => {
                     <p className="fw-bold">NIP/NIK</p>
                   </div>
                   <div className="col-2">
-                    <p className="fw-light">{data.user?.nip || data.user?.nik}</p>
+                    <p className="fw-light">{data.user?.nik}</p>
                   </div>
                 </div>
                 <div className="d-flex flex-row">

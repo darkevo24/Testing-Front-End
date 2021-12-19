@@ -8,7 +8,7 @@ const bem = bn('log');
 export const LogStatus = ({ data }) => (
   <div className={bem.e('section')}>
     <div className={bem.e('title')}>Log Status</div>
-    {!data
+    {!data || data.length === 0
       ? 'Tidak ada log'
       : data.map((item, key) => (
           <div key={key} className="mb-3">

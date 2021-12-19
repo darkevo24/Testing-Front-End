@@ -16,11 +16,12 @@ const CMSBeritaBaru = () => {
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
-    data.mainImage = 'https://rembangkab.go.id/haribawana/uploads/pemerintah-kabupaten-rembang-no-image.jpg';
     data.mainImageTitle = '';
     data.publishDate = data.publishDate ? data.publishDate + ' ' + data.publishTime : '';
     data.kategori = data.kategori.value;
     data.status = 0;
+    data.taglineId = data.taglineId.map((tag) => tag.value);
+    data.issn = data.issn ? data.issn : '';
     dispatch(setNewBerita({ payload: data })).then((res) => {
       res?.payload
         ? Notification.show({

@@ -22,7 +22,7 @@ const EditorConfig = {
 const TextEditor = ({ defaultValue, disabled, onChange = () => {} }) => {
   return (
     <Editor
-      apiKey="ne6hq4p5tdn0hwuirba4i005nv3yavpgeahao9yy58ka476c"
+      apiKey="2htoke0b3pysjlaz24f7uw5uarba4s6wi6oy0lhi4ne43237"
       init={EditorConfig}
       className="tinymce-custom"
       initialValue={defaultValue}

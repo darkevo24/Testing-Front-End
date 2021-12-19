@@ -163,6 +163,7 @@ export const prefixID = (id, text) => {
 
 export const getStatusClass = (status) => {
   switch (status) {
+    case 0:
     case 'draft':
       return {
         divBG: 'bg-gray',
@@ -170,6 +171,7 @@ export const getStatusClass = (status) => {
         text: 'Draft',
         divText: 'Draft',
       };
+    case 5:
     case 'diarsipkan': {
       return {
         divBG: 'bg-gray',
@@ -178,6 +180,7 @@ export const getStatusClass = (status) => {
         divText: 'Diarsipkan',
       };
     }
+    case 4:
     case 'tidak_ditayangkan':
       return {
         divBG: 'bg-orange-light',
@@ -185,6 +188,7 @@ export const getStatusClass = (status) => {
         text: 'Tidak ditayangkan',
         divText: '',
       };
+    case 1:
     case 'menunggu_persetujuan':
       return {
         divBG: 'bg-orange-light',
@@ -206,6 +210,7 @@ export const getStatusClass = (status) => {
         text: 'Dibatalkan',
         divText: 'Dibatalkan',
       };
+    case 3:
     case 'ditolak':
       return {
         divBG: 'bg-red-light',
@@ -227,6 +232,7 @@ export const getStatusClass = (status) => {
         text: 'Disetujui',
         divText: 'Disetujui',
       };
+    case 2:
     case 'ditayangkan':
       return {
         divBG: 'bg-green-light',

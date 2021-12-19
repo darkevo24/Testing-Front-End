@@ -14,7 +14,7 @@ import {
   updateStatus,
 } from './reducer';
 
-import { Loader } from 'components';
+import { Loader, CMSTopDetail } from 'components';
 import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import bn from 'utils/bemNames';
@@ -107,55 +107,58 @@ const CMSStrukturDetail = (props) => {
   }, [bidang]);
 
   return (
-    <Row className={bem.e('section')}>
-      <Col sm={9}>
-        <div>
-          <div className="d-flex justify-content-between mb-24">
-            <div className={bem.e('title')}>Bidang Detail</div>
-            {record?.status === STATUS_DATA.draft || record?.status === STATUS_DATA.rejected ? (
-              <div>
-                <Button onClick={archiveData} variant="secondary">
-                  <DeleteIcon />
-                </Button>
-                <Button
-                  onClick={() => history.goBack()}
-                  className="ml-10 bg-white sdp-text-grey-dark border-gray-stroke"
-                  variant="secondary"
-                  style={{ width: '112px' }}>
-                  Batal
-                </Button>
-                <Button onClick={simpanData} className="ml-10" variant="info" style={{ width: '112px' }}>
-                  Simpan
-                </Button>
-              </div>
-            ) : record?.status === STATUS_DATA.waitingApproval ? (
-              <div>
-                <Button
-                  onClick={tolakData}
-                  className="ml-10 bg-white sdp-text-grey-dark border-gray-stroke"
-                  variant="secondary"
-                  style={{ width: '112px' }}>
-                  Totak
-                </Button>
-                <Button onClick={setujuiData} className="ml-10" variant="info" style={{ width: '112px' }}>
-                  Setujui
-                </Button>
-              </div>
+    <div>
+      <CMSTopDetail status={record?.status?.toLowerCase()} />
+      <Row className={bem.e('section')}>
+        <Col sm={9}>
+          <div>
+            <div className="d-flex justify-content-between mb-24">
+              <div className={bem.e('title')}>Bidang Detail</div>
+              {record?.status === STATUS_DATA.draft || record?.status === STATUS_DATA.rejected ? (
+                <div>
+                  <Button onClick={archiveData} variant="secondary">
+                    <DeleteIcon />
+                  </Button>
+                  <Button
+                    onClick={() => history.goBack()}
+                    className="ml-10 bg-white sdp-text-grey-dark border-gray-stroke"
+                    variant="secondary"
+                    style={{ width: '112px' }}>
+                    Batal
+                  </Button>
+                  <Button onClick={simpanData} className="ml-10" variant="info" style={{ width: '112px' }}>
+                    Simpan
+                  </Button>
+                </div>
+              ) : record?.status === STATUS_DATA.waitingApproval ? (
+                <div>
+                  <Button
+                    onClick={tolakData}
+                    className="ml-10 bg-white sdp-text-grey-dark border-gray-stroke"
+                    variant="secondary"
+                    style={{ width: '112px' }}>
+                    Totak
+                  </Button>
+                  <Button onClick={setujuiData} className="ml-10" variant="info" style={{ width: '112px' }}>
+                    Setujui
+                  </Button>
+                </div>
+              ) : null}
+            </div>
+            {!loading ? (
+              <CMSStrukturForm
+                dataValue={record}
+                handleData={setBidang}
+                idBidang={id}
+                disabled={record?.status !== STATUS_DATA.draft && record?.status !== STATUS_DATA.rejected}
+              />
             ) : null}
           </div>
-          {!loading ? (
-            <CMSStrukturForm
-              dataValue={record}
-              handleData={setBidang}
-              idBidang={id}
-              disabled={record?.status !== STATUS_DATA.draft && record?.status !== STATUS_DATA.rejected}
-            />
-          ) : null}
-        </div>
-      </Col>
-      <Col sm={3}>{logLoading ? null : <LogStatus data={logRecord} />}</Col>
-      {(loading || logLoading) && <Loader fullscreen={true} />}
-    </Row>
+        </Col>
+        <Col sm={3}>{logLoading ? null : <LogStatus data={logRecord} />}</Col>
+        {(loading || logLoading) && <Loader fullscreen={true} />}
+      </Row>
+    </div>
   );
 };
 

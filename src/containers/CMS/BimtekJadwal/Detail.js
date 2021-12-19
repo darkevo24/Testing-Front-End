@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -8,12 +10,26 @@ import { CMSBimtekForm } from 'components';
 import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import bn from 'utils/bemNames';
+import { BimtekJadwalDetailSelector, getJadwalBimtekDetail } from './reducer';
 
 const bem = bn('content-detail');
 
 const CMSJadwalDetail = (props) => {
+  const { id } = useParams();
   // const id = props.match.params.id;
   // const history = useHistory();
+  const dispatch = useDispatch();
+  const { records } = useSelector(BimtekJadwalDetailSelector);
+  console.log(records);
+
+  const fetchBimtekDetail = (params) => {
+    return dispatch(getJadwalBimtekDetail(params));
+  };
+
+  useEffect(() => {
+    fetchBimtekDetail(id);
+  }, []);
+
   const dataLog = [
     {
       date: '12 Desember 2021',
@@ -55,7 +71,7 @@ const CMSJadwalDetail = (props) => {
               </Button>
             </div>
           </div>
-          <CMSBimtekForm />
+          <CMSBimtekForm data={records} />
         </div>
       </Col>
       <Col sm={3}>

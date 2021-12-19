@@ -81,10 +81,10 @@ const CMSBimtekForm = ({ data, disabled = false, modalAction = false, isDocument
     const elmButton = document.getElementById(id);
     elmButton.click();
   };
-
+  console.log(data);
   return (
     <div className="sdp-form">
-      <Input group label="Nama Bimtek" name="name" control={control} />
+      <Input group label="Nama Bimtek" name="namaBimtek" value={data.namaBimtek} control={control} />
       <Row className="align-items-end">
         <Col>
           <DatePicker

@@ -20,6 +20,7 @@ import beritaCmsReducer from 'containers/CMS/BeritaBaru/reducer';
 import cmsKomunitasAhliReducer from 'containers/CMS/KomunitasAhli/reducer';
 import cmsBimtekPermintaanDataReducer from 'containers/CMS/BimtekPermintaan/reducer';
 import cmsBimtekDokumentasiReducer from 'containers/CMS/BimtekDokumentasi/reducer';
+import cmsBimtekJadwalReducer from 'containers/CMS/BimtekJadwal/reducer';
 import komunitasAhliReducer from 'containers/Komunitas/reducer';
 
 /**
@@ -41,6 +42,7 @@ export default function createReducer(injectedReducers) {
     cmsKomunitasAhli: cmsKomunitasAhliReducer,
     cmsBimtekPermintaan: cmsBimtekPermintaanDataReducer,
     cmsBimtekDokumentasi: cmsBimtekDokumentasiReducer,
+    cmsBimtekJadwal: cmsBimtekJadwalReducer,
     komunitasAhli: komunitasAhliReducer,
     router: connectRouter(history),
     ...injectedReducers,

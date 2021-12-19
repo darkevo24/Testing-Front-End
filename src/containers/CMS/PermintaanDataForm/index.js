@@ -143,7 +143,7 @@ const CMSPermintaanDataView = () => {
       // status: yup.mixed().required(),
       catatan: yup.string().required(),
       // catatanproses: yup.string().required(),
-      urlDataset: yup.string().required(),
+      // urlDataset: yup.string().required(),
     })
     .required();
 
@@ -160,7 +160,7 @@ const CMSPermintaanDataView = () => {
       catatan: data.catatan,
     };
     dispatch(postPermintaanDataTolak(obj)).then((res) => {
-      res
+      !res?.name === 'error'
         ? Notification.show({
             type: 'secondary',
             message: <div> Permintaan Data Berhasil Ditolak </div>,
@@ -181,7 +181,7 @@ const CMSPermintaanDataView = () => {
       catatan: data.catatan,
     };
     dispatch(postPermintaanDataProses(obj)).then((res) => {
-      res
+      !res?.name === 'error'
         ? Notification.show({
             type: 'secondary',
             message: <div> Permintaan Data Berhasil Diproses </div>,
@@ -203,7 +203,7 @@ const CMSPermintaanDataView = () => {
       url: data.urlDataset,
     };
     dispatch(postPermintaanDataSelesai(obj)).then((res) => {
-      res
+      !res?.name === 'error'
         ? Notification.show({
             type: 'secondary',
             message: <div> Permintaan Data Berhasil Diselesaikan </div>,
@@ -236,12 +236,11 @@ const CMSPermintaanDataView = () => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      if(data) {
-        return data;
-      },
+      ...data,
     },
   });
 
+  console.log(data);
   return (
     <div>
       {data.status === 'SELESAI' ? <SuccessText /> : null}
@@ -284,7 +283,7 @@ const CMSPermintaanDataView = () => {
                     <p className="fw-bold">NIP/NIK</p>
                   </div>
                   <div className="col-2">
-                    <p className="fw-light">{data.user?.roles}</p>
+                    <p className="fw-light">{data.user?.nip || data.user?.nik}</p>
                   </div>
                 </div>
                 <div className="d-flex flex-row">
@@ -292,7 +291,7 @@ const CMSPermintaanDataView = () => {
                     <p className="fw-bold">Instansi</p>
                   </div>
                   <div className="col-2">
-                    <p className="fw-light">{data.user?.instansi}</p>
+                    <p className="fw-light">{data.instansi?.nama}</p>
                   </div>
                 </div>
                 <div className="d-flex flex-row">

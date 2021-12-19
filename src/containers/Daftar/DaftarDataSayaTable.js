@@ -54,9 +54,9 @@ const DaftarDataSayaTable = ({
     fetchSayaData({ params: { sortBy: sortId, sortDirection: desc ? 'DESC' : 'ASC' } });
   };
 
-  // const handleDropdownFilter = (filter) => (selectedValue) => {
-  //   fetchSayaData({ bodyParams: { [filter]: selectedValue.value } });
-  // };
+  const handleDropdownFilter = (filter) => (selectedValue) => {
+    fetchSayaData({ bodyParams: { [filter]: selectedValue.value } });
+  };
 
   const data = useMemo(() => result?.content?.records || [], [result]);
   const showDeleteModal = (data) => {
@@ -70,18 +70,29 @@ const DaftarDataSayaTable = ({
   };
 
   const handleDelete = () => {
-    // TODO: handle actual delete of the data.
-
     dispatch(deleteDaftarData(selectedRecord)).then((res) => {
+      const hasError = res?.type?.includes('rejected');
+      if (hasError) {
+        Notification.show({
+          type: 'secondary',
+          message: (
+            <div>
+              Kesalahan dalam menghapus daftar <span className="fw-bold">{selectedRecord.name}</span>
+            </div>
+          ),
+          icon: 'cross',
+        });
+      } else {
+        Notification.show({
+          message: (
+            <div>
+              Daftar <span className="fw-bold">{selectedRecord.name}</span> Berhasil Dihapus
+            </div>
+          ),
+          icon: 'check',
+        });
+      }
       setIsDeleteModalVisible(false);
-    });
-    Notification.show({
-      message: (
-        <div>
-          Daftar <span className="fw-bold">{selectedRecord.name}</span> Berhasil Dihapus
-        </div>
-      ),
-      icon: 'check',
     });
   };
 
@@ -221,19 +232,43 @@ const DaftarDataSayaTable = ({
         <div className="row">
           <div className="col">
             <label className="sdp-form-label py-8">Instansi</label>
-            <SingleSelectDropdown data={instansiOptions} placeHolder="Semua" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('instansi')}
+              data={instansiOptions}
+              placeHolder="Semua"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
           <div className="col">
             <label className="sdp-form-label py-8">Produsen Data</label>
-            <SingleSelectDropdown data={produenOptions} placeHolder="Semua" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('produsenData')}
+              data={produenOptions}
+              placeHolder="Semua"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
           <div className="col">
             <label className="sdp-form-label py-8">Data Induk</label>
-            <SingleSelectDropdown data={dataindukOptions} placeHolder="Semua" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('dataInduk')}
+              data={dataindukOptions}
+              placeHolder="Semua"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
           <div className="col">
             <label className="sdp-form-label py-8">Prioritas</label>
-            <SingleSelectDropdown data={priorityOptions} placeHolder="Ya" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('prioritas')}
+              data={priorityOptions}
+              placeHolder="Ya"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
         </div>
       </div>

@@ -10,6 +10,7 @@ export { default as ReadOnlyInputs } from './ReadOnlyInputs';
 export { default as Loader } from './Loader';
 export { default as MapTile } from './MapTile';
 export { default as Modal } from './Modal';
+export { default as ModalDelete } from './ModalDelete';
 export { default as Notification } from './Notification';
 export { default as Popover } from './Popover';
 export { default as SectionList } from './SectionList';

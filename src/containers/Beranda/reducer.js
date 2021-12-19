@@ -26,6 +26,16 @@ export const initialState = {
     pageSize: defaultNumberOfRows,
     params: getInitialParams(),
   },
+  datasetTrending: {
+    loading: false,
+    error: null,
+    records: [],
+  },
+  datasetPopular: {
+    loading: false,
+    error: null,
+    records: [],
+  },
   user: null,
   error: null,
 };
@@ -39,6 +49,20 @@ export const getDataSet = createAsyncThunk('beranda/getDataset', async (params) 
   data = mapOrStringsToFq(data, facetFields);
   const response = await get(apiUrls.dataset, { query: pickValidDatasetPaginationParams(data) });
   return response?.data?.result;
+});
+
+/**
+ * Define needed action
+ *
+ */
+export const getDatasetTrending = createAsyncThunk('beranda/datasetTrending', async (param) => {
+  const response = await get(`${apiUrls.homeDataSetEndPoint}/${param}`);
+  return response?.data?.content;
+});
+
+export const getDatasetPopular = createAsyncThunk('beranda/datasetPopular', async (param) => {
+  const response = await get(`${apiUrls.homeDataSetEndPoint}/${param}`);
+  return response?.data?.content;
 });
 
 const berandaSlice = createSlice({
@@ -61,10 +85,44 @@ const berandaSlice = createSlice({
       state.dataset.loading = false;
       state.dataset.error = 'Error in fetching dataset details!';
     });
+
+    /***
+     * Get Dataset Trending
+     *
+     */
+    builder.addCase(getDatasetTrending.pending, (state) => {
+      state.datasetTrending.loading = true;
+    });
+    builder.addCase(getDatasetTrending.fulfilled, (state, action) => {
+      state.datasetTrending.loading = false;
+      state.datasetTrending.records = action.payload || [];
+    });
+    builder.addCase(getDatasetTrending.rejected, (state) => {
+      state.datasetTrending.loading = false;
+      state.datasetTrending.error = true;
+    });
+
+    /***
+     * Get Dataset Popular
+     *
+     */
+    builder.addCase(getDatasetPopular.pending, (state) => {
+      state.datasetPopular.loading = true;
+    });
+    builder.addCase(getDatasetPopular.fulfilled, (state, action) => {
+      state.datasetPopular.loading = false;
+      state.datasetPopular.records = action.payload || [];
+    });
+    builder.addCase(getDatasetPopular.rejected, (state) => {
+      state.datasetPopular.loading = false;
+      state.datasetPopular.error = true;
+    });
   },
 });
 
 export const datasetSelector = (state) => state.beranda?.dataset;
+export const datasetTrendingSelector = (state) => state.beranda?.datasetTrending;
+export const datasetPopularSelector = (state) => state.beranda?.datasetPopular;
 
 // export const { } = berandaSlice.actions;
 

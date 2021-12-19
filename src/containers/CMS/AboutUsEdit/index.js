@@ -9,7 +9,7 @@ import Form from 'react-bootstrap/Form';
 // import { useHistory } from 'react-router-dom';
 
 import { LogStatus } from 'components/Sidebars/LogStatus';
-import { TextEditor, Loader } from 'components';
+import { TextEditor, Loader, CMSTopDetail } from 'components';
 import bn from 'utils/bemNames';
 import { ReactComponent as EditIcon } from 'assets/pencil.svg';
 
@@ -73,6 +73,7 @@ const CMSAboutUsEdit = (props) => {
 
   return (
     <>
+      <CMSTopDetail status={data?.status?.toLowerCase()} />
       <Row className={bem.e('section')}>
         <Col sm={8}>
           <div>

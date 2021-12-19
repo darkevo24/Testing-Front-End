@@ -1,4 +1,4 @@
-import { getApiEndpoint } from 'utils/constants';
+import { getApiEndpoint, getPublicV1Endpoint } from 'utils/constants';
 import { HTTP } from 'services/core';
 
 const API_URL = {
@@ -126,5 +126,61 @@ export const doBeritaWorkflow = (id, action) => {
     })
     .catch((err) => {
       return Promise.resolve({ success: false, message: err.message });
+    });
+};
+
+export const getBertaLayout = () => {
+  const URL = getPublicV1Endpoint('layout');
+  return HTTP.get(URL, HTTP.defaultHeaders())
+    .then((res) => {
+      if (!res || res.status !== '200 OK') {
+        return Promise.reject(res);
+      }
+      return res.content;
+    })
+    .then((content) => {
+      const contentData = JSON.parse(content.content);
+      return {
+        code: content.code,
+        content: {
+          kiri: contentData?.kiri,
+          kanan: contentData?.kanan,
+          inactive: contentData.inactive,
+        },
+      };
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+};
+
+export const updateBertaLayout = (code, kiri, kanan, inactive) => {
+  const URL = getPublicV1Endpoint('layout');
+  const params = {
+    content: JSON.stringify({
+      kiri: kiri,
+      kanan: kanan,
+      inactive: inactive,
+    }),
+  };
+  return HTTP.put(URL, HTTP.defaultHeaders(), params)
+    .then((res) => {
+      if (!res || res.status !== '200 OK') {
+        return Promise.reject(res);
+      }
+      return res.content;
+    })
+    .then((content) => {
+      return {
+        code: code,
+        content: {
+          kiri: content.content?.kiri,
+          kanan: content.content?.kanan,
+          inactive: content.content.inactive,
+        },
+      };
+    })
+    .catch((err) => {
+      return Promise.reject(err);
     });
 };

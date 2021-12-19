@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Box from './Box';
 import { useRef } from 'react';
 import './beritalayout.scss';
 import Berita from 'containers/Berita';
 import cx from 'classnames';
 import bn from 'utils/bemNames';
+import { useSelector, useDispatch } from 'react-redux';
+import { beritaLayoutSelector, getBertaLayout } from './reducer';
 
 const bem = bn('berita-layout');
 var shortid = require('shortid');
@@ -13,6 +15,16 @@ const BeritaLayout = () => {
   const kiri = useRef(null);
   const kanan = useRef(null);
   const inactive = useRef(null);
+  const { state, error, code, content } = useSelector(beritaLayoutSelector);
+  const dispatch = useDispatch();
+
+  const fetchBeritaLayoutData = useCallback(() => {
+    dispatch(getBertaLayout());
+  }, []);
+
+  useEffect(() => {
+    fetchBeritaLayoutData();
+  }, [fetchBeritaLayoutData]);
 
   let obj = window.localStorage.getItem('tempberitalayout')
     ? JSON.parse(window.localStorage.getItem('tempberitalayout'))

@@ -228,19 +228,7 @@ const CMSAboutUsEdit = (props) => {
             )}
           </div>
         </Col>
-        <Col sm={3}>
-          {loadingLog ? null : (
-            <LogStatus
-              data={dataLog.map((item) => {
-                return {
-                  createdAt: item.createdAt,
-                  status: item.data.status,
-                  content: item.remark,
-                };
-              })}
-            />
-          )}
-        </Col>
+        <Col sm={3}>{loadingLog ? null : <LogStatus data={dataLog} />}</Col>
       </Row>
       {loading || loadingLog ? <Loader fullscreen={true} /> : ''}
     </>

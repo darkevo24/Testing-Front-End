@@ -151,7 +151,13 @@ const KomunitasAhli = () => {
           <div className="d-flex align-items-center justify-content-between">
             <label className="fw-bold fs-24 lh-29 p-32">Profil Ahli</label>
             {!loading && (
-              <DetailHeader status={status} loading={loading} history={history} handleModal={(type) => setModal(type)} />
+              <DetailHeader
+                record={record}
+                status={status}
+                loading={loading}
+                history={history}
+                handleModal={(type) => setModal(type)}
+              />
             )}
           </div>
           <div className="mb-3 px-24">

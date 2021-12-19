@@ -18,7 +18,7 @@ export const LogStatus = ({ data }) => (
             </div>
             <div className="d-flex align-items-center">
               <div className={cx(bem.e('status'), item.data?.status.toLowerCase())}>{item.data?.status}</div>
-              <div className={bem.e('content')}>{item.data?.deskripsi}</div>
+              <div className={bem.e('content')}>{item.remark}</div>
             </div>
           </div>
         ))}

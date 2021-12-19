@@ -10,8 +10,8 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'components/Table';
 import bn from 'utils/bemNames';
-import { Search } from 'components/Icons';
 import { Loader } from 'components';
+import { Search } from 'components/Icons';
 import { prefixID } from './constant';
 import { getInstansi, getUnitkerja, getPermintaanData, permintaanDataSelector } from './reducer';
 
@@ -34,7 +34,6 @@ const CMSPermintaanData = () => {
     };
     return dispatch(getPermintaanData(obj));
   };
-  console.log(records);
   const fetchInstansiData = () => {
     return dispatch(getInstansi());
   };

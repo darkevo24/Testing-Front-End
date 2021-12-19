@@ -197,7 +197,7 @@ const CMSPermintaanDataView = () => {
   };
 
   const onSubmitSelesai = (data) => {
-    console.log(data);
+    // console.log(data);
     let obj = {
       id,
       catatan: data.catatan,

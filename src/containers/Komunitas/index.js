@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { Row, Col, Button } from 'react-bootstrap';
 import Table from 'components/Table';
 import { icons, MailSvg } from 'components/Icons';
-
+import sortBy from 'lodash/sortBy';
 import { Kontak_list } from 'utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { komunitasAhliDatasetSelector, getKomunitasAhliData } from './reducer';
@@ -133,12 +133,18 @@ const KomunitasAhliPage = () => {
                 <p>{item.riwayat}</p>
                 <div className="sdp-rating-wrapper d-flex justify-content-between">
                   <div className="d-flex">
-                    <div className="sdp-kontak br-5 border-gray-stroke p-10 sdp-text-grey-dark mr-8 cursor-pointer">
-                      <MailSvg variant="danger" />
-                    </div>
-                    {item.kontak.map((kontak_item) => {
+                    {sortBy(item.kontak, ['tipe']).map((kontak_item) => {
                       const kontakDetail = Kontak_list.find((kontak) => kontak.name === kontak_item.tipe);
-                      if (!kontakDetail) return null;
+                      if ((!kontakDetail && kontak_item.tipe !== 'email') || !kontak_item?.value) return null;
+                      if (!kontakDetail && kontak_item.tipe === 'email') {
+                        return (
+                          <div
+                            className="sdp-kontak br-5 border-gray-stroke p-10 sdp-text-grey-dark mr-8 cursor-pointer"
+                            onClick={() => window.open(`mailto:${kontak_item.value}`, '_blank')}>
+                            <MailSvg variant="danger" />
+                          </div>
+                        );
+                      }
                       const Icon = icons[kontakDetail.icon];
                       return (
                         <div

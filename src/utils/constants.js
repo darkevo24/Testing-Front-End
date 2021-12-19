@@ -62,6 +62,7 @@ export const apiUrls = {
   cmsAboutUs: getCMSEndpoint('tentang'),
   aboutUs: getApiEndpoint('public/tentang'),
   userBeritaPortal: getPublicV1Endpoint('berita'),
+  homeDataSetEndPoint: getPublicV1Endpoint('dataset'),
   portalForumSDI: getPortalEndpoint('v1/forum-sdi'),
   cmsForumSDI: getCMSEndpoint('forum-sdi'),
   bimtekSummaryMateriTerdekat: getPortalEndpoint('v1/bimtek/materi-terdekat'),

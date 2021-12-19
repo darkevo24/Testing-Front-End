@@ -100,8 +100,8 @@ export const CardWithDetail = ({ title, dataSetUrl, description, date, views, fo
     <FlexBoxContent>
       <LeftBox style={{ display: 'flex', alignItems: 'center' }}>
         <h6>{count} File</h6>
-        {formats.map((format) => (
-          <Button key={`${title}-${format.id}`}>{format.format}</Button>
+        {formats.map((value, index) => (
+          <Button key={index}>{value}</Button>
         ))}
       </LeftBox>
       <RightBox>{views} Views</RightBox>

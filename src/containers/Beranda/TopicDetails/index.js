@@ -90,7 +90,7 @@ const TopicDetail = () => {
     },
   ];
 
-  const generateSlug = (groupName = '') => groupName.replace(/ /g, '-').toLowerCase();
+  const generateSlug = (groupName = '') => groupName.replace(/ /g, '-');
 
   const fetchDataset = (override, reset = false) => {
     const filterParams = {

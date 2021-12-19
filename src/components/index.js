@@ -16,3 +16,5 @@ export { default as SectionList } from './SectionList';
 export { default as Table } from './Table';
 export { default as Tags } from './Tags';
 export { default as TextEditor } from './TextEditor';
+export { default as CMSTopDetail } from './CMSTopDetail';
+export { CMSModal } from './CMSStatusModals';

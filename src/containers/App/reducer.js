@@ -81,6 +81,11 @@ export const getListTagline = createAsyncThunk('cms/getListTagline', async () =>
   return response?.data?.content;
 });
 
+export const setNewTagline = createAsyncThunk('cms/setNewTagline', async (params) => {
+  const response = await post(apiUrls.taglineData, params);
+  return response?.data?.content;
+});
+
 export const uploadFoto = createAsyncThunk('cms/uploadFoto', async (formData) => {
   const response = await post(apiUrls.uploadFoto, formData);
   return response?.data;
@@ -164,6 +169,18 @@ const AppSlice = createSlice({
     builder.addCase(getListTagline.rejected, (state) => {
       state.tagline.loading = false;
       state.tagline.error = 'Error in fetching tagline!';
+    });
+
+    builder.addCase(setNewTagline.pending, (state) => {
+      state.tagline.loading = true;
+    });
+    builder.addCase(setNewTagline.fulfilled, (state, action) => {
+      state.tagline.loading = false;
+      state.tagline.records = action.payload.records;
+    });
+    builder.addCase(setNewTagline.rejected, (state) => {
+      state.tagline.loading = false;
+      state.tagline.error = 'Error in create tagline!';
     });
 
     builder.addCase(uploadFoto.pending, (state) => {

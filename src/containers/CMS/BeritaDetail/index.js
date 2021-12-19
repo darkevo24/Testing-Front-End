@@ -7,8 +7,8 @@ import { setDetailBerita, setEditBerita, detailDataSelector } from '../BeritaBar
 import { useDispatch, useSelector } from 'react-redux';
 
 import { LogStatus } from 'components/Sidebars/LogStatus';
-import { CMSForm, Loader } from 'components';
-import { submitBeritaForm } from 'components/CMSForm';
+import { CMSForm, Loader, CMSTopDetail, CMSModal } from 'components';
+import { submitBeritaForm, submitNewKategori } from 'components/CMSForm';
 import { Trash, EyeSvg, SaveSvg } from 'components/Icons';
 import Notification from 'components/Notification';
 import bn from 'utils/bemNames';
@@ -29,19 +29,53 @@ const CMSBeritaDetail = (props) => {
   }, [idBerita]);
 
   const [beritaStatus, setBeritaStatus] = useState(record);
+  const [modalLabel, setModalLabel] = useState('');
   // DRAFT = 0, WAITING = 1, PUBLISH/APPROVE = 2, REJECT = 3, UNPUBLISH = 4, DELETE = 5
   const actionSubmit = (status) => {
     setBeritaStatus(status);
-    if (status === 5) {
-      return;
+    let label = '';
+    switch (status) {
+      case 0:
+        label = 'Simpan Berita?';
+        break;
+      case 1:
+        label = 'Kirim Berita?';
+        break;
+      case 2:
+        label = 'Apakah anda yakin ingin <b className="sdp-text-blue">menyetujui</b> Berita?';
+        break;
+      case 3:
+        label = 'Apakah anda yakin ingin <b className="sdp-text-blue">menolak</b> Berita?';
+        break;
+      case 4:
+        label = 'Apakah anda yakin ingin <b className="sdp-text-blue">tidak menayangkan</b> Berita?';
+        break;
+      case 5:
+        label = 'Apakah anda yakin ingin <b className="sdp-text-blue">menghapus</b> Berita?';
+        break;
+      default:
+        return;
     }
-    submitBeritaForm();
+    setModalLabel(<span dangerouslySetInnerHTML={{ __html: label }} />);
   };
 
   const onSubmit = (data) => {
+    setBeritaStatus(-1);
     data.publishDate = data.publishDate ? data.publishDate + ' ' + data.publishTime : '';
-
     data.status = beritaStatus;
+    if (data.kategori.value === 'new') {
+      // action create kategori
+      submitNewKategori(data.kategori.label).then((res) => {
+        data.kategori = res.data.content.id;
+        submitEditBerita(data);
+      });
+      return;
+    }
+    data.kategori = data.kategori.id;
+    submitEditBerita(data);
+  };
+
+  const submitEditBerita = (data) => {
     dispatch(setEditBerita({ payload: data, id: idBerita })).then((res) => {
       res?.payload
         ? Notification.show({
@@ -66,83 +100,94 @@ const CMSBeritaDetail = (props) => {
   };
 
   return (
-    <Row className={bem.e('section')}>
-      <Col sm={8}>
-        <div>
-          <div className="d-flex justify-content-between mb-3">
-            <div className={bem.e('title')}>Edit Berita</div>
-            {record?.status === 1 ? (
-              <div>
-                <Button variant="secondary" onClick={() => actionSubmit(5)}>
-                  <Trash />
-                </Button>
-                <Button variant="light" className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
-                  <EyeSvg />
-                </Button>
-                <Button
-                  onClick={() => actionSubmit(0)}
-                  variant="light"
-                  className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
-                  <SaveSvg />
-                </Button>
-                <Button
-                  onClick={() => actionSubmit(3)}
-                  variant="light"
-                  className="ml-10 bg-white border-gray-stroke sdp-text-black-dark"
-                  style={{ width: '112px' }}>
-                  Tolak
-                </Button>
-                <Button onClick={() => actionSubmit(2)} className="ml-10" variant="info" style={{ width: '112px' }}>
-                  Publish
-                </Button>
-              </div>
-            ) : record?.status === 2 ? (
-              <div>
-                <Button variant="secondary" onClick={() => actionSubmit(5)}>
-                  <Trash />
-                </Button>
-                <Button variant="light" className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
-                  <EyeSvg />
-                </Button>
-                <Button
-                  onClick={() => actionSubmit(0)}
-                  variant="light"
-                  className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
-                  <SaveSvg />
-                </Button>
-                <Button
-                  onClick={() => actionSubmit(4)}
-                  variant="light"
-                  className="ml-10 bg-white border-gray-stroke sdp-text-black-dark"
-                  style={{ width: '112px' }}>
-                  Unpublish
-                </Button>
-              </div>
-            ) : (
-              <div>
-                <Button variant="secondary" onClick={() => actionSubmit(5)}>
-                  <Trash />
-                </Button>
-                <Button
-                  variant="light"
-                  className="ml-10 bg-white border-gray-stroke sdp-text-black-dark"
-                  style={{ width: '112px' }}>
-                  Lihat
-                </Button>
-                <Button onClick={() => actionSubmit(1)} className="ml-10" variant="info" style={{ width: '112px' }}>
-                  Simpan
-                </Button>
-              </div>
-            )}
+    <div>
+      <CMSTopDetail status={record?.status} />
+      <Row className={bem.e('section')}>
+        <Col sm={8}>
+          <div>
+            <div className="d-flex justify-content-between mb-3">
+              <div className={bem.e('title')}>Edit Berita</div>
+              {record?.status === 1 ? (
+                <div>
+                  <Button variant="secondary" onClick={() => actionSubmit(5)}>
+                    <Trash />
+                  </Button>
+                  <Button variant="light" className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
+                    <EyeSvg />
+                  </Button>
+                  <Button
+                    onClick={() => actionSubmit(0)}
+                    variant="light"
+                    className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
+                    <SaveSvg />
+                  </Button>
+                  <Button
+                    onClick={() => actionSubmit(3)}
+                    variant="light"
+                    className="ml-10 bg-white border-gray-stroke sdp-text-black-dark"
+                    style={{ width: '112px' }}>
+                    Tolak
+                  </Button>
+                  <Button onClick={() => actionSubmit(2)} className="ml-10" variant="info" style={{ width: '112px' }}>
+                    Publish
+                  </Button>
+                </div>
+              ) : record?.status === 2 ? (
+                <div>
+                  <Button variant="secondary" onClick={() => actionSubmit(5)}>
+                    <Trash />
+                  </Button>
+                  <Button variant="light" className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
+                    <EyeSvg />
+                  </Button>
+                  <Button
+                    onClick={() => actionSubmit(0)}
+                    variant="light"
+                    className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
+                    <SaveSvg />
+                  </Button>
+                  <Button
+                    onClick={() => actionSubmit(4)}
+                    variant="light"
+                    className="ml-10 bg-white border-gray-stroke sdp-text-black-dark"
+                    style={{ width: '112px' }}>
+                    Unpublish
+                  </Button>
+                </div>
+              ) : (
+                <div>
+                  <Button variant="secondary" onClick={() => actionSubmit(5)}>
+                    <Trash />
+                  </Button>
+                  <Button
+                    variant="light"
+                    className="ml-10 bg-white border-gray-stroke sdp-text-black-dark"
+                    style={{ width: '112px' }}>
+                    Lihat
+                  </Button>
+                  <Button onClick={() => actionSubmit(1)} className="ml-10" variant="info" style={{ width: '112px' }}>
+                    Simpan
+                  </Button>
+                </div>
+              )}
+            </div>
+            {!loading ? <CMSForm data={record} onSubmit={onSubmit} /> : null}
           </div>
-          {!loading ? <CMSForm data={record} onSubmit={onSubmit} /> : null}
-        </div>
-      </Col>
-      <Col sm={3}>
-        <LogStatus data={[]} />
-      </Col>
-      {loading && <Loader fullscreen={true} />}
-    </Row>
+        </Col>
+        <Col sm={3}>
+          <LogStatus data={[]} />
+        </Col>
+        {loading && <Loader fullscreen={true} />}
+      </Row>
+      {beritaStatus >= 0 ? (
+        <CMSModal
+          loader={false}
+          onClose={() => setBeritaStatus(-1)}
+          confirmButtonAction={submitBeritaForm}
+          label={modalLabel}
+        />
+      ) : null}
+    </div>
   );
 };
 

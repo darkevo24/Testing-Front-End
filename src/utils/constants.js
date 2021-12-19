@@ -53,6 +53,7 @@ export const apiUrls = {
   daftarDataSummary: getV1Endpoint('katalog/summary'),
   daftarDataDownload: getV1Endpoint('katalog/file/download'),
   taglineData: getV1Endpoint('tagline'),
+  setting: getV1Endpoint('settings'),
   kategoriData: getV1Endpoint('settings/key/BERITA'),
   sdgPillers: getV1Endpoint('settings/key/SDGS'),
   rkpPN: getV1Endpoint('settings/key/RKP'),

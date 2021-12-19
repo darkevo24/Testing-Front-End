@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, get, put } from 'utils/request';
+import { apiUrls, get, put, post } from 'utils/request';
 
 export const initialState = {
   loading: false,
@@ -42,6 +42,16 @@ export const getStrukturOrganisasiLogs = createAsyncThunk('cms/getStrukturOrgani
 
 export const setStrukturOrganisasi = createAsyncThunk('cms/setStrukturOrganisasi', async (params) => {
   const response = await put(`${apiUrls.strukturData}/${params.id}`, params.payload);
+  return response?.data;
+});
+
+export const createStrukturOrganisasi = createAsyncThunk('cms/createStrukturOrganisasi', async (params) => {
+  const response = await post(apiUrls.strukturData, params.payload);
+  return response?.data;
+});
+
+export const updateStatus = createAsyncThunk('cms/updateStatusStruktur', async (params) => {
+  const response = await post(`${apiUrls.strukturData}/${params.id}/${params.action}`, {});
   return response?.data;
 });
 
@@ -102,6 +112,18 @@ const strukturOrganisasiSlice = createSlice({
     builder.addCase(setStrukturOrganisasi.rejected, (state) => {
       state.detaildataSet.loading = false;
       state.detaildataSet.error = 'Error in fetching detail struktur data!';
+    });
+
+    builder.addCase(createStrukturOrganisasi.pending, (state, action) => {
+      state.detaildataSet.loading = true;
+    });
+    builder.addCase(createStrukturOrganisasi.fulfilled, (state, action) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.record = action.payload;
+    });
+    builder.addCase(createStrukturOrganisasi.rejected, (state, action) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.error = action.error.message;
     });
   },
 });

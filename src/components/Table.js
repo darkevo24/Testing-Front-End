@@ -8,7 +8,6 @@ import cx from 'classnames';
 import isFunction from 'lodash/isFunction';
 import isString from 'lodash/isString';
 import findIndex from 'lodash/findIndex';
-import set from 'lodash/set';
 import { useAsyncDebounce, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 
 import { LeftChevron, RightChevron, Search, icons } from 'components/Icons';
@@ -19,7 +18,6 @@ const bem = bn('table');
 export const FilterSearchInput = ({
   searchPlaceholder = 'Search',
   onSearch,
-  preGlobalFilteredRows,
   globalFilter,
   setGlobalFilter,
   searchValue,

@@ -53,9 +53,9 @@ const CMSBimtekForm = ({ data, disabled = false, modalAction = false, isDocument
 
   const {
     control,
-    formState: { errors },
-    handleSubmit,
-    setValue,
+    // formState: { errors },
+    // handleSubmit,
+    // setValue,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {

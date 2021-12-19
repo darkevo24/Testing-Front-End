@@ -107,7 +107,7 @@ const SLICE_OBJ = createSlice({
     });
     builder.addCase(getAboutUsLogs.fulfilled, (state, action) => {
       state.logdataset.loading = false;
-      state.logdataset.records = action.payload.reverse();
+      state.logdataset.records = [...action.payload].reverse();
     });
     builder.addCase(getAboutUsLogs.rejected, (state, action) => {
       state.logdataset.loading = false;

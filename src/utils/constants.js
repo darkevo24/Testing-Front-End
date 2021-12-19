@@ -39,6 +39,7 @@ export const apiUrls = {
   cmsKomunitasAhliData: getCMSEndpoint('komunitas-ahli'),
   portalKomunitasAhliData: getPortalEndpoint('komunitas-ahli'),
   fileUpload: getApiEndpoint('file/upload'),
+  publiFileUpload: getApiEndpoint('file/public-upload'),
   uploadFoto: getApiEndpoint('file/public-image-upload'),
   bidangData: getCMSEndpoint('komunitas-ahli/bidang-keahlian'),
   daerahData: getV1Endpoint('kabupatenkota/search'),
@@ -60,6 +61,8 @@ export const apiUrls = {
   cmsAboutUs: getCMSEndpoint('tentang'),
   aboutUs: getApiEndpoint('public/tentang'),
   userBeritaPortal: getPublicV1Endpoint('berita'),
+  portalForumSDI: getPortalEndpoint('v1/forum-sdi'),
+  cmsForumSDI: getCMSEndpoint('forum-sdi'),
   bimtekSummaryMateriTerdekat: getPortalEndpoint('v1/bimtek/materi-terdekat'),
   bimtekSummaryJadwalTerdekat: getPortalEndpoint('v1/bimtek/jadwal-terdekat'),
   bimtekJadwal: getPortalEndpoint('v1/bimtek/jadwal'),
@@ -231,4 +234,16 @@ export const STATUS_DATA = {
   canceled: 'DIBATALKAN',
   published: 'DITAYANGKAN',
   unpublished: 'TIDAK_DITAYANGKAN',
+};
+
+export const USER_ROLES = {
+  CONTENT_CREATOR: 'CONTENT_CREATOR',
+  CONTENT_EDITOR: 'CONTENT_EDITOR',
+  ADMIN: 'ADMIN',
+  SEKRETARIAT: 'SEKRETARIAT',
+  WALIDATA: 'WALIDATA',
+  EKSEKUTIF: 'EKSEKUTIF',
+  USER: 'USER',
+  PIC_SDGS: 'PIC_SDGS',
+  PIC_BAPPENAS: 'PIC_BAPPENAS',
 };

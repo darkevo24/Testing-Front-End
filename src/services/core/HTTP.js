@@ -54,9 +54,7 @@ const parseResponse = async (responseObj) => {
       let textData = await responseObj.text();
       responseObj.data = textData ? safeParse(textData) : textData;
     }
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
   return new SuccessResponse(responseObj);
 };
 

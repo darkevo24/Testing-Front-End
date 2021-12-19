@@ -24,7 +24,7 @@ import {
   getSDGPillers,
   getRKPpn,
 } from 'containers/App/reducer';
-import { createFileAndDownload, fileTypes, prepareFormPayload } from 'utils/helper';
+import { /* createFileAndDownload, fileTypes,*/ prepareFormPayload } from 'utils/helper';
 
 const bem = bn('daftar');
 
@@ -58,11 +58,11 @@ const DaftarDataProvider = ({ children }) => {
 
   const onDownloadData = async (params) => {
     try {
-      const downloadResponse = await dispatch(downloadDaftarData(params));
+      await dispatch(downloadDaftarData(params));
       // This is directly handled in the fetch response to make it worth!!
       // createFileAndDownload(downloadResponse.payload, fileTypes.excel, new Date().getTime());
     } catch (error) {
-      console.log('error: ', error);
+      // console.log('error: ', error);
     }
   };
 

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import truncate from 'lodash/truncate';
 import cloneDeep from 'lodash/cloneDeep';
 import Modal from 'components/Modal';
@@ -23,6 +24,7 @@ const DaftarDataSayaTable = ({
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [sortBy, setSortBy] = useState(null);
   const dispatch = useDispatch();
+  const history = useHistory();
   const { pageSize, params, bodyParams, result } = useSelector(sayaDataSelector);
 
   const fetchSayaData = (filterOverride = {}, reset = false) => {
@@ -181,6 +183,9 @@ const DaftarDataSayaTable = ({
         const params = { page };
         fetchSayaData({ params });
       }
+    },
+    onRowClick: (daftar) => {
+      history.push(`/daftar/${daftar.id}/variable`, { state: { daftar } });
     },
   };
 

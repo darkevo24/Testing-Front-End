@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import truncate from 'lodash/truncate';
 import cloneDeep from 'lodash/cloneDeep';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,6 +21,7 @@ const SdgTable = ({
   tujuanSDGPillerOptions = [],
 }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [sortBy, setSortBy] = useState(null);
   const { pageSize, params, bodyParams, result } = useSelector(sdgsDataSelector);
 
@@ -132,6 +134,9 @@ const SdgTable = ({
         const params = { page };
         fetchSdgsData({ params });
       }
+    },
+    onRowClick: (daftar) => {
+      history.push(`/daftar/${daftar.id}/variable`, { state: { daftar } });
     },
   };
 

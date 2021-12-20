@@ -172,8 +172,8 @@ const DaftarTable = ({
     },
   };
   if (!cms) {
-    tableConfig.onRowClick = (data) => {
-      history.push('/data-variable');
+    tableConfig.onRowClick = (daftar) => {
+      history.push(`/daftar/${daftar.id}/variable`, { state: { daftar } });
     };
   }
 

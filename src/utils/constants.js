@@ -69,6 +69,9 @@ export const apiUrls = {
   bimtekSummaryJadwalTerdekat: getPortalEndpoint('v1/bimtek/jadwal-terdekat'),
   bimtekJadwal: getPortalEndpoint('v1/bimtek/jadwal'),
   bimtekJadwalTags: getCMSEndpoint('bimtek/tags'),
+  bimtekJadwalLocations: getV1Endpoint('kabupatenkota'),
+  formulirPendaftaran: getPortalEndpoint('v1/jwt-info'),
+  addFormulirPendaftaran: getPortalEndpoint('v1/bimtek'),
 };
 
 export const priorityOptions = [

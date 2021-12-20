@@ -54,7 +54,7 @@ export const BerandaCards = ({ bem, isLoggedIn, trendingData = [], popularData =
     return (
       <Col xs={12} sm={6} lg={3} className={cx('d-flex justify-content-center', bem.e('card-box'))}>
         <CardWithDetail
-          formats={data.fileType}
+          formats={typeof data.fileType === 'string' ? JSON.parse(data.fileType) : data.fileType}
           key={`${group}-${data.id}`}
           title={truncate(data.title, { length: 60 })}
           description={truncate(data.title, { length: 80 })}

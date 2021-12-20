@@ -9,6 +9,7 @@ import truncate from 'lodash/truncate';
 import { ReactComponent as TrendingSvg } from 'assets/trending.svg';
 import { ReactComponent as PopulerSvg } from 'assets/populer.svg';
 import { CardWithDetail } from 'components/Cards/CardWithDetail';
+import { safeParse } from 'utils/helper';
 import { getDatasetPopular, getDatasetTrending, datasetTrendingSelector, datasetPopularSelector } from './reducer';
 
 const Box = styled.div`
@@ -54,7 +55,7 @@ export const BerandaCards = ({ bem, isLoggedIn, trendingData = [], popularData =
     return (
       <Col xs={12} sm={6} lg={3} className={cx('d-flex justify-content-center', bem.e('card-box'))}>
         <CardWithDetail
-          formats={data.fileType}
+          formats={safeParse(data.fileType)}
           key={`${group}-${data.id}`}
           title={truncate(data.title, { length: 60 })}
           description={truncate(data.title, { length: 80 })}

@@ -231,7 +231,7 @@ const Daftar = (props) => {
           { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDaftarForm },
         ]}>
         <DaftarForm
-          data={selectedRecord}
+          daftarId={selectedRecord?.id}
           instansiOptions={instansiOptions}
           rkpPNOptions={rkpPNOptions}
           sdgPillerOptions={sdgPillerOptions}

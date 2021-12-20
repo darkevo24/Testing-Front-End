@@ -4,12 +4,11 @@ import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { DatePicker, Input, TextEditor } from 'components';
+import { DatePicker, Input, TextEditor, Modal } from 'components';
 import { submitForm } from 'utils/helper';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import Modal from 'components/Modal';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
@@ -89,7 +88,6 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
 
   function modalPesertaAction() {
     setModalPeserta(true);
-    alert('Ok');
   }
   return (
     <div className="sdp-form">
@@ -183,8 +181,30 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
         ) : null}
         <Button className="invisible" type="submit" />
       </Form>
-      <Modal onClose={false}>
-        <p>Test</p>
+      <Modal
+        className="cms-bimtek-materi"
+        title="Tambah Materi Baru"
+        visible={modalPeserta}
+        onClose={() => setModalPeserta(false)}>
+        <div>
+          <Input group label="Materi" name="place" control={control} />
+          <Form.Group className="mb-15">
+            <Form.Label>Lampiran</Form.Label>
+            <Form.Control type="email" className="custom-file" />
+          </Form.Group>
+          <div className="d-flex justify-content-end">
+            <Button
+              onClick={() => setModalPeserta(false)}
+              className="ml-24 bg-white sdp-text-grey-dark border-gray-stroke"
+              variant="secondary"
+              style={{ width: '112px' }}>
+              Batal
+            </Button>
+            <Button className="mx-10" variant="info" style={{ width: '112px' }}>
+              Konfirmasi
+            </Button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

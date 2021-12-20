@@ -28,7 +28,7 @@ const Modal = ({
       onHide={onClose}
       backdrop
       backdropClassName={bem.e('backdrop')}
-      className={className && bem.b(className)}
+      className={cx(bem.b(), bem.e(className))}
       centered={centered}>
       <div className={bem.e('section')}>
         {showHeader && (

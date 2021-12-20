@@ -163,6 +163,7 @@ export const prefixID = (id, text) => {
 
 export const getStatusClass = (status) => {
   switch (status) {
+    case 0:
     case 'draft':
       return {
         divBG: 'bg-gray',
@@ -170,6 +171,7 @@ export const getStatusClass = (status) => {
         text: 'Draft',
         divText: 'Draft',
       };
+    case 5:
     case 'diarsipkan': {
       return {
         divBG: 'bg-gray',
@@ -178,6 +180,7 @@ export const getStatusClass = (status) => {
         divText: 'Diarsipkan',
       };
     }
+    case 4:
     case 'tidak_ditayangkan':
       return {
         divBG: 'bg-orange-light',
@@ -185,6 +188,7 @@ export const getStatusClass = (status) => {
         text: 'Tidak ditayangkan',
         divText: '',
       };
+    case 1:
     case 'menunggu_persetujuan':
       return {
         divBG: 'bg-orange-light',
@@ -206,6 +210,7 @@ export const getStatusClass = (status) => {
         text: 'Dibatalkan',
         divText: 'Dibatalkan',
       };
+    case 3:
     case 'ditolak':
       return {
         divBG: 'bg-red-light',
@@ -227,6 +232,7 @@ export const getStatusClass = (status) => {
         text: 'Disetujui',
         divText: 'Disetujui',
       };
+    case 2:
     case 'ditayangkan':
       return {
         divBG: 'bg-green-light',
@@ -244,6 +250,17 @@ export const getStatusClass = (status) => {
     default:
       return {};
   }
+};
+
+export const dateTransform = (_, originalValue) => {
+  return moment(originalValue, 'DD/MM/YYY').toDate();
+};
+
+export const findOption = (options, value) => {
+  if (isArray(value)) {
+    return value.map((nestedItem) => findOption(options, nestedItem));
+  }
+  return options.find((option) => option.value === value);
 };
 
 export const getDatasetUrl = (name) => `${katalogUrl}/dataset/${name}`;

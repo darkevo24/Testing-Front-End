@@ -2,6 +2,7 @@ import React from 'react';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import CreatableSelect from 'react-select/creatable';
+import Select from 'react-select';
 
 export default class CreatableSelectDropDown extends React.Component {
   constructor(props) {
@@ -33,10 +34,19 @@ export default class CreatableSelectDropDown extends React.Component {
   };
 
   render() {
-    const { data, placeHolder, isLoading = false, isDisabled = false, defaultValue } = this.props;
+    const {
+      data,
+      placeHolder,
+      isLoading = false,
+      isDisabled = false,
+      defaultValue,
+      isCreatable = false,
+      ...rest
+    } = this.props;
     // const { selectedValues } = this.state;
+    const Component = isCreatable ? CreatableSelect : Select;
     return (
-      <CreatableSelect
+      <Component
         options={data}
         className="basic-single"
         classNamePrefix="select"
@@ -45,8 +55,8 @@ export default class CreatableSelectDropDown extends React.Component {
         isLoading={isLoading}
         isDisabled={isDisabled}
         isMulti={true}
-        isValidNewOption={() => false}
         defaultValue={defaultValue}
+        {...rest}
       />
     );
   }

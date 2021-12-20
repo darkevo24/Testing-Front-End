@@ -61,7 +61,7 @@ const CMSBerita = () => {
   return (
     <div className={bem.e('section')}>
       <div className={bem.e('header')}>
-        <div className={cx(bem.e('title'), 'mb-4')}>Berita</div>
+        <div className={cx(bem.e('title'), 'mb-3')}>Berita</div>
         <Row className="justify-content-between">
           <Col xs={2}>
             <Button variant="info" className="text-center" onClick={() => history.push('/cms/berita-baru')}>

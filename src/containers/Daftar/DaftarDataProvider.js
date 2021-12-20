@@ -5,7 +5,7 @@ import Notification from 'components/Notification';
 import bn from 'utils/bemNames';
 import { priorityOptions } from 'utils/constants';
 import {
-  addDaftarData,
+  daftarDataSubmit,
   getProduen,
   getSDGTujuan,
   getRKPpp,
@@ -66,7 +66,7 @@ const DaftarDataProvider = ({ children }) => {
     }
   };
 
-  const handleTambahFromSubmit = (data, cb) => {
+  const handleDaftarFromSubmit = (data, cb) => {
     const payload = prepareFormPayload(data, {
       dropdowns: [
         'instansi',
@@ -82,27 +82,27 @@ const DaftarDataProvider = ({ children }) => {
       dates: ['tanggalDibuat', 'tanggalDiperbaharui'],
     });
 
-    dispatch(addDaftarData(payload)).then((res) => {
+    dispatch(daftarDataSubmit(payload)).then((res) => {
+      const hasError = res?.type?.includes('rejected');
+      const isEdit = !!data.id;
       if (isFunction(cb)) {
-        cb(res);
+        cb(res, hasError);
       }
-      const hasError = res.type.includes('rejected');
       if (hasError) {
-        Notification.show({
+        return Notification.show({
           message: (
             <div>
-              Error <span className="fw-bold">{res.error.message}</span> Data Tidak Ditambahkan
+              Error <span className="fw-bold">{res.error.message}</span> Data Tidak {isEdit ? 'Diperbarui' : 'Ditambahkan'}
             </div>
           ),
           icon: 'cross',
         });
-        return;
       }
       Notification.show({
         type: 'secondary',
         message: (
           <div>
-            Daftar <span className="fw-bold">{payload.nama}</span> Berhasil Ditambahkan
+            Daftar <span className="fw-bold">{payload.nama}</span> Berhasil {isEdit ? 'Diperbarui' : 'Ditambahkan'}
           </div>
         ),
         icon: 'check',
@@ -123,7 +123,7 @@ const DaftarDataProvider = ({ children }) => {
     onPilarSdgChange,
     onPnRKPChange,
     onDownloadData,
-    handleTambahFromSubmit,
+    handleDaftarFromSubmit,
   };
 
   const childrenWithProps = Children.map(children, (child) => {

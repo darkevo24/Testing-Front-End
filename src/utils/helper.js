@@ -298,7 +298,9 @@ export const prepareFormPayload = (data, fieldsMap) => {
   const payload = cloneDeep(data);
   if (fieldsMap.dropdowns && isArray(fieldsMap.dropdowns)) {
     map(fieldsMap.dropdowns, (field) => {
-      set(payload, field, get(payload, `${field}.value`));
+      const fieldValue = get(payload, field);
+      const finalValue = isArray(fieldValue) ? map(fieldValue, 'value') : get(fieldValue, 'value');
+      set(payload, field, finalValue);
     });
   }
   if (fieldsMap.toArray && isArray(fieldsMap.toArray)) {
@@ -308,7 +310,7 @@ export const prepareFormPayload = (data, fieldsMap) => {
   }
   if (fieldsMap.dates && isArray(fieldsMap.dates)) {
     map(fieldsMap.dates, (field) => {
-      set(payload, field, moment(new Date(get(payload, field)), 'YYYY-MM-DD'));
+      set(payload, field, moment(new Date(get(payload, field))).format('YYYY-MM-DD'));
     });
   }
   return payload;

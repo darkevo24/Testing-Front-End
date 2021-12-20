@@ -10,8 +10,8 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'components/Table';
 import bn from 'utils/bemNames';
-import { Search } from 'components/Icons';
 import { Loader } from 'components';
+import { Search } from 'components/Icons';
 import { prefixID } from './constant';
 import { getInstansi, getUnitkerja, getPermintaanData, permintaanDataSelector } from './reducer';
 
@@ -28,13 +28,13 @@ const CMSPermintaanData = () => {
   const fetchDataset = (params) => {
     let obj = {
       page: params.page,
-      unitKerja: unitKerjaId,
+      unitKerjaId,
+      instansiId,
       status,
       q: query,
     };
     return dispatch(getPermintaanData(obj));
   };
-
   const fetchInstansiData = () => {
     return dispatch(getInstansi());
   };
@@ -46,7 +46,7 @@ const CMSPermintaanData = () => {
   useEffect(() => {
     fetchDataset({ page: page || 0 });
     fetchInstansiData();
-  }, [query, unitKerjaId, status]);
+  }, [query, instansiId, unitKerjaId, status]);
 
   useEffect(() => {
     fetchUnitKerja();
@@ -100,11 +100,11 @@ const CMSPermintaanData = () => {
     },
     {
       Header: 'Nama Peminta',
-      accessor: 'user?.name',
+      accessor: 'user.name',
     },
     {
       Header: 'Instansi',
-      accessor: 'instansi?.id',
+      accessor: 'instansi.nama',
     },
     {
       Header: 'Unit Kerja',
@@ -116,7 +116,7 @@ const CMSPermintaanData = () => {
     },
     {
       Header: 'Target Waktu',
-      accessor: 'tanggalTarget',
+      accessor: 'tanggalTarget?',
       Cell: ({ ...rest }) => (
         <span>
           {rest.row.original?.tanggalTarget ? moment(rest.row.original?.tanggalTarget).format('DD MMMM YYYY') : '---'}
@@ -125,11 +125,11 @@ const CMSPermintaanData = () => {
     },
     {
       Header: 'Jenis Data',
-      accessor: 'jenisData',
+      accessor: 'jenisData?',
     },
     {
       Header: 'Tanggal Permintaan',
-      accessor: 'tanggalPermintaan',
+      accessor: 'tanggalPermintaan?',
       Cell: ({ ...rest }) => (
         <span> {rest.row.original?.createdAt ? moment(rest.row.original?.createdAt).format('DD MMMM YYYY') : '---'} </span>
       ),
@@ -231,7 +231,7 @@ const CMSPermintaanData = () => {
           </Col>
         </Row>
       </div>
-      <div className="px-30 pt-0"> {!loading && <Table {...tableConfig} />} </div>
+      <div className="px-30 pt-0"> {!loading ? <Table {...tableConfig} /> : <Loader fullscreen={true} />} </div>
     </div>
   );
 };

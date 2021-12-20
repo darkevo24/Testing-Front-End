@@ -66,6 +66,10 @@ function AppRoutes(props) {
         <Route exact path="/dashboard-eksekutif" component={DashboardEksekutif} />
         <Route exact path="/dashboard-saya" component={DashboardSaya} />
         <Route exact path="/data-analytic" component={DataAnalytic} />
+        <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
+        <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
+        <Route exact path="/api/form" component={ManagementApiAddPage} />
+        <Route exact path="/api" component={ManagementApiPage} />
         {/* <Route path="*" component={NotFoundPage} /> */}
       </AppLayout>
     </Switch>

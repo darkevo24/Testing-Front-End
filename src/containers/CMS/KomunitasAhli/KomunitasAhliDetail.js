@@ -20,7 +20,7 @@ import RowLoader from 'components/Loader/RowLoader';
 import Spinner from 'react-bootstrap/Spinner';
 import Modal from 'components/Modal';
 import { apiUrls, deleteRequest, post } from 'utils/request';
-import { CMSModal } from '../../../components/CMSStatusModals';
+import { CMSModal } from 'components/CMSStatusModals';
 import { DetailHeader } from './detailHeader';
 
 export const getValue = (record, key) => {
@@ -151,7 +151,13 @@ const KomunitasAhli = () => {
           <div className="d-flex align-items-center justify-content-between">
             <label className="fw-bold fs-24 lh-29 p-32">Profil Ahli</label>
             {!loading && (
-              <DetailHeader status={status} loading={loading} history={history} handleModal={(type) => setModal(type)} />
+              <DetailHeader
+                record={record}
+                status={status}
+                loading={loading}
+                history={history}
+                handleModal={(type) => setModal(type)}
+              />
             )}
           </div>
           <div className="mb-3 px-24">

@@ -6,9 +6,11 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import cloneDeep from 'lodash/cloneDeep';
+import isEmpty from 'lodash/isEmpty';
 import { DatePicker, Dropdown, Input } from 'components';
 import { jadwalPermutakhiranOptions, formatOptions } from 'utils/constants';
-import { submitForm } from 'utils/helper';
+import { dateTransform, submitForm, findOption } from 'utils/helper';
 import {
   getAddDaftarSDGTujuan,
   getAddDaftarRKPpp,
@@ -22,16 +24,21 @@ const schema = yup
   .object({
     instansi: yup.mixed().required(),
     nama: yup.string().required(),
+    idKonsep: yup.string().required(),
     konsep: yup.string().required(),
     definisi: yup.string().required(),
     sumberDefinisi: yup.string().required(),
     jadwalPemutakhiran: yup.mixed().required(),
-    tanggalDibuat: yup.date().required(),
-    tanggalDiperbaharui: yup.date().required(),
+    tanggalDibuat: yup.date().required().transform(dateTransform),
+    tanggalDiperbaharui: yup.date().required().transform(dateTransform),
     produsenData: yup.string().required(),
     indukData: yup.mixed().required(),
     format: yup.mixed().required(),
     linkAkses: yup.string().required(),
+    kodePilar: yup.mixed().required(),
+    kodeTujuan: yup.mixed().required(),
+    kodePNRKP: yup.mixed().required(),
+    kodePPRKP: yup.mixed().required(),
   })
   .required();
 
@@ -43,6 +50,22 @@ const DaftarForm = ({
   sdgPillerOptions = [],
   rkpPNOptions = [],
 }) => {
+  const dispatch = useDispatch();
+  const tujuanSDGPillerOptions = useSelector(addTujuanSDGPillerOptionsSelector);
+  const rkpPPOptions = useSelector(addRkpPPOptionsSelector);
+
+  const isEdit = !isEmpty(data);
+  const daftar = cloneDeep(data || {});
+  if (isEdit) {
+    daftar.instansi = findOption(instansiOptions, daftar.intansiId);
+    daftar.jadwalPemutakhiran = findOption(jadwalPermutakhiranOptions, daftar.jadwalPemutakhiran);
+    daftar.indukData = findOption(dataindukOptions, daftar.indukData);
+    daftar.format = findOption(formatOptions, daftar.format);
+    daftar.kodePilar = findOption(sdgPillerOptions, daftar.kodePilar);
+    daftar.kodeTujuan = findOption(tujuanSDGPillerOptions, daftar.kodeTujuan);
+    daftar.kodePNRKP = findOption(rkpPNOptions, daftar.kodePNRKP);
+    daftar.kodePPRKP = findOption(rkpPPOptions, daftar.kodePPRKP);
+  }
   const {
     control,
     formState: { errors },
@@ -50,26 +73,20 @@ const DaftarForm = ({
     watch,
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      ...data,
-    },
+    defaultValues: { ...daftar },
   });
-  const dispatch = useDispatch();
-
-  const tujuanSDGPillerOptions = useSelector(addTujuanSDGPillerOptionsSelector);
-  const rkpPPOptions = useSelector(addRkpPPOptionsSelector);
 
   const watchKodePilar = watch('kodePilar', false);
   const watchKodePNRKP = watch('kodePNRKP', false);
 
   useEffect(() => {
-    if (watchKodePilar) {
+    if (watchKodePilar?.value) {
       dispatch(getAddDaftarSDGTujuan(watchKodePilar.value));
     }
   }, [watchKodePilar]);
 
   useEffect(() => {
-    if (watchKodePNRKP) {
+    if (watchKodePNRKP?.value) {
       dispatch(getAddDaftarRKPpp(watchKodePNRKP.value));
     }
   }, [watchKodePNRKP]);
@@ -126,7 +143,7 @@ const DaftarForm = ({
             name="sumberDefinisi"
             control={control}
             rules={{ required: true }}
-            error={errors.sumber?.message}
+            error={errors.sumberDefinisi?.message}
           />
           <Dropdown
             group
@@ -144,7 +161,7 @@ const DaftarForm = ({
             name="tanggalDibuat"
             control={control}
             rules={{ required: true }}
-            error={errors.dibuat?.message}
+            error={errors.tanggalDibuat?.message}
           />
           <DatePicker
             group
@@ -152,7 +169,7 @@ const DaftarForm = ({
             name="tanggalDiperbaharui"
             control={control}
             rules={{ required: true }}
-            error={errors.diper?.message}
+            error={errors.tanggalDiperbaharui?.message}
           />
           <Input
             group
@@ -160,7 +177,7 @@ const DaftarForm = ({
             name="produsenData"
             control={control}
             rules={{ required: true }}
-            error={errors.produsen?.message}
+            error={errors.produsenData?.message}
           />
           <Dropdown
             group
@@ -170,7 +187,7 @@ const DaftarForm = ({
             rules={{ required: true }}
             placeholder="Select"
             options={dataindukOptions}
-            error={errors.induk?.message}
+            error={errors.indukData?.message}
           />
           <Dropdown
             group
@@ -190,7 +207,7 @@ const DaftarForm = ({
             isLink
             control={control}
             rules={{ required: true }}
-            error={errors.link?.message}
+            error={errors.linkAkses?.message}
             leftIconClass="border-right-0"
             rightIconClass="cursor-pointer"
             className="border-left-0"
@@ -203,7 +220,7 @@ const DaftarForm = ({
             rules={{ required: true }}
             placeholder="Select"
             options={sdgPillerOptions}
-            error={errors.pilarSDGs?.message}
+            error={errors.kodePilar?.message}
           />
           <Dropdown
             group
@@ -213,7 +230,7 @@ const DaftarForm = ({
             rules={{ required: true }}
             placeholder="Select"
             options={tujuanSDGPillerOptions}
-            error={errors.tujuanSDGs?.message}
+            error={errors.kodeTujuan?.message}
           />
           <Dropdown
             group
@@ -223,7 +240,7 @@ const DaftarForm = ({
             rules={{ required: true }}
             placeholder="Select"
             options={rkpPNOptions}
-            error={errors.pnRKP?.message}
+            error={errors.kodePNRKP?.message}
           />
           <Dropdown
             group
@@ -233,7 +250,7 @@ const DaftarForm = ({
             rules={{ required: true }}
             placeholder="Select"
             options={rkpPPOptions}
-            error={errors.ppRKP?.message}
+            error={errors.kodePPRKP?.message}
           />
           <Button className="invisible" type="submit" />
         </Form>

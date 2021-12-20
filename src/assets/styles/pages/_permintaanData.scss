@@ -14,11 +14,6 @@
   }
 }
 
-.icon-box {
-  width: 3rem !important;
-  height: 3rem !important;
-}
-
 .permintaan-data-form-success{
   width: 100%;
   padding-top: 10px;
@@ -41,7 +36,7 @@
     width: 100%;
     padding-top: 10px;
     padding-bottom: 10px;
-    color: $dark-orange;
+    color: $orange-dark;
     background-color: rgb(251, 241, 227);
 }
 
@@ -63,7 +58,7 @@
           color:$purple;
         }
         &.diproses {
-          color: $dark-orange;
+          color: $orange-dark;
         }
       }
       thead {
@@ -117,6 +112,10 @@
     .modal-dialog {
         width: 382px;
       .modal-body {
+        .text-blue {
+          color : $blue;
+          font-weight: bold;
+        }
         width: 382px;
         .sdp-input-wrapper {
           position: relative;

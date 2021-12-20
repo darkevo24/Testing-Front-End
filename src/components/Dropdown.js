@@ -52,6 +52,7 @@ export const Dropdown = ({
           let multiValues = [];
           if (multi && field.value && isArray(field.value)) {
             multiValues = map(field.value, 'value');
+            title = map(field.value, 'label').join(', ');
           }
           return (
             <RBDropdownButton title={title} variant={variant} {...rest} {...field}>

@@ -30,7 +30,7 @@ export const initialState = {
     error: null,
     result: null,
   },
-  addDaftarData: {
+  daftarDataSubmit: {
     loading: false,
     error: null,
     result: null,
@@ -169,13 +169,35 @@ export const putDaftarData = createAsyncThunk('daftar/putDaftarData', async (par
   return response;
 });
 
-export const deleteDaftarData = createAsyncThunk('daftar/deleteDaftarData', async (params) => {
+const makeDaftarDataActionCall = (dispatch, action, state) => {
+  const { params, bodyParams } = state;
+  const filters = { params, bodyParams };
+  return dispatch(action(filters));
+};
+
+export const refetchDaftarData = createAsyncThunk('daftarData/refetchDaftarData', async (_, { dispatch, getState }) => {
+  const state = getState()?.daftar;
+  makeDaftarDataActionCall(dispatch, getDaftarData, state.daftarData);
+  makeDaftarDataActionCall(dispatch, getRkpDaftarData, state.rkp);
+  makeDaftarDataActionCall(dispatch, getSdgDaftarData, state.sdgs);
+  makeDaftarDataActionCall(dispatch, getSayaDaftarData, state.sayaDaftarData);
+});
+
+export const deleteDaftarData = createAsyncThunk('daftar/deleteDaftarData', async (params, { dispatch }) => {
   const response = await deleteRequest(`${apiUrls.daftarData}/${params.id}`);
+  dispatch(refetchDaftarData());
   return response;
 });
 
-export const addDaftarData = createAsyncThunk('daftarData/addDaftarData', async (payload) => {
-  const response = await post(apiUrls.daftarData, payload);
+export const daftarDataSubmit = createAsyncThunk('daftarData/daftarDataSubmit', async (payload) => {
+  const isEdit = !!payload.id;
+  let url = apiUrls.daftarData;
+  let methodToCall = post;
+  if (isEdit) {
+    url = `${url}/${payload.id}`;
+    methodToCall = put;
+  }
+  const response = await methodToCall(url, payload);
   return response;
 });
 
@@ -321,16 +343,16 @@ const daftarSlice = createSlice({
       state.rkpPP.loading = false;
       state.rkpPP.error = 'Error in getting rkp pp data';
     });
-    builder.addCase(addDaftarData.pending, (state) => {
-      state.addDaftarData.loading = true;
+    builder.addCase(daftarDataSubmit.pending, (state) => {
+      state.daftarDataSubmit.loading = true;
     });
-    builder.addCase(addDaftarData.fulfilled, (state, action) => {
-      state.addDaftarData.loading = false;
-      state.addDaftarData.result = action.payload;
+    builder.addCase(daftarDataSubmit.fulfilled, (state, action) => {
+      state.daftarDataSubmit.loading = false;
+      state.daftarDataSubmit.result = action.payload;
     });
-    builder.addCase(addDaftarData.rejected, (state) => {
-      state.addDaftarData.loading = false;
-      state.addDaftarData.error = 'Error while adding data';
+    builder.addCase(daftarDataSubmit.rejected, (state) => {
+      state.daftarDataSubmit.loading = false;
+      state.daftarDataSubmit.error = 'Error while adding data';
     });
     builder.addCase(getAddDaftarSDGTujuan.pending, (state) => {
       state.addDaftarTujuanSDG.loading = true;
@@ -398,7 +420,7 @@ export const sdgsDataSelector = (state) => state.daftar.sdgs;
 export const rkpDataSelector = (state) => state.daftar.rkp;
 export const sayaDataSelector = (state) => state.daftar.sayaDaftarData;
 export const updateDaftarDataSelector = (state) => state.daftar.updateDaftarData;
-export const addDaftarDataSelector = (state) => state.daftar.addDaftarData;
+export const daftarDataSubmitSelector = (state) => state.daftar.daftarDataSubmit;
 export const addDaftarTujuanSDGSelector = (state) => state.daftar.addDaftarTujuanSDG;
 export const addDaftarRkpPPSelector = (state) => state.daftar.addDaftarRkpPP;
 export const tujuanSDGPillersSelector = (state) => state.daftar.tujuanSDGPillers;

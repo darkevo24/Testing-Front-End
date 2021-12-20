@@ -1,12 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import { ReactComponent as ForumSDIImage } from 'assets/ForumSDIImage.svg';
 import { ForumSearch } from './ForumSearch';
 import Image1 from './images/image1.png';
 import Image2 from './images/image2.png';
 import Image3 from './images/image3.png';
+import { useDispatch /*, useSelector*/ } from 'react-redux';
+import { /*forumSDIDatasetSelector, */ getForumSDIData } from './reducer';
 
 export const ForumSDI = () => {
+  const dispatch = useDispatch();
+  // const { payload, size, loading, page, records, totalRecords } = useSelector(forumSDIDatasetSelector);
+
+  useEffect(() => {
+    handleAPICall({ page: 0, q: '', status: '' });
+  }, []);
+
+  const handleAPICall = (params) => {
+    dispatch(getForumSDIData(params));
+  };
+
+  // const handleOnSearch = (value = '') => {
+  //   handleAPICall({ page: 0, q: value.trim() });
+  // };
+  //
+  // const handleOnTagChange = (value = '') => {
+  //   handleAPICall({ page: 0, q: value.trim() });
+  // };
+
   return (
     <div className="sdp-forum-sdi-container">
       <div className="d-flex flex-column align-items-center justify-content-center">

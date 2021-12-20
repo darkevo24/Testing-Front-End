@@ -8,6 +8,8 @@ export const initialState = {
     page: 0,
     status: '',
     records: [],
+    instansi: [],
+    unitKerja: [],
     size: defaultNumberOfRows,
     totalPages: null,
     totalRecords: null,
@@ -17,8 +19,28 @@ export const initialState = {
 export const PERMINTAAN_DATA = 'PERMINTAAN_DATA';
 
 export const getPermintaanData = createAsyncThunk('permintaan-data/list', async (params) => {
-  const response = await get(apiUrls.listPermintaanData, { query: { page: params.page + 1, size: 10, q: params.q } });
+  const response = await get(apiUrls.listPermintaanData, {
+    query: {
+      page: params.page + 1,
+      size: 10,
+      instansiId: params.instansiId,
+      unitKerjaId: params.unitKerjaId,
+      status: params.status,
+      q: params.q,
+    },
+  });
+  console.log(response);
   return response;
+});
+
+export const getInstansi = createAsyncThunk('permintaan-data/instansi', async (params) => {
+  const response = await get(`${apiUrls.instansiData}`);
+  return response?.data.content?.records;
+});
+
+export const getUnitkerja = createAsyncThunk('permintaan-data/unitkerja', async (params) => {
+  const response = await get(`${apiUrls.instansiData}/${params}/unitkerja`);
+  return response?.data.content;
 });
 
 const permintaanDataDetailSlice = createSlice({
@@ -37,8 +59,30 @@ const permintaanDataDetailSlice = createSlice({
       state.dataset.totalRecords = action.payload.data.content.totalRecords;
     });
     builder.addCase(getPermintaanData.rejected, (state, action) => {
-      state.loading = false;
-      state.error = 'Invalid data';
+      state.dataset.loading = false;
+      state.dataset.error = 'Invalid data';
+    });
+    builder.addCase(getInstansi.pending, (state, action) => {
+      state.dataset.loading = true;
+    });
+    builder.addCase(getInstansi.fulfilled, (state, action) => {
+      state.dataset.loading = false;
+      state.dataset.instansi = action.payload;
+    });
+    builder.addCase(getInstansi.rejected, (state, action) => {
+      state.dataset.loading = false;
+      state.dataset.error = 'Invalid data';
+    });
+    builder.addCase(getUnitkerja.pending, (state, action) => {
+      state.dataset.loading = true;
+    });
+    builder.addCase(getUnitkerja.fulfilled, (state, action) => {
+      state.dataset.loading = false;
+      state.dataset.unitKerja = action.payload;
+    });
+    builder.addCase(getUnitkerja.rejected, (state, action) => {
+      state.dataset.loading = false;
+      state.dataset.error = 'Invalid data';
     });
   },
 });

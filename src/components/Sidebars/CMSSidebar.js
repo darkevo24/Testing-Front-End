@@ -2,10 +2,11 @@ import React from 'react';
 import cx from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
 import Accordion from 'react-bootstrap/Accordion';
-import { getAnalyticsUrl } from 'utils/constants';
+import { getAnalyticsUrl, USER_ROLES } from 'utils/constants';
 
 import { SidebarApiIcon, SidebarConfigIcon, SidebarContentIcon, SidebarDataIcon, SidebarUserIcon } from 'assets/icons';
 import bn from 'utils/bemNames';
+import { ComponentAccessibility } from '../ComponentAccess';
 
 const bem = bn('sidebar');
 
@@ -67,8 +68,11 @@ export const CMSSidebar = () => {
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
-        <SidebarItem title="Forum" pathname="#" />
-        <SidebarItem title="Komunitas Ahli" pathname="/cms/komunitas-ahli" />
+        <SidebarItem title="Forum SDI" pathname="/cms/forum-sdi" />
+        <ComponentAccessibility
+          roles={[USER_ROLES.CONTENT_EDITOR, USER_ROLES.CONTENT_CREATOR, USER_ROLES.ADMIN, USER_ROLES.SEKRETARIAT]}>
+          <SidebarItem title="Komunitas Ahli" pathname="/cms/komunitas-ahli" />
+        </ComponentAccessibility>
         <Accordion defaultActiveKey="0">
           <Accordion.Item>
             <Accordion.Header
@@ -131,7 +135,7 @@ export const CMSSidebar = () => {
           <SidebarConfigIcon className="mr-10" />
           Konfigurasi
         </div>
-        <SidebarItem title="Log Aktivitas" pathname="#" />
+        <SidebarItem title="Log Aktivitas" pathname="/cms/log-activity" />
         <SidebarItem title="Sekuriti" pathname="#" />
         <SidebarItem title="Aset" pathname="#" />
         <SidebarItem title="Media Sosial" pathname="#" />

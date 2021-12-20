@@ -7,6 +7,7 @@ import RBTable from 'react-bootstrap/Table';
 import cx from 'classnames';
 import isFunction from 'lodash/isFunction';
 import isString from 'lodash/isString';
+import findIndex from 'lodash/findIndex';
 import { useAsyncDebounce, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 
 import { LeftChevron, RightChevron, Search, icons } from 'components/Icons';
@@ -17,7 +18,6 @@ const bem = bn('table');
 export const FilterSearchInput = ({
   searchPlaceholder = 'Search',
   onSearch,
-  preGlobalFilteredRows,
   globalFilter,
   setGlobalFilter,
   searchValue,
@@ -74,10 +74,13 @@ const Table = ({
   showSearch = true,
   variant = 'default',
   highlightOnHover,
+  sortBy = null,
+  onSortChange = () => null,
   manualPagination = false,
   renderFilters = () => null,
   totalCount,
-  pageSize,
+  pageCount,
+  pageSize = null,
   currentPage,
   onPageIndexChange = () => null,
   searchValue = '',
@@ -86,16 +89,30 @@ const Table = ({
   rowClass,
   startFromOne = false,
 }) => {
+  const { t } = useTranslation();
+
   const tableOptions = {
     columns,
     data,
     manualPagination,
   };
   if (manualPagination && totalCount && pageSize) {
-    tableOptions.pageCount = Math.ceil(totalCount / pageSize);
+    tableOptions.pageCount = pageCount || Math.ceil(totalCount / pageSize);
     tableOptions.initialState = { pageIndex: currentPage };
   }
-  const { t } = useTranslation();
+  if (sortBy) {
+    tableOptions.manualSortBy = true;
+    const sortedColumnIndex = findIndex(tableOptions.columns, { sortId: sortBy.sortId });
+    const sortedColumn = tableOptions.columns[sortedColumnIndex];
+    sortedColumn.isSorted = true;
+    sortedColumn.isSortedDesc = sortBy.desc;
+    const tableSortBy = [{ id: sortBy.id, desc: sortBy.desc }];
+    if (tableOptions.initialState) {
+      tableOptions.initialState.sortBy = tableSortBy;
+    } else {
+      tableOptions.initialState = { sortBy: tableSortBy };
+    }
+  }
   const {
     getTableProps,
     getTableBodyProps,
@@ -110,6 +127,7 @@ const Table = ({
     nextPage,
     previousPage,
     // setPageSize,
+    setSortBy,
     preGlobalFilteredRows,
     setGlobalFilter,
     state: { globalFilter, pageIndex },
@@ -118,6 +136,12 @@ const Table = ({
   useEffect(() => {
     onPageIndexChange(pageIndex);
   }, [pageIndex]);
+
+  useEffect(() => {
+    if (sortBy) {
+      setSortBy(tableOptions?.initialState?.sortBy);
+    }
+  }, [sortBy]);
 
   const totalPages = pageOptions.length;
   const startPageIndex = startFromOne ? 1 : 0;
@@ -153,6 +177,10 @@ const Table = ({
     if (isString(rowClass)) return rowClass;
     if (isFunction(rowClass)) return rowClass(data.original);
     return '';
+  };
+
+  const handleSortHeader = (column) => () => {
+    onSortChange(column);
   };
 
   return (
@@ -191,7 +219,7 @@ const Table = ({
                   {headerGroup.headers.map((column) => (
                     // Add the sorting props to control sorting. For this example
                     // we can add them into the header props
-                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())} onClick={handleSortHeader(column)}>
                       {column.render('Header')}
                       {/* Add a sort direction indicator */}
                       <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
@@ -255,6 +283,11 @@ Table.Link = ({ cell }) => (
 Table.Actions = ({ cell, ...rest }) => {
   const { column: { actions = [] } = {}, row } = cell;
   const id = row.id || row.index;
+  const handleIconClick = (cb) => (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    cb(row.original);
+  };
   return (
     <div className="d-flex action-icon-wrapper">
       {actions.map(({ icon, type, variant, title, callback, classes }) => {
@@ -263,11 +296,11 @@ Table.Actions = ({ cell, ...rest }) => {
         const Icon = icon || icons[type];
         if (!Icon && !title) return null;
         return Icon ? (
-          <div key={`${id}-${type}`} className={cx('icon-box', iconBoxVarient)} onClick={() => callback(row.original)}>
+          <div key={`${id}-${type}`} className={cx('icon-box', iconBoxVarient)} onClick={handleIconClick(callback)}>
             <Icon variant={variant || (isDelete && 'danger')} />
           </div>
         ) : (
-          <button key={`${id}-${type}`} className={classes} onClick={() => callback(row.original)}>
+          <button key={`${id}-${type}`} className={classes} onClick={handleIconClick(callback)}>
             {title}
           </button>
         );

@@ -3,7 +3,6 @@ import cx from 'classnames';
 import truncate from 'lodash/truncate';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import ColumnData from 'components/ColumnData';
 import Loader from 'components/Loader';
 import Table from 'components/Table';
 import Popover from 'components/Popover';
@@ -11,6 +10,7 @@ import { Check } from 'components/Icons';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import cloneDeep from 'lodash/cloneDeep';
 import { JADWAL_PERMUTAKHIRAN } from 'utils/constants';
+import DaftarPopoverContent from './DaftarPopoverContent';
 import { getDaftarData, daftarDataSelector } from './reducer';
 
 const DaftarTable = ({
@@ -29,7 +29,8 @@ const DaftarTable = ({
   onPilarSdgChange,
 }) => {
   const history = useHistory();
-  const [selectedRecord, setSelectedRecord] = useState(null);
+  // const [selectedRecord, setSelectedRecord] = useState(null);
+  const [sortBy, setSortBy] = useState(null);
   const { pageSize, loading, params, bodyParams, result } = useSelector(daftarDataSelector);
   const dispatch = useDispatch();
 
@@ -52,15 +53,11 @@ const DaftarTable = ({
   };
 
   useEffect(() => {
-    fetchDaftarData();
-  }, []);
-
-  useEffect(() => {
     fetchDaftarData({ bodyParams: { textSearch } });
   }, [textSearch]);
 
   const showDaftarDetailPage = (data) => {
-    setSelectedRecord(data);
+    // setSelectedRecord(data);
     history.push(`/cms/daftar/${data.id}`);
   };
 
@@ -69,29 +66,8 @@ const DaftarTable = ({
       {
         Header: 'Instansi',
         id: 'instansi',
+        sortId: 0,
         Cell: ({ cell: { row: { original: item } = {} } = {} }) => {
-          const items = [
-            { label: 'ID Konsep', value: 'CPCL' },
-            { label: 'KONSEP', value: 'CPCL' },
-            {
-              label: 'DEFINISI',
-              value:
-                'CPCL adalah calon petani penerima bantuan dan calon lokasi lahan yang akan menerima bantuan pemerintah	',
-            },
-            {
-              label: 'sumber definisi',
-              value:
-                'Keputusan Direktur Jenderal Tanaman Pangan Nomor 218/HK/310/12/2029 tentang Petunjuk Teknis Bantuan Pemerintah Program Peningkatan Produksi, Produktivitas dan Mutu Hasil Tanaman Pangan Tahun Anggaran 2020',
-            },
-            { label: 'dATA INDUK', value: 'PKKU; RDKK;CPCL' },
-            { label: 'fORMAT', value: 'CSV' },
-            { label: 'LINK AKSES', value: 'https://umkm.depkop.go.id', variant: 'link' },
-            { label: 'PILAR SDGS', value: 'Sosial' },
-            { label: 'Tujuan sdgs', value: '1. Mengakhiri kemiskinan dalam segala bentuk dimanapun' },
-            { label: 'PN RKP', value: '-' },
-            { label: 'PP RKP', value: '-' },
-            { label: 'PRIORITAS', value: 'Ya' },
-          ];
           return (
             <Popover
               placement="bottom-start"
@@ -100,7 +76,7 @@ const DaftarTable = ({
               triggerOn="hover"
               trigger={<div className="cursor-pointer h-100 d-flex align-items-center">{item.instansi}</div>}
               header="Detail Data Cakupan Wilayah Internet">
-              <ColumnData items={items} />
+              <DaftarPopoverContent daftarId={item.id} />
             </Popover>
           );
         },
@@ -108,33 +84,37 @@ const DaftarTable = ({
       {
         Header: 'Nama Data',
         accessor: 'nama',
+        sortId: 1,
         Cell: (data) => truncate(data.cell.value, { length: 20 }),
       },
       {
         Header: 'Jadwal Pemutakhiran',
         accessor: 'jadwalPemutakhiran',
+        sortId: 2,
         Cell: (data) => JADWAL_PERMUTAKHIRAN[data.cell.value],
       },
       {
         Header: 'Dibuat',
         accessor: 'tanggalDibuat',
+        sortId: 3,
       },
       {
         Header: 'Diperbarui',
         accessor: 'tanggalDiperbaharui',
+        sortId: 4,
       },
       {
         Header: 'Produsen Data',
         accessor: 'produsenData',
+        sortId: 5,
       },
       {
         Header: 'Label',
         accessor: 'label',
-        // TODO: replace with actual data
-        Cell: ({ cell: { row, value = [] } }) => (
+        Cell: ({ cell: { row: { id: rowId, original: item } = {} } = {} }) => (
           <div className={bem.e('tag-wrapper')}>
-            {['SDGs', 'RKP'].map((label) => (
-              <div key={`${row.id}-${label}`} className={bem.e('tag')}>
+            {[item.labelKodePilar, item.labelKodePnrkp].filter(Boolean).map((label) => (
+              <div key={`${rowId}-${label}`} className={bem.e('tag')}>
                 {label}
               </div>
             ))}
@@ -165,12 +145,20 @@ const DaftarTable = ({
 
   const data = useMemo(() => result?.content?.records || [], [result]);
 
+  const onSortChange = ({ id, sortId, isSortedDesc }) => {
+    const desc = isSortedDesc === undefined ? false : !isSortedDesc;
+    setSortBy({ id, sortId, desc });
+    fetchDaftarData({ params: { sortBy: sortId, sortDirection: desc ? 'DESC' : 'ASC' } });
+  };
+
   const tableConfig = {
     columns,
     data,
     totalCount: result?.content?.totalRecords || null,
     cms,
     pageSize,
+    sortBy,
+    onSortChange,
     manualPagination: true,
     currentPage: params.page,
     showSearch: false,

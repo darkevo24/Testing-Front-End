@@ -6,10 +6,9 @@ import Modal from 'components/Modal';
 import Notification from 'components/Notification';
 import Table from 'components/Table';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
-import DaftarForm, { submitDaftarForm } from './DaftarForm';
 import { Check } from 'components/Icons';
 import { JADWAL_PERMUTAKHIRAN } from 'utils/constants';
-import { getSayaDaftarData, sayaDataSelector, deleteDaftarData, putDaftarData } from './reducer';
+import { getSayaDaftarData, sayaDataSelector, deleteDaftarData } from './reducer';
 
 const DaftarDataSayaTable = ({
   bem,
@@ -18,12 +17,13 @@ const DaftarDataSayaTable = ({
   instansiOptions = [],
   priorityOptions = [],
   produenOptions = [],
+  showDaftarFormModal,
 }) => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [isDaftarFormVisible, setIsDaftarFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const [sortBy, setSortBy] = useState(null);
   const dispatch = useDispatch();
-  const { pageSize, loading, params, bodyParams, result } = useSelector(sayaDataSelector);
+  const { pageSize, params, bodyParams, result } = useSelector(sayaDataSelector);
 
   const fetchSayaData = (filterOverride = {}, reset = false) => {
     const { params: paramsOverride = {}, bodyParams: bodyParamsOverride = {} } = filterOverride;
@@ -44,12 +44,14 @@ const DaftarDataSayaTable = ({
   };
 
   useEffect(() => {
-    fetchSayaData();
-  }, []);
-
-  useEffect(() => {
     fetchSayaData({ bodyParams: { textSearch } });
   }, [textSearch]);
+
+  const onSortChange = ({ id, sortId, isSortedDesc }) => {
+    const desc = isSortedDesc === undefined ? false : !isSortedDesc;
+    setSortBy({ id, sortId, desc });
+    fetchSayaData({ params: { sortBy: sortId, sortDirection: desc ? 'DESC' : 'ASC' } });
+  };
 
   const handleDropdownFilter = (filter) => (selectedValue) => {
     fetchSayaData({ bodyParams: { [filter]: selectedValue.value } });
@@ -67,59 +69,29 @@ const DaftarDataSayaTable = ({
   };
 
   const handleDelete = () => {
-    // TODO: handle actual delete of the data.
-
     dispatch(deleteDaftarData(selectedRecord)).then((res) => {
+      const hasError = res?.type?.includes('rejected');
+      if (hasError) {
+        Notification.show({
+          type: 'secondary',
+          message: (
+            <div>
+              Kesalahan dalam menghapus daftar <span className="fw-bold">{selectedRecord.name}</span>
+            </div>
+          ),
+          icon: 'cross',
+        });
+      } else {
+        Notification.show({
+          message: (
+            <div>
+              Daftar <span className="fw-bold">{selectedRecord.name}</span> Berhasil Dihapus
+            </div>
+          ),
+          icon: 'check',
+        });
+      }
       setIsDeleteModalVisible(false);
-    });
-    Notification.show({
-      message: (
-        <div>
-          Daftar <span className="fw-bold">{selectedRecord.name}</span> Berhasil Dihapus
-        </div>
-      ),
-      icon: 'check',
-    });
-  };
-
-  const showDaftarFormModal = (data) => {
-    setSelectedRecord(data);
-    setIsDaftarFormVisible(true);
-  };
-
-  const hideDaftarFormModal = () => {
-    setSelectedRecord(null);
-    setIsDaftarFormVisible(false);
-  };
-
-  const handleDaftarFromSubmit = (data) => {
-    // TODO: handle the data posted to server
-
-    data.instansi = data.instansi.value;
-    data.jadwalPemutakhiran = data.jadwalPemutakhiran.value;
-    data.indukData = [data.indukData.value];
-    data.format = 'png';
-
-    dispatch(putDaftarData(data)).then((res) => {
-      hideDaftarFormModal();
-      res.payload
-        ? Notification.show({
-            type: 'secondary',
-            message: (
-              <div>
-                Daftar <span className="fw-bold">{data.name}</span> Berhasil Ditambahkan
-              </div>
-            ),
-            icon: 'check',
-          })
-        : Notification.show({
-            message: (
-              <div>
-                Daftar <span className="fw-bold">{data.name}</span> Berhasil Ditambahkan
-              </div>
-            ),
-            icon: 'cross',
-          });
     });
   };
 
@@ -128,36 +100,42 @@ const DaftarDataSayaTable = ({
       {
         Header: 'Instansi',
         accessor: 'instansi',
+        sortId: 0,
       },
       {
         Header: 'Nama Data',
         accessor: 'nama',
+        sortId: 1,
         Cell: (data) => truncate(data.cell.value, { length: 20 }),
       },
       {
         Header: 'Jadwal Pemutakhiran',
         accessor: 'jadwalPemutakhiran',
+        sortId: 2,
         Cell: (data) => JADWAL_PERMUTAKHIRAN[data.cell.value],
       },
       {
         Header: 'Dibuat',
         accessor: 'tanggalDibuat',
+        sortId: 3,
       },
       {
         Header: 'Diperbarui',
         accessor: 'tanggalDiperbaharui',
+        sortId: 4,
       },
       {
         Header: 'Produsen Data',
         accessor: 'produsenData',
+        sortId: 5,
       },
       {
         Header: 'Label',
         accessor: 'label',
-        Cell: ({ cell: { row, value = [] } }) => (
+        Cell: ({ cell: { row: { id: rowId, original: item } = {} } = {} }) => (
           <div className={bem.e('tag-wrapper')}>
-            {value.map((label) => (
-              <div key={`${row.id}-${label}`} className={bem.e('tag')}>
+            {[item.labelKodePilar, item.labelKodePnrkp].filter(Boolean).map((label) => (
+              <div key={`${rowId}-${label}`} className={bem.e('tag')}>
                 {label}
               </div>
             ))}
@@ -191,6 +169,8 @@ const DaftarDataSayaTable = ({
     data,
     totalCount: result?.content?.totalRecords || null,
     pageSize,
+    sortBy,
+    onSortChange,
     manualPagination: true,
     currentPage: params.page,
     showSearch: false,
@@ -210,19 +190,43 @@ const DaftarDataSayaTable = ({
         <div className="row">
           <div className="col">
             <label className="sdp-form-label py-8">Instansi</label>
-            <SingleSelectDropdown data={instansiOptions} placeHolder="Semua" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('instansi')}
+              data={instansiOptions}
+              placeHolder="Semua"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
           <div className="col">
             <label className="sdp-form-label py-8">Produsen Data</label>
-            <SingleSelectDropdown data={produenOptions} placeHolder="Semua" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('produsenData')}
+              data={produenOptions}
+              placeHolder="Semua"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
           <div className="col">
             <label className="sdp-form-label py-8">Data Induk</label>
-            <SingleSelectDropdown data={dataindukOptions} placeHolder="Semua" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('dataInduk')}
+              data={dataindukOptions}
+              placeHolder="Semua"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
           <div className="col">
             <label className="sdp-form-label py-8">Prioritas</label>
-            <SingleSelectDropdown data={priorityOptions} placeHolder="Ya" isLoading={false} noValue={true} />
+            <SingleSelectDropdown
+              onChange={handleDropdownFilter('prioritas')}
+              data={priorityOptions}
+              placeHolder="Ya"
+              isLoading={false}
+              noValue={true}
+            />
           </div>
         </div>
       </div>
@@ -237,19 +241,6 @@ const DaftarDataSayaTable = ({
           { text: 'Hapus', onClick: handleDelete },
         ]}>
         Apakah anda yakin untuk menghapus <span className="fw-bold">Data UMKM?</span>
-      </Modal>
-      <Modal
-        size="lg"
-        visible={isDaftarFormVisible}
-        onClose={hideDaftarFormModal}
-        icon="splitCircle"
-        title={selectedRecord ? 'Edit Data' : 'Tambah Data'}
-        subtitle="Isi form dibawah untuk menambah data"
-        actions={[
-          { variant: 'secondary', text: 'Batal', onClick: hideDaftarFormModal },
-          { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDaftarForm },
-        ]}>
-        <DaftarForm instansiOptions={instansiOptions} data={selectedRecord} onSubmit={handleDaftarFromSubmit} />
       </Modal>
     </>
   );

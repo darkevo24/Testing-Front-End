@@ -9,6 +9,9 @@ import { BerandaTop } from './BerandaTop';
 import { SearchBeranda } from './SearchBeranda';
 import { BerandaTopic } from './BerandaTopic';
 import { BerandaCards } from './BerandaCards';
+import bn from 'utils/bemNames';
+
+const bem = bn('beranda');
 
 const Container = styled.div`
   width: 1280px;
@@ -30,10 +33,10 @@ const BerandaPage = () => {
   return (
     <>
       <BerandaTop />
-      <Container>
+      <Container className={bem.b()}>
         <SearchBeranda />
         <BerandaTopic />
-        <BerandaCards isLoggedIn={isLoggedIn} trendingData={trendingData} popularData={popularData} />
+        <BerandaCards bem={bem} isLoggedIn={isLoggedIn} trendingData={trendingData} popularData={popularData} />
         {loading && <Loader fullscreen />}
       </Container>
     </>

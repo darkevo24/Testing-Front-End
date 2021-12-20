@@ -70,6 +70,12 @@ export const SearchBeranda = () => {
     history.push(`/${datasetRoute}?q=${searchText}`);
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <Box>
       <GroupedDropdown
@@ -86,6 +92,7 @@ export const SearchBeranda = () => {
           value={searchText}
           placeholder="Cari Data Publik Indonesia"
           onChange={(e) => setSearchText(e.target.value)}
+          onKeyPress={handleKeyPress}
         />
         <button type="button" className="btn-search svg-20" onClick={handleSearch}>
           <Search variant="white" />

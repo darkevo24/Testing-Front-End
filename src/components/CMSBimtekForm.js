@@ -55,7 +55,7 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
     .required();
   const {
     control,
-    formState: { errors },
+    // formState: { errors },
     handleSubmit,
     setValue,
   } = useForm({

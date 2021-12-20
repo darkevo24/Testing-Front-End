@@ -52,6 +52,7 @@ export const Dropdown = ({
           let multiValues = [];
           if (multi && field.value && isArray(field.value)) {
             multiValues = map(field.value, 'value');
+            title = map(field.value, 'label').join(', ');
           }
           return (
             <RBDropdownButton title={title} variant={variant} {...rest} {...field}>
@@ -64,6 +65,11 @@ export const Dropdown = ({
                   {multi && multiValues.includes(option.value) && <Check />}
                 </RBDropdown.Item>
               ))}
+              {!options.length && (
+                <div className="sdp-text-black-lighter px-16 py-5px d-flex align-center">
+                  <span>No Options</span>
+                </div>
+              )}
             </RBDropdownButton>
           );
         }}

@@ -5,10 +5,11 @@ import Notification from 'components/Notification';
 import bn from 'utils/bemNames';
 import { priorityOptions } from 'utils/constants';
 import {
-  addDaftarData,
+  daftarDataSubmit,
   getProduen,
   getSDGTujuan,
   getRKPpp,
+  downloadDaftarData,
   produenOptionsSelector,
   tujuanSDGPillerOptionsSelector,
   rkpPPOptionsSelector,
@@ -23,7 +24,7 @@ import {
   getSDGPillers,
   getRKPpn,
 } from 'containers/App/reducer';
-import { prepareFormPayload } from 'utils/helper';
+import { /* createFileAndDownload, fileTypes,*/ prepareFormPayload } from 'utils/helper';
 
 const bem = bn('daftar');
 
@@ -55,7 +56,17 @@ const DaftarDataProvider = ({ children }) => {
     dispatch(getRKPpp(pnRKP));
   };
 
-  const handleTambahFromSubmit = (data, cb) => {
+  const onDownloadData = async (params) => {
+    try {
+      await dispatch(downloadDaftarData(params));
+      // This is directly handled in the fetch response to make it worth!!
+      // createFileAndDownload(downloadResponse.payload, fileTypes.excel, new Date().getTime());
+    } catch (error) {
+      // console.log('error: ', error);
+    }
+  };
+
+  const handleDaftarFromSubmit = (data, cb) => {
     const payload = prepareFormPayload(data, {
       dropdowns: [
         'instansi',
@@ -71,27 +82,27 @@ const DaftarDataProvider = ({ children }) => {
       dates: ['tanggalDibuat', 'tanggalDiperbaharui'],
     });
 
-    dispatch(addDaftarData(payload)).then((res) => {
+    dispatch(daftarDataSubmit(payload)).then((res) => {
+      const hasError = res?.type?.includes('rejected');
+      const isEdit = !!data.id;
       if (isFunction(cb)) {
-        cb(res);
+        cb(res, hasError);
       }
-      const hasError = res.type.includes('rejected');
       if (hasError) {
-        Notification.show({
+        return Notification.show({
           message: (
             <div>
-              Error <span className="fw-bold">{res.error.message}</span> Data Tidak Ditambahkan
+              Error <span className="fw-bold">{res.error.message}</span> Data Tidak {isEdit ? 'Diperbarui' : 'Ditambahkan'}
             </div>
           ),
           icon: 'cross',
         });
-        return;
       }
       Notification.show({
         type: 'secondary',
         message: (
           <div>
-            Daftar <span className="fw-bold">{payload.nama}</span> Berhasil Ditambahkan
+            Daftar <span className="fw-bold">{payload.nama}</span> Berhasil {isEdit ? 'Diperbarui' : 'Ditambahkan'}
           </div>
         ),
         icon: 'check',
@@ -111,7 +122,8 @@ const DaftarDataProvider = ({ children }) => {
     rkpPPOptions,
     onPilarSdgChange,
     onPnRKPChange,
-    handleTambahFromSubmit,
+    onDownloadData,
+    handleDaftarFromSubmit,
   };
 
   const childrenWithProps = Children.map(children, (child) => {

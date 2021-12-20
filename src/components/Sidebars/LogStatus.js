@@ -8,7 +8,7 @@ const bem = bn('log');
 export const LogStatus = ({ data }) => (
   <div className={bem.e('section')}>
     <div className={bem.e('title')}>Log Status</div>
-    {!data[0]?.createdAt
+    {!data || data.length === 0
       ? 'Tidak ada log'
       : data.map((item, key) => (
           <div key={key} className="mb-3">
@@ -17,8 +17,8 @@ export const LogStatus = ({ data }) => (
               <div className={bem.e('date-line')}>{}</div>
             </div>
             <div className="d-flex align-items-center">
-              <div className={cx(bem.e('status'), item.status.toLowerCase())}>{item?.status}</div>
-              <div className={bem.e('content')}>{item.content}</div>
+              <div className={cx(bem.e('status'), item.data?.status.toLowerCase())}>{item.data?.status}</div>
+              <div className={bem.e('content')}>{item.remark}</div>
             </div>
           </div>
         ))}

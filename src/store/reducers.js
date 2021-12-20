@@ -21,19 +21,25 @@ import cmsKomunitasAhliReducer from 'containers/CMS/KomunitasAhli/reducer';
 import cmsBimtekPermintaanDataReducer from 'containers/CMS/BimtekPermintaan/reducer';
 import cmsBimtekDokumentasiReducer from 'containers/CMS/BimtekDokumentasi/reducer';
 import cmsBimtekJadwalReducer from 'containers/CMS/BimtekJadwal/reducer';
+import cmsAboutUsReducer from 'containers/CMS/AboutUs/reducer';
 import komunitasAhliReducer from 'containers/Komunitas/reducer';
+import forumSDIReducer from 'containers/ForumSDI/reducer';
+import userPortalBeritaReducer from 'containers/Berita/reducer';
+import bimtekSummaryReducer from 'containers/BimTekSummary/reducer';
+import bimtekJadwalReducer from 'containers/BimTekJadwal/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
  */
 export default function createReducer(injectedReducers) {
-  const rootReducer = combineReducers({
+  return combineReducers({
     global: appReducer,
     auth: authReducer,
     beranda: berandaReducer,
     daftar: daftarReducer,
     cms: cmsReducer,
     tentang: tentangReducer,
+    cmsTentang: cmsAboutUsReducer,
     perminataan: perminataanReducer,
     struktur: strukturReducer,
     permintaanData: permintaanDataReducer,
@@ -44,9 +50,11 @@ export default function createReducer(injectedReducers) {
     cmsBimtekDokumentasi: cmsBimtekDokumentasiReducer,
     cmsBimtekJadwal: cmsBimtekJadwalReducer,
     komunitasAhli: komunitasAhliReducer,
+    userPortalBerita: userPortalBeritaReducer,
+    forumSDI: forumSDIReducer,
+    bimtekSummary: bimtekSummaryReducer,
+    bimtekJadwal: bimtekJadwalReducer,
     router: connectRouter(history),
     ...injectedReducers,
   });
-
-  return rootReducer;
 }

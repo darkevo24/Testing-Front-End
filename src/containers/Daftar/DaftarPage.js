@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
+import get from 'lodash/get';
 import Breadcrumb from 'components/Breadcrumb';
 import HighlightWords from 'components/HighlightWords';
 import { Search } from 'components/Icons';
@@ -18,7 +19,7 @@ import SdgTable from './SdgTable';
 import RkpTable from './RkpTable';
 import DaftarDataSayaTable from './DaftarDataSayaTable';
 import { useThrottle } from 'utils/hooks';
-import { getDaftarDataSummary, daftarDataSummarySelector, addDaftarDataSelector } from './reducer';
+import { refetchDaftarData, getDaftarDataSummary, daftarDataSummarySelector } from './reducer';
 
 const Daftar = (props) => {
   const {
@@ -33,16 +34,18 @@ const Daftar = (props) => {
     rkpPPOptions,
     onPilarSdgChange,
     onPnRKPChange,
-    handleTambahFromSubmit,
+    onDownloadData,
+    handleDaftarFromSubmit,
   } = props;
   const { t } = useTranslation();
   const [searchText, setSearchText] = useState('');
   const [debouncedSearchText, setDebouncedSearchText] = useState('');
-  const [isTambahModalVisible, setIsTambahModalVisble] = useState(false);
+  const [isDaftarFormVisible, setIsDaftarFormVisible] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(t('sandbox.daftar.tabs.daftar.key'));
   const activeTitle = t(`sandbox.daftar.tabs.${activeTab}.title`);
-  const { result } = useSelector(addDaftarDataSelector);
+  const fullDaftarData = useSelector((state) => state.daftar);
   const daftarSummaryData = useSelector(daftarDataSummarySelector);
 
   const invokeDebounced = useThrottle(() => setDebouncedSearchText(searchText));
@@ -56,12 +59,22 @@ const Daftar = (props) => {
     setSearchText(e.target.value);
   };
 
+  const showDaftarFormModal = (data) => {
+    setSelectedRecord(data);
+    setIsDaftarFormVisible(true);
+  };
+
+  const hideDaftarFormModal = () => {
+    setSelectedRecord(null);
+    setIsDaftarFormVisible(false);
+  };
+
   const stats = useMemo(
     () => [
-      { title: 'Jumlah Data pada Daftar Data', value: daftarSummaryData?.result?.data || '-' },
-      { title: 'Jumlah Instansi pada Daftar Data', value: daftarSummaryData?.result?.instansi || '-' },
-      { title: 'Jumlah Dataset Terharvest', value: 35798 },
-      { title: 'Jumlah Instansi Terharvest', value: 50 },
+      { title: 'Jumlah Data pada Daftar Data', value: get(daftarSummaryData, 'result.data', '-') },
+      { title: 'Jumlah Instansi pada Daftar Data', value: get(daftarSummaryData, 'result.instansi', '-') },
+      { title: 'Jumlah Dataset Terharvest', value: get(daftarSummaryData, 'result.dataset_harverts', '-') },
+      { title: 'Jumlah Instansi Terharvest', value: get(daftarSummaryData, 'result.instansi_harverts', '-') },
     ],
     [daftarSummaryData],
   );
@@ -101,19 +114,17 @@ const Daftar = (props) => {
       {
         key: t('sandbox.daftar.tabs.daftarSafa.key'),
         title: t('sandbox.daftar.tabs.daftarSafa.title'),
-        component: <DaftarDataSayaTable {...tableProps} />,
+        component: (
+          <DaftarDataSayaTable
+            {...tableProps}
+            showDaftarFormModal={showDaftarFormModal}
+            hideDaftarFormModal={hideDaftarFormModal}
+          />
+        ),
       },
     ],
     [tableProps],
   );
-
-  const showTambahFormModal = () => {
-    setIsTambahModalVisble(true);
-  };
-
-  const hideTambahModal = () => {
-    setIsTambahModalVisble(false);
-  };
 
   const breadcrumbsList = useMemo(
     () => [
@@ -135,10 +146,32 @@ const Daftar = (props) => {
 
   const isSayaData = activeTab === t('sandbox.daftar.tabs.daftarSafa.key');
 
-  const handleAddFormSubmit = (data) => {
-    handleTambahFromSubmit(data, (res) => {
-      hideTambahModal();
+  const onDaftarFormSubmit = (data) => {
+    handleDaftarFromSubmit(data, (_hasError) => {
+      hideDaftarFormModal();
+      dispatch(refetchDaftarData());
     });
+  };
+
+  const handleDownloadData = () => {
+    let params = {};
+    switch (activeTab) {
+      case t('sandbox.daftar.tabs.daftar.key'):
+        params = fullDaftarData.daftarData.bodyParams;
+        break;
+      case t('sandbox.daftar.tabs.sdg.key'):
+        params = fullDaftarData.sdgs.bodyParams;
+        break;
+      case t('sandbox.daftar.tabs.rkp.key'):
+        params = fullDaftarData.rkp.bodyParams;
+        break;
+      case t('sandbox.daftar.tabs.daftarSafa.key'):
+        params = fullDaftarData.sayaDaftarData.bodyParams;
+        break;
+      default:
+        break;
+    }
+    onDownloadData(params);
   };
 
   return (
@@ -161,7 +194,9 @@ const Daftar = (props) => {
                   <Search />
                 </div>
               </InputGroup>
-              <Button className="btn-rounded ml-16 px-32 text-nowrap" onClick={showTambahFormModal}>
+              <Button
+                className="btn-rounded ml-16 px-32 text-nowrap"
+                onClick={isSayaData ? () => showDaftarFormModal() : handleDownloadData}>
                 {isSayaData ? t('common.addData') : t('common.download')}
               </Button>
             </div>
@@ -186,21 +221,22 @@ const Daftar = (props) => {
       </Row>
       <Modal
         size="lg"
-        visible={isTambahModalVisible}
-        onClose={hideTambahModal}
+        visible={isDaftarFormVisible}
+        onClose={hideDaftarFormModal}
         icon="splitCircle"
-        title="Tambah Data"
+        title={selectedRecord ? 'Edit Data' : 'Tambah Data'}
         subtitle="Isi form dibawah untuk menambah data"
         actions={[
-          { variant: 'secondary', text: 'Batal', onClick: hideTambahModal },
-          { text: 'Tambah', onClick: submitDaftarForm },
+          { variant: 'secondary', text: 'Batal', onClick: hideDaftarFormModal },
+          { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDaftarForm },
         ]}>
         <DaftarForm
+          data={selectedRecord}
           instansiOptions={instansiOptions}
           rkpPNOptions={rkpPNOptions}
           sdgPillerOptions={sdgPillerOptions}
           dataindukOptions={dataindukOptions}
-          onSubmit={handleAddFormSubmit}
+          onSubmit={onDaftarFormSubmit}
         />
       </Modal>
     </div>

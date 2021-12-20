@@ -75,11 +75,11 @@ const BimTekJadwalItem = ({ title, startDate, endDate, city, location, speaker, 
             <div className="mb-3">{location}</div>
             <div className="mb-3">
               <div className="bimtek-jadwal-title">Pembicara</div>
-              <div>{speaker}</div>
+              <div>{speaker.map((item) => item.nama)}</div>
             </div>
             <div>
               <div className="bimtek-jadwal-title">Materi</div>
-              <div>{materi}</div>
+              <div>{materi.map((item) => item.nama)}</div>
             </div>
             <div className="text-end mt-2">
               <Button>

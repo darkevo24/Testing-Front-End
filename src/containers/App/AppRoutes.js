@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import AppLayout, { PrivateRoute, PublicRoute } from 'layouts/AppLayout';
 import lazily from 'utils/lazily';
@@ -8,6 +8,7 @@ const { Login } = lazily(() => import('containers/Login'));
 const BerandaPage = lazy(() => import('containers/Beranda'));
 const TopicDetailPage = lazy(() => import('containers/Beranda/TopicDetails'));
 const DataSetPage = lazy(() => import('containers/Beranda/DataSet'));
+const ForumSDIPage = lazy(() => import('containers/Beranda/ForumSDI'));
 const { Perminataan } = lazily(() => import('containers/Perminataan'));
 const { PerminataanDetail } = lazily(() => import('containers/Perminataan/detail'));
 const PerminataanForumPage = lazy(() => import('containers/Perminataan/Forum'));
@@ -47,6 +48,7 @@ function AppRoutes(props) {
         <PrivateRoute exact path="/forum-sdi" component={ForumSDI} />
         <PrivateRoute exact path="/forum" component={PerminataanForumPage} />
         <Route exact path="/home" component={BerandaPage} />
+        <Route exact path="/forum-sdi" component={ForumSDIPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
         <PrivateRoute exact path="/dataset" component={DataSetPage} />
         <PrivateRoute exact path="/daftar" component={DaftarPage} />
@@ -64,6 +66,10 @@ function AppRoutes(props) {
         <Route exact path="/dashboard-eksekutif" component={DashboardEksekutif} />
         <Route exact path="/dashboard-saya" component={DashboardSaya} />
         <Route exact path="/data-analytic" component={DataAnalytic} />
+        <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
+        <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
+        <Route exact path="/api/form" component={ManagementApiAddPage} />
+        <Route exact path="/api" component={ManagementApiPage} />
         {/* <Route path="*" component={NotFoundPage} /> */}
       </AppLayout>
     </Switch>

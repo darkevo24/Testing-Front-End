@@ -109,25 +109,25 @@ const EditApi = () => {
             </div>
             <div className={bem.e('wrapper-input')}>
               <div className="form-group">
-                <label for="Judul">Judul</label>
+                <label htmlFor="Judul">Judul</label>
                 <div className="box-input">
                   <input type="text" placeholder="Lorem Ipsum" />
                 </div>
               </div>
               <div className="form-group">
-                <label for="Judul">Deskripsi</label>
+                <label htmlFor="Judul">Deskripsi</label>
                 <div className="box-input">
                   <input type="text" placeholder="Lorem Ipsum" />
                 </div>
               </div>
               <div className="form-group">
-                <label for="Judul">Source API</label>
+                <label htmlFor="Judul">Source API</label>
                 <div className="box-input">
                   <input type="text" placeholder="data.go.id/api/data" />
                 </div>
               </div>
               <div className="form-group">
-                <label for="Judul">Max Data Parameter</label>
+                <label htmlFor="Judul">Max Data Parameter</label>
                 <div className="box-input">
                   <input type="text" placeholder="Dinas Kesehatan DKI Jakarta" />
                 </div>
@@ -140,7 +140,7 @@ const EditApi = () => {
               <div className="wrapper-data">
                 <div className="wrapper-title pt-0 pb-20">
                   <h1>Source API</h1>
-                  <a href="#">(data-ckan-api.json)</a>
+                  <button>(data-ckan-api.json)</button>
                 </div>
                 <div className={bem.e('management-table pt-0')}>
                   <table>
@@ -169,13 +169,13 @@ const EditApi = () => {
                   <Row>
                     <Col md={6}>
                       <div className="form-group">
-                        <label for="Judul"> Nama </label>
+                        <label htmlFor="Judul"> Nama </label>
                         <input type="text" placeholder="" />
                       </div>
                     </Col>
                     <Col md={6}>
                       <div className="form-group">
-                        <label for="Judul"> Email </label>
+                        <label htmlFor="Judul"> Email </label>
                         <input type="text" placeholder="example@mail.com" />
                       </div>
                     </Col>
@@ -183,7 +183,7 @@ const EditApi = () => {
                   <Row>
                     <Col md={6}>
                       <div className="form-group">
-                        <label for="Judul"> File Download URL </label>
+                        <label htmlFor="Judul"> File Download URL </label>
                         <input type="text" placeholder="data.go.id/api/data" />
                       </div>
                     </Col>

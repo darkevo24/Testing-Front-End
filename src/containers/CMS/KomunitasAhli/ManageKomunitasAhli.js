@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
 import { useDispatch } from 'react-redux';
 import debounce from 'lodash/debounce';
@@ -19,12 +19,14 @@ import {
   CMS_KOMUNITAS_PENDIDIKAN,
   Kontak_list,
 } from 'utils/constants';
-import { apiUrls, get, post } from 'utils/request';
+import { apiUrls, get, post, put } from 'utils/request';
 import { getInstansiData, instansiDataSelector } from 'containers/App/reducer';
 import { useSelector } from 'react-redux';
 import { FileInput, Input } from 'components';
 import { usePrevious } from 'utils/hooks';
 import Spinner from 'react-bootstrap/Spinner';
+import { cmsKomunitasAhliDetailDatasetSelector, getCMSKomunitasAhliDataById } from './reducer';
+import { getValue } from './KomunitasAhliDetail';
 
 const schema = yup
   .object({
@@ -49,8 +51,9 @@ const KomunitasAhli = () => {
   const [cv, setCV] = useState(null);
   const [errorInfo, setErrorInfo] = useState({});
   const [apiError, setAPIError] = useState('');
-
+  const { id } = useParams();
   const instansiData = useSelector(instansiDataSelector);
+  const { record, error } = useSelector(cmsKomunitasAhliDetailDatasetSelector);
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -81,13 +84,47 @@ const KomunitasAhli = () => {
       level: null,
       foto: null,
       cv: null,
+      bidangKeahlian: null,
     },
   });
   const values = watch();
   const prevValues = usePrevious(values);
 
   useEffect(() => {
-    if (values?.level?.value !== prevValues?.level?.value) {
+    if (!id) return;
+    if (record.id !== +id) dispatch(getCMSKomunitasAhliDataById(id));
+    else {
+      setDefaultData();
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (record.id !== +id) return;
+    setDefaultData();
+  }, [record]);
+
+  const setDefaultData = () => {
+    const fields = [
+      { name: 'riwayat', value: record?.riwayat || '' },
+      { name: 'nama', value: record?.nama || '' },
+      { name: 'handphone', value: getValue(record, 'handphone') },
+      { name: 'email', value: getValue(record, 'email') },
+      { name: 'facebook', value: getValue(record, 'facebook') },
+      { name: 'twitter', value: getValue(record, 'twitter') },
+      { name: 'instagram', value: getValue(record, 'instagram') },
+      { name: 'youtube', value: getValue(record, 'youtube') },
+      { name: 'bidangKeahlian', value: { value: record?.bidangKeahlian, label: record?.bidangKeahlian } },
+      { name: 'daerah', value: { value: record?.daerah?.id, label: record?.daerah?.nama } },
+      { name: 'instansi', value: { value: record?.instansi?.id, label: record?.instansi?.nama } },
+      { name: 'penyelenggara', value: { value: record?.penyelenggara, label: record?.penyelenggara } },
+      { name: 'pendidikan', value: { value: record?.pendidikan, label: record?.pendidikan } },
+      { name: 'level', value: { value: record?.level, label: record?.level } },
+    ];
+    fields.forEach(({ name, value }) => setValue(name, value));
+  };
+
+  useEffect(() => {
+    if (prevValues?.level?.value && values?.level?.value !== prevValues?.level?.value) {
       setValue('penyelenggara', null);
     }
   }, [values]);
@@ -119,7 +156,8 @@ const KomunitasAhli = () => {
   };
 
   const goBack = () => {
-    history.push('/cms/komunitas-ahli');
+    if (id) history.push(`/cms/komunitas-ahli-detail/${+id}`);
+    else history.push('/cms/komunitas-ahli');
   };
 
   const isValidFile = (size, type, file, key, message) => {
@@ -161,6 +199,7 @@ const KomunitasAhli = () => {
       return response?.data || {};
     } catch (e) {
       setErrorInfo({ ...errorInfo, all: (errorInfo?.all || '') + ' Foto upload: ' + e.message });
+      setLoader(false);
     }
   };
 
@@ -172,13 +211,14 @@ const KomunitasAhli = () => {
       return response?.data || {};
     } catch (e) {
       setErrorInfo({ ...errorInfo, all: (errorInfo?.all || '') + ' CV upload: ' + e.message });
+      setLoader(false);
     }
   };
 
   const handleDataSubmit = (data) => {
     const clone = { ...errorInfo };
-    if (!foto) clone['foto'] = 'foto is required';
-    if (!cv) clone['cv'] = 'cv is required';
+    if ((!id && !foto) || (id && !record?.foto?.size && !foto)) clone['foto'] = 'foto is required';
+    if ((!id && !cv) || (id && !record?.foto?.size && !cv)) clone['cv'] = 'cv is required';
     if (!isEmpty(clone)) {
       setErrorInfo(clone);
       return;
@@ -186,16 +226,22 @@ const KomunitasAhli = () => {
     setShowModal(true);
     setFormData(data);
   };
+
   const onSubmit = async () => {
-    const fotoLink = await uplodFoto();
-    const cvLink = await uplodCV();
-    if (!isEmpty(errorInfo) || !fotoLink || !cvLink) {
+    setLoader(true);
+    let fotoLink, cvLink;
+    if (!id || (id && foto && cv)) {
+      fotoLink = await uplodFoto();
+      cvLink = await uplodCV();
+    }
+    if ((foto && !fotoLink) || (cv && !cvLink)) {
       setShowModal(false);
+      setLoader(false);
     } else {
-      debugger;
       try {
-        setLoader(true);
-        const response = await post(apiUrls.cmsKomunitasAhliData, {
+        const method = id ? put : post;
+        const url = id ? `${apiUrls.cmsKomunitasAhliData}/${+id}` : apiUrls.cmsKomunitasAhliData;
+        await method(url, {
           nama: formData.nama,
           bidangKeahlian: formData?.bidangKeahlian?.value || '',
           daerah: {
@@ -208,8 +254,8 @@ const KomunitasAhli = () => {
           penyelenggara: formData?.penyelenggara?.value || '',
           pendidikan: formData?.pendidikan?.value || '',
           riwayat: formData.riwayat,
-          foto: fotoLink || {},
-          cv: cvLink || {},
+          foto: fotoLink || record?.foto || {},
+          cv: cvLink || record?.cv || {},
           kontak: [
             { title: 'No Handphone', image: '', tipe: 'handphone', value: formData?.handphone || '' },
             { title: 'Email', image: '', tipe: 'email', value: formData?.email || '' },
@@ -252,7 +298,9 @@ const KomunitasAhli = () => {
         </div>
         <div className="bg-gray-lighter p-32">
           <Row className="mb-3 px-24">
-            {apiError || errorInfo?.all ? <label className="sdp-error mb-20">{apiError || errorInfo.all}</label> : null}
+            {apiError || errorInfo?.all || error ? (
+              <label className="sdp-error mb-20">{apiError || errorInfo.all || error}</label>
+            ) : null}
             <Input
               group
               groupClass="mb-16"
@@ -277,9 +325,7 @@ const KomunitasAhli = () => {
               control={control}
               label="Bidang Keahlian"
               labelClass="sdp-form-label  fw-normal"
-              data={bidangKeahlianData
-                .filter((item) => item.bidangKeahlian)
-                .map((item) => ({ value: item.bidangKeahlian, label: item.bidangKeahlian }))}
+              data={bidangKeahlianData.map((item) => ({ value: item.id, label: item.nama }))}
               placeholder=""
               rules={{ required: true }}
               error={errors?.bidangKeahlian?.message ? 'Bidang Keahlian is required' : ''}

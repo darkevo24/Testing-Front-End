@@ -24,6 +24,15 @@ const Column = styled.div`
   flex-direction: column;
   text-align: left;
   margin-right: 80px;
+  @media only screen and (max-width: 992px) {
+    margin-right: 40px;
+  }
+`;
+
+const ColumnWithMargin = styled(Column)`
+  @media only screen and (max-width: 992px) {
+    margin-top: 16px;
+  }
 `;
 
 const Row = styled.div`
@@ -43,31 +52,36 @@ const FooterLink = styled.a`
 `;
 
 export const Top = ({ history, token }) => {
+  const indexes = [
+    {
+      title: 'Beranda',
+      link: '/home',
+    },
+    {
+      title: 'Dataset',
+      link: !!token ? '/dataset' : '/topic-detail',
+    },
+  ];
+  if (token) {
+    indexes.push({
+      title: 'Dashboard',
+      link: '/kesiapan-sdi',
+    });
+  }
+  indexes.push(
+    {
+      title: 'Berita',
+      link: '/berita',
+    },
+    {
+      title: 'Tentang',
+      link: '/tentang',
+    },
+  );
   const List = [
     {
       title: 'Indeks',
-      linkList: [
-        {
-          title: 'Beranda',
-          link: '/home',
-        },
-        {
-          title: 'Dataset',
-          link: !!token ? '/dataset' : '/topic-detail',
-        },
-        {
-          title: 'Dashboard',
-          link: '/kesiapan-sdi',
-        },
-        {
-          title: 'Berita',
-          link: '/berita',
-        },
-        {
-          title: 'Tentang',
-          link: '/tentang',
-        },
-      ],
+      linkList: indexes,
     },
     {
       title: 'Links',
@@ -101,7 +115,7 @@ export const Top = ({ history, token }) => {
       <Container>
         <RBRow>
           <RBCol sm={{ span: 10, offset: 1 }}>
-            <div className="d-flex justify-content-between">
+            <div className="d-flex justify-content-between flex-wrap px-16">
               <Row>
                 <Column>
                   <img src={LogoBappenas} alt="logo" height="96px" width="96px" />
@@ -122,7 +136,7 @@ export const Top = ({ history, token }) => {
                 </Column>
               </Row>
 
-              <Column>
+              <ColumnWithMargin>
                 <Row>
                   {List.map((item, index) => (
                     <Column key={index + item.title} className={!index ? 'mr-200' : ''}>
@@ -140,7 +154,7 @@ export const Top = ({ history, token }) => {
                     </Column>
                   ))}
                 </Row>
-              </Column>
+              </ColumnWithMargin>
             </div>
           </RBCol>
         </RBRow>

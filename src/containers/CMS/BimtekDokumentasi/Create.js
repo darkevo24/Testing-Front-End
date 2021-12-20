@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
 import { CMSBimtekForm } from 'components';
+import { BimtekListSelector, getDokumentasiList } from './reducer';
 
 import bn from 'utils/bemNames';
 import cx from 'classnames';
@@ -10,6 +12,19 @@ const bem = bn('content-create');
 
 const CMSJadwalBaru = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  const { records } = useSelector(BimtekListSelector);
+
+  console.log(records);
+
+  const fetchDokumentasiList = () => {
+    return dispatch(getDokumentasiList());
+  };
+
+  useEffect(() => {
+    fetchDokumentasiList();
+  }, []);
 
   return (
     <div className={bem.e('section')}>
@@ -26,7 +41,7 @@ const CMSJadwalBaru = () => {
         <div>Saved 1 minutes ago Draft</div>
       </div>
       <div className={bem.e('body')}>
-        <CMSBimtekForm disabled={true} isDocumentation={true} />
+        <CMSBimtekForm disabled={true} isDocumentation={true} namaBimtek={records} />
       </div>
     </div>
   );

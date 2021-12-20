@@ -16,8 +16,6 @@ const bem = bn('content-detail');
 
 const CMSJadwalDetail = (props) => {
   const { id } = useParams();
-  // const id = props.match.params.id;
-  // const history = useHistory();
   const dispatch = useDispatch();
   const { records } = useSelector(BimtekJadwalDetailSelector);
   console.log(records);

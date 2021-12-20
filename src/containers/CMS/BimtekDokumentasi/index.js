@@ -90,7 +90,7 @@ const CMSBimtekPermintaan = () => {
   ];
 
   const rowClick = (data) => {
-    // history.push(`/cms/permintaan-data/${data.id}`);
+    history.push(`/cms/bimtek-dokumentasi/${data.dokumentasiId}`);
   };
 
   const getRowClass = (data) => {

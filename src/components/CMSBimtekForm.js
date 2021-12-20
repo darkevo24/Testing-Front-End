@@ -44,7 +44,8 @@ const BimtekTable = ({ modal, headers, label }) => (
   </div>
 );
 
-const CMSBimtekForm = ({ data, disabled = false, modalAction = false, isDocumentation = false, onSubmit }) => {
+const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = false, isDocumentation = false, onSubmit }) => {
+  console.log(namaBimtek);
   const schema = yup
     .object({
       name: yup.string().required(),
@@ -81,10 +82,21 @@ const CMSBimtekForm = ({ data, disabled = false, modalAction = false, isDocument
     const elmButton = document.getElementById(id);
     elmButton.click();
   };
-  console.log(data);
   return (
     <div className="sdp-form">
-      <Input group label="Nama Bimtek" name="namaBimtek" value={data.namaBimtek} control={control} />
+      {/* <Input group label="Nama Bimtek" name="namaBimtek" control={control} /> */}
+      <Form.Group className="mb-15">
+        <Form.Label>Nama Bimtek</Form.Label>
+        <Form.Select>
+          {namaBimtek.map((data, index) => {
+            return (
+              <option value={data.id} key={index}>
+                {data.namaBimtek}
+              </option>
+            );
+          })}
+        </Form.Select>
+      </Form.Group>
       <Row className="align-items-end">
         <Col>
           <DatePicker

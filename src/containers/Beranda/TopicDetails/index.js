@@ -27,19 +27,6 @@ import { getDatasetUrl, parseQueryString } from 'utils/helper';
 import { useOnClickOutside } from 'utils/hooks';
 import { datasetSelector, getDataSet } from '../reducer';
 
-const getTextClass = (type) => {
-  switch (type.toLowerCase()) {
-    case 'csv':
-      return 'sdp-text-green';
-    case 'json':
-      return 'sdp-text-grey-dark';
-    case 'wms':
-      return 'sdp-text-blue-light';
-    default:
-      return 'sdp-text-disable';
-  }
-};
-
 const TopicDetail = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState('');

@@ -3,8 +3,9 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import { DatePicker, Input, TextEditor } from 'components';
-
+import { submitForm } from 'utils/helper';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -14,6 +15,9 @@ import bn from 'utils/bemNames';
 import cx from 'classnames';
 
 const bem = bn('bimtek-form');
+
+export const jadwalBimtekFormId = 'cms-bimtek-create';
+export const SubmitJadwalBimtekForm = submitForm(jadwalBimtekFormId);
 
 const BimtekTable = ({ modal, headers, label }) => (
   <div className={bem.e('section')}>
@@ -44,14 +48,12 @@ const BimtekTable = ({ modal, headers, label }) => (
   </div>
 );
 
-const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = false, isDocumentation = false, onSubmit }) => {
-  console.log(namaBimtek);
+const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true, isDocumentation = false, onSubmit }) => {
   const schema = yup
     .object({
       name: yup.string().required(),
     })
     .required();
-
   const {
     control,
     formState: { errors },
@@ -84,79 +86,91 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = false
   };
   return (
     <div className="sdp-form">
-      {/* <Input group label="Nama Bimtek" name="namaBimtek" control={control} /> */}
-      <Form.Group className="mb-15">
-        <Form.Label>Nama Bimtek</Form.Label>
-        <Form.Select>
-          {namaBimtek.map((data, index) => {
-            return (
-              <option value={data.id} key={index}>
-                {data.namaBimtek}
-              </option>
-            );
-          })}
-        </Form.Select>
-      </Form.Group>
-      <Row className="align-items-end">
-        <Col>
-          <DatePicker
-            disabled={disabled}
-            group
-            label="Tanggal Mulai Pelaksanaan Disetujui"
-            name="publishedDate"
-            control={control}
-          />
-        </Col>
-        <Col>
-          <Input disabled={disabled} group className="m-0" type="time" label="" name="publishedTime" control={control} />
-        </Col>
-      </Row>
-      <Row className="align-items-end">
-        <Col>
-          <DatePicker
-            disabled={disabled}
-            group
-            label="Tanggal Selesai Pelaksanaan Disetujui"
-            name="publishedDate"
-            control={control}
-          />
-        </Col>
-        <Col>
-          <Input disabled={disabled} group className="m-0" type="time" label="" name="publishedTime" control={control} />
-        </Col>
-      </Row>
-      <Input disabled={disabled} group label="Tempat" name="place" control={control} />
-      <BimtekTable modal={modalAction} label="Pembicara" headers={['Nama Pembicara', 'Tanggal', 'Sesi', '']} />
-      <BimtekTable modal={modalAction} label="Materi" headers={['Materi', 'Lampiran', '']} />
-      {isDocumentation ? (
-        <>
-          <div className={bem.e('section')}>
-            <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
-              <div className={bem.e('header-title')}>Foto dan Video Kegiatan</div>
-              <div className={bem.e('header-add')} onClick={() => openUploadForm('sdp-upload-fle')}>
-                <Plus /> Upload Foto
-              </div>
-            </div>
-            <Row>
-              {listFoto.map((foto, index) => (
-                <Col key={index} sm={4} className="mb-12">
-                  <div className={bem.e('doc-foto')} style={{ backgroundImage: "url('" + foto.preview + "')" }}>
-                    <button className="sdp-text-white" onClick={() => removeFoto(index)}>
-                      Hapus Foto
-                    </button>
-                  </div>
-                </Col>
-              ))}
-            </Row>
-            <input id="sdp-upload-fle" type="file" style={{ display: 'none' }} onChange={addFoto} />
-          </div>
-          <Input group label="Link Video" name="url_video" control={control} />
-          <Form.Group>
-            <Form.Label>Isi Berita</Form.Label>
-            <TextEditor />
+      <Form id={jadwalBimtekFormId} onSubmit={handleSubmit(onSubmit)}>
+        {isDocumentation ? (
+          <Form.Group className="mb-15">
+            <Form.Label>Nama Bimtek</Form.Label>
+            <Form.Select>
+              {namaBimtek.map((data, index) => {
+                return (
+                  <option value={data.id} key={index}>
+                    {data.namaBimtek}
+                  </option>
+                );
+              })}
+            </Form.Select>
           </Form.Group>
-        </>
-      ) : null}
+        ) : (
+          <Input
+            group
+            label="Nama Bimtek"
+            name="name"
+            control={control}
+            onChange={(e) => setValue('test', e.target.value)}
+          />
+        )}
+        <Row className="align-items-end">
+          <Col>
+            <DatePicker
+              disabled={disabled}
+              group
+              label="Tanggal Mulai Pelaksanaan Disetujui"
+              name="publishedDate"
+              control={control}
+            />
+          </Col>
+          <Col>
+            <Input disabled={disabled} group className="m-0" type="time" label="" name="publishedTime" control={control} />
+          </Col>
+        </Row>
+        <Row className="align-items-end">
+          <Col>
+            <DatePicker
+              disabled={disabled}
+              group
+              label="Tanggal Selesai Pelaksanaan Disetujui"
+              name="approvedDate"
+              control={control}
+            />
+          </Col>
+          <Col>
+            <Input disabled={disabled} group className="m-0" type="time" label="" name="approvedTime" control={control} />
+          </Col>
+        </Row>
+        <Input disabled={disabled} group label="Tempat" name="place" control={control} />
+        <BimtekTable modal={modalAction} label="Pembicara" headers={['Nama Pembicara', 'Tanggal', 'Sesi', '']} />
+        <BimtekTable modal={modalAction} label="Materi" headers={['Materi', 'Lampiran', '']} />
+        {isDocumentation ? (
+          <>
+            <div className={bem.e('section')}>
+              <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
+                <div className={bem.e('header-title')}>Foto dan Video Kegiatan</div>
+                <div className={bem.e('header-add')} onClick={() => openUploadForm('sdp-upload-fle')}>
+                  <Plus /> Upload Foto
+                </div>
+              </div>
+              <Row>
+                {listFoto.map((foto, index) => (
+                  <Col key={index} sm={4} className="mb-12">
+                    <div className={bem.e('doc-foto')} style={{ backgroundImage: "url('" + foto.preview + "')" }}>
+                      <button className="sdp-text-white" onClick={() => removeFoto(index)}>
+                        Hapus Foto
+                      </button>
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+              <input id="sdp-upload-fle" type="file" style={{ display: 'none' }} onChange={addFoto} />
+            </div>
+            <Input group label="Link Video" name="url_video" control={control} />
+            <Form.Group>
+              <Form.Label>Isi Berita</Form.Label>
+              <TextEditor />
+            </Form.Group>
+          </>
+        ) : null}
+        <Button className="invisible" type="submit" />
+      </Form>
     </div>
   );
 };

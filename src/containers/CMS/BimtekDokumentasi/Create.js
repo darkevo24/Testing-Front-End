@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
-import { CMSBimtekForm } from 'components';
+import CMSBimtekForm, { SubmitJadwalBimtekForm } from 'components/CMSBimtekForm';
 import { BimtekListSelector, getDokumentasiList } from './reducer';
 
 import bn from 'utils/bemNames';
@@ -26,6 +26,10 @@ const CMSJadwalBaru = () => {
     fetchDokumentasiList();
   }, []);
 
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
   return (
     <div className={bem.e('section')}>
       <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
@@ -34,7 +38,7 @@ const CMSJadwalBaru = () => {
           <Button onClick={() => history.goBack()} className="ml-24" variant="secondary" style={{ width: '112px' }}>
             Batal
           </Button>
-          <Button className="ml-10" variant="info" style={{ width: '112px' }}>
+          <Button onClick={SubmitJadwalBimtekForm} className="ml-10" variant="info" style={{ width: '112px' }}>
             Simpan
           </Button>
         </div>

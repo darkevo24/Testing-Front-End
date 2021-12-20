@@ -2,7 +2,7 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
 
-import { CMSBimtekForm } from 'components';
+import CMSBimtekForm, { SubmitJadwalBimtekForm } from 'components/CMSBimtekForm';
 
 import bn from 'utils/bemNames';
 import cx from 'classnames';
@@ -11,6 +11,10 @@ const bem = bn('content-create');
 
 const CMSJadwalBaru = () => {
   const history = useHistory();
+
+  const onSubmit = (data) => {
+    console.log(data.publishedDate);
+  };
 
   return (
     <div className={bem.e('section')}>
@@ -23,14 +27,14 @@ const CMSJadwalBaru = () => {
           <Button className="ml-10" variant="secondary" style={{ width: '112px' }}>
             Simpan
           </Button>
-          <Button className="ml-10" variant="info" style={{ width: '112px' }}>
+          <Button onClick={SubmitJadwalBimtekForm} className="ml-10" variant="info" style={{ width: '112px' }}>
             Kirim
           </Button>
         </div>
         <div>Saved 1 minutes ago Draft</div>
       </div>
       <div className={bem.e('body')}>
-        <CMSBimtekForm modalAction={true} />
+        <CMSBimtekForm modalAction={true} onSubmit={onSubmit} />
       </div>
     </div>
   );

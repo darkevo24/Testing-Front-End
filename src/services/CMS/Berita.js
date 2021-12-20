@@ -139,14 +139,14 @@ export const getBertaLayout = () => {
       return res.content;
     })
     .then((content) => {
-      const contentData = JSON.parse(content.content);
+      const { hasNext, page, records, size, totalPages, totalRecords } = content;
       return {
-        code: content.code,
-        content: {
-          kiri: contentData?.kiri,
-          kanan: contentData?.kanan,
-          inactive: contentData.inactive,
-        },
+        hasNext: hasNext,
+        page: page,
+        records: records,
+        size: size,
+        totalPages: totalPages,
+        totalRecords: totalRecords,
       };
     })
     .catch((err) => {

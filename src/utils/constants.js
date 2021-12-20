@@ -20,7 +20,7 @@ import { SplitCircle } from 'components/Icons';
 
 export const analyticsUrl = 'https://analitik.data.go.id';
 export const katalogUrl = 'https://katalog.satudata.go.id';
-export const apiUrl = '/api-be';
+export const apiUrl = 'http://34.101.103.9/api-be';
 export const dataUrl = `${katalogUrl}/api`;
 
 export const getAnalyticsUrl = (path) => `${analyticsUrl}/${path}`;

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Box from './Box';
 import { useRef } from 'react';
 import './beritalayout.scss';
@@ -6,50 +6,58 @@ import Berita from 'containers/Berita';
 import cx from 'classnames';
 import bn from 'utils/bemNames';
 import { useSelector, useDispatch } from 'react-redux';
-import { beritaLayoutSelector, getBertaLayout } from './reducer';
+import { beritaLayoutSelector, getBertaLayout, updateBeritaLaout } from './reducer';
 
 const bem = bn('berita-layout');
 var shortid = require('shortid');
 
 const BeritaLayout = () => {
-  const kiri = useRef(null);
-  const kanan = useRef(null);
-  const inactive = useRef(null);
-  const { state, error, code, content } = useSelector(beritaLayoutSelector);
+  const [kiri, setKiri] = useState(null);
+  const [kanan, setKanan] = useState(null);
+  const [inactive, setInactive] = useState(null);
+
+  const beritaLayoutState = useSelector(beritaLayoutSelector);
   const dispatch = useDispatch();
 
   const fetchBeritaLayoutData = useCallback(() => {
     dispatch(getBertaLayout());
-  }, []);
+  }, [beritaLayoutState]);
 
   useEffect(() => {
     fetchBeritaLayoutData();
+    const { status, error, content } = beritaLayoutState;
+    const { records } = content;
+    if (status === 'idle' && !error && records.length > 0) {
+      const kiriRecord = records.filter((record) => record.code === 'kiri');
+      if (kiriRecord) {
+        const obj = JSON.parse(kiriRecord[0].content);
+        const itemKiri = obj.kiri.map((el) => ({
+          label: el.label,
+          props: el.props,
+          uid: shortid.generate(),
+          component: el.component,
+        }));
+
+        const itemKanan = obj.kanan.map((el) => ({
+          label: el.label,
+          props: el.props,
+          uid: shortid.generate(),
+          component: el.component,
+        }));
+
+        const inactiveItems = obj.inactive.map((el) => ({
+          label: el.label,
+          props: el.props,
+          uid: shortid.generate(),
+          component: el.component,
+        }));
+
+        setKiri(itemKiri);
+        setKanan(itemKanan);
+        setInactive(inactiveItems);
+      }
+    }
   }, [fetchBeritaLayoutData]);
-
-  let obj = window.localStorage.getItem('tempberitalayout')
-    ? JSON.parse(window.localStorage.getItem('tempberitalayout'))
-    : JSON.parse(window.localStorage.getItem('beritalayout'));
-
-  const itemKiri = obj.kiri.map((el) => ({
-    label: el.label,
-    props: el.props,
-    uid: shortid.generate(),
-    component: el.component,
-  }));
-
-  const itemKanan = obj.kanan.map((el) => ({
-    label: el.label,
-    props: el.props,
-    uid: shortid.generate(),
-    component: el.component,
-  }));
-
-  const inactiveItems = obj.inactive.map((el) => ({
-    label: el.label,
-    props: el.props,
-    uid: shortid.generate(),
-    component: el.component,
-  }));
 
   const onSave = () => {
     let obj = {
@@ -58,6 +66,7 @@ const BeritaLayout = () => {
       inactive: inactive.current.state.items,
     };
 
+    updateBeritaLaout(JSON.stringify(obj));
     window.localStorage.removeItem('tempberitalayout');
     window.localStorage.setItem('beritalayout', JSON.stringify(obj));
     alert('Layout berhasil disimpan');
@@ -69,6 +78,8 @@ const BeritaLayout = () => {
       kanan: kanan.current.state.items,
       inactive: inactive.current.state.items,
     };
+
+    updateBeritaLaout(JSON.stringify(obj));
 
     window.localStorage.setItem('tempberitalayout', JSON.stringify(obj));
     window.location.reload();
@@ -99,9 +110,9 @@ const BeritaLayout = () => {
         <div className={bem.e('content')}>
           <div className="drag_things_to_boxes">
             <div className="boxes">
-              <Box targetKey="box" items={itemKiri} title="Konten Utama" ref={kiri} />
-              <Box targetKey="box" items={itemKanan} title="Sidebar" ref={kanan} />
-              <Box targetKey="box" items={inactiveItems} title="Sembunyikan" ref={inactive} />
+              <Box targetKey="box" items={kiri} title="Konten Utama" />
+              <Box targetKey="box" items={kanan} title="Sidebar" />
+              <Box targetKey="box" items={inactive} title="Sembunyikan" />
             </div>
           </div>
         </div>

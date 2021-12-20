@@ -133,20 +133,22 @@ export const PerminataanDetail = () => {
               </div>
             </div>
 
-            <div className="border-gray-stroke mt-24 br-4">
-              <div className="p-16 border-bottom-gray-stroke">
-                <span className="sdp-text-grey-dark">Url Dataset</span>
-              </div>
-              <div className="p-24 cursor-pointer">
-                <div className="d-flex align-items-center mb-10">
-                  <span className="d-flex fs-14 lh-17 sdp-text-black-dark w-100 align-items-center">
-                    {moment(logSelesai.createdAt).format('DD MMMM YYYY')}
-                    <div className="border-gray-stroke h-0 w-25 ml-12" />
-                  </span>
+            {status === 'selesai' && (
+              <div className="border-gray-stroke mt-24 br-4">
+                <div className="p-16 border-bottom-gray-stroke">
+                  <span className="sdp-text-grey-dark">Url Dataset</span>
                 </div>
-                <ReadOnlyInputs value={record.urlDataset} rightIcon="copy" rightIconClass="bg-gray" />
+                <div className="p-24 cursor-pointer">
+                  <div className="d-flex align-items-center mb-10">
+                    <span className="d-flex fs-14 lh-17 sdp-text-black-dark w-100 align-items-center">
+                      {moment(logSelesai?.createdAt).format('DD MMMM YYYY')}
+                      <div className="border-gray-stroke h-0 w-25 ml-12" />
+                    </span>
+                  </div>
+                  <ReadOnlyInputs value={record.urlDataset} rightIcon="copy" rightIconClass="bg-gray" />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </Col>
         <Col xs={6} md={3}>

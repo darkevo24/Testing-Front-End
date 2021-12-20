@@ -5,6 +5,7 @@ import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { DatePicker, Input, TextEditor, Modal } from 'components';
+import { Galery, Close } from 'components/Icons';
 import { submitForm } from 'utils/helper';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -66,17 +67,19 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
   });
 
   const [listFoto, setListFoto] = useState([]);
-  const [modalPeserta, setModalPeserta] = useState(false);
+  const [listMateri, setListMateri] = useState([]);
+  const [modalMateri, setModalMateri] = useState(false);
+  const [modalPembicara, setModalPembicara] = useState(false);
 
   const addFoto = (e) => {
     let fileData = {
       file: e.target.files[0],
       preview: URL.createObjectURL(e.target.files[0]),
     };
-    console.log(e.target.files[0]);
     setListFoto([...listFoto, fileData]);
     e.target.value = '';
   };
+  console.log(listFoto);
   const removeFoto = (index) => {
     let selected = listFoto[index];
     setListFoto(listFoto.filter((item) => item !== selected));
@@ -86,9 +89,13 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
     elmButton.click();
   };
 
-  function modalPesertaAction() {
-    setModalPeserta(true);
-  }
+  const modalMateriAction = () => {
+    setModalMateri(true);
+  };
+
+  const modalPembicaraAction = () => {
+    setModalPembicara(true);
+  };
   return (
     <div className="sdp-form">
       <Form id={jadwalBimtekFormId} onSubmit={handleSubmit(onSubmit)}>
@@ -145,11 +152,11 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
         <Input disabled={disabled} group label="Tempat" name="place" control={control} />
         <BimtekTable
           modal={modalAction}
-          action={modalPesertaAction}
+          action={modalPembicaraAction}
           label="Pembicara"
           headers={['Nama Pembicara', 'Tanggal', 'Sesi', '']}
         />
-        <BimtekTable modal={modalAction} label="Materi" headers={['Materi', 'Lampiran', '']} />
+        <BimtekTable modal={modalAction} action={modalMateriAction} label="Materi" headers={['Materi', 'Lampiran', '']} />
         {isDocumentation ? (
           <>
             <div className={bem.e('section')}>
@@ -184,26 +191,80 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
       <Modal
         className="cms-bimtek-materi"
         title="Tambah Materi Baru"
-        visible={modalPeserta}
-        onClose={() => setModalPeserta(false)}>
+        visible={modalMateri}
+        onClose={() => setModalMateri(false)}>
         <div>
-          <Input group label="Materi" name="place" control={control} />
-          <Form.Group className="mb-15">
+          <Input group label="Materi" name="materi" control={control} />
+          <Form.Group>
             <Form.Label>Lampiran</Form.Label>
-            <Form.Control type="email" className="custom-file" />
+            <Form.Control id="sdp-upload-materi" multiple type="file" style={{ display: 'none' }} onChange={addFoto} />
           </Form.Group>
+          <div className="wrapper-lampiran">
+            <div className="wrapper-lampiran-header" onClick={() => openUploadForm('sdp-upload-materi')}>
+              <span className="upload"> Upload </span>
+              <span className="cta"> Upload Image (format .png, .jpeg, .jpg max. 512KB) </span>
+            </div>
+            <div className="wrapper-lampiran-file">
+              {listFoto.map((list, index) => {
+                return (
+                  <span className="file mr-10 mb-10" key={index} onClick={() => removeFoto(index)}>
+                    <Galery /> <span> {list.file?.name} </span> <Close />
+                  </span>
+                );
+              })}
+            </div>
+          </div>
           <div className="d-flex justify-content-end">
             <Button
-              onClick={() => setModalPeserta(false)}
+              onClick={() => setModalMateri(false)}
               className="ml-24 bg-white sdp-text-grey-dark border-gray-stroke"
               variant="secondary"
               style={{ width: '112px' }}>
               Batal
             </Button>
             <Button className="mx-10" variant="info" style={{ width: '112px' }}>
-              Konfirmasi
+              Simpan
             </Button>
           </div>
+        </div>
+      </Modal>
+      <Modal
+        className="cms-bimtek-materi"
+        title="Tambah Pembicari Baru"
+        visible={modalPembicara}
+        onClose={() => setModalPembicara(false)}>
+        <div className="mb-10">
+          <Row>
+            <Input group label="Nama Pembicara" name="place" control={control} />
+          </Row>
+          <Row className="align-items-end">
+            <Col>
+              <DatePicker disabled={disabled} group label="Tanggal Mulai Sesi" name="publishedDate" control={control} />
+            </Col>
+            <Col>
+              <Input disabled={disabled} group className="m-0" type="time" label="" name="publishedTime" control={control} />
+            </Col>
+          </Row>
+          <Row className="align-items-end">
+            <Col>
+              <DatePicker disabled={disabled} group label="Tanggal Selesai Sesi" name="publishedDate" control={control} />
+            </Col>
+            <Col>
+              <Input disabled={disabled} group className="m-0" type="time" label="" name="publishedTime" control={control} />
+            </Col>
+          </Row>
+        </div>
+        <div className="d-flex justify-content-end">
+          <Button
+            onClick={() => setModalPembicara(false)}
+            className="ml-24 bg-white sdp-text-grey-dark border-gray-stroke"
+            variant="secondary"
+            style={{ width: '112px' }}>
+            Batal
+          </Button>
+          <Button className="mx-10" variant="info" style={{ width: '112px' }}>
+            Simpan
+          </Button>
         </div>
       </Modal>
     </div>

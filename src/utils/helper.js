@@ -321,6 +321,27 @@ export const incrementPageParams = (params) => {
   };
 };
 
+export const mapFormatToColor = (type) => {
+  switch (type.toLowerCase()) {
+    case 'csv':
+      return 'sdp-text-purple-light';
+    case 'json':
+      return 'sdp-text-blue-extra-dark';
+    case 'wms':
+      return 'sdp-text-green-pistal';
+    case 'xml':
+      return 'sdp-text-red-extra-dark';
+    case 'xls':
+    case 'xlsx':
+      return 'sdp-text-green-dark';
+    case 'geo':
+    case 'geojson':
+      return 'sdp-text-green-gold';
+    default:
+      return 'sdp-text-disable';
+  }
+};
+
 export const fileTypes = {
   excel: {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;',

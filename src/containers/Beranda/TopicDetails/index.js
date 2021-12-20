@@ -214,14 +214,9 @@ const TopicDetail = () => {
                   <div className="fs-13 lh-16 text-nowrap sdp-text-grey-dark">{item.num_resources || 0} Files</div>
                   <div className="d-flex">
                     {formatesToShow?.map((tag) => (
-                      <Tags
-                        key={`${item.id}-${tag.id}`}
-                        className="px-12 text-nowrap"
-                        text={tag.format}
-                        colorClass={getTextClass(tag.format)}
-                      />
+                      <Tags key={`${item.id}-${tag.id}`} className="px-12 text-nowrap" text={tag.format} fillColor />
                     ))}
-                    {!!hiddenFormats && <Tags className="px-12 text-nowrap" text={`${hiddenFormats} others`} />}
+                    {!!hiddenFormats && <Tags fillColor className="px-12 text-nowrap" text={`${hiddenFormats} others`} />}
                   </div>
                 </div>
                 <div className="sdp-right-wrapper-bottom d-flex align-items-center">

@@ -4,12 +4,12 @@ import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { DatePicker, Input, TextEditor, Modal } from 'components';
+import { DatePicker, Input, TextEditor } from 'components';
 import { submitForm } from 'utils/helper';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
+import Modal from 'components/Modal';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
@@ -89,7 +89,7 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
 
   function modalPesertaAction() {
     setModalPeserta(true);
-    console.log(modalPeserta);
+    alert('Ok');
   }
   return (
     <div className="sdp-form">

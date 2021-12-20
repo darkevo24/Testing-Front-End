@@ -283,6 +283,11 @@ Table.Link = ({ cell }) => (
 Table.Actions = ({ cell, ...rest }) => {
   const { column: { actions = [] } = {}, row } = cell;
   const id = row.id || row.index;
+  const handleIconClick = (cb) => (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    cb(row.original);
+  };
   return (
     <div className="d-flex action-icon-wrapper">
       {actions.map(({ icon, type, variant, title, callback, classes }) => {
@@ -291,11 +296,11 @@ Table.Actions = ({ cell, ...rest }) => {
         const Icon = icon || icons[type];
         if (!Icon && !title) return null;
         return Icon ? (
-          <div key={`${id}-${type}`} className={cx('icon-box', iconBoxVarient)} onClick={() => callback(row.original)}>
+          <div key={`${id}-${type}`} className={cx('icon-box', iconBoxVarient)} onClick={handleIconClick(callback)}>
             <Icon variant={variant || (isDelete && 'danger')} />
           </div>
         ) : (
-          <button key={`${id}-${type}`} className={classes} onClick={() => callback(row.original)}>
+          <button key={`${id}-${type}`} className={classes} onClick={handleIconClick(callback)}>
             {title}
           </button>
         );

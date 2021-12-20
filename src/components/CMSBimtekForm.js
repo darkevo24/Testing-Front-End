@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { DatePicker, Input, TextEditor } from 'components';
+import { DatePicker, Input, TextEditor, Modal } from 'components';
 import { submitForm } from 'utils/helper';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -19,12 +19,12 @@ const bem = bn('bimtek-form');
 export const jadwalBimtekFormId = 'cms-bimtek-create';
 export const SubmitJadwalBimtekForm = submitForm(jadwalBimtekFormId);
 
-const BimtekTable = ({ modal, headers, label }) => (
+const BimtekTable = ({ modal, headers, label, action }) => (
   <div className={bem.e('section')}>
     <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
       <div className={bem.e('header-title')}>{label}</div>
       {modal ? (
-        <div className={bem.e('header-add')}>
+        <div className={bem.e('header-add')} onClick={action}>
           <Plus /> Tambah {label}
         </div>
       ) : null}
@@ -67,12 +67,14 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
   });
 
   const [listFoto, setListFoto] = useState([]);
+  const [modalPeserta, setModalPeserta] = useState(false);
+
   const addFoto = (e) => {
     let fileData = {
       file: e.target.files[0],
       preview: URL.createObjectURL(e.target.files[0]),
     };
-
+    console.log(e.target.files[0]);
     setListFoto([...listFoto, fileData]);
     e.target.value = '';
   };
@@ -84,6 +86,11 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
     const elmButton = document.getElementById(id);
     elmButton.click();
   };
+
+  function modalPesertaAction() {
+    setModalPeserta(true);
+    console.log(modalPeserta);
+  }
   return (
     <div className="sdp-form">
       <Form id={jadwalBimtekFormId} onSubmit={handleSubmit(onSubmit)}>
@@ -138,7 +145,12 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
           </Col>
         </Row>
         <Input disabled={disabled} group label="Tempat" name="place" control={control} />
-        <BimtekTable modal={modalAction} label="Pembicara" headers={['Nama Pembicara', 'Tanggal', 'Sesi', '']} />
+        <BimtekTable
+          modal={modalAction}
+          action={modalPesertaAction}
+          label="Pembicara"
+          headers={['Nama Pembicara', 'Tanggal', 'Sesi', '']}
+        />
         <BimtekTable modal={modalAction} label="Materi" headers={['Materi', 'Lampiran', '']} />
         {isDocumentation ? (
           <>
@@ -171,6 +183,9 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
         ) : null}
         <Button className="invisible" type="submit" />
       </Form>
+      <Modal onClose={false}>
+        <p>Test</p>
+      </Modal>
     </div>
   );
 };

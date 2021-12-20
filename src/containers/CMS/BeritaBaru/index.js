@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 
 import CMSForm, { submitBeritaForm } from 'components/CMSForm';
 import Notification from 'components/Notification';
-import { formatDate } from 'utils/helper';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 import { setNewBerita } from './reducer';
@@ -22,8 +21,6 @@ const CMSBeritaBaru = () => {
     data.publishDate = data.publishDate ? data.publishDate + ' ' + data.publishTime : '';
     data.kategori = data.kategori.value;
     data.status = 0;
-
-    // console.log(data);
     dispatch(setNewBerita({ payload: data })).then((res) => {
       res?.payload
         ? Notification.show({

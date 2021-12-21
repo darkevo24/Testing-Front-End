@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
-
+import { Loader } from 'components';
 import Search from './Search';
 import BeritaUtama from './BeritaUtama';
 import BeritaUtamaLain from './BeritaUtamaLain';
@@ -10,6 +11,7 @@ import TopikPopuler from './TopikPopuler';
 import BeritaLainnya from './BeritaLainnya';
 import Populer from './Populer';
 import Tweets from './Tweets';
+import { beritaLayoutSelector, getBertaLayout } from 'containers/CMS/BeritaLayout/reducer';
 
 export const BeritaDiv = styled.div`
   background-color: ${(props) => (props.color ? props.color : 'white')};
@@ -38,11 +40,6 @@ export const SectionTitle = styled.div`
   }
 `;
 
-const layout =
-  window.location.pathname !== '/berita' && window.localStorage.getItem('tempberitalayout')
-    ? JSON.parse(window.localStorage.getItem('tempberitalayout'))
-    : JSON.parse(window.localStorage.getItem('beritalayout'));
-
 const renderComp = (el) => {
   return React.createElement(components[el.component], { ...el.props, key: el.component });
 };
@@ -59,15 +56,45 @@ const components = {
   tweets: Tweets,
 };
 
-const Berita = () => (
-  <div className="row mt-4">
-    <div className="col-lg-2"></div>
-    <div className="col-lg-6" style={{ paddingRight: '5.5%' }}>
-      {layout.kiri.map((el) => renderComp(el))}
+const Berita = () => {
+  const [kiri, setKiri] = useState([]);
+  const [kanan, setKanan] = useState([]);
+
+  const beritaLayoutState = useSelector(beritaLayoutSelector);
+  const dispatch = useDispatch();
+  const { status } = beritaLayoutState;
+  const fetchBeritaLayoutData = () => {
+    dispatch(getBertaLayout());
+  };
+
+  useEffect(() => {
+    fetchBeritaLayoutData();
+  }, []);
+
+  useEffect(() => {
+    const { error, content } = beritaLayoutState;
+    const { records } = content;
+    if (status === 'idle' && !error && records.length > 0) {
+      const kiriRecord = records.filter((record) => record.code === 'kiri');
+      if (kiriRecord) {
+        const obj = JSON.parse(kiriRecord[0].content);
+        setKiri(obj.kiri);
+        setKanan(obj.kanan);
+      }
+    }
+  }, [beritaLayoutState]);
+
+  return (
+    <div className="row mt-4">
+      {status === 'loading' && <Loader fullscreen />}
+      <div className="col-lg-2"></div>
+      <div className="col-lg-6" style={{ paddingRight: '5.5%' }}>
+        {kiri.length > 0 && kiri.map((el) => renderComp(el))}
+      </div>
+      <div className="col-lg-2">{kanan.length > 0 && kanan.map((el) => renderComp(el))}</div>
+      <div className="col-lg-2"></div>
     </div>
-    <div className="col-lg-2">{layout.kanan.map((el) => renderComp(el))}</div>
-    <div className="col-lg-2"></div>
-  </div>
-);
+  );
+};
 
 export default Berita;

@@ -1,77 +1,111 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Box from './Box';
 import { useRef } from 'react';
 import './beritalayout.scss';
 import Berita from 'containers/Berita';
 import cx from 'classnames';
 import bn from 'utils/bemNames';
+import { Loader } from 'components';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  beritaLayoutSelector,
+  getBertaLayout,
+  updateBertalayout,
+  updateBeritaLaoutState,
+  resetBertaLayout,
+} from './reducer';
 
 const bem = bn('berita-layout');
 var shortid = require('shortid');
 
 const BeritaLayout = () => {
-  const kiri = useRef(null);
-  const kanan = useRef(null);
-  const inactive = useRef(null);
+  const [kiri, setKiri] = useState([]);
+  const [kanan, setKanan] = useState([]);
+  const [inactive, setInactive] = useState([]);
 
-  let obj = window.localStorage.getItem('tempberitalayout')
-    ? JSON.parse(window.localStorage.getItem('tempberitalayout'))
-    : JSON.parse(window.localStorage.getItem('beritalayout'));
+  const kiriRef = useRef(null);
+  const kananRef = useRef(null);
+  const inactiveRef = useRef(null);
 
-  const itemKiri = obj.kiri.map((el) => ({
-    label: el.label,
-    props: el.props,
-    uid: shortid.generate(),
-    component: el.component,
-  }));
+  const beritaLayoutState = useSelector(beritaLayoutSelector);
+  const { status } = beritaLayoutState;
+  const dispatch = useDispatch();
 
-  const itemKanan = obj.kanan.map((el) => ({
-    label: el.label,
-    props: el.props,
-    uid: shortid.generate(),
-    component: el.component,
-  }));
+  const fetchBeritaLayoutData = () => {
+    dispatch(getBertaLayout());
+  };
 
-  const inactiveItems = obj.inactive.map((el) => ({
-    label: el.label,
-    props: el.props,
-    uid: shortid.generate(),
-    component: el.component,
-  }));
+  useEffect(() => {
+    fetchBeritaLayoutData();
+  }, []);
+
+  useEffect(() => {
+    const { status, error, content } = beritaLayoutState;
+    const { records } = content;
+    if (status === 'idle' && !error && records.length > 0) {
+      const kiriRecord = records.filter((record) => record.code === 'kiri');
+      if (kiriRecord) {
+        const obj = JSON.parse(kiriRecord[0].content);
+        const itemKiri = obj.kiri.map((el) => ({
+          label: el.label,
+          props: el.props,
+          uid: shortid.generate(),
+          component: el.component,
+        }));
+
+        const itemKanan = obj.kanan.map((el) => ({
+          label: el.label,
+          props: el.props,
+          uid: shortid.generate(),
+          component: el.component,
+        }));
+
+        const inactiveItems = obj.inactive.map((el) => ({
+          label: el.label,
+          props: el.props,
+          uid: shortid.generate(),
+          component: el.component,
+        }));
+
+        setKiri(itemKiri);
+        setKanan(itemKanan);
+        setInactive(inactiveItems);
+      }
+    }
+  }, [beritaLayoutState]);
 
   const onSave = () => {
     let obj = {
-      kiri: kiri.current.state.items,
-      kanan: kanan.current.state.items,
-      inactive: inactive.current.state.items,
+      kiri: kiriRef.current.state.items,
+      kanan: kananRef.current.state.items,
+      inactive: inactiveRef.current.state.items,
     };
-
-    window.localStorage.removeItem('tempberitalayout');
-    window.localStorage.setItem('beritalayout', JSON.stringify(obj));
+    dispatch(updateBertalayout({ code: 'kiri', content: JSON.stringify(obj) }));
+    window.location.reload();
     alert('Layout berhasil disimpan');
   };
 
   const preview = () => {
     let obj = {
-      kiri: kiri.current.state.items,
-      kanan: kanan.current.state.items,
-      inactive: inactive.current.state.items,
+      kiri: kiriRef?.current?.state?.items,
+      kanan: kananRef?.current.state?.items,
+      inactive: inactiveRef?.current?.state?.items,
     };
+    dispatch(updateBeritaLaoutState({ status: 'preview', content: obj }));
 
-    window.localStorage.setItem('tempberitalayout', JSON.stringify(obj));
-    window.location.reload();
+    dispatch(updateBertalayout({ code: 'kiri', content: JSON.stringify(obj) }));
+    // dispatch(updateBertalayout({ code: 'kiri', content: JSON.stringify(obj) }));
   };
 
   const batal = () => {
-    window.localStorage.removeItem('tempberitalayout');
-    window.location.reload();
+    dispatch(resetBertaLayout());
   };
-
   return (
     <div className="row">
       <div className="col-lg-12">
         <div className={bem.e('header')}>
           <div className={bem.e('header-title')}>Layout Berita</div>
+          {status === 'loading' && <Loader fullscreen />}
           <div>
             <button className={cx(bem.e('button'), 'batal')} onClick={batal}>
               Batal
@@ -87,9 +121,9 @@ const BeritaLayout = () => {
         <div className={bem.e('content')}>
           <div className="drag_things_to_boxes">
             <div className="boxes">
-              <Box targetKey="box" items={itemKiri} title="Konten Utama" ref={kiri} />
-              <Box targetKey="box" items={itemKanan} title="Sidebar" ref={kanan} />
-              <Box targetKey="box" items={inactiveItems} title="Sembunyikan" ref={inactive} />
+              {kiri.length > 0 && <Box targetKey="box" items={kiri} title="Konten Utama" ref={kiriRef} />}
+              {kiri.length > 0 && <Box targetKey="box" items={kanan} title="Sidebar" ref={kananRef} />}
+              {kiri.length > 0 && <Box targetKey="box" items={inactive} title="Sembunyikan" ref={inactiveRef} />}
             </div>
           </div>
         </div>

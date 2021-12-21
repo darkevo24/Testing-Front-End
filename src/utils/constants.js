@@ -77,6 +77,8 @@ export const apiUrls = {
   bimtekJadwalLocations: getV1Endpoint('kabupatenkota'),
   formulirPendaftaran: getPortalEndpoint('v1/jwt-info'),
   addFormulirPendaftaran: getPortalEndpoint('v1/bimtek'),
+  bimtekMateri: getPortalEndpoint('v1/bimtek/materi'),
+  bimtekMateriDownload: getPortalEndpoint('v1/bimtek/download-zip'),
 };
 
 export const priorityOptions = [

@@ -70,6 +70,7 @@ const Table = ({
   searchLeftComponent,
   searchRightComponent,
   onSearch,
+  onSearchButtonPress,
   showHeader = true,
   showSearch = true,
   variant = 'default',
@@ -202,7 +203,7 @@ const Table = ({
           {searchRightComponent ? (
             searchRightComponent
           ) : (
-            <Button variant="info" className="btn-rounded ml-16 px-24 text-nowrap" onClick={onSearch}>
+            <Button variant="info" className="btn-rounded ml-16 px-24 text-nowrap" onClick={onSearchButtonPress || onSearch}>
               {searchButtonText}
             </Button>
           )}

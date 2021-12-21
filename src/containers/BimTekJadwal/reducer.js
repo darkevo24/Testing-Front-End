@@ -2,12 +2,19 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { apiUrls, get } from 'utils/request';
 
 export const getBimtekJadwalData = createAsyncThunk('bimtekJadwal/getBimtekJadwalData', async (params) => {
-  const response = await get(params ? `${apiUrls.bimtekJadwal}?tags=${params.tags}` : apiUrls.bimtekJadwal);
+  const response = await get(`${apiUrls.bimtekJadwal}`, {
+    query: params,
+  });
   return response?.data?.content;
 });
 
 export const getBimtekJadwalTagsData = createAsyncThunk('bimtekJadwal/getBimtekJadwalTagsData', async (params) => {
   const response = await get(apiUrls.bimtekJadwalTags);
+  return response?.data;
+});
+
+export const getBimtekJadwalLocationsData = createAsyncThunk('bimtekJadwal/getBimtekJadwalLocationData', async (params) => {
+  const response = await get(apiUrls.bimtekJadwalLocations);
   return response?.data;
 });
 
@@ -26,6 +33,15 @@ const INITIAL_STATE = {
   jadwalTagsDataset: {
     status: 'idle',
     records: [],
+    message: null,
+  },
+  jadwalLocationsDataset: {
+    status: 'idle',
+    records: [],
+    page: 1,
+    size: 10,
+    totalPages: 1,
+    totalRecords: 0,
     message: null,
   },
   detailDataset: {
@@ -73,12 +89,30 @@ const SLICE_OBJ = createSlice({
       state.detailDataset.loading = false;
       state.jadwalTagsDataset.message = action.error.message;
     });
+    builder.addCase(getBimtekJadwalLocationsData.pending, (state, action) => {
+      state.detailDataset.loading = true;
+    });
+    builder.addCase(getBimtekJadwalLocationsData.fulfilled, (state, action) => {
+      state.detailDataset.loading = false;
+      state.jadwalLocationsDataset.records = action.payload.content.records;
+      state.jadwalLocationsDataset.status = action.payload.status;
+      state.jadwalLocationsDataset.message = action.payload.message;
+      state.jadwalLocationsDataset.totalPages = action.payload.content.totalPages;
+      state.jadwalLocationsDataset.totalRecords = action.payload.content.totalRecords;
+      state.jadwalLocationsDataset.pages = action.payload.content.pages;
+      state.jadwalLocationsDataset.size = action.payload.content.size;
+    });
+    builder.addCase(getBimtekJadwalLocationsData.rejected, (state, action) => {
+      state.detailDataset.loading = false;
+      state.jadwalLocationsDataset.message = action.error.message;
+    });
   },
 });
 
 export const bimtekJadwalDatasetSelector = (state) => state.bimtekJadwal?.jadwalDataset;
 export const bimtekJadwalDatasetDetailSelector = (state) => state.bimtekJadwal?.detailDataset;
 export const bimtekJadwalTagsDatasetSelector = (state) => state.bimtekJadwal?.jadwalTagsDataset.records;
+export const bimtekJadwalLocatonsDatasetSelector = (state) => state.bimtekJadwal?.jadwalLocationsDataset.records;
 export const logDatasetSelector = (state) => state.bimtekJadwal?.logdataset;
 export const { updateResult } = SLICE_OBJ.actions;
 export default SLICE_OBJ.reducer;

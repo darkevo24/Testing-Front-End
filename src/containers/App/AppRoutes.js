@@ -8,7 +8,6 @@ const { Login } = lazily(() => import('containers/Login'));
 const BerandaPage = lazy(() => import('containers/Beranda'));
 const TopicDetailPage = lazy(() => import('containers/Beranda/TopicDetails'));
 const DataSetPage = lazy(() => import('containers/Beranda/DataSet'));
-const ForumSDIPage = lazy(() => import('containers/Beranda/ForumSDI'));
 const { Perminataan } = lazily(() => import('containers/Perminataan'));
 const { PerminataanDetail } = lazily(() => import('containers/Perminataan/detail'));
 const PerminataanForumPage = lazy(() => import('containers/Perminataan/Forum'));
@@ -22,6 +21,7 @@ const BimTekDokumentasiPage = lazy(() => import('containers/BimTekDokumentasi'))
 const TentangPage = lazy(() => import('containers/TentangSDI'));
 const KomunitasPage = lazy(() => import('containers/Komunitas'));
 const BeritaPage = lazy(() => import('containers/Berita'));
+const BeritaPreviewPage = lazy(() => import('containers/Berita/Preview'));
 const KesiapanSDI = lazy(() => import('containers/Dashboard/KesiapanSDI'));
 const DashboardEksekutif = lazy(() => import('containers/Dashboard/DashboardEksekutif'));
 const DashboardSaya = lazy(() => import('containers/Dashboard/DashboardSaya'));
@@ -48,13 +48,13 @@ function AppRoutes(props) {
         <PrivateRoute exact path="/forum-sdi" component={ForumSDI} />
         <PrivateRoute exact path="/forum" component={PerminataanForumPage} />
         <Route exact path="/home" component={BerandaPage} />
-        <Route exact path="/forum-sdi" component={ForumSDIPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
         <PrivateRoute exact path="/dataset" component={DataSetPage} />
         <PrivateRoute exact path="/daftar" component={DaftarPage} />
         <PrivateRoute exact path="/daftar/:daftarId/variable" component={DataVariablePage} />
         <PrivateRoute exact path="/komunitas-ahli" component={KomunitasPage} />
         <Route exact path="/berita" component={BeritaPage} />
+        <Route exact path="/berita/preview" component={BeritaPreviewPage} />
         <Route exact path="/bimtek-summary" component={BimTekSummaryPage} />
         <Route exact path="/bimtek-form" component={BimTekFormPage} />
         <Route exact path="/bimtek-jadwal" component={BimTekJadwalPage} />

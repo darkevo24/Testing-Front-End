@@ -18,7 +18,22 @@ export const DetailHeader = ({ record, status, history, handleModal }) => {
               onClick={() => handleModal('delete')}>
               <Trash />
             </Button>
+            <Button
+              key="edit"
+              variant="outline-light"
+              className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
+              onClick={() => history.push(`/cms/manage-komunitas-ahli/${record.id}`)}>
+              <PencilSvg />
+            </Button>
+            <Button key="kirim" variant="info" className="mr-16 br-4 px-40 border-0" onClick={() => handleModal('kirim')}>
+              Kirim
+            </Button>
           </ComponentAccessibility>
+        </div>
+      );
+    case 'ditolak':
+      return (
+        <div>
           <ComponentAccessibility roles={roles}>
             <Button
               key="edit"
@@ -28,66 +43,76 @@ export const DetailHeader = ({ record, status, history, handleModal }) => {
               <PencilSvg />
             </Button>
           </ComponentAccessibility>
-          <ComponentAccessibility roles={roles}>
-            <Button key="kirim" variant="info" className="mr-16 br-4 px-40 border-0" onClick={() => handleModal('kirim')}>
-              Kirim
-            </Button>
-          </ComponentAccessibility>
         </div>
       );
     case 'menunggu_persetujuan':
       return (
         <div>
-          <Button
-            key="tolak"
-            variant="outline-light"
-            className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4 px-40"
-            onClick={() => handleModal('tolak')}
-            roles={[USER_ROLES.CONTENT_EDITOR]}>
-            Tolak
-          </Button>
-          <Button
-            key="Setujui"
-            variant="info"
-            className="mr-16 br-4 px-40 border-0"
-            onClick={() => handleModal('setujui')}
-            roles={[USER_ROLES.CONTENT_EDITOR]}>
-            Setujui
-          </Button>
+          <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR]}>
+            <Button
+              key="tolak"
+              variant="outline-light"
+              className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4 px-40"
+              onClick={() => handleModal('tolak')}>
+              Tolak
+            </Button>
+            <Button
+              key="Setujui"
+              variant="info"
+              className="mr-16 br-4 px-40 border-0"
+              onClick={() => handleModal('setujui')}>
+              Setujui
+            </Button>
+          </ComponentAccessibility>
         </div>
       );
     case 'disetujui':
       return (
         <div>
-          <Button
-            key="publish"
-            variant="info"
-            className="mr-16 br-4 px-40 border-0"
-            onClick={() => handleModal('publish')}
-            roles={[USER_ROLES.CONTENT_EDITOR]}>
-            Publish
-          </Button>
+          <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR]}>
+            <Button
+              key="publish"
+              variant="info"
+              className="mr-16 br-4 px-40 border-0"
+              onClick={() => handleModal('publish')}>
+              Publish
+            </Button>
+          </ComponentAccessibility>
         </div>
       );
     case 'ditayangkan':
       return (
         <div>
-          <Button
-            key="unPublish"
-            variant="info"
-            className="mr-16 br-4 px-40 border-0"
-            onClick={() => handleModal('unPublish')}
-            roles={[USER_ROLES.CONTENT_EDITOR]}>
-            Unpublish
-          </Button>
+          <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR]}>
+            <Button
+              key="unPublish"
+              variant="info"
+              className="mr-16 br-4 px-40 border-0"
+              onClick={() => handleModal('unPublish')}>
+              Unpublish
+            </Button>
+          </ComponentAccessibility>
         </div>
       );
     case 'tidak_ditayangkan':
       return (
         <div>
-          <Button key="archieve" variant="info" className="mr-16 br-4 px-40 border-0" roles={[USER_ROLES.CONTENT_EDITOR]}>
-            onClick={() => handleModal('archieve')}> Archieve
-          </Button>
+          <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR]}>
+            <Button
+              key="edit"
+              variant="outline-light"
+              className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
+              onClick={() => history.push(`/cms/manage-komunitas-ahli/${record.id}`)}>
+              <PencilSvg />
+            </Button>
+            <Button
+              key="publish"
+              variant="info"
+              className="mr-16 br-4 px-40 border-0"
+              onClick={() => handleModal('publish')}>
+              Publish
+            </Button>
+          </ComponentAccessibility>
         </div>
       );
     default:

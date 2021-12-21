@@ -16,9 +16,11 @@ import { Input } from 'components';
 import { useForm } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
+import Spinner from 'react-bootstrap/Spinner';
 
 const KomunitasAhliPage = () => {
   const dispatch = useDispatch();
+  const [loader, setLoader] = useState(null);
   const [showFilter, setShowFilter] = useState(false);
   const [bidangKeahlianData, setBidangKeahlianData] = useState([]);
   const [daerahData, setDaerahData] = useState([]);
@@ -63,7 +65,13 @@ const KomunitasAhliPage = () => {
   };
 
   useEffect(() => {
-    handleAPICall({ page: 0, q: '', status: '' });
+    handleAPICall({
+      page: 0,
+      payload: {
+        q: '',
+        status: '',
+      },
+    });
   }, []);
 
   const handleAPICall = (params) => {
@@ -71,13 +79,19 @@ const KomunitasAhliPage = () => {
   };
 
   const handleSearch = (value = '') => {
-    handleAPICall({ page: 0, q: value.trim() });
+    handleAPICall({
+      page: 0,
+      payload: {
+        ...payload,
+        q: value.trim(),
+      },
+    });
   };
 
   const handleFilterChange = (data) => {
     let params = {
       page: 0,
-      ...payload,
+      payload,
     };
     if (data.nama.trim()) params = { ...params, nama: data.nama };
     if (data.bidangKeahlian?.value) params = { ...params, bidangKeahlian: data.bidangKeahlian.value };
@@ -85,6 +99,17 @@ const KomunitasAhliPage = () => {
     if (data.daerahId?.value) params = { ...params, daerahId: data.daerahId.value };
     handleAPICall(params);
     setShowFilter(false);
+  };
+
+  const downloadCV = async (url, fileName = '', id) => {
+    setLoader(id);
+    await get(url, { download: true, fileName })
+      .then(() => {
+        setLoader(null);
+      })
+      .catch(() => {
+        setLoader(null);
+      });
   };
 
   const handleOutSideClick = () => {
@@ -160,12 +185,16 @@ const KomunitasAhliPage = () => {
                     variant="primary"
                     className="sdp-rate-button justify-content-end"
                     onClick={() =>
-                      window.open(
+                      downloadCV(
                         item.cv.location ||
                           'https://drive.google.com/file/d/1YKu5bPdkXsuAb-dojIm5cy_To8FC0BRI/view?usp=sharing',
-                        '_blank',
+                        item.cv.fileName,
+                        item.id,
                       )
                     }>
+                    {loader === item.id && (
+                      <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="mr-10" />
+                    )}
                     Lihat CV
                   </Button>
                 </div>

@@ -18,7 +18,7 @@ export const initialState = {
 export const FORUM_SDI_SLICE = 'FORUM_SDI_SLICE';
 
 export const getForumSDIData = createAsyncThunk('portal/getForumSDIData', async ({ page, ...rest }) => {
-  const response = await get(apiUrls.portalForumSDI, { query: { page: page + 1, size: 10, ...rest } });
+  const response = await get(apiUrls.portalForumSDI, { query: { page: page + 1, size: 10, ...rest.payload } });
   return response?.data?.content;
 });
 

@@ -157,9 +157,6 @@ const CMSForumSDIForm = () => {
     setFormData(data);
   };
 
-  const topikDropDownList = topikResult?.records.map((elem) => ({ value: elem?.id, label: elem?.nama }));
-  const tagDropDownList = tagsResult?.content.map((elem) => ({ value: elem, label: elem }));
-
   const onSubmit = async () => {
     setLoader(true);
     let fileLink;
@@ -239,7 +236,7 @@ const CMSForumSDIForm = () => {
               control={control}
               label="Topik"
               labelClass="sdp-form-label  fw-normal"
-              data={topikDropDownList}
+              data={topikResult.map((elem) => ({ value: elem?.id, label: elem?.nama }))}
               placeholder=""
               rules={{ required: true }}
               error={errors?.topik?.message ? 'Topik is required' : ''}
@@ -261,7 +258,7 @@ const CMSForumSDIForm = () => {
               rules={{ required: true }}
               error={errors?.tags?.message ? 'Tag is required' : ''}
               name="tags"
-              data={tagDropDownList}
+              data={tagsResult.map((elem) => ({ value: elem, label: elem }))}
               loading={tagsLoading}
             />
             <TextEditorController

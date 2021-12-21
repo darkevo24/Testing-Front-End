@@ -345,7 +345,7 @@ const KomunitasAhli = () => {
           onClose={handleCloseModal}
           label={
             <>
-              Apakah anda yakin ingin <span className="sdp-error">menghapus</span> Jadwal Bimbingan Teknis{' '}
+              Apakah anda yakin ingin <span className="sdp-error">menghapus</span> Profil Ahli{' '}
               <b>{prefixID(record.id, 'KA')}</b>?
             </>
           }
@@ -358,7 +358,7 @@ const KomunitasAhli = () => {
           onClose={handleCloseModal}
           label={
             <>
-              Apakah anda yakin ingin <span className="sdp-text-blue">mempublikasikan</span> Jadwal Bimbingan Teknis{' '}
+              Apakah anda yakin ingin <span className="sdp-text-blue">mempublikasikan</span> Profil Ahli{' '}
               <b>{prefixID(record.id, 'KA')}</b>?
             </>
           }
@@ -371,7 +371,7 @@ const KomunitasAhli = () => {
           onClose={handleCloseModal}
           label={
             <>
-              Apakah anda yakin ingin <span className="sdp-text-blue">membatalkan</span> Jadwal Bimbingan Teknis{' '}
+              Apakah anda yakin ingin <span className="sdp-text-blue">membatalkan</span> Profil Ahli{' '}
               <b>{prefixID(record.id, 'KA')}</b>?
             </>
           }
@@ -384,7 +384,7 @@ const KomunitasAhli = () => {
           onClose={handleCloseModal}
           label={
             <>
-              Apakah anda yakin ingin <span className="sdp-text-blue">mengarsipkan</span> Jadwal Bimbingan Teknis{' '}
+              Apakah anda yakin ingin <span className="sdp-text-blue">mengarsipkan</span> Profil Ahli{' '}
               <b>{prefixID(record.id, 'KA')}</b>?
             </>
           }
@@ -394,7 +394,7 @@ const KomunitasAhli = () => {
       )}
       {showModal === 'tolak' && (
         <Modal visible={true} onClose={handleCloseModal} title="" showHeader={false} centered={true}>
-          Apakah anda yakin ingin <span className="sdp-text-red">menolak</span> Profil Ahli <b>{prefixID(id, 'PD')}</b>?
+          Apakah anda yakin ingin <span className="sdp-text-red">menolak</span> Profil Ahli <b>{prefixID(id, 'KA')}</b>?
           <textarea
             placeholder="Tulis Catatan"
             name="catatan"

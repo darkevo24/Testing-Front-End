@@ -74,6 +74,8 @@ export const apiUrls = {
   bimtekSummaryJadwalTerdekat: getPortalEndpoint('v1/bimtek/jadwal-terdekat'),
   bimtekJadwal: getPortalEndpoint('v1/bimtek/jadwal'),
   bimtekJadwalTags: getCMSEndpoint('bimtek/tags'),
+  bimtekMateri: getPortalEndpoint('v1/bimtek/materi'),
+  bimtekMateriDownload: getPortalEndpoint('v1/bimtek/download-zip'),
 };
 
 export const priorityOptions = [

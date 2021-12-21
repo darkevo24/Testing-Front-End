@@ -35,7 +35,7 @@ const ManagementApiBaru = lazy(() => import('containers/CMS/ManagementApi/Create
 const ManagementApiForm = lazy(() => import('containers/CMS/ManagementApi/Form'));
 const ManagementApiDetail = lazy(() => import('containers/CMS/ManagementApi/DetailApi'));
 const ManagementApiEdit = lazy(() => import('containers/CMS/ManagementApi/EditApi'));
-// const LogActivity = lazy(() => import('containers/CMS/LogAktifitas'));
+const LogActivity = lazy(() => import('containers/CMS/LogAktifitas'));
 const ForumSDIPage = lazy(() => import('containers/CMS/ForumSDI'));
 const ForumSDIFormPage = lazy(() => import('containers/CMS/ForumSDI/CMSForumSDIForm'));
 const CMSForumSDIDetailPage = lazy(() => import('containers/CMS/ForumSDI/CMSForumSDIDetail'));
@@ -44,9 +44,9 @@ function CMSRoutes() {
   return (
     <CMSLayout>
       <Switch>
+        <PrivateRoute exact path="/cms/log-activity" component={LogActivity} />
         <PrivateRoute exact path="/cms/manage-komunitas-ahli/:id" component={ManageKomunitasAhliPage} />
         <PrivateRoute exact path="/cms/manage-komunitas-ahli/" component={ManageKomunitasAhliPage} />
-        {/* <PrivateRoute exact path="/cms/log-activity" component={LogActivity} /> */}
         <PrivateRoute exact path="/cms/api/edit/:id?" component={ManagementApiEdit} />
         <PrivateRoute exact path="/cms/api-detail/:id" component={ManagementApiDetail} />
         <PrivateRoute exact path="/cms/api/form" component={ManagementApiForm} />

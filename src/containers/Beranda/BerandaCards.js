@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import styled from 'styled-components';
 import cx from 'classnames';
 import moment from 'moment';
-import uniqBy from 'lodash/uniqBy';
 import truncate from 'lodash/truncate';
 import { ReactComponent as TrendingSvg } from 'assets/trending.svg';
 import { ReactComponent as PopulerSvg } from 'assets/populer.svg';
 import { CardWithDetail } from 'components/Cards/CardWithDetail';
-import { getDatasetUrl } from 'utils/helper';
+import { safeParse } from 'utils/helper';
+import { getDatasetPopular, getDatasetTrending, datasetTrendingSelector, datasetPopularSelector } from './reducer';
 
 const Box = styled.div`
   margin: 80px 0;
@@ -44,32 +45,29 @@ const TitleBox = styled.div`
 
 export const BerandaCards = ({ bem, isLoggedIn, trendingData = [], popularData = [] }) => {
   const linkToRedirect = isLoggedIn ? '/dataset' : '/topic-detail';
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getDatasetTrending('trending'));
+    dispatch(getDatasetPopular('populer'));
+  }, []);
+
   const renderDataSet = (group) => (data) => {
-    const dataSetUrl = getDatasetUrl(data.name);
-    const numberOfMaxFormats = 2;
-    const uniqFormats =
-      uniqBy(
-        data.resources.filter((r) => !!r.format),
-        'format',
-      ) || [];
-    const formatesToShow = uniqFormats.slice(0, numberOfMaxFormats);
-    const hiddenFormats = uniqFormats.length - formatesToShow.length;
     return (
       <Col xs={12} sm={6} lg={3} className={cx('d-flex justify-content-center', bem.e('card-box'))}>
         <CardWithDetail
+          formats={safeParse(data.fileType)}
           key={`${group}-${data.id}`}
-          dataSetUrl={dataSetUrl}
           title={truncate(data.title, { length: 60 })}
-          description={truncate(data.notes, { length: 80 })}
-          count={data.num_resources}
-          formats={formatesToShow}
-          hiddenFormats={hiddenFormats}
-          date={moment(new Date(data.metadata_created)).format('DD MMM YYYY')}
-          views={232}
+          description={truncate(data.title, { length: 80 })}
+          count={100}
+          date={moment(new Date(data.dataSetDate)).format('DD MMM YYYY')}
+          views={data.totalview}
         />
       </Col>
     );
   };
+  const { records: dataTrending } = useSelector(datasetTrendingSelector);
+  const { records: dataPopular } = useSelector(datasetPopularSelector);
   return (
     <Box className={bem.e('cards-wrapper')}>
       <FlexBox className="px-16">
@@ -81,7 +79,7 @@ export const BerandaCards = ({ bem, isLoggedIn, trendingData = [], popularData =
           <RightBox>Lihat Semua</RightBox>
         </a>
       </FlexBox>
-      <Row>{trendingData.map(renderDataSet('trending'))}</Row>
+      <Row>{dataTrending.length > 0 && dataTrending.map(renderDataSet('trending'))}</Row>
       <FlexBox className="px-16 mt-40">
         <LeftBox>
           <PopulerSvg style={{ marginRight: '10px' }} />
@@ -91,7 +89,7 @@ export const BerandaCards = ({ bem, isLoggedIn, trendingData = [], popularData =
           <RightBox>Lihat Semua</RightBox>
         </a>
       </FlexBox>
-      <Row>{popularData.map(renderDataSet('popular'))}</Row>
+      <Row>{dataPopular.length > 0 && dataPopular.map(renderDataSet('popular'))}</Row>
     </Box>
   );
 };

@@ -146,6 +146,7 @@
         justify-content: flex-end;
         flex-wrap: nowrap;
         input {
+            height: 100%;
             padding-left: 15px;
             border-radius: 4px;
             outline: none;
@@ -540,15 +541,5 @@
 
     }
 
-}
-
-// Set Modal Dialog
-.modal-dialog {
-    display: flex;
-    align-items: center;
-    min-height: 100vh;
-    .font-weight-bold{
-        font-weight: bold;
-    }
 }
 

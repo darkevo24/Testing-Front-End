@@ -59,7 +59,7 @@ const CMSForumSDIDetail = () => {
   };
 
   const onDelete = async () => {
-    handleAPICall(deleteRequest, `${apiUrls.cmsForumSDI}/${id}/`);
+    handleAPICall(post, `${apiUrls.cmsForumSDI}/${id}/ubah-status/DELETED`, { data: { note: '' } });
   };
 
   const onSetujui = async () => {

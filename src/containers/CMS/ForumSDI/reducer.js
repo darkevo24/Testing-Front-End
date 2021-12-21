@@ -82,6 +82,7 @@ const cmsForumSDISlice = createSlice({
     });
     builder.addCase(getCMSForumSDIDataById.pending, (state, action) => {
       state.forumSDIDetail.detailLoading = true;
+      state.forumSDIDetail.detailError = '';
     });
     builder.addCase(getCMSForumSDIDataById.fulfilled, (state, action) => {
       state.forumSDIDetail.detailLoading = false;
@@ -102,6 +103,7 @@ const cmsForumSDISlice = createSlice({
     });
     builder.addCase(getCMSForumSDITags.pending, (state, action) => {
       state.forumSDITags.tagsLoading = true;
+      state.forumSDITags.tagsError = '';
     });
     builder.addCase(getCMSForumSDITags.fulfilled, (state, action) => {
       state.forumSDITags.tagsLoading = false;
@@ -112,6 +114,7 @@ const cmsForumSDISlice = createSlice({
     });
     builder.addCase(getCMSForumSDITopik.pending, (state, action) => {
       state.forumSDITopik.topikLoading = true;
+      state.forumSDITopik.topikError = '';
     });
     builder.addCase(getCMSForumSDITopik.fulfilled, (state, action) => {
       state.forumSDITopik.topikLoading = false;

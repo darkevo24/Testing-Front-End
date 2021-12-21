@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
-import { CMSBimtekForm } from 'components';
+import CMSBimtekForm, { SubmitJadwalBimtekForm } from 'components/CMSBimtekForm';
+import { BimtekListSelector, getDokumentasiList } from './reducer';
 
 import bn from 'utils/bemNames';
 import cx from 'classnames';
@@ -10,6 +12,23 @@ const bem = bn('content-create');
 
 const CMSJadwalBaru = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  const { records } = useSelector(BimtekListSelector);
+
+  console.log(records);
+
+  const fetchDokumentasiList = () => {
+    return dispatch(getDokumentasiList());
+  };
+
+  useEffect(() => {
+    fetchDokumentasiList();
+  }, []);
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
   return (
     <div className={bem.e('section')}>
@@ -19,14 +38,14 @@ const CMSJadwalBaru = () => {
           <Button onClick={() => history.goBack()} className="ml-24" variant="secondary" style={{ width: '112px' }}>
             Batal
           </Button>
-          <Button className="ml-10" variant="info" style={{ width: '112px' }}>
+          <Button onClick={SubmitJadwalBimtekForm} className="ml-10" variant="info" style={{ width: '112px' }}>
             Simpan
           </Button>
         </div>
         <div>Saved 1 minutes ago Draft</div>
       </div>
       <div className={bem.e('body')}>
-        <CMSBimtekForm disabled={true} isDocumentation={true} />
+        <CMSBimtekForm disabled={true} isDocumentation={true} namaBimtek={records} />
       </div>
     </div>
   );

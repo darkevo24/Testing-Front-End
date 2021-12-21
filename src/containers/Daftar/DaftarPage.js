@@ -19,7 +19,7 @@ import SdgTable from './SdgTable';
 import RkpTable from './RkpTable';
 import DaftarDataSayaTable from './DaftarDataSayaTable';
 import { useThrottle } from 'utils/hooks';
-import { getDaftarDataSummary, daftarDataSummarySelector } from './reducer';
+import { refetchDaftarData, getDaftarDataSummary, daftarDataSummarySelector } from './reducer';
 
 const Daftar = (props) => {
   const {
@@ -35,12 +35,13 @@ const Daftar = (props) => {
     onPilarSdgChange,
     onPnRKPChange,
     onDownloadData,
-    handleTambahFromSubmit,
+    handleDaftarFromSubmit,
   } = props;
   const { t } = useTranslation();
   const [searchText, setSearchText] = useState('');
   const [debouncedSearchText, setDebouncedSearchText] = useState('');
-  const [isTambahModalVisible, setIsTambahModalVisble] = useState(false);
+  const [isDaftarFormVisible, setIsDaftarFormVisible] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(t('sandbox.daftar.tabs.daftar.key'));
   const activeTitle = t(`sandbox.daftar.tabs.${activeTab}.title`);
@@ -56,6 +57,16 @@ const Daftar = (props) => {
 
   const handleSearchTextChange = (e) => {
     setSearchText(e.target.value);
+  };
+
+  const showDaftarFormModal = (data) => {
+    setSelectedRecord(data);
+    setIsDaftarFormVisible(true);
+  };
+
+  const hideDaftarFormModal = () => {
+    setSelectedRecord(null);
+    setIsDaftarFormVisible(false);
   };
 
   const stats = useMemo(
@@ -103,19 +114,17 @@ const Daftar = (props) => {
       {
         key: t('sandbox.daftar.tabs.daftarSafa.key'),
         title: t('sandbox.daftar.tabs.daftarSafa.title'),
-        component: <DaftarDataSayaTable {...tableProps} />,
+        component: (
+          <DaftarDataSayaTable
+            {...tableProps}
+            showDaftarFormModal={showDaftarFormModal}
+            hideDaftarFormModal={hideDaftarFormModal}
+          />
+        ),
       },
     ],
     [tableProps],
   );
-
-  const showTambahFormModal = () => {
-    setIsTambahModalVisble(true);
-  };
-
-  const hideTambahModal = () => {
-    setIsTambahModalVisble(false);
-  };
 
   const breadcrumbsList = useMemo(
     () => [
@@ -137,9 +146,10 @@ const Daftar = (props) => {
 
   const isSayaData = activeTab === t('sandbox.daftar.tabs.daftarSafa.key');
 
-  const handleAddFormSubmit = (data) => {
-    handleTambahFromSubmit(data, (res) => {
-      hideTambahModal();
+  const onDaftarFormSubmit = (data) => {
+    handleDaftarFromSubmit(data, (_hasError) => {
+      hideDaftarFormModal();
+      dispatch(refetchDaftarData());
     });
   };
 
@@ -186,7 +196,7 @@ const Daftar = (props) => {
               </InputGroup>
               <Button
                 className="btn-rounded ml-16 px-32 text-nowrap"
-                onClick={isSayaData ? showTambahFormModal : handleDownloadData}>
+                onClick={isSayaData ? () => showDaftarFormModal() : handleDownloadData}>
                 {isSayaData ? t('common.addData') : t('common.download')}
               </Button>
             </div>
@@ -211,21 +221,22 @@ const Daftar = (props) => {
       </Row>
       <Modal
         size="lg"
-        visible={isTambahModalVisible}
-        onClose={hideTambahModal}
+        visible={isDaftarFormVisible}
+        onClose={hideDaftarFormModal}
         icon="splitCircle"
-        title="Tambah Data"
+        title={selectedRecord ? 'Edit Data' : 'Tambah Data'}
         subtitle="Isi form dibawah untuk menambah data"
         actions={[
-          { variant: 'secondary', text: 'Batal', onClick: hideTambahModal },
-          { text: 'Tambah', onClick: submitDaftarForm },
+          { variant: 'secondary', text: 'Batal', onClick: hideDaftarFormModal },
+          { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDaftarForm },
         ]}>
         <DaftarForm
+          daftarId={selectedRecord?.id}
           instansiOptions={instansiOptions}
           rkpPNOptions={rkpPNOptions}
           sdgPillerOptions={sdgPillerOptions}
           dataindukOptions={dataindukOptions}
-          onSubmit={handleAddFormSubmit}
+          onSubmit={onDaftarFormSubmit}
         />
       </Modal>
     </div>

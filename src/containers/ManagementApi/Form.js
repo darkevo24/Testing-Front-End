@@ -160,10 +160,7 @@ const FormApi = () => {
             <label htmlFor="Judul">
               <div className="wrapper-union">
                 <p> Judul </p> <Union />
-                <div className="wrapper-desc">
-                  Keputusan Direktur Jenderal Tanaman Pangan Nomor 218/HK/310/12/2029 tentang Petunjuk Teknis Bantuan
-                  Pemerintah Program Peningkatan Produksi, Produktivitas dan Mutu Tanaman Pangan Tahun Anggaran 2020
-                </div>
+                <div className="wrapper-desc"> Judul API yang akan disesuaikan dengan field DCAT. </div>
               </div>
             </label>
             <input type="text" placeholder="" />
@@ -172,10 +169,7 @@ const FormApi = () => {
             <label htmlFor="Judul">
               <div className="wrapper-union">
                 <p> Deskripsi </p> <Union />
-                <div className="wrapper-desc">
-                  Keputusan Direktur Jenderal Tanaman Pangan Nomor 218/HK/310/12/2029 tentang Petunjuk Teknis Bantuan
-                  Pemerintah Program Peningkatan Produksi, Produktivitas dan Mutu Tanaman Pangan Tahun Anggaran 2020
-                </div>
+                <div className="wrapper-desc"> Deskripsi API, penjelasan mengenai data yang akan diintegrasikan. </div>
               </div>
             </label>
             <input type="text" placeholder="" />
@@ -184,25 +178,16 @@ const FormApi = () => {
             <label htmlFor="Judul">
               <div className="wrapper-union">
                 <p> Source API </p> <Union />
-                <div className="wrapper-desc">
-                  Keputusan Direktur Jenderal Tanaman Pangan Nomor 218/HK/310/12/2029 tentang Petunjuk Teknis Bantuan
-                  Pemerintah Program Peningkatan Produksi, Produktivitas dan Mutu Tanaman Pangan Tahun Anggaran 2020
-                </div>
+                <div className="wrapper-desc"> URL link endpoint json </div>
               </div>
             </label>
-            <div className="input-group">
-              <input className="custom-file-input" type="file" />
-              <div className="input-group-append">Upload</div>
-            </div>
+            <input type="text" />
           </div>
           <div className="form-group">
             <label htmlFor="Judul">
               <div className="wrapper-union">
                 <p> Max Data Parameter </p> <Union />
-                <div className="wrapper-desc">
-                  Keputusan Direktur Jenderal Tanaman Pangan Nomor 218/HK/310/12/2029 tentang Petunjuk Teknis Bantuan
-                  Pemerintah Program Peningkatan Produksi, Produktivitas dan Mutu Tanaman Pangan Tahun Anggaran 2020
-                </div>
+                <div className="wrapper-desc"> Nilai maksimum data per page, misal: 1000 </div>
               </div>
             </label>
             <input type="text" placeholder="1000" />

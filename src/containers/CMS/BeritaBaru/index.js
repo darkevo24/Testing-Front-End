@@ -2,7 +2,7 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
 
-import CMSForm, { submitBeritaForm } from 'components/CMSForm';
+import CMSForm, { submitBeritaForm, submitNewKategori } from 'components/CMSForm';
 import Notification from 'components/Notification';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
@@ -16,11 +16,27 @@ const CMSBeritaBaru = () => {
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
-    data.mainImage = 'https://rembangkab.go.id/haribawana/uploads/pemerintah-kabupaten-rembang-no-image.jpg';
     data.mainImageTitle = '';
-    data.publishDate = data.publishDate ? data.publishDate + ' ' + data.publishTime : '';
-    data.kategori = data.kategori.value;
+    const publishDate = data.publishDate ? data.publishDate.split(' ')[0] : '';
+    const publishTime = data.publishTime ? data.publishTime : '';
+    data.publishDate = !publishDate ? '' : !publishTime ? publishDate + ' 00:00:00' : publishDate + ' ' + publishTime;
     data.status = 0;
+    data.taglineId = data.taglineId.map((tag) => tag.value);
+    data.issn = data.issn ? data.issn : '';
+
+    if (data.kategori.value === 'new') {
+      // action create kategori
+      submitNewKategori(data.kategori.label).then((res) => {
+        data.kategori = res.data.content.id;
+        submitBerita(data);
+      });
+      return;
+    }
+    data.kategori = data.kategori.value;
+    submitBerita(data);
+  };
+
+  const submitBerita = (data) => {
     dispatch(setNewBerita({ payload: data })).then((res) => {
       res?.payload
         ? Notification.show({

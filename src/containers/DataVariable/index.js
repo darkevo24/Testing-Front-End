@@ -1,7 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { useParams } from 'react-router-dom';
+import cloneDeep from 'lodash/cloneDeep';
 
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import Modal from 'components/Modal';
@@ -10,15 +13,55 @@ import Popover from 'components/Popover';
 import Table from 'components/Table';
 import { Breadcrumb } from 'components';
 import truncate from 'lodash/truncate';
-import { makeData } from 'utils/dataConfig/data-variable';
+import { prepareFormPayload } from 'utils/helper';
+import {
+  daftarDetailsDataSelector,
+  dataVariableSubmit,
+  deleteVariableData,
+  getDaftarDetail,
+  getKatalogVariables,
+  katalogVariableDataSelector,
+} from 'containers/Daftar/reducer';
 import DataVariableForm, { submitDataVariableForm } from './DataVariableForm';
 
 const DataVariable = () => {
+  const { daftarId } = useParams();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
+  const daftarDetails = useSelector(daftarDetailsDataSelector);
+  const daftar = daftarDetails?.result[daftarId];
+  const { pageSize, params, bodyParams, result } = useSelector(katalogVariableDataSelector);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDataVariableFormVisible, setIsDataVariableFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
-  const selectedDaftar = 'Data cakupan wilayah Internet';
+  const data = useMemo(() => result?.records || [], [result]);
+
+  const fetchKatalogVariableData = (filterOverride = {}, reset = false) => {
+    const { params: paramsOverride = {}, bodyParams: bodyParamsOverride = {} } = filterOverride;
+    const filterParams = {
+      ...cloneDeep(params),
+      ...cloneDeep(paramsOverride),
+    };
+    if (reset) {
+      filterParams.start = 0;
+      filterParams.currentPage = 0;
+    }
+    const filterBodyParams = {
+      ...cloneDeep(bodyParams),
+      ...cloneDeep(bodyParamsOverride),
+    };
+    const filters = { params: filterParams, bodyParams: filterBodyParams };
+    dispatch(getKatalogVariables({ daftarId, filters }));
+  };
+
+  useEffect(() => {
+    if (daftarId) {
+      fetchKatalogVariableData();
+      if (!daftar) {
+        dispatch(getDaftarDetail(daftarId));
+      }
+    }
+  }, [daftarId]);
 
   const showDeleteModal = (data) => {
     setSelectedRecord(data);
@@ -31,15 +74,29 @@ const DataVariable = () => {
   };
 
   const handleDelete = () => {
-    // TODO: handle actual delete of the data.
-    setIsDeleteModalVisible(false);
-    Notification.show({
-      message: (
-        <div>
-          Variabel <span className="fw-bold">{selectedRecord.name}</span> Berhasil Dihapus
-        </div>
-      ),
-      icon: 'check',
+    dispatch(deleteVariableData(selectedRecord)).then((res) => {
+      const hasError = res?.type?.includes('rejected');
+      if (hasError) {
+        Notification.show({
+          type: 'secondary',
+          message: (
+            <div>
+              Kesalahan dalam menghapus Variabel <span className="fw-bold">{selectedRecord.name}</span>
+            </div>
+          ),
+          icon: 'cross',
+        });
+      } else {
+        Notification.show({
+          message: (
+            <div>
+              Variabel <span className="fw-bold">{selectedRecord.name}</span> Berhasil Dihapus
+            </div>
+          ),
+          icon: 'check',
+        });
+      }
+      setIsDeleteModalVisible(false);
     });
   };
 
@@ -65,6 +122,33 @@ const DataVariable = () => {
       ),
       icon: 'check',
     });
+    const payload = prepareFormPayload(data, {
+      dropdowns: ['pengaturanAkses'],
+    });
+
+    dispatch(dataVariableSubmit(payload)).then((res) => {
+      const hasError = res?.type?.includes('rejected');
+      const isEdit = !!data.id;
+      if (hasError) {
+        return Notification.show({
+          message: (
+            <div>
+              Error <span className="fw-bold">{res.error.message}</span> Data Tidak {isEdit ? 'Diperbarui' : 'Ditambahkan'}
+            </div>
+          ),
+          icon: 'cross',
+        });
+      }
+      Notification.show({
+        type: 'secondary',
+        message: (
+          <div>
+            Variabel <span className="fw-bold">{payload.nama}</span> Berhasil {isEdit ? 'Diperbarui' : 'Ditambahkan'}
+          </div>
+        ),
+        icon: 'check',
+      });
+    });
   };
 
   const dropdownFilters = [
@@ -78,11 +162,11 @@ const DataVariable = () => {
     () => [
       {
         Header: 'Nama Variabel',
-        accessor: 'name',
+        accessor: 'nama',
       },
       {
         Header: 'ID Konsep',
-        accessor: 'id-konsep',
+        accessor: 'idKonsep',
       },
       {
         Header: 'Konsep',
@@ -104,11 +188,11 @@ const DataVariable = () => {
       },
       {
         Header: 'Pengaturan Akses',
-        accessor: 'pengaturan',
+        accessor: 'pengaturanAkses',
       },
       {
         Header: 'Kode Referensi',
-        accessor: 'code',
+        accessor: 'kodeReferensi',
       },
       {
         id: 'actions',
@@ -127,11 +211,12 @@ const DataVariable = () => {
     ],
     [],
   );
-  const data = useMemo(() => makeData(200), []);
+
   const tableConfig = {
     variant: 'spaced',
     columns,
     data,
+    totalCount: result?.totalRecords || null,
     searchLeftComponent: (
       <div className="w-100 d-flex align-items-center">
         <span className="sdp-text-disable mr-16">{t('sandbox.variable.reference')}</span>
@@ -147,13 +232,23 @@ const DataVariable = () => {
     title: (
       <>
         <span className="sdp-text-disable">{t('sandbox.variable.title')}</span>
-        <span> {selectedDaftar}</span>
+        <span> {daftar?.nama}</span>
       </>
     ),
     search: true,
+    pageSize,
+    manualPagination: true,
+    currentPage: params.page,
+    highlightOnHover: true,
     searchPlaceholder: t('sandbox.variable.searchPlaceholder'),
     searchButtonText: t('sandbox.variable.addVariable'),
     onSearch: () => showDataVariableFormModal(),
+    onPageIndexChange: (page) => {
+      if (params.page !== page) {
+        const params = { page };
+        fetchKatalogVariableData({ params });
+      }
+    },
   };
 
   const breadcrumbsList = useMemo(
@@ -167,15 +262,15 @@ const DataVariable = () => {
         label: t('sandbox.daftar.title'),
       },
       {
-        path: '/daftar',
-        label: selectedDaftar,
+        path: `/daftar/${daftar?.id}/variable`,
+        label: daftar?.nama,
       },
       {
         isActive: true,
         label: t('sandbox.variable.title'),
       },
     ],
-    [t],
+    [t, daftar],
   );
 
   return (

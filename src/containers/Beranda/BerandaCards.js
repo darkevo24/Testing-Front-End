@@ -58,10 +58,10 @@ export const BerandaCards = ({ bem, isLoggedIn, trendingData = [], popularData =
           formats={safeParse(data.fileType)}
           key={`${group}-${data.id}`}
           title={truncate(data.title, { length: 60 })}
-          description={truncate(data.title, { length: 80 })}
-          count={100}
+          description={truncate(data.description, { length: 80 })}
+          count={data.viewCount}
           date={moment(new Date(data.dataSetDate)).format('DD MMM YYYY')}
-          views={data.totalview}
+          views={data.viewCount}
         />
       </Col>
     );

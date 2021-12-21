@@ -27,27 +27,17 @@ const schema = yup
   .object({
     instansi: yup.mixed().required(),
     nama: yup.string().required(),
-    idKonsep: yup.string().required(),
-    konsep: yup.string().required(),
-    definisi: yup.string().required(),
-    sumberDefinisi: yup.string().required(),
     jadwalPemutakhiran: yup.mixed().required(),
-    tanggalDibuat: yup.date().required().transform(dateTransform),
-    tanggalDiperbaharui: yup.date().required().transform(dateTransform),
     produsenData: yup.string().required(),
-    indukData: yup.mixed().required(),
     format: yup.mixed().required(),
     linkAkses: yup.string().required(),
-    kodePilar: yup.mixed().required(),
-    kodeTujuan: yup.mixed().required(),
-    kodePNRKP: yup.mixed().required(),
-    kodePPRKP: yup.mixed().required(),
   })
   .required();
 
 const DaftarForm = ({
   daftarId,
   onSubmit,
+  userInstansi,
   dataindukOptions = [],
   instansiOptions = [],
   sdgPillerOptions = [],
@@ -65,8 +55,8 @@ const DaftarForm = ({
   }, [daftarId]);
   const isEdit = !isEmpty(storeDaftar);
   const daftar = cloneDeep(storeDaftar || {});
+  daftar.instansi = findOption(instansiOptions, userInstansi?.id);
   if (isEdit) {
-    daftar.instansi = findOption(instansiOptions, daftar.instansiId);
     daftar.jadwalPemutakhiran = findOption(jadwalPermutakhiranOptions, daftar.jadwalPemutakhiran);
     daftar.indukData = findOption(dataindukOptions, daftar.indukData);
     daftar.format = findOption(formatOptions, daftar.format ? daftar.format.split(', ') : daftar.format);
@@ -131,6 +121,7 @@ const DaftarForm = ({
             label="Instansi"
             name="instansi"
             control={control}
+            disabled
             rules={{ required: true }}
             placeholder="Select"
             options={instansiOptions}
@@ -142,7 +133,7 @@ const DaftarForm = ({
             name="nama"
             control={control}
             rules={{ required: true }}
-            error={errors.name?.message}
+            error={errors.nama?.message}
           />
           <Input
             group
@@ -185,7 +176,7 @@ const DaftarForm = ({
             rules={{ required: true }}
             placeholder="Select"
             options={jadwalPermutakhiranOptions}
-            error={errors.jadwal?.message}
+            error={errors.jadwalPemutakhiran?.message}
           />
           <DatePicker
             group

@@ -3,11 +3,11 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 const REDUCER_NAME = 'BERTA_LAYOUT_REDUCER';
 
-export const getBertaLayout = createAsyncThunk('public/v1/layout/v1', async () => {
+export const getBertaLayout = createAsyncThunk('bertaLayout/getBertaLayout', async () => {
   return CMSBerita.getBertaLayout();
 });
 
-export const updateBertalayout = createAsyncThunk('public/v1/layout/code/', async ({ code, content }) => {
+export const updateBertalayout = createAsyncThunk('beritaLayout/updateBeritaLayout', async ({ code, content }) => {
   return CMSBerita.updateBertaLayout(code, content);
 });
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
-
+import { Loader } from 'components';
 import Search from './Search';
 import BeritaUtama from './BeritaUtama';
 import BeritaUtamaLain from './BeritaUtamaLain';
@@ -10,9 +11,7 @@ import TopikPopuler from './TopikPopuler';
 import BeritaLainnya from './BeritaLainnya';
 import Populer from './Populer';
 import Tweets from './Tweets';
-import { Loader } from 'components';
-import { useSelector, useDispatch } from 'react-redux';
-import { beritaLayoutSelector, getBertaLayout, updateBertalayout } from '../CMS/BeritaLayout/reducer';
+import { beritaLayoutSelector, getBertaLayout } from 'containers/CMS/BeritaLayout/reducer';
 
 export const BeritaDiv = styled.div`
   background-color: ${(props) => (props.color ? props.color : 'white')};

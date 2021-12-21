@@ -163,7 +163,7 @@ export const updateBertaLayout = (code, content) => {
   return HTTP.put(URL, HTTP.defaultHeaders(), params)
     .then((res) => {
       if (!res || res.status !== '200 OK') {
-        return Promise.reject(res);
+        return null;
       }
       return res.content;
     })
@@ -178,6 +178,6 @@ export const updateBertaLayout = (code, content) => {
       };
     })
     .catch((err) => {
-      return Promise.reject(err);
+      return err;
     });
 };

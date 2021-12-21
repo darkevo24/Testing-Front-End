@@ -1,0 +1,61 @@
+.sdp-modal__cms-bimtek-materi {
+    .modal-dialog {
+        min-height: 100vh;
+        min-width: 580px;
+        align-items: center;
+        display: flex;
+        .modal-header {
+            border-bottom: none;
+            padding: 1rem 2rem;
+            svg {
+                path {
+                    fill: $red;
+                }
+            }
+        }
+    }
+    .wrapper-lampiran {
+        border: 1px solid $stroke;
+        min-height: 158px;
+        margin-bottom: 25px;
+        &-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            .upload {
+                margin-top: 7px;
+                margin-left: 9px;
+                background: $gray-bg;
+                padding:9px 16px;
+                border-radius: 6px;
+                font-size: 14px;
+            }
+            .cta {
+                font-size: 13px;
+                line-height: 16px;
+                color:$gray;
+                padding-right: 12px;
+            }
+        }
+        &-file {
+            display: flex;
+            flex-wrap: wrap;
+            padding-left: 9px;
+            padding-top: 20px;
+            .file {
+                border: 1px solid $stroke;
+                padding:9px 16px;
+                box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+                border-radius: 35px;
+                cursor: pointer;
+                span {
+                    padding: 0 7px;
+                }
+                svg:last-child() {
+                    height: 10px;
+                }
+            }
+        }
+    }
+}

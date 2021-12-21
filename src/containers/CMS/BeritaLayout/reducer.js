@@ -7,6 +7,10 @@ export const getBertaLayout = createAsyncThunk('public/v1/layout/v1', async () =
   return CMSBerita.getBertaLayout();
 });
 
+export const updateBertalayout = createAsyncThunk('public/v1/layout/code/', async ({ code, content }) => {
+  return CMSBerita.updateBertaLayout(code, content);
+});
+
 const INITIAL_STATE = {
   dataset: {
     error: null,
@@ -27,13 +31,29 @@ const SLICE_OBJ = createSlice({
   name: REDUCER_NAME,
   initialState: INITIAL_STATE,
   reducers: {
-    updateBeritaLaout: (state, action) => {
+    updateBeritaLaoutState: (state, action) => {
       const { payload } = action;
       return {
         ...state.dataset,
         content: {
           ...state.dataset.content,
           records: [...state.dataset.content.records, payload],
+        },
+      };
+    },
+    resetBertaLayout: (state, action) => {
+      const { payload } = action;
+
+      return {
+        ...state.dataset,
+        content: {
+          ...state.dataset.content,
+          records: [
+            {
+              code: 'kiri',
+              content: JSON.stringify(payload.content),
+            },
+          ],
         },
       };
     },
@@ -59,9 +79,26 @@ const SLICE_OBJ = createSlice({
       state.dataset.status = 'error';
       state.dataset.error = action.error.message;
     });
+
+    /**
+     * update berita layout
+     */
+    builder.addCase(updateBertalayout.pending, (state) => {
+      state.dataset.status = 'loading';
+    });
+    builder.addCase(updateBertalayout.fulfilled, (state, action) => {
+      const { content } = action.payload;
+      state.dataset.status = 'idle';
+      state.dataset.content = {
+        ...state.dataset.content,
+        records: [...state.dataset.content.records, content],
+      };
+    });
+    builder.addCase(updateBertalayout.rejected, (state) => {
+      state.dataset.status = 'error';
+    });
   },
 });
 export const beritaLayoutSelector = (state) => state.cms?.bertaLayout?.dataset;
-export const { updateBeritaLaout } = SLICE_OBJ.actions;
-
+export const { updateBeritaLaoutState, resetBertaLayout } = SLICE_OBJ.actions;
 export default SLICE_OBJ.reducer;

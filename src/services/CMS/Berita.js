@@ -154,15 +154,12 @@ export const getBertaLayout = () => {
     });
 };
 
-export const updateBertaLayout = (code, kiri, kanan, inactive) => {
-  const URL = getPublicV1Endpoint('layout');
+export const updateBertaLayout = (code, content) => {
+  const URL = getPublicV1Endpoint(`layout/code/${code}`);
   const params = {
-    content: JSON.stringify({
-      kiri: kiri,
-      kanan: kanan,
-      inactive: inactive,
-    }),
+    content: content,
   };
+  console.log(params);
   return HTTP.put(URL, HTTP.defaultHeaders(), params)
     .then((res) => {
       if (!res || res.status !== '200 OK') {

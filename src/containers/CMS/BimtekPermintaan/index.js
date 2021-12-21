@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as _ from 'lodash';
@@ -10,8 +10,7 @@ import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Search } from 'components/Icons';
 import { Table, Loader } from 'components';
-import { BimtekPermintaanDataSelector, getPermintaanData } from './reducer';
-
+import { BimtekPermintaanDataSelector, BimtekInstansi, getPermintaanData, getInstansi } from './reducer';
 import bn from 'utils/bemNames';
 
 const bem = bn('content-table');
@@ -20,20 +19,28 @@ const CMSBimtekPermintaan = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [query, setQuery] = useState('');
+  const [instansiId, setInstansiId] = useState('');
 
   const { size, loading, page, records, totalRecords } = useSelector(BimtekPermintaanDataSelector);
-  console.log(records);
+  const instansiData = useSelector(BimtekInstansi);
+
   const fetchCmsPerminataanDataset = (params) => {
     let obj = {
       page: params.page,
       q: query,
+      instansiId,
     };
     return dispatch(getPermintaanData(obj));
   };
+  const fetchInstansi = () => {
+    return dispatch(getInstansi());
+  };
+  const instansi = useMemo(() => instansiData || [], [instansiData]);
 
   useEffect(() => {
     fetchCmsPerminataanDataset({ page: page || 0 });
-  }, [query]);
+    fetchInstansi();
+  }, [query, instansiId]);
 
   const updateQuery = _.debounce((val) => {
     setQuery(val);
@@ -123,8 +130,15 @@ const CMSBimtekPermintaan = () => {
           <Col xs={5} className="d-flex align-items-center">
             <div className="mr-10">Instansi</div>
             <div className="mr-10">
-              <Form.Select aria-label="Default select example">
-                <option value="1">Badan Pusat</option>
+              <Form.Select aria-label="Default select example" onChange={(e) => setInstansiId(e.target.value)}>
+                {instansi &&
+                  instansi.map((data, index) => {
+                    return (
+                      <option key={index} value={data.id}>
+                        {data.nama}
+                      </option>
+                    );
+                  })}
               </Form.Select>
             </div>
             <InputGroup>

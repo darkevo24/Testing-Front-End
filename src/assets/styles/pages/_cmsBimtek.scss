@@ -59,3 +59,16 @@
         }
     }
 }
+
+.sdp-modal__cms-bimtek-permintaan-detail {
+    .modal-dialog {
+        max-width: 400px;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        .text-blue {
+            color: $blue;
+            font-weight: bold;
+        }
+    }
+}

@@ -25,6 +25,7 @@ const CMSPermintaanData = () => {
   const [status, setStatus] = useState('');
   const dispatch = useDispatch();
   const { size, loading, page, records, totalRecords, instansi, unitKerja } = useSelector(permintaanDataSelector);
+  console.log(page);
   const fetchDataset = (params) => {
     let obj = {
       page: params.page,

@@ -17,7 +17,8 @@
         },
         "daftarSafa": {
           "key": "daftarSafa",
-          "title": "Daftar Data Saya"
+          "title": "Daftar Data Saya",
+          "tableTitle": "Daftar Data {{instansi}}"
         }
       },
       "title": "Daftar Data",

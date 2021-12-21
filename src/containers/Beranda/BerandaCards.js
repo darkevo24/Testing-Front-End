@@ -59,7 +59,7 @@ export const BerandaCards = ({ bem, isLoggedIn, trendingData = [], popularData =
           key={`${group}-${data.id}`}
           title={truncate(data.title, { length: 60 })}
           description={truncate(data.description, { length: 80 })}
-          count={data.viewCount}
+          count={data.totalFile}
           date={moment(new Date(data.dataSetDate)).format('DD MMM YYYY')}
           views={data.viewCount}
         />

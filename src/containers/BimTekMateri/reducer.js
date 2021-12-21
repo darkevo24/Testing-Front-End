@@ -2,10 +2,9 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { apiUrls, get } from 'utils/request';
 
 export const getBimtekMateri = createAsyncThunk('bimtekMateri/getBimtekMateri', async (params) => {
-  const queryParams = Object.entries(params)
-    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-    .join('&');
-  const response = await get(`${apiUrls.bimtekMateri}?${queryParams}`);
+  const response = await get(`${apiUrls.bimtekMateri}`, {
+    query: params,
+  });
   return response?.data?.content;
 });
 

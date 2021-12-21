@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useHistory } from 'react-router-dom';
-import { setDetailBerita, setEditBerita, detailDataSelector } from '../BeritaBaru/reducer';
+import { setDetailBerita, setEditBerita, detailDataSelector, deleteBerita } from '../BeritaBaru/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { LogStatus } from 'components/Sidebars/LogStatus';
@@ -60,9 +60,19 @@ const CMSBeritaDetail = (props) => {
   };
 
   const onSubmit = (data) => {
-    setBeritaStatus(-1);
-    data.publishDate = data.publishDate ? data.publishDate + ' ' + data.publishTime : '';
+    const publishDate = data.publishDate ? data.publishDate.split(' ')[0] : '';
+    const publishTime = data.publishTime ? data.publishTime : '';
+    data.publishDate = !publishDate ? '' : !publishTime ? publishDate + ' 00:00:00' : publishDate + ' ' + publishTime;
+    // set default publishDate when publish
+    if (beritaStatus === 2) {
+      const currentDate = new Date().toISOString();
+      data.publishDate = currentDate.split('T')[0] + ' ' + currentDate.split('T')[1].split('.')[0];
+    }
+
+    data.taglineId = data.taglineId.map((tag) => tag.value);
     data.status = beritaStatus;
+    setBeritaStatus(-1); // close confirmation modal
+
     if (data.kategori.value === 'new') {
       // action create kategori
       submitNewKategori(data.kategori.label).then((res) => {
@@ -71,32 +81,41 @@ const CMSBeritaDetail = (props) => {
       });
       return;
     }
-    data.kategori = data.kategori.id;
+    data.kategori = data.kategori.value;
     submitEditBerita(data);
   };
 
   const submitEditBerita = (data) => {
-    dispatch(setEditBerita({ payload: data, id: idBerita })).then((res) => {
-      res?.payload
-        ? Notification.show({
-            type: 'secondary',
-            message: (
-              <div>
-                Berita <span className="fw-bold">{res.payload.content.judul}</span> Berhasil Ditambahkan
-              </div>
-            ),
-            icon: 'check',
-            onClose: history.goBack(),
-          })
-        : Notification.show({
-            message: (
-              <div>
-                Error <span className="fw-bold">{res.error.message}</span> Data Tidak Ditambahkan
-              </div>
-            ),
-            icon: 'cross',
-          });
-    });
+    switch (data.status) {
+      case 5:
+        // delete
+        dispatch(deleteBerita({ id: idBerita })).then((res) => notifyResponse(res));
+        break;
+      default:
+        return dispatch(setEditBerita({ payload: data, id: idBerita })).then((res) => notifyResponse(res));
+    }
+  };
+
+  const notifyResponse = (res) => {
+    res?.payload
+      ? Notification.show({
+          type: 'secondary',
+          message: (
+            <div>
+              Berita <span className="fw-bold">{res.meta.arg?.payload?.judul}</span> Berhasil Diubah
+            </div>
+          ),
+          icon: 'check',
+          onClose: history.goBack(),
+        })
+      : Notification.show({
+          message: (
+            <div>
+              Error <span className="fw-bold">{res.error?.message}</span> Data Tidak Diubah
+            </div>
+          ),
+          icon: 'cross',
+        });
   };
 
   return (

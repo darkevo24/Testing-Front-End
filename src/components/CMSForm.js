@@ -82,6 +82,7 @@ const CMSForm = ({ data, style, onSubmit }) => {
             label: kategoriRecords.find((kategori) => kategori.id === data.kategori)?.keterangan,
           }
         : null,
+      taglineId: data.tagLineList?.map((tagline) => ({ label: tagline.keterangan, value: tagline.id })),
     },
   });
 

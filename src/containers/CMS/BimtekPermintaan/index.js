@@ -22,7 +22,7 @@ const CMSBimtekPermintaan = () => {
   const [query, setQuery] = useState('');
 
   const { size, loading, page, records, totalRecords } = useSelector(BimtekPermintaanDataSelector);
-
+  console.log(records);
   const fetchCmsPerminataanDataset = (params) => {
     let obj = {
       page: params.page,
@@ -40,7 +40,7 @@ const CMSBimtekPermintaan = () => {
   }, 500);
 
   const rowClick = (data) => {
-    // history.push(`/cms/permintaan-data/${data.id}`);
+    history.push(`/cms/bimtek-permintaan/${data.id}`);
   };
 
   const getRowClass = (data) => {
@@ -51,18 +51,20 @@ const CMSBimtekPermintaan = () => {
   const columns = [
     {
       Header: 'Nama Peminta',
-      accessor: 'namaLengkap?.',
+      accessor: 'namaLengkap',
+      Cell: ({ ...rest }) => <span> {rest.row.original?.namaPeminta} </span>,
     },
     {
       Header: 'Instansi',
       accessor: 'namaInstansi',
+      Cell: ({ ...rest }) => <span> {rest.row.original?.namaInstansi} </span>,
     },
     {
       Header: 'Tanggal Permintaan',
       accessor: 'tanggalRequest',
       Cell: ({ ...rest }) => (
         <span>
-          {rest.row.original?.tanggalRequest ? moment(rest.row.original.tanggalRequest).format('DD MMMM YYYY') : '---'}
+          {rest.row.original?.tanggalRequest ? moment(rest.row.original?.tanggalRequest).format('DD MMMM YYYY') : '---'}
         </span>
       ),
     },
@@ -72,7 +74,7 @@ const CMSBimtekPermintaan = () => {
       Cell: ({ ...rest }) => (
         <span>
           {rest.row.original?.tanggalSelesaiDisetujui
-            ? moment(rest.row.original.tanggalSelesaiDisetujui).format('DD MMMM YYYY')
+            ? moment(rest.row.original?.tanggalSelesaiDisetujui).format('DD MMMM YYYY')
             : '---'}
         </span>
       ),

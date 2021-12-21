@@ -98,11 +98,11 @@ export const CardWithDetail = ({ title, dataSetUrl, description, date, views, fo
     </Box>
     <Divider />
     <FlexBoxContent>
-      <LeftBox style={{ display: 'flex', alignItems: 'center' }}>
+      {/* <LeftBox style={{ display: 'flex', alignItems: 'center' }}>
         {formats.slice(0, 2).map((value, index) => (
           <Button key={index}>{value}</Button>
         ))}
-      </LeftBox>
+      </LeftBox> */}
       <RightBox>{views} Views</RightBox>
     </FlexBoxContent>
   </FlexBox>

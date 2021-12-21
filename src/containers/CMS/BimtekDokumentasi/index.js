@@ -31,7 +31,7 @@ const CMSBimtekPermintaan = () => {
   const fetchDokumentasi = (params) => {
     let obj = {
       page: params.page,
-      q: query,
+      namaBimtek: query,
     };
     return dispatch(getDokumentasi(obj));
   };

@@ -102,15 +102,17 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
         {isDocumentation ? (
           <Form.Group className="mb-15">
             <Form.Label>Nama Bimtek</Form.Label>
-            <Form.Select>
-              {namaBimtek.map((data, index) => {
-                return (
-                  <option value={data.id} key={index}>
-                    {data.namaBimtek}
-                  </option>
-                );
-              })}
-            </Form.Select>
+            {namaBimtek && (
+              <Form.Select>
+                {namaBimtek.map((data, index) => {
+                  return (
+                    <option value={data.id} key={index}>
+                      {data.namaBimtek}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            )}
           </Form.Group>
         ) : (
           <Input

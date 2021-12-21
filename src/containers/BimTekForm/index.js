@@ -44,8 +44,6 @@ const BimTekForm = () => {
       kota: Number(kotaData),
       ekspektasiJumlahPeserta: Number(peserta),
       tagMateri: materiTagData,
-      namaBimtek: 'defg',
-      instansi: 1,
     };
 
     try {

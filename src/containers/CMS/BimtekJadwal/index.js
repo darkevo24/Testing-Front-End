@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import * as _ from 'lodash';
@@ -21,16 +21,21 @@ const bem = bn('content-table');
 const CMSBimtekPermintaan = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [query, setQuery] = useState('');
 
   const { size, loading, page, records, totalRecords } = useSelector(BimtekJadwalSelector);
   console.log(records);
-  const fetchJadwalBimtek = () => {
-    return dispatch(getJadwalBimtek());
+  const fetchJadwalBimtek = (params) => {
+    let obj = {
+      page: params.page,
+      q: query,
+    };
+    return dispatch(getJadwalBimtek(obj));
   };
 
   useEffect(() => {
-    fetchJadwalBimtek();
-  }, []);
+    fetchJadwalBimtek({ page: page || 0 });
+  }, [query]);
 
   const columns = [
     {
@@ -107,6 +112,10 @@ const CMSBimtekPermintaan = () => {
     // return 'bg-gray';
   };
 
+  const updateQuery = _.debounce((val) => {
+    setQuery(val);
+  }, 500);
+
   const tableConfig = {
     className: 'cms-permintaan-data',
     columns,
@@ -140,7 +149,12 @@ const CMSBimtekPermintaan = () => {
           </Col>
           <Col xs={4}>
             <InputGroup>
-              <Form.Control variant="normal" type="text" placeholder="Cari Bimbingan Teknis" />
+              <Form.Control
+                onChange={(e) => updateQuery(e.target.value)}
+                variant="normal"
+                type="text"
+                placeholder="Cari Bimbingan Teknis"
+              />
               <Search />
             </InputGroup>
           </Col>

@@ -21,7 +21,9 @@ export const initialState = {
 export const BIMTEK_JADWAL = 'BIMTEK_JADWAL';
 
 export const getJadwalBimtek = createAsyncThunk('permintaan-data/bimtek-jadwal', async (params) => {
-  const response = await get(apiUrls.cmsBimtekJadwal);
+  const response = await get(apiUrls.cmsBimtekJadwal, {
+    query: { page: params.page + 1, size: 10, namaBimtek: params.namaBimtek },
+  });
   return response;
 });
 

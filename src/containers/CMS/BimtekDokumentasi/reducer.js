@@ -27,7 +27,7 @@ export const BIMTEK_DOKUMENTASI = 'BIMTEK_DOKUMENTASI';
 export const getDokumentasi = createAsyncThunk('dokumentasi', async (params) => {
   console.log('params ' + params.page);
   const response = await get(apiUrls.cmsBimtekDokumentasi, {
-    query: { page: params.page + 1, size: 10, nama_bimtek: params.namaBimtek },
+    query: { page: params.page + 1, size: 10, namaBimtek: params.namaBimtek },
   });
   return response;
 });

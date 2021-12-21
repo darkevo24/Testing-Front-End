@@ -60,6 +60,12 @@ const CMSBeritaDetail = (props) => {
   };
 
   const onSubmit = (data) => {
+    // preview berita
+    if (beritaStatus === 9) {
+      window.localStorage.setItem('preview-berita', JSON.stringify(data));
+      return window.open('/berita/preview', '_blank');
+    }
+
     const publishDate = data.publishDate ? data.publishDate.split(' ')[0] : '';
     const publishTime = data.publishTime ? data.publishTime : '';
     data.publishDate = !publishDate ? '' : !publishTime ? publishDate + ' 00:00:00' : publishDate + ' ' + publishTime;
@@ -116,6 +122,12 @@ const CMSBeritaDetail = (props) => {
           ),
           icon: 'cross',
         });
+  };
+
+  const previewBerita = () => {
+    Promise.resolve()
+      .then(() => setBeritaStatus(9))
+      .then(() => submitBeritaForm());
   };
 
   return (
@@ -179,6 +191,7 @@ const CMSBeritaDetail = (props) => {
                     <Trash />
                   </Button>
                   <Button
+                    onClick={() => previewBerita()}
                     variant="light"
                     className="ml-10 bg-white border-gray-stroke sdp-text-black-dark"
                     style={{ width: '112px' }}>
@@ -198,7 +211,7 @@ const CMSBeritaDetail = (props) => {
         </Col>
         {loading && <Loader fullscreen={true} />}
       </Row>
-      {beritaStatus >= 0 ? (
+      {beritaStatus >= 0 && beritaStatus < 9 ? (
         <CMSModal
           loader={false}
           onClose={() => setBeritaStatus(-1)}

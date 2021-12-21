@@ -26,6 +26,7 @@ const BimTekForm = () => {
   const [peserta, setPeserta] = useState();
   const [materiTagData, setMateriTagData] = useState();
   const [kotaData, setKotaData] = useState();
+  const [materiError, setMateriError] = useState(true);
   useEffect(() => {
     dispatch(getBimtekJadwalTagsData());
     dispatch(getBimtekJadwalLocationsData());
@@ -38,17 +39,27 @@ const BimTekForm = () => {
     return { label: tags, value: tags };
   });
 
+  useEffect(() => {
+    materiTagData?.length > 0 && setMateriError(true);
+  }, [materiTagData]);
+
   const getFormulirData = async (e) => {
     e.preventDefault();
     const params = {
       kota: Number(kotaData),
       ekspektasiJumlahPeserta: Number(peserta),
-      tagMateri: materiTagData,
+      tagMateri: materiTagData.map((materiTags) => materiTags.value),
     };
-
-    try {
-      await post(apiUrls.addFormulirPendaftaran, params);
-    } catch (er) {}
+    if (!params?.tagMateri || params.tagMateri?.length === 0) {
+      setMateriError(false);
+    } else {
+      try {
+        await post(apiUrls.addFormulirPendaftaran, params);
+      } catch (er) {}
+      setKotaData('');
+      setPeserta('');
+      setMateriTagData([]);
+    }
   };
   const handleKotaChange = (e) => {
     setKotaData(e.target.value);
@@ -56,9 +67,8 @@ const BimTekForm = () => {
   const Ekspektasi = (e) => {
     setPeserta(e.target.value);
   };
-  const handleMateriChange = (e) => {
-    const materiBimtek = e.map((value) => value.value);
-    setMateriTagData(materiBimtek);
+  const handleMateriChange = (selected) => {
+    setMateriTagData(selected);
   };
   return (
     <BimtekLayout>
@@ -100,7 +110,7 @@ const BimTekForm = () => {
               <Form.Group as={Col} controlId="city">
                 <Form.Label>Kota Pelaksana</Form.Label>
                 <Form.Select name="kota" value={kotaData} onChange={handleKotaChange} required placeholder="Kota Pelaksana">
-                  <option>Select</option>
+                  <option></option>
                   {filterLocations.map((category, key) => (
                     <option key={key} value={category.provinsi}>
                       {category.nama}
@@ -122,7 +132,11 @@ const BimTekForm = () => {
                 classNamePrefix="select"
                 onChange={handleMateriChange}
                 name="tagMateri"
+                value={materiTagData}
               />
+              <p hidden={materiError} className="text-danger">
+                Required!!
+              </p>
             </Form.Group>
             <Button variant="info" type="submit" className="mt-3">
               Kirim Pengajuan

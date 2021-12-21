@@ -7,7 +7,13 @@ import cx from 'classnames';
 import bn from 'utils/bemNames';
 import { Loader } from 'components';
 import { useSelector, useDispatch } from 'react-redux';
-import { beritaLayoutSelector, getBertaLayout, updateBertalayout, resetBertaLayout } from './reducer';
+import {
+  beritaLayoutSelector,
+  getBertaLayout,
+  updateBertalayout,
+  updateBeritaLaoutState,
+  resetBertaLayout,
+} from './reducer';
 
 const bem = bn('berita-layout');
 var shortid = require('shortid');
@@ -85,19 +91,14 @@ const BeritaLayout = () => {
       kanan: kananRef?.current.state?.items,
       inactive: inactiveRef?.current?.state?.items,
     };
+    dispatch(updateBeritaLaoutState({ status: 'preview', content: obj }));
+
     dispatch(updateBertalayout({ code: 'kiri', content: JSON.stringify(obj) }));
+    // dispatch(updateBertalayout({ code: 'kiri', content: JSON.stringify(obj) }));
   };
 
   const batal = () => {
-    const obj = JSON.parse(window.localStorage.getItem('beritalayout'));
-    dispatch(
-      resetBertaLayout({
-        content: {
-          ...obj,
-        },
-      }),
-    );
-    // window.location.reload();
+    dispatch(resetBertaLayout());
   };
   return (
     <div className="row">

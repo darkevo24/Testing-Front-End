@@ -24,6 +24,7 @@ const INITIAL_STATE = {
       totalPages: 1,
       totalRecords: 2,
     },
+    defaultLayout: [],
   },
 };
 
@@ -33,29 +34,15 @@ const SLICE_OBJ = createSlice({
   reducers: {
     updateBeritaLaoutState: (state, action) => {
       const { payload } = action;
-      return {
-        ...state.dataset,
-        content: {
-          ...state.dataset.content,
-          records: [...state.dataset.content.records, payload],
-        },
-      };
+      state.dataset.content.records = state.dataset.content.records.map((record) => {
+        if (record.code === 'kiri') {
+          record.content = JSON.stringify(payload.content);
+        }
+        return record;
+      });
     },
     resetBertaLayout: (state, action) => {
-      const { payload } = action;
-
-      return {
-        ...state.dataset,
-        content: {
-          ...state.dataset.content,
-          records: [
-            {
-              code: 'kiri',
-              content: JSON.stringify(payload.content),
-            },
-          ],
-        },
-      };
+      state.dataset.content.records = [...state.dataset.defaultLayout];
     },
   },
   extraReducers: (builder) => {
@@ -74,6 +61,7 @@ const SLICE_OBJ = createSlice({
         totalPages: totalPages,
         totalRecords: totalRecords,
       };
+      state.dataset.defaultLayout = records;
     });
     builder.addCase(getBertaLayout.rejected, (state, action) => {
       state.dataset.status = 'error';

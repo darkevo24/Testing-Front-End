@@ -81,6 +81,7 @@ const DaftarDataProvider = ({ children }) => {
       toArray: ['indukData'],
       dates: ['tanggalDibuat', 'tanggalDiperbaharui'],
     });
+    payload.format = payload.format.join(', ');
 
     dispatch(daftarDataSubmit(payload)).then((res) => {
       const hasError = res?.type?.includes('rejected');

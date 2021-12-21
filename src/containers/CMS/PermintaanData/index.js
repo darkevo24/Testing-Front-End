@@ -28,7 +28,8 @@ const CMSPermintaanData = () => {
   const fetchDataset = (params) => {
     let obj = {
       page: params.page,
-      unitKerja: unitKerjaId,
+      unitKerjaId,
+      instansiId,
       status,
       q: query,
     };
@@ -45,7 +46,7 @@ const CMSPermintaanData = () => {
   useEffect(() => {
     fetchDataset({ page: page || 0 });
     fetchInstansiData();
-  }, [query, unitKerjaId, status]);
+  }, [query, instansiId, unitKerjaId, status]);
 
   useEffect(() => {
     fetchUnitKerja();

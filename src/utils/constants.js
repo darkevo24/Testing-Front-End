@@ -48,6 +48,8 @@ export const apiUrls = {
   katalogData: getV1Endpoint('katalog'),
   listPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
   detailPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
+  variable: getV1Endpoint('variable'),
+  katalogVariable: getV1Endpoint('variable/katalog'),
   daftarData: getV1Endpoint('katalog'),
   daftarDataList: getV1Endpoint('katalog/list'),
   daftarDataSummary: getV1Endpoint('katalog/summary'),
@@ -59,6 +61,9 @@ export const apiUrls = {
   rkpPN: getV1Endpoint('settings/key/RKP'),
   strukturData: getCMSEndpoint('bidang'),
   cmsBeritaData: getCMSEndpoint('berita'),
+  cmsBimtekJadwal: getCMSEndpoint('bimtek'),
+  cmsBimtekPermintaanData: getCMSEndpoint('bimtek/permintaan'),
+  cmsBimtekDokumentasi: getCMSEndpoint('bimtek/dokumentasi'),
   cmsAboutUs: getCMSEndpoint('tentang'),
   aboutUs: getApiEndpoint('public/tentang'),
   userBeritaPortal: getPublicV1Endpoint('berita'),
@@ -102,6 +107,8 @@ export const jadwalPermutakhiranOptions = JADWAL_PERMUTAKHIRAN.map(arrayToOption
 export const FORMATS = ['csv', 'xlsx', 'pdf', 'png/jpg/jpeg', 'docx', 'json', 'xml'];
 
 export const formatOptions = FORMATS.map(arrayToOptionsMapper());
+
+export const pengaturanAksesOptions = ['Terbuka', 'Terbatas', 'Tertutup'].map(arrayToOptionsMapper());
 
 export const TOPIC_LIST = [
   { title: 'Semua', items: [], icon: <SplitCircle /> },

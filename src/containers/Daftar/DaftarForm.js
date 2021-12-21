@@ -7,11 +7,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import cloneDeep from 'lodash/cloneDeep';
+import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import { DatePicker, Dropdown, Input } from 'components';
 import { jadwalPermutakhiranOptions, formatOptions } from 'utils/constants';
 import { dateTransform, submitForm, findOption } from 'utils/helper';
 import {
+  daftarDetailsDataSelector,
+  getDaftarDetail,
   getAddDaftarSDGTujuan,
   getAddDaftarRKPpp,
   addTujuanSDGPillerOptionsSelector,
@@ -43,7 +46,7 @@ const schema = yup
   .required();
 
 const DaftarForm = ({
-  data,
+  daftarId,
   onSubmit,
   dataindukOptions = [],
   instansiOptions = [],
@@ -53,24 +56,34 @@ const DaftarForm = ({
   const dispatch = useDispatch();
   const tujuanSDGPillerOptions = useSelector(addTujuanSDGPillerOptionsSelector);
   const rkpPPOptions = useSelector(addRkpPPOptionsSelector);
-
-  const isEdit = !isEmpty(data);
-  const daftar = cloneDeep(data || {});
+  const daftarDetails = useSelector(daftarDetailsDataSelector);
+  const storeDaftar = daftarDetails?.result[daftarId];
+  useEffect(() => {
+    if (daftarId && !storeDaftar) {
+      dispatch(getDaftarDetail(daftarId));
+    }
+  }, [daftarId]);
+  const isEdit = !isEmpty(storeDaftar);
+  const daftar = cloneDeep(storeDaftar || {});
   if (isEdit) {
-    daftar.instansi = findOption(instansiOptions, daftar.intansiId);
+    daftar.instansi = findOption(instansiOptions, daftar.instansiId);
     daftar.jadwalPemutakhiran = findOption(jadwalPermutakhiranOptions, daftar.jadwalPemutakhiran);
     daftar.indukData = findOption(dataindukOptions, daftar.indukData);
-    daftar.format = findOption(formatOptions, daftar.format);
+    daftar.format = findOption(formatOptions, daftar.format ? daftar.format.split(', ') : daftar.format);
     daftar.kodePilar = findOption(sdgPillerOptions, daftar.kodePilar);
     daftar.kodeTujuan = findOption(tujuanSDGPillerOptions, daftar.kodeTujuan);
     daftar.kodePNRKP = findOption(rkpPNOptions, daftar.kodePNRKP);
     daftar.kodePPRKP = findOption(rkpPPOptions, daftar.kodePPRKP);
+    daftar.tanggalDibuat = new Date(daftar.tanggalDibuat);
+    daftar.tanggalDiperbaharui = new Date(daftar.tanggalDibuat);
   }
   const {
     control,
     formState: { errors },
     handleSubmit,
     watch,
+    reset,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: { ...daftar },
@@ -90,6 +103,25 @@ const DaftarForm = ({
       dispatch(getAddDaftarRKPpp(watchKodePNRKP.value));
     }
   }, [watchKodePNRKP]);
+
+  useEffect(() => {
+    reset(daftar);
+  }, [storeDaftar]);
+
+  useEffect(() => {
+    const ppOption = findOption(rkpPPOptions, get(daftar, 'kodePPRKP.value', daftar.kodePPRKP));
+    if (daftar.kodePPRKP && ppOption) {
+      setValue('kodePPRKP', ppOption);
+    }
+  }, [rkpPPOptions]);
+
+  useEffect(() => {
+    const tujuanOption = findOption(tujuanSDGPillerOptions, get(daftar, 'kodeTujuan.value', daftar.kodeTujuan));
+    if (daftar.kodeTujuan && tujuanOption) {
+      setValue('kodeTujuan', tujuanOption);
+    }
+  }, [tujuanSDGPillerOptions]);
+
   return (
     <div className="daftar-form">
       <Row>

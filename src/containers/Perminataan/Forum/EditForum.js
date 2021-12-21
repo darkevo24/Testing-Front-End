@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import Modal from 'components/Modal';
@@ -6,7 +6,6 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Input from 'components/Input';
-import SingleDropDown from 'components/DropDown/SingleDropDown';
 import { DatePicker } from 'components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,14 +16,9 @@ import { getInstansiData, instansiDataSelector } from 'containers/App/reducer';
 import isEmpty from 'lodash/isEmpty';
 import { usePrevious } from 'utils/hooks';
 import moment from 'moment';
+import { SingleSelectDropdown } from 'components/DropDown/SingleSelectDropDown';
 
 export const EditForum = ({ onClose, data, initialCall }) => {
-  const [tipeData, setTipeData] = useState({ value: data?.jenisData || '', label: data?.jenisData || '' });
-  const [instansiSumber, setInstansiSumber] = useState({
-    value: data?.instansi?.id || '',
-    label: data?.instansi?.nama || '',
-  });
-  const [errorDetail, setErrorDetail] = useState({});
   const dispatch = useDispatch();
   const { newRecord, records, loading } = useSelector(perminataanDatasetSelector);
   const instansiDetail = useSelector(instansiDataSelector);
@@ -34,6 +28,7 @@ export const EditForum = ({ onClose, data, initialCall }) => {
     control,
     formState: { errors },
     handleSubmit,
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -41,8 +36,12 @@ export const EditForum = ({ onClose, data, initialCall }) => {
       tujuanPermintaan: data.tujuanPermintaan,
       tanggalTarget: new Date(data.tanggalTarget),
       tipeDataText: data?.tipeData,
+      tipeData: { value: data?.jenisData || '', label: data?.jenisData || '' },
+      instansiSumber: { value: data?.instansi?.id || '', label: data?.instansi?.nama || '' },
     },
   });
+
+  const value = watch();
 
   useEffect(() => {
     if (!instansiDetail?.result?.length) dispatch(getInstansiData());
@@ -59,13 +58,6 @@ export const EditForum = ({ onClose, data, initialCall }) => {
 
   const onSubmit = (detail) => {
     if (loading) return;
-    let errorClone = { ...errorDetail };
-    if (!tipeData?.value) errorClone = { ...errorClone, tipeData: true };
-    if (!instansiSumber?.value) errorClone = { ...errorClone, instansiSumber: true };
-    if (!isEmpty(errorClone)) {
-      setErrorDetail(errorClone);
-      return;
-    }
     dispatch(
       putPerminataanData({
         id: data.id,
@@ -73,9 +65,9 @@ export const EditForum = ({ onClose, data, initialCall }) => {
         tujuanPermintaan: detail.tujuanPermintaan,
         tanggalTarget: moment(detail.tanggalTarget).format('YYYY-MM-DD'),
         instansi: {
-          id: instansiSumber.value,
+          id: detail?.instansiSumber.value,
         },
-        jenisData: tipeData?.value !== 'Lainnya' ? tipeData.value : detail.tipeDataText,
+        jenisData: detail?.tipeData?.value !== 'Lainnya' ? detail?.tipeData.value : detail.tipeDataText,
       }),
     ).then((e) => {
       if (e?.error?.message) return;
@@ -108,18 +100,16 @@ export const EditForum = ({ onClose, data, initialCall }) => {
           />
           <Form.Group as={Col} md="12" className="mb-16">
             <label className="sdp-form-label py-8">Tipe Data</label>
-            <SingleDropDown
-              data={DROPDOWN_LIST}
-              onChange={(data = {}) => {
-                setTipeData(data);
-                delete errorDetail.tipeData;
-              }}
-              placeHolder=""
-              defaultData={tipeData}
+            <SingleSelectDropdown
+              data={DROPDOWN_LIST.map((item) => ({ value: item, label: item }))}
+              placeholder=""
+              control={control}
+              className="sdp-form-label "
+              error={errors?.tipeData?.message ? 'Tipe Data is required' : ''}
+              name="tipeData"
             />
-            {errorDetail?.tipeData && <label className="sdp-text-red py-8">Tipe Data is required</label>}
           </Form.Group>
-          {tipeData?.value === 'Lainnya' && (
+          {value.tipeData?.value === 'Lainnya' && (
             <Input
               group
               label="Add New Tipe Data"
@@ -132,17 +122,15 @@ export const EditForum = ({ onClose, data, initialCall }) => {
           )}
           <Form.Group as={Col} md="12" className="mb-16">
             <label className="sdp-form-label py-8">Instansi Sumber Data</label>
-            <SingleDropDown
+            <SingleSelectDropdown
               data={(instansiDetail?.result || []).map((item) => ({ value: item.id, label: item.nama }))}
+              placeholder=""
+              control={control}
+              className="sdp-form-label "
+              error={errors?.instansiSumber?.message ? 'Instansi Sumber Data is required' : ''}
               isLoading={instansiDetail?.loading || false}
-              onChange={(data = {}) => {
-                setInstansiSumber(data);
-                delete errorDetail.instansiData;
-              }}
-              placeHolder=""
-              defaultData={instansiSumber}
+              name="instansiSumber"
             />
-            {errorDetail?.instansiSumber && <label className="sdp-text-red py-8">Instansi Sumber Data is required</label>}
           </Form.Group>
 
           <DatePicker

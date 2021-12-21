@@ -75,7 +75,7 @@ const BimTekForm = () => {
       <Card className="bimtek-form">
         <Card.Header>Formulir Pendaftaran</Card.Header>
         <Card.Body>
-          <Form onSubmit={(e) => getFormulirData(e)}>
+          <Form onSubmit={getFormulirData}>
             <Row>
               <Form.Group as={Col} controlId="fullName">
                 <Form.Label>Nama Lengkap</Form.Label>

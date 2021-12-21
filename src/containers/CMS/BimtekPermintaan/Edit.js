@@ -139,7 +139,7 @@ const CMSBimtekPermintaanEdit = (props) => {
     );
   };
 
-  const TerkirimText = () => {
+  const DraftText = () => {
     const history = useHistory();
     const backToTable = () => {
       history.push('/cms/bimtek-permintaan');
@@ -149,7 +149,7 @@ const CMSBimtekPermintaanEdit = (props) => {
         <div className="icon-box pr-10 pl-5" onClick={backToTable}>
           <LeftChevron></LeftChevron>
         </div>
-        <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Terkirim</Row>
+        <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">{data.status}</Row>
       </div>
     );
   };
@@ -159,6 +159,7 @@ const CMSBimtekPermintaanEdit = (props) => {
       {data.status === 'PUBLISHED' ? <SuccessText /> : null}
       {data.status === 'WAITING_REQUEST_APPROVAL' ? <WaitingText /> : null}
       {data.status === 'WAITING_APPROVAL' ? <WaitingText /> : null}
+      {data.status === 'DRAFT' ? <WaitingText /> : null}
       <Row className={bem.e('section')}>
         <Col sm={9}>
           <div>

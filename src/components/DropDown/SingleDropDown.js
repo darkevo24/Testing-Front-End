@@ -55,7 +55,7 @@ export default class SingleSelectDropdown extends React.Component {
 
   handleOnChange = (selected) => {
     this.setState({ selectedValues: selected });
-    typeof this.props.onChange === 'function' && this.props.onChange(selected, this.props.type, this.props.extraProps);
+    typeof this.props.onChange === 'function' && this.props.onChange(selected);
   };
 
   render() {

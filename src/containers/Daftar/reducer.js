@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
-import { dataToOptionsMapper, dataOptionsMapperCurry, idKeteranganOptionsMapper, incrementPageParams } from 'utils/helper';
+import {
+  dataToOptionsMapper,
+  dataOptionsMapperCurry,
+  idKeteranganOptionsMapper,
+  idNameOptionsMapper,
+  incrementPageParams,
+} from 'utils/helper';
 import { apiPaginationParams, apiUrls, defaultNumberOfRows, deleteRequest, get, post, put } from 'utils/request';
 
 const defaultDaftarBodyParams = {
@@ -118,6 +124,11 @@ export const initialState = {
       ...defaultDaftarBodyParams,
       tab: 3,
     },
+  },
+  kodeReferensi: {
+    loading: false,
+    error: null,
+    result: null,
   },
   katalogVariableData: {
     loading: false,
@@ -248,6 +259,11 @@ export const downloadDaftarData = createAsyncThunk('daftarData/downloadDaftarDat
   return response?.data;
 });
 
+export const getKodeReferensi = createAsyncThunk('daftarData/getKodeReferensi', async (daftarId) => {
+  const response = await get(`${apiUrls.katalogVariable}/${daftarId}/parent`);
+  return response?.data?.content;
+});
+
 export const getKatalogVariables = createAsyncThunk('daftarData/getKatalogVariables', async ({ daftarId, filters }) => {
   const query = incrementPageParams(filters.params);
   const response = await post(`${apiUrls.katalogVariable}/${daftarId}`, filters.bodyParams, { query });
@@ -273,6 +289,10 @@ export const dataVariableSubmit = createAsyncThunk('daftarData/dataVariableSubmi
     url = `${url}/${payload.id}`;
     methodToCall = put;
   }
+  // if (isEdit) {
+  //   delete payload.id;
+  //   delete payload.idKatalog;
+  // }
   const response = await methodToCall(url, payload);
   return response;
 });
@@ -460,6 +480,19 @@ const daftarSlice = createSlice({
       state.downloadDaftarData.loading = false;
       state.downloadDaftarData.error = 'Error while downloading daftar data';
     });
+    builder.addCase(getKodeReferensi.pending, (state) => {
+      state.kodeReferensi.loading = true;
+    });
+    builder.addCase(getKodeReferensi.fulfilled, (state, action) => {
+      state.kodeReferensi.loading = false;
+      // Note: update this when arif changes the response
+      state.kodeReferensi.result = action.payload?.records;
+      state.kodeReferensi.error = '';
+    });
+    builder.addCase(getKodeReferensi.rejected, (state) => {
+      state.kodeReferensi.loading = false;
+      state.kodeReferensi.error = 'Error while fetching kodeReferensi data';
+    });
     builder.addCase(getKatalogVariables.pending, (state, action) => {
       const {
         filters: { bodyParams, params },
@@ -515,6 +548,7 @@ export const addDaftarRkpPPSelector = (state) => state.daftar.addDaftarRkpPP;
 export const tujuanSDGPillersSelector = (state) => state.daftar.tujuanSDGPillers;
 export const rkpPPSelector = (state) => state.daftar.rkpPP;
 export const katalogVariableDataSelector = (state) => state.daftar.katalogVariableData;
+export const kodeReferensiSelector = (state) => state.daftar.kodeReferensi;
 
 export const produenOptionsSelector = createSelector(produenDataSelector, dataToOptionsMapper);
 export const tujuanSDGPillerOptionsSelector = createSelector(
@@ -530,6 +564,11 @@ export const addTujuanSDGPillerOptionsSelector = createSelector(
 export const addRkpPPOptionsSelector = createSelector(
   addDaftarRkpPPSelector,
   dataOptionsMapperCurry(idKeteranganOptionsMapper),
+);
+
+export const kodeReferensiOptionsSelector = createSelector(
+  kodeReferensiSelector,
+  dataOptionsMapperCurry(idNameOptionsMapper),
 );
 
 export default daftarSlice.reducer;

@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useParams } from 'react-router-dom';
 import cloneDeep from 'lodash/cloneDeep';
+import find from 'lodash/find';
 
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import Modal from 'components/Modal';
@@ -20,6 +21,8 @@ import {
   deleteVariableData,
   getDaftarDetail,
   getKatalogVariables,
+  getKodeReferensi,
+  kodeReferensiOptionsSelector,
   katalogVariableDataSelector,
 } from 'containers/Daftar/reducer';
 import DataVariableForm, { submitDataVariableForm } from './DataVariableForm';
@@ -34,6 +37,9 @@ const DataVariable = () => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDataVariableFormVisible, setIsDataVariableFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const [kodeReferensi, setKodeReferensi] = useState(null);
+  const kodeReferensiOptions = useSelector(kodeReferensiOptionsSelector);
+
   const data = useMemo(() => result?.records || [], [result]);
 
   const fetchKatalogVariableData = (filterOverride = {}, reset = false) => {
@@ -57,11 +63,18 @@ const DataVariable = () => {
   useEffect(() => {
     if (daftarId) {
       fetchKatalogVariableData();
+      dispatch(getKodeReferensi(daftarId));
       if (!daftar) {
         dispatch(getDaftarDetail(daftarId));
       }
     }
   }, [daftarId]);
+
+  const handleKodeReferensiChange = (kodeReferensiOption) => {
+    const kodeReferensi = kodeReferensiOption?.value;
+    setKodeReferensi(kodeReferensi);
+    fetchKatalogVariableData({ bodyParams: { kodeReferensi } });
+  };
 
   const showDeleteModal = (data) => {
     setSelectedRecord(data);
@@ -87,6 +100,7 @@ const DataVariable = () => {
           icon: 'cross',
         });
       } else {
+        fetchKatalogVariableData();
         Notification.show({
           message: (
             <div>
@@ -111,7 +125,6 @@ const DataVariable = () => {
   };
 
   const handleDataVariableFormSubmit = (data) => {
-    // TODO: handle the data posted to server
     hideDataVariableFormModal();
     Notification.show({
       type: 'secondary',
@@ -125,6 +138,10 @@ const DataVariable = () => {
     const payload = prepareFormPayload(data, {
       dropdowns: ['pengaturanAkses'],
     });
+    if (kodeReferensi) {
+      payload.kodeReferensi = kodeReferensi;
+    }
+    payload.idKatalog = parseInt(daftarId);
 
     dispatch(dataVariableSubmit(payload)).then((res) => {
       const hasError = res?.type?.includes('rejected');
@@ -139,6 +156,7 @@ const DataVariable = () => {
           icon: 'cross',
         });
       }
+      fetchKatalogVariableData();
       Notification.show({
         type: 'secondary',
         message: (
@@ -150,13 +168,6 @@ const DataVariable = () => {
       });
     });
   };
-
-  const dropdownFilters = [
-    { label: 'Option 1', value: 'Option 1' },
-    { label: 'Option 2', value: 'Option 2' },
-    { label: 'Option 3', value: 'Option 3' },
-    { label: 'Option 4', value: 'Option 4' },
-  ];
 
   const columns = useMemo(
     () => [
@@ -193,6 +204,7 @@ const DataVariable = () => {
       {
         Header: 'Kode Referensi',
         accessor: 'kodeReferensi',
+        Cell: ({ cell: { value } }) => find(kodeReferensiOptions, { value })?.label || '-',
       },
       {
         id: 'actions',
@@ -222,7 +234,8 @@ const DataVariable = () => {
         <span className="sdp-text-disable mr-16">{t('sandbox.variable.reference')}</span>
         <SingleSelectDropdown
           className="wpx-300"
-          data={dropdownFilters}
+          data={kodeReferensiOptions}
+          onChange={handleKodeReferensiChange}
           placeHolder="ID UMKM"
           isLoading={false}
           noValue={true}
@@ -242,7 +255,10 @@ const DataVariable = () => {
     highlightOnHover: true,
     searchPlaceholder: t('sandbox.variable.searchPlaceholder'),
     searchButtonText: t('sandbox.variable.addVariable'),
-    onSearch: () => showDataVariableFormModal(),
+    onSearch: (filterText) => {
+      fetchKatalogVariableData({ bodyParams: { filterText } });
+    },
+    onSearchButtonPress: () => showDataVariableFormModal(),
     onPageIndexChange: (page) => {
       if (params.page !== page) {
         const params = { page };

@@ -299,18 +299,26 @@ export const prepareFormPayload = (data, fieldsMap) => {
   if (fieldsMap.dropdowns && isArray(fieldsMap.dropdowns)) {
     map(fieldsMap.dropdowns, (field) => {
       const fieldValue = get(payload, field);
-      const finalValue = isArray(fieldValue) ? map(fieldValue, 'value') : get(fieldValue, 'value');
-      set(payload, field, finalValue);
+      if (!!fieldValue) {
+        const finalValue = isArray(fieldValue) ? map(fieldValue, 'value') : get(fieldValue, 'value');
+        set(payload, field, finalValue);
+      }
     });
   }
   if (fieldsMap.toArray && isArray(fieldsMap.toArray)) {
     map(fieldsMap.toArray, (field) => {
-      set(payload, field, [get(payload, field)]);
+      const fieldValue = get(payload, field);
+      if (!!fieldValue) {
+        set(payload, field, [fieldValue]);
+      }
     });
   }
   if (fieldsMap.dates && isArray(fieldsMap.dates)) {
     map(fieldsMap.dates, (field) => {
-      set(payload, field, moment(new Date(get(payload, field))).format('YYYY-MM-DD'));
+      const fieldValue = get(payload, field);
+      if (!!fieldValue) {
+        set(payload, field, moment(new Date(fieldValue)).format('YYYY-MM-DD'));
+      }
     });
   }
   return payload;

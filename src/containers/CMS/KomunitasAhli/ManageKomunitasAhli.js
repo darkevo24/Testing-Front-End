@@ -143,7 +143,7 @@ const KomunitasAhli = () => {
 
   const debounceSearch = useRef(
     debounce((searchTerm = 'a') => {
-      getDaerahData(searchTerm.trim());
+      getDaerahData(searchTerm);
     }, 300),
   );
 
@@ -224,7 +224,7 @@ const KomunitasAhli = () => {
   const handleDataSubmit = (data) => {
     const clone = { ...errorInfo };
     if ((!id && !foto) || (id && !record?.foto?.size && !foto)) clone['foto'] = 'foto is required';
-    if ((!id && !cv) || (id && !record?.CV?.size && !cv)) clone['cv'] = 'cv is required';
+    if ((!id && !cv) || (id && !record?.cv?.size && !cv)) clone['cv'] = 'cv is required';
     if (!isEmpty(clone)) {
       setErrorInfo(clone);
       return;
@@ -453,6 +453,7 @@ const KomunitasAhli = () => {
                     + Upload new file
                   </label>
                 </div>
+                {!fotoUpload ? <label className="sdp-text-red mt-8">{errorInfo.foto}</label> : null}
               </Form.Group>
             ) : null}
             {fotoUpload ? (
@@ -482,6 +483,7 @@ const KomunitasAhli = () => {
                     + Upload new file
                   </label>
                 </div>
+                {!cvUpload ? <label className="sdp-text-red mt-8">{errorInfo.cv}</label> : null}
               </Form.Group>
             ) : null}
             {cvUpload ? (

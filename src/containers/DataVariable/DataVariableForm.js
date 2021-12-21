@@ -4,9 +4,11 @@ import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import cloneDeep from 'lodash/cloneDeep';
+import isEmpty from 'lodash/isEmpty';
 import { Dropdown, Input } from 'components';
 import { pengaturanAksesOptions } from 'utils/constants';
-import { submitForm } from 'utils/helper';
+import { submitForm, findOption } from 'utils/helper';
 
 export const dataVariableFormId = 'daftar-form-id';
 export const submitDataVariableForm = submitForm(dataVariableFormId);
@@ -21,6 +23,11 @@ const schema = yup
   .required();
 
 const DataVariableForm = ({ data, onSubmit }) => {
+  const isEdit = !isEmpty(data?.id);
+  const variable = cloneDeep(data || {});
+  if (isEdit) {
+    variable.pengaturanAkses = findOption(pengaturanAksesOptions, variable.pengaturanAkses);
+  }
   const {
     control,
     formState: { errors },
@@ -28,7 +35,7 @@ const DataVariableForm = ({ data, onSubmit }) => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      ...data,
+      ...variable,
     },
   });
 
@@ -39,17 +46,17 @@ const DataVariableForm = ({ data, onSubmit }) => {
           <Input
             group
             label="Name Data"
-            name="name"
+            name="nama"
             placeholder="Add an email or name"
             control={control}
             rules={{ required: true }}
-            error={errors.name?.message}
+            error={errors.nama?.message}
           />
           <Input
             group
             label="Konsep"
             name="konsep"
-            placeholder="Add an email or name"
+            placeholder="Konsep"
             control={control}
             rules={{ required: true }}
             error={errors.konsep?.message}
@@ -58,7 +65,7 @@ const DataVariableForm = ({ data, onSubmit }) => {
             group
             label="ID Konsep"
             name="idKonsep"
-            placeholder="Add an email or name"
+            placeholder="ID Konsep"
             control={control}
             rules={{ required: true }}
             error={errors.idKonsep?.message}
@@ -67,7 +74,7 @@ const DataVariableForm = ({ data, onSubmit }) => {
             group
             label="Definisi"
             name="definisi"
-            placeholder="Add an email or name"
+            placeholder="Definisi"
             control={control}
             as="textarea"
             rules={{ required: true }}

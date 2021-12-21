@@ -11,7 +11,7 @@ import { ReadOnlyInputs } from 'components';
 import { LeftChevron } from 'components/Icons';
 import Modal from 'components/Modal';
 import { getCMSForumSDIDataById, cmsForumSDIGetDetailSelector } from './reducer';
-import { apiUrls, deleteRequest, post } from 'utils/request';
+import { apiUrls, post } from 'utils/request';
 import { DetailHeader } from './detailHeader';
 import { getStatusClass, prefixID } from 'utils/helper';
 import RowLoader from 'components/Loader/RowLoader';

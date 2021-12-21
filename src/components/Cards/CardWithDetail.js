@@ -99,6 +99,7 @@ export const CardWithDetail = ({ title, dataSetUrl, description, date, views, fo
     <Divider />
     <FlexBoxContent>
       <LeftBox style={{ display: 'flex', alignItems: 'center' }}>
+        <h6>{count} File</h6>
         {formats.slice(0, 2).map((value, index) => (
           <Button key={index}>{value}</Button>
         ))}

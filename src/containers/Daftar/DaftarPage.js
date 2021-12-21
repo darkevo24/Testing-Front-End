@@ -13,6 +13,7 @@ import HighlightWords from 'components/HighlightWords';
 import { Search } from 'components/Icons';
 import Modal from 'components/Modal';
 import Tabs from 'components/Tabs';
+import { userInstansiSelector } from 'containers/App/reducer';
 import DaftarForm, { submitDaftarForm } from './DaftarForm';
 import DaftarTable from './DaftarTable';
 import SdgTable from './SdgTable';
@@ -44,10 +45,14 @@ const Daftar = (props) => {
   const [selectedRecord, setSelectedRecord] = useState(null);
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(t('sandbox.daftar.tabs.daftar.key'));
-  const activeTitle = t(`sandbox.daftar.tabs.${activeTab}.title`);
   const fullDaftarData = useSelector((state) => state.daftar);
   const daftarSummaryData = useSelector(daftarDataSummarySelector);
+  const userInstansi = useSelector(userInstansiSelector);
 
+  const sayaKey = t('sandbox.daftar.tabs.daftarSafa.key');
+  const activeTitle = t(`sandbox.daftar.tabs.${activeTab}.${activeTab === sayaKey ? 'tableTitle' : 'title'}`, {
+    instansi: userInstansi?.nama,
+  });
   const invokeDebounced = useThrottle(() => setDebouncedSearchText(searchText));
   useEffect(invokeDebounced, [searchText]);
 
@@ -123,7 +128,7 @@ const Daftar = (props) => {
         ),
       },
     ],
-    [tableProps],
+    [tableProps, userInstansi],
   );
 
   const breadcrumbsList = useMemo(
@@ -236,6 +241,7 @@ const Daftar = (props) => {
           rkpPNOptions={rkpPNOptions}
           sdgPillerOptions={sdgPillerOptions}
           dataindukOptions={dataindukOptions}
+          userInstansi={userInstansi}
           onSubmit={onDaftarFormSubmit}
         />
       </Modal>

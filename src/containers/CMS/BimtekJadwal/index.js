@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import * as _ from 'lodash';
+import * as setSearch from 'lodash';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
@@ -10,7 +10,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { Search } from 'components/Icons';
 import { Table } from 'components';
 import { useHistory } from 'react-router-dom';
-import { BimtekJadwalSelector, getJadwalBimtek } from './reducer';
+import { bimtekJadwalSelector, getJadwalBimtek } from './reducer';
 
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import bn from 'utils/bemNames';
@@ -23,7 +23,7 @@ const CMSBimtekPermintaan = () => {
   const dispatch = useDispatch();
   const [query, setQuery] = useState('');
 
-  const { size, loading, page, records, totalRecords } = useSelector(BimtekJadwalSelector);
+  const { size, loading, page, records, totalRecords } = useSelector(bimtekJadwalSelector);
   console.log(records);
   const fetchJadwalBimtek = (params) => {
     let obj = {
@@ -112,7 +112,7 @@ const CMSBimtekPermintaan = () => {
     // return 'bg-gray';
   };
 
-  const updateQuery = _.debounce((val) => {
+  const updateQuery = setSearch.debounce((val) => {
     setQuery(val);
   }, 500);
 

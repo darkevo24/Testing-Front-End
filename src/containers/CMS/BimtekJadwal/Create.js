@@ -15,8 +15,6 @@ const CMSJadwalBaru = () => {
 
   const onSubmit = (data) => {
     const tanggal = moment(data?.publishedDate).format('DD MMMM YYYY');
-    console.log(tanggal);
-    console.log(data);
   };
 
   return (

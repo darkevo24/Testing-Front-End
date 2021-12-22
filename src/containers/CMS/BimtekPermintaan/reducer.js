@@ -33,37 +33,36 @@ export const initialState = {
 
 export const BIMTEK_PERMINTAAN_DATA = 'BIMTEK_PERMINTAAN_DATA';
 
-export const getPermintaanData = createAsyncThunk('permintaan-data/bimtek', async (params) => {
+export const getPermintaanData = createAsyncThunk('bimtek-permintaan/getListBimtek', async (params) => {
   const response = await get(apiUrls.cmsBimtekPermintaanData, {
     query: { page: params.page + 1, size: 10, q: params.q, instansiId: params.instansiId },
   });
-  console.log(response);
   return response;
 });
 
-export const getPermintaanDataDetail = createAsyncThunk('permintaan-data/detail', async (params) => {
-  const response = await get(apiUrls.cmsBimtekPermintaanData + '/' + params.id);
+export const getPermintaanDataDetail = createAsyncThunk('bimtek-permintaan/getListBimtekDetail', async (params) => {
+  const response = await get(`${apiUrls.cmsBimtekPermintaanData}/${params.id}`);
   return response;
 });
 
-export const getListLogAktifitas = createAsyncThunk('permintaan-data/logs', async (params) => {
-  const response = await get(apiUrls.cmsBimtekLogs + '/' + params.id);
+export const getListLogAktifitas = createAsyncThunk('bimtek-permintaan/getListLogs', async (params) => {
+  const response = await get(`${apiUrls.cmsBimtekLogs}/${params.id}`);
   return response;
 });
 
-export const getInstansi = createAsyncThunk('permintaan-data-bimtek/instansi', async (params) => {
+export const getInstansi = createAsyncThunk('bimtek-permintaan-bimtek/getListInstansi', async (params) => {
   const response = await get(`${apiUrls.instansiData}`);
   console.log(response);
   return response?.data.content?.records;
 });
 
-export const postStatusApprove = createAsyncThunk('/permintaan-data-bimtek/status-approve', async (params) => {
+export const postStatusApprove = createAsyncThunk('/bimtek-permintaan/changeStatusDetailApproved', async (params) => {
   const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/ubah-status/APPROVED`, { catatan: 'test' });
   console.log(response);
   return response;
 });
 
-export const postStatusReject = createAsyncThunk('/permintaan-data-bimtek/status-approve', async (params) => {
+export const postStatusReject = createAsyncThunk('/bimtek-permintaan/changeStatusDetailRejected', async (params) => {
   const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/ubah-status/REJECTED`, { catatan: 'test' });
   return response;
 });
@@ -134,9 +133,9 @@ const BimtekPermintaanDataDetailSlice = createSlice({
   },
 });
 
-export const BimtekPermintaanDataSelector = (state) => state.cmsBimtekPermintaan.dataset;
-export const BimtekLogSelector = (state) => state.cmsBimtekPermintaan.logs;
-export const BimtekPermintaanDataDetail = (state) => state.cmsBimtekPermintaan?.detail?.records;
-export const BimtekInstansi = (state) => state.cmsBimtekPermintaan?.instansi?.records;
+export const bimtekPermintaanDataSelector = (state) => state.cmsBimtekPermintaan.dataset;
+export const bimtekLogSelector = (state) => state.cmsBimtekPermintaan.logs;
+export const bimtekPermintaanDataDetail = (state) => state.cmsBimtekPermintaan?.detail?.records;
+export const bimtekInstansi = (state) => state.cmsBimtekPermintaan?.instansi?.records;
 
 export default BimtekPermintaanDataDetailSlice.reducer;

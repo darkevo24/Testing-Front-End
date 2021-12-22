@@ -10,14 +10,14 @@ import { CMSBimtekForm } from 'components';
 import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import bn from 'utils/bemNames';
-import { BimtekJadwalDetailSelector, getJadwalBimtekDetail } from './reducer';
+import { bimtekJadwalDetailSelector, getJadwalBimtekDetail } from './reducer';
 
 const bem = bn('content-detail');
 
 const CMSJadwalDetail = (props) => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { records } = useSelector(BimtekJadwalDetailSelector);
+  const { records } = useSelector(bimtekJadwalDetailSelector);
   console.log(records);
 
   const fetchBimtekDetail = (params) => {

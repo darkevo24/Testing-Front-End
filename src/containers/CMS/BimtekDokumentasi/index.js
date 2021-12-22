@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import * as _ from 'lodash';
+import * as setSearch from 'lodash';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
@@ -10,7 +10,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { Search } from 'components/Icons';
 import { Table } from 'components';
 import { useHistory } from 'react-router-dom';
-import { BimtekDokumentasiSelector, getDokumentasi } from './reducer';
+import { bimtekDokumentasiSelector, getDokumentasi } from './reducer';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
@@ -22,9 +22,9 @@ const CMSBimtekPermintaan = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { size, loading, page, records, totalRecords } = useSelector(BimtekDokumentasiSelector);
+  const { size, loading, page, records, totalRecords } = useSelector(bimtekDokumentasiSelector);
 
-  const updateQuery = _.debounce((val) => {
+  const updateQuery = setSearch.debounce((val) => {
     setQuery(val);
   }, 500);
 

@@ -1,3 +1,10 @@
+.sdp-content-detail__cms-permintaan-detail {
+    .icon-box {
+        width: 3rem;
+        height: 3rem;
+    }
+}
+
 .sdp-modal__cms-bimtek-materi {
     .modal-dialog {
         min-height: 100vh;
@@ -66,9 +73,5 @@
         min-height: 80vh;
         display: flex;
         align-items: center;
-        .text-blue {
-            color: $blue;
-            font-weight: bold;
-        }
     }
 }

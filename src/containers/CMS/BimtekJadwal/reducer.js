@@ -20,14 +20,14 @@ export const initialState = {
 
 export const BIMTEK_JADWAL = 'BIMTEK_JADWAL';
 
-export const getJadwalBimtek = createAsyncThunk('permintaan-data/bimtek-jadwal', async (params) => {
+export const getJadwalBimtek = createAsyncThunk('bimtek-jadwal/getListJadwalBimtek', async (params) => {
   const response = await get(apiUrls.cmsBimtekJadwal, {
     query: { page: params.page + 1, size: 10, namaBimtek: params.namaBimtek },
   });
   return response;
 });
 
-export const getJadwalBimtekDetail = createAsyncThunk('permintaan-data/bimtek-jadwal-detail', async (params) => {
+export const getJadwalBimtekDetail = createAsyncThunk('bimtek-jadwal/getListJadwalDetailBimtek', async (params) => {
   const response = await get(`${apiUrls.cmsBimtekJadwal}/${params}`);
   return response;
 });
@@ -41,7 +41,6 @@ const BimtekJadwalSlice = createSlice({
       state.dataset.loading = true;
     });
     builder.addCase(getJadwalBimtek.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.dataset.loading = false;
       state.dataset.records = action.payload.data.content.records;
       state.dataset.page = action.payload.data.content.page;
@@ -56,7 +55,6 @@ const BimtekJadwalSlice = createSlice({
       state.detail.loading = true;
     });
     builder.addCase(getJadwalBimtekDetail.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.detail.loading = false;
       state.detail.records = action.payload.data?.content;
     });
@@ -67,7 +65,7 @@ const BimtekJadwalSlice = createSlice({
   },
 });
 
-export const BimtekJadwalSelector = (state) => state.cmsBimtekJadwal.dataset;
-export const BimtekJadwalDetailSelector = (state) => state.cmsBimtekJadwal.detail;
+export const bimtekJadwalSelector = (state) => state.cmsbimtekJadwal.dataset;
+export const bimtekJadwalDetailSelector = (state) => state.cmsBimtekJadwal.detail;
 
 export default BimtekJadwalSlice.reducer;

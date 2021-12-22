@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
@@ -13,13 +15,15 @@ import * as yup from 'yup';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
+import { postImageDokumentasi } from 'containers/CMS/BimtekDokumentasi/reducer';
+import { getJadwalBimtekDetail, bimtekJadwalDetailSelector } from 'containers/CMS/BimtekJadwal/reducer';
 
 const bem = bn('bimtek-form');
 
 export const jadwalBimtekFormId = 'cms-bimtek-create';
 export const SubmitJadwalBimtekForm = submitForm(jadwalBimtekFormId);
 
-const BimtekTable = ({ modal, headers, label, action }) => (
+const BimtekTable = ({ modal, headers, label, action, pembicara, materi }) => (
   <div className={bem.e('section')}>
     <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
       <div className={bem.e('header-title')}>{label}</div>
@@ -38,17 +42,51 @@ const BimtekTable = ({ modal, headers, label, action }) => (
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td className="text-center" colSpan={headers.length}>
-            Tidak ada data
-          </td>
-        </tr>
+        {pembicara &&
+          pembicara.map((data, index) => {
+            return (
+              <tr key={index}>
+                <td> {data.nama} </td>
+                <td> {data.tanggalMulai} </td>
+                <td> {data.tanggalSelesai} </td>
+              </tr>
+            );
+          })}
+        {materi &&
+          materi.map((data, index) => {
+            return (
+              <tr key={index}>
+                <td> {data.nama} </td>
+                <td> {data.fileType} </td>
+              </tr>
+            );
+          })}
       </tbody>
     </Table>
   </div>
 );
 
 const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true, isDocumentation = false, onSubmit }) => {
+  const [listFoto, setListFoto] = useState([]);
+  const [listMateri, setListMateri] = useState([]);
+  const [modalMateri, setModalMateri] = useState(false);
+  const [modalPembicara, setModalPembicara] = useState(false);
+  const [detailBimtekId, setDetailBimtekId] = useState('');
+  const dispatch = useDispatch();
+  const { records } = useSelector(bimtekJadwalDetailSelector);
+
+  useEffect(() => {
+    return dispatch(getJadwalBimtekDetail(detailBimtekId));
+  }, [detailBimtekId]);
+
+  const dataDokumentasiDetail = useMemo(() => records || {}, [records]);
+
+  console.log(dataDokumentasiDetail);
+
+  useEffect(() => {
+    reset(dataDokumentasiDetail);
+  }, [dataDokumentasiDetail]);
+
   const schema = yup
     .object({
       name: yup.string().required(),
@@ -59,17 +97,13 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
     // formState: { errors },
     handleSubmit,
     setValue,
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      ...data,
+      ...dataDokumentasiDetail,
     },
   });
-
-  const [listFoto, setListFoto] = useState([]);
-  const [listMateri, setListMateri] = useState([]);
-  const [modalMateri, setModalMateri] = useState(false);
-  const [modalPembicara, setModalPembicara] = useState(false);
 
   const addFoto = (e) => {
     let fileData = {
@@ -77,9 +111,11 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
       preview: URL.createObjectURL(e.target.files[0]),
     };
     setListFoto([...listFoto, fileData]);
+    const formData = new FormData();
+    formData.append('file', fileData.file);
     e.target.value = '';
+    return dispatch(postImageDokumentasi(fileData));
   };
-  console.log(listFoto);
   const removeFoto = (index) => {
     let selected = listFoto[index];
     setListFoto(listFoto.filter((item) => item !== selected));
@@ -103,7 +139,8 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
           <Form.Group className="mb-15">
             <Form.Label>Nama Bimtek</Form.Label>
             {namaBimtek && (
-              <Form.Select>
+              <Form.Select onChange={(e) => setDetailBimtekId(e.target.value)}>
+                <option value="0"> PILIH BIMTEK </option>
                 {namaBimtek.map((data, index) => {
                   return (
                     <option value={data.id} key={index}>
@@ -134,7 +171,16 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
             />
           </Col>
           <Col>
-            <Input disabled={disabled} group className="m-0" type="time" label="" name="publishedTime" control={control} />
+            <Input
+              disabled={disabled}
+              group
+              className="m-0"
+              type="time"
+              label=""
+              name="tanggalMulaiDisetujui"
+              onChange={() => setValue(moment(dataDokumentasiDetail?.tanggalMulaiDisetujui).format('HH:mm:ss'))}
+              control={control}
+            />
           </Col>
         </Row>
         <Row className="align-items-end">
@@ -151,14 +197,21 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
             <Input disabled={disabled} group className="m-0" type="time" label="" name="approvedTime" control={control} />
           </Col>
         </Row>
-        <Input disabled={disabled} group label="Tempat" name="place" control={control} />
+        <Input disabled={disabled} group label="Tempat" name="tempat" control={control} />
         <BimtekTable
+          pembicara={records?.pembicara}
           modal={modalAction}
           action={modalPembicaraAction}
           label="Pembicara"
           headers={['Nama Pembicara', 'Tanggal', 'Sesi', '']}
         />
-        <BimtekTable modal={modalAction} action={modalMateriAction} label="Materi" headers={['Materi', 'Lampiran', '']} />
+        <BimtekTable
+          materi={records?.materi}
+          modal={modalAction}
+          action={modalMateriAction}
+          label="Materi"
+          headers={['Materi', 'Lampiran', '']}
+        />
         {isDocumentation ? (
           <>
             <div className={bem.e('section')}>

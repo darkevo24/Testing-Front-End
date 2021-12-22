@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
 import CMSBimtekForm, { SubmitJadwalBimtekForm } from 'components/CMSBimtekForm';
-import { BimtekListSelector, getDokumentasiList } from './reducer';
+import { bimtekListSelector, getDokumentasiList } from './reducer';
 
 import bn from 'utils/bemNames';
 import cx from 'classnames';
@@ -14,9 +14,7 @@ const CMSJadwalBaru = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { records } = useSelector(BimtekListSelector);
-
-  console.log(records);
+  const { records } = useSelector(bimtekListSelector);
 
   const fetchDokumentasiList = () => {
     return dispatch(getDokumentasiList());

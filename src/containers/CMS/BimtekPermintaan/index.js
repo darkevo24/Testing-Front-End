@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import * as _ from 'lodash';
+import * as setSearch from 'lodash';
 import moment from 'moment';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -10,7 +10,7 @@ import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Search } from 'components/Icons';
 import { Table, Loader } from 'components';
-import { BimtekPermintaanDataSelector, BimtekInstansi, getPermintaanData, getInstansi } from './reducer';
+import { bimtekPermintaanDataSelector, bimtekInstansi, getPermintaanData, getInstansi } from './reducer';
 import bn from 'utils/bemNames';
 
 const bem = bn('content-table');
@@ -21,8 +21,8 @@ const CMSBimtekPermintaan = () => {
   const [query, setQuery] = useState('');
   const [instansiId, setInstansiId] = useState('');
 
-  const { size, loading, page, records, totalRecords } = useSelector(BimtekPermintaanDataSelector);
-  const instansiData = useSelector(BimtekInstansi);
+  const { size, loading, page, records, totalRecords } = useSelector(bimtekPermintaanDataSelector);
+  const instansiData = useSelector(bimtekInstansi);
 
   const fetchCmsPerminataanDataset = (params) => {
     let obj = {
@@ -39,10 +39,13 @@ const CMSBimtekPermintaan = () => {
 
   useEffect(() => {
     fetchCmsPerminataanDataset({ page: page || 0 });
-    fetchInstansi();
   }, [query, instansiId]);
 
-  const updateQuery = _.debounce((val) => {
+  useEffect(() => {
+    fetchInstansi();
+  }, []);
+
+  const updateQuery = setSearch.debounce((val) => {
     setQuery(val);
   }, 500);
 
@@ -50,21 +53,14 @@ const CMSBimtekPermintaan = () => {
     history.push(`/cms/bimtek-permintaan/${data.id}`);
   };
 
-  const getRowClass = (data) => {
-    // if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
-    // return 'bg-gray';
-  };
-
   const columns = [
     {
       Header: 'Nama Peminta',
       accessor: 'namaLengkap',
-      Cell: ({ ...rest }) => <span> {rest.row.original?.namaPeminta} </span>,
     },
     {
       Header: 'Instansi',
       accessor: 'namaInstansi',
-      Cell: ({ ...rest }) => <span> {rest.row.original?.namaInstansi} </span>,
     },
     {
       Header: 'Tanggal Permintaan',
@@ -113,7 +109,6 @@ const CMSBimtekPermintaan = () => {
     currentPage: page,
     manualPagination: true,
     onRowClick: rowClick,
-    rowClass: getRowClass,
     onPageIndexChange: (currentPage) => {
       if (currentPage !== page) {
         fetchCmsPerminataanDataset({ page: currentPage });

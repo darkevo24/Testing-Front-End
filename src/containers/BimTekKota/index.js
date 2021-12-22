@@ -8,56 +8,58 @@ import { useForm } from 'react-hook-form';
 import { Dropdown } from 'components';
 import { ReactComponent as LocationTag } from 'assets/location-tag.svg';
 import { Search, NoPerminataanData } from 'components/Icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { bimtekDokumentasiDatasetSelector, getBimtekDokumentasi } from './reducer';
+import moment from 'moment';
+import { bimtekJadwalLocationsDatasetSelector, getBimtekJadwalLocationsData } from 'containers/BimTekJadwal/reducer';
+import './bimtekKota.scss';
 
 const BimtekKota = () => {
-  const { control } = useForm({});
+  const { control, watch } = useForm({});
+  const dispatch = useDispatch();
+  const watchNamaBimtek = watch('filterName');
+  const [filterNamaBimtek, setFilterNamaBimtek] = useState();
 
-  const dataKota = [
-    {
-      id: 1,
-      namaFile: 'Pendahuluan dan Latarbelakang',
-      namaBimtek: 'Perencanaan dan Program Bimbingan Teknis',
-      tanggal: '2021-08-09',
-      lokasi: 'Jakarta Selatan',
-      urlFile: '',
-    },
-    {
-      id: 2,
-      namaFile: 'Materi Pokok',
-      namaBimtek: 'Perencanaan dan Program Bimbingan Teknis',
-      tanggal: '2021-08-09',
-      lokasi: 'Jakarta Selatan',
-      urlFile: '',
-    },
-    {
-      id: 2,
-      namaFile: 'Penutupan',
-      namaBimtek: 'Perencanaan dan Program Bimbingan Teknis',
-      tanggal: '2021-08-09',
-      lokasi: 'Jakarta Selatan',
-      urlFile: '',
-    },
-    {
-      id: 3,
-      namaFile: 'Penutupan',
-      namaBimtek: 'Perencanaan dan Program Bimbingan Teknis',
-      tanggal: '2021-08-09',
-      lokasi: 'Jakarta Selatan',
-      urlFile: '',
-    },
-  ];
+  useEffect(() => {
+    dispatch(getBimtekDokumentasi());
+    dispatch(getBimtekJadwalLocationsData());
+  }, []);
 
+  useEffect(() => {
+    const params = {
+      ...(filterNamaBimtek ? { nama: filterNamaBimtek } : {}),
+      ...(watchNamaBimtek?.value ? { kota: watchNamaBimtek?.value } : {}),
+    };
+    dispatch(getBimtekDokumentasi(params));
+  }, [watchNamaBimtek, filterNamaBimtek]);
+  const { records: dataKota } = useSelector(bimtekDokumentasiDatasetSelector);
+  const kotaFilterData = useSelector(bimtekJadwalLocationsDatasetSelector);
+
+  const changeNamaBimtek = (e) => {
+    setFilterNamaBimtek(e.target.value);
+  };
   return (
     <BimtekLayout className="sdp-bimtek-kota">
       <div className="fw-bold fs-32 mb-12">Kota Pelaksana</div>
       <Row className="mb-3">
         <Col xs={3}>
-          <Dropdown name="filterName" control={control} placeholder="Kota" />
+          <Dropdown
+            name="filterName"
+            control={control}
+            placeholder="Kota"
+            options={kotaFilterData.map((kota) => ({
+              value: kota.id,
+              label: kota.nama,
+            }))}
+          />
         </Col>
         <Col xs={5}>
           <InputGroup>
-            <Form.Control variant="normal" type="text" placeholder="Cari" />
-            <Search />
+            <Form.Control variant="normal" type="text" placeholder="Cari" onChange={changeNamaBimtek} />
+            <div className="searchNamaBimtek">
+              <Search />
+            </div>
           </InputGroup>
         </Col>
       </Row>
@@ -70,7 +72,7 @@ const BimtekKota = () => {
           </div>
         ) : null}
         {dataKota.map((item, key) => (
-          <KotaItem key={key} nama={item.namaFile} tanggal={item.tanggal} lokasi={item.lokasi} />
+          <KotaItem key={key} nama={item.namaBimtek} tanggal={moment(item.tanggal).format('YYYY-MM-D')} lokasi={item.kota} />
         ))}
       </Row>
     </BimtekLayout>

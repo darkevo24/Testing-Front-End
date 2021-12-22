@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getListBerita, beritaCmsListSelector } from '../BeritaBaru/reducer';
+import { getListBerita, beritaCmsListSelector, setPreviewBerita } from '../BeritaBaru/reducer';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -64,7 +64,10 @@ const CMSBerita = () => {
         <div className={cx(bem.e('title'), 'mb-3')}>Berita</div>
         <Row className="justify-content-between">
           <Col xs={2}>
-            <Button variant="info" className="text-center" onClick={() => history.push('/cms/berita-baru')}>
+            <Button
+              variant="info"
+              className="text-center"
+              onClick={() => dispatch(setPreviewBerita({})).then(() => history.push('/cms/berita-baru'))}>
               <Plus /> Buat Berita
             </Button>
           </Col>

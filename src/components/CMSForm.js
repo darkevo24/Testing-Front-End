@@ -76,12 +76,14 @@ const CMSForm = ({ data, style, onSubmit }) => {
     resolver: yupResolver(schema),
     defaultValues: {
       ...data,
-      kategori: data.kategori
-        ? {
+      kategori: !data.kategori
+        ? null
+        : data.kategori.value
+        ? data.kategori
+        : {
             value: data.kategori,
             label: kategoriRecords.find((kategori) => kategori.id === data.kategori)?.keterangan,
-          }
-        : null,
+          },
       taglineId: data.tagLineList?.map((tagline) => ({ label: tagline.keterangan, value: tagline.id })),
     },
   });

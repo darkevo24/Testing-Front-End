@@ -64,6 +64,10 @@ export const deleteBerita = createAsyncThunk('cms/deleteBerita', async (params) 
   return response?.data;
 });
 
+export const setPreviewBerita = createAsyncThunk('cms/setPreviewBerita', async (params) => {
+  return params;
+});
+
 const beritaCmsSlice = createSlice({
   name: BERITA_CMS_SLICE,
   initialState,
@@ -133,6 +137,10 @@ const beritaCmsSlice = createSlice({
     builder.addCase(deleteBerita.rejected, (state, action) => {
       state.detaildataSet.loading = false;
       state.detaildataSet.error = action.error.message;
+    });
+
+    builder.addCase(setPreviewBerita.fulfilled, (state, action) => {
+      state.detaildataSet.record = action.payload;
     });
   },
 });

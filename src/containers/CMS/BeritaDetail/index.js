@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useHistory } from 'react-router-dom';
-import { setDetailBerita, setEditBerita, detailDataSelector, deleteBerita } from '../BeritaBaru/reducer';
+import { setDetailBerita, setEditBerita, detailDataSelector, deleteBerita, setPreviewBerita } from '../BeritaBaru/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { LogStatus } from 'components/Sidebars/LogStatus';
@@ -25,7 +25,9 @@ const CMSBeritaDetail = (props) => {
   };
 
   useEffect(() => {
-    fetchData({ id: idBerita });
+    if (record.id?.toString() !== idBerita) {
+      fetchData({ id: idBerita });
+    }
   }, [idBerita]);
 
   const [beritaStatus, setBeritaStatus] = useState(record);
@@ -62,8 +64,7 @@ const CMSBeritaDetail = (props) => {
   const onSubmit = (data) => {
     // preview berita
     if (beritaStatus === 9) {
-      window.localStorage.setItem('preview-berita', JSON.stringify(data));
-      return window.open('/berita/preview', '_blank');
+      return dispatch(setPreviewBerita(data)).then(() => history.push('/berita/preview'));
     }
 
     const publishDate = data.publishDate ? data.publishDate.split(' ')[0] : '';

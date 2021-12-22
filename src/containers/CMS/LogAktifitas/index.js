@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import moment from 'moment';
+import cx from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -9,24 +11,55 @@ import * as yup from 'yup';
 import { DatePicker } from 'components';
 import { Search, ModalAlertDanger } from 'components/Icons';
 import { Modal, Table } from 'components';
+import TableLoader from 'components/Loader/TableLoader';
 import bn from 'utils/bemNames';
+import { getCMSLogActifitasData, cmsLogAktifitasDataSelector } from './reducer';
 
 const bem = bn('log-activity');
 
 const schema = yup
   .object({
-    title: yup.string().required(),
-    category: yup.mixed().required(),
-    thumbnail: yup.mixed().required(),
+    search: yup.string().trim().max(100),
+    startDate: yup.string(),
+    endDate: yup.string(),
   })
   .required();
 
 const LogActivity = () => {
+  const dispatch = useDispatch();
+
+  const { q, startDate, endDate, size, loading, page, records, totalRecords, totalPages } =
+    useSelector(cmsLogAktifitasDataSelector);
+
+  useEffect(() => {
+    handleAPICall({
+      page: page,
+      ...(q && { q }),
+      ...(startDate && { startDate: startDate }),
+      ...(endDate && { endDate: endDate }),
+    });
+  }, []);
+
+  const handleAPICall = (params) => {
+    dispatch(getCMSLogActifitasData(params));
+  };
+
+  const handleSearch = (value = '') => {
+    handleAPICall({
+      page: page,
+      q: value.trim(),
+      ...(startDate && { startDate: startDate }),
+      ...(endDate && { endDate: endDate }),
+    });
+  };
+
   const [modalProfile, setModalProfile] = useState(false);
   const {
     control,
     formState: { errors },
     handleSubmit,
+    getValues,
+    getFieldValue,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -38,79 +71,6 @@ const LogActivity = () => {
     // if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
     // return 'bg-gray';
   };
-
-  const LIST_TABLE = [
-    {
-      id_user: 'ibrohim@gmail.com',
-      ip: '120.722.322',
-      time: '22/10/2021',
-      activity: 'Membuat permintaan data baru PD00021',
-      status: 'Berhasil',
-    },
-    {
-      id_user: 'ibrohim@gmail.com',
-      ip: '120.722.322',
-      time: '22/10/2021',
-      activity: 'Membuat permintaan data baru PD00021',
-      status: 'Berhasil',
-    },
-    {
-      id_user: 'ibrohim@gmail.com',
-      ip: '120.722.322',
-      time: '22/10/2021',
-      activity: 'Membuat permintaan data baru PD00021',
-      status: 'Berhasil',
-    },
-    {
-      id_user: 'ibrohim@gmail.com',
-      ip: '120.722.322',
-      time: new Date().getTime(),
-      activity: 'Membuat permintaan data baru PD00021',
-      status: 'Berhasil',
-    },
-    {
-      id_user: 'ibrohim@gmail.com',
-      ip: '120.722.322',
-      time: new Date().getTime(),
-      activity: 'Membuat permintaan data baru PD00021',
-      status: 'Berhasil',
-    },
-    {
-      id_user: 'ibrohim@gmail.com',
-      ip: '120.722.322',
-      time: new Date().getTime(),
-      activity: 'Membuat permintaan data baru PD00021',
-      status: 'Berhasil',
-    },
-    {
-      id_user: 'ibrohim@gmail.com',
-      ip: '120.722.322',
-      time: new Date().getTime(),
-      activity: 'Membuat permintaan data baru PD00021',
-      status: 'Error',
-    },
-    {
-      id_user: 'ibrohim@gmail.com',
-      ip: '120.722.322',
-      time: new Date().getTime(),
-      activity: 'Membuat permintaan data baru PD00021',
-      status: 'Gagal',
-    },
-    {
-      id_user: 'ibrohim@gmail.com',
-      ip: '120.722.322',
-      time: new Date().getTime(),
-      activity: 'Membuat permintaan data baru PD00021',
-      status: 'Error',
-    },
-    {
-      id_user: 'ibrohim@gmail.com',
-      ip: '120.722.322',
-      time: new Date().getTime(),
-      activity: 'Membuat permintaan data baru PD00021',
-      status: 'Gagal',
-    },
-  ];
 
   const columns = [
     {
@@ -132,25 +92,40 @@ const LogActivity = () => {
       Header: 'Activity',
       accessor: 'activity',
     },
+    {
+      Header: 'Status',
+      accessor: 'status',
+      Cell: ({ ...rest }) => {
+        return (
+          <span
+            className={cx({
+              'sdp-text-red': rest.row.original.status === 'Error' || rest.row.original.status === 'Gagal',
+            })}>
+            {rest.row.original.status}
+          </span>
+        );
+      },
+    },
   ];
 
   const tableConfig = {
     className: 'cms-table-log',
     columns,
-    data: LIST_TABLE,
+    data: records,
     title: '',
     showSearch: false,
     onSearch: () => {},
     variant: 'link',
-    totalCount: 10,
-    pageSize: 10,
-    currentPage: 1,
+    totalCount: totalRecords || null,
+    pageCount: totalPages || null,
+    pageSize: size,
+    currentPage: page,
     manualPagination: true,
     onRowClick: rowClick,
     rowClass: getRowClass,
     onPageIndexChange: (currentPage) => {
-      if (currentPage !== 1) {
-        // fetchDataset({ page: currentPage });
+      if (currentPage !== page) {
+        handleAPICall({ page: currentPage, q, startDate, endDate });
       }
     },
   };
@@ -177,10 +152,10 @@ const LogActivity = () => {
               <p>Awal</p>
               <DatePicker
                 className="cms-log-activity"
-                name="publishedDate"
+                name="startDate"
                 control={control}
                 rules={{ required: false }}
-                error={errors.publishedDate?.message}
+                error={errors.startDate?.message}
                 arrow={true}
               />
             </div>
@@ -188,20 +163,25 @@ const LogActivity = () => {
               <p>Akhir</p>
               <DatePicker
                 className="cms-log-activity"
-                name="publishedDate"
+                name="endDate"
                 control={control}
                 rules={{ required: false }}
-                error={errors.publishedDate?.message}
+                error={errors.endDate?.message}
                 arrow={true}
               />
             </div>
             <InputGroup>
-              <Form.Control variant="normal" type="text" placeholder="Pencarian" />
+              <Form.Control
+                variant="normal"
+                type="text"
+                placeholder="Pencarian"
+                onChange={(e) => handleSearch(e.target.value)}
+              />
               <Search />
             </InputGroup>
           </div>
         </div>
-        <Table {...tableConfig} />
+        {loading ? <TableLoader speed={2} width={'100%'} height={550} /> : <Table {...tableConfig} />}
       </div>
       <Modal className="cms-log-activity" showHeader={false} visible={modalProfile} onClose={() => setModalProfile(false)}>
         <div className="alert">

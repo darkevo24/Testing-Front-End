@@ -17,6 +17,7 @@ import bn from 'utils/bemNames';
 import cx from 'classnames';
 import { postImageDokumentasi } from 'containers/CMS/BimtekDokumentasi/reducer';
 import { getJadwalBimtekDetail, bimtekJadwalDetailSelector } from 'containers/CMS/BimtekJadwal/reducer';
+import { apiUrls, post } from 'utils/request';
 
 const bem = bn('bimtek-form');
 
@@ -66,22 +67,34 @@ const BimtekTable = ({ modal, headers, label, action, pembicara, materi }) => (
   </div>
 );
 
-const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true, isDocumentation = false, onSubmit }) => {
+const CMSBimtekForm = ({
+  data,
+  disabled = false,
+  namaBimtek,
+  modalAction = true,
+  isDocumentation = false,
+  onSubmit,
+  createDokumentasi,
+}) => {
   const [listFoto, setListFoto] = useState([]);
+  const [foto, setFoto] = useState([]);
+  const [dokumentasi, setDokumentasi] = useState('');
+  const [urlVideo, setUrlVideo] = useState('');
   const [listMateri, setListMateri] = useState([]);
   const [modalMateri, setModalMateri] = useState(false);
   const [modalPembicara, setModalPembicara] = useState(false);
   const [detailBimtekId, setDetailBimtekId] = useState('');
   const dispatch = useDispatch();
   const { records } = useSelector(bimtekJadwalDetailSelector);
-
+  console.log(dokumentasi);
   useEffect(() => {
     return dispatch(getJadwalBimtekDetail(detailBimtekId));
   }, [detailBimtekId]);
 
   const dataDokumentasiDetail = useMemo(() => records || {}, [records]);
 
-  console.log(dataDokumentasiDetail);
+  // console.log(dataDokumentasiDetail);
+  // console.log(moment(dataDokumentasiDetail?.tanggalMulaiDisetujui).format('HH:mm'));
 
   useEffect(() => {
     reset(dataDokumentasiDetail);
@@ -102,20 +115,36 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
     resolver: yupResolver(schema),
     defaultValues: {
       ...dataDokumentasiDetail,
+      listFoto,
+      dokumentasi,
+      urlVideo,
     },
   });
 
-  const addFoto = (e) => {
-    let fileData = {
-      file: e.target.files[0],
-      preview: URL.createObjectURL(e.target.files[0]),
-    };
-    setListFoto([...listFoto, fileData]);
-    const formData = new FormData();
-    formData.append('file', fileData.file);
-    e.target.value = '';
-    return dispatch(postImageDokumentasi(fileData));
+  const addFoto = async (e) => {
+    // let fileData = {
+    //   file: e.target.files[0],
+    //   preview: URL.createObjectURL(e.target.files[0]),
+    // };
+    // setListFoto([...listFoto, fileData]);
+    // e.target.value = '';
+    // console.log(fileData);
+    console.log(e.target.files[0]);
+    console.log(e);
+    try {
+      let fotoFormData = new FormData();
+      fotoFormData.append('file', e.target.files[0]);
+      await post(apiUrls.uploadFoto, fotoFormData, { headers: { 'Content-Type': undefined } }).then((res) => {
+        console.log(res);
+        setFoto([...foto, res.data]);
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
+
+  console.log(foto);
+
   const removeFoto = (index) => {
     let selected = listFoto[index];
     setListFoto(listFoto.filter((item) => item !== selected));
@@ -178,7 +207,6 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
               type="time"
               label=""
               name="tanggalMulaiDisetujui"
-              onChange={() => setValue(moment(dataDokumentasiDetail?.tanggalMulaiDisetujui).format('HH:mm:ss'))}
               control={control}
             />
           </Col>
@@ -222,9 +250,9 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
                 </div>
               </div>
               <Row>
-                {listFoto.map((foto, index) => (
+                {foto.map((foto, index) => (
                   <Col key={index} sm={4} className="mb-12">
-                    <div className={bem.e('doc-foto')} style={{ backgroundImage: "url('" + foto.preview + "')" }}>
+                    <div className={bem.e('doc-foto')} style={{ backgroundImage: "url('" + foto.location + "')" }}>
                       <button className="sdp-text-white" onClick={() => removeFoto(index)}>
                         Hapus Foto
                       </button>
@@ -237,7 +265,7 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
             <Input group label="Link Video" name="url_video" control={control} />
             <Form.Group>
               <Form.Label>Isi Berita</Form.Label>
-              <TextEditor />
+              <TextEditor onChange={(e) => setDokumentasi(e)} />
             </Form.Group>
           </>
         ) : null}

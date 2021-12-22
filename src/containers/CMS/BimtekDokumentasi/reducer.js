@@ -52,7 +52,7 @@ export const postImageDokumentasi = createAsyncThunk('bimtek-dokumentasi/postIma
   //     },
   //   ],
   // });
-  // console.log(params);
+  console.log(params);
   // return response;
 });
 

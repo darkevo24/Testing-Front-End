@@ -14,6 +14,7 @@ const CMSJadwalBaru = () => {
   const history = useHistory();
 
   const onSubmit = (data) => {
+    console.log(data);
     const tanggal = moment(data?.publishedDate).format('DD MMMM YYYY');
   };
 

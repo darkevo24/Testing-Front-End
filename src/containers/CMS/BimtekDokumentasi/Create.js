@@ -24,6 +24,15 @@ const CMSJadwalBaru = () => {
     fetchDokumentasiList();
   }, []);
 
+  const triggerPost = (data) => {
+    console.log(data);
+  };
+
+  const onSubmit = (data) => {
+    console.log(data);
+    // const tanggal = moment(data?.publishedDate).format('DD MMMM YYYY');
+  };
+
   return (
     <div className={bem.e('section')}>
       <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
@@ -39,7 +48,13 @@ const CMSJadwalBaru = () => {
         <div>Saved 1 minutes ago Draft</div>
       </div>
       <div className={bem.e('body')}>
-        <CMSBimtekForm disabled={true} isDocumentation={true} namaBimtek={records} />
+        <CMSBimtekForm
+          disabled={true}
+          isDocumentation={true}
+          namaBimtek={records}
+          createDokumentasi={triggerPost}
+          onSubmit={onSubmit}
+        />
       </div>
     </div>
   );

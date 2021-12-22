@@ -67,7 +67,7 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
   });
 
   const [listFoto, setListFoto] = useState([]);
-  const [listMateri, setListMateri] = useState([]);
+  // const [listMateri, setListMateri] = useState([]);
   const [modalMateri, setModalMateri] = useState(false);
   const [modalPembicara, setModalPembicara] = useState(false);
 
@@ -79,7 +79,7 @@ const CMSBimtekForm = ({ data, disabled = false, namaBimtek, modalAction = true,
     setListFoto([...listFoto, fileData]);
     e.target.value = '';
   };
-  console.log(listFoto);
+
   const removeFoto = (index) => {
     let selected = listFoto[index];
     setListFoto(listFoto.filter((item) => item !== selected));

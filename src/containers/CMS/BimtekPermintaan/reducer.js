@@ -17,9 +17,7 @@ export const initialState = {
 export const BIMTEK_PERMINTAAN_DATA = 'BIMTEK_PERMINTAAN_DATA';
 
 export const getPermintaanData = createAsyncThunk('permintaan-data/bimtek', async (params) => {
-  const response = await get(apiUrls.cmsBimtekPermintaanData, { query: { page: params.page + 1, size: 10, q: params.q } });
-  console.log(response);
-  return response;
+  return await get(apiUrls.cmsBimtekPermintaanData, { query: { page: params.page + 1, size: 10, q: params.q } });
 });
 
 const BimtekPermintaanDataDetailSlice = createSlice({
@@ -31,7 +29,6 @@ const BimtekPermintaanDataDetailSlice = createSlice({
       state.dataset.loading = true;
     });
     builder.addCase(getPermintaanData.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.dataset.loading = false;
       state.dataset.records = action.payload.data.content.records;
       state.dataset.page = action.payload.data.content.page;

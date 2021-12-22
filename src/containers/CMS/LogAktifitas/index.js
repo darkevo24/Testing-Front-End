@@ -26,7 +26,7 @@ const LogActivity = () => {
   const {
     control,
     formState: { errors },
-    handleSubmit,
+    // handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),
   });

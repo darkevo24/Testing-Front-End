@@ -17,7 +17,6 @@ const CMSDokumentasiDetail = (props) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { records } = useSelector(BimtekDokumentasiDetailSelector);
-  console.log(records);
   const fetchDokumentasiDetail = (params) => {
     return dispatch(getDokumentasiDetail(params));
   };

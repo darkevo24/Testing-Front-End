@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import * as _ from 'lodash';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
@@ -22,8 +21,7 @@ const CMSBimtekPermintaan = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { size, loading, page, records, totalRecords } = useSelector(BimtekJadwalSelector);
-  console.log(records);
+  const { size, page, records, totalRecords } = useSelector(BimtekJadwalSelector);
   const fetchJadwalBimtek = () => {
     return dispatch(getJadwalBimtek());
   };

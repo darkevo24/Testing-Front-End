@@ -5,7 +5,7 @@ import { ForumSearch } from './ForumSearch';
 import { useDispatch, useSelector } from 'react-redux';
 import { forumSDIDatasetSelector, getForumSDIData } from './reducer';
 import { getCMSForumSDITags } from '../CMS/ForumSDI/reducer';
-import RowLoader from '../../components/Loader/RowLoader';
+import RowLoader from 'components/Loader/RowLoader';
 
 export const ForumSDI = () => {
   const dispatch = useDispatch();
@@ -47,13 +47,13 @@ export const ForumSDI = () => {
         {loading ? (
           <RowLoader />
         ) : (
-          records.map((item) => (
-            <div className="border rounded-3">
+          records.map((item, index) => (
+            <div className="border rounded-3" key={`topic-${index}`}>
               <div className="border p-15">
                 <div className="rounded-pill border-0 btn sdp-link-blue bg-blue-light">{item.topik}</div>
               </div>
-              {item.data.map((dataItem) => (
-                <div className="bg-secondary d-flex p-8">
+              {item.data.map((dataItem, dataIndex) => (
+                <div className="bg-secondary d-flex p-8" key={`tag-${dataIndex}`}>
                   <Card className="m-8" style={{ width: '300px', height: '115px' }}>
                     <Card.Title className="h6 fw-600">{dataItem.judul}</Card.Title>
                     <Card.Body className="d-flex pt-10 pl-0">

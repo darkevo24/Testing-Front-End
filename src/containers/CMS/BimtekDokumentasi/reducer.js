@@ -25,19 +25,15 @@ export const initialState = {
 export const BIMTEK_DOKUMENTASI = 'BIMTEK_DOKUMENTASI';
 
 export const getDokumentasi = createAsyncThunk('dokumentasi', async (params) => {
-  const response = await get(apiUrls.cmsBimtekDokumentasi, { query: { page: params.page + 1, size: 10, q: params.q } });
-  return response;
+  return await get(apiUrls.cmsBimtekDokumentasi, { query: { page: params.page + 1, size: 10, q: params.q } });
 });
 
 export const getDokumentasiDetail = createAsyncThunk('dokumentasi/detail', async (params) => {
-  const response = await get(`${apiUrls.cmsBimtekDokumentasi}/${params}`);
-  return response;
+  return await get(`${apiUrls.cmsBimtekDokumentasi}/${params}`);
 });
 
 export const getDokumentasiList = createAsyncThunk('dokumentasi/list', async (params) => {
-  const response = await get(apiUrls.cmsBimtekJadwal);
-  console.log(response);
-  return response;
+  return await get(apiUrls.cmsBimtekJadwal);
 });
 
 const BimtekDokumentasiSlice = createSlice({

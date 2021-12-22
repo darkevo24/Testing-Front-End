@@ -22,7 +22,7 @@ const CMSBimtekPermintaan = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { size, loading, page, records, totalRecords } = useSelector(BimtekDokumentasiSelector);
+  const { size, page, records, totalRecords } = useSelector(BimtekDokumentasiSelector);
 
   const updateQuery = _.debounce((val) => {
     setQuery(val);

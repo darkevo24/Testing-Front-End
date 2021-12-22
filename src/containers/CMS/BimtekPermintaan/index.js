@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as _ from 'lodash';
 import moment from 'moment';
@@ -9,7 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Search } from 'components/Icons';
-import { Table, Loader } from 'components';
+import { Table } from 'components';
 import { BimtekPermintaanDataSelector, getPermintaanData } from './reducer';
 
 import bn from 'utils/bemNames';
@@ -17,11 +16,10 @@ import bn from 'utils/bemNames';
 const bem = bn('content-table');
 
 const CMSBimtekPermintaan = () => {
-  const history = useHistory();
   const dispatch = useDispatch();
   const [query, setQuery] = useState('');
 
-  const { size, loading, page, records, totalRecords } = useSelector(BimtekPermintaanDataSelector);
+  const { size, page, records, totalRecords } = useSelector(BimtekPermintaanDataSelector);
 
   const fetchCmsPerminataanDataset = (params) => {
     let obj = {

@@ -1,11 +1,5 @@
 import React from 'react';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import { CMSTopDetail } from 'components';
-import bn from 'utils/bemNames';
 import moment from 'moment';
-
-const bem = bn('content-detail');
 
 const CMSBeritaPreview = () => {
   const berita = JSON.parse(window.localStorage.getItem('preview-berita'));
@@ -15,8 +9,8 @@ const CMSBeritaPreview = () => {
       <div className="fs-32 fw-600 mb-24">{berita?.judul}</div>
       <div className="fs-16 mb-16">{berita?.createdBy}</div>
       <div className="sdp-text-disable mb-24 fs-14">{formatDate(berita?.publishDate)}</div>
-      <img className="w-100" src={berita?.mainImage}></img>
-      <div className="fs-18 mt-32" dangerouslySetInnerHTML={{ __html: berita?.content }}></div>
+      <img className="w-100" src={berita?.mainImage} alt="no icon" />
+      <div className="fs-18 mt-32" dangerouslySetInnerHTML={{ __html: berita?.content }} />
     </div>
   );
 };

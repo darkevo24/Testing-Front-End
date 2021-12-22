@@ -163,6 +163,7 @@ const KomunitasAhliPage = () => {
                       if (!kontakDetail && kontak_item.tipe === 'email') {
                         return (
                           <div
+                            key={kontak_item.tipe + item.id}
                             className="sdp-kontak br-5 border-gray-stroke p-10 sdp-text-grey-dark mr-8 cursor-pointer"
                             onClick={() => window.open(`mailto:${kontak_item.value}`, '_blank')}>
                             <MailSvg variant="danger" />

@@ -85,9 +85,14 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
     [],
   );
 
-  const renderDataSet = (group) => (data) => {
+  const renderDataSet = (group) => (data, index) => {
     return (
-      <Col xs={12} sm={6} lg={3} className={cx('d-flex justify-content-center', bem.e('card-box'))}>
+      <Col
+        key={`CardWithDetail-${group}-${index}`}
+        xs={12}
+        sm={6}
+        lg={3}
+        className={cx('d-flex justify-content-center', bem.e('card-box'))}>
         <CardWithDetail
           LogForClick={logToTrendingAPI(data, dispatch)}
           formats={safeParse(data.fileType)}

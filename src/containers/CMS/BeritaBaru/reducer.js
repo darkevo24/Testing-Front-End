@@ -128,7 +128,6 @@ const beritaCmsSlice = createSlice({
       state.detaildataSet.loading = true;
     });
     builder.addCase(deleteBerita.fulfilled, (state, action) => {
-      console.log('reducer', action);
       state.detaildataSet.loading = false;
     });
     builder.addCase(deleteBerita.rejected, (state, action) => {

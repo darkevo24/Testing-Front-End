@@ -1,4 +1,4 @@
-import { getApiEndpoint, getPublicV1Endpoint } from 'utils/constants';
+import { getApiEndpoint } from 'utils/constants';
 import { HTTP } from 'services/core';
 import { apiUrls, get, put } from 'utils/request';
 

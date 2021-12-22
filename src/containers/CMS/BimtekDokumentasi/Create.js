@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
@@ -16,8 +16,6 @@ const CMSJadwalBaru = () => {
 
   const { records } = useSelector(BimtekListSelector);
 
-  console.log(records);
-
   const fetchDokumentasiList = () => {
     return dispatch(getDokumentasiList());
   };
@@ -25,10 +23,6 @@ const CMSJadwalBaru = () => {
   useEffect(() => {
     fetchDokumentasiList();
   }, []);
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
 
   return (
     <div className={bem.e('section')}>

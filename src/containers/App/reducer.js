@@ -78,7 +78,7 @@ export const getListKategori = createAsyncThunk('cms/getListKategori', async () 
 });
 
 export const getListTagline = createAsyncThunk('cms/getListTagline', async () => {
-  const response = await get(apiUrls.taglineData);
+  const response = await get(`${apiUrls.taglineData}?size=100&sortBy=keterangan&sort_direction=ASC`);
   return response?.data?.content;
 });
 

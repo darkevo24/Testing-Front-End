@@ -24,11 +24,10 @@ const CMSBimtekPermintaan = () => {
   const [query, setQuery] = useState('');
 
   const { size, loading, page, records, totalRecords } = useSelector(bimtekJadwalSelector);
-  console.log(records);
   const fetchJadwalBimtek = (params) => {
     let obj = {
       page: params.page,
-      q: query,
+      namaBimtek: query,
     };
     return dispatch(getJadwalBimtek(obj));
   };

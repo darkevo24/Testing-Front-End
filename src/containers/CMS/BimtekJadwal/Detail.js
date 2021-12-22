@@ -18,7 +18,6 @@ const CMSJadwalDetail = (props) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { records } = useSelector(bimtekJadwalDetailSelector);
-  console.log(records);
 
   const fetchBimtekDetail = (params) => {
     return dispatch(getJadwalBimtekDetail(params));

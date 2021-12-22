@@ -24,10 +24,6 @@ const CMSJadwalBaru = () => {
     fetchDokumentasiList();
   }, []);
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-
   return (
     <div className={bem.e('section')}>
       <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>

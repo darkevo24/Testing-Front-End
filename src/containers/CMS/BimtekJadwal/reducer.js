@@ -65,7 +65,7 @@ const BimtekJadwalSlice = createSlice({
   },
 });
 
-export const bimtekJadwalSelector = (state) => state.cmsbimtekJadwal.dataset;
+export const bimtekJadwalSelector = (state) => state.cmsBimtekJadwal.dataset;
 export const bimtekJadwalDetailSelector = (state) => state.cmsBimtekJadwal.detail;
 
 export default BimtekJadwalSlice.reducer;

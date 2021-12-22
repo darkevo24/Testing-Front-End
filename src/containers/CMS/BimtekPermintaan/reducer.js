@@ -52,18 +52,31 @@ export const getListLogAktifitas = createAsyncThunk('bimtek-permintaan/getListLo
 
 export const getInstansi = createAsyncThunk('bimtek-permintaan-bimtek/getListInstansi', async (params) => {
   const response = await get(`${apiUrls.instansiData}`);
-  console.log(response);
   return response?.data.content?.records;
 });
 
 export const postStatusApprove = createAsyncThunk('/bimtek-permintaan/changeStatusDetailApproved', async (params) => {
   const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/ubah-status/APPROVED`, { catatan: 'test' });
-  console.log(response);
   return response;
 });
 
 export const postStatusReject = createAsyncThunk('/bimtek-permintaan/changeStatusDetailRejected', async (params) => {
   const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/ubah-status/REJECTED`, { catatan: 'test' });
+  return response;
+});
+
+export const postStatusDraft = createAsyncThunk('/bimtek-permintaan/changeStatusDetailDraft', async (params) => {
+  const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/ubah-status/DRAFT`, { catatan: 'test' });
+  return response;
+});
+
+export const postStatusPublish = createAsyncThunk('/bimtek-permintaan/changeStatusDetailPublish', async (params) => {
+  const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/ubah-status/PUBLISHED`, { catatan: 'test' });
+  return response;
+});
+
+export const postStatusUnpublish = createAsyncThunk('/bimtek-permintaan/changeStatusDetailUnpublish', async (params) => {
+  const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/ubah-status/UNPUBLISH`, { catatan: 'test' });
   return response;
 });
 
@@ -127,6 +140,50 @@ const BimtekPermintaanDataDetailSlice = createSlice({
       state.status = action.payload;
     });
     builder.addCase(postStatusApprove.rejected, (state, action) => {
+      state.loading = false;
+      state.error = 'Invalid data';
+    });
+    builder.addCase(postStatusReject.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(postStatusReject.fulfilled, (state, action) => {
+      state.loading = false;
+      state.status = action.payload;
+    });
+    builder.addCase(postStatusReject.rejected, (state, action) => {
+      state.loading = false;
+      state.error = 'Invalid data';
+    });
+    builder.addCase(postStatusDraft.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(postStatusDraft.fulfilled, (state, action) => {
+      state.loading = false;
+      state.status = action.payload;
+    });
+    builder.addCase(postStatusDraft.rejected, (state, action) => {
+      state.loading = false;
+      state.error = 'Invalid data';
+    });
+    builder.addCase(postStatusPublish.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(postStatusPublish.fulfilled, (state, action) => {
+      state.loading = false;
+      state.status = action.payload;
+    });
+    builder.addCase(postStatusPublish.rejected, (state, action) => {
+      state.loading = false;
+      state.error = 'Invalid data';
+    });
+    builder.addCase(postStatusUnpublish.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(postStatusUnpublish.fulfilled, (state, action) => {
+      state.loading = false;
+      state.status = action.payload;
+    });
+    builder.addCase(postStatusUnpublish.rejected, (state, action) => {
       state.loading = false;
       state.error = 'Invalid data';
     });

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import * as _ from 'lodash';
+import * as setSearch from 'lodash';
 import moment from 'moment';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
@@ -52,7 +52,7 @@ const CMSPermintaanData = () => {
     fetchUnitKerja();
   }, [instansiId]);
 
-  const updateQuery = _.debounce((val) => {
+  const updateQuery = setSearch.debounce((val) => {
     setQuery(val);
   }, 500);
 

@@ -1,5 +1,6 @@
 import { getApiEndpoint, getPublicV1Endpoint } from 'utils/constants';
 import { HTTP } from 'services/core';
+import { get, put } from 'utils/request';
 
 const API_URL = {
   berita: (id, action) => {
@@ -129,55 +130,40 @@ export const doBeritaWorkflow = (id, action) => {
     });
 };
 
-export const getBertaLayout = () => {
+export const getBertaLayout = async () => {
   const URL = getPublicV1Endpoint('layout');
-  return HTTP.get(URL, HTTP.defaultHeaders())
-    .then((res) => {
-      if (!res || res.status !== '200 OK') {
-        return Promise.reject(res);
-      }
-      return res.content;
-    })
-    .then((content) => {
-      const { hasNext, page, records, size, totalPages, totalRecords } = content;
-      return {
-        hasNext: hasNext,
-        page: page,
-        records: records,
-        size: size,
-        totalPages: totalPages,
-        totalRecords: totalRecords,
-      };
-    })
-    .catch((err) => {
-      return Promise.reject(err);
-    });
+  const result = await get(URL);
+  if (result?.data?.content) {
+    const { content } = result.data;
+    const { hasNext, page, records, size, totalPages, totalRecords } = content;
+    return {
+      hasNext: hasNext,
+      page: page,
+      records: records,
+      size: size,
+      totalPages: totalPages,
+      totalRecords: totalRecords,
+    };
+  }
+  return null;
 };
 
-export const updateBertaLayout = (code, content) => {
+export const updateBertaLayout = async (code, content) => {
   const URL = getPublicV1Endpoint(`layout/code/${code}`);
-  const params = {
+  const data = {
     content: content,
   };
-  console.log(params);
-  return HTTP.put(URL, HTTP.defaultHeaders(), params)
-    .then((res) => {
-      if (!res || res.status !== '200 OK') {
-        return null;
-      }
-      return res.content;
-    })
-    .then((content) => {
-      return {
-        code: code,
-        content: {
-          kiri: content.content?.kiri,
-          kanan: content.content?.kanan,
-          inactive: content.content.inactive,
-        },
-      };
-    })
-    .catch((err) => {
-      return err;
-    });
+  const result = await put(URL, data);
+  if (result?.data?.content) {
+    const { content } = result.data;
+    return {
+      code: code,
+      content: {
+        kiri: content.content?.kiri,
+        kanan: content.content?.kanan,
+        inactive: content.content.inactive,
+      },
+    };
+  }
+  return null;
 };

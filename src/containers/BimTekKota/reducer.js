@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { apiUrls, get } from 'utils/request';
 
 export const getBimtekDokumentasi = createAsyncThunk('bimtekDokumentasi/getBimtekDokumentasi', async (params) => {
-  const response = await get(`${apiUrls.bimtekDokumentasi}`, {
+  const response = await get(apiUrls.bimtekDokumentasi, {
     query: params,
   });
   return response?.data?.content;

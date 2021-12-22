@@ -13,7 +13,6 @@ import { useEffect, useState } from 'react';
 import { bimtekDokumentasiDatasetSelector, getBimtekDokumentasi } from './reducer';
 import moment from 'moment';
 import { bimtekJadwalLocationsDatasetSelector, getBimtekJadwalLocationsData } from 'containers/BimTekJadwal/reducer';
-import './bimtekKota.scss';
 
 const BimtekKota = () => {
   const { control, watch } = useForm({});

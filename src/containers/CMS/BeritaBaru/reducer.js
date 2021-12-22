@@ -59,6 +59,11 @@ export const setEditBerita = createAsyncThunk('cms/setEditBerita', async (params
   return response?.data?.content;
 });
 
+export const setStatusBerita = createAsyncThunk('cms/setStatusBerita', async (params) => {
+  const response = await put(`${apiUrls.cmsBeritaData}/${params.id}/status`, params.payload);
+  return response?.data?.content;
+});
+
 export const deleteBerita = createAsyncThunk('cms/deleteBerita', async (params) => {
   const response = await deleteRequest(`${apiUrls.cmsBeritaData}/${params.id}`);
   return response?.data;
@@ -124,6 +129,18 @@ const beritaCmsSlice = createSlice({
       state.detaildataSet.record = action.payload;
     });
     builder.addCase(setEditBerita.rejected, (state) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.error = 'Error in fetching edit berita!';
+    });
+
+    builder.addCase(setStatusBerita.pending, (state, action) => {
+      state.detaildataSet.loading = true;
+    });
+    builder.addCase(setStatusBerita.fulfilled, (state, action) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.record = action.payload;
+    });
+    builder.addCase(setStatusBerita.rejected, (state) => {
       state.detaildataSet.loading = false;
       state.detaildataSet.error = 'Error in fetching edit berita!';
     });

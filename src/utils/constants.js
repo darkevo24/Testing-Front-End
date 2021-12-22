@@ -253,6 +253,18 @@ export const STATUS_DATA = {
   unpublished: 'TIDAK_DITAYANGKAN',
 };
 
+export const STATUS_DATA_BERITA = [
+  'DRAFT',
+  'DRAFT', // from BE is 'SAVE' but actual is same as 'DRAFT'
+  'MENUNGGU_PERSETUJUAN',
+  'DISETUJUI',
+  'DITOLAK',
+  'DITAYANGKAN',
+  'TIDAK_DITAYANGKAN',
+  'DIHAPUS',
+  'DIARSIPKAN',
+];
+
 export const USER_ROLES = {
   CONTENT_CREATOR: 'CONTENT_CREATOR',
   CONTENT_EDITOR: 'CONTENT_EDITOR',

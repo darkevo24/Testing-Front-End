@@ -15,6 +15,7 @@ import { useHistory } from 'react-router-dom';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 import { formatDate } from 'utils/helper';
+import { STATUS_DATA_BERITA } from 'utils/constants';
 
 const bem = bn('content-table');
 
@@ -84,9 +85,9 @@ const CMSBerita = () => {
         header={['Judul Berita', 'Tanggal Publish', 'Status', 'Author', 'Editor']}
         data={records.map((item) => {
           let value = {
-            data: [item.judul, formatDate(item.publishDate), setStatus(item.status), item.createBy, item.editorBy],
+            data: [item.judul, formatDate(item.publishDate), STATUS_DATA_BERITA[item.status], item.createBy, item.editorBy],
             action: '/cms/berita-detail/' + item.id,
-            classValue: [null, null, setStatus(item.status).toLowerCase(), null, null],
+            classValue: [null, null, STATUS_DATA_BERITA[item.status].toLowerCase(), null, null],
           };
           return value;
         })}

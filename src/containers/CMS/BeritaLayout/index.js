@@ -91,10 +91,7 @@ const BeritaLayout = () => {
       kanan: kananRef?.current.state?.items,
       inactive: inactiveRef?.current?.state?.items,
     };
-    dispatch(updateBeritaLaoutState({ status: 'preview', content: obj }));
-
-    dispatch(updateBertalayout({ code: 'kiri', content: JSON.stringify(obj) }));
-    // dispatch(updateBertalayout({ code: 'kiri', content: JSON.stringify(obj) }));
+    dispatch(updateBeritaLaoutState({ content: obj }));
   };
 
   const batal = () => {

@@ -1,6 +1,6 @@
 import { getApiEndpoint, getPublicV1Endpoint } from 'utils/constants';
 import { HTTP } from 'services/core';
-import { get, put } from 'utils/request';
+import { apiUrls, get, put } from 'utils/request';
 
 const API_URL = {
   berita: (id, action) => {
@@ -131,37 +131,24 @@ export const doBeritaWorkflow = (id, action) => {
 };
 
 export const getBertaLayout = async () => {
-  const URL = getPublicV1Endpoint('layout');
-  const result = await get(URL);
-  if (result?.data?.content) {
-    const { content } = result.data;
-    const { hasNext, page, records, size, totalPages, totalRecords } = content;
-    return {
-      hasNext: hasNext,
-      page: page,
-      records: records,
-      size: size,
-      totalPages: totalPages,
-      totalRecords: totalRecords,
-    };
-  }
-  return null;
+  const result = await get(apiUrls.beritaLayout);
+  return result?.data?.content || null;
 };
 
 export const updateBertaLayout = async (code, content) => {
-  const URL = getPublicV1Endpoint(`layout/code/${code}`);
   const data = {
-    content: content,
+    content,
   };
-  const result = await put(URL, data);
+  const result = await put(apiUrls.updateKiriLayout, data);
   if (result?.data?.content) {
     const { content } = result.data;
+    const contentData = content?.content;
     return {
       code: code,
       content: {
-        kiri: content.content?.kiri,
-        kanan: content.content?.kanan,
-        inactive: content.content.inactive,
+        kiri: contentData?.kiri || '',
+        kanan: content.content?.kanan || '',
+        inactive: contentData?.inactive || '',
       },
     };
   }

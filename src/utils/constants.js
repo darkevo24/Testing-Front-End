@@ -79,6 +79,8 @@ export const apiUrls = {
   addFormulirPendaftaran: getPortalEndpoint('v1/bimtek'),
   bimtekMateri: getPortalEndpoint('v1/bimtek/materi'),
   bimtekMateriDownload: getPortalEndpoint('v1/bimtek/download-zip'),
+  beritaLayout: getPublicV1Endpoint('layout'),
+  updateKiriLayout: getPublicV1Endpoint('layout/code/kiri'),
 };
 
 export const priorityOptions = [

@@ -69,7 +69,6 @@ const KomunitasAhliPage = () => {
       page: 0,
       payload: {
         q: '',
-        status: '',
       },
     });
   }, []);

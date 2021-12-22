@@ -81,6 +81,7 @@ export const apiUrls = {
   bimtekMateriDownload: getPortalEndpoint('v1/bimtek/download-zip'),
   beritaLayout: getPublicV1Endpoint('layout'),
   updateKiriLayout: getPublicV1Endpoint('layout/code/kiri'),
+  bimtekDokumentasi: getPortalEndpoint('v1/bimtek/dokumentasi'),
 };
 
 export const priorityOptions = [

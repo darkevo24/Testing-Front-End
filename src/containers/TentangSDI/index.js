@@ -56,6 +56,18 @@ const TentangSDI = () => {
     'Bidang Komunikasi',
   ];
 
+  const getYoutubeEmbed = (url) => {
+    // eslint-disable-next-line
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+
+    if (match && match[2].length === 11) {
+      return '//www.youtube.com/embed/' + match[2];
+    } else {
+      return 'error';
+    }
+  };
+
   return (
     <div>
       <div className={bem.e('container')}>
@@ -70,7 +82,7 @@ const TentangSDI = () => {
               width="100%"
               height="500"
               title="sample"
-              src={dataset.video}
+              src={getYoutubeEmbed(dataset.video)}
               frameborder="0"
               allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen></iframe>

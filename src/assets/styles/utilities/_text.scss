@@ -35,6 +35,7 @@
   text-decoration: none;
   color: $black-dark-10;
   &:hover {
+    cursor: pointer;
     color: $black-dark-10;
     border-bottom: 1px solid $black-dark-10;
     text-decoration: underline;

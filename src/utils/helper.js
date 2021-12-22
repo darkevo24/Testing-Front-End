@@ -374,3 +374,11 @@ export const createFileAndDownload = (data, fileType = fileTypes.excel, filename
     document.body.removeChild(elem);
   }
 };
+
+export const convertTitleToSlug = (title) => {
+  return title
+    .toLowerCase()
+    .replace(/ /g, '-')
+    .replace(/[-]+/g, '-')
+    .replace(/[^\w-]+/g, '');
+};

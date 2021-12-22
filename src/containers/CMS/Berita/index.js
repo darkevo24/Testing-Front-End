@@ -44,21 +44,6 @@ const CMSBerita = () => {
     });
   }, [searchQuery]);
 
-  const setStatus = (status) => {
-    switch (status) {
-      case 0:
-        return 'DRAFT';
-      case 1:
-        return 'MENUNGGU_PERSETUJUAN';
-      case 2:
-        return 'DISETUJUI';
-      case 3:
-        return 'DITOLAK';
-      default:
-        return '';
-    }
-  };
-
   return (
     <div className={bem.e('section')}>
       <div className={bem.e('header')}>

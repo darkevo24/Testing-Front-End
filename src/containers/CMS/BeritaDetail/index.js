@@ -113,7 +113,7 @@ const CMSBeritaDetail = (props) => {
           (res) => notifyResponse(res),
         );
         break;
-      case 5:
+      case 7:
         // delete
         dispatch(deleteBerita({ id: idBerita })).then((res) => notifyResponse(res));
         break;

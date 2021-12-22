@@ -27,6 +27,8 @@ import forumSDIReducer from 'containers/ForumSDI/reducer';
 import userPortalBeritaReducer from 'containers/Berita/reducer';
 import bimtekSummaryReducer from 'containers/BimTekSummary/reducer';
 import bimtekJadwalReducer from 'containers/BimTekJadwal/reducer';
+import formulirPendaftaranReducer from 'containers/BimTekForm/reducer';
+import bimtekMateriReducer from 'containers/BimTekMateri/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -54,6 +56,8 @@ export default function createReducer(injectedReducers) {
     forumSDI: forumSDIReducer,
     bimtekSummary: bimtekSummaryReducer,
     bimtekJadwal: bimtekJadwalReducer,
+    formulirPendaftaran: formulirPendaftaranReducer,
+    bimtekMateri: bimtekMateriReducer,
     router: connectRouter(history),
     ...injectedReducers,
   });

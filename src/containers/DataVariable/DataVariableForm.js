@@ -4,22 +4,30 @@ import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import cloneDeep from 'lodash/cloneDeep';
+import isEmpty from 'lodash/isEmpty';
 import { Dropdown, Input } from 'components';
-import { pengaturanData } from 'utils/dataConfig/data-variable';
-import { submitForm } from 'utils/helper';
+import { pengaturanAksesOptions } from 'utils/constants';
+import { submitForm, findOption } from 'utils/helper';
 
 export const dataVariableFormId = 'daftar-form-id';
 export const submitDataVariableForm = submitForm(dataVariableFormId);
 const schema = yup
   .object({
-    name: yup.string().required(),
+    nama: yup.string().required(),
+    idKonsep: yup.string().required(),
     konsep: yup.string().required(),
     definisi: yup.string().required(),
-    pengaturan: yup.mixed().required(),
+    pengaturanAkses: yup.mixed().required(),
   })
   .required();
 
 const DataVariableForm = ({ data, onSubmit }) => {
+  const isEdit = !isEmpty(data?.id);
+  const variable = cloneDeep(data || {});
+  if (isEdit) {
+    variable.pengaturanAkses = findOption(pengaturanAksesOptions, variable.pengaturanAkses);
+  }
   const {
     control,
     formState: { errors },
@@ -27,7 +35,7 @@ const DataVariableForm = ({ data, onSubmit }) => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      ...data,
+      ...variable,
     },
   });
 
@@ -38,26 +46,35 @@ const DataVariableForm = ({ data, onSubmit }) => {
           <Input
             group
             label="Name Data"
-            name="name"
+            name="nama"
             placeholder="Add an email or name"
             control={control}
             rules={{ required: true }}
-            error={errors.name?.message}
+            error={errors.nama?.message}
           />
           <Input
             group
             label="Konsep"
             name="konsep"
-            placeholder="Add an email or name"
+            placeholder="Konsep"
             control={control}
             rules={{ required: true }}
             error={errors.konsep?.message}
           />
           <Input
             group
+            label="ID Konsep"
+            name="idKonsep"
+            placeholder="ID Konsep"
+            control={control}
+            rules={{ required: true }}
+            error={errors.idKonsep?.message}
+          />
+          <Input
+            group
             label="Definisi"
             name="definisi"
-            placeholder="Add an email or name"
+            placeholder="Definisi"
             control={control}
             as="textarea"
             rules={{ required: true }}
@@ -66,12 +83,12 @@ const DataVariableForm = ({ data, onSubmit }) => {
           <Dropdown
             group
             label="Pengaturan Akses"
-            name="pengaturan"
+            name="pengaturanAkses"
             control={control}
             rules={{ required: true }}
             placeholder="Select"
-            options={pengaturanData.map((pengaturan) => ({ value: pengaturan, label: pengaturan }))}
-            error={errors.pengaturan?.message}
+            options={pengaturanAksesOptions}
+            error={errors.pengaturanAkses?.message}
           />
           <Button className="invisible" type="submit" />
         </Form>

@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
+import find from 'lodash/find';
 import { dataOptionsMapperCurry, idKeteranganOptionsMapper, idNameOptionsMapper } from 'utils/helper';
 import { apiUrls, get, post } from 'utils/request';
 
@@ -214,5 +215,17 @@ export const sdgPillerOptionsSelector = createSelector(
   dataOptionsMapperCurry(idKeteranganOptionsMapper),
 );
 export const rkpPNOptionsSelector = createSelector(rkpPNSelector, dataOptionsMapperCurry(idKeteranganOptionsMapper));
+
+export const userInstansiSelector = (state) => {
+  const instansiData = instansiDataSelector(state);
+  if (instansiData?.result?.length) {
+    const user = state?.auth?.user || {};
+    const userInstansi = user?.instansi;
+    if (userInstansi) {
+      return find(instansiData.result, { id: userInstansi });
+    }
+  }
+  return null;
+};
 
 export default AppSlice.reducer;

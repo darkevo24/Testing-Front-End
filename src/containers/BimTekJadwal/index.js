@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -7,11 +7,12 @@ import { BimtekLayout } from 'layouts/BimtekLayout';
 import BimTekJadwalItem from './item.js';
 import './bimtekjadwal.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
 import {
   bimtekJadwalDatasetSelector,
+  bimtekJadwalLocatonsDatasetSelector,
   bimtekJadwalTagsDatasetSelector,
   getBimtekJadwalData,
+  getBimtekJadwalLocationsData,
   getBimtekJadwalTagsData,
 } from './reducer.js';
 import moment from 'moment';
@@ -21,21 +22,27 @@ moment.locale('id');
 
 const BimTekJadwal = () => {
   let currentYear = new Date().getFullYear();
-  let filterCity = [];
   let filterYear = [];
+  const [paramsData, setParamsData] = useState({});
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getBimtekJadwalData());
     dispatch(getBimtekJadwalTagsData());
+    dispatch(getBimtekJadwalLocationsData());
   }, []);
 
+  useEffect(() => {
+    dispatch(getBimtekJadwalData(paramsData));
+  }, [paramsData]);
+
   const { records: jadwalData } = useSelector(bimtekJadwalDatasetSelector);
+  const filterLocations = useSelector(bimtekJadwalLocatonsDatasetSelector);
   const filterCategory = useSelector(bimtekJadwalTagsDatasetSelector);
 
-  const filterCategoryData = (e) => {
-    dispatch(getBimtekJadwalData({ tags: e.target.value }));
+  const handleFilterChange = (e) => {
+    setParamsData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   for (var i = 0; i < 10; i++) {
     filterYear.push(currentYear - i);
@@ -45,7 +52,7 @@ const BimTekJadwal = () => {
       <div>
         <Row className="bimtek-filter mb-3">
           <Col xs={4}>
-            <Form.Select onChange={(e) => filterCategoryData(e)}>
+            <Form.Select name="tag" onChange={handleFilterChange}>
               <option>Kategori Bimtek</option>
               {filterCategory.map((category, key) => (
                 <option key={key} value={category}>
@@ -55,15 +62,17 @@ const BimTekJadwal = () => {
             </Form.Select>
           </Col>
           <Col xs={4}>
-            <Form.Select>
+            <Form.Select name="kota" onChange={handleFilterChange}>
               <option>Pilih Kota Pelaksanaan</option>
-              {filterCity.map((city, key) => (
-                <option key={key}>{city}</option>
+              {filterLocations?.map((city, key) => (
+                <option key={key} value={city.provinsi}>
+                  {city.nama}
+                </option>
               ))}
             </Form.Select>
           </Col>
           <Col xs={2}>
-            <Form.Select>
+            <Form.Select name="tahun" onChange={handleFilterChange}>
               {filterYear.map((year, key) => (
                 <option key={key}>{year}</option>
               ))}

@@ -56,11 +56,10 @@ export const SingleSelectDropdown = ({
         rules={rules}
         render={({ field }) => {
           const handleInputChange = (newValue) => {
-            const inputValue = newValue.replace(/\W/g, '');
             if (isFunction(onInputChange?.current)) {
-              onInputChange.current(inputValue);
+              onInputChange.current(newValue);
             }
-            return inputValue;
+            return newValue;
           };
           const Component = isCreatable ? CreatableSelect : Select;
           return (

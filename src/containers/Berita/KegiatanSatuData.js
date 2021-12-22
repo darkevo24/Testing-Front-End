@@ -35,24 +35,25 @@ const berita = [
 ];
 
 const KegiatanSatuData = (props) => {
-  return (
-    <Wrapper>
-      <SectionTitle>Kegiatan Satu Data Indonesia</SectionTitle>
-      <BeritaGrid columns={props.columns}>
-        {Array.apply(null, { length: props.jumlah }).map((e, i) => (
-          <BeritaCard key={'ksdi' + i}>
-            <BeritaCardImageWrapper>
-              <BeritaCardImage src={berita[i % 3].imageSrc} />
-            </BeritaCardImageWrapper>
-            <BeritaCardContent>
-              <BeritaCardTanggal>{berita[i % 3].tanggal}</BeritaCardTanggal>
-              <BeritaCardJudul>{berita[i % 3].judul}</BeritaCardJudul>
-            </BeritaCardContent>
-          </BeritaCard>
-        ))}
-      </BeritaGrid>
-    </Wrapper>
-  );
+  return <div></div>;
+  // return (
+  //   <Wrapper>
+  //     <SectionTitle>Kegiatan Satu Data Indonesia</SectionTitle>
+  //     <BeritaGrid columns={props.columns}>
+  //       {Array.apply(null, { length: props.jumlah }).map((e, i) => (
+  //         <BeritaCard key={'ksdi' + i}>
+  //           <BeritaCardImageWrapper>
+  //             <BeritaCardImage src={berita[i % 3].imageSrc} />
+  //           </BeritaCardImageWrapper>
+  //           <BeritaCardContent>
+  //             <BeritaCardTanggal>{berita[i % 3].tanggal}</BeritaCardTanggal>
+  //             <BeritaCardJudul>{berita[i % 3].judul}</BeritaCardJudul>
+  //           </BeritaCardContent>
+  //         </BeritaCard>
+  //       ))}
+  //     </BeritaGrid>
+  //   </Wrapper>
+  // );
 };
 
 export default KegiatanSatuData;

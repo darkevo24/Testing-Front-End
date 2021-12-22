@@ -23,12 +23,12 @@ export const initialState = {
     statusError: null,
   },
   forumSDITopik: {
-    topikResult: null,
+    topikResult: [],
     topikLoading: false,
     topikError: null,
   },
   forumSDITags: {
-    tagsResult: null,
+    tagsResult: [],
     tagsLoading: false,
     tagsError: null,
   },
@@ -82,6 +82,7 @@ const cmsForumSDISlice = createSlice({
     });
     builder.addCase(getCMSForumSDIDataById.pending, (state, action) => {
       state.forumSDIDetail.detailLoading = true;
+      state.forumSDIDetail.detailError = '';
     });
     builder.addCase(getCMSForumSDIDataById.fulfilled, (state, action) => {
       state.forumSDIDetail.detailLoading = false;
@@ -102,22 +103,26 @@ const cmsForumSDISlice = createSlice({
     });
     builder.addCase(getCMSForumSDITags.pending, (state, action) => {
       state.forumSDITags.tagsLoading = true;
+      state.forumSDITags.tagsError = '';
     });
     builder.addCase(getCMSForumSDITags.fulfilled, (state, action) => {
       state.forumSDITags.tagsLoading = false;
-      state.forumSDITags.tagsResult = action.payload;
+      state.forumSDITags.tagsResult = action.payload?.content || [];
     });
     builder.addCase(getCMSForumSDITags.rejected, (state, action) => {
       state.forumSDITags.tagsError = 'Error in fetching forum sdi tags data!';
+      state.forumSDITags.tagsLoading = false;
     });
     builder.addCase(getCMSForumSDITopik.pending, (state, action) => {
       state.forumSDITopik.topikLoading = true;
+      state.forumSDITopik.topikError = '';
     });
     builder.addCase(getCMSForumSDITopik.fulfilled, (state, action) => {
       state.forumSDITopik.topikLoading = false;
-      state.forumSDITopik.topikResult = action.payload;
+      state.forumSDITopik.topikResult = action.payload?.records || [];
     });
     builder.addCase(getCMSForumSDITopik.rejected, (state, action) => {
+      state.forumSDITopik.topikLoading = false;
       state.forumSDITopik.topikError = 'Error in fetching forum sdi topik data!';
     });
   },

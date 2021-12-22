@@ -7,11 +7,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import cloneDeep from 'lodash/cloneDeep';
+import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import { DatePicker, Dropdown, Input } from 'components';
 import { jadwalPermutakhiranOptions, formatOptions } from 'utils/constants';
 import { dateTransform, submitForm, findOption } from 'utils/helper';
 import {
+  daftarDetailsDataSelector,
+  getDaftarDetail,
   getAddDaftarSDGTujuan,
   getAddDaftarRKPpp,
   addTujuanSDGPillerOptionsSelector,
@@ -24,27 +27,17 @@ const schema = yup
   .object({
     instansi: yup.mixed().required(),
     nama: yup.string().required(),
-    idKonsep: yup.string().required(),
-    konsep: yup.string().required(),
-    definisi: yup.string().required(),
-    sumberDefinisi: yup.string().required(),
     jadwalPemutakhiran: yup.mixed().required(),
-    tanggalDibuat: yup.date().required().transform(dateTransform),
-    tanggalDiperbaharui: yup.date().required().transform(dateTransform),
     produsenData: yup.string().required(),
-    indukData: yup.mixed().required(),
     format: yup.mixed().required(),
     linkAkses: yup.string().required(),
-    kodePilar: yup.mixed().required(),
-    kodeTujuan: yup.mixed().required(),
-    kodePNRKP: yup.mixed().required(),
-    kodePPRKP: yup.mixed().required(),
   })
   .required();
 
 const DaftarForm = ({
-  data,
+  daftarId,
   onSubmit,
+  userInstansi,
   dataindukOptions = [],
   instansiOptions = [],
   sdgPillerOptions = [],
@@ -53,24 +46,34 @@ const DaftarForm = ({
   const dispatch = useDispatch();
   const tujuanSDGPillerOptions = useSelector(addTujuanSDGPillerOptionsSelector);
   const rkpPPOptions = useSelector(addRkpPPOptionsSelector);
-
-  const isEdit = !isEmpty(data);
-  const daftar = cloneDeep(data || {});
+  const daftarDetails = useSelector(daftarDetailsDataSelector);
+  const storeDaftar = daftarDetails?.result[daftarId];
+  useEffect(() => {
+    if (daftarId && !storeDaftar) {
+      dispatch(getDaftarDetail(daftarId));
+    }
+  }, [daftarId]);
+  const isEdit = !isEmpty(storeDaftar);
+  const daftar = cloneDeep(storeDaftar || {});
+  daftar.instansi = findOption(instansiOptions, userInstansi?.id);
   if (isEdit) {
-    daftar.instansi = findOption(instansiOptions, daftar.intansiId);
     daftar.jadwalPemutakhiran = findOption(jadwalPermutakhiranOptions, daftar.jadwalPemutakhiran);
     daftar.indukData = findOption(dataindukOptions, daftar.indukData);
-    daftar.format = findOption(formatOptions, daftar.format);
+    daftar.format = findOption(formatOptions, daftar.format ? daftar.format.split(', ') : daftar.format);
     daftar.kodePilar = findOption(sdgPillerOptions, daftar.kodePilar);
     daftar.kodeTujuan = findOption(tujuanSDGPillerOptions, daftar.kodeTujuan);
     daftar.kodePNRKP = findOption(rkpPNOptions, daftar.kodePNRKP);
     daftar.kodePPRKP = findOption(rkpPPOptions, daftar.kodePPRKP);
+    daftar.tanggalDibuat = new Date(daftar.tanggalDibuat);
+    daftar.tanggalDiperbaharui = new Date(daftar.tanggalDibuat);
   }
   const {
     control,
     formState: { errors },
     handleSubmit,
     watch,
+    reset,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: { ...daftar },
@@ -90,6 +93,25 @@ const DaftarForm = ({
       dispatch(getAddDaftarRKPpp(watchKodePNRKP.value));
     }
   }, [watchKodePNRKP]);
+
+  useEffect(() => {
+    reset(daftar);
+  }, [storeDaftar]);
+
+  useEffect(() => {
+    const ppOption = findOption(rkpPPOptions, get(daftar, 'kodePPRKP.value', daftar.kodePPRKP));
+    if (daftar.kodePPRKP && ppOption) {
+      setValue('kodePPRKP', ppOption);
+    }
+  }, [rkpPPOptions]);
+
+  useEffect(() => {
+    const tujuanOption = findOption(tujuanSDGPillerOptions, get(daftar, 'kodeTujuan.value', daftar.kodeTujuan));
+    if (daftar.kodeTujuan && tujuanOption) {
+      setValue('kodeTujuan', tujuanOption);
+    }
+  }, [tujuanSDGPillerOptions]);
+
   return (
     <div className="daftar-form">
       <Row>
@@ -99,6 +121,7 @@ const DaftarForm = ({
             label="Instansi"
             name="instansi"
             control={control}
+            disabled
             rules={{ required: true }}
             placeholder="Select"
             options={instansiOptions}
@@ -110,7 +133,7 @@ const DaftarForm = ({
             name="nama"
             control={control}
             rules={{ required: true }}
-            error={errors.name?.message}
+            error={errors.nama?.message}
           />
           <Input
             group
@@ -153,7 +176,7 @@ const DaftarForm = ({
             rules={{ required: true }}
             placeholder="Select"
             options={jadwalPermutakhiranOptions}
-            error={errors.jadwal?.message}
+            error={errors.jadwalPemutakhiran?.message}
           />
           <DatePicker
             group

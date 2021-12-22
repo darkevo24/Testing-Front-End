@@ -139,9 +139,9 @@ const DataSet = () => {
                 </div>
                 <div className="d-flex flex-wrap mt-n8">
                   {formatesToShow?.map((tag) => (
-                    <Tags key={`${item.id}-${tag.id}`} className="mt-8 px-12" text={tag.format} />
+                    <Tags key={`${item.id}-${tag.id}`} fillColor className="mt-8 px-12" text={tag.format} />
                   ))}
-                  {!!hiddenFormats && <Tags className="px-12 text-nowrap" text={`${hiddenFormats} others`} />}
+                  {!!hiddenFormats && <Tags fillColor className="px-12 text-nowrap" text={`${hiddenFormats} others`} />}
                 </div>
               </div>
               <div className="sdp-card-right-section d-flex flex-column justify-content-between">

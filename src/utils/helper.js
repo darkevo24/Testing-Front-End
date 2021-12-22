@@ -298,17 +298,27 @@ export const prepareFormPayload = (data, fieldsMap) => {
   const payload = cloneDeep(data);
   if (fieldsMap.dropdowns && isArray(fieldsMap.dropdowns)) {
     map(fieldsMap.dropdowns, (field) => {
-      set(payload, field, get(payload, `${field}.value`));
+      const fieldValue = get(payload, field);
+      if (!!fieldValue) {
+        const finalValue = isArray(fieldValue) ? map(fieldValue, 'value') : get(fieldValue, 'value');
+        set(payload, field, finalValue);
+      }
     });
   }
   if (fieldsMap.toArray && isArray(fieldsMap.toArray)) {
     map(fieldsMap.toArray, (field) => {
-      set(payload, field, [get(payload, field)]);
+      const fieldValue = get(payload, field);
+      if (!!fieldValue) {
+        set(payload, field, [fieldValue]);
+      }
     });
   }
   if (fieldsMap.dates && isArray(fieldsMap.dates)) {
     map(fieldsMap.dates, (field) => {
-      set(payload, field, moment(new Date(get(payload, field)), 'YYYY-MM-DD'));
+      const fieldValue = get(payload, field);
+      if (!!fieldValue) {
+        set(payload, field, moment(new Date(fieldValue)).format('YYYY-MM-DD'));
+      }
     });
   }
   return payload;
@@ -319,6 +329,27 @@ export const incrementPageParams = (params) => {
     ...params,
     page: params.page + 1,
   };
+};
+
+export const mapFormatToColor = (type) => {
+  switch (type.toLowerCase()) {
+    case 'csv':
+      return 'sdp-text-purple-light';
+    case 'json':
+      return 'sdp-text-blue-extra-dark';
+    case 'wms':
+      return 'sdp-text-green-pistal';
+    case 'xml':
+      return 'sdp-text-red-extra-dark';
+    case 'xls':
+    case 'xlsx':
+      return 'sdp-text-green-dark';
+    case 'geo':
+    case 'geojson':
+      return 'sdp-text-green-gold';
+    default:
+      return 'sdp-text-disable';
+  }
 };
 
 export const fileTypes = {

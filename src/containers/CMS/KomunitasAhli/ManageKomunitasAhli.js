@@ -44,6 +44,8 @@ const schema = yup
 const KomunitasAhli = () => {
   const [showModal, setShowModal] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [fotoUpload, setFotoUpload] = useState(false);
+  const [cvUpload, setCVUpload] = useState(false);
   const [formData, setFormData] = useState({});
   const [bidangKeahlianData, setBidangKeahlianData] = useState([]);
   const [daerahData, setDaerahData] = useState([]);
@@ -130,6 +132,10 @@ const KomunitasAhli = () => {
   }, [values]);
 
   useEffect(() => {
+    if (!id) {
+      setFotoUpload(true);
+      setCVUpload(true);
+    }
     if (!instansiData?.result?.length) dispatch(getInstansiData());
     getBidangData();
     getDaerahData();
@@ -137,7 +143,7 @@ const KomunitasAhli = () => {
 
   const debounceSearch = useRef(
     debounce((searchTerm = 'a') => {
-      getDaerahData(searchTerm.trim());
+      getDaerahData(searchTerm);
     }, 300),
   );
 
@@ -218,7 +224,7 @@ const KomunitasAhli = () => {
   const handleDataSubmit = (data) => {
     const clone = { ...errorInfo };
     if ((!id && !foto) || (id && !record?.foto?.size && !foto)) clone['foto'] = 'foto is required';
-    if ((!id && !cv) || (id && !record?.foto?.size && !cv)) clone['cv'] = 'cv is required';
+    if ((!id && !cv) || (id && !record?.cv?.size && !cv)) clone['cv'] = 'cv is required';
     if (!isEmpty(clone)) {
       setErrorInfo(clone);
       return;
@@ -230,9 +236,9 @@ const KomunitasAhli = () => {
   const onSubmit = async () => {
     setLoader(true);
     let fotoLink, cvLink;
-    if (!id || (id && foto && cv)) {
-      fotoLink = await uplodFoto();
-      cvLink = await uplodCV();
+    if (!id || (id && (foto || cv))) {
+      if (foto) fotoLink = await uplodFoto();
+      if (cv) cvLink = await uplodCV();
     }
     if ((foto && !fotoLink) || (cv && !cvLink)) {
       setShowModal(false);
@@ -436,38 +442,68 @@ const KomunitasAhli = () => {
               maxLength={500}
               error={errors?.riwayat?.message ? 'Riwayat Singkat is required' : ''}
             />
-            <FileInput
-              error={errorInfo?.foto}
-              group
-              groupClass="mb-16"
-              groupProps={{
-                md: 8,
-                as: Col,
-                controlId: 'formFile',
-              }}
-              label="Foto Profil"
-              labelClass="sdp-form-label fw-normal"
-              name="foto"
-              control={control}
-              uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
-              handleOnChange={handleFoto}
-            />
-            <FileInput
-              error={errorInfo?.cv}
-              group
-              groupClass="mb-16"
-              groupProps={{
-                md: 8,
-                as: Col,
-                controlId: 'formFile',
-              }}
-              label="CV Upload file"
-              labelClass="sdp-form-label fw-normal"
-              name="cv"
-              control={control}
-              uploadInfo="format .pdf max 2Mb"
-              handleOnChange={handleCV}
-            />
+            {id ? (
+              <Form.Group as={Col} className="mt-5 mb-10" md="8">
+                <label className="sdp-form-label mb-8">Foto Profil</label>
+                <div className="cms-komunitas-ahli-file-input input-data d-flex align-items-center border-gray-stroke p-9 br-4">
+                  <div className="br-12 m-16">
+                    <img src={record?.foto?.location} alt="" className="brp-50" height="120px" width="120px" />
+                  </div>
+                  <label className="sdp-text-black bg-gray cursor-pointer" onClick={() => setFotoUpload(true)}>
+                    + Upload new file
+                  </label>
+                </div>
+                {!fotoUpload ? <label className="sdp-text-red mt-8">{errorInfo.foto}</label> : null}
+              </Form.Group>
+            ) : null}
+            {fotoUpload ? (
+              <FileInput
+                error={errorInfo?.foto}
+                group
+                groupClass="mb-16"
+                groupProps={{
+                  md: 8,
+                  as: Col,
+                  controlId: 'formFile',
+                }}
+                label={!id ? 'Foto Profil' : ''}
+                labelClass="sdp-form-label fw-normal"
+                name="foto"
+                control={control}
+                uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
+                handleOnChange={handleFoto}
+              />
+            ) : null}
+            {id ? (
+              <Form.Group as={Col} className="mt-5 mb-10" md="8">
+                <label className="sdp-form-label mb-8">CV</label>
+                <div className="cms-komunitas-ahli-file-input input-data d-flex align-items-center border-gray-stroke p-9 br-4">
+                  <label className="sdp-text-blue bg-light-blue mr-10">{record?.cv?.fileName}</label>
+                  <label className="sdp-text-black bg-gray cursor-pointer" onClick={() => setCVUpload(true)}>
+                    + Upload new file
+                  </label>
+                </div>
+                {!cvUpload ? <label className="sdp-text-red mt-8">{errorInfo.cv}</label> : null}
+              </Form.Group>
+            ) : null}
+            {cvUpload ? (
+              <FileInput
+                error={errorInfo?.cv}
+                group
+                groupClass="mb-16"
+                groupProps={{
+                  md: 8,
+                  as: Col,
+                  controlId: 'formFile',
+                }}
+                label={!id ? 'CV Upload file' : ''}
+                labelClass="sdp-form-label fw-normal"
+                name="cv"
+                control={control}
+                uploadInfo="format .pdf max 2Mb"
+                handleOnChange={handleCV}
+              />
+            ) : null}
             <Form.Group as={Col} className="d-flex justify-content-between mb-16" md="8">
               <Col className="sdp-table-sub-title py-16" md="4">
                 Kontak

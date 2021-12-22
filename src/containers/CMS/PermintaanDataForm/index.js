@@ -262,7 +262,7 @@ const CMSPermintaanDataView = () => {
               <Input disabled group label="Deskripsi Data" name="deskripsi" control={control} />
               <Input disabled group label="Tujuan Permintaan data" name="tujuanPermintaan" control={control} />
               <Input disabled group label="Target Waktu" name="tanggalTarget" control={control} />
-              <Input disabled group label="Produsen Data" name="produsen" control={control} />
+              <Input disabled group label="Produsen Data" name="instansi.nama" control={control} />
               <Input disabled group label="Jenis Data" name="jenisData" control={control} />
               <Input disabled group isLink label="URL Dataset" name="urlDataset" control={control} />
             </Form>

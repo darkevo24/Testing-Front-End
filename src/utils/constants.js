@@ -80,6 +80,12 @@ export const apiUrls = {
   addFormulirPendaftaran: getPortalEndpoint('v1/bimtek'),
   bimtekMateri: getPortalEndpoint('v1/bimtek/materi'),
   bimtekMateriDownload: getPortalEndpoint('v1/bimtek/download-zip'),
+  beritaLayout: getPublicV1Endpoint('layout'),
+  updateKiriLayout: getPublicV1Endpoint('layout/code/kiri'),
+  bimtekDokumentasi: getPortalEndpoint('v1/bimtek/dokumentasi'),
+  bimtekDokumentasiMingguIni: getPortalEndpoint('v1/bimtek/dokumentasi/minggu-ini'),
+  bimtekDokumentasiMingguLalu: getPortalEndpoint('v1/bimtek/dokumentasi/minggu-lalu'),
+  bimtekDokumentasiBulanIni: getPortalEndpoint('v1/bimtek/dokumentasi/bulan-ini'),
 };
 
 export const priorityOptions = [
@@ -250,6 +256,18 @@ export const STATUS_DATA = {
   published: 'DITAYANGKAN',
   unpublished: 'TIDAK_DITAYANGKAN',
 };
+
+export const STATUS_DATA_BERITA = [
+  'DRAFT',
+  'DRAFT', // from BE is 'SAVE' but actual is same as 'DRAFT'
+  'MENUNGGU_PERSETUJUAN',
+  'DISETUJUI',
+  'DITOLAK',
+  'DITAYANGKAN',
+  'TIDAK_DITAYANGKAN',
+  'DIHAPUS',
+  'DIARSIPKAN',
+];
 
 export const USER_ROLES = {
   CONTENT_CREATOR: 'CONTENT_CREATOR',

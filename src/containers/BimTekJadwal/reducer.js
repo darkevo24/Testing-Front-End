@@ -112,7 +112,7 @@ const SLICE_OBJ = createSlice({
 export const bimtekJadwalDatasetSelector = (state) => state.bimtekJadwal?.jadwalDataset;
 export const bimtekJadwalDatasetDetailSelector = (state) => state.bimtekJadwal?.detailDataset;
 export const bimtekJadwalTagsDatasetSelector = (state) => state.bimtekJadwal?.jadwalTagsDataset.records;
-export const bimtekJadwalLocatonsDatasetSelector = (state) => state.bimtekJadwal?.jadwalLocationsDataset.records;
+export const bimtekJadwalLocationsDatasetSelector = (state) => state.bimtekJadwal?.jadwalLocationsDataset.records;
 export const logDatasetSelector = (state) => state.bimtekJadwal?.logdataset;
 export const { updateResult } = SLICE_OBJ.actions;
 export default SLICE_OBJ.reducer;

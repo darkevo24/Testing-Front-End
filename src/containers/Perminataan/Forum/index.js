@@ -117,8 +117,8 @@ const Forum = () => {
             Data-diri
           </Col>
           <Row className="mb-3 px-24">
-            {readOnlyFields.map((field) => (
-              <Form.Group as={Col} md="6" className="mb-16">
+            {readOnlyFields.map((field, index) => (
+              <Form.Group key={`read-only-input-${index}`} as={Col} md="6" className="mb-16">
                 <ReadOnlyInputs className="sdp-text-disable" labelClass="sdp-form-label fw-normal" {...field} />
               </Form.Group>
             ))}

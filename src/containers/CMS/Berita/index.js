@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getListBerita, beritaCmsListSelector } from '../BeritaBaru/reducer';
+import { getListBerita, beritaCmsListSelector, setPreviewBerita } from '../BeritaBaru/reducer';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -15,6 +15,7 @@ import { useHistory } from 'react-router-dom';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 import { formatDate } from 'utils/helper';
+import { STATUS_DATA_BERITA } from 'utils/constants';
 
 const bem = bn('content-table');
 
@@ -43,28 +44,16 @@ const CMSBerita = () => {
     });
   }, [searchQuery]);
 
-  const setStatus = (status) => {
-    switch (status) {
-      case 0:
-        return 'DRAFT';
-      case 1:
-        return 'MENUNGGU_PERSETUJUAN';
-      case 2:
-        return 'DISETUJUI';
-      case 3:
-        return 'DITOLAK';
-      default:
-        return '';
-    }
-  };
-
   return (
     <div className={bem.e('section')}>
       <div className={bem.e('header')}>
         <div className={cx(bem.e('title'), 'mb-3')}>Berita</div>
         <Row className="justify-content-between">
           <Col xs={2}>
-            <Button variant="info" className="text-center" onClick={() => history.push('/cms/berita-baru')}>
+            <Button
+              variant="info"
+              className="text-center"
+              onClick={() => dispatch(setPreviewBerita({})).then(() => history.push('/cms/berita-baru'))}>
               <Plus /> Buat Berita
             </Button>
           </Col>
@@ -81,9 +70,9 @@ const CMSBerita = () => {
         header={['Judul Berita', 'Tanggal Publish', 'Status', 'Author', 'Editor']}
         data={records.map((item) => {
           let value = {
-            data: [item.judul, formatDate(item.publishDate), setStatus(item.status), item.createBy, item.editorBy],
+            data: [item.judul, formatDate(item.publishDate), STATUS_DATA_BERITA[item.status], item.createBy, item.editorBy],
             action: '/cms/berita-detail/' + item.id,
-            classValue: [null, null, setStatus(item.status).toLowerCase(), null, null],
+            classValue: [null, null, STATUS_DATA_BERITA[item.status].toLowerCase(), null, null],
           };
           return value;
         })}

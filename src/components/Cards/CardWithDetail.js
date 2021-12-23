@@ -53,7 +53,17 @@ const Button = styled.div`
   margin-left: 10px;
 `;
 
-export const CardWithDetail = ({ title, dataSetUrl, description, date, views, formats = ['PDF'], count = 1, onClick }) => (
+export const CardWithDetail = ({
+  LogForClick,
+  title,
+  dataSetUrl,
+  description,
+  date,
+  views,
+  formats = ['PDF'],
+  count = 1,
+  onClick,
+}) => (
   <FlexBox
     onClick={onClick}
     style={{
@@ -66,7 +76,7 @@ export const CardWithDetail = ({ title, dataSetUrl, description, date, views, fo
       width: '308px',
     }}>
     <Box style={{ height: '127px' }}>
-      <a title="dataset" href={dataSetUrl} className="sdp-link">
+      <a onClick={LogForClick} title="dataset" href={dataSetUrl} className="sdp-link">
         <Box
           style={{
             fontStyle: 'normal',

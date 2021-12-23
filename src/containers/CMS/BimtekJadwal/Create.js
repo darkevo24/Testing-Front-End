@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import moment from 'moment';
+// import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 
 import CMSBimtekForm, { SubmitJadwalBimtekForm } from 'components/CMSBimtekForm';

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import cloneDeep from 'lodash/cloneDeep';
-import { apiUrls, defaultNumberOfRows, get, paginationParams } from 'utils/request';
+import { apiUrls, defaultNumberOfRows, get, paginationParams, post } from 'utils/request';
 import {
   mapOrStringsToFq,
   mapParamsToJsonString,
@@ -36,6 +36,11 @@ export const initialState = {
     error: null,
     records: [],
   },
+  logTrendingOrPopular: {
+    loading: false,
+    error: '',
+    records: [],
+  },
   user: null,
   error: null,
 };
@@ -64,6 +69,20 @@ export const getDatasetPopular = createAsyncThunk('beranda/datasetPopular', asyn
   const response = await get(`${apiUrls.homeDataSetEndPoint}/${param}`);
   return response?.data?.content;
 });
+
+export const logHomeTrendingOrPopular = createAsyncThunk(
+  'beranda/logHomeTrendingOrPopular',
+  async (param, { rejectWithValue }) => {
+    try {
+      return await post(apiUrls.homeDataSetEndPoint, param);
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err);
+    }
+  },
+);
 
 const berandaSlice = createSlice({
   name: BERANDA_REDUCER,
@@ -116,6 +135,22 @@ const berandaSlice = createSlice({
     builder.addCase(getDatasetPopular.rejected, (state) => {
       state.datasetPopular.loading = false;
       state.datasetPopular.error = true;
+    });
+
+    /***
+     * Log Home Or Trending.
+     *
+     */
+    builder.addCase(logHomeTrendingOrPopular.pending, (state) => {
+      state.logTrendingOrPopular.loading = true;
+    });
+    builder.addCase(logHomeTrendingOrPopular.fulfilled, (state, action) => {
+      state.logTrendingOrPopular.loading = false;
+      state.logTrendingOrPopular.records = action.payload.records;
+    });
+    builder.addCase(logHomeTrendingOrPopular.rejected, (state) => {
+      state.logTrendingOrPopular.loading = false;
+      state.logTrendingOrPopular.error = 'Error !';
     });
   },
 });

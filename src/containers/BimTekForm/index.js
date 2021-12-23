@@ -10,7 +10,7 @@ import { BimtekLayout } from 'layouts/BimtekLayout';
 
 import './bimtekform.scss';
 import {
-  bimtekJadwalLocatonsDatasetSelector,
+  bimtekJadwalLocationsDatasetSelector,
   bimtekJadwalTagsDatasetSelector,
   getBimtekJadwalLocationsData,
   getBimtekJadwalTagsData,
@@ -33,7 +33,7 @@ const BimTekForm = () => {
     dispatch(getFormulirPendaftaranData());
   }, []);
   const filterCategory = useSelector(bimtekJadwalTagsDatasetSelector);
-  const filterLocations = useSelector(bimtekJadwalLocatonsDatasetSelector);
+  const filterLocations = useSelector(bimtekJadwalLocationsDatasetSelector);
   const { records: getPendaftaranData } = useSelector(formulirPendaftaranDatasetSelector);
   const tagMateri = filterCategory.map((tags) => {
     return { label: tags, value: tags };

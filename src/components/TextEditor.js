@@ -1,4 +1,5 @@
 import { Editor } from '@tinymce/tinymce-react';
+import { apiUrls } from 'utils/constants';
 
 const EditorConfig = {
   height: 500,
@@ -15,7 +16,7 @@ const EditorConfig = {
     alignleft aligncenter alignright alignjustify | \
     numlist bullist outdent indent | \
     image preview',
-  images_upload_url: process.env.REACT_APP_API_URL + '/file/public-upload',
+  images_upload_url: apiUrls.publiFileUpload,
   file_picker_types: 'image media',
 };
 

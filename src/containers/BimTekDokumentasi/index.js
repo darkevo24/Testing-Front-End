@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -9,86 +10,53 @@ import { BimtekLayout } from 'layouts/BimtekLayout';
 import { useForm } from 'react-hook-form';
 import { DatePicker } from 'components';
 import { Search, NoPerminataanData, Close } from 'components/Icons';
-
+import {
+  getBimtekDokumentasiMingguIni,
+  getBimtekDokumentasiMingguLalu,
+  getBimtekDokumentasiBulanIni,
+  getBimtekAllDokumentasi,
+  bimtekDokumentasiMingguIni,
+  bimtekDokumentasiMingguLalu,
+  bimtekDokumentasiBulanIni,
+  bimtekAllDokumentasi,
+} from './reducer';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
+import moment from 'moment';
 
 const bem = bn('bimtek-dokumentasi');
 
 const BimTekDokumentasi = () => {
-  const { control } = useForm({});
+  const dispatch = useDispatch();
+  const [docDetail, setDocDetail] = useState(false);
+  const [selectedDoc, setSelectedDoc] = useState({});
+  const [filterNamaBimtek, setFilterNamaBimtek] = useState();
+  const { control, watch } = useForm({});
+  const watchDate = watch('tgl');
 
-  const dataDokumentasi = [
-    {
-      label: 'Minggu ini',
-      data: [
-        {
-          id: 1,
-          photos: [
-            'https://i.picsum.photos/id/544/536/354.jpg?hmac=w5hlO2J6AMeb_LBrkxt3mI59Ss5pjTgdJImTKDonzhc',
-            'https://i.picsum.photos/id/174/536/354.jpg?hmac=BfySTNvwCB_IZZueijD4RPBFgdEyPtIJRFTotFQ7Bz0',
-            'https://i.picsum.photos/id/679/536/354.jpg?hmac=DjxD7ZCUdEANv_Jc2kgtDCPnxeSbfGvI_5O0bpGo7UY',
-          ],
-          title: 'Belajar Word',
-          date: '25 November 2021',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a.',
-        },
-        {
-          id: 2,
-          photos: [
-            'https://i.picsum.photos/id/132/536/354.jpg?hmac=ySCa5N4b-Q3YNUAT2pz9ffGI1Uq3pmk9el_00tooo8A',
-            'https://i.picsum.photos/id/557/536/354.jpg?hmac=8K4sIO3JciaBqsEhBcIhOTSrpWJu1zCcRR4UAzoF5g4',
-            'https://i.picsum.photos/id/417/536/354.jpg?hmac=Matsrj1iHedTOJ1uSvFWYRPrdtI6xSFcv9slnup-NQo',
-          ],
-          title: 'Perencanaan dan Program Bimbingan Teknis',
-          date: '23 November 2021',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a.',
-        },
-        {
-          id: 3,
-          photos: [
-            'https://i.picsum.photos/id/892/536/354.jpg?hmac=60WxlDjmsmE707hkhf2GjWSxc4kxxl4ggWFAxnQ-vd0',
-            'https://i.picsum.photos/id/990/536/354.jpg?hmac=lxIb_KJ25hKUrltIoEOtgpkV73jgyl8K__1dJg28HgM',
-          ],
-          title: 'Bimbingan Teknis Pemrograman',
-          date: '22 November 2021',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a.',
-        },
-      ],
-    },
-    {
-      label: 'Minggu Lalu',
-      data: [
-        {
-          id: 3,
-          photos: ['https://i.picsum.photos/id/129/536/354.jpg?hmac=gjW_nduOoXN0pECejBE5tOikjkxxiYjU9JQq_Y-nPBQ'],
-          title: 'Bimbingan Teknis Pemrograman',
-          date: '30 November 2021',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a.',
-        },
-        {
-          id: 1,
-          photos: ['https://i.picsum.photos/id/9/536/354.jpg?hmac=5PiiV8cCMwZsDl8bYwpetFqtPuNn5uY2WcKTEb5ykW4'],
-          title: 'Belajar Word',
-          date: '30 November 2021',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a.',
-        },
-      ],
-    },
+  const { records: mingguIniRecords } = useSelector(bimtekDokumentasiMingguIni);
+  const { records: mingguLaluRecords } = useSelector(bimtekDokumentasiMingguLalu);
+  const { records: bulanIniRecords } = useSelector(bimtekDokumentasiBulanIni);
+  const { records: dokumentasiRecords } = useSelector(bimtekAllDokumentasi);
+
+  useEffect(() => {
+    const params = {
+      ...(filterNamaBimtek ? { nama: filterNamaBimtek } : {}),
+      ...(watchDate ? { tgl: moment(watchDate).format('YYYY-MM-DD') } : {}),
+    };
+    dispatch(getBimtekDokumentasiMingguIni(params));
+    dispatch(getBimtekDokumentasiMingguLalu(params));
+    dispatch(getBimtekDokumentasiBulanIni(params));
+    dispatch(getBimtekAllDokumentasi(params));
+  }, [watchDate, filterNamaBimtek]);
+
+  var dataDokumentasi = [
+    { label: 'Minggu Ini', data: mingguIniRecords },
+    { label: 'Minggu Lalu', data: mingguLaluRecords },
+    { label: 'Bulan Ini', data: bulanIniRecords },
+    { label: 'Dokumentasi', data: dokumentasiRecords },
   ];
 
-  const [docDetail, setDocDetail] = useState(false);
-  const [selectedDoc, setSelectedDoc] = useState({
-    photos: '',
-    title: '',
-    date: '',
-    description: '',
-  });
   const [activePhoto, setActivePhoto] = useState(0);
 
   const openDetail = (list, item) => {
@@ -102,12 +70,19 @@ const BimTekDokumentasi = () => {
       <Row className="mb-12">
         <Col xs={5}>
           <InputGroup>
-            <Form.Control variant="normal" type="text" placeholder="Cari" />
-            <Search />
+            <Form.Control
+              variant="normal"
+              type="text"
+              placeholder="Cari"
+              onChange={(e) => setFilterNamaBimtek(e.target.value)}
+            />
+            <div className="searchNamaBimtek">
+              <Search />
+            </div>
           </InputGroup>
         </Col>
         <Col xs={3}>
-          <DatePicker name="filterDate" control={control} placeholder="Filter Tanggal" />
+          <DatePicker name="tgl" control={control} placeholder="Filter Tanggal" />
         </Col>
       </Row>
       {dataDokumentasi.length === 0 ? (
@@ -130,9 +105,9 @@ const BimTekDokumentasi = () => {
               {list.data.map((item, j) => (
                 <DokumentasiItem
                   key={j}
-                  title={item.title}
-                  urlPhoto={item.photos[0]}
-                  date={item.date}
+                  title={item.namaBimtek}
+                  urlPhoto={item.image.location}
+                  date={moment(item.tanggalMulaiDisetujui).format('DD MMMM YYYY')}
                   onClick={() => openDetail(i, j)}
                 />
               ))}
@@ -144,28 +119,34 @@ const BimTekDokumentasi = () => {
       <Modal show={docDetail} onHide={setDocDetail} dialogClassName={bem.e('modal')}>
         <Modal.Header
           className={bem.e('modal-header')}
-          style={{ backgroundImage: "url('" + selectedDoc.photos[activePhoto] + "')" }}>
+          style={{ backgroundImage: "url('" + selectedDoc?.image?.location + "')" }}>
           <div onClick={() => setDocDetail(false)} className={cx(bem.e('detail-close'), 'bg-white rounded-circle')}>
             <Close />
           </div>
           <div
-            onClick={() => setActivePhoto(activePhoto - 1)}
+            onClick={() => {
+              if (activePhoto > 0) setActivePhoto(activePhoto - 1);
+            }}
             className={cx(bem.e('detail-left'), 'bg-white rounded-circle')}>
             <div></div>
           </div>
           <div
-            onClick={() => setActivePhoto(activePhoto + 1)}
+            onClick={() => {
+              if (selectedDoc?.image?.length && activePhoto < selectedDoc.image.length) setActivePhoto(activePhoto + 1);
+            }}
             className={cx(bem.e('detail-right'), 'bg-white rounded-circle')}>
             <div></div>
           </div>
           <div className={cx(bem.e('detail-page'), 'sdp-text-white fs-16')}>
-            {activePhoto + 1 + ' / ' + selectedDoc.photos.length}
+            {activePhoto + 1 + ' / ' + (selectedDoc?.image?.length ? selectedDoc.image.length : 1)}
           </div>
         </Modal.Header>
         <Modal.Body>
-          <div className="sdp-text-grey-dark fs-14 mb-16">{selectedDoc.date}</div>
-          <div className="sdp-text-black-dark fs-24 fw-bold mb-16">{selectedDoc.title}</div>
-          <div className="sdp-text-grey-dark fs-16 mb-16">{selectedDoc.description}</div>
+          <div className="sdp-text-grey-dark fs-14 mb-16">
+            {moment(selectedDoc.tanggalMulaiDisetujui).format('DD MMMM YYYY')}
+          </div>
+          <div className="sdp-text-black-dark fs-24 fw-bold mb-16">{selectedDoc.namaBimtek}</div>
+          <div className="sdp-text-grey-dark fs-16 mb-16">{selectedDoc.namaBimtek}</div>
         </Modal.Body>
       </Modal>
     </BimtekLayout>

@@ -177,7 +177,7 @@ const CMSJadwalBaru = () => {
             icon: 'cross',
           });
       setTimeout(() => {
-        history.push(`/cms/bimtek-dokumentasi/${BimtekId}`);
+        history.push(`/cms/bimtek-dokumentasi`);
       }, 1000);
     });
   };

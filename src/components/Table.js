@@ -23,6 +23,7 @@ export const FilterSearchInput = ({
   searchValue,
   manualPagination = false,
   highlightSearchInput = false,
+  searchThreshold = 300,
 }) => {
   const [value, setValue] = useState(globalFilter);
   const onSearchChange = useAsyncDebounce((value) => {
@@ -33,7 +34,7 @@ export const FilterSearchInput = ({
     } else {
       setGlobalFilter(value || undefined);
     }
-  }, 200);
+  }, searchThreshold);
   const handleSearchChange = ({ target: { value = '' } = {} }) => {
     setValue(value);
     onSearchChange(value);
@@ -89,6 +90,7 @@ const Table = ({
   onRowClick,
   rowClass,
   startFromOne = false,
+  searchThreshold,
 }) => {
   const { t } = useTranslation();
 
@@ -199,6 +201,7 @@ const Table = ({
             manualPagination={manualPagination}
             searchValue={searchValue}
             highlightSearchInput={highlightSearchInput}
+            searchThreshold={searchThreshold}
           />
           {searchRightComponent ? (
             searchRightComponent

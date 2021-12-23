@@ -88,15 +88,15 @@ const KomunitasAhliPage = () => {
   };
 
   const handleFilterChange = (data) => {
-    let params = {
+    let payload_clone = { ...payload };
+    if (data.nama.trim()) payload_clone = { ...payload_clone, nama: data.nama };
+    if (data.bidangKeahlian?.value) payload_clone = { ...payload_clone, bidangKeahlian: data.bidangKeahlian.value };
+    if (data.instansiId?.value) payload_clone = { ...payload_clone, instansiId: data.instansiId.value };
+    if (data.daerahId?.value) payload_clone = { ...payload_clone, daerahId: data.daerahId.value };
+    handleAPICall({
       page: 0,
-      payload,
-    };
-    if (data.nama.trim()) params = { ...params, nama: data.nama };
-    if (data.bidangKeahlian?.value) params = { ...params, bidangKeahlian: data.bidangKeahlian.value };
-    if (data.instansiId?.value) params = { ...params, instansiId: data.instansiId.value };
-    if (data.daerahId?.value) params = { ...params, daerahId: data.daerahId.value };
-    handleAPICall(params);
+      payload: payload_clone,
+    });
     setShowFilter(false);
   };
 
@@ -150,9 +150,7 @@ const KomunitasAhliPage = () => {
               <div key={'wrapper-' + item.id} className="sdp-info-wrapper m-16">
                 <label className="sdp-title">{item?.nama}</label>
                 <div className="mt-16 d-flex mb-12">
-                  {/*{item.tags.map((tag) => (*/}
-                  {/*  <div className="br-2 border-gray-stroke px-6 py-5 sdp-text-grey-dark mr-8 bg-gray">{tag}</div>*/}
-                  {/*))}*/}
+                  <div className="br-2 px-6 py-5 sdp-text-grey-dark mr-8 bg-gray">{item.bidangKeahlian}</div>
                 </div>
                 <p>{item.riwayat}</p>
                 <div className="sdp-rating-wrapper d-flex justify-content-between">
@@ -208,11 +206,12 @@ const KomunitasAhliPage = () => {
     subTitle: 'Komunitas Ahli',
     search: true,
     searchValue: payload.q,
+    searchThreshold: 600,
     searchPlaceholder: 'Cari Ahli Berdasarkan Nama',
     searchRightComponent: (
       <>
         <Button
-          className="sdp-button border-gray-stroke br-4 bg-white ml-10"
+          className="sdp-button border-gray-stroke br-4 bg-white ml-10 text-nowrap"
           variant="light"
           onClick={() => setShowFilter(true)}>
           Advanced Search
@@ -226,9 +225,7 @@ const KomunitasAhliPage = () => {
                   key="bidangKeahlian"
                   name="bidangKeahlian"
                   control={control}
-                  data={bidangKeahlianData
-                    .filter((item) => item.bidangKeahlian)
-                    .map((item) => ({ value: item.bidangKeahlian, label: item.bidangKeahlian }))}
+                  data={bidangKeahlianData.map((item) => ({ value: item.id, label: item.nama }))}
                   placeholder="Bidang Keahlian"
                   className="mb-15 bg-gray"
                 />
@@ -275,12 +272,10 @@ const KomunitasAhliPage = () => {
     showHeader: false,
   };
 
-  let marginClass = window.screen.width <= 1024 ? 'mx-200' : window.screen.width <= 1440 ? 'mx-300' : 'mx-500';
-
   return (
     <div className="sdp-komunitas-wrapper">
-      <Row className={cx('mt-48', marginClass)}>
-        <Col>
+      <Row className="mt-48 justify-content-md-center mx-16">
+        <Col lg="6">
           {loading ? (
             <>
               <label className="sdp-heading mb-10">Komunitas Ahli</label>

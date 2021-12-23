@@ -4,15 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-// import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import { useHistory } from 'react-router-dom';
-import { DatePicker, Input, Modal, Table } from 'components';
-import { bimtekListSelector, getDokumentasiList } from './reducer';
+import { ReactComponent as Plus } from 'assets/plus.svg';
+import { DatePicker, Input, Modal, Table, TextEditor } from 'components';
+import { bimtekListSelector, getDokumentasiList, postImageDokumentasi } from './reducer';
 import { bimtekJadwalDetailSelector, getJadwalBimtekDetail } from 'containers/CMS/BimtekJadwal/reducer';
+import { apiUrls, post } from 'utils/request';
 
 import bn from 'utils/bemNames';
 import cx from 'classnames';
@@ -22,8 +23,10 @@ const bem = bn('content-create');
 const CMSJadwalBaru = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [fotoDokumentasi, setFotoDokumentasi] = useState([]);
+  const [urlVidio, setUrlVidio] = useState('');
+  const [isiDokumentasi, setIsiDokumentasi] = useState('');
   const [BimtekId, setBimtekId] = useState(0);
-
   const { records } = useSelector(bimtekListSelector);
   const DetailBimtek = useSelector(bimtekJadwalDetailSelector);
 
@@ -31,12 +34,10 @@ const CMSJadwalBaru = () => {
     return dispatch(getDokumentasiList());
   };
 
-  const dataListBimtek = useMemo(() => records || {}, [records]);
-  const dataDetailBimtek = useMemo(() => DetailBimtek || {}, [DetailBimtek]);
+  const dataListBimtek = records;
+  const dataDetailBimtek = useMemo(() => DetailBimtek || [], [DetailBimtek]);
   const materiBimtek = useMemo(() => DetailBimtek.records.materi || [], [DetailBimtek]);
   const pembicaraBimtek = useMemo(() => DetailBimtek.records.pembicara || [], [DetailBimtek]);
-  console.log(materiBimtek);
-  console.log(dataDetailBimtek);
 
   useEffect(() => {
     fetchDokumentasiList();
@@ -72,6 +73,25 @@ const CMSJadwalBaru = () => {
     console.log(data);
   };
 
+  const addFoto = async (e) => {
+    let file = e.target.files[0];
+    try {
+      let fotoFormData = new FormData();
+      fotoFormData.append('file', file);
+      await post(apiUrls.uploadFoto, fotoFormData, { headers: { 'Content-Type': undefined } }).then((res) => {
+        console.log(res);
+        setFotoDokumentasi([...fotoDokumentasi, res.data]);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const openUploadForm = (id) => {
+    const elmButton = document.getElementById(id);
+    elmButton.click();
+  };
+
   const columnsMateri = [
     {
       Header: 'Materi',
@@ -99,7 +119,7 @@ const CMSJadwalBaru = () => {
   ];
 
   const tableConfigMateri = {
-    className: 'cms-bimtek-permintaan',
+    className: 'cms-bimtek-dokumentasi',
     columns: columnsMateri,
     data: materiBimtek,
     title: '',
@@ -109,7 +129,7 @@ const CMSJadwalBaru = () => {
   };
 
   const tableConfigPembicara = {
-    className: 'cms-bimtek-permintaan',
+    className: 'cms-bimtek-dokumentasi',
     columns: columnsPembicara,
     data: pembicaraBimtek,
     title: '',
@@ -118,15 +138,25 @@ const CMSJadwalBaru = () => {
     variant: 'link',
   };
 
+  const postDokumentasi = () => {
+    let obj = {
+      id: BimtekId,
+      isiDokumentasi,
+      urlVidio,
+      images: fotoDokumentasi,
+    };
+    return dispatch(postImageDokumentasi(obj));
+  };
+
   return (
-    <div className={bem.e('section cms-bimtek-permintaan-detail')}>
+    <div className={bem.e('section cms-bimtek-dokumentasi-detail')}>
       <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
         <div className={bem.e('title')}>
           Dokumentasi Bimbingan Teknis Baru
           <Button onClick={() => history.goBack()} className="ml-24" variant="secondary" style={{ width: '112px' }}>
             Batal
           </Button>
-          <Button className="ml-10" variant="info" style={{ width: '112px' }}>
+          <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => postDokumentasi()}>
             Simpan
           </Button>
         </div>
@@ -149,7 +179,7 @@ const CMSJadwalBaru = () => {
               </Form.Select>
             )}
           </Form.Group>
-          <Row className="align-items-end">
+          <Row className="align-items-end mb-15">
             <Col>
               <DatePicker
                 group
@@ -175,7 +205,7 @@ const CMSJadwalBaru = () => {
               />
             </Col>
           </Row>
-          <Row className="align-items-end">
+          <Row className="align-items-end mb-15">
             <Col>
               <DatePicker
                 group
@@ -204,7 +234,7 @@ const CMSJadwalBaru = () => {
           <Input
             group
             readOnly
-            className="m-0"
+            className="mb-10"
             type="text"
             label=""
             name="tempat"
@@ -212,8 +242,37 @@ const CMSJadwalBaru = () => {
             rules={{ required: false }}
             error={errors.publishedTime?.message}
           />
-          <Table {...tableConfigPembicara} />
-          <Table {...tableConfigMateri} />
+          <div className="pembicara">
+            <span className="fw-bold mb-10 d-block"> Pembicara </span>
+            <Table {...tableConfigPembicara} />
+          </div>
+          <div className="materi">
+            <span className="fw-bold mb-10 d-block"> Materi </span>
+            <Table {...tableConfigMateri} />
+          </div>
+          <div className="wrapper-upload">
+            <div className="wrapper-title">
+              <span className="fw-bold mb-10 d-block"> Foto dan Video Kegiatan </span>
+              <div className="text-danger d-flex icon" onClick={() => openUploadForm('sdp-upload-dokumentasi')}>
+                <Plus /> Upload Foto
+              </div>
+            </div>
+            <Row>
+              {fotoDokumentasi.map((foto, index) => {
+                return (
+                  <Col key={index} sm={4}>
+                    <div className="doc-foto" style={{ backgroundImage: "url('" + foto.location + "')" }}></div>
+                  </Col>
+                );
+              })}
+            </Row>
+            <input id="sdp-upload-dokumentasi" type="file" style={{ display: 'none' }} onChange={addFoto} />
+          </div>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Url Vidio</Form.Label>
+            <Form.Control type="text" onChange={(e) => setUrlVidio(e.target.value)} />
+          </Form.Group>
+          <TextEditor onChange={(e) => setIsiDokumentasi(e)} />
         </Form>
       </div>
     </div>

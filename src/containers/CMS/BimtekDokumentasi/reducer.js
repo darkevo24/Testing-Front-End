@@ -41,19 +41,19 @@ export const getDokumentasiList = createAsyncThunk('bimtek-dokumentasi/getListDo
   return response;
 });
 
-export const postImageDokumentasi = createAsyncThunk('bimtek-dokumentasi/postImageDokumentasi', async (params) => {
-  // const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.file}/images`, {
-  //   images: [
-  //     {
-  //       filename: params.filename,
-  //       location: params.location,
-  //       fileType: params.fileType,
-  //       size: 10,
-  //     },
-  //   ],
-  // });
+export const postImageDokumentasi = createAsyncThunk('bimtek-dokumentasi/postDokumentasi', async (params) => {
+  const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi`, {
+    dokumentasi: [
+      {
+        isiDokumentasi: params.isiDokumentasi,
+        urlVidio: params.urlVidio,
+        images: params.images,
+      },
+    ],
+  });
   console.log(params);
-  // return response;
+  console.log(response);
+  return response;
 });
 
 const BimtekDokumentasiSlice = createSlice({

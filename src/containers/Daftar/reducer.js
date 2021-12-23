@@ -198,8 +198,7 @@ export const getSayaDaftarData = createAsyncThunk('daftar/getSayaDaftarData', as
 });
 
 export const putDaftarData = createAsyncThunk('daftar/putDaftarData', async (params) => {
-  const response = await put(`${apiUrls.daftarData}`, params);
-  return response;
+  return await put(`${apiUrls.daftarData}`, params);
 });
 
 const makeDaftarDataActionCall = (dispatch, action, state) => {

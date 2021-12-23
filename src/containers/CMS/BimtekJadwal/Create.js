@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import moment from 'moment';
+// import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 
 import CMSBimtekForm, { SubmitJadwalBimtekForm } from 'components/CMSBimtekForm';
@@ -14,8 +14,7 @@ const CMSJadwalBaru = () => {
   const history = useHistory();
 
   const onSubmit = (data) => {
-    console.log(data);
-    const tanggal = moment(data?.publishedDate).format('DD MMMM YYYY');
+    // const tanggal = moment(data?.publishedDate).format('DD MMMM YYYY');
   };
 
   return (

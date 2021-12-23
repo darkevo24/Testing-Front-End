@@ -539,7 +539,7 @@ const KomunitasAhli = () => {
               </Form.Group>
             </Row>
             {Kontak_list.map((kontak, index) => (
-              <Form.Group as={Col} className="d-flex justify-content-between mb-16" md="8">
+              <Form.Group key={kontak.name} as={Col} className="d-flex justify-content-between mb-16" md="8">
                 <Col md="12">
                   <Input
                     label={`Kontak ${index + 3}`}

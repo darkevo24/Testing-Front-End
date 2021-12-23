@@ -9,7 +9,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Search } from 'components/Icons';
-import { Table, Loader } from 'components';
+import { Table } from 'components';
 import { bimtekPermintaanDataSelector, bimtekInstansi, getPermintaanData, getInstansi } from './reducer';
 import bn from 'utils/bemNames';
 
@@ -21,7 +21,7 @@ const CMSBimtekPermintaan = () => {
   const [query, setQuery] = useState('');
   const [instansiId, setInstansiId] = useState('');
 
-  const { size, loading, page, records, totalRecords } = useSelector(bimtekPermintaanDataSelector);
+  const { size, page, records, totalRecords } = useSelector(bimtekPermintaanDataSelector);
   const instansiData = useSelector(bimtekInstansi);
 
   const fetchCmsPerminataanDataset = (params) => {

@@ -110,8 +110,8 @@ export const PerminataanDetail = () => {
                 <span className="sdp-text-grey-dark">Informasi Peminta Data</span>
               </div>
               <div className="p-24">
-                {getUserInfo(user).map((item) => (
-                  <div className="d-flex justify-content-between mb-16">
+                {getUserInfo(user).map((item, index) => (
+                  <div className="d-flex justify-content-between mb-16" key={`informasi-data-${index}`}>
                     <span className="fs-14 lh-17 sdp-text-black-dark">{item.title}</span>
                     <span className="fs-14 lh-17 sdp-text-black-dark">{item.data}</span>
                   </div>
@@ -124,8 +124,8 @@ export const PerminataanDetail = () => {
                 <span className="sdp-text-grey-dark">Permintaan Data</span>
               </div>
               <div className="p-24">
-                {getPerminataanInfo(record).map((item) => (
-                  <div className="d-flex justify-content-between  mb-16">
+                {getPerminataanInfo(record).map((item, index) => (
+                  <div className="d-flex justify-content-between mb-16" key={`permintaan-data-${index}`}>
                     <span className="fs-14 lh-17 sdp-text-black-dark">{item.title}</span>
                     <span className="fs-14 lh-17 sdp-text-black-dark">{item.data}</span>
                   </div>
@@ -154,11 +154,11 @@ export const PerminataanDetail = () => {
         <Col xs={6} md={3}>
           <span className="fs-20 lh-25">Log Status</span>
           <div className="d-flex flex-column mt-24">
-            {logRecord.map((item) => {
+            {logRecord.map((item, index) => {
               const status = (item?.data?.status || '').toLowerCase();
               const classDetail = getStatusClass(status);
               return (
-                <div className="mb-24">
+                <div className="mb-24" key={`log-record-${index}`}>
                   <div className="d-flex align-items-center">
                     <span className="fs-14 lh-17 sdp-text-black-dark w-100">
                       {moment(item.createdAt).format('DD MMMM YYYY')}

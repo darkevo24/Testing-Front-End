@@ -162,13 +162,14 @@ const KomunitasAhli = () => {
           </div>
           <div className="mb-3 px-24">
             {apiError || error ? <label className="sdp-error mb-20">{apiError || error}</label> : null}
-            {list.map((item) =>
+            {list.map((item, index) =>
               loading ? (
-                <RowLoader />
+                <RowLoader key={`row-loader-${index}`} />
               ) : (
                 <ReadOnlyInputs
                   group
                   label={item.label}
+                  key={`input-${index}`}
                   labelClass="sdp-form-label fw-normal"
                   type="text"
                   value={item.value}
@@ -271,7 +272,7 @@ const KomunitasAhli = () => {
               </div>
             )}
             {Kontak_list.map((kontak, index) => (
-              <Form.Group as={Col} className="d-flex justify-content-between mb-16" md="12">
+              <Form.Group as={Col} key={`kontak-${index}`} className="d-flex justify-content-between mb-16" md="12">
                 <Col md="12">
                   {loading ? (
                     <RowLoader />
@@ -298,11 +299,11 @@ const KomunitasAhli = () => {
             {logLoading ? (
               <RowLoader />
             ) : (
-              (logRecord || []).map((item) => {
+              (logRecord || []).map((item, index) => {
                 const status = (item?.data?.status || '').toLowerCase();
                 const classDetail = getStatusClass(status);
                 return (
-                  <div className="mb-24">
+                  <div className="mb-24" key={`log-record-${index}`}>
                     <div className="d-flex align-items-center">
                       <span className="fs-14 lh-17 sdp-text-black-dark w-100">
                         {moment(item.createdAt).format('DD MMMM YYYY')}

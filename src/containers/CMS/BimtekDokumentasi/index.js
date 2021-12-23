@@ -24,6 +24,8 @@ const CMSBimtekPermintaan = () => {
 
   const { size, loading, page, records, totalRecords } = useSelector(bimtekDokumentasiSelector);
 
+  console.log(records);
+
   const updateQuery = setSearch.debounce((val) => {
     setQuery(val);
   }, 500);
@@ -65,7 +67,7 @@ const CMSBimtekPermintaan = () => {
       accessor: 'pembicara',
       Cell: ({ ...rest }) => (
         <span>
-          {rest.row.original?.pembicara.map((data) => {
+          {rest.row.original?.pembicara?.map((data) => {
             return data.nama;
           })}
         </span>
@@ -76,7 +78,7 @@ const CMSBimtekPermintaan = () => {
       accessor: 'materi',
       Cell: ({ ...rest }) => (
         <span>
-          {rest.row.original?.materi.map((data) => {
+          {rest.row.original?.materi?.map((data) => {
             return data.nama;
           })}
         </span>

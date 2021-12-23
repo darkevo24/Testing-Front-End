@@ -10,6 +10,7 @@ import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as Plus } from 'assets/plus.svg';
+import Notification from 'components/Notification';
 import { DatePicker, Input, Modal, Table, TextEditor } from 'components';
 import { bimtekListSelector, getDokumentasiList, postImageDokumentasi } from './reducer';
 import { bimtekJadwalDetailSelector, getJadwalBimtekDetail } from 'containers/CMS/BimtekJadwal/reducer';
@@ -47,8 +48,19 @@ const CMSJadwalBaru = () => {
     return dispatch(getJadwalBimtekDetail(BimtekId));
   }, [BimtekId]);
 
+  const tanggalMulaiDisetujui = moment(dataDetailBimtek.records.tanggalMulaiDisetujui).format('YYYY/MM/DD');
+  const waktuMulaiDisetujui = moment(dataDetailBimtek.records.tanggalMulaiDisetujui).format('hh:mm');
+  const tanggalSelesaiDisetujui = moment(dataDetailBimtek.records.tanggalMulaiDisetujui).format('YYYY/MM/DD');
+  const waktuSelesaiDisetujui = moment(dataDetailBimtek.records.tanggalSelesaiDisetujui).format('hh:mm');
+
   useEffect(() => {
-    reset(dataDetailBimtek.records);
+    reset({
+      default: dataDetailBimtek.records,
+      waktuMulaiDisetujui,
+      waktuSelesaiDisetujui,
+      tanggalMulaiDisetujui,
+      tanggalSelesaiDisetujui,
+    });
   }, [dataDetailBimtek]);
 
   const schema = yup
@@ -61,6 +73,7 @@ const CMSJadwalBaru = () => {
     control,
     formState: { errors },
     reset,
+    setValue,
     handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),
@@ -69,9 +82,7 @@ const CMSJadwalBaru = () => {
     },
   });
 
-  const onProses = (data) => {
-    console.log(data);
-  };
+  const onProses = (data) => {};
 
   const addFoto = async (e) => {
     let file = e.target.files[0];
@@ -79,11 +90,19 @@ const CMSJadwalBaru = () => {
       let fotoFormData = new FormData();
       fotoFormData.append('file', file);
       await post(apiUrls.uploadFoto, fotoFormData, { headers: { 'Content-Type': undefined } }).then((res) => {
-        console.log(res);
+        Notification.show({
+          type: 'secondary',
+          message: <div> Berhasil Upload Gambar Dokumentasi </div>,
+          icon: 'check',
+        });
         setFotoDokumentasi([...fotoDokumentasi, res.data]);
       });
     } catch (e) {
-      console.log(e);
+      Notification.show({
+        type: 'secondary',
+        message: <div> Gagal Upload Gambar Dokumentasi </div>,
+        icon: 'cross',
+      });
     }
   };
 
@@ -145,9 +164,23 @@ const CMSJadwalBaru = () => {
       urlVidio,
       images: fotoDokumentasi,
     };
-    return dispatch(postImageDokumentasi(obj));
+    return dispatch(postImageDokumentasi(obj)).then((res) => {
+      res.payload
+        ? Notification.show({
+            type: 'secondary',
+            message: <div> Berhasil Menambahkan Dokumentasi </div>,
+            icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Gagal Menambahkan Dokumentasi </div>,
+            icon: 'cross',
+          });
+      setTimeout(() => {
+        history.push(`/cms/bimtek-dokumentasi/${BimtekId}`);
+      }, 1000);
+    });
   };
-
   return (
     <div className={bem.e('section cms-bimtek-dokumentasi-detail')}>
       <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
@@ -185,7 +218,7 @@ const CMSJadwalBaru = () => {
                 group
                 readOnly
                 label="Tanggal Mulai Pelaksanaan Disetujui"
-                // name="tanggalMulaiDisetujui"
+                name={tanggalMulaiDisetujui !== 'Invalid date' ? 'tanggalMulaiDisetujui' : ''}
                 control={control}
                 rules={{ required: false }}
                 error={errors.publishedDate?.message}
@@ -198,7 +231,7 @@ const CMSJadwalBaru = () => {
                 className="m-0"
                 type="time"
                 label=""
-                name=""
+                name="waktuMulaiDisetujui"
                 control={control}
                 rules={{ required: false }}
                 error={errors.publishedTime?.message}
@@ -211,7 +244,7 @@ const CMSJadwalBaru = () => {
                 group
                 readOnly
                 label="Tanggal Selesai Pelaksanaan Disetujui"
-                name=""
+                name={tanggalSelesaiDisetujui !== 'Invalid date' ? 'tanggalSelesaiDisetujui' : ''}
                 control={control}
                 rules={{ required: false }}
                 error={errors.publishedDate?.message}
@@ -224,7 +257,7 @@ const CMSJadwalBaru = () => {
                 className="m-0"
                 type="time"
                 label=""
-                name=""
+                name="waktuSelesaiDisetujui"
                 control={control}
                 rules={{ required: false }}
                 error={errors.publishedTime?.message}
@@ -237,7 +270,7 @@ const CMSJadwalBaru = () => {
             className="mb-10"
             type="text"
             label=""
-            name="tempat"
+            name="default.tempat"
             control={control}
             rules={{ required: false }}
             error={errors.publishedTime?.message}

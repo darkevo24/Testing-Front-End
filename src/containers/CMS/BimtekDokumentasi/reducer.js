@@ -20,6 +20,10 @@ export const initialState = {
     loading: false,
     records: [],
   },
+  postDokumentasi: {
+    loading: false,
+    records: [],
+  },
 };
 
 export const BIMTEK_DOKUMENTASI = 'BIMTEK_DOKUMENTASI';
@@ -51,8 +55,6 @@ export const postImageDokumentasi = createAsyncThunk('bimtek-dokumentasi/postDok
       },
     ],
   });
-  console.log(params);
-  console.log(response);
   return response;
 });
 
@@ -98,15 +100,15 @@ const BimtekDokumentasiSlice = createSlice({
       state.list.error = 'Invalid data';
     });
     builder.addCase(postImageDokumentasi.pending, (state, action) => {
-      state.list.loading = true;
+      state.postDokumentasi.loading = true;
     });
     builder.addCase(postImageDokumentasi.fulfilled, (state, action) => {
-      state.list.loading = false;
-      state.list.records = action.payload;
+      state.postDokumentasi.loading = false;
+      state.postDokumentasi.records = action.payload;
     });
     builder.addCase(postImageDokumentasi.rejected, (state, action) => {
-      state.list.loading = false;
-      state.list.error = 'Invalid data';
+      state.postDokumentasi.loading = false;
+      state.postDokumentasi.error = 'Invalid data';
     });
   },
 });

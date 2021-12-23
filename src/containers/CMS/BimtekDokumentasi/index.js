@@ -24,8 +24,6 @@ const CMSBimtekPermintaan = () => {
 
   const { size, loading, page, records, totalRecords } = useSelector(bimtekDokumentasiSelector);
 
-  console.log(records);
-
   const updateQuery = setSearch.debounce((val) => {
     setQuery(val);
   }, 500);

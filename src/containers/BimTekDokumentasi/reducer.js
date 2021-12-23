@@ -32,9 +32,16 @@ export const getBimtekDokumentasiBulanIni = createAsyncThunk(
 );
 
 export const getBimtekAllDokumentasi = createAsyncThunk('bimtekAllDokumentasi/getBimtekAllDokumentasi', async (params) => {
-  const response = await get(apiUrls.bimtekDokumentasi, {
-    query: params,
-  });
+  let response;
+  let url = apiUrls.bimtekDokumentasi;
+  if (params.id) {
+    url += `/${params.id}`;
+    response = await get(url);
+  } else {
+    response = await get(url, {
+      query: params,
+    });
+  }
   return response?.data?.content;
 });
 
@@ -71,6 +78,7 @@ const INITIAL_STATE = {
   documentasiDataset: {
     status: 'idle',
     records: [],
+    singleRecord: [],
     page: 1,
     size: 10,
     totalRecords: 0,
@@ -144,6 +152,9 @@ const SLICE_OBJ = createSlice({
       state.documentasiDataset.size = action.payload.size;
       state.documentasiDataset.totalPages = action.payload.totalPages;
       state.documentasiDataset.totalRecords = action.payload.totalRecords;
+      if (!action.payload.records) {
+        state.documentasiDataset.singleRecord = action.payload;
+      }
     });
     builder.addCase(getBimtekAllDokumentasi.rejected, (state, action) => {
       state.detailDataset.loading = false;

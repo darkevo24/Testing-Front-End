@@ -80,6 +80,7 @@ export const apiUrls = {
   addFormulirPendaftaran: getPortalEndpoint('v1/bimtek'),
   bimtekMateri: getPortalEndpoint('v1/bimtek/materi'),
   bimtekMateriDownload: getPortalEndpoint('v1/bimtek/download-zip'),
+  bimtekMateriTerdekatDownload: getApiEndpoint('file/public-download'),
   beritaLayout: getPublicV1Endpoint('layout'),
   updateKiriLayout: getPublicV1Endpoint('layout/code/kiri'),
   bimtekDokumentasi: getPortalEndpoint('v1/bimtek/dokumentasi'),

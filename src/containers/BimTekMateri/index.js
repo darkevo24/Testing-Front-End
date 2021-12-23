@@ -65,7 +65,7 @@ const BimtekMateri = () => {
           namaBimtek={item.namaBimtek}
           tanggal={moment(item.tanggalMulaiDisetujui).format('YYYY-MM-DD')}
           lokasi={item.kota}
-          urlFile={item.id}
+          urlFile={item.materi.fileName}
         />
       ))}
     </BimtekLayout>
@@ -75,7 +75,7 @@ const BimtekMateri = () => {
 const MateriItem = ({ namaFile, namaBimtek, tanggal, lokasi, urlFile }) => {
   const downloadMateri = async (id) => {
     try {
-      await get(`${apiUrls.bimtekMateriDownload}/${id}`);
+      await get(`${apiUrls.bimtekMateriTerdekatDownload}/${id}`);
     } catch (e) {}
   };
 

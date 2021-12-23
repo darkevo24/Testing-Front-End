@@ -60,7 +60,7 @@ export const setEditBerita = createAsyncThunk('cms/setEditBerita', async (params
 });
 
 export const setStatusBerita = createAsyncThunk('cms/setStatusBerita', async (params) => {
-  const response = await put(`${apiUrls.cmsBeritaData}/${params.id}/status`, params.payload);
+  const response = await put(`${apiUrls.cmsBeritaData}/status`, params.payload);
   return response?.data?.content;
 });
 

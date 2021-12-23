@@ -34,6 +34,32 @@ export const submitNewKategori = async (kategori) => {
   }
 };
 
+export const getDate = (date) => {
+  if (!date) {
+    return '';
+  }
+  // handle format yyyy-mm-ddTHH:mm:ss
+  if (date.indexOf('T') >= 0) {
+    return date.split('T')[0];
+  }
+
+  // handle format yyyy-mm-dd HH:mm:ss
+  return date.split(' ')[0];
+};
+
+export const getTime = (date) => {
+  if (!date) {
+    return '';
+  }
+  // handle format yyyy-mm-ddTHH:mm:ss
+  if (date.indexOf('T') >= 0) {
+    return date.split('T')[1].split(' ')[0].split('.')[0];
+  }
+
+  // handle format yyyy-mm-dd HH:mm:ss
+  return date.split(' ')[1];
+};
+
 const schema = yup
   .object({
     judul: yup.string().required(),
@@ -72,6 +98,7 @@ const CMSForm = ({ data, style, onSubmit }) => {
     formState: { errors },
     handleSubmit,
     setValue,
+    setError,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -109,7 +136,10 @@ const CMSForm = ({ data, style, onSubmit }) => {
         setValue('mainImage', res.data.location);
       });
     } catch (e) {
-      errors.mainImage.message = e.error?.message;
+      setError('mainImage', {
+        type: 'manual',
+        message: e.error?.message,
+      });
     }
   };
 
@@ -173,7 +203,7 @@ const CMSForm = ({ data, style, onSubmit }) => {
             <Form.Control
               type="date"
               onChange={(e) => setValue('publishDate', e.target.value)}
-              defaultValue={data?.publishDate?.toString().split(' ')[0]}
+              defaultValue={getDate(data.publishDate)}
             />
           </Form.Group>
         </Col>
@@ -183,7 +213,7 @@ const CMSForm = ({ data, style, onSubmit }) => {
             <Form.Control
               type="time"
               onChange={(e) => setValue('publishTime', e.target.value)}
-              defaultValue={data?.publishDate?.toString().split(' ')[1]}
+              defaultValue={getTime(data.publishDate)}
             />
           </Form.Group>
         </Col>

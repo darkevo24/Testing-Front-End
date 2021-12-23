@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import { CMSForm, Loader, CMSTopDetail, CMSModal } from 'components';
-import { submitBeritaForm, submitNewKategori } from 'components/CMSForm';
+import { submitBeritaForm, submitNewKategori, getDate } from 'components/CMSForm';
 import { Trash, EyeSvg, SaveSvg } from 'components/Icons';
 import Notification from 'components/Notification';
 import bn from 'utils/bemNames';
@@ -77,11 +77,11 @@ const CMSBeritaDetail = (props) => {
       return dispatch(setPreviewBerita(data)).then(() => history.push('/berita/preview'));
     }
 
-    const publishDate = data.publishDate ? data.publishDate.split(' ')[0] : '';
-    const publishTime = data.publishTime ? data.publishTime : '';
+    const publishDate = getDate(data.publishDate);
+    const publishTime = data.publishTime ? data.publishTime + ':00' : '';
     data.publishDate = !publishDate ? '' : !publishTime ? publishDate + ' 00:00:00' : publishDate + ' ' + publishTime;
     // set default publishDate when publish
-    if (beritaStatus === 2) {
+    if (beritaStatus === 5) {
       const currentDate = new Date().toISOString();
       data.publishDate = currentDate.split('T')[0] + ' ' + currentDate.split('T')[1].split('.')[0];
     }
@@ -109,16 +109,20 @@ const CMSBeritaDetail = (props) => {
       case 5:
       case 6:
         // update status
-        dispatch(setStatusBerita({ payload: { status: data.status, note: data.note ? data.note : '' }, id: idBerita })).then(
-          (res) => notifyResponse(res),
-        );
+        dispatch(setStatusBerita({ payload: { id: [idBerita], status: data.status, note: data.note ? data.note : '' } }))
+          .then((res) => notifyResponse(res))
+          .then(() => fetchData({ id: idBerita }));
         break;
       case 7:
         // delete
-        dispatch(deleteBerita({ id: idBerita })).then((res) => notifyResponse(res));
+        dispatch(deleteBerita({ id: idBerita }))
+          .then((res) => notifyResponse(res))
+          .then(() => history.goBack());
         break;
       default:
-        return dispatch(setEditBerita({ payload: data, id: idBerita })).then((res) => notifyResponse(res));
+        return dispatch(setEditBerita({ payload: data, id: idBerita }))
+          .then((res) => notifyResponse(res))
+          .then(() => fetchData({ id: idBerita }));
     }
   };
 

@@ -86,6 +86,7 @@ export const apiUrls = {
   bimtekDokumentasiMingguIni: getPortalEndpoint('v1/bimtek/dokumentasi/minggu-ini'),
   bimtekDokumentasiMingguLalu: getPortalEndpoint('v1/bimtek/dokumentasi/minggu-lalu'),
   bimtekDokumentasiBulanIni: getPortalEndpoint('v1/bimtek/dokumentasi/bulan-ini'),
+  bimtekPermintaan: getCMSEndpoint('bimtek/permintaan'),
 };
 
 export const priorityOptions = [

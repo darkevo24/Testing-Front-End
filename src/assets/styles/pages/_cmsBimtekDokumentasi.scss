@@ -1,0 +1,14 @@
+.cms-bimtek-permintaan-detail {
+    .cms-bimtek-permintaan {
+        .sdp-table__table-wrapper {
+            thead {
+                tr {
+                    border-bottom: 2px solid $red;
+                }
+            }
+        }
+        .pagination {
+            display: none;
+        }
+    }
+}

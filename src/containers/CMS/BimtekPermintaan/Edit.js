@@ -192,7 +192,7 @@ const CMSBimtekPermintaanEdit = (props) => {
     );
   };
 
-  const WaitingText = () => {
+  const WaitingApproval = () => {
     const history = useHistory();
     const backToTable = () => {
       history.push('/cms/bimtek-permintaan');
@@ -209,6 +209,23 @@ const CMSBimtekPermintaanEdit = (props) => {
     );
   };
 
+  const WaitingRequestApproval = () => {
+    const history = useHistory();
+    const backToTable = () => {
+      history.push('/cms/bimtek-permintaan');
+    };
+    return (
+      <div className="d-flex">
+        <div className="icon-box" onClick={backToTable}>
+          <LeftChevron></LeftChevron>
+        </div>
+        <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">
+          Waiting Request Approval
+        </Row>
+      </div>
+    );
+  };
+
   const DraftText = () => {
     const history = useHistory();
     const backToTable = () => {
@@ -220,6 +237,21 @@ const CMSBimtekPermintaanEdit = (props) => {
           <LeftChevron></LeftChevron>
         </div>
         <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">DRAFT</Row>
+      </div>
+    );
+  };
+
+  const RejectedText = () => {
+    const history = useHistory();
+    const backToTable = () => {
+      history.push('/cms/bimtek-permintaan');
+    };
+    return (
+      <div className="d-flex">
+        <div className="icon-box" onClick={backToTable}>
+          <LeftChevron></LeftChevron>
+        </div>
+        <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">REJECTED</Row>
       </div>
     );
   };
@@ -244,11 +276,21 @@ const CMSBimtekPermintaanEdit = (props) => {
     );
   };
 
-  const ButtonStatusWaitingList = () => {
+  const ButtonStatusWaitingRequestApproval = () => {
+    return (
+      <div>
+        <Button className="ml-10" variant="info" onClick={() => setModalDraft(true)}>
+          Kirim Pengajuan
+        </Button>
+      </div>
+    );
+  };
+
+  const ButtonStatusWaitingApproval = () => {
     return (
       <div>
         <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => setModalDraft(true)}>
-          Draft
+          Kirim
         </Button>
       </div>
     );
@@ -267,16 +309,28 @@ const CMSBimtekPermintaanEdit = (props) => {
     );
   };
 
+  const ButtonStatusRejected = () => {
+    return (
+      <div>
+        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalTolak(true)}>
+          Tolak
+        </Button>
+      </div>
+    );
+  };
+
   const StatusBar = () => {
     switch (data.status) {
       case 'WAITING_REQUEST_APPROVAL':
-        return <WaitingText />;
+        return <WaitingRequestApproval />;
       case 'PUBLISHED':
         return <SuccessText />;
       case 'WAITING_APPROVAL':
-        return <WaitingText />;
+        return <WaitingApproval />;
       case 'DRAFT':
         return <DraftText />;
+      case 'REJECTED':
+        return <RejectedText />;
       default:
         return null;
     }
@@ -285,15 +339,17 @@ const CMSBimtekPermintaanEdit = (props) => {
   const ButtonStatusAction = () => {
     switch (data.status) {
       case 'WAITING_REQUEST_APPROVAL':
-        return <ButtonStatusWaitingList />;
+        return <ButtonStatusWaitingRequestApproval />;
       case 'PUBLISHED':
         return <ButtonStatusPublish />;
       case 'WAITING_APPROVAL':
-        return <ButtonStatusWaitingList />;
+        return <ButtonStatusWaitingApproval />;
       case 'DRAFT':
         return <ButtonStatusDraft />;
       case 'APPROVED':
         return <ButtonStatusApproved />;
+      case 'REJECTED':
+        return <ButtonStatusRejected />;
       default:
         return null;
     }

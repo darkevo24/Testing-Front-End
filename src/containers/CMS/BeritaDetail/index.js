@@ -3,7 +3,14 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useHistory } from 'react-router-dom';
-import { setDetailBerita, setEditBerita, detailDataSelector, deleteBerita } from '../BeritaBaru/reducer';
+import {
+  setDetailBerita,
+  setEditBerita,
+  detailDataSelector,
+  deleteBerita,
+  setPreviewBerita,
+  setStatusBerita,
+} from '../BeritaBaru/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { LogStatus } from 'components/Sidebars/LogStatus';
@@ -25,12 +32,14 @@ const CMSBeritaDetail = (props) => {
   };
 
   useEffect(() => {
-    fetchData({ id: idBerita });
+    if (record.id?.toString() !== idBerita) {
+      fetchData({ id: idBerita });
+    }
   }, [idBerita]);
 
   const [beritaStatus, setBeritaStatus] = useState(record);
   const [modalLabel, setModalLabel] = useState('');
-  // DRAFT = 0, WAITING = 1, PUBLISH/APPROVE = 2, REJECT = 3, UNPUBLISH = 4, DELETE = 5
+
   const actionSubmit = (status) => {
     setBeritaStatus(status);
     let label = '';
@@ -38,32 +47,34 @@ const CMSBeritaDetail = (props) => {
       case 0:
         label = 'Simpan Berita?';
         break;
-      case 1:
+      case 2:
         label = 'Kirim Berita?';
         break;
-      case 2:
+      case 3:
         label = 'Apakah anda yakin ingin <b className="sdp-text-blue">menyetujui</b> Berita?';
         break;
-      case 3:
+      case 4:
         label = 'Apakah anda yakin ingin <b className="sdp-text-blue">menolak</b> Berita?';
         break;
-      case 4:
+      case 5:
+        label = 'Apakah anda yakin ingin <b className="sdp-text-blue">menayangkan</b> Berita?';
+        break;
+      case 6:
         label = 'Apakah anda yakin ingin <b className="sdp-text-blue">tidak menayangkan</b> Berita?';
         break;
-      case 5:
+      case 7:
         label = 'Apakah anda yakin ingin <b className="sdp-text-blue">menghapus</b> Berita?';
         break;
       default:
         return;
     }
-    setModalLabel(<span dangerouslySetInnerHTML={{ __html: label }} />);
+    setModalLabel(<span dangerouslySetInnerHTML={{ __html: label }}></span>);
   };
 
   const onSubmit = (data) => {
     // preview berita
     if (beritaStatus === 9) {
-      window.localStorage.setItem('preview-berita', JSON.stringify(data));
-      return window.open('/berita/preview', '_blank');
+      return dispatch(setPreviewBerita(data)).then(() => history.push('/berita/preview'));
     }
 
     const publishDate = data.publishDate ? data.publishDate.split(' ')[0] : '';
@@ -93,7 +104,16 @@ const CMSBeritaDetail = (props) => {
 
   const submitEditBerita = (data) => {
     switch (data.status) {
+      case 3:
+      case 4:
       case 5:
+      case 6:
+        // update status
+        dispatch(setStatusBerita({ payload: { status: data.status, note: data.note ? data.note : '' }, id: idBerita })).then(
+          (res) => notifyResponse(res),
+        );
+        break;
+      case 7:
         // delete
         dispatch(deleteBerita({ id: idBerita })).then((res) => notifyResponse(res));
         break;
@@ -112,7 +132,6 @@ const CMSBeritaDetail = (props) => {
             </div>
           ),
           icon: 'check',
-          onClose: history.goBack(),
         })
       : Notification.show({
           message: (
@@ -138,37 +157,15 @@ const CMSBeritaDetail = (props) => {
           <div>
             <div className="d-flex justify-content-between mb-3">
               <div className={bem.e('title')}>Edit Berita</div>
-              {record?.status === 1 ? (
+              {record?.status === 2 ? (
                 <div>
-                  <Button variant="secondary" onClick={() => actionSubmit(5)}>
+                  <Button variant="secondary" onClick={() => actionSubmit(7)}>
                     <Trash />
                   </Button>
-                  <Button variant="light" className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
-                    <EyeSvg />
-                  </Button>
                   <Button
-                    onClick={() => actionSubmit(0)}
+                    onClick={() => previewBerita()}
                     variant="light"
                     className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
-                    <SaveSvg />
-                  </Button>
-                  <Button
-                    onClick={() => actionSubmit(3)}
-                    variant="light"
-                    className="ml-10 bg-white border-gray-stroke sdp-text-black-dark"
-                    style={{ width: '112px' }}>
-                    Tolak
-                  </Button>
-                  <Button onClick={() => actionSubmit(2)} className="ml-10" variant="info" style={{ width: '112px' }}>
-                    Publish
-                  </Button>
-                </div>
-              ) : record?.status === 2 ? (
-                <div>
-                  <Button variant="secondary" onClick={() => actionSubmit(5)}>
-                    <Trash />
-                  </Button>
-                  <Button variant="light" className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
                     <EyeSvg />
                   </Button>
                   <Button
@@ -182,12 +179,50 @@ const CMSBeritaDetail = (props) => {
                     variant="light"
                     className="ml-10 bg-white border-gray-stroke sdp-text-black-dark"
                     style={{ width: '112px' }}>
-                    Unpublish
+                    Tolak
                   </Button>
+                  <Button onClick={() => actionSubmit(3)} className="ml-10" variant="info" style={{ width: '112px' }}>
+                    Setujui
+                  </Button>
+                </div>
+              ) : record?.status === 3 || record?.status === 5 || record?.status === 6 ? (
+                <div>
+                  <Button variant="secondary" onClick={() => actionSubmit(7)}>
+                    <Trash />
+                  </Button>
+                  <Button
+                    onClick={() => previewBerita()}
+                    variant="light"
+                    className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
+                    <EyeSvg />
+                  </Button>
+                  <Button
+                    onClick={() => actionSubmit(0)}
+                    variant="light"
+                    className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
+                    <SaveSvg />
+                  </Button>
+                  {record?.status === 3 || record?.status === 6 ? (
+                    <Button
+                      onClick={() => actionSubmit(5)}
+                      variant="light"
+                      className="ml-10 bg-white border-gray-stroke sdp-text-black-dark"
+                      style={{ width: '112px' }}>
+                      Publish
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => actionSubmit(6)}
+                      variant="light"
+                      className="ml-10 bg-white border-gray-stroke sdp-text-black-dark"
+                      style={{ width: '112px' }}>
+                      Unpublish
+                    </Button>
+                  )}
                 </div>
               ) : (
                 <div>
-                  <Button variant="secondary" onClick={() => actionSubmit(5)}>
+                  <Button variant="secondary" onClick={() => actionSubmit(7)}>
                     <Trash />
                   </Button>
                   <Button
@@ -197,8 +232,8 @@ const CMSBeritaDetail = (props) => {
                     style={{ width: '112px' }}>
                     Lihat
                   </Button>
-                  <Button onClick={() => actionSubmit(1)} className="ml-10" variant="info" style={{ width: '112px' }}>
-                    Simpan
+                  <Button onClick={() => actionSubmit(2)} className="ml-10" variant="info" style={{ width: '112px' }}>
+                    Kirim
                   </Button>
                 </div>
               )}

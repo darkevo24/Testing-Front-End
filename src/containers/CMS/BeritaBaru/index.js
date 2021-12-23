@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
 
@@ -6,16 +6,23 @@ import CMSForm, { submitBeritaForm, submitNewKategori } from 'components/CMSForm
 import Notification from 'components/Notification';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
-import { setNewBerita } from './reducer';
-import { useDispatch } from 'react-redux';
+import { setNewBerita, setPreviewBerita, detailDataSelector } from './reducer';
+import { useDispatch, useSelector } from 'react-redux';
 
 const bem = bn('content-create');
 
 const CMSBeritaBaru = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [action, setAction] = useState('simpan');
+  const { record } = useSelector(detailDataSelector);
 
   const onSubmit = (data) => {
+    // preview berita
+    if (action === 'preview') {
+      return dispatch(setPreviewBerita(data)).then(() => history.push('/berita/preview'));
+    }
+
     data.mainImageTitle = '';
     const publishDate = data.publishDate ? data.publishDate.split(' ')[0] : '';
     const publishTime = data.publishTime ? data.publishTime : '';
@@ -60,30 +67,36 @@ const CMSBeritaBaru = () => {
     });
   };
 
+  const actionClick = (status) => {
+    Promise.resolve()
+      .then(() => setAction(status))
+      .then(() => submitBeritaForm());
+  };
+
   return (
     <div className={bem.e('section')}>
       <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
         <div className={bem.e('title')}>
           Buat Berita Baru
           <Button
-            onClick={() => history.push('/cms/berita-konten')}
+            onClick={() => dispatch(setPreviewBerita({})).then(() => history.push('/cms/berita-konten'))}
             className="ml-24"
             variant="secondary"
             style={{ width: '112px' }}>
             Batal
           </Button>
-          <Button onClick={submitBeritaForm} className="ml-10" variant="info" style={{ width: '112px' }}>
+          <Button onClick={() => actionClick('simpan')} className="ml-10" variant="info" style={{ width: '112px' }}>
             Simpan
           </Button>
         </div>
         <div>
-          <Button className="ml-24" variant="secondary" style={{ width: '112px' }}>
+          <Button onClick={() => actionClick('preview')} className="ml-24" variant="secondary" style={{ width: '112px' }}>
             Preview
           </Button>
         </div>
       </div>
       <div className={bem.e('body')}>
-        <CMSForm data={[]} onSubmit={onSubmit} />
+        <CMSForm data={record} onSubmit={onSubmit} />
       </div>
     </div>
   );

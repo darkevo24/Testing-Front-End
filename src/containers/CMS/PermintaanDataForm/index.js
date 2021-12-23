@@ -160,7 +160,7 @@ const CMSPermintaanDataView = () => {
       catatan: data.catatan,
     };
     dispatch(postPermintaanDataTolak(obj)).then((res) => {
-      res?.name === 'error'
+      res.error.name === 'Error'
         ? Notification.show({
             type: 'secondary',
             message: <div> Permintaan Data Gagal Ditolak </div>,
@@ -181,7 +181,8 @@ const CMSPermintaanDataView = () => {
       catatan: data.catatan,
     };
     dispatch(postPermintaanDataProses(obj)).then((res) => {
-      res?.name === 'error'
+      console.log(res);
+      res.error.name === 'Error'
         ? Notification.show({
             type: 'secondary',
             message: <div> Permintaan Data Gagal Diproses </div>,
@@ -203,7 +204,7 @@ const CMSPermintaanDataView = () => {
       url: data.urlDataset,
     };
     dispatch(postPermintaanDataSelesai(obj)).then((res) => {
-      res?.name === 'error'
+      res.error.name === 'Error'
         ? Notification.show({
             type: 'secondary',
             message: <div> Permintaan Data Gagal Diselesaikan </div>,

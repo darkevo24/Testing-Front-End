@@ -16,16 +16,19 @@ import {
   getBimtekJadwalTagsData,
 } from 'containers/BimTekJadwal/reducer';
 import { useDispatch, useSelector } from 'react-redux';
-import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import { formulirPendaftaranDatasetSelector, getFormulirPendaftaranData } from './reducer';
 import { apiUrls } from 'utils/constants';
 import { post } from 'utils/request';
+import Select from 'react-select';
 
 const BimTekForm = () => {
   const dispatch = useDispatch();
   const [peserta, setPeserta] = useState();
   const [materiTagData, setMateriTagData] = useState();
   const [kotaData, setKotaData] = useState();
+  const [kotaError, setKotaError] = useState(true);
+  const [ekspektasiError, setEkspektasiError] = useState(true);
   const [materiError, setMateriError] = useState(true);
   useEffect(() => {
     dispatch(getBimtekJadwalTagsData());
@@ -35,34 +38,47 @@ const BimTekForm = () => {
   const filterCategory = useSelector(bimtekJadwalTagsDatasetSelector);
   const filterLocations = useSelector(bimtekJadwalLocationsDatasetSelector);
   const { records: getPendaftaranData } = useSelector(formulirPendaftaranDatasetSelector);
+  const kotaOptions = filterLocations.map((category) => {
+    return { label: category.nama, value: category.provinsi };
+  });
   const tagMateri = filterCategory.map((tags) => {
     return { label: tags, value: tags };
   });
 
   useEffect(() => {
+    peserta !== undefined && setEkspektasiError(true);
+    kotaData !== undefined && setKotaError(true);
     materiTagData?.length > 0 && setMateriError(true);
-  }, [materiTagData]);
+  }, [peserta, kotaData, materiTagData]);
 
   const getFormulirData = async (e) => {
     e.preventDefault();
     const params = {
       kota: Number(kotaData),
       ekspektasiJumlahPeserta: Number(peserta),
-      tagMateri: materiTagData.map((materiTags) => materiTags.value),
+      tagMateri: materiTagData && materiTagData.map((materiTags) => materiTags.value),
     };
-    if (!params?.tagMateri || params.tagMateri?.length === 0) {
-      setMateriError(false);
+    if (kotaData === undefined || peserta === undefined || !params?.tagMateri || params.tagMateri?.length === 0) {
+      if (kotaData === undefined || kotaData === null) {
+        setKotaError(false);
+      }
+      if (peserta === undefined || peserta === '') {
+        setEkspektasiError(false);
+      }
+      if (!params?.tagMateri || params.tagMateri?.length === 0) {
+        setMateriError(false);
+      }
     } else {
       try {
         await post(apiUrls.addFormulirPendaftaran, params);
       } catch (er) {}
-      setKotaData('');
+      setKotaData(null);
       setPeserta('');
       setMateriTagData([]);
     }
   };
   const handleKotaChange = (e) => {
-    setKotaData(e.target.value);
+    setKotaData(e.value);
   };
   const Ekspektasi = (e) => {
     setPeserta(e.target.value);
@@ -107,25 +123,33 @@ const BimTekForm = () => {
               </Form.Group>
             </Row>
             <Row>
-              <Form.Group as={Col} controlId="city">
+              <Form.Group as={Col} controlId="city" className="wrapper">
                 <Form.Label>Kota Pelaksana</Form.Label>
-                <Form.Select name="kota" value={kotaData} onChange={handleKotaChange} required placeholder="Kota Pelaksana">
-                  <option></option>
-                  {filterLocations.map((category, key) => (
-                    <option key={key} value={category.provinsi}>
-                      {category.nama}
-                    </option>
-                  ))}
-                </Form.Select>
+                <Select
+                  closeMenuOnSelect={true}
+                  options={kotaOptions}
+                  isMulti={false}
+                  classNamePrefix="select"
+                  onChange={handleKotaChange}
+                  value={kotaData == null ? null : kotaOptions.find((item) => item.value === kotaData)}
+                  name="tagMateri"
+                  className="select-pendaftran"
+                />
+                <p hidden={kotaError} className="text-danger error-message">
+                  Kota Pelaksana is required.
+                </p>
               </Form.Group>
-              <Form.Group as={Col} controlId="talentCount">
+              <Form.Group as={Col} controlId="talentCount" className="wrapper">
                 <Form.Label>Ekspektasi Jumlah Peserta</Form.Label>
-                <Form.Control type="number" value={peserta} name="ekspektasiJumlahPeserta" onChange={Ekspektasi} required />
+                <Form.Control type="number" min={0} value={peserta} name="ekspektasiJumlahPeserta" onChange={Ekspektasi} />
+                <p hidden={ekspektasiError} className="text-danger error-message">
+                  Ekspektasi Jumlah Peserta is required.
+                </p>
               </Form.Group>
             </Row>
-            <Form.Group as={Col} controlId="materi">
+            <Form.Group as={Col} controlId="materi" className="materi-wrapper">
               <Form.Label>Materi Bimtek</Form.Label>
-              <Select
+              <CreatableSelect
                 closeMenuOnSelect={true}
                 options={tagMateri}
                 isMulti={true}
@@ -133,9 +157,10 @@ const BimTekForm = () => {
                 onChange={handleMateriChange}
                 name="tagMateri"
                 value={materiTagData}
+                className="select-pendaftran"
               />
-              <p hidden={materiError} className="text-danger">
-                Required!!
+              <p hidden={materiError} className="text-danger error-message">
+                Materi Bimtek is required.
               </p>
             </Form.Group>
             <Button variant="info" type="submit" className="mt-3">

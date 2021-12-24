@@ -1,6 +1,3 @@
-// import { Facebook } from 'react-content-loader';
-import React from 'react';
-
 const types = {
   danger: 'red',
   dark: 'black-dark',

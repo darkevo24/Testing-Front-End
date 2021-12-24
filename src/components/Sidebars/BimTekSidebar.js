@@ -21,6 +21,10 @@ const List = [
     title: 'Materi',
     link: '/bimtek-materi',
   },
+  {
+    title: 'Permintaan Bimtek Saya',
+    link: '/bimtek-permintaan',
+  },
 ];
 
 export const BimTekSidebar = () => (

@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 import moment from 'moment';
+import isFunction from 'lodash/isFunction';
 import { ReadOnlyInputs } from 'components';
 import { LeftChevron } from 'components/Icons';
 import Modal from 'components/Modal';
@@ -42,12 +43,13 @@ const CMSForumSDIDetail = () => {
     dispatch(getCMSForumSDIDataById(id));
   };
 
-  const handleAPICall = async (method, url, params) => {
+  const handleAPICall = async (method, url, params, callBack) => {
     try {
       setLoader(true);
       await method(url, {}, params);
       handleCloseModal();
       initialCall();
+      isFunction(callBack) && callBack();
     } catch (e) {
       handleCloseModal();
       setAPIError(e.message);
@@ -59,23 +61,23 @@ const CMSForumSDIDetail = () => {
   };
 
   const onDelete = async () => {
-    handleAPICall(post, `${apiUrls.cmsForumSDI}/${id}/ubah-status/DELETED`, { data: { note: '' } });
+    handleAPICall(post, `${apiUrls.cmsForumSDI}/${id}/ubah-status/DELETED`, { data: { note: '' } }, goBack);
   };
 
   const onSetujui = async () => {
-    handleAPICall(post, `${apiUrls.cmsForumSDI}/${id}/ubah-status/APPROVED`);
+    handleAPICall(post, `${apiUrls.cmsForumSDI}/${id}/ubah-status/APPROVED`, { data: { note: '' } });
   };
 
   const onTolak = async () => {
-    handleAPICall(post, `${apiUrls.cmsForumSDI}/${id}/ubah-status/REJECTED`, { query: { notes } });
+    handleAPICall(post, `${apiUrls.cmsForumSDI}/${id}/ubah-status/REJECTED`, { data: { note: notes } });
   };
 
   const onPublish = async () => {
-    handleAPICall(post, `${apiUrls.cmsForumSDI}/${id}/ubah-status/PUBLISHED`);
+    handleAPICall(post, `${apiUrls.cmsForumSDI}/${id}/ubah-status/PUBLISHED`, { data: { note: '' } });
   };
 
   const onUnpublish = async () => {
-    handleAPICall(post, `${apiUrls.cmsForumSDI}/${id}/ubah-status/UNPUBLISHED`);
+    handleAPICall(post, `${apiUrls.cmsForumSDI}/${id}/ubah-status/UNPUBLISHED`, { data: { note: '' } });
   };
 
   const handleCloseModal = () => {

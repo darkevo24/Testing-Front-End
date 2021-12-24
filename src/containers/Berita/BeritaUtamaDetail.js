@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import Loader from 'components/Loader';
-import styled from 'styled-components';
 import { beritaLayoutSelector, getBertaLayout } from 'containers/CMS/BeritaLayout/reducer';
-import userAvator from 'assets/user.svg';
-import worldGray from 'assets/world-gray.svg';
-import fbGray from 'assets/fb-gray.svg';
-import twitterGray from 'assets/twitter-gray.svg';
-import shareGray from 'assets/share-gray.svg';
-import clockGray from 'assets/clock-gray.svg';
+import userIcon from 'assets/user.svg';
+import worldIcon from 'assets/world.svg';
+import fbIcon from 'assets/fb.svg';
+import twitterIcon from 'assets/twitterIcon.svg';
+import shareIcon from 'assets/share.svg';
+import clockIcon from 'assets/clock.svg';
 import Search from './Search';
 import BeritaUtama from './BeritaUtama';
 import BeritaUtamaLain from './BeritaUtamaLain';
@@ -20,6 +20,7 @@ import BeritaLainnya from './BeritaLainnya';
 import Populer from './Populer';
 import Tweets from './Tweets';
 import { newsDetailSelector, getNewsDetail } from './reducer';
+import './berita.scss';
 
 const components = {
   search: Search,
@@ -37,17 +38,8 @@ const renderComp = (el) => {
   return React.createElement(components[el.component], { ...el.props, key: el.component });
 };
 
-const UserProfile = styled.div`
-  font-family: Myriad Pro;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 19px;
-  color: #135fb2;
-`;
-
 const BeritaUtamaDetail = (props) => {
-  const id = props.match.params.id;
+  const { id } = useParams();
   const dispatch = useDispatch();
   const { record, isLoading } = useSelector(newsDetailSelector);
 
@@ -89,20 +81,20 @@ const BeritaUtamaDetail = (props) => {
         <div>
           <div className="fs-32 fw-600 mb-24">{record?.judul}</div>
           <div className="d-flex flex-row">
-            <img src={userAvator} />
-            <UserProfile className="fs-16 mt-8">{record?.createBy}</UserProfile>
+            <img src={userIcon} />
+            <span className="userProfile fs-16 mt-8">{record?.createBy}</span>
           </div>
           <div className="d-flex flex-row justify-content-between">
-            <img src={clockGray} className="mx-8" />
+            <img src={clockIcon} className="mx-8" />
             <div className="sdp-text-disable mb-24 fs-14">{formatDate(record?.publishDate)}</div>
             <div className="mr-8 my-12">
-              <img src={worldGray} className="mx-8" />
-              <img src={fbGray} className="mx-8" />
-              <img src={twitterGray} className="mx-8" />
-              <img src={shareGray} className="mx-8" />
+              <img src={worldIcon} className="mx-8" />
+              <img src={fbIcon} className="mx-8" />
+              <img src={twitterIcon} className="mx-8" />
+              <img src={shareIcon} className="mx-8" />
             </div>
           </div>
-          <img className="w-100" src={record.image} />
+          <img className="w-100" src={record.mainImage} />
           <div className="fs-18 mt-32" dangerouslySetInnerHTML={{ __html: record?.content }}></div>
         </div>
       </div>

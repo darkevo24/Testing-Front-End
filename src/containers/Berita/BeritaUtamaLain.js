@@ -30,19 +30,21 @@ const BeritaUtamaLain = (props) => {
     <Wrapper>
       <SectionTitle>Berita Utama Lainnya</SectionTitle>
       <BeritaGrid columns={props.columns}>
-        {records.length
-          ? records.map((record, i) => (
+        {records.length &&
+          records.map((value, i) => {
+            const { image, slug, judul } = value;
+            return (
               <BeritaCard key={i}>
                 <BeritaCardImageWrapper>
-                  <BeritaCardImage src={record.image} />
+                  <BeritaCardImage src={image} />
                 </BeritaCardImageWrapper>
                 <BeritaCardContent>
-                  <BeritaCardTanggal>{record.slug}</BeritaCardTanggal>
-                  <BeritaCardJudul>{record.judul}</BeritaCardJudul>
+                  <BeritaCardTanggal>{slug}</BeritaCardTanggal>
+                  <BeritaCardJudul>{judul}</BeritaCardJudul>
                 </BeritaCardContent>
               </BeritaCard>
-            ))
-          : null}
+            );
+          })}
       </BeritaGrid>
     </Wrapper>
   );

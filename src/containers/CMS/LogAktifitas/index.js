@@ -34,9 +34,9 @@ const LogActivity = () => {
   useEffect(() => {
     handleAPICall({
       page: page,
-      ...(q && { q }),
-      ...(startDate && { startDate: startDate }),
-      ...(endDate && { endDate: endDate }),
+      q,
+      startDate,
+      endDate,
     });
   }, []);
 
@@ -93,13 +93,19 @@ const LogActivity = () => {
     {
       Header: 'Status',
       accessor: 'status',
-      Cell: ({ ...rest }) => {
+
+      Cell: ({
+        row: {
+          original: { status = '' },
+        },
+      }) => {
         return (
           <span
             className={cx({
-              'sdp-text-red': rest.row.original.status === 'Error' || rest.row.original.status === 'Gagal',
+              'sdp-text-red': ['Error', 'Gagal'].includes(status),
+              'sdp-text-green': ['Success', 'Berhasil'].includes(status),
             })}>
-            {rest.row.original.status}
+            {status}
           </span>
         );
       },

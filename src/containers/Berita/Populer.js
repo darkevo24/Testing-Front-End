@@ -70,17 +70,19 @@ const Populer = (props) => {
       <SectionTitle>Populer</SectionTitle>
       <Header>Lihat Semua</Header>
       <BeritaGrid columns={props.columns}>
-        {records && records?.length
-          ? records.map((record, i) => (
+        {records?.length &&
+          records.map((record, i) => {
+            const { image, kategori, judul } = record;
+            return (
               <BeritaItem key={'populer' + i}>
                 <ImageWrapper>
-                  <Image src={record.image} />
-                  <Topik>{record.kategori}</Topik>
+                  <Image src={image} />
+                  <Topik>{kategori}</Topik>
                 </ImageWrapper>
-                <Title>{record.judul}</Title>
+                <Title>{judul}</Title>
               </BeritaItem>
-            ))
-          : null}
+            );
+          })}
       </BeritaGrid>
     </Wrapper>
   );

@@ -66,20 +66,22 @@ const ListBerita = (props) => {
   return (
     <Wrapper>
       <BeritaGrid columns={props.columns}>
-        {records.length
-          ? records.map((content, i) => (
+        {records.length &&
+          records.map((content, i) => {
+            const { judul, slug, image, kategori } = content;
+            return (
               <BeritaItem className="row" key={'lb' + i}>
                 <div className="col-lg-4" style={{ paddingRight: '24px' }}>
-                  <Image src={content?.image} />
+                  <Image src={image} />
                 </div>
                 <div className="col-lg-8">
-                  <Topik>{content?.kategori}</Topik>
-                  <Judul>{content?.judul}</Judul>
-                  <Konten>{content?.slug}</Konten>
+                  <Topik>{kategori}</Topik>
+                  <Judul>{judul}</Judul>
+                  <Konten>{slug}</Konten>
                 </div>
               </BeritaItem>
-            ))
-          : null}
+            );
+          })}
       </BeritaGrid>
       {records.length > 3 && <ButtonLoadMore onClick={handleLoadMore}>Muat Lebih Banyak</ButtonLoadMore>}
     </Wrapper>

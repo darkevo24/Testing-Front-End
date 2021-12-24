@@ -18,14 +18,12 @@ export const initialState = {
   error: null,
 };
 export const getCMSLogActifitasData = createAsyncThunk('cms/getAditTrial', async ({ page, q, startDate, endDate }) => {
+  const params = { page };
+  if (q) params.q = q;
+  if (startDate) params.startDate = startDate;
+  if (endDate) params.endDate = endDate;
   const response = await get(apiUrls.cmsAuditTrialData, {
-    query: {
-      page: page + 1,
-      size: 10,
-      ...(q && { q }),
-      ...(startDate && { startDate }),
-      ...(endDate && { endDate }),
-    },
+    query: params,
   });
   return response?.data?.content;
 });

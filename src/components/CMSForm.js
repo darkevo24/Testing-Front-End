@@ -151,16 +151,19 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
 
   return (
     <Form id={beritaFormId} className="sdp-form" onSubmit={handleSubmit(onSubmit)} style={style}>
-      <FileInput
-        group
-        label="Thumbnail"
-        name="mainImage"
-        control={control}
-        error={errors.mainImage?.message}
-        uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
-        handleOnChange={handleFoto}
-        disabled={disabled}
-      />
+      {disabled ? (
+        <img className="wpx-200 mb-3" src={data?.mainImage} alt="thumbnail" />
+      ) : (
+        <FileInput
+          group
+          label="Thumbnail"
+          name="mainImage"
+          control={control}
+          error={errors.mainImage?.message}
+          uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
+          handleOnChange={handleFoto}
+        />
+      )}
       <Input group label="Judul" name="judul" control={control} disabled={disabled} error={errors.judul?.message} />
       <Form.Group className="mb-3">
         <Form.Label>Kategori</Form.Label>

@@ -59,31 +59,48 @@ const CMSBeritaDetail = (props) => {
     // open modal
     let label = '';
     switch (data.status) {
-      case 0:
-        label = 'Simpan Berita?';
-        break;
       case 2:
-        label = 'Kirim Berita?';
+        label = <span>Kirim Berita?</span>;
         break;
       case 3:
-        label = 'Apakah anda yakin ingin <b className="sdp-text-blue">menyetujui</b> Berita?';
+        label = (
+          <span>
+            Apakah anda yakin ingin <b className="sdp-text-blue">menyetujui</b> Berita?
+          </span>
+        );
         break;
       case 4:
-        label = 'Apakah anda yakin ingin <b className="sdp-text-blue">menolak</b> Berita?';
+        label = (
+          <span>
+            Apakah anda yakin ingin <b className="sdp-text-blue">menolak</b> Berita?
+          </span>
+        );
         break;
       case 5:
-        label = 'Apakah anda yakin ingin <b className="sdp-text-blue">menayangkan</b> Berita?';
+        label = (
+          <span>
+            Apakah anda yakin ingin <b className="sdp-text-blue">menayangkan</b> Berita?
+          </span>
+        );
         break;
       case 6:
-        label = 'Apakah anda yakin ingin <b className="sdp-text-blue">tidak menayangkan</b> Berita?';
+        label = (
+          <span>
+            Apakah anda yakin ingin <b className="sdp-text-blue">tidak menayangkan</b> Berita?
+          </span>
+        );
         break;
       case 7:
-        label = 'Apakah anda yakin ingin <b className="sdp-text-blue">menghapus</b> Berita?';
+        label = (
+          <span>
+            Apakah anda yakin ingin <b className="sdp-text-blue">menghapus</b> Berita?
+          </span>
+        );
         break;
       default:
         return;
     }
-    setModalLabel(<span dangerouslySetInnerHTML={{ __html: label }}></span>);
+    setModalLabel(label);
     setModalConfirm(true);
     // set data
     setDataBerita(data);
@@ -115,7 +132,7 @@ const CMSBeritaDetail = (props) => {
       : Notification.show({
           message: (
             <div>
-              Error <span className="fw-bold">{res.error?.message}</span> Data Tidak Diubah
+              Error <span className="fw-bold">{res.error?.message}</span> Data Tidak Dapat Diubah
             </div>
           ),
           icon: 'cross',

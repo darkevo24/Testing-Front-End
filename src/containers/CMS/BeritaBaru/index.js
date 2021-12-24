@@ -35,7 +35,7 @@ const CMSBeritaBaru = () => {
     data.issn = data.issn ? data.issn : '';
 
     if (data.kategori.value !== 'new') {
-      data.kategori = data.kategori.id;
+      data.kategori = data.kategori.value;
     }
 
     data.status = 0;

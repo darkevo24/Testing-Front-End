@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import moment from 'moment';
 import 'moment/locale/id';
 import parse from 'html-react-parser';
-import { latestNewsSelector, getLatestNews } from './reducer';
+import { useHistory } from 'react-router-dom';
+import { gethighlightedNews, highlightedNewsSelector } from './reducer';
 
 const Wrapper = styled.div`
   margin-bottom: 80px;
@@ -27,6 +28,7 @@ const Judul = styled.div`
   line-height: 34px;
   color: #2d2627;
   margin-bottom: 16px;
+  cursor: pointer;
 `;
 
 const Overview = styled.div`
@@ -36,27 +38,31 @@ const Overview = styled.div`
 `;
 
 const BeritaUtama = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   moment.locale('id');
-  const { records: dataLatestNews } = useSelector(latestNewsSelector);
+  const { records, status } = useSelector(highlightedNewsSelector);
 
   useEffect(() => {
-    try {
-      dispatch(getLatestNews('latest/category'));
-    } catch (e) {}
-  }, []);
+    if (status === 'idel') dispatch(gethighlightedNews('latest/category'));
+  }, [dispatch, status]);
+
+  const handleDetail = (event, title) => {
+    event.preventDefault();
+    history.push(`/berita/${title}`);
+  };
   return (
     <Wrapper>
-      {dataLatestNews.length > 0 &&
-        dataLatestNews.map((value) => {
-          const { image, judul, partContent, tanggalPublis } = value;
+      {records.length > 0 &&
+        records.map((value, index) => {
+          const { image, judul, partContent, tanggalPublis, id } = value;
           return (
-            <>
+            <div key={index}>
               <ImageBerita src={image} />
               <Tanggal>{moment(tanggalPublis).fromNow()}</Tanggal>
-              <Judul>{judul}</Judul>
+              <Judul onClick={(event) => handleDetail(event, id)}>{judul}</Judul>
               <Overview>{parse(partContent)}</Overview>
-            </>
+            </div>
           );
         })}
     </Wrapper>

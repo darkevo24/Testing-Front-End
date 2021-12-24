@@ -33,7 +33,7 @@ const CMSBimtekPermintaan = () => {
   };
 
   useEffect(() => {
-    fetchJadwalBimtek({ page: page || 0 });
+    fetchJadwalBimtek({ page: 0 });
   }, [query]);
 
   const columns = [

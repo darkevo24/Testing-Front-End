@@ -37,7 +37,7 @@ const CMSBimtekPermintaan = () => {
   };
 
   useEffect(() => {
-    fetchDokumentasi({ page: page || 0 });
+    fetchDokumentasi({ page: 0 });
   }, [query]);
 
   const columns = [
@@ -108,7 +108,7 @@ const CMSBimtekPermintaan = () => {
     variant: 'link',
     totalCount: totalRecords,
     pageSize: size,
-    currentPage: page,
+    currentPage: page - 1,
     manualPagination: true,
     onRowClick: rowClick,
     rowClass: getRowClass,

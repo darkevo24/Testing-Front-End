@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useHistory } from 'react-router-dom';
-import { setDetailBerita, setEditBerita, detailDataSelector, deleteBerita } from '../BeritaBaru/reducer';
+import { setDetailBerita, detailDataSelector, setPreviewBerita, setStatusBerita } from '../BeritaBaru/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { DetailHeader } from './detailHeader';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import { CMSForm, Loader, CMSTopDetail, CMSModal } from 'components';
-import { submitBeritaForm, submitNewKategori } from 'components/CMSForm';
-import { Trash, EyeSvg, SaveSvg } from 'components/Icons';
+import { submitBeritaForm, getDate } from 'components/CMSForm';
 import Notification from 'components/Notification';
 import bn from 'utils/bemNames';
 
@@ -25,81 +24,98 @@ const CMSBeritaDetail = (props) => {
   };
 
   useEffect(() => {
-    fetchData({ id: idBerita });
+    if (record.id?.toString() !== idBerita) {
+      fetchData({ id: idBerita });
+    }
   }, [idBerita]);
 
   const [beritaStatus, setBeritaStatus] = useState(record);
   const [modalLabel, setModalLabel] = useState('');
-  // DRAFT = 0, WAITING = 1, PUBLISH/APPROVE = 2, REJECT = 3, UNPUBLISH = 4, DELETE = 5
-  const actionSubmit = (status) => {
-    setBeritaStatus(status);
-    let label = '';
-    switch (status) {
-      case 0:
-        label = 'Simpan Berita?';
-        break;
-      case 1:
-        label = 'Kirim Berita?';
-        break;
-      case 2:
-        label = 'Apakah anda yakin ingin <b className="sdp-text-blue">menyetujui</b> Berita?';
-        break;
-      case 3:
-        label = 'Apakah anda yakin ingin <b className="sdp-text-blue">menolak</b> Berita?';
-        break;
-      case 4:
-        label = 'Apakah anda yakin ingin <b className="sdp-text-blue">tidak menayangkan</b> Berita?';
-        break;
-      case 5:
-        label = 'Apakah anda yakin ingin <b className="sdp-text-blue">menghapus</b> Berita?';
-        break;
-      default:
-        return;
-    }
-    setModalLabel(<span dangerouslySetInnerHTML={{ __html: label }} />);
-  };
+  const [modalConfirm, setModalConfirm] = useState(false);
+  const [dataBerita, setDataBerita] = useState({});
 
   const onSubmit = (data) => {
     // preview berita
     if (beritaStatus === 9) {
-      window.localStorage.setItem('preview-berita', JSON.stringify(data));
-      return window.open('/berita/preview', '_blank');
+      return dispatch(setPreviewBerita(data)).then(() => history.push('/berita/preview'));
     }
 
-    const publishDate = data.publishDate ? data.publishDate.split(' ')[0] : '';
-    const publishTime = data.publishTime ? data.publishTime : '';
+    const publishDate = getDate(data.publishDate);
+    const publishTime = data.publishTime ? data.publishTime + ':00' : '';
     data.publishDate = !publishDate ? '' : !publishTime ? publishDate + ' 00:00:00' : publishDate + ' ' + publishTime;
     // set default publishDate when publish
-    if (beritaStatus === 2) {
+    if (beritaStatus === 5) {
       const currentDate = new Date().toISOString();
       data.publishDate = currentDate.split('T')[0] + ' ' + currentDate.split('T')[1].split('.')[0];
     }
 
-    data.taglineId = data.taglineId.map((tag) => tag.value);
+    data.taglineId = data.taglineId?.map((tag) => tag.value) || [];
     data.status = beritaStatus;
-    setBeritaStatus(-1); // close confirmation modal
 
-    if (data.kategori.value === 'new') {
-      // action create kategori
-      submitNewKategori(data.kategori.label).then((res) => {
-        data.kategori = res.data.content.id;
-        submitEditBerita(data);
-      });
-      return;
+    if (data.kategori.value !== 'new') {
+      data.kategori = data.kategori.id;
     }
-    data.kategori = data.kategori.value;
-    submitEditBerita(data);
-  };
 
-  const submitEditBerita = (data) => {
+    // open modal
+    let label = '';
     switch (data.status) {
+      case 2:
+        label = <span>Kirim Berita?</span>;
+        break;
+      case 3:
+        label = (
+          <span>
+            Apakah anda yakin ingin <b className="sdp-text-blue">menyetujui</b> Berita?
+          </span>
+        );
+        break;
+      case 4:
+        label = (
+          <span>
+            Apakah anda yakin ingin <b className="sdp-text-blue">menolak</b> Berita?
+          </span>
+        );
+        break;
       case 5:
-        // delete
-        dispatch(deleteBerita({ id: idBerita })).then((res) => notifyResponse(res));
+        label = (
+          <span>
+            Apakah anda yakin ingin <b className="sdp-text-blue">menayangkan</b> Berita?
+          </span>
+        );
+        break;
+      case 6:
+        label = (
+          <span>
+            Apakah anda yakin ingin <b className="sdp-text-blue">tidak menayangkan</b> Berita?
+          </span>
+        );
+        break;
+      case 7:
+        label = (
+          <span>
+            Apakah anda yakin ingin <b className="sdp-text-blue">menghapus</b> Berita?
+          </span>
+        );
         break;
       default:
-        return dispatch(setEditBerita({ payload: data, id: idBerita })).then((res) => notifyResponse(res));
+        return;
     }
+    setModalLabel(label);
+    setModalConfirm(true);
+    // set data
+    setDataBerita(data);
+  };
+
+  const submitEditBerita = () => {
+    setModalConfirm(false);
+
+    return dispatch(
+      setStatusBerita({
+        payload: { id: [idBerita], status: dataBerita.status, note: dataBerita.note ? dataBerita.note : '' },
+      }),
+    )
+      .then((res) => notifyResponse(res))
+      .then(() => fetchData({ id: idBerita }));
   };
 
   const notifyResponse = (res) => {
@@ -112,21 +128,20 @@ const CMSBeritaDetail = (props) => {
             </div>
           ),
           icon: 'check',
-          onClose: history.goBack(),
         })
       : Notification.show({
           message: (
             <div>
-              Error <span className="fw-bold">{res.error?.message}</span> Data Tidak Diubah
+              Error <span className="fw-bold">{res.error?.message}</span> Data Tidak Dapat Diubah
             </div>
           ),
           icon: 'cross',
         });
   };
 
-  const previewBerita = () => {
+  const actionClick = (status) => {
     Promise.resolve()
-      .then(() => setBeritaStatus(9))
+      .then(() => setBeritaStatus(status))
       .then(() => submitBeritaForm());
   };
 
@@ -138,72 +153,9 @@ const CMSBeritaDetail = (props) => {
           <div>
             <div className="d-flex justify-content-between mb-3">
               <div className={bem.e('title')}>Edit Berita</div>
-              {record?.status === 1 ? (
-                <div>
-                  <Button variant="secondary" onClick={() => actionSubmit(5)}>
-                    <Trash />
-                  </Button>
-                  <Button variant="light" className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
-                    <EyeSvg />
-                  </Button>
-                  <Button
-                    onClick={() => actionSubmit(0)}
-                    variant="light"
-                    className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
-                    <SaveSvg />
-                  </Button>
-                  <Button
-                    onClick={() => actionSubmit(3)}
-                    variant="light"
-                    className="ml-10 bg-white border-gray-stroke sdp-text-black-dark"
-                    style={{ width: '112px' }}>
-                    Tolak
-                  </Button>
-                  <Button onClick={() => actionSubmit(2)} className="ml-10" variant="info" style={{ width: '112px' }}>
-                    Publish
-                  </Button>
-                </div>
-              ) : record?.status === 2 ? (
-                <div>
-                  <Button variant="secondary" onClick={() => actionSubmit(5)}>
-                    <Trash />
-                  </Button>
-                  <Button variant="light" className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
-                    <EyeSvg />
-                  </Button>
-                  <Button
-                    onClick={() => actionSubmit(0)}
-                    variant="light"
-                    className="ml-8 bg-white sdp-text-grey-dark border-gray-stroke">
-                    <SaveSvg />
-                  </Button>
-                  <Button
-                    onClick={() => actionSubmit(4)}
-                    variant="light"
-                    className="ml-10 bg-white border-gray-stroke sdp-text-black-dark"
-                    style={{ width: '112px' }}>
-                    Unpublish
-                  </Button>
-                </div>
-              ) : (
-                <div>
-                  <Button variant="secondary" onClick={() => actionSubmit(5)}>
-                    <Trash />
-                  </Button>
-                  <Button
-                    onClick={() => previewBerita()}
-                    variant="light"
-                    className="ml-10 bg-white border-gray-stroke sdp-text-black-dark"
-                    style={{ width: '112px' }}>
-                    Lihat
-                  </Button>
-                  <Button onClick={() => actionSubmit(1)} className="ml-10" variant="info" style={{ width: '112px' }}>
-                    Simpan
-                  </Button>
-                </div>
-              )}
+              <DetailHeader record={record} history={history} handleClick={actionClick} />
             </div>
-            {!loading ? <CMSForm data={record} onSubmit={onSubmit} /> : null}
+            {!loading ? <CMSForm data={record} onSubmit={onSubmit} disabled={true} /> : null}
           </div>
         </Col>
         <Col sm={3}>
@@ -211,11 +163,11 @@ const CMSBeritaDetail = (props) => {
         </Col>
         {loading && <Loader fullscreen={true} />}
       </Row>
-      {beritaStatus >= 0 && beritaStatus < 9 ? (
+      {modalConfirm ? (
         <CMSModal
           loader={false}
-          onClose={() => setBeritaStatus(-1)}
-          confirmButtonAction={submitBeritaForm}
+          onClose={() => setModalConfirm(false)}
+          confirmButtonAction={submitEditBerita}
           label={modalLabel}
         />
       ) : null}

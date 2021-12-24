@@ -51,6 +51,7 @@ export const apiUrls = {
   detailPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
   variable: getV1Endpoint('variable'),
   katalogVariable: getV1Endpoint('variable/katalog'),
+  daftarSekreteriatData: getV1Endpoint('katalog/sekreteriat/list'),
   daftarData: getV1Endpoint('katalog'),
   daftarDataList: getV1Endpoint('katalog/list'),
   daftarDataSummary: getV1Endpoint('katalog/summary'),
@@ -65,6 +66,7 @@ export const apiUrls = {
   cmsBimtekJadwal: getCMSEndpoint('bimtek'),
   cmsBimtekPermintaanData: getCMSEndpoint('bimtek/permintaan'),
   cmsBimtekDokumentasi: getCMSEndpoint('bimtek/dokumentasi'),
+  cmsBimtekLogs: getCMSEndpoint('bimtek/logs'),
   cmsAboutUs: getCMSEndpoint('tentang'),
   aboutUs: getApiEndpoint('public/tentang'),
   userBeritaPortal: getPublicV1Endpoint('berita'),
@@ -82,8 +84,14 @@ export const apiUrls = {
   addFormulirPendaftaran: getPortalEndpoint('v1/bimtek'),
   bimtekMateri: getPortalEndpoint('v1/bimtek/materi'),
   bimtekMateriDownload: getPortalEndpoint('v1/bimtek/download-zip'),
+  bimtekMateriTerdekatDownload: getApiEndpoint('file/public-download'),
   beritaLayout: getPublicV1Endpoint('layout'),
   updateKiriLayout: getPublicV1Endpoint('layout/code/kiri'),
+  bimtekDokumentasi: getPortalEndpoint('v1/bimtek/dokumentasi'),
+  bimtekDokumentasiMingguIni: getPortalEndpoint('v1/bimtek/dokumentasi/minggu-ini'),
+  bimtekDokumentasiMingguLalu: getPortalEndpoint('v1/bimtek/dokumentasi/minggu-lalu'),
+  bimtekDokumentasiBulanIni: getPortalEndpoint('v1/bimtek/dokumentasi/bulan-ini'),
+  bimtekPermintaan: getCMSEndpoint('bimtek/permintaan'),
 };
 
 export const priorityOptions = [
@@ -254,6 +262,18 @@ export const STATUS_DATA = {
   published: 'DITAYANGKAN',
   unpublished: 'TIDAK_DITAYANGKAN',
 };
+
+export const STATUS_DATA_BERITA = [
+  'DRAFT',
+  'DRAFT', // from BE is 'SAVE' but actual is same as 'DRAFT'
+  'MENUNGGU_PERSETUJUAN',
+  'DISETUJUI',
+  'DITOLAK',
+  'DITAYANGKAN',
+  'TIDAK_DITAYANGKAN',
+  'DIHAPUS',
+  'DIARSIPKAN',
+];
 
 export const USER_ROLES = {
   CONTENT_CREATOR: 'CONTENT_CREATOR',

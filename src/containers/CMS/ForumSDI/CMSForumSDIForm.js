@@ -12,7 +12,6 @@ import Spinner from 'react-bootstrap/Spinner';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FileInput, Input } from 'components';
 import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
-import MultiSelectDropDown from 'components/DropDown/MultiSelectDropDown';
 import TextEditorController from 'components/TextEditorController';
 import Modal from 'components/Modal';
 import { apiUrls, post, put } from 'utils/request';
@@ -88,12 +87,12 @@ const CMSForumSDIForm = () => {
 
   useEffect(() => {
     if (!detailResult?.id) return;
-    const topikResID = topikResult?.records.find((elem) => detailResult?.topik === elem?.nama);
+    const topikResID = topikResult.find((elem) => detailResult?.topik === elem?.nama);
     setValue('topik', { value: topikResID?.id, label: topikResID?.nama });
   }, [topikResult]);
 
   const setDefaultData = () => {
-    const topikResID = topikResult?.records.find((elem) => detailResult?.topik === elem?.nama);
+    const topikResID = topikResult.find((elem) => detailResult?.topik === elem?.nama);
     const fields = [
       { name: 'judul', value: detailResult?.judul || '' },
       { name: 'topik', value: { value: topikResID?.id, label: topikResID?.nama } || '' },
@@ -243,7 +242,7 @@ const CMSForumSDIForm = () => {
               isCreatable={true}
               loading={topikLoading}
             />
-            <MultiSelectDropDown
+            <SingleSelectDropDown
               group
               groupClass="mb-16"
               groupProps={{
@@ -253,13 +252,14 @@ const CMSForumSDIForm = () => {
               isMulti
               control={control}
               label="Tag"
-              labelClass="sdp-form-label  fw-normal"
+              labelClass="sdp-form-label fw-normal"
               placeholder=""
               rules={{ required: true }}
               error={errors?.tags?.message ? 'Tag is required' : ''}
               name="tags"
               data={tagsResult.map((elem) => ({ value: elem, label: elem }))}
               loading={tagsLoading}
+              isCreatable={true}
             />
             <TextEditorController
               rules={{ required: true }}

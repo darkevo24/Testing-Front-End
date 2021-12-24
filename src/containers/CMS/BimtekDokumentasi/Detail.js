@@ -9,15 +9,15 @@ import { CMSBimtekForm } from 'components';
 import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import bn from 'utils/bemNames';
-import { BimtekDokumentasiDetailSelector, getDokumentasiDetail } from './reducer';
+import { bimtekDokumentasiDetailSelector, getDokumentasiDetail } from './reducer';
 
 const bem = bn('content-detail');
 
 const CMSDokumentasiDetail = (props) => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { records } = useSelector(BimtekDokumentasiDetailSelector);
-  console.log(records);
+  const { records } = useSelector(bimtekDokumentasiDetailSelector);
+  // console.log(records);
   const fetchDokumentasiDetail = (params) => {
     return dispatch(getDokumentasiDetail(params));
   };

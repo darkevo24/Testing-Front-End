@@ -14,3 +14,12 @@
     }
   }
 }
+.searchNamaBimtek {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.searchNamaBimtek svg path {
+  fill: red;
+}

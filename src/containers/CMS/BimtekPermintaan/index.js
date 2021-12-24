@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import * as _ from 'lodash';
+import * as setSearch from 'lodash';
 import moment from 'moment';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -9,9 +9,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Search } from 'components/Icons';
-import { Table, Loader } from 'components';
-import { BimtekPermintaanDataSelector, getPermintaanData } from './reducer';
-
+import { Table } from 'components';
+import { bimtekPermintaanDataSelector, bimtekInstansi, getPermintaanData, getInstansi } from './reducer';
 import bn from 'utils/bemNames';
 
 const bem = bn('content-table');
@@ -20,38 +19,44 @@ const CMSBimtekPermintaan = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [query, setQuery] = useState('');
+  const [instansiId, setInstansiId] = useState('');
 
-  const { size, loading, page, records, totalRecords } = useSelector(BimtekPermintaanDataSelector);
+  const { size, page, records, totalRecords } = useSelector(bimtekPermintaanDataSelector);
+  const instansiData = useSelector(bimtekInstansi);
 
   const fetchCmsPerminataanDataset = (params) => {
     let obj = {
       page: params.page,
       q: query,
+      instansiId,
     };
     return dispatch(getPermintaanData(obj));
   };
+  const fetchInstansi = () => {
+    return dispatch(getInstansi());
+  };
+  const instansi = useMemo(() => instansiData || [], [instansiData]);
 
   useEffect(() => {
     fetchCmsPerminataanDataset({ page: page || 0 });
-  }, [query]);
+  }, [query, instansiId]);
 
-  const updateQuery = _.debounce((val) => {
+  useEffect(() => {
+    fetchInstansi();
+  }, []);
+
+  const updateQuery = setSearch.debounce((val) => {
     setQuery(val);
   }, 500);
 
   const rowClick = (data) => {
-    // history.push(`/cms/permintaan-data/${data.id}`);
-  };
-
-  const getRowClass = (data) => {
-    // if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
-    // return 'bg-gray';
+    history.push(`/cms/bimtek-permintaan/${data.id}`);
   };
 
   const columns = [
     {
       Header: 'Nama Peminta',
-      accessor: 'namaLengkap?.',
+      accessor: 'namaLengkap',
     },
     {
       Header: 'Instansi',
@@ -62,7 +67,7 @@ const CMSBimtekPermintaan = () => {
       accessor: 'tanggalRequest',
       Cell: ({ ...rest }) => (
         <span>
-          {rest.row.original?.tanggalRequest ? moment(rest.row.original.tanggalRequest).format('DD MMMM YYYY') : '---'}
+          {rest.row.original?.tanggalRequest ? moment(rest.row.original?.tanggalRequest).format('DD MMMM YYYY') : '---'}
         </span>
       ),
     },
@@ -72,7 +77,7 @@ const CMSBimtekPermintaan = () => {
       Cell: ({ ...rest }) => (
         <span>
           {rest.row.original?.tanggalSelesaiDisetujui
-            ? moment(rest.row.original.tanggalSelesaiDisetujui).format('DD MMMM YYYY')
+            ? moment(rest.row.original?.tanggalSelesaiDisetujui).format('DD MMMM YYYY')
             : '---'}
         </span>
       ),
@@ -104,7 +109,6 @@ const CMSBimtekPermintaan = () => {
     currentPage: page,
     manualPagination: true,
     onRowClick: rowClick,
-    rowClass: getRowClass,
     onPageIndexChange: (currentPage) => {
       if (currentPage !== page) {
         fetchCmsPerminataanDataset({ page: currentPage });
@@ -121,8 +125,15 @@ const CMSBimtekPermintaan = () => {
           <Col xs={5} className="d-flex align-items-center">
             <div className="mr-10">Instansi</div>
             <div className="mr-10">
-              <Form.Select aria-label="Default select example">
-                <option value="1">Badan Pusat</option>
+              <Form.Select aria-label="Default select example" onChange={(e) => setInstansiId(e.target.value)}>
+                {instansi &&
+                  instansi.map((data, index) => {
+                    return (
+                      <option key={index} value={data.id}>
+                        {data.nama}
+                      </option>
+                    );
+                  })}
               </Form.Select>
             </div>
             <InputGroup>

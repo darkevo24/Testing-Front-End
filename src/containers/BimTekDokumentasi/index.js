@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -9,92 +10,68 @@ import { BimtekLayout } from 'layouts/BimtekLayout';
 import { useForm } from 'react-hook-form';
 import { DatePicker } from 'components';
 import { Search, NoPerminataanData, Close } from 'components/Icons';
-
+import {
+  getBimtekDokumentasiMingguIni,
+  getBimtekDokumentasiMingguLalu,
+  getBimtekDokumentasiBulanIni,
+  getBimtekAllDokumentasi,
+  bimtekDokumentasiMingguIni,
+  bimtekDokumentasiMingguLalu,
+  bimtekDokumentasiBulanIni,
+  bimtekAllDokumentasi,
+} from './reducer';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
+import moment from 'moment';
 
 const bem = bn('bimtek-dokumentasi');
 
 const BimTekDokumentasi = () => {
-  const { control } = useForm({});
+  const dispatch = useDispatch();
+  const [docDetail, setDocDetail] = useState(false);
+  const [params, setParams] = useState({});
+  const { control, watch } = useForm({});
+  const watchDate = watch('filterDate');
+
+  const { records: mingguIniRecords } = useSelector(bimtekDokumentasiMingguIni);
+  const { records: mingguLaluRecords } = useSelector(bimtekDokumentasiMingguLalu);
+  const { records: bulanIniRecords } = useSelector(bimtekDokumentasiBulanIni);
+  const { records: dokumentasiRecords } = useSelector(bimtekAllDokumentasi);
+  const { singleRecord: singleDokumentasiRecords } = useSelector(bimtekAllDokumentasi);
+
+  useEffect(() => {
+    watchDate && setParams({ ...params, tgl: moment(watchDate).format('YYYY-MM-DD') });
+  }, [watchDate]);
+
+  useEffect(() => {
+    dispatch(getBimtekDokumentasiMingguIni(params));
+    dispatch(getBimtekDokumentasiMingguLalu(params));
+    dispatch(getBimtekDokumentasiBulanIni(params));
+    dispatch(getBimtekAllDokumentasi(params));
+  }, [params]);
 
   const dataDokumentasi = [
-    {
-      label: 'Minggu ini',
-      data: [
-        {
-          id: 1,
-          photos: [
-            'https://i.picsum.photos/id/544/536/354.jpg?hmac=w5hlO2J6AMeb_LBrkxt3mI59Ss5pjTgdJImTKDonzhc',
-            'https://i.picsum.photos/id/174/536/354.jpg?hmac=BfySTNvwCB_IZZueijD4RPBFgdEyPtIJRFTotFQ7Bz0',
-            'https://i.picsum.photos/id/679/536/354.jpg?hmac=DjxD7ZCUdEANv_Jc2kgtDCPnxeSbfGvI_5O0bpGo7UY',
-          ],
-          title: 'Belajar Word',
-          date: '25 November 2021',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a.',
-        },
-        {
-          id: 2,
-          photos: [
-            'https://i.picsum.photos/id/132/536/354.jpg?hmac=ySCa5N4b-Q3YNUAT2pz9ffGI1Uq3pmk9el_00tooo8A',
-            'https://i.picsum.photos/id/557/536/354.jpg?hmac=8K4sIO3JciaBqsEhBcIhOTSrpWJu1zCcRR4UAzoF5g4',
-            'https://i.picsum.photos/id/417/536/354.jpg?hmac=Matsrj1iHedTOJ1uSvFWYRPrdtI6xSFcv9slnup-NQo',
-          ],
-          title: 'Perencanaan dan Program Bimbingan Teknis',
-          date: '23 November 2021',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a.',
-        },
-        {
-          id: 3,
-          photos: [
-            'https://i.picsum.photos/id/892/536/354.jpg?hmac=60WxlDjmsmE707hkhf2GjWSxc4kxxl4ggWFAxnQ-vd0',
-            'https://i.picsum.photos/id/990/536/354.jpg?hmac=lxIb_KJ25hKUrltIoEOtgpkV73jgyl8K__1dJg28HgM',
-          ],
-          title: 'Bimbingan Teknis Pemrograman',
-          date: '22 November 2021',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a.',
-        },
-      ],
-    },
-    {
-      label: 'Minggu Lalu',
-      data: [
-        {
-          id: 3,
-          photos: ['https://i.picsum.photos/id/129/536/354.jpg?hmac=gjW_nduOoXN0pECejBE5tOikjkxxiYjU9JQq_Y-nPBQ'],
-          title: 'Bimbingan Teknis Pemrograman',
-          date: '30 November 2021',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a.',
-        },
-        {
-          id: 1,
-          photos: ['https://i.picsum.photos/id/9/536/354.jpg?hmac=5PiiV8cCMwZsDl8bYwpetFqtPuNn5uY2WcKTEb5ykW4'],
-          title: 'Belajar Word',
-          date: '30 November 2021',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet dolor commodo lectus tempus ullamcorper sit amet sed nulla. Donec aliquam malesuada justo, vitae sagittis sem aliquet a.',
-        },
-      ],
-    },
+    { label: 'Minggu Ini', data: mingguIniRecords },
+    { label: 'Minggu Lalu', data: mingguLaluRecords },
+    { label: 'Bulan Ini', data: bulanIniRecords },
+    { label: 'Dokumentasi', data: dokumentasiRecords },
   ];
 
-  const [docDetail, setDocDetail] = useState(false);
-  const [selectedDoc, setSelectedDoc] = useState({
-    photos: '',
-    title: '',
-    date: '',
-    description: '',
-  });
   const [activePhoto, setActivePhoto] = useState(0);
 
-  const openDetail = (list, item) => {
+  const openDetail = (dokumentasiId) => {
     setDocDetail(true);
-    setSelectedDoc(dataDokumentasi[list].data[item]);
+    dispatch(getBimtekAllDokumentasi({ id: dokumentasiId }));
     setActivePhoto(0);
+  };
+
+  const handleImageScroll = (operation) => {
+    if (operation === 'increment') {
+      if (singleDokumentasiRecords?.image?.length && activePhoto < singleDokumentasiRecords.image.length)
+        setActivePhoto(activePhoto + 1);
+    } else {
+      if (activePhoto > 0) setActivePhoto(activePhoto - 1);
+    }
   };
 
   return (
@@ -102,8 +79,15 @@ const BimTekDokumentasi = () => {
       <Row className="mb-12">
         <Col xs={5}>
           <InputGroup>
-            <Form.Control variant="normal" type="text" placeholder="Cari" />
-            <Search />
+            <Form.Control
+              variant="normal"
+              type="text"
+              placeholder="Cari"
+              onChange={(e) => setParams({ ...params, nama: e.target.value })}
+            />
+            <div className="searchNamaBimtek">
+              <Search />
+            </div>
           </InputGroup>
         </Col>
         <Col xs={3}>
@@ -116,24 +100,28 @@ const BimTekDokumentasi = () => {
           <div className="text-black-50 mb-2 mt-2">No Data</div>
         </div>
       ) : null}
-      {dataDokumentasi.map((list, i) => (
-        <div key={i} className="mb-40">
+      {dataDokumentasi.map((list, dokumentasiDataiIndex) => (
+        <div key={dokumentasiDataiIndex} className="mb-40">
           <div className={cx(bem.e('title'), 'fw-bold fs-18')}>{list.label}</div>
           <div className={cx(bem.e('title-border'), 'mb-16')}></div>
-          {list.data.length === 0 ? (
+          {list?.data?.length === 0 ? (
             <div className="d-flex justify-content-center align-items-center flex-column">
               <NoPerminataanData />
               <div className="text-black-50">No Data</div>
             </div>
           ) : (
             <div className={bem.e('list')}>
-              {list.data.map((item, j) => (
+              {list?.data?.map((dokumentasi, index) => (
                 <DokumentasiItem
-                  key={j}
-                  title={item.title}
-                  urlPhoto={item.photos[0]}
-                  date={item.date}
-                  onClick={() => openDetail(i, j)}
+                  key={index}
+                  title={dokumentasi.namaBimtek}
+                  urlPhoto={dokumentasi?.image?.location ?? null}
+                  date={
+                    dokumentasi?.tanggalMulaiDisetujui
+                      ? moment(dokumentasi.tanggalMulaiDisetujui).format('DD MMMM YYYY')
+                      : null
+                  }
+                  onClick={() => openDetail(dokumentasi.dokumentasiId)}
                 />
               ))}
             </div>
@@ -144,28 +132,30 @@ const BimTekDokumentasi = () => {
       <Modal show={docDetail} onHide={setDocDetail} dialogClassName={bem.e('modal')}>
         <Modal.Header
           className={bem.e('modal-header')}
-          style={{ backgroundImage: "url('" + selectedDoc.photos[activePhoto] + "')" }}>
+          style={{ backgroundImage: "url('" + singleDokumentasiRecords?.image?.location + "')" }}>
           <div onClick={() => setDocDetail(false)} className={cx(bem.e('detail-close'), 'bg-white rounded-circle')}>
             <Close />
           </div>
           <div
-            onClick={() => setActivePhoto(activePhoto - 1)}
+            onClick={() => handleImageScroll('decrement')}
             className={cx(bem.e('detail-left'), 'bg-white rounded-circle')}>
             <div></div>
           </div>
           <div
-            onClick={() => setActivePhoto(activePhoto + 1)}
+            onClick={() => handleImageScroll('increment')}
             className={cx(bem.e('detail-right'), 'bg-white rounded-circle')}>
             <div></div>
           </div>
           <div className={cx(bem.e('detail-page'), 'sdp-text-white fs-16')}>
-            {activePhoto + 1 + ' / ' + selectedDoc.photos.length}
+            {activePhoto + 1 + ' / ' + (singleDokumentasiRecords?.image?.length ? singleDokumentasiRecords.image.length : 1)}
           </div>
         </Modal.Header>
         <Modal.Body>
-          <div className="sdp-text-grey-dark fs-14 mb-16">{selectedDoc.date}</div>
-          <div className="sdp-text-black-dark fs-24 fw-bold mb-16">{selectedDoc.title}</div>
-          <div className="sdp-text-grey-dark fs-16 mb-16">{selectedDoc.description}</div>
+          <div className="sdp-text-grey-dark fs-14 mb-16">
+            {moment(singleDokumentasiRecords.tanggalMulaiDisetujui).format('DD MMMM YYYY')}
+          </div>
+          <div className="sdp-text-black-dark fs-24 fw-bold mb-16">{singleDokumentasiRecords.namaBimtek}</div>
+          <div className="sdp-text-grey-dark fs-16 mb-16">{singleDokumentasiRecords.isiDokumentasi}</div>
         </Modal.Body>
       </Modal>
     </BimtekLayout>
@@ -173,13 +163,13 @@ const BimTekDokumentasi = () => {
 };
 
 const DokumentasiItem = ({ urlPhoto, title, date, onClick = () => {} }) => {
-  const dataUrl = "url('" + urlPhoto + "')";
+  const dataUrl = `url('${urlPhoto}')`;
 
   return (
-    <div className={cx(bem.e('list-item'), 'mr-16')} onClick={(e) => onClick(e)}>
+    <div className={cx(bem.e('list-item'), 'mr-16')} onClick={onClick}>
       <div className={bem.e('content-section')}>
-        <div className={cx(bem.e('content-date'), 'fs-14')}>{date}</div>
-        <div className={bem.e('content-image')} style={{ backgroundImage: dataUrl }}></div>
+        {date && <div className={cx(bem.e('content-date'), 'fs-14')}>{date}</div>}
+        {urlPhoto && <div className={bem.e('content-image')} style={{ backgroundImage: dataUrl }}></div>}
       </div>
       <div className={cx(bem.e('content-title'), 'fw-600 fs-14 mt-8')}>{title}</div>
     </div>

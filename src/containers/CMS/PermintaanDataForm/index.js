@@ -240,11 +240,22 @@ const CMSPermintaanDataView = () => {
     },
   });
 
+  const StatusBar = () => {
+    switch (data.status) {
+      case 'SELESAI':
+        return <SuccessText />;
+      case 'TERKIRIM':
+        return <TerkirimText />;
+      case 'DIPROSES':
+        return <DiprosesText />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div>
-      {data.status === 'SELESAI' ? <SuccessText /> : null}
-      {data.status === 'TERKIRIM' ? <TerkirimText /> : null}
-      {data.status === 'DIPROSES' ? <DiprosesText /> : null}
+      <StatusBar />
       <Row className={bem.e('section')}>
         <Col sm={9} className="my-5">
           <div>
@@ -262,7 +273,7 @@ const CMSPermintaanDataView = () => {
               <Input disabled group label="Deskripsi Data" name="deskripsi" control={control} />
               <Input disabled group label="Tujuan Permintaan data" name="tujuanPermintaan" control={control} />
               <Input disabled group label="Target Waktu" name="tanggalTarget" control={control} />
-              <Input disabled group label="Produsen Data" name="produsen" control={control} />
+              <Input disabled group label="Produsen Data" name="instansi.nama" control={control} />
               <Input disabled group label="Jenis Data" name="jenisData" control={control} />
               <Input disabled group isLink label="URL Dataset" name="urlDataset" control={control} />
             </Form>

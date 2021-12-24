@@ -43,13 +43,13 @@ export const ReadOnlyInputs = ({
       {label && <Form.Label className={labelClass}>{label}</Form.Label>}
       <InputGroup className={cx('sdp-input-wrapper', wrapperClass)}>
         {LeftIconNode && (
-          <InputGroup.Text className={cx('input-icon bg-white', leftIconClass)}>
+          <InputGroup.Text className={cx('input-icon bg-gray', leftIconClass)}>
             <LeftIconNode />
           </InputGroup.Text>
         )}
         <Form.Control maxLength={maxLengthNumber} {...rest} className={cx('bg-gray', className)} readOnly />
         {RightIconNode && (
-          <InputGroup.Text className={cx('input-icon bg-white', rightIconClass)} onClick={handleIconClick(rest)}>
+          <InputGroup.Text className={cx('input-icon bg-gray', rightIconClass)} onClick={handleIconClick(rest)}>
             <RightIconNode />
           </InputGroup.Text>
         )}

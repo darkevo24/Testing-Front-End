@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -10,7 +10,13 @@ import { ReactComponent as TrendingSvg } from 'assets/trending.svg';
 import { ReactComponent as PopulerSvg } from 'assets/populer.svg';
 import { CardWithDetail } from 'components/Cards/CardWithDetail';
 import { safeParse } from 'utils/helper';
-import { getDatasetPopular, getDatasetTrending, datasetTrendingSelector, datasetPopularSelector } from './reducer';
+import {
+  getDatasetPopular,
+  getDatasetTrending,
+  datasetTrendingSelector,
+  datasetPopularSelector,
+  logHomeTrendingOrPopular,
+} from './reducer';
 
 const Box = styled.div`
   margin: 80px 0;
@@ -43,7 +49,7 @@ const TitleBox = styled.div`
   line-height: 23px;
 `;
 
-export const BerandaCards = ({ bem, isLoggedIn, trendingData = [], popularData = [] }) => {
+export const BerandaCards = ({ bem, isLoggedIn }) => {
   const linkToRedirect = isLoggedIn ? '/dataset' : '/topic-detail';
   const dispatch = useDispatch();
   useEffect(() => {
@@ -51,10 +57,37 @@ export const BerandaCards = ({ bem, isLoggedIn, trendingData = [], popularData =
     dispatch(getDatasetPopular('populer'));
   }, []);
 
-  const renderDataSet = (group) => (data) => {
+  const logToTrendingAPI = useCallback(
+    (param, dispatch) => () => {
+      const { dataSetDate, description, fileType, title, totalFile, url } = param;
+      dispatch(
+        logHomeTrendingOrPopular({
+          title: title,
+          fileType: JSON.parse(fileType),
+          dataSetDate: moment(dataSetDate).format('YYYY-MM-DD'),
+          description: description,
+          totalFile: totalFile,
+          url: url,
+        }),
+      ).then((result) => {
+        if (!result.error) {
+          window.open(url, '_self');
+        }
+      });
+    },
+    [],
+  );
+
+  const renderDataSet = (group) => (data, index) => {
     return (
-      <Col xs={12} sm={6} lg={3} className={cx('d-flex justify-content-center', bem.e('card-box'))}>
+      <Col
+        key={`CardWithDetail-${group}-${index}`}
+        xs={12}
+        sm={6}
+        lg={3}
+        className={cx('d-flex justify-content-center', bem.e('card-box'))}>
         <CardWithDetail
+          LogForClick={logToTrendingAPI(data, dispatch)}
           formats={safeParse(data.fileType)}
           key={`${group}-${data.id}`}
           title={truncate(data.title, { length: 60 })}

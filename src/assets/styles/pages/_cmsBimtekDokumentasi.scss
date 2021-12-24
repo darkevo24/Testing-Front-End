@@ -1,0 +1,31 @@
+.cms-bimtek-dokumentasi-detail {
+    .cms-bimtek-dokumentasi {
+        .sdp-table__table-wrapper {
+            thead {
+                tr {
+                    border-bottom: 2px solid $red;
+                }
+            }
+        }
+        .pagination {
+            display: none;
+        }
+    }
+    .wrapper-upload {
+        padding-bottom: 30px;
+        .wrapper-title {
+            display: flex;
+            justify-content: space-between;
+            .icon {
+                cursor: pointer;
+                svg {
+                    height: 20px;
+                    margin-right: 3px;
+                }
+            }
+        }
+        .doc-foto {
+            height: 200px;
+        }
+    }
+}

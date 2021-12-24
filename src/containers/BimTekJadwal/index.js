@@ -9,7 +9,7 @@ import './bimtekjadwal.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   bimtekJadwalDatasetSelector,
-  bimtekJadwalLocatonsDatasetSelector,
+  bimtekJadwalLocationsDatasetSelector,
   bimtekJadwalTagsDatasetSelector,
   getBimtekJadwalData,
   getBimtekJadwalLocationsData,
@@ -38,7 +38,7 @@ const BimTekJadwal = () => {
   }, [paramsData]);
 
   const { records: jadwalData } = useSelector(bimtekJadwalDatasetSelector);
-  const filterLocations = useSelector(bimtekJadwalLocatonsDatasetSelector);
+  const filterLocations = useSelector(bimtekJadwalLocationsDatasetSelector);
   const filterCategory = useSelector(bimtekJadwalTagsDatasetSelector);
 
   const handleFilterChange = (e) => {

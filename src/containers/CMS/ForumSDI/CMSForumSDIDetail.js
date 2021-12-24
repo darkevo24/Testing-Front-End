@@ -143,8 +143,10 @@ const CMSForumSDIDetail = () => {
                 <Form.Group as={Col} className="cms-forum-sdi-tag mt-5 mb-24" md="12">
                   <label className="sdp-form-label mb-8">Tag</label>
                   <div className="tag-data d-flex align-items-center bg-gray border-gray-stroke p-9 br-4">
-                    {detailResult?.tags.map((elem) => (
-                      <label className="sdp-text-blue mr-6 bg-light-blue">{elem}</label>
+                    {detailResult?.tags.map((elem, index) => (
+                      <label className="sdp-text-blue mr-6 bg-light-blue" key={`tag-label-${index}`}>
+                        {elem}
+                      </label>
                     ))}
                   </div>
                 </Form.Group>
@@ -168,8 +170,10 @@ const CMSForumSDIDetail = () => {
                 <Form.Group as={Col} className="cms-forum-sdi-input mt-5" md="12">
                   <label className="sdp-form-label mb-8">Lampiran</label>
                   <div className="input-data d-flex align-items-center bg-gray border-gray-stroke p-9 br-4">
-                    {detailResult?.lampiran.map((elem) => (
-                      <label className="sdp-text-blue bg-light-blue">{elem?.fileName}</label>
+                    {detailResult?.lampiran.map((elem, index) => (
+                      <label className="sdp-text-blue bg-light-blue" key={`topik-label-${index}`}>
+                        {elem?.fileName}
+                      </label>
                     ))}
                   </div>
                 </Form.Group>

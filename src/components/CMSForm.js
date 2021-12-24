@@ -34,15 +34,42 @@ export const submitNewKategori = async (kategori) => {
   }
 };
 
+export const getDate = (date) => {
+  if (!date) {
+    return '';
+  }
+  // handle format yyyy-mm-ddTHH:mm:ss
+  if (date.indexOf('T') >= 0) {
+    return date.split('T')[0];
+  }
+
+  // handle format yyyy-mm-dd HH:mm:ss
+  return date.split(' ')[0];
+};
+
+export const getTime = (date) => {
+  if (!date) {
+    return '';
+  }
+  // handle format yyyy-mm-ddTHH:mm:ss
+  if (date.indexOf('T') >= 0) {
+    return date.split('T')[1].split(' ')[0].split('.')[0];
+  }
+
+  // handle format yyyy-mm-dd HH:mm:ss
+  return date.split(' ')[1];
+};
+
 const schema = yup
   .object({
     judul: yup.string().required(),
     kategori: yup.mixed().required(),
     mainImage: yup.mixed().required(),
+    content: yup.mixed().required(),
   })
   .required();
 
-const CMSForm = ({ data, style, onSubmit }) => {
+const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
   const dispatch = useDispatch();
   const [listKategori, setListKategori] = useState([]);
   const { records: kategoriRecords } = useSelector(kategoriSelector);
@@ -72,16 +99,19 @@ const CMSForm = ({ data, style, onSubmit }) => {
     formState: { errors },
     handleSubmit,
     setValue,
+    setError,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       ...data,
-      kategori: data.kategori
-        ? {
+      kategori: !data.kategori
+        ? null
+        : data.kategori.value
+        ? data.kategori
+        : {
             value: data.kategori,
             label: kategoriRecords.find((kategori) => kategori.id === data.kategori)?.keterangan,
-          }
-        : null,
+          },
       taglineId: data.tagLineList?.map((tagline) => ({ label: tagline.keterangan, value: tagline.id })),
     },
   });
@@ -107,7 +137,10 @@ const CMSForm = ({ data, style, onSubmit }) => {
         setValue('mainImage', res.data.location);
       });
     } catch (e) {
-      errors.mainImage.message = e.error?.message;
+      setError('mainImage', {
+        type: 'manual',
+        message: e.error?.message,
+      });
     }
   };
 
@@ -119,16 +152,20 @@ const CMSForm = ({ data, style, onSubmit }) => {
 
   return (
     <Form id={beritaFormId} className="sdp-form" onSubmit={handleSubmit(onSubmit)} style={style}>
-      <FileInput
-        group
-        label="Thumbnail"
-        name="mainImage"
-        control={control}
-        error={errors.mainImage?.message}
-        uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
-        handleOnChange={handleFoto}
-      />
-      <Input group label="Judul" name="judul" control={control} rules={{ required: true }} error={errors.judul?.message} />
+      {disabled ? (
+        <img className="wpx-200 mb-3" src={data?.mainImage} alt="thumbnail" />
+      ) : (
+        <FileInput
+          group
+          label="Thumbnail"
+          name="mainImage"
+          control={control}
+          error={errors.mainImage?.message}
+          uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
+          handleOnChange={handleFoto}
+        />
+      )}
+      <Input group label="Judul" name="judul" control={control} disabled={disabled} error={errors.judul?.message} />
       <Form.Group className="mb-3">
         <Form.Label>Kategori</Form.Label>
         <SingleSelectDropdown
@@ -138,6 +175,7 @@ const CMSForm = ({ data, style, onSubmit }) => {
           isCreatable={true}
           onCreateOption={createKategori}
           name="kategori"
+          isDisabled={disabled}
         />
         <div className="sdp-error">{errors.kategori?.message}</div>
       </Form.Group>
@@ -150,11 +188,13 @@ const CMSForm = ({ data, style, onSubmit }) => {
           defaultValue={data.tagLineList?.map((tagline) => ({ label: tagline.keterangan, value: tagline.id }))}
           isCreatable={true}
           onCreateOption={createTagline}
+          isDisabled={disabled}
         />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Isi Berita</Form.Label>
-        <TextEditor defaultValue={data.content} onChange={(e) => setValue('content', e)} />
+        <TextEditor disabled={disabled} defaultValue={data.content} onChange={(e) => setValue('content', e)} />
+        <div className="sdp-error">{errors.content?.message}</div>
       </Form.Group>
       <Input
         group
@@ -163,6 +203,7 @@ const CMSForm = ({ data, style, onSubmit }) => {
         control={control}
         rules={{ required: false }}
         error={errors.issn?.message}
+        disabled={disabled}
       />
       <Row>
         <Col>
@@ -171,7 +212,8 @@ const CMSForm = ({ data, style, onSubmit }) => {
             <Form.Control
               type="date"
               onChange={(e) => setValue('publishDate', e.target.value)}
-              defaultValue={data?.publishDate?.toString().split(' ')[0]}
+              defaultValue={getDate(data.publishDate)}
+              disabled={disabled}
             />
           </Form.Group>
         </Col>
@@ -181,7 +223,8 @@ const CMSForm = ({ data, style, onSubmit }) => {
             <Form.Control
               type="time"
               onChange={(e) => setValue('publishTime', e.target.value)}
-              defaultValue={data?.publishDate?.toString().split(' ')[1]}
+              defaultValue={getTime(data.publishDate)}
+              disabled={disabled}
             />
           </Form.Group>
         </Col>

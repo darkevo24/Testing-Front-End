@@ -29,7 +29,6 @@ export const getPermintaanData = createAsyncThunk('permintaan-data/list', async 
       q: params.q,
     },
   });
-  console.log(response);
   return response;
 });
 

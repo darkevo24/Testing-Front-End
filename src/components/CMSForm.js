@@ -68,7 +68,7 @@ const schema = yup
   })
   .required();
 
-const CMSForm = ({ data, style, onSubmit }) => {
+const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
   const dispatch = useDispatch();
   const [listKategori, setListKategori] = useState([]);
   const { records: kategoriRecords } = useSelector(kategoriSelector);
@@ -159,8 +159,9 @@ const CMSForm = ({ data, style, onSubmit }) => {
         error={errors.mainImage?.message}
         uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
         handleOnChange={handleFoto}
+        disabled={disabled}
       />
-      <Input group label="Judul" name="judul" control={control} rules={{ required: true }} error={errors.judul?.message} />
+      <Input group label="Judul" name="judul" control={control} disabled={disabled} error={errors.judul?.message} />
       <Form.Group className="mb-3">
         <Form.Label>Kategori</Form.Label>
         <SingleSelectDropdown
@@ -170,6 +171,7 @@ const CMSForm = ({ data, style, onSubmit }) => {
           isCreatable={true}
           onCreateOption={createKategori}
           name="kategori"
+          isDisabled={disabled}
         />
         <div className="sdp-error">{errors.kategori?.message}</div>
       </Form.Group>
@@ -182,11 +184,12 @@ const CMSForm = ({ data, style, onSubmit }) => {
           defaultValue={data.tagLineList?.map((tagline) => ({ label: tagline.keterangan, value: tagline.id }))}
           isCreatable={true}
           onCreateOption={createTagline}
+          isDisabled={disabled}
         />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Isi Berita</Form.Label>
-        <TextEditor defaultValue={data.content} onChange={(e) => setValue('content', e)} />
+        <TextEditor disabled={disabled} defaultValue={data.content} onChange={(e) => setValue('content', e)} />
       </Form.Group>
       <Input
         group
@@ -195,6 +198,7 @@ const CMSForm = ({ data, style, onSubmit }) => {
         control={control}
         rules={{ required: false }}
         error={errors.issn?.message}
+        disabled={disabled}
       />
       <Row>
         <Col>
@@ -204,6 +208,7 @@ const CMSForm = ({ data, style, onSubmit }) => {
               type="date"
               onChange={(e) => setValue('publishDate', e.target.value)}
               defaultValue={getDate(data.publishDate)}
+              disabled={disabled}
             />
           </Form.Group>
         </Col>
@@ -214,6 +219,7 @@ const CMSForm = ({ data, style, onSubmit }) => {
               type="time"
               onChange={(e) => setValue('publishTime', e.target.value)}
               defaultValue={getTime(data.publishDate)}
+              disabled={disabled}
             />
           </Form.Group>
         </Col>

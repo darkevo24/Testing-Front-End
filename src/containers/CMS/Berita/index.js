@@ -53,7 +53,7 @@ const CMSBerita = () => {
             <Button
               variant="info"
               className="text-center"
-              onClick={() => dispatch(setPreviewBerita({})).then(() => history.push('/cms/berita-baru'))}>
+              onClick={() => dispatch(setPreviewBerita({})).then(() => history.push('/cms/berita-form'))}>
               <Plus /> Buat Berita
             </Button>
           </Col>

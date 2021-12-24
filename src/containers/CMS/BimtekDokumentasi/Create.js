@@ -24,6 +24,7 @@ const bem = bn('content-create');
 const CMSJadwalBaru = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [showCreateDokumentasi, setCreateDokumentasi] = useState(false);
   const [fotoDokumentasi, setFotoDokumentasi] = useState([]);
   const [urlVidio, setUrlVidio] = useState('');
   const [isiDokumentasi, setIsiDokumentasi] = useState('');
@@ -48,11 +49,11 @@ const CMSJadwalBaru = () => {
     return dispatch(getJadwalBimtekDetail(BimtekId));
   }, [BimtekId]);
 
-  const tanggalMulaiDisetujui = moment(dataDetailBimtek.records.tanggalMulaiDisetujui).format('YYYY/MM/DD');
+  const tanggalMulaiDisetujui = moment(dataDetailBimtek.records.tanggalMulaiDisetujui).format('DD/MM/YYYY');
   const waktuMulaiDisetujui = moment(dataDetailBimtek.records.tanggalMulaiDisetujui).format('hh:mm');
-  const tanggalSelesaiDisetujui = moment(dataDetailBimtek.records.tanggalMulaiDisetujui).format('YYYY/MM/DD');
+  const tanggalSelesaiDisetujui = moment(dataDetailBimtek.records.tanggalSelesaiDisetujui).format('DD/MM/YYYY');
   const waktuSelesaiDisetujui = moment(dataDetailBimtek.records.tanggalSelesaiDisetujui).format('hh:mm');
-
+  console.log(DetailBimtek);
   useEffect(() => {
     reset({
       default: dataDetailBimtek.records,
@@ -130,15 +131,23 @@ const CMSJadwalBaru = () => {
     {
       Header: 'Tanggal',
       accessor: 'tanggalMulai',
+      Cell: ({ ...rest }) => (
+        <span>
+          {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('DD MMMM YYYY') : '---'}
+        </span>
+      ),
     },
     {
       Header: 'Sesi',
       accessor: 'sesi',
+      Cell: ({ ...rest }) => (
+        <span> {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('hh:mm:ss') : '---'} </span>
+      ),
     },
   ];
 
   const tableConfigMateri = {
-    className: 'cms-bimtek-dokumentasi',
+    className: 'cms-bimtek-table',
     columns: columnsMateri,
     data: materiBimtek,
     title: '',
@@ -148,7 +157,7 @@ const CMSJadwalBaru = () => {
   };
 
   const tableConfigPembicara = {
-    className: 'cms-bimtek-dokumentasi',
+    className: 'cms-bimtek-table',
     columns: columnsPembicara,
     data: pembicaraBimtek,
     title: '',
@@ -176,20 +185,23 @@ const CMSJadwalBaru = () => {
             message: <div> Gagal Menambahkan Dokumentasi </div>,
             icon: 'cross',
           });
-      setTimeout(() => {
-        history.push(`/cms/bimtek-dokumentasi`);
-      }, 1000);
+      if (res.payload) {
+        setTimeout(() => {
+          history.push(`/cms/bimtek-dokumentasi`);
+        }, 1000);
+      }
     });
+    setCreateDokumentasi(false);
   };
   return (
-    <div className={bem.e('section cms-bimtek-dokumentasi-detail')}>
+    <div className={bem.e('section cms-bimtek')}>
       <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
         <div className={bem.e('title')}>
           Dokumentasi Bimbingan Teknis Baru
           <Button onClick={() => history.goBack()} className="ml-24" variant="secondary" style={{ width: '112px' }}>
             Batal
           </Button>
-          <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => postDokumentasi()}>
+          <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => setCreateDokumentasi(true)}>
             Simpan
           </Button>
         </div>
@@ -221,7 +233,7 @@ const CMSJadwalBaru = () => {
                 name={tanggalMulaiDisetujui !== 'Invalid date' ? 'tanggalMulaiDisetujui' : ''}
                 control={control}
                 rules={{ required: false }}
-                error={errors.publishedDate?.message}
+                error={errors.tanggalMulaiDisetujui?.message}
               />
             </Col>
             <Col>
@@ -247,7 +259,7 @@ const CMSJadwalBaru = () => {
                 name={tanggalSelesaiDisetujui !== 'Invalid date' ? 'tanggalSelesaiDisetujui' : ''}
                 control={control}
                 rules={{ required: false }}
-                error={errors.publishedDate?.message}
+                error={errors.tanggalSelesaiDisetujui?.message}
               />
             </Col>
             <Col>
@@ -308,6 +320,25 @@ const CMSJadwalBaru = () => {
           <TextEditor onChange={(e) => setIsiDokumentasi(e)} />
         </Form>
       </div>
+      <Modal
+        showHeader={false}
+        title="Tambah Pembicari Baru"
+        visible={showCreateDokumentasi}
+        onClose={() => setCreateDokumentasi(false)}>
+        <div className="mt-20 mb-20">
+          <p className="mb-0"> Simpan Perubahan Data? </p>
+        </div>
+        <Form onSubmit={handleSubmit(postDokumentasi)} noValidate>
+          <div className="d-flex justify-content-end mt-20">
+            <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setCreateDokumentasi()}>
+              Batal
+            </Button>
+            <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
+              Konfirmasi
+            </Button>
+          </div>
+        </Form>
+      </Modal>
     </div>
   );
 };

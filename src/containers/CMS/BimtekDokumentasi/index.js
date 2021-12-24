@@ -90,7 +90,7 @@ const CMSBimtekPermintaan = () => {
   ];
 
   const rowClick = (data) => {
-    history.push(`/cms/bimtek-dokumentasi/${data.dokumentasiId}`);
+    history.push(`/cms/bimtek-dokumentasi/${data?.dokumentasiId}`);
   };
 
   const getRowClass = (data) => {
@@ -108,7 +108,7 @@ const CMSBimtekPermintaan = () => {
     variant: 'link',
     totalCount: totalRecords,
     pageSize: size,
-    currentPage: page - 1,
+    currentPage: page,
     manualPagination: true,
     onRowClick: rowClick,
     rowClass: getRowClass,

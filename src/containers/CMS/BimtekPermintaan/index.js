@@ -38,7 +38,7 @@ const CMSBimtekPermintaan = () => {
   const instansi = useMemo(() => instansiData || [], [instansiData]);
 
   useEffect(() => {
-    fetchCmsPerminataanDataset({ page: page || 0 });
+    fetchCmsPerminataanDataset({ page: 0 });
   }, [query, instansiId]);
 
   useEffect(() => {
@@ -95,27 +95,27 @@ const CMSBimtekPermintaan = () => {
       Cell: ({ ...rest }) => <Button variant="info"> Detail </Button>,
     },
   ];
-
   const tableConfig = {
     className: 'cms-permintaan-data',
     columns,
-    data: records,
+    data: records || [],
     title: '',
-    showSearch: false,
-    onSearch: () => {},
-    variant: 'link',
-    totalCount: totalRecords,
+    totalCount: totalRecords || null,
+    // pageCount: totalPages || null,
     pageSize: size,
     currentPage: page,
     manualPagination: true,
+    showSearch: false,
+    onSearch: () => {},
     onRowClick: rowClick,
+    variant: 'spaced',
     onPageIndexChange: (currentPage) => {
       if (currentPage !== page) {
         fetchCmsPerminataanDataset({ page: currentPage });
       }
     },
   };
-
+  console.log(page);
   return (
     <div className={bem.e('section')}>
       <div className={bem.e('header')}>

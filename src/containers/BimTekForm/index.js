@@ -19,10 +19,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { formulirPendaftaranDatasetSelector, getFormulirPendaftaranData } from './reducer';
 import { apiUrls } from 'utils/constants';
 import { post } from 'utils/request';
-import Select from 'react-select';
-import MultiDropDown from 'components/DropDown/MultiDropDown';
 import { useForm } from 'react-hook-form';
 import bn from 'utils/bemNames';
+import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
 
 const bem = bn('bimtek-form');
 
@@ -141,15 +140,13 @@ const BimTekForm = () => {
             <Row>
               <Form.Group as={Col} controlId="city" className={bem.e('kota-dropdown', 'position-relative')}>
                 <Form.Label>Kota Pelaksana</Form.Label>
-                <Select
-                  closeMenuOnSelect={true}
-                  options={kotaOptions}
-                  isMulti={false}
-                  classNamePrefix="select"
-                  onChange={handleKotaChange}
-                  value={kotaData == null ? null : kotaOptions.find((item) => item.value === kotaData)}
+                <SingleSelectDropdown
+                  data={kotaOptions}
+                  control={control}
+                  placeholder="Pilih Kota"
                   name="tagMateri"
-                  className="select-pendaftran"
+                  value={kotaData == null ? null : kotaOptions.find((item) => item.value === kotaData)}
+                  onChange={handleKotaChange}
                 />
                 <p hidden={kotaError} className={bem.e('error-message')}>
                   Kota Pelaksana is required.
@@ -165,7 +162,7 @@ const BimTekForm = () => {
             </Row>
             <Form.Group as={Col} controlId="materi" className={bem.e('materi-dropdown', 'position-relative')}>
               <Form.Label>Materi Bimtek</Form.Label>
-              <MultiDropDown
+              <SingleSelectDropdown
                 data={tagMateri}
                 control={control}
                 placeholder="Pilih Materi"
@@ -174,6 +171,7 @@ const BimTekForm = () => {
                 name="tagMateri"
                 onChange={handleMateriChange}
                 value={materiTagData}
+                isMulti
               />
               <p hidden={materiError} className={bem.e('error-message')}>
                 Materi Bimtek is required.

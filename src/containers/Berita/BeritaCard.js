@@ -21,6 +21,7 @@ export const BeritaCardImage = styled.img`
 
 export const BeritaCardContent = styled.div`
   padding: 16px;
+  cursor: pointer;
 `;
 
 export const BeritaCardTanggal = styled.div`

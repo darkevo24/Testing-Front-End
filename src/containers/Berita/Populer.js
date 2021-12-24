@@ -3,6 +3,7 @@ import { BeritaGrid, SectionTitle } from '.';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOtherNews, otherNewsSelector } from './reducer';
+import { useHistory } from 'react-router-dom';
 
 const Wrapper = styled.div`
   margin-bottom: 40px;
@@ -41,6 +42,7 @@ const Title = styled.div`
   line-height: 21px;
   color: #515154;
   margin-top: 12px;
+  cursor: pointer;
 `;
 
 const Topik = styled.div`
@@ -57,6 +59,7 @@ const Topik = styled.div`
 
 const Populer = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { records, status } = useSelector(otherNewsSelector);
 
   useEffect(() => {
@@ -65,6 +68,11 @@ const Populer = (props) => {
     }
   }, [dispatch, status]);
 
+  const handleDetail = (event, title) => {
+    event.preventDefault();
+    history.push(`/berita/${title}`);
+  };
+
   return (
     <Wrapper>
       <SectionTitle>Populer</SectionTitle>
@@ -72,14 +80,14 @@ const Populer = (props) => {
       <BeritaGrid columns={props.columns}>
         {records?.length &&
           records.map((record, i) => {
-            const { image, kategori, judul } = record;
+            const { image, kategori, judul, id } = record;
             return (
               <BeritaItem key={'populer' + i}>
                 <ImageWrapper>
                   <Image src={image} />
                   <Topik>{kategori}</Topik>
                 </ImageWrapper>
-                <Title>{judul}</Title>
+                <Title onClick={(event) => handleDetail(event, id)}>{judul}</Title>
               </BeritaItem>
             );
           })}

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { BeritaGrid } from '.';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOtherNews, otherNewsSelector } from './reducer';
+import { useHistory } from 'react-router-dom';
 
 const Wrapper = styled.div`
   border-top: 4px solid #ff0000;
@@ -28,6 +29,7 @@ const Judul = styled.div`
   font-size: 16px;
   color: #2d2627;
   margin: 12px 0;
+  cursor: pointer;
 `;
 
 const Konten = styled.div`
@@ -52,6 +54,7 @@ const ButtonLoadMore = styled.button`
 
 const ListBerita = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { records, status } = useSelector(otherNewsSelector);
   const [page, setPage] = useState(3);
 
@@ -63,12 +66,16 @@ const ListBerita = (props) => {
   const handleLoadMore = () => {
     setPage(page + 3);
   };
+  const handleDetail = (event, title) => {
+    event.preventDefault();
+    history.push(`/berita/${title}`);
+  };
   return (
     <Wrapper>
       <BeritaGrid columns={props.columns}>
         {records.length &&
           records.map((content, i) => {
-            const { judul, slug, image, kategori } = content;
+            const { judul, slug, image, kategori, id } = content;
             return (
               <BeritaItem className="row" key={'lb' + i}>
                 <div className="col-lg-4" style={{ paddingRight: '24px' }}>
@@ -76,7 +83,7 @@ const ListBerita = (props) => {
                 </div>
                 <div className="col-lg-8">
                   <Topik>{kategori}</Topik>
-                  <Judul>{judul}</Judul>
+                  <Judul onClick={(event) => handleDetail(event, id)}>{judul}</Judul>
                   <Konten>{slug}</Konten>
                 </div>
               </BeritaItem>

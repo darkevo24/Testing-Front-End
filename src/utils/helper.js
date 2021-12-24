@@ -249,6 +249,14 @@ export const getStatusClass = (status) => {
         text: 'Selesai',
         divText: 'Selesai',
       };
+    case 7:
+    case 'dihapus':
+      return {
+        divBG: 'bg-red-light',
+        textColor: 'sdp-text-red',
+        text: 'Dihapus',
+        divText: 'Dihapus',
+      };
     default:
       return {};
   }

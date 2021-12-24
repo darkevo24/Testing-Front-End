@@ -53,7 +53,7 @@ const CMSBerita = () => {
             <Button
               variant="info"
               className="text-center"
-              onClick={() => dispatch(setPreviewBerita({})).then(() => history.push('/cms/berita-baru'))}>
+              onClick={() => dispatch(setPreviewBerita({})).then(() => history.push('/cms/berita-form'))}>
               <Plus /> Buat Berita
             </Button>
           </Col>
@@ -66,7 +66,7 @@ const CMSBerita = () => {
         </Row>
       </div>
       <CMSTable
-        customWidth={[45, 14, 12, 11, 11, 7]}
+        customWidth={[40, 12, 12, 11, 11, 6]}
         header={['Judul Berita', 'Tanggal Publish', 'Status', 'Author', 'Editor']}
         data={records.map((item) => {
           let value = {

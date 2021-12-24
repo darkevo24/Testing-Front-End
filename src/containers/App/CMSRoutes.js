@@ -63,7 +63,7 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/about-us/edit/:id?" component={AboutUsEditPage} />
         <PrivateRoute exact path="/cms/berita-layout" component={BeritaLayout} />
         <PrivateRoute exact path="/cms/berita-konten" component={BeritaPage} />
-        <PrivateRoute exact path="/cms/berita-baru" component={BeritaBaruPage} />
+        <PrivateRoute exact path="/cms/berita-form" component={BeritaBaruPage} />
         <PrivateRoute exact path="/cms/berita-detail/:id" component={BeritaDetailPage} />
         <PrivateRoute exact path="/cms/bimtek-permintaan" component={BimtekPermintaanPage} />
         <PrivateRoute exact path="/cms/bimtek-permintaan/:id" component={BimtekPermintaanEditPage} />

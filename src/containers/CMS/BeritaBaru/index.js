@@ -49,15 +49,15 @@ const CMSBeritaBaru = () => {
     let label = '';
     switch (action) {
       case 'simpan':
-        label = 'Simpan Berita?';
+        label = <span>Simpan Berita?</span>;
         break;
       case 'kirim':
-        label = 'Kirim Berita?';
+        label = <span>Kirim Berita?</span>;
         break;
       default:
         return;
     }
-    setModalLabel(<span dangerouslySetInnerHTML={{ __html: label }}></span>);
+    setModalLabel(label);
     setModalConfirm(true);
   };
 

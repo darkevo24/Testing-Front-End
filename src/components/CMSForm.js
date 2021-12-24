@@ -65,6 +65,7 @@ const schema = yup
     judul: yup.string().required(),
     kategori: yup.mixed().required(),
     mainImage: yup.mixed().required(),
+    content: yup.mixed().required(),
   })
   .required();
 
@@ -193,6 +194,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
       <Form.Group className="mb-3">
         <Form.Label>Isi Berita</Form.Label>
         <TextEditor disabled={disabled} defaultValue={data.content} onChange={(e) => setValue('content', e)} />
+        <div className="sdp-error">{errors.content?.message}</div>
       </Form.Group>
       <Input
         group

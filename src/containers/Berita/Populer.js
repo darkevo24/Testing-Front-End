@@ -1,5 +1,8 @@
+import { useEffect } from 'react';
 import { BeritaGrid, SectionTitle } from '.';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOtherNews, otherNewsSelector } from './reducer';
 
 const Wrapper = styled.div`
   margin-bottom: 40px;
@@ -53,22 +56,31 @@ const Topik = styled.div`
 `;
 
 const Populer = (props) => {
+  const dispatch = useDispatch();
+  const { records, status } = useSelector(otherNewsSelector);
+
+  useEffect(() => {
+    if (status === 'idel') {
+      dispatch(getOtherNews(3));
+    }
+  }, [dispatch, status]);
+
   return (
     <Wrapper>
       <SectionTitle>Populer</SectionTitle>
       <Header>Lihat Semua</Header>
       <BeritaGrid columns={props.columns}>
-        {Array.apply(null, { length: props.jumlah }).map((e, i) => (
-          <BeritaItem key={'populer' + i}>
-            <ImageWrapper>
-              <Image src="https://cdn0-production-images-kly.akamaized.net/qCtvfeEWHK-aiReMuuZFBm7y-3Q=/300x172/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3626876/original/071959500_1636427539-IMG-20211109-WA0003.jpg" />
-              <Topik>Megapolitan</Topik>
-            </ImageWrapper>
-            <Title>
-              Kemenhub Berbagi Pengalaman Penanganan Covid-19 Sektor Transportasi Di Forum ASEAN-Republik Korea ke-11
-            </Title>
-          </BeritaItem>
-        ))}
+        {records && records?.length
+          ? records.map((record, i) => (
+              <BeritaItem key={'populer' + i}>
+                <ImageWrapper>
+                  <Image src={record.image} />
+                  <Topik>{record.kategori}</Topik>
+                </ImageWrapper>
+                <Title>{record.judul}</Title>
+              </BeritaItem>
+            ))
+          : null}
       </BeritaGrid>
     </Wrapper>
   );

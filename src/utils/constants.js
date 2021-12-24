@@ -68,6 +68,8 @@ export const apiUrls = {
   cmsAboutUs: getCMSEndpoint('tentang'),
   aboutUs: getApiEndpoint('public/tentang'),
   userBeritaPortal: getPublicV1Endpoint('berita'),
+  userBeritaLatest: getPublicV1Endpoint('berita/latest'),
+  userBeritaPopular: getPublicV1Endpoint('berita/populer'),
   homeDataSetEndPoint: getPublicV1Endpoint('dataset'),
   portalForumSDI: getPortalEndpoint('v1/forum-sdi'),
   cmsForumSDI: getCMSEndpoint('forum-sdi'),

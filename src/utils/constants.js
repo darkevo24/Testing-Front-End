@@ -50,6 +50,7 @@ export const apiUrls = {
   detailPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
   variable: getV1Endpoint('variable'),
   katalogVariable: getV1Endpoint('variable/katalog'),
+  daftarSekreteriatData: getV1Endpoint('katalog/sekreteriat/list'),
   daftarData: getV1Endpoint('katalog'),
   daftarDataList: getV1Endpoint('katalog/list'),
   daftarDataSummary: getV1Endpoint('katalog/summary'),

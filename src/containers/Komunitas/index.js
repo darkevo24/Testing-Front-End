@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import cx from 'classnames';
 import { Row, Col, Button } from 'react-bootstrap';
 import Table from 'components/Table';
 import { icons, MailSvg } from 'components/Icons';

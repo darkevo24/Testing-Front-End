@@ -19,7 +19,7 @@ import { ReactComponent as SearchSvg } from 'assets/search.svg';
 import { TOPIC_LIST } from 'utils/constants';
 import { Loader } from 'components';
 import { Breadcrumbs } from 'components/Breadcrumb';
-import { Search } from 'components/Icons';
+import { FilledSquareSvg, Search } from 'components/Icons';
 import Table from 'components/Table';
 import { Tags } from 'components/Tags';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
@@ -264,9 +264,7 @@ const TopicDetail = () => {
             className="sdp-instansi-button border-gray-stroke br-4 bg-white ml-10"
             variant="light"
             onClick={() => setShowInstansiFilter(true)}>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="12" height="12" rx="2" fill="#FF0000" />
-            </svg>
+            <FilledSquareSvg variant="gray" />
             {t('beranda.topic.searchInstansi')}
           </Button>
         </div>

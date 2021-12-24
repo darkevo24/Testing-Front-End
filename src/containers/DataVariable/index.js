@@ -5,15 +5,9 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useParams } from 'react-router-dom';
 import cloneDeep from 'lodash/cloneDeep';
-import find from 'lodash/find';
-
-import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import Modal from 'components/Modal';
 import Notification from 'components/Notification';
-import Popover from 'components/Popover';
-import Table from 'components/Table';
 import { Breadcrumb } from 'components';
-import truncate from 'lodash/truncate';
 import { prepareFormPayload } from 'utils/helper';
 import {
   daftarDetailsDataSelector,
@@ -26,8 +20,9 @@ import {
   katalogVariableDataSelector,
 } from 'containers/Daftar/reducer';
 import DataVariableForm, { submitDataVariableForm } from './DataVariableForm';
+import DataVariableTable from './DataVariableTable';
 
-const DataVariable = () => {
+const DataVariable = ({ cms }) => {
   const { daftarId } = useParams();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -169,104 +164,6 @@ const DataVariable = () => {
     });
   };
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'Nama Variabel',
-        accessor: 'nama',
-      },
-      {
-        Header: 'ID Konsep',
-        accessor: 'idKonsep',
-      },
-      {
-        Header: 'Konsep',
-        accessor: 'konsep',
-      },
-      {
-        Header: 'Definisi',
-        accessor: 'definisi',
-        Cell: ({ cell: { value } = {} }) => {
-          return (
-            <Popover
-              placement="bottom-start"
-              triggerOn="hover"
-              trigger={<span className="cursor-pointer">{truncate(value, { length: 50 })}</span>}>
-              {value}
-            </Popover>
-          );
-        },
-      },
-      {
-        Header: 'Pengaturan Akses',
-        accessor: 'pengaturanAkses',
-      },
-      {
-        Header: 'Kode Referensi',
-        accessor: 'kodeReferensi',
-        Cell: ({ cell: { value } }) => find(kodeReferensiOptions, { value })?.label || '-',
-      },
-      {
-        id: 'actions',
-        actions: [
-          {
-            type: 'edit',
-            callback: showDataVariableFormModal,
-          },
-          {
-            type: 'trash',
-            callback: showDeleteModal,
-          },
-        ],
-        Cell: Table.Actions,
-      },
-    ],
-    [],
-  );
-
-  const tableConfig = {
-    variant: 'spaced',
-    columns,
-    data,
-    totalCount: result?.totalRecords || null,
-    searchLeftComponent: (
-      <div className="w-100 d-flex align-items-center">
-        <span className="sdp-text-disable mr-16">{t('sandbox.variable.reference')}</span>
-        <SingleSelectDropdown
-          className="wpx-300"
-          data={kodeReferensiOptions}
-          onChange={handleKodeReferensiChange}
-          placeHolder="ID UMKM"
-          isLoading={false}
-          noValue={true}
-        />
-      </div>
-    ),
-    title: (
-      <>
-        <span className="sdp-text-disable">{t('sandbox.variable.title')}</span>
-        <span> {daftar?.nama}</span>
-      </>
-    ),
-    search: true,
-    pageSize,
-    manualPagination: true,
-    currentPage: params.page,
-    highlightOnHover: true,
-    searchPlaceholder: t('sandbox.variable.searchPlaceholder'),
-    searchButtonText: t('sandbox.variable.addVariable'),
-    onSearch: (filterText) => {
-      fetchKatalogVariableData({ bodyParams: { filterText } });
-    },
-    onSearchButtonPress: () => showDataVariableFormModal(),
-    onPageIndexChange: (page) => {
-      if (params.page !== page) {
-        const params = { page };
-        fetchKatalogVariableData({ params });
-      }
-    },
-  };
-
   const breadcrumbsList = useMemo(
     () => [
       {
@@ -291,10 +188,23 @@ const DataVariable = () => {
 
   return (
     <div className="daftar-page pb-100">
-      <Breadcrumb breadcrumbsList={breadcrumbsList} />
+      {!cms ? <Breadcrumb breadcrumbsList={breadcrumbsList} /> : null}
       <Row>
-        <Col sm={{ span: 10, offset: 1 }} md={{ span: 8, offset: 2 }}>
-          <Table {...tableConfig} />
+        <Col sm={!cms && { span: 10, offset: 1 }} md={!cms && { span: 8, offset: 2 }}>
+          <DataVariableTable
+            manualPagination={true}
+            search={!cms}
+            showDeleteModal={showDeleteModal}
+            showDataVariableFormModal={showDataVariableFormModal}
+            data={data}
+            result={result}
+            daftar={daftar}
+            fetchKatalogVariableData={fetchKatalogVariableData}
+            handleKodeReferensiChange={handleKodeReferensiChange}
+            kodeReferensiOptions={kodeReferensiOptions}
+            pageSize={pageSize}
+            params={params}
+          />
         </Col>
       </Row>
       <Modal

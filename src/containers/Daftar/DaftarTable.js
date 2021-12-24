@@ -11,7 +11,14 @@ import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import cloneDeep from 'lodash/cloneDeep';
 import { JADWAL_PERMUTAKHIRAN } from 'utils/constants';
 import DaftarPopoverContent from './DaftarPopoverContent';
-import { getDaftarData, daftarDataSelector } from './reducer';
+import {
+  getDaftarData,
+  sekreteriatDaftarDataSelector,
+  daftarDataSelector,
+  getSekreteriatDaftarData,
+  setRKPppData,
+  setSDGsData,
+} from './reducer';
 
 const DaftarTable = ({
   bem,
@@ -29,9 +36,9 @@ const DaftarTable = ({
   onPilarSdgChange,
 }) => {
   const history = useHistory();
-  // const [selectedRecord, setSelectedRecord] = useState(null);
   const [sortBy, setSortBy] = useState(null);
-  const { pageSize, loading, params, bodyParams, result } = useSelector(daftarDataSelector);
+  const selector = cms ? sekreteriatDaftarDataSelector : daftarDataSelector;
+  const { pageSize, loading, params, bodyParams, result } = useSelector(selector);
   const dispatch = useDispatch();
 
   const fetchDaftarData = (filterOverride = {}, reset = false) => {
@@ -43,17 +50,23 @@ const DaftarTable = ({
     if (reset) {
       filterParams.start = 0;
       filterParams.currentPage = 0;
+      filterParams.page = 0;
+      filterParams.size = 10;
     }
     const filterBodyParams = {
       ...cloneDeep(bodyParams),
       ...cloneDeep(bodyParamsOverride),
     };
     const filters = { params: filterParams, bodyParams: filterBodyParams };
-    return dispatch(getDaftarData(filters));
+    if (cms) {
+      return dispatch(getSekreteriatDaftarData(filters));
+    } else {
+      return dispatch(getDaftarData(filters));
+    }
   };
 
   useEffect(() => {
-    fetchDaftarData({ bodyParams: { textSearch } });
+    fetchDaftarData({ bodyParams: { textSearch } }, true);
   }, [textSearch]);
 
   const showDaftarDetailPage = (data) => {
@@ -177,15 +190,25 @@ const DaftarTable = ({
     };
   }
 
-  const handleDropdownFilter = (filter) => (selectedValue) => {
-    fetchDaftarData({ bodyParams: { [filter]: selectedValue.value } });
-    if (filter === 'pnRKP') {
-      onPnRKPChange(selectedValue.value);
-    }
-    if (filter === 'pilarSDGS') {
-      onPilarSdgChange(selectedValue.value);
-    }
-  };
+  const handleDropdownFilter =
+    (filter) =>
+    (selectedValue = {}) => {
+      fetchDaftarData({ bodyParams: { [filter]: selectedValue?.value || null } });
+      if (filter === 'pnRKP') {
+        if (!selectedValue?.value) {
+          dispatch(setRKPppData());
+          return;
+        }
+        onPnRKPChange(selectedValue?.value);
+      }
+      if (filter === 'pilarSDGS') {
+        if (!selectedValue?.value) {
+          dispatch(setSDGsData());
+          return;
+        }
+        onPilarSdgChange(selectedValue?.value || null);
+      }
+    };
 
   return (
     <>
@@ -196,6 +219,7 @@ const DaftarTable = ({
             <SingleSelectDropdown
               onChange={handleDropdownFilter('instansi')}
               data={instansiOptions}
+              isClearable
               placeHolder="Semua"
               isLoading={false}
               noValue={true}
@@ -207,6 +231,7 @@ const DaftarTable = ({
               onChange={handleDropdownFilter('produsenData')}
               data={produenOptions}
               placeHolder="Semua"
+              isClearable
               isLoading={false}
               noValue={true}
             />
@@ -216,6 +241,7 @@ const DaftarTable = ({
             <SingleSelectDropdown
               onChange={handleDropdownFilter('dataInduk')}
               data={dataindukOptions}
+              isClearable
               placeHolder="Semua"
               isLoading={false}
               noValue={true}
@@ -228,6 +254,7 @@ const DaftarTable = ({
                 <SingleSelectDropdown
                   onChange={handleDropdownFilter('pilarSDGS')}
                   data={sdgPillerOptions}
+                  isClearable
                   placeHolder="-"
                   isLoading={false}
                   noValue={true}
@@ -238,6 +265,7 @@ const DaftarTable = ({
                 <SingleSelectDropdown
                   onChange={handleDropdownFilter('tujuanSDGS')}
                   data={tujuanSDGPillerOptions}
+                  isClearable
                   placeHolder="-"
                   isLoading={false}
                   noValue={true}
@@ -249,6 +277,7 @@ const DaftarTable = ({
                   onChange={handleDropdownFilter('pnRKP')}
                   data={rkpPNOptions}
                   placeHolder="-"
+                  isClearable
                   isLoading={false}
                   noValue={true}
                 />
@@ -258,6 +287,7 @@ const DaftarTable = ({
                 <SingleSelectDropdown
                   onChange={handleDropdownFilter('ppRKP')}
                   data={rkpPPOptions}
+                  isClearable
                   placeHolder="-"
                   isLoading={false}
                   noValue={true}
@@ -270,6 +300,7 @@ const DaftarTable = ({
               <SingleSelectDropdown
                 onChange={handleDropdownFilter('prioritas')}
                 data={priorityOptions}
+                isClearable
                 placeHolder="Ya"
                 isLoading={false}
                 noValue={true}

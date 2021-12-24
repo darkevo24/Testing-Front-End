@@ -39,7 +39,6 @@ const KomunitasAhli = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { id } = useParams();
-  useEffect(() => {}, []);
 
   const goBack = () => {
     history.push('/cms/komunitas-ahli');

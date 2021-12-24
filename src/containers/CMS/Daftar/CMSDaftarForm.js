@@ -1,204 +1,550 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { DatePicker, Input, Table } from 'components';
-import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
+import { DatePicker, Input } from 'components';
+import TambahFormModal from './CMSDaftarTambahForm';
+import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
+import DaftarDataProvider from 'containers/Daftar/DaftarDataProvider';
+import DataVariableTable from 'containers/DataVariable/DataVariableTable';
+import { formatOptions, jadwalPermutakhiranOptions } from 'utils/constants';
+import {
+  getAddDaftarSDGTujuan,
+  getAddDaftarRKPpp,
+  addTujuanSDGPillerOptionsSelector,
+  addRkpPPOptionsSelector,
+  // kodeReferensiOptionsSelector,
+  // dataVariableSubmit,
+} from 'containers/Daftar/reducer';
+// import DataVariableForm, { submitDataVariableForm } from '../../DataVariable/DataVariableForm';
+// import Modal from '../../../components/Modal';
+import DataVariable from '../../DataVariable';
 
-const CMSDaftarForm = () => {
-  const schema = yup
-    .object({
-      instansi: yup.mixed().required(),
-      nama: yup.string().required(),
-      idkonsep: yup.number().required(),
-      konsep: yup.string().required(),
-      jadwalpemutakhiran: yup.mixed().required(),
-      definisi: yup.string().required(),
-      sumberdefinisi: yup.string().required(),
-    })
-    .required();
-  const { control } = useForm({
+const schema = yup.object({
+  instansi: yup.mixed().required(),
+  nama: yup.string().required(),
+  idKonsep: yup.string().required(),
+  konsep: yup.string().required(),
+  jadwalPemutakhiran: yup.mixed().required(),
+  definisi: yup.string().required(),
+  sumberDefinisi: yup.string().required(),
+  tanggalDibuat: yup.date().required(),
+  tanggalDiperbaharui: yup.date().required(),
+  produsenData: yup.string().required(),
+  indukData: yup.mixed().required(),
+  format: yup.mixed().required(),
+  linkAkses: yup.string().required(),
+  kodePilar: yup.mixed().required(),
+  kodeTujuan: yup.mixed().required(),
+  kodePNRKP: yup.mixed().required(),
+  kodePPRKP: yup.mixed().required(),
+});
+
+const CMSDaftarPage = ({ ...props }) => {
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState({});
+  const [tableData, setTableData] = useState([]);
+  const [apiError, setAPIError] = useState('');
+
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const history = useHistory();
+  const { result, error } = props.dafterDataWithId;
+  const instansiOptions = props.instansiOptions;
+  const dataindukOptions = props.dataindukOptions;
+  const sdgPillerOptions = props.sdgPillerOptions;
+  const rkpPNOptions = props.rkpPNOptions;
+  const tujuanSDGPillerOptions = useSelector(addTujuanSDGPillerOptionsSelector);
+  const rkpPPOptions = useSelector(addRkpPPOptionsSelector);
+
+  useEffect(async () => {
+    if (result?.id !== +id || !id) return;
+    // if (result?.id !== +id) props.getDafterDataById(id);
+    reset({
+      instansi: { value: result?.instansiId, label: result?.instansi } || {},
+      nama: result?.nama || '',
+      idKonsep: result?.idKonsep || '',
+      konsep: result?.konsep || '',
+      jadwalPemutakhiran: { value: result?.jadwalPemutakhiran, label: result?.jadwalPemutakhiran } || {},
+      definisi: result?.definisi || '',
+      sumberDefinisi: result?.sumberDefinisi || '',
+      tanggalDibuat: moment(result?.tanggalDibuat || new Date()).toDate() || '',
+      tanggalDiperbaharui: moment(result?.tanggalDiperbaharui || new Date()).toDate() || '',
+      produsenData: result?.produsenData || '',
+      indukData: result?.indukData || {},
+      format: { value: result?.format, label: result?.format } || {},
+      linkAkses: result?.linkAkses || '',
+      kodePilar: { value: result?.kodePilar, label: result?.kodePilarDeskripsi } || {},
+      kodeTujuan: { value: result?.kodeTujuan, label: result?.kodeTujuanDeskripsi } || {},
+      kodePNRKP: { value: result?.kodePNRKP, label: result?.kodePNRKPDeskripsi } || {},
+      kodePPRKP: { value: result?.kodePPRKP, label: result?.kodePPRKPDeskripsi } || {},
+    });
+  }, [result, id]);
+
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    reset,
+    watch,
+  } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      instansi: null,
+      nama: '',
+      idKonsep: '',
+      konsep: '',
+      jadwalPemutakhiran: null,
+      definisi: '',
+      sumberDefinisi: '',
+      tanggalDibuat: '',
+      tanggalDiperbaharui: '',
+      produsenData: '',
+      indukData: null,
+      format: null,
+      linkAkses: '',
+      kodePilar: null,
+      kodeTujuan: null,
+      kodePNRKP: null,
+      kodePPRKP: null,
+    },
   });
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'Nama Variabel',
-        accessor: 'nama',
-      },
-      {
-        Header: 'ID Konsep',
-        accessor: 'idkonsep',
-      },
-      {
-        Header: 'Konsep',
-        accessor: 'konsep',
-      },
-      {
-        Header: 'Definisi',
-        accessor: 'definisi',
-      },
-      {
-        Header: 'Pengaturan Akses',
-        accessor: 'pengaturanakses',
-      },
-      {
-        Header: 'Kode Referensi',
-        accessor: 'kodereferensi',
-      },
-      {
-        id: 'actions',
-        actions: [
-          {
-            type: 'edit',
-          },
-          {
-            type: 'cross',
-          },
-        ],
-        Cell: Table.Actions,
-      },
-    ],
-    [],
-  );
-
-  const data = [
-    {
-      nama: 'ID UMKM',
-      idkonsep: 123,
-      konsep: 'ID',
-      definisi: `Contrary to popular belief, Lorem Ipsum is not simply random text.`,
-      pengaturanakses: 'akses',
-      kodereferensi: 'ref',
-    },
-    {
-      nama: 'ID UMKM',
-      idkonsep: 123,
-      konsep: 'ID',
-      definisi: `Contrary to popular belief,`,
-      pengaturanakses: 'akses',
-      kodereferensi: 'ref',
-    },
-  ];
-
-  const tableConfig = {
-    columns,
-    data,
-    variant: 'cms-outline',
-    title: 'Data Variabel',
-    showSearch: false,
+  const handleDataSubmit = (formData) => {
+    let clone = [...tableData];
+    formData.pengaturanAkses = formData.pengaturanAkses.label;
+    if (selectedRecord.idKonsep) {
+      const index = clone.indexOf(selectedRecord);
+      clone[index] = formData;
+      setTableData([...clone]);
+      setSelectedRecord({});
+    } else {
+      setSelectedRecord({});
+      clone.push({ ...formData, id: clone.length + 1 });
+      setTableData([...clone]);
+    }
+    setShowAddModal(false);
   };
 
-  const level = [1, 2, 3, 4, 5];
+  const handleEditModal = (formData) => {
+    //TODO handle EDIT
+  };
+
+  const handleDelete = (formData) => {
+    // TODO handle DELETE
+  };
+
+  const handleSubmitCallBack = async (apiResponse, hasError) => {
+    if (hasError) {
+      setAPIError(apiResponse.error.message);
+      return null;
+    }
+    // const apiCall = [];
+    // tableData.forEach((item) => {
+    //   if (!id) delete item.id;
+    //   apiCall.push(dispatch(dataVariableSubmit(item)));
+    // });
+    // const response = await Promise.all(apiCall);
+    // TODO handle variable response
+  };
+
+  const handleDaftarFormSubmit = async (daftarFormData) => {
+    if (id) daftarFormData.id = id;
+    if (!id) daftarFormData['status'] = 1;
+    props.handleDaftarFromSubmit(daftarFormData, handleSubmitCallBack, true);
+  };
+
+  const watchKodePilar = watch('kodePilar', false);
+  const watchKodePNRKP = watch('kodePNRKP', false);
+
+  useEffect(() => {
+    if (watchKodePilar?.value) {
+      dispatch(getAddDaftarSDGTujuan(watchKodePilar.value));
+    }
+  }, [watchKodePilar]);
+
+  useEffect(() => {
+    if (watchKodePNRKP?.value) {
+      dispatch(getAddDaftarRKPpp(watchKodePNRKP.value));
+    }
+  }, [watchKodePNRKP]);
+
   return (
-    <div className="mx-32 pb-42 pt-32">
-      <Row>
-        <Col>
-          <label className="sdp-form-label py-8">Instansi</label>
-          <SingleSelectDropdown data={level.map((lvl) => ({ value: lvl, label: lvl }))} isLoading={false} noValue={true} />
-        </Col>
-        <Col>
-          <Input group label="Nama Data" name="nama" control={control} />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Input group label="ID Konsep" name="idkonsep" control={control} />
-        </Col>
-        <Col>
-          <Input group label="Konsep" name="konsep" control={control} />
-        </Col>
-      </Row>
-      <Row className="mb-3">
-        <Col xs="6">
-          <label className="sdp-form-label py-8">Jadwal Pemutakhiran</label>
-          <SingleSelectDropdown data={level.map((lvl) => ({ value: lvl, label: lvl }))} isLoading={false} noValue={true} />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Input group label="Definisi" name="definisi" control={control} />
-        </Col>
-        <Col>
-          <Input group label="Sumber Definisi" name="sumberdefinisi" control={control} />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <DatePicker group label="Dibuat" control={control} name="dibuat" />
-        </Col>
-        <Col>
-          <DatePicker group label="Diperbarui" control={control} name="diperbarui" />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Input group label="Produsen Data" name="produsendata" control={control} />
-        </Col>
-        <Col>
-          <label className="sdp-form-label py-8">Data Induk</label>
-          <SingleSelectDropdown data={level.map((lvl) => ({ value: lvl, label: lvl }))} isLoading={false} noValue={true} />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <label className="sdp-form-label py-8">Format</label>
-          <SingleSelectDropdown data={level.map((lvl) => ({ value: lvl, label: lvl }))} isLoading={false} noValue={true} />
-        </Col>
-        <Col>
-          <Input group label="Link Akses" name="linkakses" rightIcon="copy" control={control} />
-        </Col>
-      </Row>
-      <Row className="mb-3">
-        <Col>
-          <label className="sdp-form-label py-8">Pilar SDGs</label>
-          <SingleSelectDropdown
-            data={level.map((lvl) => ({ value: lvl, label: lvl }))}
-            placeHolder="-"
-            isLoading={false}
-            noValue={true}
-          />
-        </Col>
-        <Col>
-          <label className="sdp-form-label py-8">Tujuan SDGs</label>
-          <SingleSelectDropdown
-            data={level.map((lvl) => ({ value: lvl, label: lvl }))}
-            placeHolder="-"
-            isLoading={false}
-            noValue={true}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <label className="sdp-form-label py-8">PN RKP</label>
-          <SingleSelectDropdown
-            data={level.map((lvl) => ({ value: lvl, label: lvl }))}
-            placeHolder="-"
-            isLoading={false}
-            noValue={true}
-          />
-        </Col>
-        <Col>
-          <label className="sdp-form-label py-8">PP RKP</label>
-          <SingleSelectDropdown
-            data={level.map((lvl) => ({ value: lvl, label: lvl }))}
-            placeHolder="-"
-            isLoading={false}
-            noValue={true}
-          />
-        </Col>
-      </Row>
-      <Table {...tableConfig} />
-      <Button variant="success">Tambah Variabel</Button>
-    </div>
+    <>
+      <Form noValidate onSubmit={handleSubmit(handleDaftarFormSubmit)}>
+        <Row className="bg-gray-lighter pl-24">
+          <Col>
+            <div className="d-flex justify-content-between p-26 border-bottom">
+              <div className="d-flex">
+                <div className="sdp-heading mb-4">Data Baru</div>
+                <div className="ml-24">
+                  <Button variant="outline-secondary" className="mr-16" onClick={() => history.push('/cms/daftar')}>
+                    Batal
+                  </Button>
+                  <Button variant="secondary" type="submit">
+                    Simpan
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Col>
+          <Col lg="11">
+            <div className="py-32 pt-32">
+              {error || apiError ? <label className="sdp-error mb-20">{error || apiError}</label> : null}
+              <Row>
+                <Col>
+                  <SingleSelectDropdown
+                    group
+                    groupClass="mb-16"
+                    groupProps={{
+                      md: 12,
+                      as: Col,
+                    }}
+                    label="Instansi"
+                    labelClass="sdp-form-label  fw-normal"
+                    placeholder=""
+                    rules={{ required: true }}
+                    error={errors.instansi ? 'Instansi is required' : null}
+                    data={instansiOptions}
+                    name="instansi"
+                    isLoading={false}
+                    control={control}
+                    noValue={true}
+                  />
+                </Col>
+                <Col>
+                  <Input
+                    group
+                    groupClass="mb-16"
+                    groupProps={{
+                      md: 12,
+                      as: Col,
+                    }}
+                    labelClass="sdp-form-label fw-normal"
+                    label="Nama Data"
+                    error={errors.nama ? 'Nama Data is required' : null}
+                    name="nama"
+                    control={control}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Input
+                    group
+                    groupClass="mb-16"
+                    groupProps={{
+                      md: 12,
+                      as: Col,
+                    }}
+                    labelClass="sdp-form-label fw-normal"
+                    label="ID Konsep"
+                    error={errors.idKonsep ? 'ID Konsep is required' : null}
+                    name="idKonsep"
+                    control={control}
+                  />
+                </Col>
+                <Col>
+                  <Input
+                    group
+                    groupClass="mb-16"
+                    groupProps={{
+                      md: 12,
+                      as: Col,
+                    }}
+                    error={errors.konsep ? 'Konsep is required' : null}
+                    labelClass="sdp-form-label fw-normal"
+                    label="Konsep"
+                    name="konsep"
+                    control={control}
+                  />
+                </Col>
+              </Row>
+              <Row className="mb-3">
+                <Col xs="6">
+                  <SingleSelectDropdown
+                    group
+                    groupClass="mb-16"
+                    groupProps={{
+                      md: 12,
+                      as: Col,
+                    }}
+                    label="Jadwal Pemutakhiran"
+                    labelClass="sdp-form-label  fw-normal"
+                    placeholder=""
+                    rules={{ required: true }}
+                    error={errors.jadwalPemutakhiran ? 'Jadwal Pemutakhiran is required' : null}
+                    data={jadwalPermutakhiranOptions}
+                    name="jadwalPemutakhiran"
+                    isLoading={false}
+                    control={control}
+                    noValue={true}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Input
+                    group
+                    groupClass="mb-16"
+                    groupProps={{
+                      md: 12,
+                      as: Col,
+                    }}
+                    labelClass="sdp-form-label fw-normal"
+                    label="Definisi"
+                    error={errors.definisi ? 'Definisi is required' : null}
+                    name="definisi"
+                    as="textarea"
+                    control={control}
+                  />
+                </Col>
+                <Col>
+                  <Input
+                    group
+                    groupClass="mb-16"
+                    groupProps={{
+                      md: 12,
+                      as: Col,
+                    }}
+                    labelClass="sdp-form-label fw-normal"
+                    label="Sumber Definisi"
+                    error={errors.sumberDefinisi ? 'Sumber Definisi is required' : null}
+                    as="textarea"
+                    name="sumberDefinisi"
+                    control={control}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <DatePicker
+                    group
+                    label="Dibuat"
+                    labelClass="sdp-form-label fw-normal"
+                    control={control}
+                    error={errors.tanggalDibuat ? 'Dibuat is required' : null}
+                    name="tanggalDibuat"
+                  />
+                </Col>
+                <Col>
+                  <DatePicker
+                    group
+                    label="Diperbarui"
+                    labelClass="sdp-form-label fw-normal"
+                    error={errors.tanggalDiperbaharui ? 'Diperbarui is required' : null}
+                    control={control}
+                    name="tanggalDiperbaharui"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Input
+                    group
+                    groupClass="mb-16"
+                    groupProps={{
+                      md: 12,
+                      as: Col,
+                    }}
+                    error={errors.produsenData ? 'Produsen Data is required' : null}
+                    labelClass="sdp-form-label fw-normal"
+                    label="Produsen Data"
+                    name="produsenData"
+                    control={control}
+                  />
+                </Col>
+                <Col>
+                  <SingleSelectDropdown
+                    group
+                    groupClass="mb-16"
+                    groupProps={{
+                      md: 12,
+                      as: Col,
+                    }}
+                    label="Data Induk"
+                    labelClass="sdp-form-label  fw-normal"
+                    placeholder=""
+                    error={errors.indukData ? 'Data Induk is required' : null}
+                    rules={{ required: true }}
+                    data={dataindukOptions}
+                    name="indukData"
+                    isLoading={false}
+                    control={control}
+                    noValue={true}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <SingleSelectDropdown
+                    group
+                    groupClass="mb-16"
+                    groupProps={{
+                      md: 12,
+                      as: Col,
+                    }}
+                    label="Format"
+                    labelClass="sdp-form-label  fw-normal"
+                    placeholder=""
+                    rules={{ required: true }}
+                    error={errors.format ? 'Format is required' : null}
+                    data={formatOptions}
+                    name="format"
+                    isLoading={false}
+                    control={control}
+                    noValue={true}
+                  />
+                </Col>
+                <Col>
+                  <Input
+                    groupClass="mb-16"
+                    groupProps={{
+                      md: 12,
+                      as: Col,
+                    }}
+                    labelClass="sdp-form-label fw-normal"
+                    group
+                    label="Link Akses"
+                    error={errors.linkAkses ? 'Link Akses is required' : null}
+                    name="linkAkses"
+                    rightIcon="copy"
+                    control={control}
+                  />
+                </Col>
+              </Row>
+              <Row className="mb-3">
+                <Col>
+                  <SingleSelectDropdown
+                    placeHolder="-"
+                    name="kodePilar"
+                    isLoading={false}
+                    noValue={true}
+                    group
+                    groupClass="mb-16"
+                    groupProps={{
+                      md: 12,
+                      as: Col,
+                    }}
+                    label="Pilar SDGs"
+                    labelClass="sdp-form-label  fw-normal"
+                    placeholder=""
+                    rules={{ required: true }}
+                    error={errors.pilarsdgs ? 'Pilar SDGs is required' : null}
+                    data={sdgPillerOptions}
+                    control={control}
+                  />
+                </Col>
+                <Col>
+                  <SingleSelectDropdown
+                    placeHolder="-"
+                    group
+                    groupClass="mb-16"
+                    groupProps={{
+                      md: 12,
+                      as: Col,
+                    }}
+                    label="Tujuan SDGs"
+                    labelClass="sdp-form-label  fw-normal"
+                    placeholder=""
+                    rules={{ required: true }}
+                    error={errors.tujuansdgs ? 'Tujuan SDGs is required' : null}
+                    data={tujuanSDGPillerOptions}
+                    name="kodeTujuan"
+                    isLoading={false}
+                    control={control}
+                    noValue={true}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <SingleSelectDropdown
+                    placeHolder="-"
+                    name="kodePNRKP"
+                    isLoading={false}
+                    noValue={true}
+                    group
+                    groupClass="mb-16"
+                    groupProps={{
+                      md: 12,
+                      as: Col,
+                    }}
+                    label="PN RKP"
+                    labelClass="sdp-form-label  fw-normal"
+                    placeholder=""
+                    rules={{ required: true }}
+                    error={errors.pnrkp ? 'PN RKP is required' : null}
+                    data={rkpPNOptions}
+                    control={control}
+                  />
+                </Col>
+                <Col>
+                  <SingleSelectDropdown
+                    placeHolder="-"
+                    name="kodePPRKP"
+                    control={control}
+                    noValue={true}
+                    group
+                    groupClass="mb-16"
+                    groupProps={{
+                      md: 12,
+                      as: Col,
+                    }}
+                    label="PP RKP"
+                    error={errors.pprkp ? 'PP RKP is required' : null}
+                    labelClass="sdp-form-label  fw-normal"
+                    placeholder=""
+                    rules={{ required: true }}
+                    data={rkpPPOptions}
+                    isLoading={false}
+                  />
+                </Col>
+              </Row>
+            </div>
+            <div className="pl-32  pt-32 pb-42 pr-32">
+              {id ? (
+                <DataVariable cms />
+              ) : (
+                <DataVariableTable
+                  manualPagination={false}
+                  search={false}
+                  showDeleteModal={handleDelete}
+                  showDataVariableFormModal={handleEditModal}
+                  data={tableData}
+                />
+              )}
+              <Button variant="success" onClick={() => setShowAddModal(true)}>
+                Tambah Variabel
+              </Button>
+            </div>
+          </Col>
+        </Row>
+      </Form>
+      <TambahFormModal
+        visible={showAddModal}
+        data={selectedRecord}
+        handleDataSubmit={handleDataSubmit}
+        setModal={setShowAddModal}
+        selectedRecord={selectedRecord}
+      />
+    </>
   );
 };
+
+const CMSDaftarForm = () => (
+  <DaftarDataProvider>
+    <CMSDaftarPage />
+  </DaftarDataProvider>
+);
 
 export default CMSDaftarForm;

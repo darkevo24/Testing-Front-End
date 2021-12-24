@@ -48,6 +48,7 @@ const DaftarForm = ({
   const rkpPPOptions = useSelector(addRkpPPOptionsSelector);
   const daftarDetails = useSelector(daftarDetailsDataSelector);
   const storeDaftar = daftarDetails?.result[daftarId];
+
   useEffect(() => {
     if (daftarId && !storeDaftar) {
       dispatch(getDaftarDetail(daftarId));

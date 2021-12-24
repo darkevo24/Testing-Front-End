@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getListSosMed, getListSelector, deleteSosMed, editSosMed, createSosMed } from './reducer';
-
+import { useForm } from 'react-hook-form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import { CMSModal, Modal, FileInput, Input, Loader } from 'components';
-import { icons, Trash, Edit } from 'components/Icons';
-
-import bn from 'utils/bemNames';
 import cx from 'classnames';
-import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { CMSModal, Modal, FileInput, Input, Loader } from 'components';
+import { icons, Trash, Edit } from 'components/Icons';
+import bn from 'utils/bemNames';
 import { apiUrls, post } from 'utils/request';
+import { getListSosMed, getListSelector, deleteSosMed, editSosMed, createSosMed } from './reducer';
 
 const bem = bn('content-table');
 

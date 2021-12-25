@@ -44,7 +44,7 @@ const CMSPermintaanDataView = () => {
     };
     return (
       <div className="d-flex">
-        <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
+        <div className="icon-box" onClick={backToTable}>
           <LeftChevron></LeftChevron>
         </div>
         <Row className="permintaan-data-form-success fw-bold justify-content-center align-items-center">Selesai</Row>
@@ -59,7 +59,7 @@ const CMSPermintaanDataView = () => {
     };
     return (
       <div className="d-flex">
-        <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
+        <div className="icon-box" onClick={backToTable}>
           <LeftChevron></LeftChevron>
         </div>
         <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Terkirim</Row>
@@ -74,7 +74,7 @@ const CMSPermintaanDataView = () => {
     };
     return (
       <div className="d-flex">
-        <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
+        <div className="icon-box" onClick={backToTable}>
           <LeftChevron></LeftChevron>
         </div>
         <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">Terproses</Row>
@@ -255,7 +255,7 @@ const CMSPermintaanDataView = () => {
   };
 
   return (
-    <div>
+    <div className={bem.e('cms-permintaan-data')}>
       <StatusBar />
       <Row className={bem.e('section')}>
         <Col sm={9} className="my-5">

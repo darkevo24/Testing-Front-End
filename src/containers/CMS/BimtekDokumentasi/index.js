@@ -23,7 +23,6 @@ const CMSBimtekPermintaan = () => {
   const dispatch = useDispatch();
 
   const { size, page, records, totalRecords } = useSelector(bimtekDokumentasiSelector);
-
   const updateQuery = setSearch.debounce((val) => {
     setQuery(val);
   }, 500);
@@ -80,6 +79,10 @@ const CMSBimtekPermintaan = () => {
           })}
         </span>
       ),
+    },
+    {
+      Header: 'Status',
+      accessor: 'status',
     },
     {
       Header: '',

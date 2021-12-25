@@ -35,11 +35,11 @@ const CMSBimtekPermintaanEdit = (props) => {
   const { records } = useSelector(bimtekLogSelector);
   const detailPermintaan = useSelector(bimtekPermintaanDataDetail);
   const [showModalSetuju, setModalSetuju] = useState(false);
+  const [showModalWaitingSetujui, setModalWaitingSetujui] = useState(false);
   const [showModalTolak, setModalTolak] = useState(false);
   const [showModalDraft, setModalDraft] = useState(false);
   const [showModalPublish, setModalPublish] = useState(false);
   const [showModalUnpublish, setModalUnpublish] = useState(false);
-  console.log(detailPermintaan);
   const fetchBimtekLog = (params) => {
     return dispatch(getListLogAktifitas(params));
   };
@@ -73,7 +73,7 @@ const CMSBimtekPermintaanEdit = (props) => {
     resolver: yupResolver(schema),
     defaultValues: {
       ...data,
-      waktuMulai: moment(data?.tanggalRequest).format('HH:mm'),
+      // tanggalMulaiDisetujui,
     },
   });
 
@@ -175,6 +175,44 @@ const CMSBimtekPermintaanEdit = (props) => {
           });
     });
     setModalUnpublish(false);
+  };
+
+  const onSubmitSetujuiBimbingan = (data) => {
+    console.log(data);
+    const tanggalMulaiDisetujui = `${moment(data.tanggalMulaiDisetujuiUpdate).format('YYYY-MM-DD')} ${
+      data.jamMulaiDesetujuiUpdate
+    }`;
+    const tanggalSelesaiDisetujui = `${moment(data.tanggalSelesaiDisetujuiUpdate).format('YYYY-MM-DD')} ${
+      data.jamSelesaiDisetujuiUpdate
+    }`;
+    let idBimtek = data.id;
+    let obj = {
+      namaBimtek: data.namaBimtek,
+      tagMateri: data.tagMateri,
+      tanggalMulaiDisetujui,
+      tanggalSelesaiDisetujui,
+      kota: data.kota,
+      alamat: data.tempat,
+    };
+    console.log(id);
+    console.log(obj);
+    // let obj = {
+    //   id,
+    // };
+    // dispatch(postStatusUnpublish(obj)).then((res) => {
+    //   res?.error
+    //     ? Notification.show({
+    //         type: 'secondary',
+    //         message: <div> Gagal Unpublish Status </div>,
+    //         icon: 'cross',
+    //       })
+    //     : Notification.show({
+    //         type: 'secondary',
+    //         message: <div> Berhasil Unpublish Status </div>,
+    //         icon: 'check',
+    //       });
+    // });
+    // setModalUnpublish(false);
   };
 
   const SuccessText = () => {
@@ -282,8 +320,8 @@ const CMSBimtekPermintaanEdit = (props) => {
         <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalTolak(true)}>
           Tolak
         </Button>
-        <Button className="ml-10" variant="info" onClick={() => setModalDraft(true)}>
-          Kirim Pengajuan
+        <Button className="ml-10" variant="info" onClick={() => setModalWaitingSetujui(true)}>
+          Setujui
         </Button>
       </div>
     );
@@ -383,7 +421,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                   <DatePicker
                     group
                     label="Tanggal Mulai Pelaksanaan Disetujui"
-                    name=""
+                    name="tanggalMulaiDisetujuiUpdate"
                     control={control}
                     rules={{ required: false }}
                     error={errors.publishedDate?.message}
@@ -395,7 +433,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                     className="m-0"
                     type="time"
                     label=""
-                    name="waktuMulai"
+                    name="jamMulaiDesetujuiUpdate"
                     control={control}
                     rules={{ required: false }}
                     error={errors.publishedTime?.message}
@@ -407,7 +445,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                   <DatePicker
                     group
                     label="Tanggal Selesai Pelaksanaan Disetujui"
-                    name=""
+                    name="tanggalSelesaiDisetujuiUpdate"
                     control={control}
                     rules={{ required: false }}
                     error={errors.publishedDate?.message}
@@ -419,7 +457,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                     className="m-0"
                     type="time"
                     label=""
-                    name="publishedTime"
+                    name="jamSelesaiDisetujuiUpdate"
                     control={control}
                     rules={{ required: false }}
                     error={errors.publishedTime?.message}
@@ -549,6 +587,34 @@ const CMSBimtekPermintaanEdit = (props) => {
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
                 Tolak
+              </Button>
+            </div>
+          </Form>
+        </Modal>
+        <Modal
+          showHeader={false}
+          className="cms-bimtek-permintaan-detail"
+          title="Tambah Pembicari Baru"
+          visible={showModalWaitingSetujui}
+          onClose={() => setModalWaitingSetujui(false)}>
+          <div className="mt-20 mb-20">
+            <p className="mb-0">
+              Apakah anda yakin ingin
+              <span className="sdp-text-blue"> Menyetujui </span>
+              Permintaan Bimbingan Teknis {id} ?
+            </p>
+          </div>
+          <Form onSubmit={handleSubmit(onSubmitSetujuiBimbingan)} noValidate>
+            <div className="d-flex justify-content-end mt-20">
+              <Button
+                className="mr-10"
+                variant="secondary"
+                style={{ width: '112px' }}
+                onClick={() => setModalWaitingSetujui()}>
+                Batal
+              </Button>
+              <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
+                Setujui
               </Button>
             </div>
           </Form>

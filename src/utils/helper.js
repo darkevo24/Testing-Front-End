@@ -161,89 +161,143 @@ export const prefixID = (id, text) => {
   else return text + `${id}`;
 };
 
+const grayText = {
+  divBG: 'bg-gray',
+  textColor: 'sdp-text-disable',
+};
+const orangeText = {
+  divBG: 'bg-orange-light',
+  textColor: 'sdp-text-orange-dark',
+};
+const redText = {
+  divBG: 'bg-red-light',
+  textColor: 'sdp-text-red',
+};
+const purpleText = {
+  divBG: 'bg-purple-light',
+  textColor: 'sdp-text-purple',
+};
+const greenText = {
+  divBG: 'bg-green-light',
+  textColor: 'sdp-text-green-light',
+};
 export const getStatusClass = (status) => {
   switch (status) {
+    case 0:
+    case 1:
     case 'draft':
       return {
-        divBG: 'bg-gray',
-        textColor: 'sdp-text-disable',
+        ...grayText,
         text: 'Draft',
         divText: 'Draft',
       };
+    case 8:
     case 'diarsipkan': {
       return {
-        divBG: 'bg-gray',
-        textColor: 'sdp-text-disable',
+        ...grayText,
         text: 'Diarsipkan',
         divText: 'Diarsipkan',
       };
     }
+    case 6:
     case 'tidak_ditayangkan':
       return {
-        divBG: 'bg-orange-light',
-        textColor: 'sdp-text-orange-dark',
+        ...orangeText,
         text: 'Tidak ditayangkan',
         divText: '',
       };
+    case 'unpublished':
+      return {
+        ...orangeText,
+        text: 'Unpublished',
+        divText: 'Unpublished',
+      };
+    case 2:
+    case 'waiting_approval':
     case 'menunggu_persetujuan':
       return {
-        divBG: 'bg-orange-light',
-        textColor: 'sdp-text-orange-dark',
+        ...orangeText,
         text: 'Waiting for approval',
         divText: '',
       };
     case 'diproses':
       return {
-        divBG: 'bg-orange-light',
-        textColor: 'sdp-text-orange-dark',
+        ...orangeText,
         text: 'Diprosses',
         divText: 'Permintaan sedang Diproses',
       };
     case 'dibatalkan':
       return {
-        divBG: 'bg-red-light',
-        textColor: 'sdp-text-red',
+        ...redText,
         text: 'Dibatalkan',
         divText: 'Dibatalkan',
       };
+    case 4:
     case 'ditolak':
       return {
-        divBG: 'bg-red-light',
-        textColor: 'sdp-text-red',
+        ...redText,
         text: 'Ditolak',
         divText: 'Ditolak',
       };
     case 'terkirim':
       return {
-        divBG: 'bg-purple-light',
-        textColor: 'sdp-text-purple',
+        ...purpleText,
         text: 'Terkirim',
         divText: 'Terkirim',
       };
+    case 'approved':
+      return {
+        ...greenText,
+        text: 'Approved',
+        divText: 'Approved',
+      };
+    case 'published':
+      return {
+        ...greenText,
+        text: 'Published',
+        divText: 'Published',
+      };
+    case 3:
     case 'disetujui':
       return {
-        divBG: 'bg-green-light',
-        textColor: 'sdp-text-green-light',
+        ...greenText,
         text: 'Disetujui',
         divText: 'Disetujui',
       };
+    case 5:
     case 'ditayangkan':
       return {
-        divBG: 'bg-green-light',
-        textColor: 'sdp-text-green-light',
+        ...greenText,
         text: 'Ditayangkan',
         divText: 'Ditayangkan',
       };
     case 'selesai':
       return {
-        divBG: 'bg-green-light',
-        textColor: 'sdp-text-green-light',
+        ...greenText,
         text: 'Selesai',
         divText: 'Selesai',
+      };
+    case 7:
+    case 'dihapus':
+      return {
+        ...redText,
+        text: 'Dihapus',
+        divText: 'Dihapus',
       };
     default:
       return {};
   }
+};
+
+export const dateTransform = (_, originalValue) => {
+  return moment(originalValue, 'DD/MM/YYY').toDate();
+};
+
+export const findOption = (options, value) => {
+  if (isArray(value)) {
+    return value.map((nestedItem) => findOption(options, nestedItem));
+  }
+  return options.find((option) => option.value === value);
 };
 
 export const getDatasetUrl = (name) => `${katalogUrl}/dataset/${name}`;
@@ -281,17 +335,27 @@ export const prepareFormPayload = (data, fieldsMap) => {
   const payload = cloneDeep(data);
   if (fieldsMap.dropdowns && isArray(fieldsMap.dropdowns)) {
     map(fieldsMap.dropdowns, (field) => {
-      set(payload, field, get(payload, `${field}.value`));
+      const fieldValue = get(payload, field);
+      if (!!fieldValue) {
+        const finalValue = isArray(fieldValue) ? map(fieldValue, 'value') : get(fieldValue, 'value');
+        set(payload, field, finalValue);
+      }
     });
   }
   if (fieldsMap.toArray && isArray(fieldsMap.toArray)) {
     map(fieldsMap.toArray, (field) => {
-      set(payload, field, [get(payload, field)]);
+      const fieldValue = get(payload, field);
+      if (!!fieldValue) {
+        set(payload, field, [fieldValue]);
+      }
     });
   }
   if (fieldsMap.dates && isArray(fieldsMap.dates)) {
     map(fieldsMap.dates, (field) => {
-      set(payload, field, moment(new Date(get(payload, field)), 'YYYY-MM-DD'));
+      const fieldValue = get(payload, field);
+      if (!!fieldValue) {
+        set(payload, field, moment(new Date(fieldValue)).format('YYYY-MM-DD'));
+      }
     });
   }
   return payload;
@@ -302,6 +366,27 @@ export const incrementPageParams = (params) => {
     ...params,
     page: params.page + 1,
   };
+};
+
+export const mapFormatToColor = (type) => {
+  switch (type.toLowerCase()) {
+    case 'csv':
+      return 'sdp-text-purple-light';
+    case 'json':
+      return 'sdp-text-blue-extra-dark';
+    case 'wms':
+      return 'sdp-text-green-pistal';
+    case 'xml':
+      return 'sdp-text-red-extra-dark';
+    case 'xls':
+    case 'xlsx':
+      return 'sdp-text-green-dark';
+    case 'geo':
+    case 'geojson':
+      return 'sdp-text-green-gold';
+    default:
+      return 'sdp-text-disable';
+  }
 };
 
 export const fileTypes = {
@@ -325,4 +410,12 @@ export const createFileAndDownload = (data, fileType = fileTypes.excel, filename
     elem.click();
     document.body.removeChild(elem);
   }
+};
+
+export const convertTitleToSlug = (title) => {
+  return title
+    .toLowerCase()
+    .replace(/ /g, '-')
+    .replace(/[-]+/g, '-')
+    .replace(/[^\w-]+/g, '');
 };

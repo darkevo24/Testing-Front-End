@@ -37,7 +37,7 @@ export const DetailHeader = ({ record, status, history, handleModal }) => {
           </Button>
         </div>
       );
-    case 'disetujui':
+    case 'approved':
       return (
         <div>
           <Button key="publish" variant="info" className="mr-16 br-4 px-40 border-0" onClick={() => handleModal('publish')}>
@@ -45,7 +45,7 @@ export const DetailHeader = ({ record, status, history, handleModal }) => {
           </Button>
         </div>
       );
-    case 'ditayangkan':
+    case 'published':
       return (
         <div>
           <Button
@@ -54,6 +54,21 @@ export const DetailHeader = ({ record, status, history, handleModal }) => {
             className="mr-16 br-4 px-40 border-0"
             onClick={() => handleModal('unPublish')}>
             Unpublish
+          </Button>
+        </div>
+      );
+    case 'unpublished':
+      return (
+        <div>
+          <Button
+            key="edit"
+            variant="outline-light"
+            className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
+            onClick={() => history.push(`/cms/forum-sdi/manage-forum-sdi/${record.id}`)}>
+            <PencilSvg />
+          </Button>
+          <Button key="publish" variant="info" className="mr-16 br-4 px-40 border-0" onClick={() => handleModal('publish')}>
+            Publish
           </Button>
         </div>
       );

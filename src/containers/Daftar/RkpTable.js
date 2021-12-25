@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import truncate from 'lodash/truncate';
 import cloneDeep from 'lodash/cloneDeep';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,6 +21,7 @@ const RkpTable = ({
   rkpPPOptions = [],
 }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [sortBy, setSortBy] = useState(null);
   const { pageSize, params, bodyParams, result } = useSelector(rkpDataSelector);
 
@@ -132,6 +134,9 @@ const RkpTable = ({
         const params = { page };
         fetchRkpData({ params });
       }
+    },
+    onRowClick: (daftar) => {
+      history.push(`/daftar/${daftar.id}/variable`, { state: { daftar } });
     },
   };
 

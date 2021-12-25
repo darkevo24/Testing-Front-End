@@ -17,18 +17,23 @@ export const initialState = {
     detailLoading: false,
     detailError: null,
   },
+  forumSDILogs: {
+    logResult: null,
+    logLoading: false,
+    logError: null,
+  },
   forumSDIStatus: {
     statusResult: null,
     statusLoading: false,
     statusError: null,
   },
   forumSDITopik: {
-    topikResult: null,
+    topikResult: [],
     topikLoading: false,
     topikError: null,
   },
   forumSDITags: {
-    tagsResult: null,
+    tagsResult: [],
     tagsLoading: false,
     tagsError: null,
   },
@@ -45,6 +50,10 @@ export const getCMSForumSDIListData = createAsyncThunk('cms/getCMSForumSDIListDa
 export const getCMSForumSDIDataById = createAsyncThunk('cms/getCMSForumSDIDataById', async (params) => {
   const response = await get(`${apiUrls.cmsForumSDI}/${params}`);
   return response?.data?.content;
+});
+export const getCMSForumSDILogById = createAsyncThunk('cms/getCMSForumSDILogById', async (params) => {
+  const response = await get(`${apiUrls.cmsForumSDI}/logs/${params}`);
+  return response?.data?.content?.records;
 });
 export const getCMSForumSDITopik = createAsyncThunk('cms/getCMSForumSDITopik', async (params) => {
   const response = await get(`${apiUrls.cmsForumSDI}/topik`);
@@ -82,6 +91,7 @@ const cmsForumSDISlice = createSlice({
     });
     builder.addCase(getCMSForumSDIDataById.pending, (state, action) => {
       state.forumSDIDetail.detailLoading = true;
+      state.forumSDIDetail.detailError = '';
     });
     builder.addCase(getCMSForumSDIDataById.fulfilled, (state, action) => {
       state.forumSDIDetail.detailLoading = false;
@@ -89,6 +99,17 @@ const cmsForumSDISlice = createSlice({
     });
     builder.addCase(getCMSForumSDIDataById.rejected, (state, action) => {
       state.forumSDIDetail.detailError = 'Error in fetching forum sdi detail data!';
+    });
+    builder.addCase(getCMSForumSDILogById.pending, (state, action) => {
+      state.forumSDILogs.logLoading = true;
+      state.forumSDILogs.logError = '';
+    });
+    builder.addCase(getCMSForumSDILogById.fulfilled, (state, action) => {
+      state.forumSDILogs.logLoading = false;
+      state.forumSDILogs.logResult = action.payload;
+    });
+    builder.addCase(getCMSForumSDILogById.rejected, (state, action) => {
+      state.forumSDILogs.logError = 'Error in fetching forum sdi Log data!';
     });
     builder.addCase(getCMSForumSDIStatus.pending, (state, action) => {
       state.forumSDIStatus.statusLoading = true;
@@ -102,22 +123,26 @@ const cmsForumSDISlice = createSlice({
     });
     builder.addCase(getCMSForumSDITags.pending, (state, action) => {
       state.forumSDITags.tagsLoading = true;
+      state.forumSDITags.tagsError = '';
     });
     builder.addCase(getCMSForumSDITags.fulfilled, (state, action) => {
       state.forumSDITags.tagsLoading = false;
-      state.forumSDITags.tagsResult = action.payload;
+      state.forumSDITags.tagsResult = action.payload?.content || [];
     });
     builder.addCase(getCMSForumSDITags.rejected, (state, action) => {
       state.forumSDITags.tagsError = 'Error in fetching forum sdi tags data!';
+      state.forumSDITags.tagsLoading = false;
     });
     builder.addCase(getCMSForumSDITopik.pending, (state, action) => {
       state.forumSDITopik.topikLoading = true;
+      state.forumSDITopik.topikError = '';
     });
     builder.addCase(getCMSForumSDITopik.fulfilled, (state, action) => {
       state.forumSDITopik.topikLoading = false;
-      state.forumSDITopik.topikResult = action.payload;
+      state.forumSDITopik.topikResult = action.payload?.records || [];
     });
     builder.addCase(getCMSForumSDITopik.rejected, (state, action) => {
+      state.forumSDITopik.topikLoading = false;
       state.forumSDITopik.topikError = 'Error in fetching forum sdi topik data!';
     });
   },
@@ -128,5 +153,6 @@ export const cmsForumSDIGetStatusSelector = (state) => state?.cms?.cmsForumSdi?.
 export const cmsForumSDIGetTagsSelector = (state) => state?.cms?.cmsForumSdi?.forumSDITags;
 export const cmsForumSDIGetTopikSelector = (state) => state?.cms?.cmsForumSdi?.forumSDITopik;
 export const cmsForumSDIGetDetailSelector = (state) => state?.cms?.cmsForumSdi?.forumSDIDetail;
+export const cmsForumSDIGetLogSelector = (state) => state?.cms?.cmsForumSdi?.forumSDILogs;
 
 export default cmsForumSDISlice.reducer;

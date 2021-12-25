@@ -39,8 +39,8 @@ const CMSStrukturProfile = ({ handleClose, show, title, data = null, idBidang = 
   const [foto, setFoto] = useState(null);
   const [fotoLoading, setFotoLoading] = useState(false);
   const handleFoto = (file) => {
+    // eslint-disable-next-line
     let fileName = file.name.replace(/[&/\\#, +()$~%'":*?<>{}]/g, '');
-    // let blob = file;
     let newFile = new File([file], fileName, { type: 'image/png' });
     setFoto(newFile);
   };

@@ -17,6 +17,7 @@ import {
 } from './reducer';
 import moment from 'moment';
 import 'moment/locale/id';
+import { apiUrls, get } from 'utils/request';
 
 moment.locale('id');
 
@@ -87,6 +88,12 @@ const BimtekSummary = () => {
   const { records: jadwalRecords } = useSelector(bimtekSummaryJadwalTerdekatDatasetSelector);
   const dataJadwal = jadwalRecords.slice(0, 3);
 
+  const downloadMateri = async (file) => {
+    try {
+      await get(`${apiUrls.bimtekMateriTerdekatDownload}/${file}`);
+    } catch (e) {}
+  };
+
   return (
     <BimtekLayout>
       <div>
@@ -138,7 +145,7 @@ const BimtekSummary = () => {
           {materiRecords.map((item, key) => (
             <MateriItem key={key}>
               {item.nama}
-              <Button>
+              <Button onClick={() => downloadMateri(item.fileName)}>
                 <Download />
               </Button>
             </MateriItem>

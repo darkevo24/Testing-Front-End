@@ -23,6 +23,7 @@ export const FilterSearchInput = ({
   searchValue,
   manualPagination = false,
   highlightSearchInput = false,
+  searchThreshold = 300,
 }) => {
   const [value, setValue] = useState(globalFilter);
   const onSearchChange = useAsyncDebounce((value) => {
@@ -33,7 +34,7 @@ export const FilterSearchInput = ({
     } else {
       setGlobalFilter(value || undefined);
     }
-  }, 200);
+  }, searchThreshold);
   const handleSearchChange = ({ target: { value = '' } = {} }) => {
     setValue(value);
     onSearchChange(value);
@@ -70,6 +71,7 @@ const Table = ({
   searchLeftComponent,
   searchRightComponent,
   onSearch,
+  onSearchButtonPress,
   showHeader = true,
   showSearch = true,
   variant = 'default',
@@ -88,6 +90,7 @@ const Table = ({
   onRowClick,
   rowClass,
   startFromOne = false,
+  searchThreshold,
 }) => {
   const { t } = useTranslation();
 
@@ -198,11 +201,12 @@ const Table = ({
             manualPagination={manualPagination}
             searchValue={searchValue}
             highlightSearchInput={highlightSearchInput}
+            searchThreshold={searchThreshold}
           />
           {searchRightComponent ? (
             searchRightComponent
           ) : (
-            <Button variant="info" className="btn-rounded ml-16 px-24 text-nowrap" onClick={onSearch}>
+            <Button variant="info" className="btn-rounded ml-16 px-24 text-nowrap" onClick={onSearchButtonPress || onSearch}>
               {searchButtonText}
             </Button>
           )}
@@ -283,6 +287,11 @@ Table.Link = ({ cell }) => (
 Table.Actions = ({ cell, ...rest }) => {
   const { column: { actions = [] } = {}, row } = cell;
   const id = row.id || row.index;
+  const handleIconClick = (cb) => (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    cb(row.original);
+  };
   return (
     <div className="d-flex action-icon-wrapper">
       {actions.map(({ icon, type, variant, title, callback, classes }) => {
@@ -291,11 +300,11 @@ Table.Actions = ({ cell, ...rest }) => {
         const Icon = icon || icons[type];
         if (!Icon && !title) return null;
         return Icon ? (
-          <div key={`${id}-${type}`} className={cx('icon-box', iconBoxVarient)} onClick={() => callback(row.original)}>
+          <div key={`${id}-${type}`} className={cx('icon-box', iconBoxVarient)} onClick={handleIconClick(callback)}>
             <Icon variant={variant || (isDelete && 'danger')} />
           </div>
         ) : (
-          <button key={`${id}-${type}`} className={classes} onClick={() => callback(row.original)}>
+          <button key={`${id}-${type}`} className={classes} onClick={handleIconClick(callback)}>
             {title}
           </button>
         );

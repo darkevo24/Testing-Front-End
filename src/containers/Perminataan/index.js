@@ -160,6 +160,7 @@ export const Perminataan = () => {
               <div className="sdp-perminataan-left-sidebar mr-40">
                 {LIST.map((item) => (
                   <div
+                    key={item.key}
                     className={cx('sdp-perminataan-sidebar-item cursor-pointer', {
                       active: activeTab === item.key,
                     })}
@@ -177,7 +178,7 @@ export const Perminataan = () => {
           ) : !records?.length ? (
             <div className="sdp-perminataan-no-data d-flex justify-content-center align-items-center h-100 flex-column">
               <NoPerminataanData />
-              <spn className="mt-10 fs-18 lh-22 sdp-text-disable">Tidak Ada Permintaan Data</spn>
+              <span className="mt-10 fs-18 lh-22 sdp-text-disable">Tidak Ada Permintaan Data</span>
             </div>
           ) : (
             <Table {...tableConfig} />

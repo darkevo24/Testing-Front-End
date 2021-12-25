@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
+import * as setSearch from 'lodash';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Search } from 'components/Icons';
-import { CMSTable } from 'components';
+import { Table } from 'components';
 import { useHistory } from 'react-router-dom';
+import { bimtekJadwalSelector, getJadwalBimtek } from './reducer';
 
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import bn from 'utils/bemNames';
@@ -16,39 +20,121 @@ const bem = bn('content-table');
 
 const CMSBimtekPermintaan = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const [query, setQuery] = useState('');
 
-  const dataBimtek = [
+  const { size, page, records, totalRecords } = useSelector(bimtekJadwalSelector);
+  const fetchJadwalBimtek = (params) => {
+    let obj = {
+      page: params.page,
+      namaBimtek: query,
+    };
+    return dispatch(getJadwalBimtek(obj));
+  };
+
+  useEffect(() => {
+    fetchJadwalBimtek({ page: page || 0 });
+  }, [query]);
+
+  const columns = [
     {
-      id: 1,
-      name: 'Portal SDI',
-      dateStart: '01-11-2021',
-      dateEnd: '04-11-2021',
-      place: 'Online',
-      speaker: 'Online',
-      subjects: 'Teknologi ; Ekonomi ; Geologi',
-      status: 'Approved',
+      Header: 'Nama Bimbingan',
+      accessor: 'namaBimtek',
     },
     {
-      id: 2,
-      name: 'Portal SDI',
-      dateStart: '28-11-2021',
-      dateEnd: '30-11-2021',
-      place: 'Online',
-      speaker: 'Online',
-      subjects: 'Teknologi ; Ekonomi ; Geologi',
-      status: 'Approved',
+      Header: 'Tanggal Mulai',
+      accessor: 'tanggalMulaiDisetujui',
+      Cell: ({ ...rest }) => (
+        <span>
+          {rest.row.original?.tanggalMulaiDisetujui
+            ? moment(rest.row.original?.tanggalMulaiDisetujui).format('DD MMMM YYYY')
+            : '---'}
+        </span>
+      ),
     },
     {
-      id: 3,
-      name: 'Portal SDI',
-      dateStart: '15-12-2021',
-      dateEnd: '16-12-2021',
-      place: 'Online',
-      speaker: 'Online',
-      subjects: 'Teknologi ; Ekonomi ; Geologi',
-      status: 'Approved',
+      Header: 'Tanggal Berakhir',
+      accessor: 'tanggalBerakhir',
+      Cell: ({ ...rest }) => (
+        <span>
+          {rest.row.original?.tanggalBerakhir ? moment(rest.row.original?.tanggalBerakhir).format('DD MMMM YYYY') : '---'}
+        </span>
+      ),
+    },
+    {
+      Header: 'Tempat',
+      accessor: 'tempat',
+    },
+    {
+      Header: 'Pembicara',
+      accessor: 'pembicara',
+      Cell: ({ ...rest }) => (
+        <span>
+          {rest.row.original?.pembicara.map((data, index) => {
+            return <span key={index}>{data.nama}</span>;
+          })}
+        </span>
+      ),
+    },
+    {
+      Header: 'Materi',
+      accessor: 'tagMateri',
+      Cell: ({ ...rest }) => (
+        <span>
+          {rest.row.original?.tagMateri.map((data, index) => {
+            return (
+              <div key={index}>
+                <span>{data}</span>
+              </div>
+            );
+          })}
+        </span>
+      ),
+    },
+    {
+      Header: 'Status',
+      accessor: 'status',
+    },
+    {
+      Header: '',
+      accessor: 'button',
+      Cell: ({ ...rest }) => <Button variant="info"> Detail </Button>,
     },
   ];
+
+  const rowClick = (data) => {
+    history.push(`/cms/bimtek-jadwal/${data.id}`);
+  };
+
+  const getRowClass = (data) => {
+    // if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
+    // return 'bg-gray';
+  };
+
+  const updateQuery = setSearch.debounce((val) => {
+    setQuery(val);
+  }, 500);
+
+  const tableConfig = {
+    className: 'cms-permintaan-data',
+    columns,
+    data: records,
+    title: '',
+    showSearch: false,
+    onSearch: () => {},
+    variant: 'link',
+    totalCount: totalRecords,
+    pageSize: size,
+    currentPage: page,
+    manualPagination: true,
+    onRowClick: rowClick,
+    rowClass: getRowClass,
+    onPageIndexChange: (currentPage) => {
+      if (currentPage !== page) {
+        fetchJadwalBimtek({ page: currentPage });
+      }
+    },
+  };
 
   return (
     <div className={bem.e('section')}>
@@ -62,13 +148,18 @@ const CMSBimtekPermintaan = () => {
           </Col>
           <Col xs={4}>
             <InputGroup>
-              <Form.Control variant="normal" type="text" placeholder="Cari Bimbingan Teknis" />
+              <Form.Control
+                onChange={(e) => updateQuery(e.target.value)}
+                variant="normal"
+                type="text"
+                placeholder="Cari Bimbingan Teknis"
+              />
               <Search />
             </InputGroup>
           </Col>
         </Row>
       </div>
-      <CMSTable
+      {/* <CMSTable
         customWidth={[13, 10, 12, 10, 10, 15, 8, 7]}
         header={['Nama Bimbingan', 'Tanggal Mulai', 'Tanggal Berakhir', 'Tempat', 'Pembicara', 'Materi', 'Status']}
         data={dataBimtek.map((item) => {
@@ -78,7 +169,8 @@ const CMSBimtekPermintaan = () => {
           };
           return value;
         })}
-      />
+      /> */}
+      <div className="p-30"> {<Table {...tableConfig} />} </div>
     </div>
   );
 };

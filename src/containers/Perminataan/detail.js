@@ -21,7 +21,7 @@ import { BackArrow, PencilSvg } from 'components/Icons';
 import { getPerminataanInfo, getUserInfo } from './constant';
 import { prefixID, getStatusClass } from 'utils/helper';
 import { userSelector } from '../Login/reducer';
-import { Loader } from 'components';
+import { Loader, ReadOnlyInputs } from 'components';
 import { EditForum } from './Forum/EditForum';
 
 export const PerminataanDetail = () => {
@@ -68,7 +68,7 @@ export const PerminataanDetail = () => {
   };
 
   const divClass = getStatusClass(status);
-
+  const logSelesai = logRecord.find((item) => item.data.status === 'SELESAI');
   return (
     <div className="sdp-perminataan-detail-container my-40 mx-400">
       <Row className="mt-40">
@@ -110,8 +110,8 @@ export const PerminataanDetail = () => {
                 <span className="sdp-text-grey-dark">Informasi Peminta Data</span>
               </div>
               <div className="p-24">
-                {getUserInfo(user).map((item) => (
-                  <div className="d-flex justify-content-between mb-16">
+                {getUserInfo(user).map((item, index) => (
+                  <div className="d-flex justify-content-between mb-16" key={`informasi-data-${index}`}>
                     <span className="fs-14 lh-17 sdp-text-black-dark">{item.title}</span>
                     <span className="fs-14 lh-17 sdp-text-black-dark">{item.data}</span>
                   </div>
@@ -124,24 +124,41 @@ export const PerminataanDetail = () => {
                 <span className="sdp-text-grey-dark">Permintaan Data</span>
               </div>
               <div className="p-24">
-                {getPerminataanInfo(record).map((item) => (
-                  <div className="d-flex justify-content-between  mb-16">
+                {getPerminataanInfo(record).map((item, index) => (
+                  <div className="d-flex justify-content-between mb-16" key={`permintaan-data-${index}`}>
                     <span className="fs-14 lh-17 sdp-text-black-dark">{item.title}</span>
                     <span className="fs-14 lh-17 sdp-text-black-dark">{item.data}</span>
                   </div>
                 ))}
               </div>
             </div>
+
+            {status === 'selesai' && (
+              <div className="border-gray-stroke mt-24 br-4">
+                <div className="p-16 border-bottom-gray-stroke">
+                  <span className="sdp-text-grey-dark">Url Dataset</span>
+                </div>
+                <div className="p-24 cursor-pointer">
+                  <div className="d-flex align-items-center mb-10">
+                    <span className="d-flex fs-14 lh-17 sdp-text-black-dark w-100 align-items-center">
+                      {moment(logSelesai?.createdAt).format('DD MMMM YYYY')}
+                      <div className="border-gray-stroke h-0 w-25 ml-12" />
+                    </span>
+                  </div>
+                  <ReadOnlyInputs value={record.urlDataset} rightIcon="copy" rightIconClass="bg-gray" />
+                </div>
+              </div>
+            )}
           </div>
         </Col>
         <Col xs={6} md={3}>
           <span className="fs-20 lh-25">Log Status</span>
           <div className="d-flex flex-column mt-24">
-            {logRecord.map((item) => {
+            {logRecord.map((item, index) => {
               const status = (item?.data?.status || '').toLowerCase();
               const classDetail = getStatusClass(status);
               return (
-                <div className="mb-24">
+                <div className="mb-24" key={`log-record-${index}`}>
                   <div className="d-flex align-items-center">
                     <span className="fs-14 lh-17 sdp-text-black-dark w-100">
                       {moment(item.createdAt).format('DD MMMM YYYY')}
@@ -154,11 +171,7 @@ export const PerminataanDetail = () => {
                         {classDetail?.text || item.data.status}
                       </span>
                     </div>
-                    <span className="sdp-text-disable">
-                      {status === 'selesai'
-                        ? 'Data Pengguna Sudah dapat digunakan.'
-                        : 'Dataset sudah dapat di akses di portal data.go.id'}
-                    </span>
+                    <span className="sdp-text-disable">{item.remark}</span>
                   </div>
                 </div>
               );

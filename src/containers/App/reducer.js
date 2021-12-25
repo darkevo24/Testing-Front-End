@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
+import find from 'lodash/find';
 import { dataOptionsMapperCurry, idKeteranganOptionsMapper, idNameOptionsMapper } from 'utils/helper';
 import { apiUrls, get, post } from 'utils/request';
 
@@ -77,7 +78,12 @@ export const getListKategori = createAsyncThunk('cms/getListKategori', async () 
 });
 
 export const getListTagline = createAsyncThunk('cms/getListTagline', async () => {
-  const response = await get(apiUrls.taglineData);
+  const response = await get(`${apiUrls.taglineData}?size=100&sortBy=keterangan&sort_direction=ASC`);
+  return response?.data?.content;
+});
+
+export const setNewTagline = createAsyncThunk('cms/setNewTagline', async (params) => {
+  const response = await post(apiUrls.taglineData, params);
   return response?.data?.content;
 });
 
@@ -166,6 +172,18 @@ const AppSlice = createSlice({
       state.tagline.error = 'Error in fetching tagline!';
     });
 
+    builder.addCase(setNewTagline.pending, (state) => {
+      state.tagline.loading = true;
+    });
+    builder.addCase(setNewTagline.fulfilled, (state, action) => {
+      state.tagline.loading = false;
+      state.tagline.records = action.payload.records;
+    });
+    builder.addCase(setNewTagline.rejected, (state) => {
+      state.tagline.loading = false;
+      state.tagline.error = 'Error in create tagline!';
+    });
+
     builder.addCase(uploadFoto.pending, (state) => {
       state.file.loading = true;
     });
@@ -197,5 +215,17 @@ export const sdgPillerOptionsSelector = createSelector(
   dataOptionsMapperCurry(idKeteranganOptionsMapper),
 );
 export const rkpPNOptionsSelector = createSelector(rkpPNSelector, dataOptionsMapperCurry(idKeteranganOptionsMapper));
+
+export const userInstansiSelector = (state) => {
+  const instansiData = instansiDataSelector(state);
+  if (instansiData?.result?.length) {
+    const user = state?.auth?.user || {};
+    const userInstansi = user?.instansi;
+    if (userInstansi) {
+      return find(instansiData.result, { id: userInstansi });
+    }
+  }
+  return null;
+};
 
 export default AppSlice.reducer;

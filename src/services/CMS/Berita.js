@@ -1,5 +1,6 @@
 import { getApiEndpoint } from 'utils/constants';
 import { HTTP } from 'services/core';
+import { apiUrls, get, put } from 'utils/request';
 
 const API_URL = {
   berita: (id, action) => {
@@ -127,4 +128,29 @@ export const doBeritaWorkflow = (id, action) => {
     .catch((err) => {
       return Promise.resolve({ success: false, message: err.message });
     });
+};
+
+export const getBertaLayout = async () => {
+  const result = await get(apiUrls.beritaLayout);
+  return result?.data?.content || null;
+};
+
+export const updateBertaLayout = async (code, content) => {
+  const data = {
+    content,
+  };
+  const result = await put(apiUrls.updateKiriLayout, data);
+  if (result?.data?.content) {
+    const { content } = result.data;
+    const contentData = content?.content;
+    return {
+      code: code,
+      content: {
+        kiri: contentData?.kiri || '',
+        kanan: content.content?.kanan || '',
+        inactive: contentData?.inactive || '',
+      },
+    };
+  }
+  return null;
 };

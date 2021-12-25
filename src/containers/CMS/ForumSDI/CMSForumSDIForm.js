@@ -12,7 +12,6 @@ import Spinner from 'react-bootstrap/Spinner';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FileInput, Input } from 'components';
 import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
-import MultiSelectDropDown from 'components/DropDown/MultiSelectDropDown';
 import TextEditorController from 'components/TextEditorController';
 import Modal from 'components/Modal';
 import { apiUrls, post, put } from 'utils/request';
@@ -24,13 +23,12 @@ import {
   cmsForumSDIGetTopikSelector,
   cmsForumSDIGetTagsSelector,
 } from './reducer';
-import { Close } from 'components/Icons';
 
 const schema = yup
   .object({
     judul: yup.string().required(),
     topik: yup.mixed().required(),
-    tags: yup.mixed().required(),
+    tags: yup.array().required().min(1),
     isi: yup.string().required(),
   })
   .required();
@@ -43,7 +41,6 @@ const CMSForumSDIForm = () => {
   const [showUploadFile, setShowUploadFile] = useState(false);
   const [formData, setFormData] = useState({});
   const [apiError, setAPIError] = useState('');
-  const [uploadedFiles, setUploadedFiles] = useState([]);
   const { id } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -57,14 +54,13 @@ const CMSForumSDIForm = () => {
     formState: { errors },
     handleSubmit,
     setValue,
-    // watch,
     getValues,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       judul: '',
       topik: null,
-      tags: null,
+      tags: [],
       isi: '',
     },
   });
@@ -85,16 +81,21 @@ const CMSForumSDIForm = () => {
   }, [id]);
 
   useEffect(() => {
-    if (detailResult?.id !== +id) return;
+    if (detailResult?.id !== +id || !id) return;
     setDefaultData();
   }, [detailResult]);
 
+  useEffect(() => {
+    if (!detailResult?.id) return;
+    const topikResID = topikResult.find((elem) => detailResult?.topik === elem?.nama);
+    setValue('topik', { value: topikResID?.id, label: topikResID?.nama });
+  }, [topikResult]);
+
   const setDefaultData = () => {
-    const topikResID = topikResult?.records.find((elem) => detailResult?.topik === elem?.id);
-    setUploadedFiles(detailResult?.lampiran);
+    const topikResID = topikResult.find((elem) => detailResult?.topik === elem?.nama);
     const fields = [
       { name: 'judul', value: detailResult?.judul || '' },
-      { name: 'topik', value: [{ value: topikResID?.id, label: topikResID?.name }] || '' },
+      { name: 'topik', value: { value: topikResID?.id, label: topikResID?.nama } || '' },
       { name: 'tags', value: detailResult?.tags.map((elem) => ({ value: elem, label: elem })) },
       { name: 'isi', value: detailResult?.isi || '' },
     ];
@@ -118,7 +119,7 @@ const CMSForumSDIForm = () => {
 
   const handleFiles = (files) => {
     const isValid = isValidFile(524288, files, 'lampiran', 'Only File with Max 512KB');
-    if (!isValid) setLampiran(files);
+    if (isValid) setLampiran(files);
   };
 
   const uplodFile = async () => {
@@ -134,13 +135,6 @@ const CMSForumSDIForm = () => {
     }
   };
 
-  const removeFiles = (item) => {
-    const list = [...uploadedFiles];
-    const index = uploadedFiles.findIndex((file) => file.fileName === item.fileName);
-    list.splice(index, 1);
-    setUploadedFiles(list);
-  };
-
   const goBack = () => {
     if (id) {
       history.push(`/cms/forum-sdi-detail/${id}`);
@@ -151,7 +145,7 @@ const CMSForumSDIForm = () => {
 
   const handleDataSubmit = (data) => {
     const clone = { ...errorInfo };
-    if ((!id && !lampiran) || (id && !uploadedFiles.length && !lampiran)) {
+    if ((!id && !lampiran) || (id && !detailResult?.lampiran?.[0]?.fileName && !lampiran)) {
       clone['lampiran'] = 'lampiran is required';
     }
     if (!isEmpty(clone)) {
@@ -161,9 +155,6 @@ const CMSForumSDIForm = () => {
     setShowModal(true);
     setFormData(data);
   };
-
-  const topikDropDownList = topikResult?.records.map((elem) => ({ value: elem?.id, label: elem?.nama }));
-  const tagDropDownList = tagsResult?.content.map((elem) => ({ value: elem, label: elem }));
 
   const onSubmit = async () => {
     setLoader(true);
@@ -244,14 +235,14 @@ const CMSForumSDIForm = () => {
               control={control}
               label="Topik"
               labelClass="sdp-form-label  fw-normal"
-              data={topikDropDownList}
+              data={topikResult.map((elem) => ({ value: elem?.id, label: elem?.nama }))}
               placeholder=""
               rules={{ required: true }}
               error={errors?.topik?.message ? 'Topik is required' : ''}
               isCreatable={true}
               loading={topikLoading}
             />
-            <MultiSelectDropDown
+            <SingleSelectDropDown
               group
               groupClass="mb-16"
               groupProps={{
@@ -261,13 +252,14 @@ const CMSForumSDIForm = () => {
               isMulti
               control={control}
               label="Tag"
-              labelClass="sdp-form-label  fw-normal"
+              labelClass="sdp-form-label fw-normal"
               placeholder=""
               rules={{ required: true }}
               error={errors?.tags?.message ? 'Tag is required' : ''}
               name="tags"
-              data={tagDropDownList}
+              data={tagsResult.map((elem) => ({ value: elem, label: elem }))}
               loading={tagsLoading}
+              isCreatable={true}
             />
             <TextEditorController
               rules={{ required: true }}
@@ -289,14 +281,7 @@ const CMSForumSDIForm = () => {
               <Form.Group as={Col} className="cms-forum-sdi-input mt-5 mb-10" md="8">
                 <label className="sdp-form-label mb-8">Lampiran</label>
                 <div className="input-data d-flex align-items-center bg-gray border-gray-stroke p-9 br-4">
-                  {uploadedFiles.map((elem) => (
-                    <label className="sdp-text-blue bg-light-blue mr-10">
-                      {elem?.fileName}
-                      <span className="sdp-text-black-dark ml-10 svg-8 cursor-pointer" onClick={() => removeFiles(elem)}>
-                        <Close variant="dark" />
-                      </span>
-                    </label>
-                  ))}
+                  <label className="sdp-text-blue bg-light-blue mr-10">{detailResult?.lampiran[0]?.fileName}</label>
                   <label className="sdp-text-black bg-gray cursor-pointer" onClick={() => setShowUploadFile(true)}>
                     + Upload new file
                   </label>

@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
@@ -8,61 +10,62 @@ import { DatePicker, Dropdown } from 'components';
 import { ReactComponent as LocationTag } from 'assets/location-tag.svg';
 import { ReactComponent as DownloadIcon } from 'assets/download-red.svg';
 import { NoPerminataanData } from 'components/Icons';
+import { getBimtekMateri, bimtekMateri } from './reducer';
+import moment from 'moment';
+import { apiUrls, get } from 'utils/request';
 
 const BimtekMateri = () => {
-  const { control } = useForm({});
+  const dispatch = useDispatch();
+  const { records: materiRecords, allRecords: allMateriRecords } = useSelector(bimtekMateri);
+  const { control, watch } = useForm({});
+  const watchDate = watch('tgl');
+  const watchNamaBimtek = watch('namaBimtek');
 
-  const dataMateri = [
-    {
-      id: 1,
-      namaFile: 'Pendahuluan dan Latarbelakang',
-      namaBimtek: 'Perencanaan dan Program Bimbingan Teknis',
-      tanggal: '2021-08-09',
-      lokasi: 'Jakarta Selatan',
-      urlFile: '',
-    },
-    {
-      id: 2,
-      namaFile: 'Materi Pokok',
-      namaBimtek: 'Perencanaan dan Program Bimbingan Teknis',
-      tanggal: '2021-08-09',
-      lokasi: 'Jakarta Selatan',
-      urlFile: '',
-    },
-    {
-      id: 2,
-      namaFile: 'Penutupan',
-      namaBimtek: 'Perencanaan dan Program Bimbingan Teknis',
-      tanggal: '2021-08-09',
-      lokasi: 'Jakarta Selatan',
-      urlFile: '',
-    },
-  ];
+  useEffect(() => {
+    dispatch(getBimtekMateri());
+  }, []);
+
+  useEffect(() => {
+    const params = {
+      ...(watchNamaBimtek?.value ? { namaBimtek: watchNamaBimtek.value } : {}),
+      ...(watchDate ? { tgl: moment(watchDate).format('YYYY-MM-DD') } : {}),
+    };
+
+    dispatch(getBimtekMateri(params));
+  }, [watchDate, watchNamaBimtek]);
 
   return (
     <BimtekLayout className="sdp-bimtek-materi">
       <Row className="mb-12">
         <Col xs={4}>
-          <Dropdown name="filterName" control={control} placeholder="Nama Bimtek" />
+          <Dropdown
+            name="namaBimtek"
+            control={control}
+            options={allMateriRecords.map((lvl) => ({
+              value: lvl.namaBimtek,
+              label: lvl.namaBimtek,
+            }))}
+            placeholder="Nama Bimtek"
+          />
         </Col>
         <Col xs={4}>
-          <DatePicker name="filterDate" control={control} placeholder="Filter Tanggal" />
+          <DatePicker name="tgl" control={control} placeholder="Filter Tanggal" />
         </Col>
       </Row>
-      {dataMateri.length === 0 ? (
+      {materiRecords.length === 0 ? (
         <div className="d-flex justify-content-center align-items-center h-100 flex-column">
           <NoPerminataanData />
           <div className="text-black-50 mb-2 mt-2">No Data</div>
         </div>
       ) : null}
-      {dataMateri.map((item, key) => (
+      {materiRecords.map((item, key) => (
         <MateriItem
           key={key}
-          namaFile={item.namaFile}
+          namaFile={item.materi.nama}
           namaBimtek={item.namaBimtek}
-          tanggal={item.tanggal}
-          lokasi={item.lokasi}
-          urlFile={item.urlFile}
+          tanggal={moment(item.tanggalMulaiDisetujui).format('YYYY-MM-DD')}
+          lokasi={item.kota}
+          urlFile={item.materi.fileName}
         />
       ))}
     </BimtekLayout>
@@ -70,6 +73,12 @@ const BimtekMateri = () => {
 };
 
 const MateriItem = ({ namaFile, namaBimtek, tanggal, lokasi, urlFile }) => {
+  const downloadMateri = async (id) => {
+    try {
+      await get(`${apiUrls.bimtekMateriTerdekatDownload}/${id}`);
+    } catch (e) {}
+  };
+
   return (
     <Row className="mb-2 ml-0 sdp-bimtek-materi__item">
       <Col sm={9}>
@@ -83,7 +92,7 @@ const MateriItem = ({ namaFile, namaBimtek, tanggal, lokasi, urlFile }) => {
         </div>
       </Col>
       <Col sm={3} className="text-end">
-        <Button variant="secondary" className="fs-14 p-12">
+        <Button variant="secondary" className="fs-14 p-12" onClick={() => downloadMateri(urlFile)}>
           <DownloadIcon className="mr-10" /> Download Materi
         </Button>
       </Col>

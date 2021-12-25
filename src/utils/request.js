@@ -21,11 +21,11 @@ export class ResponseError extends Error {
  * Parses the response data returned by a network request
  *
  * @param  {object} response A response from a network request
- * @param  {string} responseType A type of response that we are expecting from the server
+ * @param  {boolean} download states if request is to download from the server
  *
  * @return {object}          The parsed JSON from the request
  */
-async function parseResponse(response) {
+async function parseResponse(response, download, fileName) {
   if (response.status === 204 || response.status === 205) {
     return null;
   }
@@ -42,11 +42,12 @@ async function parseResponse(response) {
       data = await response.json();
     } else if (
       (responseType && responseType.includes('application/force-download')) ||
-      (disposition && disposition.includes('attachment;'))
+      (disposition && disposition.includes('attachment;')) ||
+      download
     ) {
       data = await response.blob();
-      if (disposition && disposition.includes('filename=')) {
-        const filename = disposition.split('filename=')[1];
+      if ((disposition && disposition.includes('filename=')) || fileName) {
+        const filename = !fileName ? disposition.split('filename=')[1] : fileName;
         const url = window.URL.createObjectURL(data);
         const aNode = document.createElement('a');
         aNode.href = url;
@@ -95,7 +96,10 @@ function checkStatus(response) {
  *
  * @return {object}           The response data
  */
-export async function request(url, { method = 'GET', headers: optionHeaders = {}, data = {}, query = {} }) {
+export async function request(
+  url,
+  { method = 'GET', headers: optionHeaders = {}, data = {}, query = {}, download = false, fileName = null },
+) {
   const defaultHeaders = {
     Accept: typeJSON,
     'Content-Type': typeJSON,
@@ -131,7 +135,7 @@ export async function request(url, { method = 'GET', headers: optionHeaders = {}
     fetchResponse = error.response;
   }
   const response = checkStatus(fetchResponse);
-  return parseResponse(response);
+  return parseResponse(response, download, fileName);
 }
 
 /**

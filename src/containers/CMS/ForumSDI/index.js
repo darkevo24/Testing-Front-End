@@ -74,7 +74,10 @@ const CMSForumSDI = () => {
     },
     {
       Header: 'Tanggal Dibuat',
-      accessor: 'tanggalDibuat',
+      accessor: 'tanggalDraft',
+      Cell: ({ ...rest }) => {
+        return <span>{rest.row.original.tanggalDraft.split(' ')[0]}</span>;
+      },
     },
     {
       Header: 'Status',

@@ -241,11 +241,22 @@ const CMSPermintaanDataView = () => {
     },
   });
 
+  const StatusBar = () => {
+    switch (data.status) {
+      case 'SELESAI':
+        return <SuccessText />;
+      case 'TERKIRIM':
+        return <TerkirimText />;
+      case 'DIPROSES':
+        return <DiprosesText />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div>
-      {data.status === 'SELESAI' ? <SuccessText /> : null}
-      {data.status === 'TERKIRIM' ? <TerkirimText /> : null}
-      {data.status === 'DIPROSES' ? <DiprosesText /> : null}
+      <StatusBar />
       <Row className={bem.e('section')}>
         <Col sm={9} className="my-5">
           <div>

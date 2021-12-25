@@ -12,6 +12,6 @@ export const getPerminataanInfo = (data) => [
   { data: data?.['deskripsi'] || '', title: 'Deskripsi Data' },
   { data: data?.['tujuanPermintaan'] || '', title: 'Tujuan Permintaan Data' },
   { data: data?.['tanggalTarget'] ? moment(data['tanggalTarget']).format('DD MMMM YYYY') : '', title: 'Target Waktu' },
-  { data: data?.['producen'] || '', title: 'Produsen Data' },
+  { data: data?.['instansi']?.nama || '', title: 'Produsen Data' },
   { data: data?.['jenisData'] || '', title: 'Jenis Data' },
 ];

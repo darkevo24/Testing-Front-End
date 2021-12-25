@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { BeritaGrid } from '.';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOtherNews, otherNewsSelector } from './reducer';
 
 const Wrapper = styled.div`
   border-top: 4px solid #ff0000;
@@ -48,29 +51,39 @@ const ButtonLoadMore = styled.button`
 `;
 
 const ListBerita = (props) => {
+  const dispatch = useDispatch();
+  const { records, status } = useSelector(otherNewsSelector);
+  const [page, setPage] = useState(3);
+
+  useEffect(() => {
+    if (status === 'idel') {
+      dispatch(getOtherNews(page));
+    }
+  }, [dispatch, status, page]);
+  const handleLoadMore = () => {
+    setPage(page + 3);
+  };
   return (
     <Wrapper>
       <BeritaGrid columns={props.columns}>
-        {Array.apply(null, { length: props.jumlah }).map((e, i) => (
-          <BeritaItem className="row" key={'lb' + i}>
-            <div className="col-lg-4" style={{ paddingRight: '24px' }}>
-              <Image src="https://cdn0-production-images-kly.akamaized.net/gIDRPzEs3mEphuPi_b90S6FVvvs=/200x112/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3611600/original/089535000_1635120005-20211025-Fabio-Quartararo-6.jpg" />
-            </div>
-            <div className="col-lg-8">
-              <Topik>Kesehatan</Topik>
-              <Judul>
-                Kemenhub Berbagi Pengalaman Penanganan Covid-19 Sektor Transportasi Di Forum ASEAN-Republik Korea ke-11
-              </Judul>
-              <Konten>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                commodo consequat.
-              </Konten>
-            </div>
-          </BeritaItem>
-        ))}
+        {records.length &&
+          records.map((content, i) => {
+            const { judul, slug, image, kategori } = content;
+            return (
+              <BeritaItem className="row" key={'lb' + i}>
+                <div className="col-lg-4" style={{ paddingRight: '24px' }}>
+                  <Image src={image} />
+                </div>
+                <div className="col-lg-8">
+                  <Topik>{kategori}</Topik>
+                  <Judul>{judul}</Judul>
+                  <Konten>{slug}</Konten>
+                </div>
+              </BeritaItem>
+            );
+          })}
       </BeritaGrid>
-      <ButtonLoadMore>Muat Lebih Banyak</ButtonLoadMore>
+      {records.length > 3 && <ButtonLoadMore onClick={handleLoadMore}>Muat Lebih Banyak</ButtonLoadMore>}
     </Wrapper>
   );
 };

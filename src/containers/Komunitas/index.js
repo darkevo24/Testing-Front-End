@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import cx from 'classnames';
 import { Row, Col, Button } from 'react-bootstrap';
 import Table from 'components/Table';
 import { icons, MailSvg } from 'components/Icons';
@@ -16,9 +15,11 @@ import { Input } from 'components';
 import { useForm } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
+import Spinner from 'react-bootstrap/Spinner';
 
 const KomunitasAhliPage = () => {
   const dispatch = useDispatch();
+  const [loader, setLoader] = useState(null);
   const [showFilter, setShowFilter] = useState(false);
   const [bidangKeahlianData, setBidangKeahlianData] = useState([]);
   const [daerahData, setDaerahData] = useState([]);
@@ -63,7 +64,12 @@ const KomunitasAhliPage = () => {
   };
 
   useEffect(() => {
-    handleAPICall({ page: 0, q: '', status: '' });
+    handleAPICall({
+      page: 0,
+      payload: {
+        q: '',
+      },
+    });
   }, []);
 
   const handleAPICall = (params) => {
@@ -71,20 +77,37 @@ const KomunitasAhliPage = () => {
   };
 
   const handleSearch = (value = '') => {
-    handleAPICall({ page: 0, q: value.trim() });
+    handleAPICall({
+      page: 0,
+      payload: {
+        ...payload,
+        q: value.trim(),
+      },
+    });
   };
 
   const handleFilterChange = (data) => {
-    let params = {
+    let payload_clone = { ...payload };
+    if (data.nama.trim()) payload_clone = { ...payload_clone, nama: data.nama };
+    if (data.bidangKeahlian?.value) payload_clone = { ...payload_clone, bidangKeahlian: data.bidangKeahlian.value };
+    if (data.instansiId?.value) payload_clone = { ...payload_clone, instansiId: data.instansiId.value };
+    if (data.daerahId?.value) payload_clone = { ...payload_clone, daerahId: data.daerahId.value };
+    handleAPICall({
       page: 0,
-      ...payload,
-    };
-    if (data.nama.trim()) params = { ...params, nama: data.nama };
-    if (data.bidangKeahlian?.value) params = { ...params, bidangKeahlian: data.bidangKeahlian.value };
-    if (data.instansiId?.value) params = { ...params, instansiId: data.instansiId.value };
-    if (data.daerahId?.value) params = { ...params, daerahId: data.daerahId.value };
-    handleAPICall(params);
+      payload: payload_clone,
+    });
     setShowFilter(false);
+  };
+
+  const downloadCV = async (url, fileName = '', id) => {
+    setLoader(id);
+    await get(url, { download: true, fileName })
+      .then(() => {
+        setLoader(null);
+      })
+      .catch(() => {
+        setLoader(null);
+      });
   };
 
   const handleOutSideClick = () => {
@@ -126,9 +149,7 @@ const KomunitasAhliPage = () => {
               <div key={'wrapper-' + item.id} className="sdp-info-wrapper m-16">
                 <label className="sdp-title">{item?.nama}</label>
                 <div className="mt-16 d-flex mb-12">
-                  {/*{item.tags.map((tag) => (*/}
-                  {/*  <div className="br-2 border-gray-stroke px-6 py-5 sdp-text-grey-dark mr-8 bg-gray">{tag}</div>*/}
-                  {/*))}*/}
+                  <div className="br-2 px-6 py-5 sdp-text-grey-dark mr-8 bg-gray">{item.bidangKeahlian}</div>
                 </div>
                 <p>{item.riwayat}</p>
                 <div className="sdp-rating-wrapper d-flex justify-content-between">
@@ -139,6 +160,7 @@ const KomunitasAhliPage = () => {
                       if (!kontakDetail && kontak_item.tipe === 'email') {
                         return (
                           <div
+                            key={kontak_item.tipe + item.id}
                             className="sdp-kontak br-5 border-gray-stroke p-10 sdp-text-grey-dark mr-8 cursor-pointer"
                             onClick={() => window.open(`mailto:${kontak_item.value}`, '_blank')}>
                             <MailSvg variant="danger" />
@@ -160,12 +182,16 @@ const KomunitasAhliPage = () => {
                     variant="primary"
                     className="sdp-rate-button justify-content-end"
                     onClick={() =>
-                      window.open(
+                      downloadCV(
                         item.cv.location ||
                           'https://drive.google.com/file/d/1YKu5bPdkXsuAb-dojIm5cy_To8FC0BRI/view?usp=sharing',
-                        '_blank',
+                        item.cv.fileName,
+                        item.id,
                       )
                     }>
+                    {loader === item.id && (
+                      <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="mr-10" />
+                    )}
                     Lihat CV
                   </Button>
                 </div>
@@ -179,11 +205,12 @@ const KomunitasAhliPage = () => {
     subTitle: 'Komunitas Ahli',
     search: true,
     searchValue: payload.q,
+    searchThreshold: 600,
     searchPlaceholder: 'Cari Ahli Berdasarkan Nama',
     searchRightComponent: (
       <>
         <Button
-          className="sdp-button border-gray-stroke br-4 bg-white ml-10"
+          className="sdp-button border-gray-stroke br-4 bg-white ml-10 text-nowrap"
           variant="light"
           onClick={() => setShowFilter(true)}>
           Advanced Search
@@ -197,9 +224,7 @@ const KomunitasAhliPage = () => {
                   key="bidangKeahlian"
                   name="bidangKeahlian"
                   control={control}
-                  data={bidangKeahlianData
-                    .filter((item) => item.bidangKeahlian)
-                    .map((item) => ({ value: item.bidangKeahlian, label: item.bidangKeahlian }))}
+                  data={bidangKeahlianData.map((item) => ({ value: item.id, label: item.nama }))}
                   placeholder="Bidang Keahlian"
                   className="mb-15 bg-gray"
                 />
@@ -246,12 +271,10 @@ const KomunitasAhliPage = () => {
     showHeader: false,
   };
 
-  let marginClass = window.screen.width <= 1024 ? 'mx-200' : window.screen.width <= 1440 ? 'mx-300' : 'mx-500';
-
   return (
     <div className="sdp-komunitas-wrapper">
-      <Row className={cx('mt-48', marginClass)}>
-        <Col>
+      <Row className="mt-48 justify-content-md-center mx-16">
+        <Col lg="6">
           {loading ? (
             <>
               <label className="sdp-heading mb-10">Komunitas Ahli</label>

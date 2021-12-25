@@ -5,6 +5,7 @@ import moment from 'moment';
 import cx from 'classnames';
 import { Controller } from 'react-hook-form';
 import { LeftChevron, RightChevron, Calender } from './Icons';
+import { ReactComponent as ArrowDown } from 'assets/arrow-down-datepicker.svg';
 import bn from 'utils/bemNames';
 
 const bem = bn('date-picker');
@@ -19,6 +20,7 @@ export const DatePicker = ({
   format = 'DD/MM/YYYY',
   group,
   groupClass = 'mb-3',
+  arrow,
   className,
   ...rest
 }) => {
@@ -43,7 +45,7 @@ export const DatePicker = ({
         render={({ field }) => {
           const { onChange } = field;
           return (
-            <div className={cx('sdp-input-wrapper', bem.b())}>
+            <div className={cx('sdp-input-wrapper', bem.b(className))}>
               <div
                 className="icon-box"
                 onClick={() => {
@@ -51,7 +53,7 @@ export const DatePicker = ({
                     refDatePicker.current.deferFocusInput();
                   }
                 }}>
-                <Calender />
+                {arrow ? <ArrowDown /> : <Calender />}
               </div>
               <RDatePicker
                 selected={

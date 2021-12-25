@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, defaultNumberOfRows, post, put, get } from 'utils/request';
+import { apiUrls, defaultNumberOfRows, post, put, get, deleteRequest } from 'utils/request';
 
 export const initialState = {
   loading: false,
@@ -57,6 +57,20 @@ export const setDetailBerita = createAsyncThunk('cms/setDetailBerita', async (pa
 export const setEditBerita = createAsyncThunk('cms/setEditBerita', async (params) => {
   const response = await put(`${apiUrls.cmsBeritaData}/${params.id}`, params.payload);
   return response?.data?.content;
+});
+
+export const setStatusBerita = createAsyncThunk('cms/setStatusBerita', async (params) => {
+  const response = await put(`${apiUrls.cmsBeritaData}/status`, params.payload);
+  return response?.data?.content;
+});
+
+export const deleteBerita = createAsyncThunk('cms/deleteBerita', async (params) => {
+  const response = await deleteRequest(`${apiUrls.cmsBeritaData}/${params.id}`);
+  return response?.data;
+});
+
+export const setPreviewBerita = createAsyncThunk('cms/setPreviewBerita', async (params) => {
+  return params;
 });
 
 const beritaCmsSlice = createSlice({
@@ -117,6 +131,33 @@ const beritaCmsSlice = createSlice({
     builder.addCase(setEditBerita.rejected, (state) => {
       state.detaildataSet.loading = false;
       state.detaildataSet.error = 'Error in fetching edit berita!';
+    });
+
+    builder.addCase(setStatusBerita.pending, (state, action) => {
+      state.detaildataSet.loading = true;
+    });
+    builder.addCase(setStatusBerita.fulfilled, (state, action) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.record = action.payload;
+    });
+    builder.addCase(setStatusBerita.rejected, (state) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.error = 'Error in fetching edit berita!';
+    });
+
+    builder.addCase(deleteBerita.pending, (state) => {
+      state.detaildataSet.loading = true;
+    });
+    builder.addCase(deleteBerita.fulfilled, (state, action) => {
+      state.detaildataSet.loading = false;
+    });
+    builder.addCase(deleteBerita.rejected, (state, action) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.error = action.error.message;
+    });
+
+    builder.addCase(setPreviewBerita.fulfilled, (state, action) => {
+      state.detaildataSet.record = action.payload;
     });
   },
 });

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import RBDropdown from 'react-bootstrap/Dropdown';
 import RBDropdownButton from 'react-bootstrap/DropdownButton';
 import cx from 'classnames';
@@ -15,7 +15,8 @@ import remove from 'lodash/remove';
 import { ReactComponent as SearchSvg } from 'assets/search.svg';
 import { Breadcrumb, Loader, MapTile, SectionList, Table, Tags } from 'components';
 import { Circle, Close } from 'components/Icons';
-import { datasetSelector, getDataSet } from '../reducer';
+import moment from 'moment';
+import { datasetSelector, getDataSet, logHomeTrendingOrPopular } from '../reducer';
 import bn from 'utils/bemNames';
 import { getDatasetUrl, parseQueryString } from 'utils/helper';
 
@@ -112,6 +113,28 @@ const DataSet = () => {
     fetchDataset({ sort: option.value }, true);
   };
 
+  const logToTrendingAPI = useCallback(
+    (param, dispatch) => () => {
+      const { name, resources, title, num_resources } = param;
+      const dataSetUrl = getDatasetUrl(name);
+      const fileType = resources[0].format;
+      const payload = {
+        title: title,
+        fileType: [fileType],
+        dataSetDate: moment(resources[0].created).format('YYYY-MM-DD'),
+        description: resources[0].description,
+        totalFile: num_resources,
+        url: dataSetUrl,
+      };
+      dispatch(logHomeTrendingOrPopular(payload)).then((result) => {
+        if (!result.error) {
+          window.open(dataSetUrl, '_self');
+        }
+      });
+    },
+    [],
+  );
+
   const tableConfig = {
     variant: 'card',
     columns: [
@@ -132,16 +155,16 @@ const DataSet = () => {
             <div className="sdp-card-wrapped d-flex p-16 justify-content-between" key={item.id}>
               <div className="flex-column">
                 <div className="sdp-left-wrapper mb-27 mr-16">
-                  <a title="dataset" href={dataSetUrl} className="sdp-link">
+                  <a title="dataset" href="#" className="sdp-link" onClick={logToTrendingAPI(item, dispatch)}>
                     <div className="mb-8 fs-16 fw-600 lh-19">{item.title}</div>
                   </a>
                   <div className="fs-14 lh-17 sdp-text-black-dark">{item.notes}</div>
                 </div>
                 <div className="d-flex flex-wrap mt-n8">
                   {formatesToShow?.map((tag) => (
-                    <Tags key={`${item.id}-${tag.id}`} className="mt-8 px-12" text={tag.format} />
+                    <Tags key={`${item.id}-${tag.id}`} fillColor className="mt-8 px-12" text={tag.format} />
                   ))}
-                  {!!hiddenFormats && <Tags className="px-12 text-nowrap" text={`${hiddenFormats} others`} />}
+                  {!!hiddenFormats && <Tags fillColor className="px-12 text-nowrap" text={`${hiddenFormats} others`} />}
                 </div>
               </div>
               <div className="sdp-card-right-section d-flex flex-column justify-content-between">

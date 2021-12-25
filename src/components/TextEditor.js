@@ -1,4 +1,5 @@
 import { Editor } from '@tinymce/tinymce-react';
+import { apiUrls } from 'utils/constants';
 
 const EditorConfig = {
   height: 500,
@@ -15,14 +16,14 @@ const EditorConfig = {
     alignleft aligncenter alignright alignjustify | \
     numlist bullist outdent indent | \
     image preview',
-  images_upload_url: process.env.REACT_APP_API_URL + '/file/public-upload',
+  images_upload_url: apiUrls.publiFileUpload,
   file_picker_types: 'image media',
 };
 
 const TextEditor = ({ defaultValue, disabled, onChange = () => {} }) => {
   return (
     <Editor
-      apiKey="ne6hq4p5tdn0hwuirba4i005nv3yavpgeahao9yy58ka476c"
+      apiKey="2htoke0b3pysjlaz24f7uw5uarba4s6wi6oy0lhi4ne43237"
       init={EditorConfig}
       className="tinymce-custom"
       initialValue={defaultValue}

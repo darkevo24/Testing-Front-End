@@ -1,19 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 // import { useHistory } from 'react-router-dom';
 import { CMSBimtekForm } from 'components';
-
 import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import bn from 'utils/bemNames';
+import { bimtekDokumentasiDetailSelector, getDokumentasiDetail } from './reducer';
 
 const bem = bn('content-detail');
 
 const CMSDokumentasiDetail = (props) => {
-  // const id = props.match.params.id;
-  // const history = useHistory();
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { records } = useSelector(bimtekDokumentasiDetailSelector);
+  // console.log(records);
+  const fetchDokumentasiDetail = (params) => {
+    return dispatch(getDokumentasiDetail(params));
+  };
+
+  useEffect(() => {
+    fetchDokumentasiDetail(id);
+  }, []);
+
   const dataLog = [
     {
       date: '12 Desember 2021',
@@ -52,7 +64,7 @@ const CMSDokumentasiDetail = (props) => {
               </Button>
             </div>
           </div>
-          <CMSBimtekForm disabled={true} isDocumentation={true} />
+          <CMSBimtekForm disabled={true} isDocumentation={true} data={records} />
         </div>
       </Col>
       <Col sm={3}>

@@ -88,7 +88,7 @@ const BimTekForm = () => {
         const response = await post(apiUrls.addFormulirPendaftaran, params);
         Notification.show({
           type: 'secondary',
-          message: <div> Permintaan Bimbingan Teknis [{response.data.content.id}] berhasil terkirim </div>,
+          message: <div> Permintaan Bimbingan Teknis {response.data.content.id} berhasil terkirim </div>,
           icon: 'check',
         });
       } catch (er) {

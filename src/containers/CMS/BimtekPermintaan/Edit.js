@@ -24,6 +24,7 @@ import {
   postStatusDraft,
   postStatusPublish,
   postStatusUnpublish,
+  updateStatusBimtekSetujui,
 } from './reducer';
 
 const bem = bn('content-detail');
@@ -100,6 +101,7 @@ const CMSBimtekPermintaanEdit = (props) => {
   const onSubmitTolak = (data) => {
     let obj = {
       id,
+      catatan: data.catatanTolak,
     };
     dispatch(postStatusReject(obj)).then((res) => {
       res?.error
@@ -185,34 +187,30 @@ const CMSBimtekPermintaanEdit = (props) => {
     const tanggalSelesaiDisetujui = `${moment(data.tanggalSelesaiDisetujuiUpdate).format('YYYY-MM-DD')} ${
       data.jamSelesaiDisetujuiUpdate
     }`;
-    let idBimtek = data.id;
     let obj = {
+      id: data.id,
       namaBimtek: data.namaBimtek,
       tagMateri: data.tagMateri,
       tanggalMulaiDisetujui,
       tanggalSelesaiDisetujui,
-      kota: data.kota,
+      kota: data.kotaId,
       alamat: data.tempat,
     };
-    console.log(id);
     console.log(obj);
-    // let obj = {
-    //   id,
-    // };
-    // dispatch(postStatusUnpublish(obj)).then((res) => {
-    //   res?.error
-    //     ? Notification.show({
-    //         type: 'secondary',
-    //         message: <div> Gagal Unpublish Status </div>,
-    //         icon: 'cross',
-    //       })
-    //     : Notification.show({
-    //         type: 'secondary',
-    //         message: <div> Berhasil Unpublish Status </div>,
-    //         icon: 'check',
-    //       });
-    // });
-    // setModalUnpublish(false);
+    dispatch(updateStatusBimtekSetujui(obj)).then((res) => {
+      res.payload
+        ? Notification.show({
+            type: 'secondary',
+            message: <div> Berhasil Menyetujui Bimbingan Teknis </div>,
+            icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Gagal Menyetujui Bimbingan Teknis </div>,
+            icon: 'cross',
+          });
+    });
+    setModalWaitingSetujui(false);
   };
 
   const SuccessText = () => {
@@ -580,7 +578,7 @@ const CMSBimtekPermintaanEdit = (props) => {
             </p>
           </div>
           <Form onSubmit={handleSubmit(onSubmitTolak)} noValidate>
-            <Input as="textarea" control={control} />
+            <Input as="textarea" name="catatanTolak" control={control} />
             <div className="d-flex justify-content-end mt-20">
               <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalTolak()}>
                 Batal
@@ -614,7 +612,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
-                Setujui
+                Konfirmasi
               </Button>
             </div>
           </Form>

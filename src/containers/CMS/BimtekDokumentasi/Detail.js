@@ -38,6 +38,7 @@ const CMSDokumentasiDetail = (props) => {
   const history = useHistory();
   const { records } = useSelector(bimtekDokumentasiDetailSelector);
   const { logAktifitas } = useSelector(bimtekLogAktifitas);
+  console.log(logAktifitas);
   const fetchDokumentasiDetail = (params) => {
     return dispatch(getDokumentasiDetail(params));
   };
@@ -48,7 +49,6 @@ const CMSDokumentasiDetail = (props) => {
   const dataDetailDokumentasi = useMemo(() => records || [], [records]);
   const materiBimtek = useMemo(() => dataDetailDokumentasi.materi || [], [records]);
   const pembicaraBimtek = useMemo(() => dataDetailDokumentasi.pembicara || [], [records]);
-  console.log(dataDetailDokumentasi);
   useEffect(() => {
     if (id === 'null') {
       history.push('/cms/bimtek-dokumentasi');
@@ -340,7 +340,7 @@ const CMSDokumentasiDetail = (props) => {
                   return (
                     <Col key={index} sm={4}>
                       <div className="doc-foto">
-                        <img src={foto.location} alt="img" />
+                        <img src={foto?.location} alt="img" />
                         <Button onClick={() => deleteFotoDokumentasi(index)}>
                           <span> Remove Photo </span>
                         </Button>

@@ -36,7 +36,7 @@ const CMSPermintaanDataView = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { result, dataLog } = useSelector(permintaanDataDetailSelector);
-
+  console.log(dataLog);
   const SuccessText = () => {
     const history = useHistory();
     const backToTable = () => {

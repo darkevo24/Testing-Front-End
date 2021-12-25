@@ -35,6 +35,7 @@ const CMSMediaSosial = () => {
     formState: { errors },
     handleSubmit,
     setValue,
+    setError,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -67,10 +68,12 @@ const CMSMediaSosial = () => {
   };
 
   const deleteData = () => {
-    dispatch(deleteSosMed({ id: selected.id })).then(() => {
-      fetchData();
-      setModalDelete(false);
-    });
+    dispatch(deleteSosMed({ id: selected.id }))
+      .then(() => {
+        fetchData();
+        setModalDelete(false);
+      })
+      .catch(() => setModalDelete(false));
   };
 
   const simpanData = (data) => {
@@ -87,6 +90,15 @@ const CMSMediaSosial = () => {
   const [foto, setFoto] = useState(null);
   const [fotoLoading, setFotoLoading] = useState(false);
   const handleFoto = (file) => {
+    // handle file size
+    const size = 512000;
+    const type = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (file?.size > size && type.includes(file?.type)) {
+      return setError('image', {
+        type: 'manual',
+        message: 'Only PNG, JPEG e JPG with Max 512Kb',
+      });
+    }
     // eslint-disable-next-line
     let fileName = file.name.replace(/[&/\\#, +()$~%'":*?<>{}]/g, '');
     let newFile = new File([file], fileName, { type: 'image/png' });
@@ -121,7 +133,7 @@ const CMSMediaSosial = () => {
         <div className={cx(bem.e('title'), 'mb-3')}>Media Sosial</div>
         <Row className="justify-content-between">
           <Col xs={2}>
-            <Button onClick={() => addAction()} variant="info" className="text-center">
+            <Button onClick={addAction} variant="info" className="text-center">
               Tambah
             </Button>
           </Col>
@@ -194,7 +206,7 @@ const CMSMediaSosial = () => {
         <CMSModal
           loader={false}
           onClose={() => setModalDelete(false)}
-          confirmButtonAction={() => deleteData()}
+          confirmButtonAction={deleteData}
           label={
             <span>
               Apakah anda yakin ingin <b className="sdp-text-blue">menghapus</b> {selected.tipe}?

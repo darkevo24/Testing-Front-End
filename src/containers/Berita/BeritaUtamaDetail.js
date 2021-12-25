@@ -95,7 +95,7 @@ const BeritaUtamaDetail = (props) => {
             </div>
           </div>
           <img className="w-100" src={record.mainImage} />
-          <div className="fs-18 mt-32" dangerouslySetInnerHTML={{ __html: record?.content }}></div>
+          <div className="fs-18 mt-32 overview" dangerouslySetInnerHTML={{ __html: record?.content }}></div>
         </div>
       </div>
       <div className="col-lg-2">{kanan.length > 0 && kanan.map((el) => renderComp(el))}</div>

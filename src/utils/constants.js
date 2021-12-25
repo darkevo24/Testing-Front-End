@@ -20,7 +20,7 @@ import { SplitCircle } from 'components/Icons';
 
 export const analyticsUrl = 'https://analitik.data.go.id';
 export const katalogUrl = 'https://katalog.satudata.go.id';
-export const apiUrl = '/api-be';
+export const apiUrl = 'http://34.101.103.9/api-be';
 export const dataUrl = `${katalogUrl}/api`;
 
 export const getAnalyticsUrl = (path) => `${analyticsUrl}/${path}`;
@@ -38,7 +38,7 @@ export const apiUrls = {
   instansiData: getV1Endpoint('instansi'),
   cmsKomunitasAhliData: getCMSEndpoint('komunitas-ahli'),
   portalKomunitasAhliData: getPortalEndpoint('komunitas-ahli'),
-  cmsAuditTrialData: getCMSEndpoint('audit-trial'),
+  cmsAuditTrialData: getCMSEndpoint('audit-trail'),
   fileUpload: getApiEndpoint('file/upload'),
   publiFileUpload: getApiEndpoint('file/public-upload'),
   uploadFoto: getApiEndpoint('file/public-image-upload'),

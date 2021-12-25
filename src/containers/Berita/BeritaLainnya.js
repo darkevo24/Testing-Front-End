@@ -1,5 +1,8 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
 import { SectionTitle } from '.';
+import { getNewsByMonth, newsByMonthSelector } from './reducer';
 
 const Wrapper = styled.div`
   margin-bottom: 40px;
@@ -36,18 +39,30 @@ const bulan = [
   },
 ];
 
-const BeritaLainnya = () => (
-  <Wrapper>
-    <SectionTitle>Berita Lainnya</SectionTitle>
-    {bulan.map((el, i) => (
-      <TopikItem key={'bl' + i}>
-        <span style={{ color: '#007AFF' }}>{el.month}</span>
-        <span>–</span>
-        <span>{el.year}</span>
-        <span style={{ color: '#858A8F' }}>({el.news})</span>
-      </TopikItem>
-    ))}
-  </Wrapper>
-);
+const BeritaLainnya = () => {
+  const dispatch = useDispatch();
+  const { records, status } = useSelector(newsByMonthSelector);
+
+  useEffect(() => {
+    if (status === 'idel') {
+      dispatch(getNewsByMonth('/perbulen'));
+    }
+  }, [dispatch, status]);
+
+  return (
+    <Wrapper>
+      <SectionTitle>Berita Lainnya</SectionTitle>
+      {records.length &&
+        records.map((value, index) => (
+          <TopikItem key={index}>
+            <span style={{ color: '#007AFF' }}>{value.month}</span>
+            <span>–</span>
+            <span>{value.year}</span>
+            <span style={{ color: '#858A8F' }}>({value.news})</span>
+          </TopikItem>
+        ))}
+    </Wrapper>
+  );
+};
 
 export default BeritaLainnya;

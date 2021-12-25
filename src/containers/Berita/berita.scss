@@ -6,3 +6,26 @@
   line-height: 19px;
   color: #135fb2;
 }
+
+// Berita Utama
+.overview {
+  font-size: 16px;
+  line-height: 24px;
+  color: #515154;
+   p {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      img {
+        margin-top: 24px;
+        margin-bottom: 24px;
+      }
+   }
+}
+.read-more-link{
+  color: blueviolet;
+  text-decoration: underline;
+  letter-spacing: 1px;
+  cursor: pointer;
+  
+}

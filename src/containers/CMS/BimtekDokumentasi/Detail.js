@@ -48,6 +48,7 @@ const CMSDokumentasiDetail = (props) => {
   const dataDetailDokumentasi = useMemo(() => records || [], [records]);
   const materiBimtek = useMemo(() => dataDetailDokumentasi.materi || [], [records]);
   const pembicaraBimtek = useMemo(() => dataDetailDokumentasi.pembicara || [], [records]);
+  console.log(dataDetailDokumentasi);
   useEffect(() => {
     if (id === 'null') {
       history.push('/cms/bimtek-dokumentasi');
@@ -131,6 +132,12 @@ const CMSDokumentasiDetail = (props) => {
       });
     }
   };
+
+  function deleteFotoDokumentasi(e) {
+    const filter = fotoDokumentasi.filter((item, index) => index !== e);
+    setFotoDokumentasi(filter);
+    console.log(filter);
+  }
 
   const openUploadForm = (id) => {
     const elmButton = document.getElementById(id);
@@ -332,7 +339,12 @@ const CMSDokumentasiDetail = (props) => {
                 {fotoDokumentasi.map((foto, index) => {
                   return (
                     <Col key={index} sm={4}>
-                      <img src={foto?.location} className="doc-foto" alt="img" />
+                      <div className="doc-foto">
+                        <img src={foto.location} alt="img" />
+                        <Button onClick={() => deleteFotoDokumentasi(index)}>
+                          <span> Remove Photo </span>
+                        </Button>
+                      </div>
                     </Col>
                   );
                 })}

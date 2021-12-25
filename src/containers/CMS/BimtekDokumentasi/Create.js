@@ -107,6 +107,12 @@ const CMSJadwalBaru = () => {
     }
   };
 
+  function deleteFotoDokumentasi(e) {
+    const filter = fotoDokumentasi.filter((item, index) => index !== e);
+    setFotoDokumentasi(filter);
+    console.log(filter);
+  }
+
   const openUploadForm = (id) => {
     const elmButton = document.getElementById(id);
     elmButton.click();
@@ -173,7 +179,7 @@ const CMSJadwalBaru = () => {
       urlVidio,
       images: fotoDokumentasi,
     };
-    return dispatch(postImageDokumentasi(obj)).then((res) => {
+    dispatch(postImageDokumentasi(obj)).then((res) => {
       res.payload
         ? Notification.show({
             type: 'secondary',
@@ -306,7 +312,12 @@ const CMSJadwalBaru = () => {
               {fotoDokumentasi.map((foto, index) => {
                 return (
                   <Col key={index} sm={4}>
-                    <img src={foto.location} className="doc-foto" alt="img" />
+                    <div className="doc-foto">
+                      <img src={foto.location} alt="img" />
+                      <Button onClick={() => deleteFotoDokumentasi(index)}>
+                        <span> Remove Photo </span>
+                      </Button>
+                    </div>
                   </Col>
                 );
               })}

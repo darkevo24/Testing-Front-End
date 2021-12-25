@@ -27,7 +27,7 @@ const CMSPermintaanData = () => {
   const { size, loading, page, records, totalRecords, instansi, unitKerja } = useSelector(permintaanDataSelector);
   const fetchDataset = (params) => {
     let obj = {
-      page: 0,
+      page: params.page,
       unitKerjaId,
       instansiId,
       status,

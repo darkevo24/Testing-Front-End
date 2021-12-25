@@ -27,7 +27,7 @@ const CMSPermintaanData = () => {
   const { size, loading, page, records, totalRecords, instansi, unitKerja } = useSelector(permintaanDataSelector);
   const fetchDataset = (params) => {
     let obj = {
-      page: params.page,
+      page: 0,
       unitKerjaId,
       instansiId,
       status,
@@ -44,9 +44,12 @@ const CMSPermintaanData = () => {
   };
 
   useEffect(() => {
-    fetchDataset({ page: page || 0 });
-    fetchInstansiData();
+    fetchDataset({ page: 0 });
   }, [query, instansiId, unitKerjaId, status]);
+
+  useEffect(() => {
+    fetchInstansiData();
+  }, [instansiId]);
 
   useEffect(() => {
     fetchUnitKerja();

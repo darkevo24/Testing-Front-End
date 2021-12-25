@@ -12,7 +12,7 @@ import { CMSModal } from 'components/CMSStatusModals';
 import { getStatusClass, prefixID } from 'utils/helper';
 import { apiUrls, deleteRequest, put } from 'utils/request';
 import RowLoader from 'components/Loader/RowLoader';
-import { jadwalPermutakhiranOptions } from '../../../../utils/constants';
+import { jadwalPermutakhiranOptions } from 'utils/constants';
 // import DataVariableTable from 'containers/DataVariable/DataVariableTable';
 
 export const DaftarDetailPage = ({ ...props }) => {
@@ -185,13 +185,14 @@ export const DaftarDetailPage = ({ ...props }) => {
                 </Button>
                 <Button
                   key="verifikansi"
-                  variant={''}
+                  variant=""
                   className={cx('mr-16 br-4 pr-40 py-13 border-gray-stroke flex-item-center', {
                     'sdp-text-blue': false,
                     'sdp-text-disable': true,
                   })}
                   disabled={!isEnable}
                   onClick={() => setModal('verifikansi')}>
+                  // TODO change color based on API response
                   <FilledSquareSvg variant={false ? 'blue' : 'stroke'} />
                   <label className="ml-10">Verifikansi</label>
                 </Button>
@@ -218,17 +219,17 @@ export const DaftarDetailPage = ({ ...props }) => {
                   <div className="mb-24">
                     <div className="d-flex align-items-center">
                       <span className="fs-14 lh-17 sdp-text-black-dark w-100">
-                        {moment(item.createdAt).format('DD MMMM YYYY')}
+                        {item?.createdAt ? null : moment(item.createdAt).format('DD MMMM YYYY')}
                       </span>
                       <div className="border-gray-stroke h-0 w-100" />
                     </div>
                     <div className="d-flex mt-12 ">
                       <div className={`br-2 py-4 px-6 mr-8 h-fit-content ${classDetail?.divBG || ''}`}>
                         <span className={`fs-14 lh-17 ${classDetail?.textColor || ''}`}>
-                          {classDetail?.text || item.data.status}
+                          {classDetail?.text || item?.data?.status || ''}
                         </span>
                       </div>
-                      <span className="sdp-text-disable">{item.remark}</span>
+                      <span className="sdp-text-disable">{item?.remark || ''}</span>
                     </div>
                   </div>
                 );

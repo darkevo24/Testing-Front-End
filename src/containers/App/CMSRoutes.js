@@ -27,7 +27,8 @@ const KesiapanSDI = lazy(() => import('containers/CMS/DashboardManage/KesiapanSD
 const DashboardEksekutifPage = lazy(() => import('containers/CMS/DashboardManage/DashboardEksekutif'));
 const DataAnalyticPage = lazy(() => import('containers/CMS/DashboardManage/DataAnalytic'));
 const CMSDaftarPage = lazy(() => import('containers/CMS/Daftar'));
-const DaftarDetailPage = lazy(() => import('containers/CMS/Daftar/CMSDaftarDetail'));
+const DaftarDetailPage = lazy(() => import('containers/CMS/Daftar/DafterDetail'));
+const DaftarFormPage = lazy(() => import('containers/CMS/Daftar/CMSDaftarForm'));
 const PermintaanData = lazy(() => import('containers/CMS/PermintaanData/index'));
 const PermintaanDataDetail = lazy(() => import('containers/CMS/PermintaanDataForm/index'));
 const ManagementApi = lazy(() => import('containers/CMS/ManagementApi'));
@@ -63,7 +64,7 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/about-us/edit/:id?" component={AboutUsEditPage} />
         <PrivateRoute exact path="/cms/berita-layout" component={BeritaLayout} />
         <PrivateRoute exact path="/cms/berita-konten" component={BeritaPage} />
-        <PrivateRoute exact path="/cms/berita-baru" component={BeritaBaruPage} />
+        <PrivateRoute exact path="/cms/berita-form" component={BeritaBaruPage} />
         <PrivateRoute exact path="/cms/berita-detail/:id" component={BeritaDetailPage} />
         <PrivateRoute exact path="/cms/bimtek-permintaan" component={BimtekPermintaanPage} />
         <PrivateRoute exact path="/cms/bimtek-permintaan/:id" component={BimtekPermintaanEditPage} />
@@ -76,8 +77,10 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/kesiapan-sdi" component={KesiapanSDI} />
         <PrivateRoute exact path="/cms/dashboard-eksekutif" component={DashboardEksekutifPage} />
         <PrivateRoute exact path="/cms/data-analytic" component={DataAnalyticPage} />
-        <PrivateRoute exact path="/cms/daftar" component={CMSDaftarPage} />
+        <PrivateRoute exact path="/cms/daftar/manage-dafter-data/:id" component={DaftarFormPage} />
+        <PrivateRoute exact path="/cms/daftar/manage-dafter-data/" component={DaftarFormPage} />
         <PrivateRoute exact path="/cms/daftar/:id" component={DaftarDetailPage} />
+        <PrivateRoute exact path="/cms/daftar" component={CMSDaftarPage} />
         <PrivateRoute exact path="/cms/permintaan-data" component={PermintaanData} />
         <PrivateRoute exact path="/cms/permintaan-data/:id" component={PermintaanDataDetail} />
         <PrivateRoute exact path="/cms/forum-sdi/manage-forum-sdi/:id" component={ForumSDIFormPage} />

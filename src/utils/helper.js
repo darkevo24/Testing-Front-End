@@ -161,22 +161,40 @@ export const prefixID = (id, text) => {
   else return text + `${id}`;
 };
 
+const grayText = {
+  divBG: 'bg-gray',
+  textColor: 'sdp-text-disable',
+};
+const orangeText = {
+  divBG: 'bg-orange-light',
+  textColor: 'sdp-text-orange-dark',
+};
+const redText = {
+  divBG: 'bg-red-light',
+  textColor: 'sdp-text-red',
+};
+const purpleText = {
+  divBG: 'bg-purple-light',
+  textColor: 'sdp-text-purple',
+};
+const greenText = {
+  divBG: 'bg-green-light',
+  textColor: 'sdp-text-green-light',
+};
 export const getStatusClass = (status) => {
   switch (status) {
     case 0:
     case 1:
     case 'draft':
       return {
-        divBG: 'bg-gray',
-        textColor: 'sdp-text-disable',
+        ...grayText,
         text: 'Draft',
         divText: 'Draft',
       };
     case 8:
     case 'diarsipkan': {
       return {
-        divBG: 'bg-gray',
-        textColor: 'sdp-text-disable',
+        ...grayText,
         text: 'Diarsipkan',
         divText: 'Diarsipkan',
       };
@@ -184,70 +202,87 @@ export const getStatusClass = (status) => {
     case 6:
     case 'tidak_ditayangkan':
       return {
-        divBG: 'bg-orange-light',
-        textColor: 'sdp-text-orange-dark',
+        ...orangeText,
         text: 'Tidak ditayangkan',
         divText: '',
       };
+    case 'unpublished':
+      return {
+        ...orangeText,
+        text: 'Unpublished',
+        divText: 'Unpublished',
+      };
     case 2:
+    case 'waiting_approval':
     case 'menunggu_persetujuan':
       return {
-        divBG: 'bg-orange-light',
-        textColor: 'sdp-text-orange-dark',
+        ...orangeText,
         text: 'Waiting for approval',
         divText: '',
       };
     case 'diproses':
       return {
-        divBG: 'bg-orange-light',
-        textColor: 'sdp-text-orange-dark',
+        ...orangeText,
         text: 'Diprosses',
         divText: 'Permintaan sedang Diproses',
       };
     case 'dibatalkan':
       return {
-        divBG: 'bg-red-light',
-        textColor: 'sdp-text-red',
+        ...redText,
         text: 'Dibatalkan',
         divText: 'Dibatalkan',
       };
     case 4:
     case 'ditolak':
       return {
-        divBG: 'bg-red-light',
-        textColor: 'sdp-text-red',
+        ...redText,
         text: 'Ditolak',
         divText: 'Ditolak',
       };
     case 'terkirim':
       return {
-        divBG: 'bg-purple-light',
-        textColor: 'sdp-text-purple',
+        ...purpleText,
         text: 'Terkirim',
         divText: 'Terkirim',
+      };
+    case 'approved':
+      return {
+        ...greenText,
+        text: 'Approved',
+        divText: 'Approved',
+      };
+    case 'published':
+      return {
+        ...greenText,
+        text: 'Published',
+        divText: 'Published',
       };
     case 3:
     case 'disetujui':
       return {
-        divBG: 'bg-green-light',
-        textColor: 'sdp-text-green-light',
+        ...greenText,
         text: 'Disetujui',
         divText: 'Disetujui',
       };
     case 5:
     case 'ditayangkan':
       return {
-        divBG: 'bg-green-light',
-        textColor: 'sdp-text-green-light',
+        ...greenText,
         text: 'Ditayangkan',
         divText: 'Ditayangkan',
       };
     case 'selesai':
       return {
-        divBG: 'bg-green-light',
-        textColor: 'sdp-text-green-light',
+        ...greenText,
         text: 'Selesai',
         divText: 'Selesai',
+      };
+    case 7:
+    case 'dihapus':
+      return {
+        ...redText,
+        text: 'Dihapus',
+        divText: 'Dihapus',
       };
     default:
       return {};

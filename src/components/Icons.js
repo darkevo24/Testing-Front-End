@@ -1,5 +1,3 @@
-// import { Facebook } from 'react-content-loader';
-
 const types = {
   danger: 'red',
   dark: 'black-dark',
@@ -368,6 +366,12 @@ export const SaveSvg = () => (
   </svg>
 );
 
+export const FilledSquareSvg = (props) => (
+  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="12" height="12" rx="2" fill={`var(--${getColor(props, types.dark)})`} />
+  </svg>
+);
+
 export const icons = {
   edit: Edit,
   calender: Calender,
@@ -398,4 +402,5 @@ export const icons = {
   mailSvg: MailSvg,
   eye: EyeSvg,
   save: SaveSvg,
+  filledSquareSvg: FilledSquareSvg,
 };

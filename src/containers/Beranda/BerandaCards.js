@@ -1,12 +1,10 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import styled from 'styled-components';
 import cx from 'classnames';
 import moment from 'moment';
-import { convertTitleToSlug, getDatasetUrl } from 'utils/helper';
 import truncate from 'lodash/truncate';
 import { ReactComponent as TrendingSvg } from 'assets/trending.svg';
 import { ReactComponent as PopulerSvg } from 'assets/populer.svg';
@@ -52,7 +50,6 @@ const TitleBox = styled.div`
 `;
 
 export const BerandaCards = ({ bem, isLoggedIn }) => {
-  const history = useHistory();
   const linkToRedirect = isLoggedIn ? '/dataset' : '/topic-detail';
   const dispatch = useDispatch();
   useEffect(() => {
@@ -62,9 +59,7 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
 
   const logToTrendingAPI = useCallback(
     (param, dispatch) => () => {
-      const { dataSetDate, description, fileType, title, totalFile } = param;
-      const slug = convertTitleToSlug(title);
-      const href = getDatasetUrl(slug);
+      const { dataSetDate, description, fileType, title, totalFile, url } = param;
       dispatch(
         logHomeTrendingOrPopular({
           title: title,
@@ -72,13 +67,11 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
           dataSetDate: moment(dataSetDate).format('YYYY-MM-DD'),
           description: description,
           totalFile: totalFile,
-          url: href,
+          url: url,
         }),
       ).then((result) => {
         if (!result.error) {
-          history.push({
-            pathname: `/dataset/${slug}`,
-          });
+          window.open(url, '_self');
         }
       });
     },

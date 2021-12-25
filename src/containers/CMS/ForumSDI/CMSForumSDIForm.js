@@ -87,12 +87,12 @@ const CMSForumSDIForm = () => {
 
   useEffect(() => {
     if (!detailResult?.id) return;
-    const topikResID = topikResult?.records.find((elem) => detailResult?.topik === elem?.nama);
+    const topikResID = topikResult.find((elem) => detailResult?.topik === elem?.nama);
     setValue('topik', { value: topikResID?.id, label: topikResID?.nama });
   }, [topikResult]);
 
   const setDefaultData = () => {
-    const topikResID = topikResult?.records.find((elem) => detailResult?.topik === elem?.nama);
+    const topikResID = topikResult.find((elem) => detailResult?.topik === elem?.nama);
     const fields = [
       { name: 'judul', value: detailResult?.judul || '' },
       { name: 'topik', value: { value: topikResID?.id, label: topikResID?.nama } || '' },

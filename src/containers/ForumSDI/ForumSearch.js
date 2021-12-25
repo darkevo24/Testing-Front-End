@@ -8,11 +8,10 @@ import { cmsForumSDIGetTagsSelector } from '../CMS/ForumSDI/reducer';
 
 export const ForumSearch = ({ handleOnSearch, handleOnTagChange }) => {
   const [searchText, setSearchText] = useState('');
-  const [selectedItem, setSelectedItem] = useState({ value: '', label: '' });
   const { tagsResult, tagsLoading } = useSelector(cmsForumSDIGetTagsSelector);
 
-  const onChange = (data) => {
-    setSelectedItem(data);
+  const onChange = (data = {}) => {
+    handleOnTagChange(data);
   };
 
   const handleSearch = () => {
@@ -28,6 +27,7 @@ export const ForumSearch = ({ handleOnSearch, handleOnTagChange }) => {
   return (
     <div className="sdp-forum-search-container">
       <Breadcrumbs
+        className="br-56"
         breadcrumbsList={[
           {
             path: '/home',
@@ -40,7 +40,7 @@ export const ForumSearch = ({ handleOnSearch, handleOnTagChange }) => {
         ]}
       />
       <SingleSelectDropdown
-        defaultData={selectedItem}
+        isClearable={true}
         data={(tagsResult || []).map((tag) => ({ value: tag, label: tag }))}
         onChange={onChange}
         noValue={true}
@@ -48,7 +48,7 @@ export const ForumSearch = ({ handleOnSearch, handleOnTagChange }) => {
         isLoading={tagsLoading}
         className="border-left-gray-stroke"
       />
-      <div className="position-relative d-flex w-100 bg-white align-items-center">
+      <div className="position-relative d-flex w-100 bg-white align-items-center br-56">
         <input
           name="searchText"
           value={searchText}

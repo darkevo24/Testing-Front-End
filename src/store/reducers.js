@@ -18,6 +18,7 @@ import permintaanDataReducer from 'containers/CMS/PermintaanData/reducer';
 import permintaanDataDetailReducer from 'containers/CMS/PermintaanDataForm/reducer';
 import beritaCmsReducer from 'containers/CMS/BeritaBaru/reducer';
 import cmsKomunitasAhliReducer from 'containers/CMS/KomunitasAhli/reducer';
+import cmsLogActifitiasReducer from 'containers/CMS/LogAktifitas/reducer';
 import cmsBimtekPermintaanDataReducer from 'containers/CMS/BimtekPermintaan/reducer';
 import cmsBimtekDokumentasiReducer from 'containers/CMS/BimtekDokumentasi/reducer';
 import cmsBimtekJadwalReducer from 'containers/CMS/BimtekJadwal/reducer';
@@ -31,6 +32,7 @@ import formulirPendaftaranReducer from 'containers/BimTekForm/reducer';
 import bimtekMateriReducer from 'containers/BimTekMateri/reducer';
 import bimtekDokumentasiReducer from 'containers/BimTekKota/reducer';
 import bimtekAllDokumentasiReducer from 'containers/BimTekDokumentasi/reducer';
+import bimtekPermintaanReducer from 'containers/BimtekPermintaan/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -50,6 +52,7 @@ export default function createReducer(injectedReducers) {
     permintaanDataDetail: permintaanDataDetailReducer,
     cmsBerita: beritaCmsReducer,
     cmsKomunitasAhli: cmsKomunitasAhliReducer,
+    cmsLogActifitias: cmsLogActifitiasReducer,
     cmsBimtekPermintaan: cmsBimtekPermintaanDataReducer,
     cmsBimtekDokumentasi: cmsBimtekDokumentasiReducer,
     cmsBimtekJadwal: cmsBimtekJadwalReducer,
@@ -62,6 +65,7 @@ export default function createReducer(injectedReducers) {
     bimtekMateri: bimtekMateriReducer,
     bimtekDokumentasi: bimtekDokumentasiReducer,
     bimtekAllDokumentasi: bimtekAllDokumentasiReducer,
+    bimtekPermintaan: bimtekPermintaanReducer,
     router: connectRouter(history),
     ...injectedReducers,
   });

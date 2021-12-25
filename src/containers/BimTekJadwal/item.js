@@ -9,6 +9,7 @@ import { ReactComponent as ChevronUp } from 'assets/chevron-up.svg';
 import { ReactComponent as ChevronDown } from 'assets/chevron-down.svg';
 import { ReactComponent as LocationTag } from 'assets/location-tag.svg';
 import { ReactComponent as Download } from 'assets/download-red.svg';
+import { apiUrls, get } from 'utils/request';
 
 const CustomToggle = ({ children, eventKey, callback }) => {
   const decoratedOnClick = useAccordionButton(eventKey, () => callback && callback(eventKey));
@@ -46,7 +47,12 @@ const Button = styled.div`
 
 const BimTekJadwalItem = ({ title, startDate, endDate, city, location, speaker, materi }) => {
   const [collapse, setCollapse] = useState(false);
-
+  const materiFile = materi.map((item) => item.fileName);
+  const downloadMateri = async (file) => {
+    try {
+      await get(`${apiUrls.bimtekMateriTerdekatDownload}/${file}`);
+    } catch (e) {}
+  };
   return (
     <Card className="bimtek-jadwal-card">
       <Accordion>
@@ -82,7 +88,7 @@ const BimTekJadwalItem = ({ title, startDate, endDate, city, location, speaker, 
               <div>{materi.map((item) => item.nama)}</div>
             </div>
             <div className="text-end mt-2">
-              <Button>
+              <Button onClick={() => downloadMateri(materiFile)}>
                 <Download className="mr-10" /> Download Materi
               </Button>
             </div>

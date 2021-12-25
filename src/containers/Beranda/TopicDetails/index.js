@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useRef } from 'react';
+import React, { useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import moment from 'moment';
 import cx from 'classnames';
 import RBDropdown from 'react-bootstrap/Dropdown';
@@ -19,13 +19,13 @@ import { ReactComponent as SearchSvg } from 'assets/search.svg';
 import { TOPIC_LIST } from 'utils/constants';
 import { Loader } from 'components';
 import { Breadcrumbs } from 'components/Breadcrumb';
-import { Search } from 'components/Icons';
+import { FilledSquareSvg, Search } from 'components/Icons';
 import Table from 'components/Table';
 import { Tags } from 'components/Tags';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
 import { getDatasetUrl, parseQueryString } from 'utils/helper';
 import { useOnClickOutside } from 'utils/hooks';
-import { datasetSelector, getDataSet } from '../reducer';
+import { datasetSelector, getDataSet, logHomeTrendingOrPopular } from '../reducer';
 
 const TopicDetail = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -161,6 +161,29 @@ const TopicDetail = () => {
       applyInstansiFilter();
     }
   };
+
+  const logToTrendingAPI = useCallback(
+    (param, dispatch) => () => {
+      const { name, resources, title, num_resources } = param;
+      const dataSetUrl = getDatasetUrl(name);
+      const fileType = resources[0].format;
+      const payload = {
+        title: title,
+        fileType: [fileType],
+        dataSetDate: moment(resources[0].created).format('YYYY-MM-DD'),
+        description: resources[0].description,
+        totalFile: num_resources,
+        url: dataSetUrl,
+      };
+      dispatch(logHomeTrendingOrPopular(payload)).then((result) => {
+        if (!result.error) {
+          window.open(dataSetUrl, '_self');
+        }
+      });
+    },
+    [],
+  );
+
   useEffect(() => {
     document.addEventListener('keyup', handleEnterOnFilter);
     return () => {
@@ -174,7 +197,6 @@ const TopicDetail = () => {
         id: 'card',
         Header: 'Card',
         Cell: ({ cell: { row: { original: item } = {} } = {} }) => {
-          const dataSetUrl = getDatasetUrl(item.name);
           const numberOfMaxFormats = 3;
           const uniqFormats =
             uniqBy(
@@ -187,7 +209,7 @@ const TopicDetail = () => {
             <div className="row sdp-card-wrapped d-flex py-8 justify-content-between" key={item.id}>
               <div className="col-8 flex-column">
                 <div className="sdp-left-wrapper mb-27">
-                  <a title="dataset" href={dataSetUrl} className="sdp-link">
+                  <a title="dataset" href="#" className="sdp-link" onClick={logToTrendingAPI(item, dispatch)}>
                     <div className="mb-8 fs-16 fw-600 lh-19 sdp-text-black-dark">{item.title}</div>
                   </a>
                   <div className="fs-14 lh-17 sdp-text-black-dark">{item.notes}</div>
@@ -242,9 +264,7 @@ const TopicDetail = () => {
             className="sdp-instansi-button border-gray-stroke br-4 bg-white ml-10"
             variant="light"
             onClick={() => setShowInstansiFilter(true)}>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="12" height="12" rx="2" fill="#FF0000" />
-            </svg>
+            <FilledSquareSvg variant="gray" />
             {t('beranda.topic.searchInstansi')}
           </Button>
         </div>

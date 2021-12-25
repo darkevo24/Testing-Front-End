@@ -27,7 +27,6 @@ const CMSBimtekPermintaan = () => {
   const updateQuery = setSearch.debounce((val) => {
     setQuery(val);
   }, 500);
-
   const fetchDokumentasi = (params) => {
     let obj = {
       page: params.page,
@@ -37,7 +36,7 @@ const CMSBimtekPermintaan = () => {
   };
 
   useEffect(() => {
-    fetchDokumentasi({ page: page || 0 });
+    fetchDokumentasi({ page: 0 });
   }, [query]);
 
   const columns = [
@@ -65,7 +64,7 @@ const CMSBimtekPermintaan = () => {
       accessor: 'pembicara',
       Cell: ({ ...rest }) => (
         <span>
-          {rest.row.original?.pembicara.map((data) => {
+          {rest.row.original?.pembicara?.map((data) => {
             return data.nama;
           })}
         </span>
@@ -76,7 +75,7 @@ const CMSBimtekPermintaan = () => {
       accessor: 'materi',
       Cell: ({ ...rest }) => (
         <span>
-          {rest.row.original?.materi.map((data) => {
+          {rest.row.original?.materi?.map((data) => {
             return data.nama;
           })}
         </span>
@@ -90,7 +89,7 @@ const CMSBimtekPermintaan = () => {
   ];
 
   const rowClick = (data) => {
-    history.push(`/cms/bimtek-dokumentasi/${data.dokumentasiId}`);
+    history.push(`/cms/bimtek-dokumentasi/${data?.dokumentasiId}`);
   };
 
   const getRowClass = (data) => {

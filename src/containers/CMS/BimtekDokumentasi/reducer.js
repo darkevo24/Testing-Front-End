@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, defaultNumberOfRows, get, post } from 'utils/request';
+import { apiUrls, defaultNumberOfRows, get, post, put, deleteRequest } from 'utils/request';
 
 export const initialState = {
   dataset: {
@@ -19,6 +19,19 @@ export const initialState = {
   list: {
     loading: false,
     records: [],
+  },
+  postDokumentasi: {
+    loading: false,
+    records: [],
+  },
+  deleteDokumentasi: {
+    loading: false,
+    records: [],
+  },
+  logs: {
+    loading: false,
+    error: null,
+    logAktifitas: [],
   },
 };
 
@@ -41,7 +54,12 @@ export const getDokumentasiList = createAsyncThunk('bimtek-dokumentasi/getListDo
   return response;
 });
 
-export const postImageDokumentasi = createAsyncThunk('bimtek-dokumentasi/postDokumentasi', async (params) => {
+export const getListLogAktifitas = createAsyncThunk('bimtek-dokumentasi/getListLogs', async (params) => {
+  const response = await get(`${apiUrls.cmsBimtekLogs}/${params}`);
+  return response?.data?.content?.records;
+});
+
+export const postImageDokumentasi = createAsyncThunk('bimtek-dokumentasi/posImageDokumentasi', async (params) => {
   const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi`, {
     dokumentasi: [
       {
@@ -51,10 +69,37 @@ export const postImageDokumentasi = createAsyncThunk('bimtek-dokumentasi/postDok
       },
     ],
   });
-  console.log(params);
+  return response;
+});
+
+export const updateDokumentasiDetail = createAsyncThunk('bimtek-dokumentasi/postUpdateDokumentasiDetail', async (params) => {
+  const response = await put(`${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}`, {
+    isiDokumentasi: params.isiDokumentasi,
+    urlVidio: params.urlVidio,
+  });
   console.log(response);
   return response;
 });
+
+export const deleteDokumentasiDetail = createAsyncThunk(
+  'bimtek-dokumentasi/deleteBimtekDokumentasiDetail',
+  async (params) => {
+    const response = await deleteRequest(`${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}`);
+    console.log(response);
+    return response;
+  },
+);
+
+export const postImageDokumentasiDetail = createAsyncThunk(
+  'bimtek-dokumentasi/postImageDokumentasiDetail',
+  async (params) => {
+    const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}/images`, {
+      images: params.images,
+    });
+    console.log(response);
+    return response;
+  },
+);
 
 const BimtekDokumentasiSlice = createSlice({
   name: BIMTEK_DOKUMENTASI,
@@ -67,7 +112,7 @@ const BimtekDokumentasiSlice = createSlice({
     builder.addCase(getDokumentasi.fulfilled, (state, action) => {
       state.dataset.loading = false;
       state.dataset.records = action.payload.data.content.records;
-      state.dataset.page = action.payload.data.content.page;
+      state.dataset.page = action.payload.data.content.page - 1;
       state.dataset.totalPages = action.payload.data.content.totalPages;
       state.dataset.totalRecords = action.payload.data.content.totalRecords;
     });
@@ -86,6 +131,17 @@ const BimtekDokumentasiSlice = createSlice({
       state.detail.loading = false;
       state.detail.error = 'Invalid data';
     });
+    builder.addCase(getListLogAktifitas.pending, (state, action) => {
+      state.logs.loading = true;
+    });
+    builder.addCase(getListLogAktifitas.fulfilled, (state, action) => {
+      state.logs.loading = false;
+      state.logs.logAktifitas = action.payload;
+    });
+    builder.addCase(getListLogAktifitas.rejected, (state, action) => {
+      state.logs.loading = false;
+      state.logs.error = 'Invalid data';
+    });
     builder.addCase(getDokumentasiList.pending, (state, action) => {
       state.list.loading = true;
     });
@@ -98,15 +154,48 @@ const BimtekDokumentasiSlice = createSlice({
       state.list.error = 'Invalid data';
     });
     builder.addCase(postImageDokumentasi.pending, (state, action) => {
-      state.list.loading = true;
+      state.postDokumentasi.loading = true;
     });
     builder.addCase(postImageDokumentasi.fulfilled, (state, action) => {
-      state.list.loading = false;
-      state.list.records = action.payload;
+      state.postDokumentasi.loading = false;
+      state.postDokumentasi.records = action.payload;
     });
     builder.addCase(postImageDokumentasi.rejected, (state, action) => {
-      state.list.loading = false;
-      state.list.error = 'Invalid data';
+      state.postDokumentasi.loading = false;
+      state.postDokumentasi.error = 'Invalid data';
+    });
+    builder.addCase(postImageDokumentasiDetail.pending, (state, action) => {
+      state.postDokumentasi.loading = true;
+    });
+    builder.addCase(postImageDokumentasiDetail.fulfilled, (state, action) => {
+      state.postDokumentasi.loading = false;
+      state.postDokumentasi.records = action.payload;
+    });
+    builder.addCase(postImageDokumentasiDetail.rejected, (state, action) => {
+      state.postDokumentasi.loading = false;
+      state.postDokumentasi.error = 'Invalid data';
+    });
+    builder.addCase(updateDokumentasiDetail.pending, (state, action) => {
+      state.postDokumentasi.loading = true;
+    });
+    builder.addCase(updateDokumentasiDetail.fulfilled, (state, action) => {
+      state.postDokumentasi.loading = false;
+      state.postDokumentasi.records = action.payload;
+    });
+    builder.addCase(updateDokumentasiDetail.rejected, (state, action) => {
+      state.postDokumentasi.loading = false;
+      state.postDokumentasi.error = 'Invalid data';
+    });
+    builder.addCase(deleteDokumentasiDetail.pending, (state, action) => {
+      state.deleteDokumentasi.loading = true;
+    });
+    builder.addCase(deleteDokumentasiDetail.fulfilled, (state, action) => {
+      state.deleteDokumentasi.loading = false;
+      state.deleteDokumentasi.records = action.payload;
+    });
+    builder.addCase(deleteDokumentasiDetail.rejected, (state, action) => {
+      state.deleteDokumentasi.loading = false;
+      state.deleteDokumentasi.error = 'Invalid data';
     });
   },
 });
@@ -114,5 +203,6 @@ const BimtekDokumentasiSlice = createSlice({
 export const bimtekDokumentasiSelector = (state) => state.cmsBimtekDokumentasi.dataset;
 export const bimtekDokumentasiDetailSelector = (state) => state.cmsBimtekDokumentasi.detail;
 export const bimtekListSelector = (state) => state.cmsBimtekDokumentasi.list;
+export const bimtekLogAktifitas = (state) => state.cmsBimtekDokumentasi.logs;
 
 export default BimtekDokumentasiSlice.reducer;

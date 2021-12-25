@@ -14,6 +14,8 @@ import {
   cmsForumSDIGetTagsSelector,
 } from './reducer';
 import TableLoader from 'components/Loader/TableLoader';
+import { ComponentAccessibility } from 'components/ComponentAccess';
+import { USER_ROLES } from 'utils/constants';
 
 const CMSForumSDI = () => {
   const dispatch = useDispatch();
@@ -134,9 +136,11 @@ const CMSForumSDI = () => {
     <div className="sdp-cms-forum-sdi-container">
       <label className="fw-bold fs-32 lh-32 p-32">Forum SDI</label>
       <div className="d-flex mx-32">
-        <Button onClick={gotoFormPage} className="bg-info sdp-text-white br-4 border-0">
-          + Forum Baru
-        </Button>
+        <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR, USER_ROLES.CONTENT_CREATOR]}>
+          <Button onClick={gotoFormPage} className="bg-info sdp-text-white br-4 border-0">
+            + Forum Baru
+          </Button>
+        </ComponentAccessibility>
         <div className="d-flex flex-grow-1 align-items-center justify-content-end">
           <div className="d-flex align-items-center">
             <label className="mr-12">Topik</label>

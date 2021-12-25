@@ -39,7 +39,7 @@ const CMSBimtekPermintaanEdit = (props) => {
   const [showModalDraft, setModalDraft] = useState(false);
   const [showModalPublish, setModalPublish] = useState(false);
   const [showModalUnpublish, setModalUnpublish] = useState(false);
-
+  console.log(detailPermintaan);
   const fetchBimtekLog = (params) => {
     return dispatch(getListLogAktifitas(params));
   };
@@ -279,6 +279,9 @@ const CMSBimtekPermintaanEdit = (props) => {
   const ButtonStatusWaitingRequestApproval = () => {
     return (
       <div>
+        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalTolak(true)}>
+          Tolak
+        </Button>
         <Button className="ml-10" variant="info" onClick={() => setModalDraft(true)}>
           Kirim Pengajuan
         </Button>

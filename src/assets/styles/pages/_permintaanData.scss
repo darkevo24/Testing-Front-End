@@ -106,41 +106,31 @@
     }
   }
 }
-
-.sdp-modal {
-  &.modal-permintaan-detail {
-    .modal-dialog {
-        width: 382px;
-      .modal-body {
-        .text-blue {
-          color : $blue;
-          font-weight: bold;
-        }
-        width: 382px;
-        .sdp-input-wrapper {
-          position: relative;
-        }
-        .length{
-          position: absolute;
-          right: 23px;
-          bottom: 74px;
-          color: $gray;
-          font-size: 14px;
-        }
-      }
+.sdp-modal__modal-permintaan-detail {
+  .modal-dialog {
+    width: 382px;
+  .modal-body {
+    width: 382px;
+    .sdp-input-wrapper {
+      position: relative;
+    }
+    .length{
+      position: absolute;
+      right: 23px;
+      bottom: 74px;
+      color: $gray;
+      font-size: 14px;
     }
   }
-  &.modal-permintaan-data-proses {
-    .modal-dialog {
+}
+}
+.sdp-modal__modal-permintaan-data-proses {
+   .modal-dialog {
       max-width: 400px;
       display: flex;
       align-items: center;
       min-height: 100vh;
       .font-weight-bold{
-          font-weight: bold;
-      }
-      .text-blue {
-          color : $blue;
           font-weight: bold;
       }
       .alert {
@@ -175,5 +165,10 @@
           }
       }
     }
+}
+.sdp-content-detail__cms-permintaan-data {
+  .icon-box {
+      width: 3rem;
+      height: 3rem;
   }
 }

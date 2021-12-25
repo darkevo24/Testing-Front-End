@@ -100,9 +100,9 @@ const CMSDokumentasiDetail = (props) => {
   });
 
   useEffect(() => {
-    setUrlVidio(dataDetailDokumentasi.urlVidio);
-    setIsiDokumentasi(dataDetailDokumentasi.isiDokumentasi);
-    setFotoDokumentasi([dataDetailDokumentasi.image]);
+    setUrlVidio(dataDetailDokumentasi?.urlVidio);
+    setIsiDokumentasi(dataDetailDokumentasi?.isiDokumentasi);
+    setFotoDokumentasi(dataDetailDokumentasi?.images);
   }, [dataDetailDokumentasi]);
 
   const addFoto = async (e) => {
@@ -336,7 +336,7 @@ const CMSDokumentasiDetail = (props) => {
                 </div>
               </div>
               <Row>
-                {fotoDokumentasi.map((foto, index) => {
+                {fotoDokumentasi?.map((foto, index) => {
                   return (
                     <Col key={index} sm={4}>
                       <div className="doc-foto">

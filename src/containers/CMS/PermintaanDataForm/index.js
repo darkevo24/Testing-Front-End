@@ -36,7 +36,7 @@ const CMSPermintaanDataView = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { result, dataLog } = useSelector(permintaanDataDetailSelector);
-  console.log(dataLog);
+
   const SuccessText = () => {
     const history = useHistory();
     const backToTable = () => {
@@ -44,7 +44,7 @@ const CMSPermintaanDataView = () => {
     };
     return (
       <div className="d-flex">
-        <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
+        <div className="icon-box" onClick={backToTable}>
           <LeftChevron></LeftChevron>
         </div>
         <Row className="permintaan-data-form-success fw-bold justify-content-center align-items-center">Selesai</Row>
@@ -59,7 +59,7 @@ const CMSPermintaanDataView = () => {
     };
     return (
       <div className="d-flex">
-        <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
+        <div className="icon-box" onClick={backToTable}>
           <LeftChevron></LeftChevron>
         </div>
         <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Terkirim</Row>
@@ -74,7 +74,7 @@ const CMSPermintaanDataView = () => {
     };
     return (
       <div className="d-flex">
-        <div className="icon-box py-4 px-4 w-auto" onClick={backToTable}>
+        <div className="icon-box" onClick={backToTable}>
           <LeftChevron></LeftChevron>
         </div>
         <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">Terproses</Row>
@@ -160,7 +160,7 @@ const CMSPermintaanDataView = () => {
       catatan: data.catatan,
     };
     dispatch(postPermintaanDataTolak(obj)).then((res) => {
-      res?.name === 'error'
+      res.error.name === 'Error'
         ? Notification.show({
             type: 'secondary',
             message: <div> Permintaan Data Gagal Ditolak </div>,
@@ -181,7 +181,8 @@ const CMSPermintaanDataView = () => {
       catatan: data.catatan,
     };
     dispatch(postPermintaanDataProses(obj)).then((res) => {
-      res?.name === 'error'
+      console.log(res);
+      res.error.name === 'Error'
         ? Notification.show({
             type: 'secondary',
             message: <div> Permintaan Data Gagal Diproses </div>,
@@ -203,7 +204,7 @@ const CMSPermintaanDataView = () => {
       url: data.urlDataset,
     };
     dispatch(postPermintaanDataSelesai(obj)).then((res) => {
-      res?.name === 'error'
+      res.error.name === 'Error'
         ? Notification.show({
             type: 'secondary',
             message: <div> Permintaan Data Gagal Diselesaikan </div>,
@@ -254,7 +255,7 @@ const CMSPermintaanDataView = () => {
   };
 
   return (
-    <div>
+    <div className={bem.e('cms-permintaan-data')}>
       <StatusBar />
       <Row className={bem.e('section')}>
         <Col sm={9} className="my-5">
@@ -372,7 +373,7 @@ const CMSPermintaanDataView = () => {
           <div className="mt-20 mb-20">
             <p className="font-weight-bold mb-0">
               Apakah anda yakin ingin
-              <span className="text-blue"> memproses </span>
+              <span className="sdp-text-blue"> memproses </span>
               Permintaan Data
             </p>
             {id} ?
@@ -408,7 +409,7 @@ const CMSPermintaanDataView = () => {
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
-              <span className="text-blue"> Menyelesaikan </span>
+              <span className="sdp-text-blue"> Menyelesaikan </span>
               Permintaan Data
             </p>
             <span className="font-weight-bold"> {id} </span>?
@@ -417,7 +418,7 @@ const CMSPermintaanDataView = () => {
           <Form id={prosesFormId} onSubmit={handleSubmit(onSubmitSelesai)} noValidate>
             <InputGroup>
               <div className="url">URL</div>
-              <Input name="urlDataset" control={control} type="text" />
+              <Input name="catatan" control={control} type="text" />
             </InputGroup>
             <Form.Group as={Col} md="12" className="mb-16 mt-15">
               <Input

@@ -11,7 +11,12 @@ import isFunction from 'lodash/isFunction';
 import { ReadOnlyInputs } from 'components';
 import { LeftChevron } from 'components/Icons';
 import Modal from 'components/Modal';
-import { getCMSForumSDIDataById, cmsForumSDIGetDetailSelector } from './reducer';
+import {
+  getCMSForumSDIDataById,
+  cmsForumSDIGetDetailSelector,
+  cmsForumSDIGetLogSelector,
+  getCMSForumSDILogById,
+} from './reducer';
 import { apiUrls, post } from 'utils/request';
 import { DetailHeader } from './detailHeader';
 import { getStatusClass, prefixID } from 'utils/helper';
@@ -27,6 +32,7 @@ const CMSForumSDIDetail = () => {
   const { id } = useParams();
   const history = useHistory();
   const { detailResult, detailError, detailLoading } = useSelector(cmsForumSDIGetDetailSelector);
+  const { logResult, logLoading } = useSelector(cmsForumSDIGetLogSelector);
 
   const status = (detailResult?.status || '').toLowerCase();
 
@@ -41,6 +47,7 @@ const CMSForumSDIDetail = () => {
 
   const initialCall = () => {
     dispatch(getCMSForumSDIDataById(id));
+    dispatch(getCMSForumSDILogById(id));
   };
 
   const handleAPICall = async (method, url, params, callBack) => {
@@ -85,11 +92,11 @@ const CMSForumSDIDetail = () => {
     setLoader(false);
   };
 
-  const divClass = getStatusClass(detailResult?.status || '');
+  const divClass = getStatusClass(status || '');
 
   return (
     <div className="cms-forum-sdi-detail-wrapper">
-      <div className="d-flex bg-secondary align-items-center">
+      <div className="d-flex align-items-center">
         <button className="bg-white border-gray-stroke p-10" onClick={goBack}>
           <LeftChevron />
         </button>
@@ -97,104 +104,123 @@ const CMSForumSDIDetail = () => {
           <span className={`fs-14 lh-17 ${divClass?.textColor || ''}`}>{divClass?.text || detailResult?.status || ''}</span>
         </div>
       </div>
-      <div className="d-flex mt-56">
-        <div className="w-75 pl-100">
-          <div className="d-flex ml-24 mr-10 justify-content-between">
-            <div>
-              <label className="fw-bold fs-24">Forum SDI</label>
+      <div className="d-flex">
+        <Row className="mt-56 justify-content-md-center">
+          <Col xs={12} md={8}>
+            <div className="d-flex ml-24 mr-10 mb-20 justify-content-between">
+              <div>
+                <label className="fw-bold fs-24">Forum SDI</label>
+              </div>
+              <div>
+                {!detailLoading ? (
+                  <DetailHeader
+                    handleModal={(type) => setShowModal(type)}
+                    record={detailResult}
+                    history={history}
+                    status={status}
+                  />
+                ) : null}
+              </div>
             </div>
-            <div>
-              {!detailLoading ? (
-                <DetailHeader
-                  handleModal={(type) => setShowModal(type)}
-                  record={detailResult}
-                  history={history}
-                  status={status}
-                />
-              ) : null}
-            </div>
-          </div>
-          <div className="forum-sdi-detail-wrapper">
             {apiError || detailError ? <label className="sdp-error mb-20">{apiError || detailError}</label> : null}
-            <Row className="mb-3 px-24">
-              {detailLoading ? (
-                <RowLoader />
-              ) : (
-                <ReadOnlyInputs
-                  group
-                  label="Judul"
-                  labelClass="sdp-form-label fw-normal"
-                  type="text"
-                  value={detailResult?.judul}
-                />
-              )}
-              {detailLoading ? (
-                <RowLoader />
-              ) : (
-                <ReadOnlyInputs
-                  group
-                  label="Topik"
-                  labelClass="sdp-form-label fw-normal"
-                  type="text"
-                  value={detailResult?.topik}
-                />
-              )}
-              {detailLoading ? (
-                <RowLoader />
-              ) : (
-                <Form.Group as={Col} className="cms-forum-sdi-tag mt-5 mb-24" md="12">
-                  <label className="sdp-form-label mb-8">Tag</label>
-                  <div className="tag-data d-flex align-items-center bg-gray border-gray-stroke p-9 br-4">
-                    {detailResult?.tags.map((elem, index) => (
-                      <label className="sdp-text-blue mr-6 bg-light-blue" key={`tag-label-${index}`}>
-                        {elem}
-                      </label>
-                    ))}
+            <div className="forum-sdi-detail-wrapper">
+              <Row className="mb-3 px-24">
+                {detailLoading ? (
+                  <RowLoader />
+                ) : (
+                  <ReadOnlyInputs
+                    group
+                    label="Judul"
+                    labelClass="sdp-form-label fw-normal"
+                    type="text"
+                    value={detailResult?.judul}
+                  />
+                )}
+                {detailLoading ? (
+                  <RowLoader />
+                ) : (
+                  <ReadOnlyInputs
+                    group
+                    label="Topik"
+                    labelClass="sdp-form-label fw-normal"
+                    type="text"
+                    value={detailResult?.topik}
+                  />
+                )}
+                {detailLoading ? (
+                  <RowLoader />
+                ) : (
+                  <Form.Group as={Col} className="cms-forum-sdi-tag mt-5 mb-24" md="12">
+                    <label className="sdp-form-label mb-8">Tag</label>
+                    <div className="tag-data d-flex align-items-center bg-gray border-gray-stroke p-9 br-4">
+                      {detailResult?.tags.map((elem, index) => (
+                        <label className="sdp-text-blue mr-6 bg-light-blue" key={`tag-label-${index}`}>
+                          {elem}
+                        </label>
+                      ))}
+                    </div>
+                  </Form.Group>
+                )}
+                {detailLoading ? (
+                  <RowLoader />
+                ) : (
+                  <ReadOnlyInputs
+                    group
+                    rows={3}
+                    label="Isi Forum"
+                    labelClass="sdp-form-label fw-normal"
+                    type="text"
+                    as="textarea"
+                    value={detailResult?.isi}
+                  />
+                )}
+                {detailLoading ? (
+                  <RowLoader />
+                ) : (
+                  <Form.Group as={Col} className="cms-forum-sdi-input mt-5" md="12">
+                    <label className="sdp-form-label mb-8">Lampiran</label>
+                    <div className="input-data d-flex align-items-center bg-gray border-gray-stroke p-9 br-4">
+                      {detailResult?.lampiran.map((elem, index) => (
+                        <label className="sdp-text-blue bg-light-blue" key={`topik-label-${index}`}>
+                          {elem?.fileName}
+                        </label>
+                      ))}
+                    </div>
+                  </Form.Group>
+                )}
+              </Row>
+            </div>
+          </Col>
+          <Col xs={12} md={3}>
+            <label className="fs-20 lh-25 mb-20 fw-bold">Log Status</label>
+            {logLoading ? (
+              <RowLoader />
+            ) : (
+              (logResult || []).map((item, index) => {
+                const status = (item?.status || '').toLowerCase();
+                const classDetail = getStatusClass(status);
+                return (
+                  <div className="mb-24" key={`log-record-${index}`}>
+                    <div className="d-flex align-items-center">
+                      <span className="fs-14 lh-17 mr-5 sdp-text-black-dark mw-fit-content">
+                        {moment(item.createdAt).format('DD MMMM YYYY')}
+                      </span>
+                      <div className="border-gray-stroke h-0 w-100" />
+                    </div>
+                    <div className="d-flex mt-12  ">
+                      <div className={`br-2 py-4 px-6 mr-8 h-fit-content ${classDetail?.divBG || ''}`}>
+                        <span className={`fs-14 lh-17 ${classDetail?.textColor || ''}`}>
+                          {classDetail?.text || item.status}
+                        </span>
+                      </div>
+                      <span className="sdp-text-disable">{item.displayMessage}</span>
+                    </div>
                   </div>
-                </Form.Group>
-              )}
-              {detailLoading ? (
-                <RowLoader />
-              ) : (
-                <ReadOnlyInputs
-                  group
-                  rows={3}
-                  label="Isi Forum"
-                  labelClass="sdp-form-label fw-normal"
-                  type="text"
-                  as="textarea"
-                  value={detailResult?.isi}
-                />
-              )}
-              {detailLoading ? (
-                <RowLoader />
-              ) : (
-                <Form.Group as={Col} className="cms-forum-sdi-input mt-5" md="12">
-                  <label className="sdp-form-label mb-8">Lampiran</label>
-                  <div className="input-data d-flex align-items-center bg-gray border-gray-stroke p-9 br-4">
-                    {detailResult?.lampiran.map((elem, index) => (
-                      <label className="sdp-text-blue bg-light-blue" key={`topik-label-${index}`}>
-                        {elem?.fileName}
-                      </label>
-                    ))}
-                  </div>
-                </Form.Group>
-              )}
-            </Row>
-          </div>
-        </div>
-        <div className="w-25 wpx-">
-          <div className="mb-57">
-            <label className="fw-600 fs-20">Log Status</label>
-          </div>
-          <div className="d-flex w-75 align-items-center pb-16">
-            <span className="wpx-120">{moment(new Date()).format('DD MMMM YYYY')}</span>
-            <div className="border-gray-stroke h-0 w-100" />
-          </div>
-          <div>
-            <span className="bg-gray sdp-text-disable p-5 border-0">Dibuat</span>
-          </div>
-        </div>
+                );
+              })
+            )}
+          </Col>
+        </Row>
       </div>
       {showModal === 'kirim' && (
         <CMSModal onClose={handleCloseModal} label="Kirim Forum SDI?" loader={loader} confirmButtonAction={onKirim} />
@@ -255,7 +281,7 @@ const CMSForumSDIDetail = () => {
             placeholder="Tulis Catatan"
             name="catatan"
             value={notes}
-            onChange={({ target: { value = '' } = {} }) => setNotes(value.trim())}
+            onChange={({ target: { value = '' } = {} }) => setNotes(value)}
             className="border-gray-stroke br-4 w-100 mt-24 mb-24 h-214"
             required
           />

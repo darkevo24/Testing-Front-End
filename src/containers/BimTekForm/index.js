@@ -22,6 +22,7 @@ import { post } from 'utils/request';
 import { useForm } from 'react-hook-form';
 import bn from 'utils/bemNames';
 import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
+import Notification from 'components/Notification';
 
 const bem = bn('bimtek-form');
 
@@ -84,8 +85,19 @@ const BimTekForm = () => {
       }
     } else {
       try {
-        await post(apiUrls.addFormulirPendaftaran, params);
-      } catch (er) {}
+        const response = await post(apiUrls.addFormulirPendaftaran, params);
+        Notification.show({
+          type: 'secondary',
+          message: <div> Permintaan Bimbingan Teknis {response.data.content.id} berhasil terkirim </div>,
+          icon: 'check',
+        });
+      } catch (er) {
+        Notification.show({
+          type: 'secondary',
+          message: <div> Permintaan Bimbingan Teknis berhasil terkirim </div>,
+          icon: 'check',
+        });
+      }
       setKotaData(null);
       setPeserta('');
       setMateriTagData([]);
@@ -123,7 +135,7 @@ const BimTekForm = () => {
                 <Form.Control type="text" value={getPendaftaranData.instansiName} disabled />
               </Form.Group>
               <Form.Group as={Col} controlId="position">
-                <Form.Label>Jabatan / Peran Daftar</Form.Label>
+                <Form.Label>Unit Kerja</Form.Label>
                 <Form.Control type="text" value={getPendaftaranData.jabatanName} disabled />
               </Form.Group>
             </Row>

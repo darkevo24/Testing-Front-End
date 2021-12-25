@@ -27,7 +27,6 @@ const CMSBimtekPermintaan = () => {
   const updateQuery = setSearch.debounce((val) => {
     setQuery(val);
   }, 500);
-
   const fetchDokumentasi = (params) => {
     let obj = {
       page: params.page,

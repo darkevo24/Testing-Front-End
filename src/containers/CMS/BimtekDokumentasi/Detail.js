@@ -1,17 +1,17 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import moment from 'moment';
-import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import moment from 'moment';
+import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import * as yup from 'yup';
+import { LogStatus } from 'components/Sidebars/LogStatus';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
-import { LogStatus } from 'components/Sidebars/LogStatus';
 import bn from 'utils/bemNames';
 import { DatePicker, Input, Modal, Table, TextEditor, Notification } from 'components';
 import {
@@ -29,17 +29,18 @@ const bem = bn('content-detail');
 
 const CMSDokumentasiDetail = (props) => {
   const [showDeleteDokumentasi, setDeleteDokumentasi] = useState(false);
+  const [showUpdateDokumentasi, setUpdateDokumentasi] = useState(false);
   const [fotoDokumentasi, setFotoDokumentasi] = useState([]);
   const [urlVidio, setUrlVidio] = useState('');
   const [isiDokumentasi, setIsiDokumentasi] = useState('');
   const dispatch = useDispatch();
   const { id } = useParams();
+  const history = useHistory();
   const { records } = useSelector(bimtekDokumentasiDetailSelector);
   const { logAktifitas } = useSelector(bimtekLogAktifitas);
   const fetchDokumentasiDetail = (params) => {
     return dispatch(getDokumentasiDetail(params));
   };
-
   const fetchLogAktifitas = (params) => {
     return dispatch(getListLogAktifitas(params));
   };
@@ -47,27 +48,33 @@ const CMSDokumentasiDetail = (props) => {
   const dataDetailDokumentasi = useMemo(() => records || [], [records]);
   const materiBimtek = useMemo(() => dataDetailDokumentasi.materi || [], [records]);
   const pembicaraBimtek = useMemo(() => dataDetailDokumentasi.pembicara || [], [records]);
-  console.log(dataDetailDokumentasi);
   useEffect(() => {
+    if (id === 'null') {
+      history.push('/cms/bimtek-dokumentasi');
+      Notification.show({
+        type: 'secondary',
+        message: <div> Dokumentasi tidak ditemukan </div>,
+        icon: 'cross',
+      });
+    }
     fetchDokumentasiDetail(id);
     fetchLogAktifitas(id);
-  }, []);
-  const tanggalMulaiDisetujui = moment(dataDetailDokumentasi.tanggalMulaiDisetujui).format('DD/MM/YYYY');
-  const waktuMulaiDisetujui = moment(dataDetailDokumentasi.tanggalMulaiDisetujui).format('hh:mm');
-  const tanggalSelesaiDisetujui = moment(dataDetailDokumentasi.tanggalMulaiDisetujui).format('DD/MM/YYYY');
-  const waktuSelesaiDisetujui = moment(dataDetailDokumentasi.tanggalMulaiDisetujui).format('hh:mm');
-  console.log(tanggalMulaiDisetujui);
-  console.log(dataDetailDokumentasi.tanggalMulaiDisetujui);
+  }, [id]);
+
+  const tanggalMulaiDisetujui = moment(dataDetailDokumentasi?.tanggalMulaiDisetujui).format('DD/MM/YYYY');
+  const waktuMulaiDisetujui = moment(dataDetailDokumentasi?.tanggalMulaiDisetujui).format('hh:mm');
+  const tanggalSelesaiDisetujui = moment(dataDetailDokumentasi?.tanggalSelesaiDisetujui).format('DD/MM/YYYY');
+  const waktuSelesaiDisetujui = moment(dataDetailDokumentasi?.tanggalSelesaiDisetujui).format('hh:mm');
+  const dataTempat = dataDetailDokumentasi?.kota;
   useEffect(() => {
     reset({
-      default: dataDetailDokumentasi.records,
       waktuMulaiDisetujui,
       waktuSelesaiDisetujui,
       tanggalMulaiDisetujui,
       tanggalSelesaiDisetujui,
+      dataTempat,
     });
   }, [dataDetailDokumentasi]);
-
   const schema = yup
     .object({
       // name: yup.string().required(),
@@ -83,7 +90,11 @@ const CMSDokumentasiDetail = (props) => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      ...dataDetailDokumentasi,
+      tanggalMulaiDisetujui,
+      tanggalSelesaiDisetujui,
+      waktuMulaiDisetujui,
+      waktuSelesaiDisetujui,
+      dataTempat,
     },
   });
 
@@ -133,17 +144,38 @@ const CMSDokumentasiDetail = (props) => {
       isiDokumentasi,
       urlVidio,
     };
+    setUpdateDokumentasi(false);
     return dispatch(updateDokumentasiDetail(obj)).then((res) => {
-      res?.error
+      res.payload
         ? Notification.show({
-            type: 'secondary',
-            message: <div> Gagal Update Dokumentasi </div>,
-            icon: 'cross',
-          })
-        : Notification.show({
             type: 'secondary',
             message: <div> Berhasil Update Dokumentasi </div>,
             icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Gagal Update Dokumentasi </div>,
+            icon: 'cross',
+          });
+    });
+  };
+  const deleteDokumentasi = () => {
+    let obj = {
+      idDokumentasi: dataDetailDokumentasi.dokumentasiId,
+      id: dataDetailDokumentasi.id,
+    };
+    setDeleteDokumentasi(false);
+    return dispatch(deleteDokumentasiDetail(obj)).then((res) => {
+      res.payload
+        ? Notification.show({
+            type: 'secondary',
+            message: <div> Berhasil Menghapus Dokumentasi </div>,
+            icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Gagal Menghapus Dokumentasi </div>,
+            icon: 'cross',
           });
     });
   };
@@ -200,25 +232,8 @@ const CMSDokumentasiDetail = (props) => {
     onSearch: () => {},
     variant: 'link',
   };
-  const deleteDokumentasi = () => {
-    let obj = {
-      idDokumentasi: dataDetailDokumentasi.dokumentasiId,
-      id: dataDetailDokumentasi.id,
-    };
-    setDeleteDokumentasi(false);
-    return dispatch(deleteDokumentasiDetail(obj)).then((res) => {
-      res.payload
-        ? Notification.show({
-            type: 'secondary',
-            message: <div> Berhasil Menghapus Dokumentasi </div>,
-            icon: 'check',
-          })
-        : Notification.show({
-            type: 'secondary',
-            message: <div> Gagal Menghapus Dokumentasi </div>,
-            icon: 'cross',
-          });
-    });
+  const onTest = (data) => {
+    console.log(data);
   };
   return (
     <Row className={bem.e('section cms-bimtek')}>
@@ -230,19 +245,23 @@ const CMSDokumentasiDetail = (props) => {
               <Button variant="secondary" onClick={() => setDeleteDokumentasi(true)}>
                 <DeleteIcon />
               </Button>
-              <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => updateDokumentasi()}>
+              <Button
+                className="ml-10"
+                variant="secondary"
+                style={{ width: '112px' }}
+                onClick={() => setUpdateDokumentasi(true)}>
                 Perbarui
               </Button>
             </div>
           </div>
-          <Form className="sdp-form">
+          <Form className="sdp-form" onSubmit={handleSubmit(onTest)}>
             <Row className="align-items-end mb-15">
               <Col>
                 <DatePicker
                   group
                   readOnly
                   label="Tanggal Mulai Pelaksanaan Disetujui"
-                  // name={tanggalMulaiDisetujui !== 'Invalid date' ? 'tanggalMulaiDisetujui' : ''}
+                  name="tanggalMulaiDisetujui"
                   control={control}
                   rules={{ required: false }}
                 />
@@ -266,7 +285,7 @@ const CMSDokumentasiDetail = (props) => {
                   group
                   readOnly
                   label="Tanggal Selesai Pelaksanaan Disetujui"
-                  // name={tanggalSelesaiDisetujui !== 'Invalid date' ? 'tanggalSelesaiDisetujui' : ''}
+                  name="tanggalSelesaiDisetujui"
                   control={control}
                   rules={{ required: false }}
                 />
@@ -290,7 +309,7 @@ const CMSDokumentasiDetail = (props) => {
               className="mb-10"
               type="text"
               label="tempat"
-              name="default.kota"
+              name="dataTempat"
               control={control}
               rules={{ required: false }}
             />
@@ -313,7 +332,7 @@ const CMSDokumentasiDetail = (props) => {
                 {fotoDokumentasi.map((foto, index) => {
                   return (
                     <Col key={index} sm={4}>
-                      <div className="doc-foto" style={{ backgroundImage: "url('" + foto?.location + "')" }}></div>
+                      <img src={foto?.location} className="doc-foto" alt="img" />
                     </Col>
                   );
                 })}
@@ -331,13 +350,9 @@ const CMSDokumentasiDetail = (props) => {
       <Col sm={3}>
         <LogStatus data={logAktifitas} />
       </Col>
-      <Modal
-        showHeader={false}
-        title="Tambah Pembicari Baru"
-        visible={showDeleteDokumentasi}
-        onClose={() => setDeleteDokumentasi(false)}>
+      <Modal showHeader={false} visible={showDeleteDokumentasi} onClose={() => setDeleteDokumentasi(false)}>
         <div className="mt-20 mb-20">
-          <p className="mb-0"> Apakah Anda yaking ingin menghapus Data? </p>
+          <p className="mb-0"> Apakah Anda yakin ingin menghapus Data? </p>
         </div>
         <Form onSubmit={handleSubmit(deleteDokumentasi)} noValidate>
           <div className="d-flex justify-content-end mt-20">
@@ -346,6 +361,21 @@ const CMSDokumentasiDetail = (props) => {
             </Button>
             <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
               Hapus Data
+            </Button>
+          </div>
+        </Form>
+      </Modal>
+      <Modal showHeader={false} visible={showUpdateDokumentasi} onClose={() => setUpdateDokumentasi(false)}>
+        <div className="mt-20 mb-20">
+          <p className="mb-0"> Apakah Anda yakin ingin memperbarui Data? </p>
+        </div>
+        <Form onSubmit={handleSubmit(updateDokumentasi)} noValidate>
+          <div className="d-flex justify-content-end mt-20">
+            <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setUpdateDokumentasi()}>
+              Batal
+            </Button>
+            <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
+              Perbarui
             </Button>
           </div>
         </Form>

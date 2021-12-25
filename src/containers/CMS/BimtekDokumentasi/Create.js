@@ -53,7 +53,7 @@ const CMSJadwalBaru = () => {
   const waktuMulaiDisetujui = moment(dataDetailBimtek.records.tanggalMulaiDisetujui).format('hh:mm');
   const tanggalSelesaiDisetujui = moment(dataDetailBimtek.records.tanggalSelesaiDisetujui).format('DD/MM/YYYY');
   const waktuSelesaiDisetujui = moment(dataDetailBimtek.records.tanggalSelesaiDisetujui).format('hh:mm');
-  console.log(DetailBimtek);
+  console.log(tanggalMulaiDisetujui);
   useEffect(() => {
     reset({
       default: dataDetailBimtek.records,
@@ -306,7 +306,7 @@ const CMSJadwalBaru = () => {
               {fotoDokumentasi.map((foto, index) => {
                 return (
                   <Col key={index} sm={4}>
-                    <div className="doc-foto" style={{ backgroundImage: "url('" + foto.location + "')" }}></div>
+                    <img src={foto.location} className="doc-foto" alt="img" />
                   </Col>
                 );
               })}

@@ -76,7 +76,7 @@ export const postStatusPublish = createAsyncThunk('/bimtek-permintaan/changeStat
 });
 
 export const postStatusUnpublish = createAsyncThunk('/bimtek-permintaan/changeStatusDetailUnpublish', async (params) => {
-  const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/ubah-status/UNPUBLISH`, { catatan: 'test' });
+  const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/ubah-status/UNPUBLISHED`, { catatan: 'test' });
   return response;
 });
 

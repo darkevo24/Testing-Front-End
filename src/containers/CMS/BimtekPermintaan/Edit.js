@@ -59,17 +59,7 @@ const CMSBimtekPermintaanEdit = (props) => {
 
   useEffect(() => {
     reset(data);
-    if (data.status === 'WAITING_REQUEST_APPROVAL') {
-      setObjRequired({
-        namaBimbinganTeknis: yup.string().required(),
-        tempatBimbinganTeknis: yup.string().required(),
-        tanggalMulaiDisetujuiUpdate: yup.string().required(),
-        tanggalSelesaiDisetujuiUpdate: yup.string().required(),
-        jamMulaiDisetujuiUpdate: yup.string().required(),
-        jamSelesaiDisetujuiUpdate: yup.string().required(),
-      });
-    }
-  }, [data, trigger]);
+  }, [data]);
   const schema = yup.object(objRequired).required();
 
   const {
@@ -84,6 +74,25 @@ const CMSBimtekPermintaanEdit = (props) => {
       // tanggalMulaiDisetujui,
     },
   });
+
+  const onSetModalWaitingSetujui = () => {
+    setObjRequired({
+      namaBimbinganTeknis: yup.string().required(),
+      tempatBimbinganTeknis: yup.string().required(),
+      tanggalMulaiDisetujuiUpdate: yup.string().required(),
+      tanggalSelesaiDisetujuiUpdate: yup.string().required(),
+      jamMulaiDisetujuiUpdate: yup.string().required(),
+      jamSelesaiDisetujuiUpdate: yup.string().required(),
+    });
+    setModalWaitingSetujui(true);
+  };
+
+  const onSetModalTolak = () => {
+    setObjRequired({
+      catatanTolak: yup.string().required(),
+    });
+    setModalTolak(true);
+  };
 
   const onSubmitProses = (data) => {
     let obj = {
@@ -321,10 +330,10 @@ const CMSBimtekPermintaanEdit = (props) => {
   const ButtonStatusWaitingRequestApproval = () => {
     return (
       <div>
-        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalTolak(true)}>
+        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => onSetModalTolak()}>
           Tolak
         </Button>
-        <Button className="ml-10" variant="info" onClick={() => setModalWaitingSetujui(true)}>
+        <Button className="ml-10" variant="info" onClick={() => onSetModalWaitingSetujui()}>
           Setujui
         </Button>
       </div>
@@ -598,7 +607,7 @@ const CMSBimtekPermintaanEdit = (props) => {
             </p>
           </div>
           <Form onSubmit={handleSubmit(onSubmitTolak)} noValidate>
-            <Input as="textarea" name="catatanTolak" control={control} />
+            <Input as="textarea" name="catatanTolak" control={control} error={errors.catatanTolak?.message} />
             <div className="d-flex justify-content-end mt-20">
               <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalTolak()}>
                 Batal

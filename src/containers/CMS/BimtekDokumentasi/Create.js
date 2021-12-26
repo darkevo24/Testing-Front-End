@@ -12,7 +12,7 @@ import { useHistory } from 'react-router-dom';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import Notification from 'components/Notification';
 import { DatePicker, Input, Modal, Table, TextEditor } from 'components';
-import { bimtekListSelector, getDokumentasiList, postImageDokumentasi } from './reducer';
+import { bimtekListSelector, getJadwalBimtekList, postImageDokumentasi } from './reducer';
 import { bimtekJadwalDetailSelector, getJadwalBimtekDetail } from 'containers/CMS/BimtekJadwal/reducer';
 import { apiUrls, post } from 'utils/request';
 
@@ -33,7 +33,7 @@ const CMSJadwalBaru = () => {
   const DetailBimtek = useSelector(bimtekJadwalDetailSelector);
 
   const fetchDokumentasiList = () => {
-    return dispatch(getDokumentasiList());
+    return dispatch(getJadwalBimtekList());
   };
 
   const dataListBimtek = records;

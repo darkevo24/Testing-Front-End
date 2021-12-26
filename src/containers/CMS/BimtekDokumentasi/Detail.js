@@ -294,7 +294,7 @@ const CMSDokumentasiDetail = (props) => {
   const ApprovedText = () => {
     const history = useHistory();
     const backToTable = () => {
-      history.push('/cms/permintaan-data');
+      history.push('/cms/bimtek-dokumentasi');
     };
     return (
       <div className="d-flex">
@@ -308,7 +308,7 @@ const CMSDokumentasiDetail = (props) => {
   const UnpublishText = () => {
     const history = useHistory();
     const backToTable = () => {
-      history.push('/cms/permintaan-data');
+      history.push('/cms/bimtek-dokumentasi');
     };
     return (
       <div className="d-flex">

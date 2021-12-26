@@ -53,7 +53,6 @@ const CMSJadwalBaru = () => {
   const waktuMulaiDisetujui = moment(dataDetailBimtek.records.tanggalMulaiDisetujui).format('hh:mm');
   const tanggalSelesaiDisetujui = moment(dataDetailBimtek.records.tanggalSelesaiDisetujui).format('DD/MM/YYYY');
   const waktuSelesaiDisetujui = moment(dataDetailBimtek.records.tanggalSelesaiDisetujui).format('hh:mm');
-  console.log(tanggalMulaiDisetujui);
   useEffect(() => {
     reset({
       default: dataDetailBimtek.records,
@@ -110,7 +109,6 @@ const CMSJadwalBaru = () => {
   function deleteFotoDokumentasi(e) {
     const filter = fotoDokumentasi.filter((item, index) => index !== e);
     setFotoDokumentasi(filter);
-    console.log(filter);
   }
 
   const openUploadForm = (id) => {

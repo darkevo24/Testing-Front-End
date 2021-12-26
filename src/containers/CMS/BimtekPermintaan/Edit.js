@@ -35,6 +35,8 @@ const CMSBimtekPermintaanEdit = (props) => {
   const dispatch = useDispatch();
   const { records } = useSelector(bimtekLogSelector);
   const detailPermintaan = useSelector(bimtekPermintaanDataDetail);
+  const [trigger, setTrigger] = useState(false);
+  const [objRequired, setObjRequired] = useState({});
   const [showModalSetuju, setModalSetuju] = useState(false);
   const [showModalWaitingSetujui, setModalWaitingSetujui] = useState(false);
   const [showModalTolak, setModalTolak] = useState(false);
@@ -51,19 +53,24 @@ const CMSBimtekPermintaanEdit = (props) => {
   useEffect(() => {
     fetchBimtekLog({ id });
     fetchPermintaanDetail({ id });
-  }, []);
+  }, [trigger]);
 
   const data = useMemo(() => detailPermintaan || {}, [detailPermintaan]);
 
   useEffect(() => {
     reset(data);
-  }, [data]);
-
-  const schema = yup
-    .object({
-      // name: yup.string().required(),
-    })
-    .required();
+    if (data.status === 'WAITING_REQUEST_APPROVAL') {
+      setObjRequired({
+        namaBimbinganTeknis: yup.string().required(),
+        tempatBimbinganTeknis: yup.string().required(),
+        tanggalMulaiDisetujuiUpdate: yup.string().required(),
+        tanggalSelesaiDisetujuiUpdate: yup.string().required(),
+        jamMulaiDisetujuiUpdate: yup.string().required(),
+        jamSelesaiDisetujuiUpdate: yup.string().required(),
+      });
+    }
+  }, [data, trigger]);
+  const schema = yup.object(objRequired).required();
 
   const {
     control,
@@ -180,23 +187,21 @@ const CMSBimtekPermintaanEdit = (props) => {
   };
 
   const onSubmitSetujuiBimbingan = (data) => {
-    console.log(data);
     const tanggalMulaiDisetujui = `${moment(data.tanggalMulaiDisetujuiUpdate).format('YYYY-MM-DD')} ${
-      data.jamMulaiDesetujuiUpdate
-    }`;
+      data.jamMulaiDisetujuiUpdate
+    }:00`;
     const tanggalSelesaiDisetujui = `${moment(data.tanggalSelesaiDisetujuiUpdate).format('YYYY-MM-DD')} ${
       data.jamSelesaiDisetujuiUpdate
-    }`;
+    }:00`;
     let obj = {
       id: data.id,
-      namaBimtek: data.namaBimtek,
+      namaBimtek: data.namaBimbinganTeknis,
       tagMateri: data.tagMateri,
       tanggalMulaiDisetujui,
       tanggalSelesaiDisetujui,
       kota: data.kotaId,
-      alamat: data.tempat,
+      alamat: data.tempatBimbinganTeknis,
     };
-    console.log(obj);
     dispatch(updateStatusBimtekSetujui(obj)).then((res) => {
       res.payload
         ? Notification.show({
@@ -211,6 +216,7 @@ const CMSBimtekPermintaanEdit = (props) => {
           });
     });
     setModalWaitingSetujui(false);
+    setTrigger(true);
   };
 
   const SuccessText = () => {
@@ -414,6 +420,20 @@ const CMSBimtekPermintaanEdit = (props) => {
               <Input readOnly group label="Email" name="requestor.email" control={control} />
               <Input readOnly group label="Ekspektasi Jumlah Peserta" name="ekspektasiJumlahPeserta" control={control} />
               <Input readOnly group label="Tagging Materi" name="tagMateri" control={control} />
+              <Input
+                group
+                label="Nama Bimbingan Teknis"
+                name="namaBimbinganTeknis"
+                control={control}
+                error={errors.namaBimbinganTeknis?.message}
+              />
+              <Input
+                group
+                label="Tempat"
+                name="tempatBimbinganTeknis"
+                control={control}
+                error={errors.tempatBimbinganTeknis?.message}
+              />
               <Row className="align-items-end">
                 <Col>
                   <DatePicker
@@ -422,7 +442,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                     name="tanggalMulaiDisetujuiUpdate"
                     control={control}
                     rules={{ required: false }}
-                    error={errors.publishedDate?.message}
+                    error={errors.tanggalMulaiDisetujuiUpdate?.message}
                   />
                 </Col>
                 <Col>
@@ -431,10 +451,10 @@ const CMSBimtekPermintaanEdit = (props) => {
                     className="m-0"
                     type="time"
                     label=""
-                    name="jamMulaiDesetujuiUpdate"
+                    name="jamMulaiDisetujuiUpdate"
                     control={control}
                     rules={{ required: false }}
-                    error={errors.publishedTime?.message}
+                    error={errors.jamMulaiDisetujuiUpdate?.message}
                   />
                 </Col>
               </Row>
@@ -446,7 +466,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                     name="tanggalSelesaiDisetujuiUpdate"
                     control={control}
                     rules={{ required: false }}
-                    error={errors.publishedDate?.message}
+                    error={errors.tanggalSelesaiDisetujuiUpdate?.message}
                   />
                 </Col>
                 <Col>
@@ -458,7 +478,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                     name="jamSelesaiDisetujuiUpdate"
                     control={control}
                     rules={{ required: false }}
-                    error={errors.publishedTime?.message}
+                    error={errors.jamSelesaiDisetujuiUpdate?.message}
                   />
                 </Col>
               </Row>

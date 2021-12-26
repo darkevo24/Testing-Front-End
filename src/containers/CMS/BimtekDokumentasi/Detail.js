@@ -38,7 +38,6 @@ const CMSDokumentasiDetail = (props) => {
   const history = useHistory();
   const { records } = useSelector(bimtekDokumentasiDetailSelector);
   const { logAktifitas } = useSelector(bimtekLogAktifitas);
-  console.log(logAktifitas);
   const fetchDokumentasiDetail = (params) => {
     return dispatch(getDokumentasiDetail(params));
   };
@@ -116,7 +115,7 @@ const CMSDokumentasiDetail = (props) => {
           message: <div> Berhasil Upload Gambar Dokumentasi </div>,
           icon: 'check',
         });
-        setFotoDokumentasi([...fotoDokumentasi, res.data]);
+        setFotoDokumentasi(...fotoDokumentasi, res.data);
         let obj = {
           idDokumentasi: dataDetailDokumentasi.dokumentasiId,
           id: dataDetailDokumentasi.id,
@@ -136,7 +135,6 @@ const CMSDokumentasiDetail = (props) => {
   function deleteFotoDokumentasi(e) {
     const filter = fotoDokumentasi.filter((item, index) => index !== e);
     setFotoDokumentasi(filter);
-    console.log(filter);
   }
 
   const openUploadForm = (id) => {
@@ -239,9 +237,7 @@ const CMSDokumentasiDetail = (props) => {
     onSearch: () => {},
     variant: 'link',
   };
-  const onTest = (data) => {
-    console.log(data);
-  };
+  const onTest = (data) => {};
   return (
     <Row className={bem.e('section cms-bimtek')}>
       <Col sm={9}>

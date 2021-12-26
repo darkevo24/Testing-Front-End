@@ -37,8 +37,6 @@ export const getPermintaanData = createAsyncThunk('bimtek-permintaan/getListBimt
   const response = await get(apiUrls.cmsBimtekPermintaanData, {
     query: { page: params.page + 1, size: 10, namaBimtek: params.q, instansiId: params.instansiId },
   });
-  console.log(params.page);
-  console.log(response);
   return response;
 });
 
@@ -86,10 +84,10 @@ export const updateStatusBimtekSetujui = createAsyncThunk('/bimtek-permintaan/ch
   const response = await put(`${apiUrls.cmsBimtekJadwal}/${params.id}`, {
     namaBimtek: params.namaBimtek,
     tagMateri: params.tagMateri,
-    tanggalMulaiSetujui: params.tanggalMulaiSetujui,
+    tanggalMulaiDisetujui: params.tanggalMulaiDisetujui,
     tanggalSelesaiDisetujui: params.tanggalSelesaiDisetujui,
     kota: params.kota,
-    alamat: params.alamat,
+    alamat: 'test',
   });
   return response;
 });

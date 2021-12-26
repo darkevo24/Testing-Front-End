@@ -30,6 +30,7 @@ export const prosesFormId = 'proses-form-id';
 export const selesaiFormId = 'selesai-form-id';
 
 const CMSPermintaanDataView = () => {
+  const [objRequired, setObjRequired] = useState({});
   const [showTolakModal, isSetShowTolakModal] = useState(false);
   const [showProsesModal, isSetShowProsesModal] = useState(false);
   const [showSelesaiModal, isSetShowSelesaiModal] = useState(false);
@@ -82,6 +83,21 @@ const CMSPermintaanDataView = () => {
     );
   };
 
+  const DraftText = () => {
+    const history = useHistory();
+    const backToTable = () => {
+      history.push('/cms/permintaan-data');
+    };
+    return (
+      <div className="d-flex">
+        <div className="icon-box" onClick={backToTable}>
+          <LeftChevron></LeftChevron>
+        </div>
+        <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">Draft</Row>
+      </div>
+    );
+  };
+
   const TerkirimButton = ({ onTolak, onProses }) => {
     return (
       <div>
@@ -128,25 +144,6 @@ const CMSPermintaanDataView = () => {
   const hideSelesaiModal = () => {
     isSetShowSelesaiModal(false);
   };
-
-  const schema = yup
-    .object({
-      // id: yup.mixed().required(),
-      // namaPeminta: yup.mixed().required(),
-      // deskripsi: yup.mixed().required(),
-      // jenisData: yup.string().required(),
-      // tanggaltarget: yup.string().required(),
-      // produsen: yup.mixed().required(),
-      // tipe: yup.mixed().required(),
-      // tanggalPermintaan: yup.string().required(),
-      // tujuanPermintaan: yup.string().required(),
-      // status: yup.mixed().required(),
-      catatan: yup.string().required(),
-      // catatanproses: yup.string().required(),
-      // urlDataset: yup.string().required(),
-    })
-    .required();
-
   const fetchDataset = () => {
     return dispatch(getPermintaanDataDetail(id));
   };
@@ -160,16 +157,16 @@ const CMSPermintaanDataView = () => {
       catatan: data.catatan,
     };
     dispatch(postPermintaanDataTolak(obj)).then((res) => {
-      res.error.name === 'Error'
+      !res.status === 'FAILED'
         ? Notification.show({
             type: 'secondary',
-            message: <div> Permintaan Data Gagal Ditolak </div>,
-            icon: 'cross',
+            message: <div> Permintaan Data Berhasi Ditolak </div>,
+            icon: 'check',
           })
         : Notification.show({
             type: 'secondary',
-            message: <div> Permintaan Data Berhasil Ditolak </div>,
-            icon: 'check',
+            message: <div> Permintaan Data Gagal Ditolak </div>,
+            icon: 'cross',
           });
     });
     hideTolakModal();
@@ -181,17 +178,16 @@ const CMSPermintaanDataView = () => {
       catatan: data.catatan,
     };
     dispatch(postPermintaanDataProses(obj)).then((res) => {
-      console.log(res);
-      res.error.name === 'Error'
+      !res.status === 'FAILED'
         ? Notification.show({
-            type: 'secondary',
-            message: <div> Permintaan Data Gagal Diproses </div>,
-            icon: 'cross',
-          })
-        : Notification.show({
             type: 'secondary',
             message: <div> Permintaan Data Berhasil Diproses </div>,
             icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Permintaan Data Gagal Diproses </div>,
+            icon: 'cross',
           });
     });
     hideProsesModal();
@@ -201,19 +197,19 @@ const CMSPermintaanDataView = () => {
     let obj = {
       id,
       catatan: data.catatan,
-      url: data.urlDataset,
+      url: data.urlDatasetNew,
     };
     dispatch(postPermintaanDataSelesai(obj)).then((res) => {
-      res.error.name === 'Error'
+      !res.status === 'FAILED'
         ? Notification.show({
-            type: 'secondary',
-            message: <div> Permintaan Data Gagal Diselesaikan </div>,
-            icon: 'cross',
-          })
-        : Notification.show({
             type: 'secondary',
             message: <div> Permintaan Data Berhasil Diselesaikan </div>,
             icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Permintaan Data Gagal Diselesaikan </div>,
+            icon: 'cross',
           });
     });
     hideSelesaiModal();
@@ -227,7 +223,21 @@ const CMSPermintaanDataView = () => {
 
   useEffect(() => {
     reset(data);
+    switch (data.status) {
+      case 'TERKIRIM':
+        return setObjRequired({
+          catatan: yup.string().required(),
+        });
+      case 'DIPROSES':
+        return setObjRequired({
+          catatan: yup.string().required(),
+          urlDatasetNew: yup.string().required(),
+        });
+      default:
+        return null;
+    }
   }, [data]);
+  const schema = yup.object(objRequired).required();
 
   const {
     control,
@@ -249,6 +259,8 @@ const CMSPermintaanDataView = () => {
         return <TerkirimText />;
       case 'DIPROSES':
         return <DiprosesText />;
+      case 'DRAFT':
+        return <DraftText />;
       default:
         return null;
     }
@@ -418,7 +430,13 @@ const CMSPermintaanDataView = () => {
           <Form id={prosesFormId} onSubmit={handleSubmit(onSubmitSelesai)} noValidate>
             <InputGroup>
               <div className="url">URL</div>
-              <Input name="catatan" control={control} type="text" />
+              <Input
+                name="urlDatasetNew"
+                control={control}
+                type="text"
+                rules={{ required: true }}
+                error={errors.urlDatasetNew?.message}
+              />
             </InputGroup>
             <Form.Group as={Col} md="12" className="mb-16 mt-15">
               <Input

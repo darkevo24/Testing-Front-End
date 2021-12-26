@@ -152,16 +152,15 @@
       .input-group {
           .url {
               padding: 10px;
-              height: 100%;
               position: absolute;
               left: 0;
-              border: 1px solid $stroke;
+              border-right: 1px solid $stroke;
               z-index: 9999;
-              background: $white;
           }
           input {
               padding-left: 55px;
               position: relative;
+              overflow: hidden;
           }
       }
     }

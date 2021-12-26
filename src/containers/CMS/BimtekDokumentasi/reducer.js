@@ -77,7 +77,6 @@ export const updateDokumentasiDetail = createAsyncThunk('bimtek-dokumentasi/post
     isiDokumentasi: params.isiDokumentasi,
     urlVidio: params.urlVidio,
   });
-  console.log(response);
   return response;
 });
 
@@ -85,7 +84,6 @@ export const deleteDokumentasiDetail = createAsyncThunk(
   'bimtek-dokumentasi/deleteBimtekDokumentasiDetail',
   async (params) => {
     const response = await deleteRequest(`${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}`);
-    console.log(response);
     return response;
   },
 );
@@ -96,7 +94,6 @@ export const postImageDokumentasiDetail = createAsyncThunk(
     const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}/images`, {
       images: params.images,
     });
-    console.log(response);
     return response;
   },
 );

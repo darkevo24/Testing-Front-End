@@ -11,7 +11,7 @@
 .overview {
   font-size: 16px;
   line-height: 24px;
-  color: gray-dark;
+  color: $gray-dark;
  
 }
 .read_more_link{
@@ -39,7 +39,7 @@
   .judul {
     font-weight: 600;
     font-size: 16px;
-    color: black-dark;
+    color: $black-dark;
     margin: 12px 0;
     cursor: pointer;
   }
@@ -47,14 +47,14 @@
   .kontent {
     font-size: 14px;
     line-height: 21px;
-    color: gray-dark;
+    color: $gray-dark;
   }
 
   .loadMoreBUtton {
-    background: gray-bg;
+    background: $gray-bg;
     border-radius: 4px;
     font-size: 14px;
-    color: black-dark;
+    color: $black-dark;
     padding: 16px 24px;
     margin: 32px 0;
     border: 0;

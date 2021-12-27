@@ -50,6 +50,7 @@ const BimTekJadwal = () => {
   for (var i = 0; i < 10; i++) {
     filterYear.push(currentYear - i);
   }
+
   return (
     <BimtekLayout>
       <div className="h-100">
@@ -82,24 +83,26 @@ const BimTekJadwal = () => {
             </Form.Select>
           </Col>
         </Row>
-        {!jadwalData.length && (
+        {!jadwalData.length ? (
           <div className="d-flex justify-content-center align-items-center h-100 flex-column mt-5">
             <NoPerminataanData />
             <div className="text-black-50 mb-2 mt-2">No Data</div>
           </div>
+        ) : (
+          jadwalData.map((item, key) => (
+            <BimTekJadwalItem
+              key={key}
+              title={item.namaBimtek}
+              startDate={moment(item.tanggalMulaiDisetujui).format('D MMMM YYYY')}
+              endDate={moment(item.tanggalSelesaiDisetujui).format('D MMMM YYYY')}
+              city={item.kota}
+              location={item.tempat}
+              speaker={item.pembicara}
+              materi={item.materi}
+              id={item.id}
+            />
+          ))
         )}
-        {jadwalData.map((item, key) => (
-          <BimTekJadwalItem
-            key={key}
-            title={item.namaBimtek}
-            startDate={moment(item.tanggalMulaiDisetujui).format('D MMMM YYYY')}
-            endDate={moment(item.tanggalSelesaiDisetujui).format('D MMMM YYYY')}
-            city={item.kota}
-            location={item.tempat}
-            speaker={item.pembicara}
-            materi={item.materi}
-          />
-        ))}
       </div>
     </BimtekLayout>
   );

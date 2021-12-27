@@ -23,6 +23,7 @@ import { useForm } from 'react-hook-form';
 import bn from 'utils/bemNames';
 import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
 import Notification from 'components/Notification';
+import { ReadOnlyInputs } from 'components';
 
 const bem = bn('bimtek-form');
 
@@ -106,7 +107,7 @@ const BimTekForm = () => {
   const handleKotaChange = (e) => {
     setKotaData(e.value);
   };
-  const ekspektasi = (e) => {
+  const onEkspektasiChange = (e) => {
     setPeserta(e.target.value);
   };
   const handleMateriChange = (selected) => {
@@ -121,36 +122,66 @@ const BimTekForm = () => {
           <Form onSubmit={getFormulirData}>
             <Row>
               <Form.Group as={Col} controlId="fullName">
-                <Form.Label>Nama Lengkap</Form.Label>
-                <Form.Control type="text" defaultValue={getPendaftaranData.nama} disabled />
+                <ReadOnlyInputs
+                  group
+                  label="Nama Lengkap"
+                  labelClass="sdp-form-label fw-normal"
+                  type="text"
+                  defaultValue={getPendaftaranData.nama}
+                />
               </Form.Group>
               <Form.Group as={Col} controlId="domisili">
-                <Form.Label>Provinsi/Kab/Kota</Form.Label>
-                <Form.Control type="text" defaultValue={getPendaftaranData.provinsiName} disabled />
+                <ReadOnlyInputs
+                  group
+                  label="Provinsi/Kab/Kota"
+                  labelClass="sdp-form-label fw-normal"
+                  type="text"
+                  defaultValue={getPendaftaranData.provinsiName}
+                />
               </Form.Group>
             </Row>
             <Row>
               <Form.Group as={Col} controlId="agency">
-                <Form.Label>Dinas Instansi</Form.Label>
-                <Form.Control type="text" defaultValue={getPendaftaranData.instansiName} disabled />
+                <ReadOnlyInputs
+                  group
+                  label="Dinas Instansi"
+                  labelClass="sdp-form-label fw-normal"
+                  type="text"
+                  defaultValue={getPendaftaranData.instansiName}
+                />
               </Form.Group>
               <Form.Group as={Col} controlId="position">
-                <Form.Label>Unit Kerja</Form.Label>
-                <Form.Control type="text" defaultValue={getPendaftaranData.unitKerjaName} disabled />
+                <ReadOnlyInputs
+                  group
+                  label="Unit Kerja"
+                  labelClass="sdp-form-label fw-normal"
+                  type="text"
+                  defaultValue={getPendaftaranData.unitKerjaName}
+                />
               </Form.Group>
             </Row>
             <Row>
               <Form.Group as={Col} controlId="phoneNumber">
-                <Form.Label>Nomor Handphone</Form.Label>
-                <Form.Control type="number" defaultValue={getPendaftaranData.noHp} disabled />
+                <ReadOnlyInputs
+                  group
+                  label="Nomor Handphon"
+                  labelClass="sdp-form-label fw-normal"
+                  type="text"
+                  defaultValue={getPendaftaranData.noHp}
+                />
               </Form.Group>
               <Form.Group as={Col} controlId="email">
-                <Form.Label>Alamat E-mail</Form.Label>
-                <Form.Control type="email" defaultValue={getPendaftaranData.email} disabled />
+                <ReadOnlyInputs
+                  group
+                  label="Alamat E-mail"
+                  labelClass="sdp-form-label fw-normal"
+                  type="text"
+                  defaultValue={getPendaftaranData.email}
+                />
               </Form.Group>
             </Row>
             <Row>
-              <Form.Group as={Col} controlId="city" className={bem.e('kota-dropdown', 'position-relative')}>
+              <Form.Group as={Col} controlId="city" className={bem.e('pendaftaran-form-field', 'position-relative')}>
                 <Form.Label>Kota Pelaksana</Form.Label>
                 <SingleSelectDropdown
                   data={kotaOptions}
@@ -164,15 +195,21 @@ const BimTekForm = () => {
                   Kota Pelaksana is required.
                 </p>
               </Form.Group>
-              <Form.Group as={Col} controlId="talentCount" className={bem.e('', 'position-relative')}>
+              <Form.Group as={Col} controlId="talentCount" className={bem.e('pendaftaran-form-field', 'position-relative')}>
                 <Form.Label>Ekspektasi Jumlah Peserta</Form.Label>
-                <Form.Control type="number" min={0} value={peserta} name="ekspektasiJumlahPeserta" onChange={ekspektasi} />
+                <Form.Control
+                  type="number"
+                  min={0}
+                  value={peserta}
+                  name="ekspektasiJumlahPeserta"
+                  onChange={onEkspektasiChange}
+                />
                 <p hidden={ekspektasiError} className={bem.e('error-message')}>
                   Ekspektasi Jumlah Peserta is required.
                 </p>
               </Form.Group>
             </Row>
-            <Form.Group as={Col} controlId="materi" className={bem.e('materi-dropdown', 'position-relative')}>
+            <Form.Group as={Col} controlId="materi" className={bem.e('pendaftaran-form-field', 'position-relative')}>
               <Form.Label>Materi Bimtek</Form.Label>
               <SingleSelectDropdown
                 data={tagMateri}

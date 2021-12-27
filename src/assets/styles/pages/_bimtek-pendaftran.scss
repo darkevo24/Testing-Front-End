@@ -5,4 +5,11 @@
     margin-bottom: 0;
     color: red;
   }
+
+  &__pendaftaran-form-field label {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: var(--gray-dark);
+  }
 }

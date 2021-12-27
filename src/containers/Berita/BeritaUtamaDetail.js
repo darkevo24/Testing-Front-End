@@ -86,7 +86,7 @@ const BeritaUtamaDetail = (props) => {
           </div>
           <div className="d-flex flex-row justify-content-between">
             <img src={clockIcon} className="mx-8" />
-            <div className="sdp-text-disable mb-24 fs-14">{formatDate(record?.publishDate)}</div>
+            <div className="sdp-text-disable mb-24 fs-14">{formatDate(record?.tanggalPublis)}</div>
             <div className="mr-8 my-12">
               <img src={worldIcon} className="mx-8" />
               <img src={fbIcon} className="mx-8" />
@@ -95,7 +95,7 @@ const BeritaUtamaDetail = (props) => {
             </div>
           </div>
           <img className="w-100" src={record.mainImage} />
-          <div className="fs-18 mt-32 overview" dangerouslySetInnerHTML={{ __html: record?.content }}></div>
+          <div className="fs-18 mt-32" dangerouslySetInnerHTML={{ __html: record?.content }}></div>
         </div>
       </div>
       <div className="col-lg-2">{kanan.length > 0 && kanan.map((el) => renderComp(el))}</div>

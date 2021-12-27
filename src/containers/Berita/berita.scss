@@ -29,3 +29,41 @@
   cursor: pointer;
   
 }
+
+// berita per bulan 
+.wrapper {
+   border-top: 4px solid #ff0000;
+   padding-top: 32px;
+}
+.topik {
+  font-size: 14px;
+  color: #007aff;
+  background: rgba(0, 122, 255, 0.12);
+  border-radius: 4px;
+  padding: 8px 12px;
+  display: inline-block;
+}
+
+.judul {
+  font-weight: 600;
+  font-size: 16px;
+  color: #2d2627;
+  margin: 12px 0;
+  cursor: pointer;
+}
+
+.kontent {
+  font-size: 14px;
+  line-height: 21px;
+  color: #515154;
+}
+
+.loadMoreBUtton {
+  background: #f5f6fa;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #2d2627;
+  padding: 16px 24px;
+  margin: 32px 0;
+  border: 0;
+}

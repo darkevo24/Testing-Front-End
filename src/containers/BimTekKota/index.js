@@ -63,14 +63,14 @@ const BimtekKota = () => {
         </Col>
       </Row>
       <Row>
-        {dataKota.length === 0 ? (
+        {!dataKota?.length && (
           <div className="d-flex justify-content-center align-items-center h-100 flex-column">
             <NoPerminataanData />
             <div className="text-black-50 mb-2 mt-2">No Data</div>
-            <div>Pilih kota atau cari bimtek untuk menampilkan data</div>
+            <div className="text-black-50 mb-2 mt-2">Pilih kota atau cari bimtek untuk menampilkan data</div>
           </div>
-        ) : null}
-        {dataKota.map((item, key) => (
+        )}
+        {dataKota?.map((item, key) => (
           <KotaItem key={key} nama={item.namaBimtek} tanggal={moment(item.tanggal).format('YYYY-MM-D')} lokasi={item.kota} />
         ))}
       </Row>

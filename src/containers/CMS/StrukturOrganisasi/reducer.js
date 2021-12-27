@@ -9,7 +9,8 @@ export const initialState = {
     page: 0,
     records: [],
     size: null,
-    totalRecords: null,
+    totalRecords: 0,
+    totalPages: 1,
   },
   detaildataSet: {
     loading: false,
@@ -53,6 +54,10 @@ export const createStrukturOrganisasi = createAsyncThunk('cms/createStrukturOrga
 export const updateStatus = createAsyncThunk('cms/updateStatusStruktur', async (params) => {
   const response = await post(`${apiUrls.strukturData}/${params.id}/${params.action}`, {});
   return response?.data;
+});
+
+export const setPreviewBidang = createAsyncThunk('cms/setPreviewBidang', async (params) => {
+  return params;
 });
 
 const strukturOrganisasiSlice = createSlice({
@@ -124,6 +129,10 @@ const strukturOrganisasiSlice = createSlice({
     builder.addCase(createStrukturOrganisasi.rejected, (state, action) => {
       state.detaildataSet.loading = false;
       state.detaildataSet.error = action.error.message;
+    });
+
+    builder.addCase(setPreviewBidang.fulfilled, (state, action) => {
+      state.detaildataSet.record = action.payload;
     });
   },
 });

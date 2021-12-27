@@ -59,19 +59,20 @@ const BeritaLainnya = () => {
   return (
     <Wrapper>
       <SectionTitle>Berita Lainnya</SectionTitle>
-      {records.length &&
-        records.map((value, index) => (
-          <TopikItem key={index}>
-            <span
-              style={{ color: '#007AFF', cursor: 'pointer' }}
-              onClick={(e) => handleDetail(e, `${value.month}-${value.year}`)}>
-              {value.bulan}
-            </span>
-            <span>–</span>
-            <span>{value.year}</span>
-            <span style={{ color: '#858A8F' }}>({value.jumlah})</span>
-          </TopikItem>
-        ))}
+      {records.length
+        ? records.map((value, index) => (
+            <TopikItem key={index}>
+              <span
+                style={{ color: 'var(--blue)', cursor: 'pointer' }}
+                onClick={(e) => handleDetail(e, `${value.month}-${value.year}`)}>
+                {value.bulan}
+              </span>
+              <span>–</span>
+              <span>{value.year}</span>
+              <span style={{ color: '#858A8F' }}>({value.jumlah})</span>
+            </TopikItem>
+          ))
+        : null}
     </Wrapper>
   );
 };

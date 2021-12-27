@@ -20,7 +20,6 @@ import BeritaLainnya from './BeritaLainnya';
 import Populer from './Populer';
 import Tweets from './Tweets';
 import { newsDetailSelector, getNewsDetail } from './reducer';
-import './berita.scss';
 
 const components = {
   search: Search,

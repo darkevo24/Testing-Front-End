@@ -14,7 +14,6 @@ import { Modal, Table } from 'components';
 import TableLoader from 'components/Loader/TableLoader';
 import bn from 'utils/bemNames';
 import { getCMSLogActifitasData, cmsLogAktifitasDataSelector } from './reducer';
-import { original } from '@reduxjs/toolkit';
 
 const bem = bn('log-activity');
 
@@ -76,7 +75,6 @@ const LogActivity = () => {
       accessor: 'createdAt',
       Cell: ({ ...rest }) => (
         <span>
-          {' '}
           {rest.row.original?.createdAt ? moment(rest.row.original?.createdAt).format('DD/MM YYYY : HH:MM') : '---'}{' '}
         </span>
       ),

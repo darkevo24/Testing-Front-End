@@ -7,7 +7,6 @@ import 'moment/locale/id';
 import parse from 'html-react-parser';
 import { useHistory } from 'react-router-dom';
 import { gethighlightedNews, highlightedNewsSelector } from './reducer';
-import './berita.scss';
 
 const Wrapper = styled.div`
   margin-bottom: 80px;

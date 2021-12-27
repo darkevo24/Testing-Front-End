@@ -11,7 +11,6 @@ import TopikPopuler from './TopikPopuler';
 import BeritaLainnya from './BeritaLainnya';
 import Populer from './Populer';
 import Tweets from './Tweets';
-import './berita.scss';
 import { beritaLayoutSelector, getBertaLayout } from 'containers/CMS/BeritaLayout/reducer';
 import { newsByMonthSelector, getNewsByMonth } from './reducer';
 const components = {

@@ -10,7 +10,7 @@ import { CMSBimtekForm } from 'components';
 import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import bn from 'utils/bemNames';
-import { bimtekJadwalDetailSelector, getJadwalBimtekDetail } from './reducer';
+import { bimtekJadwalDetailSelector, bimtekLogAktifitas, getListLogAktifitas, getJadwalBimtekDetail } from './reducer';
 
 const bem = bn('content-detail');
 
@@ -18,38 +18,13 @@ const CMSJadwalDetail = (props) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { records } = useSelector(bimtekJadwalDetailSelector);
-  console.log(records);
-
-  const fetchBimtekDetail = (params) => {
-    return dispatch(getJadwalBimtekDetail(params));
-  };
+  const { dataLog } = useSelector(bimtekLogAktifitas);
+  // console.log(records);
 
   useEffect(() => {
-    fetchBimtekDetail(id);
+    dispatch(getJadwalBimtekDetail(id));
+    dispatch(getListLogAktifitas(id));
   }, []);
-
-  const dataLog = [
-    {
-      date: '12 Desember 2021',
-      status: 'Selesai',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '10 Desember 2021',
-      status: 'Diproses',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '08 Desember 2021',
-      status: 'Terkirim',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '08 Desember 2021',
-      status: 'Dibuat',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-  ];
 
   return (
     <Row className={bem.e('section')}>
@@ -69,7 +44,7 @@ const CMSJadwalDetail = (props) => {
               </Button>
             </div>
           </div>
-          <CMSBimtekForm data={records} />
+          {/* <CMSBimtekForm data={records} /> */}
         </div>
       </Col>
       <Col sm={3}>

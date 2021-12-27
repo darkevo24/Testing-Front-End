@@ -20,7 +20,7 @@ export const LogStatus = ({ data }) => (
               <div className={cx(bem.e('status'), item.data?.status.toLowerCase() || item?.status.toLowerCase())}>
                 {item.data?.status || item?.status}
               </div>
-              <div className={bem.e('content')}>{item.remark || item?.diplayMessage}</div>
+              <div className={bem.e('content')}>{item.remark || item?.displayMessage}</div>
             </div>
           </div>
         ))}

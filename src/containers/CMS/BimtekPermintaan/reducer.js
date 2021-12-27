@@ -87,7 +87,7 @@ export const updateStatusBimtekSetujui = createAsyncThunk('/bimtek-permintaan/ch
     tanggalMulaiDisetujui: params.tanggalMulaiDisetujui,
     tanggalSelesaiDisetujui: params.tanggalSelesaiDisetujui,
     kota: params.kota,
-    alamat: 'test',
+    alamat: params.alamat,
   });
   return response;
 });

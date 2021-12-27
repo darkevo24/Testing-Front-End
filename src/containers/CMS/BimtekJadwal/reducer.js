@@ -16,6 +16,11 @@ export const initialState = {
     loading: false,
     records: [],
   },
+  log: {
+    loading: false,
+    error: null,
+    dataLog: [],
+  },
 };
 
 export const BIMTEK_JADWAL = 'BIMTEK_JADWAL';
@@ -32,6 +37,11 @@ export const getJadwalBimtekDetail = createAsyncThunk('bimtek-jadwal/getListJadw
   return response;
 });
 
+export const getListLogAktifitas = createAsyncThunk('bimtek-jadwal/getListLogs', async (params) => {
+  const response = await get(`${apiUrls.cmsBimtekLogs}/${params}`);
+  return response?.data?.content?.records;
+});
+
 const BimtekJadwalSlice = createSlice({
   name: BIMTEK_JADWAL,
   initialState,
@@ -43,7 +53,7 @@ const BimtekJadwalSlice = createSlice({
     builder.addCase(getJadwalBimtek.fulfilled, (state, action) => {
       state.dataset.loading = false;
       state.dataset.records = action.payload.data.content.records;
-      state.dataset.page = action.payload.data.content.page;
+      state.dataset.page = action.payload.data.content.page - 1;
       state.dataset.totalPages = action.payload.data.content.totalPages;
       state.dataset.totalRecords = action.payload.data.content.totalRecords;
     });
@@ -62,10 +72,23 @@ const BimtekJadwalSlice = createSlice({
       state.loading = false;
       state.error = 'Invalid data';
     });
+    builder.addCase(getListLogAktifitas.pending, (state, action) => {
+      state.log.loading = true;
+    });
+    builder.addCase(getListLogAktifitas.fulfilled, (state, action) => {
+      state.log.loading = false;
+      state.log.dataLog = action.payload;
+      console.log(action.payload);
+    });
+    builder.addCase(getListLogAktifitas.rejected, (state, action) => {
+      state.log.loading = false;
+      state.log.error = 'Invalid data';
+    });
   },
 });
 
 export const bimtekJadwalSelector = (state) => state.cmsBimtekJadwal.dataset;
 export const bimtekJadwalDetailSelector = (state) => state.cmsBimtekJadwal.detail;
+export const bimtekLogAktifitas = (state) => state.cmsBimtekJadwal.log;
 
 export default BimtekJadwalSlice.reducer;

@@ -224,8 +224,8 @@ const CMSBimtekPermintaanEdit = (props) => {
             icon: 'cross',
           });
     });
-    setModalWaitingSetujui(false);
     setTrigger(true);
+    setModalWaitingSetujui(false);
   };
 
   const SuccessText = () => {

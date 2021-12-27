@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import moment from 'moment';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-// import { useHistory } from 'react-router-dom';
-import { CMSBimtekForm } from 'components';
-
 import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import bn from 'utils/bemNames';
-import { bimtekJadwalDetailSelector, getJadwalBimtekDetail } from './reducer';
+import { DatePicker, Input, Modal, Table, TextEditor, Notification } from 'components';
+import { bimtekJadwalDetailSelector, bimtekLogAktifitas, getListLogAktifitas, getJadwalBimtekDetail } from './reducer';
 
 const bem = bn('content-detail');
 
@@ -18,38 +20,29 @@ const CMSJadwalDetail = (props) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { records } = useSelector(bimtekJadwalDetailSelector);
-  console.log(records);
-
-  const fetchBimtekDetail = (params) => {
-    return dispatch(getJadwalBimtekDetail(params));
-  };
+  const { dataLog } = useSelector(bimtekLogAktifitas);
 
   useEffect(() => {
-    fetchBimtekDetail(id);
+    dispatch(getJadwalBimtekDetail(id));
+    dispatch(getListLogAktifitas(id));
   }, []);
 
-  const dataLog = [
-    {
-      date: '12 Desember 2021',
-      status: 'Selesai',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '10 Desember 2021',
-      status: 'Diproses',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '08 Desember 2021',
-      status: 'Terkirim',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-    {
-      date: '08 Desember 2021',
-      status: 'Dibuat',
-      content: 'Dataset sudah dapat di akses di portal data.go.id',
-    },
-  ];
+  const schema = yup
+    .object({
+      // name: yup.string().required(),
+    })
+    .required();
+
+  const {
+    control,
+    formState: { errors },
+    reset,
+    setValue,
+    handleSubmit,
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {},
+  });
 
   return (
     <Row className={bem.e('section')}>
@@ -69,7 +62,57 @@ const CMSJadwalDetail = (props) => {
               </Button>
             </div>
           </div>
-          <CMSBimtekForm data={records} />
+          <Input group label="Nama Bimtek" name="requestor.nama" control={control} />
+          <Input group label="Kategori Bimtek" name="requestor.nama" control={control} />
+          <Row className="align-items-end">
+            <Col>
+              <DatePicker
+                group
+                label="Tanggal Mulai Pelaksanaan Disetujui"
+                name="tanggalMulaiDisetujuiUpdate"
+                control={control}
+                rules={{ required: false }}
+                error={errors.tanggalMulaiDisetujuiUpdate?.message}
+              />
+            </Col>
+            <Col>
+              <Input
+                group
+                className="m-0"
+                type="time"
+                label=""
+                name="jamMulaiDisetujuiUpdate"
+                control={control}
+                rules={{ required: false }}
+                error={errors.jamMulaiDisetujuiUpdate?.message}
+              />
+            </Col>
+          </Row>
+          <Row className="align-items-end">
+            <Col>
+              <DatePicker
+                group
+                label="Tanggal Selesai Pelaksanaan Disetujui"
+                name="tanggalSelesaiDisetujuiUpdate"
+                control={control}
+                rules={{ required: false }}
+                error={errors.tanggalSelesaiDisetujuiUpdate?.message}
+              />
+            </Col>
+            <Col>
+              <Input
+                group
+                className="m-0"
+                type="time"
+                label=""
+                name="jamSelesaiDisetujuiUpdate"
+                control={control}
+                rules={{ required: false }}
+                error={errors.jamSelesaiDisetujuiUpdate?.message}
+              />
+            </Col>
+          </Row>
+          <Input group label="Kota Pelaksana" name="requestor.nama" control={control} />
         </div>
       </Col>
       <Col sm={3}>

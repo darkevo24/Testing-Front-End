@@ -61,7 +61,7 @@ const CMSJadwalBaru = () => {
       tanggalMulaiDisetujui,
       tanggalSelesaiDisetujui,
     });
-  }, [dataDetailBimtek]);
+  }, [dataDetailBimtek, BimtekId]);
 
   const schema = yup
     .object({
@@ -106,10 +106,10 @@ const CMSJadwalBaru = () => {
     }
   };
 
-  function deleteFotoDokumentasi(e) {
+  const deleteFotoDokumentasi = (e) => {
     const filter = fotoDokumentasi.filter((item, index) => index !== e);
     setFotoDokumentasi(filter);
-  }
+  };
 
   const openUploadForm = (id) => {
     const elmButton = document.getElementById(id);
@@ -329,21 +329,21 @@ const CMSJadwalBaru = () => {
           <TextEditor onChange={(e) => setIsiDokumentasi(e)} />
         </Form>
       </div>
-      <Modal
-        showHeader={false}
-        title="Tambah Pembicari Baru"
-        visible={showCreateDokumentasi}
-        onClose={() => setCreateDokumentasi(false)}>
+      <Modal showHeader={false} title="Tambah Pembicari Baru" visible={showCreateDokumentasi}>
         <div className="mt-20 mb-20">
           <p className="mb-0"> Simpan Perubahan Data? </p>
         </div>
         <Form onSubmit={handleSubmit(postDokumentasi)} noValidate>
           <div className="d-flex justify-content-end mt-20">
-            <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setCreateDokumentasi()}>
+            <Button
+              className="mr-10"
+              variant="secondary"
+              style={{ width: '112px' }}
+              onClick={() => setCreateDokumentasi(false)}>
               Batal
             </Button>
             <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
-              Konfirmasi
+              Simpan
             </Button>
           </div>
         </Form>

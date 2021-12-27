@@ -24,6 +24,7 @@ const CMSBimtekPermintaan = () => {
   const [query, setQuery] = useState('');
 
   const { size, page, records, totalRecords } = useSelector(bimtekJadwalSelector);
+  console.log(records);
   const fetchJadwalBimtek = (params) => {
     let obj = {
       page: params.page,
@@ -54,10 +55,12 @@ const CMSBimtekPermintaan = () => {
     },
     {
       Header: 'Tanggal Berakhir',
-      accessor: 'tanggalBerakhir',
+      accessor: 'tanggalSelesaiDisetujui',
       Cell: ({ ...rest }) => (
         <span>
-          {rest.row.original?.tanggalBerakhir ? moment(rest.row.original?.tanggalBerakhir).format('DD MMMM YYYY') : '---'}
+          {rest.row.original?.tanggalSelesaiDisetujui
+            ? moment(rest.row.original?.tanggalSelesaiDisetujui).format('DD MMMM YYYY')
+            : '---'}
         </span>
       ),
     },
@@ -70,7 +73,7 @@ const CMSBimtekPermintaan = () => {
       accessor: 'pembicara',
       Cell: ({ ...rest }) => (
         <span>
-          {rest.row.original?.pembicara.map((data, index) => {
+          {rest.row.original?.pembicara?.map((data, index) => {
             return <span key={index}>{data.nama}</span>;
           })}
         </span>
@@ -81,7 +84,7 @@ const CMSBimtekPermintaan = () => {
       accessor: 'tagMateri',
       Cell: ({ ...rest }) => (
         <span>
-          {rest.row.original?.tagMateri.map((data, index) => {
+          {rest.row.original?.tagMateri?.map((data, index) => {
             return (
               <div key={index}>
                 <span>{data}</span>

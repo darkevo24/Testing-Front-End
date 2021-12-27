@@ -14,6 +14,8 @@ import { ReactComponent as Plus } from 'assets/plus.svg';
 import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
 import bn from 'utils/bemNames';
 import { DatePicker, Input, Modal, Table, TextEditor, Notification } from 'components';
+import { ComponentAccessibility } from 'components/ComponentAccess';
+import { USER_ROLES } from 'utils/constants';
 import {
   bimtekDokumentasiDetailSelector,
   bimtekLogAktifitas,
@@ -45,7 +47,6 @@ const CMSDokumentasiDetail = (props) => {
   const [isiDokumentasi, setIsiDokumentasi] = useState('');
   const [showModalSimpan, setModalSimpan] = useState(false);
   const [showModalWaitingApproval, setModalWaitingApproval] = useState(false);
-  const [showModalDraft, setModalDraft] = useState(false);
   const [showModalPublish, setModalPublish] = useState(false);
   const [showModalUnpublish, setModalUnpublish] = useState(false);
   const [showModalTolak, setModalTolak] = useState(false);
@@ -60,12 +61,12 @@ const CMSDokumentasiDetail = (props) => {
     return dispatch(getListLogAktifitas(params));
   };
 
-  const dataDetailDokumentasi = records || [];
+  const dataDetailDokumentasi = records;
   const materiBimtek = useMemo(() => dataDetailDokumentasi.materi || [], [records]);
   const pembicaraBimtek = useMemo(() => dataDetailDokumentasi.pembicara || [], [records]);
   useEffect(() => {
     if (id === 'null') {
-      history.push('/cms/bimtek-dokumentasi');
+      history.goBack();
       Notification.show({
         type: 'secondary',
         message: <div> Dokumentasi tidak ditemukan </div>,
@@ -91,7 +92,7 @@ const CMSDokumentasiDetail = (props) => {
       tanggalSelesaiDisetujui,
       dataTempat,
     });
-  }, [dataDetailDokumentasi]);
+  }, [dataDetailDokumentasi, trigger]);
   const schema = yup
     .object({
       // name: yup.string().required(),
@@ -148,10 +149,10 @@ const CMSDokumentasiDetail = (props) => {
     }
   };
 
-  function deleteFotoDokumentasi(e) {
+  const deleteFotoDokumentasi = (e) => {
     const filter = fotoDokumentasi.filter((item, index) => index !== e);
     setFotoDokumentasi(filter);
-  }
+  };
 
   const openUploadForm = (id) => {
     const elmButton = document.getElementById(id);
@@ -167,7 +168,7 @@ const CMSDokumentasiDetail = (props) => {
     };
     setUpdateDokumentasi(false);
     return dispatch(updateDokumentasiDetail(obj)).then((res) => {
-      res.payload
+      !res.error
         ? Notification.show({
             type: 'secondary',
             message: <div> Berhasil Update Dokumentasi </div>,
@@ -187,7 +188,7 @@ const CMSDokumentasiDetail = (props) => {
     };
     setDeleteDokumentasi(false);
     dispatch(deleteDokumentasiDetail(obj)).then((res) => {
-      res.payload
+      !res.error
         ? Notification.show({
             type: 'secondary',
             message: <div> Berhasil Menghapus Dokumentasi </div>,
@@ -199,9 +200,6 @@ const CMSDokumentasiDetail = (props) => {
             icon: 'cross',
           });
     });
-    setTimeout(() => {
-      history.push('/cms/bimtek-dokumentasi');
-    }, 1000);
   };
   const columnsMateri = [
     {
@@ -256,17 +254,18 @@ const CMSDokumentasiDetail = (props) => {
     onSearch: () => {},
     variant: 'link',
   };
+
   const onTest = (data) => {};
 
+  const backToTable = () => {
+    history.push('/cms/bimtek-dokumentasi');
+  };
+
   const SuccessText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-dokumentasi');
-    };
     return (
       <div className="d-flex">
-        <div className="icon-box px-10" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+        <div className="icon-box-md" onClick={backToTable}>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-success fw-bold justify-content-center align-items-center">
           {dataDetailDokumentasi.status}
@@ -276,14 +275,10 @@ const CMSDokumentasiDetail = (props) => {
   };
 
   const WaitingApproval = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-dokumentasi');
-    };
     return (
       <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+        <div className="icon-box-md" onClick={backToTable}>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">
           Waiting Approval
@@ -291,43 +286,34 @@ const CMSDokumentasiDetail = (props) => {
       </div>
     );
   };
+
   const ApprovedText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-dokumentasi');
-    };
     return (
       <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+        <div className="icon-box-md" onClick={backToTable}>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Approved</Row>
       </div>
     );
   };
+
   const UnpublishText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-dokumentasi');
-    };
     return (
       <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+        <div className="icon-box-md" onClick={backToTable}>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Unpublish</Row>
       </div>
     );
   };
+
   const DraftText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-dokumentasi');
-    };
     return (
       <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+        <div className="icon-box-md" onClick={backToTable}>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">DRAFT</Row>
       </div>
@@ -335,19 +321,16 @@ const CMSDokumentasiDetail = (props) => {
   };
 
   const RejectedText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-dokumentasi');
-    };
     return (
       <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+        <div className="icon-box-md" onClick={backToTable}>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-ditolak fw-bold justify-content-center align-items-center">REJECTED</Row>
       </div>
     );
   };
+
   const ButtonStatusPublish = () => {
     return (
       <div>
@@ -371,7 +354,10 @@ const CMSDokumentasiDetail = (props) => {
   const ButtonStatusUnpublish = () => {
     return (
       <div>
-        <Button className="ml-10" variant="info" onClick={() => setModalPublish(true)}>
+        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => setUpdateDokumentasi(true)}>
+          Perbarui
+        </Button>
+        <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => setModalPublish(true)}>
           Publish
         </Button>
       </div>
@@ -381,11 +367,11 @@ const CMSDokumentasiDetail = (props) => {
   const ButtonStatusWaitingApproval = () => {
     return (
       <div>
-        <Button className="ml-10" variant="secondary" onClick={() => setModalTolak(true)}>
+        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalTolak(true)}>
           Tolak
         </Button>
-        <Button className="ml-10" variant="info" onClick={() => setModalWaitingApproval(true)}>
-          Kirim
+        <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => setModalWaitingApproval(true)}>
+          Setujui
         </Button>
       </div>
     );
@@ -393,22 +379,138 @@ const CMSDokumentasiDetail = (props) => {
 
   const ButtonStatusDraft = () => {
     return (
-      <div>
-        <Button className="ml-10" variant="info" onClick={() => setModalSimpan(true)}>
+      <div className="d-flex justify-content-center">
+        <Button variant="secondary" onClick={() => setDeleteDokumentasi(true)}>
+          Hapus
+        </Button>
+        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => setUpdateDokumentasi(true)}>
           Simpan
+        </Button>
+        <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => setModalSimpan(true)}>
+          Kirim
         </Button>
       </div>
     );
   };
 
-  const ButtonStatusRejected = () => {
-    return (
-      <div>
-        <Button className="ml-10" variant="secondary" onClick={() => setModalTolak(true)}>
-          Tolak
-        </Button>
-      </div>
-    );
+  const onSubmitSimpan = (data) => {
+    let obj = {
+      id: data.id,
+      idDokumentasi: data.idDokumentasi,
+    };
+    dispatch(postStatusDraft(obj)).then((res) => {
+      !res.error
+        ? Notification.show({
+            type: 'secondary',
+            message: <div> Berhasil Menyimpan Dokumentasi </div>,
+            icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Gagal Menyimpan Dokumentasi </div>,
+            icon: 'cross',
+          });
+    });
+    setModalSimpan(false);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  };
+
+  const onSubmitApproved = (data) => {
+    let obj = {
+      id: data.id,
+      idDokumentasi: data.idDokumentasi,
+    };
+    dispatch(postStatusWaitingApproval(obj)).then((res) => {
+      !res.error
+        ? Notification.show({
+            type: 'secondary',
+            message: <div> Berhasil, Dokumentasi Disetujui </div>,
+            icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Gagal Merubah Status Menjadi Disetujui </div>,
+            icon: 'cross',
+          });
+    });
+    setModalWaitingApproval(false);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  };
+
+  const onSubmitPublish = (data) => {
+    let obj = {
+      id: data.id,
+      idDokumentasi: data.idDokumentasi,
+    };
+    dispatch(postStatusApproved(obj)).then((res) => {
+      !res.error
+        ? Notification.show({
+            type: 'secondary',
+            message: <div> Berhasil, Dokumentasi Ditayangkan </div>,
+            icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Gagal, Dokumentasi Gagal Ditayangkan </div>,
+            icon: 'cross',
+          });
+    });
+    setModalPublish(false);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  };
+
+  const onSubmitUnpublish = (data) => {
+    let obj = {
+      id: data.id,
+      idDokumentasi: data.idDokumentasi,
+    };
+    dispatch(postStatusPublish(obj)).then((res) => {
+      !res.error
+        ? Notification.show({
+            type: 'secondary',
+            message: <div> Berhasil, Dokumentasi Tidak Ditayangkan </div>,
+            icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Gagal Merubah Status Menjadi Tidak Ditayangkan </div>,
+            icon: 'cross',
+          });
+    });
+    setModalUnpublish(false);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  };
+
+  const onSubmitRejected = (data) => {
+    let obj = {
+      id: data.id,
+      idDokumentasi: data.idDokumentasi,
+    };
+    dispatch(postStatusRejected(obj)).then((res) => {
+      !res.error
+        ? Notification.show({
+            type: 'secondary',
+            message: <div> Berhasil, Dokumentasi Ditolak </div>,
+            icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Gagal, Dokumentasi Gagal Ditolak </div>,
+            icon: 'cross',
+          });
+    });
+    setModalTolak(false);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
 
   const StatusBar = () => {
@@ -430,7 +532,16 @@ const CMSDokumentasiDetail = (props) => {
     }
   };
 
-  const ButtonStatusAction = () => {
+  const ButtonStatusActionCreator = () => {
+    switch (dataDetailDokumentasi.status) {
+      case 'DRAFT':
+        return <ButtonStatusDraft />;
+      default:
+        return null;
+    }
+  };
+
+  const ButtonStatusActionEditor = () => {
     switch (dataDetailDokumentasi.status) {
       case 'WAITING_APPROVAL':
         return <ButtonStatusWaitingApproval />;
@@ -442,117 +553,9 @@ const CMSDokumentasiDetail = (props) => {
         return <ButtonStatusDraft />;
       case 'APPROVED':
         return <ButtonStatusApproved />;
-      case 'REJECTED':
-        return <ButtonStatusRejected />;
       default:
         return null;
     }
-  };
-
-  const onSubmitSimpan = (data) => {
-    let obj = {
-      id: data.id,
-      idDokumentasi: data.idDokumentasi,
-    };
-    dispatch(postStatusDraft(obj)).then((res) => {
-      res.payload
-        ? Notification.show({
-            type: 'secondary',
-            message: <div> Berhasil Menyimpan Dokumentasi </div>,
-            icon: 'check',
-          })
-        : Notification.show({
-            type: 'secondary',
-            message: <div> Gagal Menyimpan Dokumentasi </div>,
-            icon: 'cross',
-          });
-    });
-    setTrigger(true);
-    setModalSimpan(false);
-  };
-  const onSubmitApproved = (data) => {
-    let obj = {
-      id: data.id,
-      idDokumentasi: data.idDokumentasi,
-    };
-    dispatch(postStatusWaitingApproval(obj)).then((res) => {
-      res.payload
-        ? Notification.show({
-            type: 'secondary',
-            message: <div> Berhasil, Dokumentasi Disetujui </div>,
-            icon: 'check',
-          })
-        : Notification.show({
-            type: 'secondary',
-            message: <div> Gagal Merubah Status Menjadi Disetujui </div>,
-            icon: 'cross',
-          });
-    });
-    setTrigger(true);
-    setModalWaitingApproval(false);
-  };
-  const onSubmitPublish = (data) => {
-    let obj = {
-      id: data.id,
-      idDokumentasi: data.idDokumentasi,
-    };
-    dispatch(postStatusApproved(obj)).then((res) => {
-      res.payload
-        ? Notification.show({
-            type: 'secondary',
-            message: <div> Berhasil, Dokumentasi Ditayangkan </div>,
-            icon: 'check',
-          })
-        : Notification.show({
-            type: 'secondary',
-            message: <div> Gagal, Dokumentasi Gagal Ditayangkan </div>,
-            icon: 'cross',
-          });
-    });
-    setTrigger(true);
-    setModalPublish(false);
-  };
-  const onSubmitUnpublish = (data) => {
-    let obj = {
-      id: data.id,
-      idDokumentasi: data.idDokumentasi,
-    };
-    dispatch(postStatusPublish(obj)).then((res) => {
-      res.payload
-        ? Notification.show({
-            type: 'secondary',
-            message: <div> Berhasil, Dokumentasi Tidak Ditayangkan </div>,
-            icon: 'check',
-          })
-        : Notification.show({
-            type: 'secondary',
-            message: <div> Gagal Merubah Status Menjadi Tidak Ditayangkan </div>,
-            icon: 'cross',
-          });
-    });
-    setTrigger(true);
-    setModalUnpublish(false);
-  };
-  const onSubmitRejected = (data) => {
-    let obj = {
-      id: data.id,
-      idDokumentasi: data.idDokumentasi,
-    };
-    dispatch(postStatusRejected(obj)).then((res) => {
-      res.payload
-        ? Notification.show({
-            type: 'secondary',
-            message: <div> Berhasil, Dokumentasi Ditolak </div>,
-            icon: 'check',
-          })
-        : Notification.show({
-            type: 'secondary',
-            message: <div> Gagal, Dokumentasi Gagal Ditolak </div>,
-            icon: 'cross',
-          });
-    });
-    setTrigger(true);
-    setModalTolak(false);
   };
 
   return (
@@ -564,17 +567,12 @@ const CMSDokumentasiDetail = (props) => {
             <div className="d-flex justify-content-between mb-4">
               <div className={bem.e('title')}>Dokumentasi Bimbingan Teknis</div>
               <div className="d-flex justify-content-center">
-                <Button variant="secondary" onClick={() => setDeleteDokumentasi(true)}>
-                  <DeleteIcon />
-                </Button>
-                <Button
-                  className="ml-10"
-                  variant="secondary"
-                  style={{ width: '112px' }}
-                  onClick={() => setUpdateDokumentasi(true)}>
-                  Perbarui
-                </Button>
-                <ButtonStatusAction />
+                <ComponentAccessibility roles={[USER_ROLES.CONTENT_CREATOR]}>
+                  <ButtonStatusActionCreator />
+                </ComponentAccessibility>
+                <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR]}>
+                  <ButtonStatusActionEditor />
+                </ComponentAccessibility>
               </div>
             </div>
             <Form className="sdp-form" onSubmit={handleSubmit(onTest)}>
@@ -678,9 +676,9 @@ const CMSDokumentasiDetail = (props) => {
         <Col sm={3}>
           <LogStatus data={logAktifitas} />
         </Col>
-        <Modal showHeader={false} visible={showDeleteDokumentasi} onClose={() => setDeleteDokumentasi(false)}>
+        <Modal showHeader={false} className="cms-bimtek-permintaan-detail" visible={showDeleteDokumentasi}>
           <div className="mt-20 mb-20">
-            <p className="mb-0"> Apakah Anda yakin ingin menghapus Data? </p>
+            <p className="mb-0"> Apakah Anda yakin ingin menghapus dokumentasi? </p>
           </div>
           <Form onSubmit={handleSubmit(deleteDokumentasi)} noValidate>
             <div className="d-flex justify-content-end mt-20">
@@ -688,7 +686,7 @@ const CMSDokumentasiDetail = (props) => {
                 className="mr-10"
                 variant="secondary"
                 style={{ width: '112px' }}
-                onClick={() => setDeleteDokumentasi()}>
+                onClick={() => setDeleteDokumentasi(false)}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
@@ -697,40 +695,38 @@ const CMSDokumentasiDetail = (props) => {
             </div>
           </Form>
         </Modal>
-        <Modal showHeader={false} visible={showUpdateDokumentasi} onClose={() => setUpdateDokumentasi(false)}>
+        <Modal showHeader={false} className="cms-bimtek-permintaan-detail" visible={showUpdateDokumentasi}>
           <div className="mt-20 mb-20">
-            <p className="mb-0"> Apakah Anda yakin ingin memperbarui Data? </p>
+            <p className="mb-0"> Apakah Anda yakin ingin memperbarui dokumentasi? </p>
           </div>
-          <Form onSubmit={handleSubmit(updateDokumentasi)} noValidate>
-            <div className="d-flex justify-content-end mt-20">
-              <Button
-                className="mr-10"
-                variant="secondary"
-                style={{ width: '112px' }}
-                onClick={() => setUpdateDokumentasi()}>
-                Batal
-              </Button>
-              <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
-                Perbarui
-              </Button>
-            </div>
-          </Form>
+          <div className="d-flex justify-content-end mt-20">
+            <Button
+              className="mr-10"
+              variant="secondary"
+              style={{ width: '112px' }}
+              onClick={() => setUpdateDokumentasi(false)}>
+              Batal
+            </Button>
+            <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }} onClick={updateDokumentasi}>
+              Perbarui
+            </Button>
+          </div>
         </Modal>
-        <Modal
-          showHeader={false}
-          className="cms-bimtek-permintaan-detail"
-          visible={showModalUnpublish}
-          onClose={() => setModalUnpublish(false)}>
+        <Modal showHeader={false} className="cms-bimtek-permintaan-detail" visible={showModalUnpublish}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
               <span className="sdp-text-blue fw-bold"> Merubah Status </span>
-              Permintaan Bimtek Dokumentasi {id} menjadi Unpublish?
+              Dokumentasi {id} menjadi Unpublish?
             </p>
           </div>
           <Form onSubmit={handleSubmit(onSubmitUnpublish)} noValidate>
             <div className="d-flex justify-content-end">
-              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalUnpublish()}>
+              <Button
+                className="mr-10"
+                variant="secondary"
+                style={{ width: '112px' }}
+                onClick={() => setModalUnpublish(false)}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
@@ -739,39 +735,31 @@ const CMSDokumentasiDetail = (props) => {
             </div>
           </Form>
         </Modal>
-        <Modal
-          showHeader={false}
-          className="cms-bimtek-permintaan-detail"
-          visible={showModalSimpan}
-          onClose={() => setModalSimpan(false)}>
+        <Modal showHeader={false} className="cms-bimtek-permintaan-detail" visible={showModalSimpan}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
-              <span className="sdp-text-blue fw-bold"> Menyimpan </span>
-              Permintaan Bimtek Dokumentasi {id} ?
+              <span className="sdp-text-blue fw-bold"> Mengirim </span>
+              Dokumentasi Bimtek {id} ?
             </p>
           </div>
           <Form onSubmit={handleSubmit(onSubmitSimpan)} noValidate>
             <div className="d-flex justify-content-end">
-              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalSimpan()}>
+              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalSimpan(false)}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
-                Konfirmasi
+                Kirim
               </Button>
             </div>
           </Form>
         </Modal>
-        <Modal
-          showHeader={false}
-          className="cms-bimtek-permintaan-detail"
-          visible={showModalWaitingApproval}
-          onClose={() => setModalWaitingApproval(false)}>
+        <Modal showHeader={false} className="cms-bimtek-permintaan-detail" visible={showModalWaitingApproval}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
               <span className="sdp-text-blue"> Menyetujui </span>
-              Permintaan Bimtek Dokumentasi {id} ?
+              Dokumentasi Bimtek {id} ?
             </p>
           </div>
           <Form onSubmit={handleSubmit(onSubmitApproved)} noValidate>
@@ -780,7 +768,7 @@ const CMSDokumentasiDetail = (props) => {
                 className="mr-10"
                 variant="secondary"
                 style={{ width: '112px' }}
-                onClick={() => setModalWaitingApproval()}>
+                onClick={() => setModalWaitingApproval(false)}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
@@ -789,21 +777,21 @@ const CMSDokumentasiDetail = (props) => {
             </div>
           </Form>
         </Modal>
-        <Modal
-          showHeader={false}
-          className="cms-bimtek-permintaan-detail"
-          visible={showModalPublish}
-          onClose={() => setModalPublish(false)}>
+        <Modal showHeader={false} className="cms-bimtek-permintaan-detail" visible={showModalPublish}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
               <span className="sdp-text-blue"> Menayangkan </span>
-              Permintaan Bimtek Dokumentasi {id} ?
+              Dokumentasi Bimtek {id} ?
             </p>
           </div>
           <Form onSubmit={handleSubmit(onSubmitPublish)} noValidate>
             <div className="d-flex justify-content-end mt-20">
-              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalPublish()}>
+              <Button
+                className="mr-10"
+                variant="secondary"
+                style={{ width: '112px' }}
+                onClick={() => setModalPublish(false)}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
@@ -812,16 +800,12 @@ const CMSDokumentasiDetail = (props) => {
             </div>
           </Form>
         </Modal>
-        <Modal
-          showHeader={false}
-          className="cms-bimtek-permintaan-detail"
-          visible={showModalTolak}
-          onClose={() => setModalTolak(false)}>
+        <Modal showHeader={false} className="cms-bimtek-permintaan-detail" visible={showModalTolak}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
               <span className="text-danger"> Menolak </span>
-              Permintaan Bimtek Dokumentasi {id} ?
+              Dokumentasi Bimtek {id} ?
             </p>
           </div>
           <Form onSubmit={handleSubmit(onSubmitRejected)} noValidate>

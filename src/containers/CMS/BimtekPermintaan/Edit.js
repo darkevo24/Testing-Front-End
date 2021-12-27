@@ -57,7 +57,20 @@ const CMSBimtekPermintaanEdit = (props) => {
   const data = useMemo(() => detailPermintaan || {}, [detailPermintaan]);
 
   useEffect(() => {
-    reset(data);
+    // reset(data);
+    reset({
+      default: data,
+      namaBimbinganTeknis: data.namaBimtek,
+      tempatBimbinganTeknis: data.tempat,
+      jamMulaiDisetujuiUpdate: !data.tanggalMulaiDisetujui ? '' : moment(data.tanggalMulaiDisetujui).format('hh:mm'),
+      jamSelesaiDisetujuiUpdate: !data.tanggalSelesaiDisetujui ? '' : moment(data.tanggalSelesaiDisetujui).format('hh:mm'),
+      tanggalMulaiDisetujuiUpdate: !data.tanggalMulaiDisetujui
+        ? ''
+        : moment(data.tanggalMulaiDisetujui).format('DD/MM/YYYY'),
+      tanggalSelesaiDisetujuiUpdate: !data.tanggalSelesaiDisetujui
+        ? ''
+        : moment(data.tanggalSelesaiDisetujui).format('DD/MM/YYYY'),
+    });
   }, [data]);
   const schema = yup.object(objRequired).required();
 
@@ -375,17 +388,24 @@ const CMSBimtekPermintaanEdit = (props) => {
               <ButtonStatusAction />
             </div>
             <Form className="sdp-form">
-              <Input readOnly group label="Nama Lengkap" name="requestor.nama" control={control} />
-              <Input readOnly group label="Dinas Instansi" name="requestor.instansiName" control={control} />
-              <Input readOnly group label="No. Handphoen" name="requestor.noHp" control={control} />
-              <Input readOnly group label="Kota Pelaksana" name="kota" control={control} />
-              <Input readOnly group label="Provinsi/Kab/Kota" name="requestor.provinsiName" control={control} />
-              <Input readOnly group label="Jabatan / Peran Daftar" name="requestor.roles" control={control} />
-              <Input readOnly group label="Email" name="requestor.email" control={control} />
-              <Input readOnly group label="Ekspektasi Jumlah Peserta" name="ekspektasiJumlahPeserta" control={control} />
-              <Input readOnly group label="Tagging Materi" name="tagMateri" control={control} />
+              <Input readOnly group label="Nama Lengkap" name="default.requestor.nama" control={control} />
+              <Input readOnly group label="Dinas Instansi" name="default.requestor.instansiName" control={control} />
+              <Input readOnly group label="No. Handphoen" name="default.requestor.noHp" control={control} />
+              <Input readOnly group label="Kota Pelaksana" name="default.kota" control={control} />
+              <Input readOnly group label="Provinsi/Kab/Kota" name="default.requestor.provinsiName" control={control} />
+              <Input readOnly group label="Jabatan / Peran Daftar" name="default.requestor.roles" control={control} />
+              <Input readOnly group label="Email" name="default.requestor.email" control={control} />
+              <Input
+                readOnly
+                group
+                label="Ekspektasi Jumlah Peserta"
+                name="default.ekspektasiJumlahPeserta"
+                control={control}
+              />
+              <Input readOnly group label="Tagging Materi" name="default.tagMateri" control={control} />
               <Input
                 group
+                readOnly={data.status === 'waiting_request_approval' ? false : true}
                 label="Nama Bimbingan Teknis"
                 name="namaBimbinganTeknis"
                 control={control}
@@ -393,6 +413,7 @@ const CMSBimtekPermintaanEdit = (props) => {
               />
               <Input
                 group
+                readOnly={data.status === 'waiting_request_approval' ? false : true}
                 label="Tempat"
                 name="tempatBimbinganTeknis"
                 control={control}
@@ -402,6 +423,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                 <Col>
                   <DatePicker
                     group
+                    readOnly={data.status === 'waiting_request_approval' ? false : true}
                     label="Tanggal Mulai Pelaksanaan Disetujui"
                     name="tanggalMulaiDisetujuiUpdate"
                     control={control}
@@ -412,6 +434,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                 <Col>
                   <Input
                     group
+                    readOnly={data.status === 'waiting_request_approval' ? false : true}
                     className="m-0"
                     type="time"
                     label=""
@@ -426,6 +449,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                 <Col>
                   <DatePicker
                     group
+                    readOnly={data.status === 'waiting_request_approval' ? false : true}
                     label="Tanggal Selesai Pelaksanaan Disetujui"
                     name="tanggalSelesaiDisetujuiUpdate"
                     control={control}
@@ -436,6 +460,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                 <Col>
                   <Input
                     group
+                    readOnly={data.status === 'waiting_request_approval' ? false : true}
                     className="m-0"
                     type="time"
                     label=""

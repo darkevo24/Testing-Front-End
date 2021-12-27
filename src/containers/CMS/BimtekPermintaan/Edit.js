@@ -224,8 +224,10 @@ const CMSBimtekPermintaanEdit = (props) => {
             icon: 'cross',
           });
     });
-    setTrigger(true);
     setModalWaitingSetujui(false);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
 
   const SuccessText = () => {
@@ -313,8 +315,8 @@ const CMSBimtekPermintaanEdit = (props) => {
         <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={onSetModalTolak}>
           Tolak
         </Button>
-        <Button className="ml-10" variant="info" onClick={onSetModalWaitingSetujui}>
-          Setujui
+        <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={onSetModalWaitingSetujui}>
+          Simpan
         </Button>
       </div>
     );
@@ -338,16 +340,6 @@ const CMSBimtekPermintaanEdit = (props) => {
         </Button>
         <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => setModalSetuju(true)}>
           Setujui
-        </Button>
-      </div>
-    );
-  };
-
-  const ButtonStatusRejected = () => {
-    return (
-      <div>
-        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalTolak(true)}>
-          Tolak
         </Button>
       </div>
     );
@@ -382,8 +374,6 @@ const CMSBimtekPermintaanEdit = (props) => {
         return <ButtonStatusDraft />;
       case 'APPROVED':
         return <ButtonStatusApproved />;
-      case 'REJECTED':
-        return <ButtonStatusRejected />;
       default:
         return null;
     }
@@ -623,7 +613,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
-                Konfirmasi
+                Simpan
               </Button>
             </div>
           </Form>

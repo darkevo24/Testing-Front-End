@@ -352,11 +352,11 @@ const CMSDokumentasiDetail = (props) => {
   const ButtonStatusWaitingApproval = () => {
     return (
       <div>
-        <Button className="ml-10" variant="secondary" onClick={() => setModalTolak(true)}>
+        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalTolak(true)}>
           Tolak
         </Button>
-        <Button className="ml-10" variant="info" onClick={() => setModalWaitingApproval(true)}>
-          Kirim
+        <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => setModalWaitingApproval(true)}>
+          Setujui
         </Button>
       </div>
     );
@@ -364,19 +364,15 @@ const CMSDokumentasiDetail = (props) => {
 
   const ButtonStatusDraft = () => {
     return (
-      <div>
-        <Button className="ml-10" variant="info" onClick={() => setModalSimpan(true)}>
+      <div className="d-flex justify-content-center">
+        <Button variant="secondary" onClick={() => setDeleteDokumentasi(true)}>
+          Hapus
+        </Button>
+        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => setUpdateDokumentasi(true)}>
           Simpan
         </Button>
-      </div>
-    );
-  };
-
-  const ButtonStatusRejected = () => {
-    return (
-      <div>
-        <Button className="ml-10" variant="secondary" onClick={() => setModalTolak(true)}>
-          Tolak
+        <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => setModalSimpan(true)}>
+          Kirim
         </Button>
       </div>
     );
@@ -400,7 +396,9 @@ const CMSDokumentasiDetail = (props) => {
             icon: 'cross',
           });
     });
-    setTrigger(true);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
     setModalSimpan(false);
   };
 
@@ -422,7 +420,9 @@ const CMSDokumentasiDetail = (props) => {
             icon: 'cross',
           });
     });
-    setTrigger(true);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
     setModalWaitingApproval(false);
   };
 
@@ -444,7 +444,9 @@ const CMSDokumentasiDetail = (props) => {
             icon: 'cross',
           });
     });
-    setTrigger(true);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
     setModalPublish(false);
   };
 
@@ -466,7 +468,9 @@ const CMSDokumentasiDetail = (props) => {
             icon: 'cross',
           });
     });
-    setTrigger(true);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
     setModalUnpublish(false);
   };
 
@@ -488,7 +492,9 @@ const CMSDokumentasiDetail = (props) => {
             icon: 'cross',
           });
     });
-    setTrigger(true);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
     setModalTolak(false);
   };
 
@@ -523,8 +529,6 @@ const CMSDokumentasiDetail = (props) => {
         return <ButtonStatusDraft />;
       case 'APPROVED':
         return <ButtonPublish />;
-      case 'REJECTED':
-        return <ButtonStatusRejected />;
       default:
         return null;
     }
@@ -539,16 +543,6 @@ const CMSDokumentasiDetail = (props) => {
             <div className="d-flex justify-content-between mb-4">
               <div className={bem.e('title')}>Dokumentasi Bimbingan Teknis</div>
               <div className="d-flex justify-content-center">
-                <Button variant="secondary" onClick={() => setDeleteDokumentasi(true)}>
-                  <DeleteIcon />
-                </Button>
-                <Button
-                  className="ml-10"
-                  variant="secondary"
-                  style={{ width: '112px' }}
-                  onClick={() => setUpdateDokumentasi(true)}>
-                  Perbarui
-                </Button>
                 <ButtonStatusAction />
               </div>
             </div>
@@ -653,9 +647,9 @@ const CMSDokumentasiDetail = (props) => {
         <Col sm={3}>
           <LogStatus data={logAktifitas} />
         </Col>
-        <Modal showHeader={false} visible={showDeleteDokumentasi}>
+        <Modal showHeader={false} className="cms-bimtek-permintaan-detail" visible={showDeleteDokumentasi}>
           <div className="mt-20 mb-20">
-            <p className="mb-0"> Apakah Anda yakin ingin menghapus Data? </p>
+            <p className="mb-0"> Apakah Anda yakin ingin menghapus dokumentasi? </p>
           </div>
           <Form onSubmit={handleSubmit(deleteDokumentasi)} noValidate>
             <div className="d-flex justify-content-end mt-20">
@@ -672,9 +666,9 @@ const CMSDokumentasiDetail = (props) => {
             </div>
           </Form>
         </Modal>
-        <Modal showHeader={false} visible={showUpdateDokumentasi}>
+        <Modal showHeader={false} className="cms-bimtek-permintaan-detail" visible={showUpdateDokumentasi}>
           <div className="mt-20 mb-20">
-            <p className="mb-0"> Apakah Anda yakin ingin memperbarui Data? </p>
+            <p className="mb-0"> Apakah Anda yakin ingin memperbarui dokumentasi? </p>
           </div>
           <div className="d-flex justify-content-end mt-20">
             <Button
@@ -694,7 +688,7 @@ const CMSDokumentasiDetail = (props) => {
             <p className="mb-0">
               Apakah anda yakin ingin
               <span className="sdp-text-blue fw-bold"> Merubah Status </span>
-              Permintaan Bimtek Dokumentasi {id} menjadi Unpublish?
+              Dokumentasi {id} menjadi Unpublish?
             </p>
           </div>
           <Form onSubmit={handleSubmit(onSubmitUnpublish)} noValidate>
@@ -717,7 +711,7 @@ const CMSDokumentasiDetail = (props) => {
             <p className="mb-0">
               Apakah anda yakin ingin
               <span className="sdp-text-blue fw-bold"> Menyimpan </span>
-              Permintaan Bimtek Dokumentasi {id} ?
+              Dokumentasi Bimtek {id} ?
             </p>
           </div>
           <Form onSubmit={handleSubmit(onSubmitSimpan)} noValidate>
@@ -736,7 +730,7 @@ const CMSDokumentasiDetail = (props) => {
             <p className="mb-0">
               Apakah anda yakin ingin
               <span className="sdp-text-blue"> Menyetujui </span>
-              Permintaan Bimtek Dokumentasi {id} ?
+              Dokumentasi Bimtek {id} ?
             </p>
           </div>
           <Form onSubmit={handleSubmit(onSubmitApproved)} noValidate>
@@ -759,7 +753,7 @@ const CMSDokumentasiDetail = (props) => {
             <p className="mb-0">
               Apakah anda yakin ingin
               <span className="sdp-text-blue"> Menayangkan </span>
-              Permintaan Bimtek Dokumentasi {id} ?
+              Dokumentasi Bimtek {id} ?
             </p>
           </div>
           <Form onSubmit={handleSubmit(onSubmitPublish)} noValidate>
@@ -782,7 +776,7 @@ const CMSDokumentasiDetail = (props) => {
             <p className="mb-0">
               Apakah anda yakin ingin
               <span className="text-danger"> Menolak </span>
-              Permintaan Bimtek Dokumentasi {id} ?
+              Dokumentasi Bimtek {id} ?
             </p>
           </div>
           <Form onSubmit={handleSubmit(onSubmitRejected)} noValidate>

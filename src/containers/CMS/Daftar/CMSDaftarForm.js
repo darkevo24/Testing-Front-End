@@ -15,7 +15,7 @@ import { DatePicker, Input } from 'components';
 import TambahFormModal from './CMSDaftarTambahForm';
 import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
 import DaftarDataProvider from 'containers/Daftar/DaftarDataProvider';
-import DataVariableTable from 'containers/DataVariable/DataVariableTable';
+// import DataVariableTable from 'containers/DataVariable/DataVariableTable';
 import { formatOptions, jadwalPermutakhiranOptions } from 'utils/constants';
 import {
   getAddDaftarSDGTujuan,
@@ -26,8 +26,8 @@ import {
   // dataVariableSubmit,
 } from 'containers/Daftar/reducer';
 // import DataVariableForm, { submitDataVariableForm } from '../../DataVariable/DataVariableForm';
-// import Modal from '../../../components/Modal';
-import DataVariable from '../../DataVariable';
+// import Modal from 'components/Modal';
+// import DataVariable from '../../DataVariable';
 
 const schema = yup.object({
   instansi: yup.mixed().required(),
@@ -43,10 +43,6 @@ const schema = yup.object({
   indukData: yup.mixed().required(),
   format: yup.mixed().required(),
   linkAkses: yup.string().required(),
-  kodePilar: yup.mixed().required(),
-  kodeTujuan: yup.mixed().required(),
-  kodePNRKP: yup.mixed().required(),
-  kodePPRKP: yup.mixed().required(),
 });
 
 const CMSDaftarPage = ({ ...props }) => {
@@ -65,30 +61,6 @@ const CMSDaftarPage = ({ ...props }) => {
   const rkpPNOptions = props.rkpPNOptions;
   const tujuanSDGPillerOptions = useSelector(addTujuanSDGPillerOptionsSelector);
   const rkpPPOptions = useSelector(addRkpPPOptionsSelector);
-
-  useEffect(async () => {
-    if (result?.id !== +id || !id) return;
-    // if (result?.id !== +id) props.getDafterDataById(id);
-    reset({
-      instansi: { value: result?.instansiId, label: result?.instansi } || {},
-      nama: result?.nama || '',
-      idKonsep: result?.idKonsep || '',
-      konsep: result?.konsep || '',
-      jadwalPemutakhiran: { value: result?.jadwalPemutakhiran, label: result?.jadwalPemutakhiran } || {},
-      definisi: result?.definisi || '',
-      sumberDefinisi: result?.sumberDefinisi || '',
-      tanggalDibuat: moment(result?.tanggalDibuat || new Date()).toDate() || '',
-      tanggalDiperbaharui: moment(result?.tanggalDiperbaharui || new Date()).toDate() || '',
-      produsenData: result?.produsenData || '',
-      indukData: result?.indukData || {},
-      format: { value: result?.format, label: result?.format } || {},
-      linkAkses: result?.linkAkses || '',
-      kodePilar: { value: result?.kodePilar, label: result?.kodePilarDeskripsi } || {},
-      kodeTujuan: { value: result?.kodeTujuan, label: result?.kodeTujuanDeskripsi } || {},
-      kodePNRKP: { value: result?.kodePNRKP, label: result?.kodePNRKPDeskripsi } || {},
-      kodePPRKP: { value: result?.kodePPRKP, label: result?.kodePPRKPDeskripsi } || {},
-    });
-  }, [result, id]);
 
   const {
     control,
@@ -112,12 +84,40 @@ const CMSDaftarPage = ({ ...props }) => {
       indukData: null,
       format: null,
       linkAkses: '',
-      kodePilar: null,
-      kodeTujuan: null,
-      kodePNRKP: null,
-      kodePPRKP: null,
     },
   });
+
+  useEffect(() => {
+    if (id && result?.id !== +id) props.getDafterDataById(id);
+  }, [id]);
+
+  useEffect(async () => {
+    if (result?.id !== +id || !id) return;
+
+    reset({
+      instansi: { value: result?.instansiId, label: result?.instansi } || {},
+      nama: result?.nama || '',
+      idKonsep: result?.idKonsep || '',
+      konsep: result?.konsep || '',
+      jadwalPemutakhiran:
+        {
+          value: jadwalPermutakhiranOptions[result?.jadwalPemutakhiran]?.value,
+          label: jadwalPermutakhiranOptions[result?.jadwalPemutakhiran]?.label,
+        } || {},
+      definisi: result?.definisi || '',
+      sumberDefinisi: result?.sumberDefinisi || '',
+      tanggalDibuat: moment(result?.tanggalDibuat || new Date()).toDate() || '',
+      tanggalDiperbaharui: moment(result?.tanggalDiperbaharui || new Date()).toDate() || '',
+      produsenData: result?.produsenData || '',
+      indukData: result?.indukData || {},
+      format: { value: result?.format, label: result?.format } || {},
+      linkAkses: result?.linkAkses || '',
+      kodePilar: { value: result?.kodePilar, label: result?.kodePilarDeskripsi } || {},
+      kodeTujuan: { value: result?.kodeTujuan, label: result?.kodeTujuanDeskripsi } || {},
+      kodePNRKP: { value: result?.kodePNRKP, label: result?.kodePNRKPDeskripsi } || {},
+      kodePPRKP: { value: result?.kodePPRKP, label: result?.kodePPRKPDeskripsi } || {},
+    });
+  }, [result, id]);
 
   const handleDataSubmit = (formData) => {
     let clone = [...tableData];
@@ -135,19 +135,20 @@ const CMSDaftarPage = ({ ...props }) => {
     setShowAddModal(false);
   };
 
-  const handleEditModal = (formData) => {
-    //TODO handle EDIT
-  };
-
-  const handleDelete = (formData) => {
-    // TODO handle DELETE
-  };
+  // const handleEditModal = (formData) => {
+  //   //TODO handle EDIT
+  // };
+  //
+  // const handleDelete = (formData) => {
+  //   // TODO handle DELETE
+  // };
 
   const handleSubmitCallBack = async (apiResponse, hasError) => {
     if (hasError) {
       setAPIError(apiResponse.error.message);
       return null;
     }
+    history.push('/cms/daftar');
     // const apiCall = [];
     // tableData.forEach((item) => {
     //   if (!id) delete item.id;
@@ -181,26 +182,27 @@ const CMSDaftarPage = ({ ...props }) => {
   return (
     <>
       <Form noValidate onSubmit={handleSubmit(handleDaftarFormSubmit)}>
-        <Row className="bg-gray-lighter pl-24">
-          <Col>
-            <div className="d-flex justify-content-between p-26 border-bottom">
-              <div className="d-flex">
-                <div className="sdp-heading mb-4">Data Baru</div>
-                <div className="ml-24">
-                  <Button variant="outline-secondary" className="mr-16" onClick={() => history.push('/cms/daftar')}>
-                    Batal
-                  </Button>
-                  <Button variant="secondary" type="submit">
-                    Simpan
-                  </Button>
-                </div>
+        <Row className="bg-gray-lighter ml-0">
+          <Col className="pl-0">
+            <div className="d-flex px-32 py-24 align-items-center border-bottom">
+              <div className="sdp-heading mb-4">Data Baru</div>
+              <div className="ml-24">
+                <Button
+                  variant="outline-secondary"
+                  className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4 py-13 px-40"
+                  onClick={() => history.push('/cms/daftar')}>
+                  Batal
+                </Button>
+                <Button variant="light" type="submit" className="mr-16 bg-gray sdp-text-grey-dark br-4 py-13 px-32 border-0">
+                  Simpan
+                </Button>
               </div>
             </div>
           </Col>
-          <Col lg="11">
+          <Col lg="11" className="pl-32">
             <div className="py-32 pt-32">
               {error || apiError ? <label className="sdp-error mb-20">{error || apiError}</label> : null}
-              <Row>
+              <Row className="mb-16">
                 <Col>
                   <SingleSelectDropdown
                     group
@@ -237,7 +239,7 @@ const CMSDaftarPage = ({ ...props }) => {
                   />
                 </Col>
               </Row>
-              <Row>
+              <Row className="mb-16">
                 <Col>
                   <Input
                     group
@@ -269,7 +271,7 @@ const CMSDaftarPage = ({ ...props }) => {
                   />
                 </Col>
               </Row>
-              <Row className="mb-3">
+              <Row className="mb-16">
                 <Col xs="6">
                   <SingleSelectDropdown
                     group
@@ -291,7 +293,7 @@ const CMSDaftarPage = ({ ...props }) => {
                   />
                 </Col>
               </Row>
-              <Row>
+              <Row className="mb-16">
                 <Col>
                   <Input
                     group
@@ -325,7 +327,7 @@ const CMSDaftarPage = ({ ...props }) => {
                   />
                 </Col>
               </Row>
-              <Row>
+              <Row className="mb-16">
                 <Col>
                   <DatePicker
                     group
@@ -347,7 +349,7 @@ const CMSDaftarPage = ({ ...props }) => {
                   />
                 </Col>
               </Row>
-              <Row>
+              <Row className="mb-16">
                 <Col>
                   <Input
                     group
@@ -384,7 +386,7 @@ const CMSDaftarPage = ({ ...props }) => {
                   />
                 </Col>
               </Row>
-              <Row>
+              <Row className="mb-16">
                 <Col>
                   <SingleSelectDropdown
                     group
@@ -422,10 +424,9 @@ const CMSDaftarPage = ({ ...props }) => {
                   />
                 </Col>
               </Row>
-              <Row className="mb-3">
+              <Row className="mb-16">
                 <Col>
                   <SingleSelectDropdown
-                    placeHolder="-"
                     name="kodePilar"
                     isLoading={false}
                     noValue={true}
@@ -438,15 +439,12 @@ const CMSDaftarPage = ({ ...props }) => {
                     label="Pilar SDGs"
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    rules={{ required: true }}
-                    error={errors.pilarsdgs ? 'Pilar SDGs is required' : null}
                     data={sdgPillerOptions}
                     control={control}
                   />
                 </Col>
                 <Col>
                   <SingleSelectDropdown
-                    placeHolder="-"
                     group
                     groupClass="mb-16"
                     groupProps={{
@@ -456,20 +454,16 @@ const CMSDaftarPage = ({ ...props }) => {
                     label="Tujuan SDGs"
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    rules={{ required: true }}
-                    error={errors.tujuansdgs ? 'Tujuan SDGs is required' : null}
                     data={tujuanSDGPillerOptions}
                     name="kodeTujuan"
-                    isLoading={false}
                     control={control}
                     noValue={true}
                   />
                 </Col>
               </Row>
-              <Row>
+              <Row className="mb-16">
                 <Col>
                   <SingleSelectDropdown
-                    placeHolder="-"
                     name="kodePNRKP"
                     isLoading={false}
                     noValue={true}
@@ -482,15 +476,12 @@ const CMSDaftarPage = ({ ...props }) => {
                     label="PN RKP"
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    rules={{ required: true }}
-                    error={errors.pnrkp ? 'PN RKP is required' : null}
                     data={rkpPNOptions}
                     control={control}
                   />
                 </Col>
                 <Col>
                   <SingleSelectDropdown
-                    placeHolder="-"
                     name="kodePPRKP"
                     control={control}
                     noValue={true}
@@ -501,32 +492,29 @@ const CMSDaftarPage = ({ ...props }) => {
                       as: Col,
                     }}
                     label="PP RKP"
-                    error={errors.pprkp ? 'PP RKP is required' : null}
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    rules={{ required: true }}
                     data={rkpPPOptions}
-                    isLoading={false}
                   />
                 </Col>
               </Row>
             </div>
-            <div className="pl-32  pt-32 pb-42 pr-32">
-              {id ? (
-                <DataVariable cms />
-              ) : (
-                <DataVariableTable
-                  manualPagination={false}
-                  search={false}
-                  showDeleteModal={handleDelete}
-                  showDataVariableFormModal={handleEditModal}
-                  data={tableData}
-                />
-              )}
-              <Button variant="success" onClick={() => setShowAddModal(true)}>
-                Tambah Variabel
-              </Button>
-            </div>
+            {/*<div className="pl-32  pt-32 pb-42 pr-32">*/}
+            {/*  {id ? (*/}
+            {/*    <DataVariable cms />*/}
+            {/*  ) : (*/}
+            {/*    <DataVariableTable*/}
+            {/*      manualPagination={false}*/}
+            {/*      search={false}*/}
+            {/*      showDeleteModal={handleDelete}*/}
+            {/*      showDataVariableFormModal={handleEditModal}*/}
+            {/*      data={tableData}*/}
+            {/*    />*/}
+            {/*  )}*/}
+            {/*  <Button variant="success" onClick={() => setShowAddModal(true)}>*/}
+            {/*    Tambah Variabel*/}
+            {/*  </Button>*/}
+            {/*</div>*/}
           </Col>
         </Row>
       </Form>

@@ -62,29 +62,8 @@ const CMSJadwalDetail = (props) => {
               </Button>
             </div>
           </div>
-          <Input readOnly group label="Nama Lengkap" name="requestor.nama" control={control} />
-          <Input readOnly group label="Dinas Instansi" name="requestor.instansiName" control={control} />
-          <Input readOnly group label="No. Handphoen" name="requestor.noHp" control={control} />
-          <Input readOnly group label="Kota Pelaksana" name="kota" control={control} />
-          <Input readOnly group label="Provinsi/Kab/Kota" name="requestor.provinsiName" control={control} />
-          <Input readOnly group label="Jabatan / Peran Daftar" name="requestor.roles" control={control} />
-          <Input readOnly group label="Email" name="requestor.email" control={control} />
-          <Input readOnly group label="Ekspektasi Jumlah Peserta" name="ekspektasiJumlahPeserta" control={control} />
-          <Input readOnly group label="Tagging Materi" name="tagMateri" control={control} />
-          <Input
-            group
-            label="Nama Bimbingan Teknis"
-            name="namaBimbinganTeknis"
-            control={control}
-            error={errors.namaBimbinganTeknis?.message}
-          />
-          <Input
-            group
-            label="Tempat"
-            name="tempatBimbinganTeknis"
-            control={control}
-            error={errors.tempatBimbinganTeknis?.message}
-          />
+          <Input group label="Nama Bimtek" name="requestor.nama" control={control} />
+          <Input group label="Kategori Bimtek" name="requestor.nama" control={control} />
           <Row className="align-items-end">
             <Col>
               <DatePicker
@@ -133,6 +112,7 @@ const CMSJadwalDetail = (props) => {
               />
             </Col>
           </Row>
+          <Input group label="Kota Pelaksana" name="requestor.nama" control={control} />
         </div>
       </Col>
       <Col sm={3}>

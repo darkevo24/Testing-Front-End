@@ -332,19 +332,6 @@ const CMSBimtekPermintaanEdit = (props) => {
     );
   };
 
-  const ButtonStatusDraft = () => {
-    return (
-      <div>
-        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalTolak(true)}>
-          Tolak
-        </Button>
-        <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => setModalSetuju(true)}>
-          Setujui
-        </Button>
-      </div>
-    );
-  };
-
   const StatusBar = () => {
     switch (data.status) {
       case 'WAITING_REQUEST_APPROVAL':
@@ -370,8 +357,6 @@ const CMSBimtekPermintaanEdit = (props) => {
         return <ButtonStatusPublish />;
       case 'WAITING_APPROVAL':
         return <ButtonStatusWaitingApproval />;
-      case 'DRAFT':
-        return <ButtonStatusDraft />;
       case 'APPROVED':
         return <ButtonStatusApproved />;
       default:

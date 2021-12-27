@@ -396,10 +396,10 @@ const CMSDokumentasiDetail = (props) => {
             icon: 'cross',
           });
     });
+    setModalSimpan(false);
     setTimeout(() => {
       window.location.reload();
     }, 1000);
-    setModalSimpan(false);
   };
 
   const onSubmitApproved = (data) => {
@@ -420,10 +420,10 @@ const CMSDokumentasiDetail = (props) => {
             icon: 'cross',
           });
     });
+    setModalWaitingApproval(false);
     setTimeout(() => {
       window.location.reload();
     }, 1000);
-    setModalWaitingApproval(false);
   };
 
   const onSubmitPublish = (data) => {
@@ -444,10 +444,10 @@ const CMSDokumentasiDetail = (props) => {
             icon: 'cross',
           });
     });
+    setModalPublish(false);
     setTimeout(() => {
       window.location.reload();
     }, 1000);
-    setModalPublish(false);
   };
 
   const onSubmitUnpublish = (data) => {
@@ -468,10 +468,10 @@ const CMSDokumentasiDetail = (props) => {
             icon: 'cross',
           });
     });
+    setModalUnpublish(false);
     setTimeout(() => {
       window.location.reload();
     }, 1000);
-    setModalUnpublish(false);
   };
 
   const onSubmitRejected = (data) => {
@@ -492,10 +492,10 @@ const CMSDokumentasiDetail = (props) => {
             icon: 'cross',
           });
     });
+    setModalTolak(false);
     setTimeout(() => {
       window.location.reload();
     }, 1000);
-    setModalTolak(false);
   };
 
   const StatusBar = () => {
@@ -710,7 +710,7 @@ const CMSDokumentasiDetail = (props) => {
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
-              <span className="sdp-text-blue fw-bold"> Menyimpan </span>
+              <span className="sdp-text-blue fw-bold"> Mengirim </span>
               Dokumentasi Bimtek {id} ?
             </p>
           </div>
@@ -720,7 +720,7 @@ const CMSDokumentasiDetail = (props) => {
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
-                Konfirmasi
+                Kirim
               </Button>
             </div>
           </Form>

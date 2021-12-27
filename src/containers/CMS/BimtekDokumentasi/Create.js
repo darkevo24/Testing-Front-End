@@ -343,7 +343,7 @@ const CMSJadwalBaru = () => {
               Batal
             </Button>
             <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
-              Konfirmasi
+              Simpan
             </Button>
           </div>
         </Form>

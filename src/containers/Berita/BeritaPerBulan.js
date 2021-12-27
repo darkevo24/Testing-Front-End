@@ -28,6 +28,7 @@ const renderComp = (el) => {
   return React.createElement(components[el.component], { ...el.props, key: el.component });
 };
 const BeritaPerBulan = () => {
+  const [size, setSize] = useState(10);
   const [kanan, setKanan] = useState([]);
 
   const dispatch = useDispatch();
@@ -40,11 +41,9 @@ const BeritaPerBulan = () => {
     dispatch(getBertaLayout());
   };
   useEffect(() => {
-    if (status === 'idel') {
-      const parmaValue = date.replace('-', '/');
-      dispatch(getNewsByMonth(`perbulan/${parmaValue}?size=${10}`));
-    }
-  }, [dispatch, date, status]);
+    const parmaValue = date.replace('-', '/');
+    dispatch(getNewsByMonth(`perbulan/${parmaValue}?size=${size}`));
+  }, [dispatch, date, size]);
 
   useEffect(() => {
     fetchBeritaLayoutData();
@@ -64,6 +63,10 @@ const BeritaPerBulan = () => {
   const handleDetail = (e, id) => {
     e.preventDefault();
     history.push(`/berita/${id}`);
+  };
+
+  const handleLoadMore = () => {
+    setSize(size + 10);
   };
   return (
     <div className="row mt-24">
@@ -90,6 +93,13 @@ const BeritaPerBulan = () => {
               );
             })
           : null}
+        <div className="row">
+          {records.length >= 10 && (
+            <button className="loadMoreBUtton" onClick={handleLoadMore}>
+              Muat Lebih Banyak
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="col-lg-2">{kanan.length > 0 && kanan.map((el) => renderComp(el))}</div>

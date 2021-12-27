@@ -1,5 +1,9 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { SectionTitle } from '.';
+import { getMonthlyNews, monthlyNewsSelector } from './reducer';
 
 const Wrapper = styled.div`
   margin-bottom: 40px;
@@ -36,18 +40,41 @@ const bulan = [
   },
 ];
 
-const BeritaLainnya = () => (
-  <Wrapper>
-    <SectionTitle>Berita Lainnya</SectionTitle>
-    {bulan.map((el, i) => (
-      <TopikItem key={'bl' + i}>
-        <span style={{ color: '#007AFF' }}>{el.month}</span>
-        <span>–</span>
-        <span>{el.year}</span>
-        <span style={{ color: '#858A8F' }}>({el.news})</span>
-      </TopikItem>
-    ))}
-  </Wrapper>
-);
+const BeritaLainnya = () => {
+  const dispatch = useDispatch();
+  const { records, status } = useSelector(monthlyNewsSelector);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (status === 'idel') {
+      dispatch(getMonthlyNews('/perbulan'));
+    }
+  }, [dispatch, status]);
+
+  const handleDetail = (event, date) => {
+    event.preventDefault();
+    history.push(`/berita/perbulan/${date}`);
+  };
+
+  return (
+    <Wrapper>
+      <SectionTitle>Berita Lainnya</SectionTitle>
+      {records.length
+        ? records.map((value, index) => (
+            <TopikItem key={index}>
+              <span
+                style={{ color: 'var(--blue)', cursor: 'pointer' }}
+                onClick={(e) => handleDetail(e, `${value.month}-${value.year}`)}>
+                {value.bulan}
+              </span>
+              <span>–</span>
+              <span>{value.year}</span>
+              <span style={{ color: 'var(--gray)' }}>({value.jumlah})</span>
+            </TopikItem>
+          ))
+        : null}
+    </Wrapper>
+  );
+};
 
 export default BeritaLainnya;

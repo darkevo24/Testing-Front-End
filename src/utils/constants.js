@@ -38,7 +38,7 @@ export const apiUrls = {
   instansiData: getV1Endpoint('instansi'),
   cmsKomunitasAhliData: getCMSEndpoint('komunitas-ahli'),
   portalKomunitasAhliData: getPortalEndpoint('komunitas-ahli'),
-  cmsAuditTrialData: getCMSEndpoint('audit-trial'),
+  cmsAuditTrialData: getCMSEndpoint('audit-trail'),
   fileUpload: getApiEndpoint('file/upload'),
   publiFileUpload: getApiEndpoint('file/public-upload'),
   uploadFoto: getApiEndpoint('file/public-image-upload'),

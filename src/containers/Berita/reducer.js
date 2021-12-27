@@ -17,6 +17,28 @@ export const initialState = {
     error: null,
     record: {},
   },
+  /**
+   * get total news by month
+   */
+  monthlyNews: {
+    loading: false,
+    error: null,
+    status: 'idel',
+    records: [],
+  },
+  /**
+   * list if news by month
+   */
+  newsByMonth: {
+    loading: false,
+    error: null,
+    status: 'idel',
+    records: [],
+    page: 1,
+    totalRecords: null,
+    totalPages: null,
+    hasNext: false,
+  },
   latestNews: {
     loading: false,
     error: null,
@@ -50,6 +72,16 @@ export const USER_NEWS_PORTAL = 'USER_NEWS_PORTAL';
  *
  */
 export const getNewsSearch = createAsyncThunk('userNewsPortal/getNewsSearch', async (param) => {
+  const response = await get(`${apiUrls.userBeritaPortal}/${param}`);
+  return response?.data?.content;
+});
+
+export const getNewsByMonth = createAsyncThunk('usernewsPortal/getNewsbyMonth', async (param) => {
+  const response = await get(`${apiUrls.userBeritaPortal}/${param}`);
+  return response?.data?.content;
+});
+
+export const getMonthlyNews = createAsyncThunk('usernewsPortal/getMonthlyNews', async (param) => {
   const response = await get(`${apiUrls.userBeritaPortal}/${param}`);
   return response?.data?.content;
 });
@@ -191,6 +223,42 @@ const userNewsPortal = createSlice({
     });
 
     /**
+     * get news via Month
+     */
+    builder.addCase(getMonthlyNews.pending, (state, action) => {
+      state.monthlyNews.loading = true;
+      state.monthlyNews.status = 'loading';
+    });
+    builder.addCase(getMonthlyNews.fulfilled, (state, action) => {
+      state.monthlyNews.loading = false;
+      state.monthlyNews.records = action.payload || [];
+      state.monthlyNews.status = 'success';
+    });
+    builder.addCase(getMonthlyNews.rejected, (state) => {
+      state.monthlyNews.loading = false;
+      state.monthlyNews.status = 'failed';
+    });
+
+    /**
+     * get monthly news
+     */
+    builder.addCase(getNewsByMonth.pending, (state, action) => {
+      state.newsByMonth.loading = true;
+      state.newsByMonth.status = 'loading';
+    });
+    builder.addCase(getNewsByMonth.fulfilled, (state, action) => {
+      state.newsByMonth.loading = false;
+      state.newsByMonth.records = action.payload.records || [];
+      state.newsByMonth.status = 'success';
+      state.newsByMonth.totalRecords = action.payload.totalRecords;
+      state.newsByMonth.totalPages = action.payload.totalPages;
+    });
+    builder.addCase(getNewsByMonth.rejected, (state) => {
+      state.newsByMonth.loading = false;
+      state.newsByMonth.status = 'failed';
+    });
+
+    /**
      * Get Tweets
      *
      */
@@ -216,6 +284,7 @@ export const highlightedNewsSelector = (state) => state.userPortalBerita?.highli
 export const newsDetailSelector = (state) => state.userPortalBerita?.news;
 export const popularTopicSelector = (state) => state.userPortalBerita?.popularTopic;
 export const otherNewsSelector = (state) => state.userPortalBerita?.otherNews;
+export const newsByMonthSelector = (state) => state.userPortalBerita?.newsByMonth;
+export const monthlyNewsSelector = (state) => state.userPortalBerita?.monthlyNews;
 export const tweetSelector = (state) => state.userPortalBerita?.tweet;
-
 export default userNewsPortal.reducer;

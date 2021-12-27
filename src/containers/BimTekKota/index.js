@@ -10,9 +10,13 @@ import { ReactComponent as LocationTag } from 'assets/location-tag.svg';
 import { Search, NoPerminataanData } from 'components/Icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { bimtekDokumentasiDatasetSelector, getBimtekDokumentasi } from './reducer';
 import moment from 'moment';
-import { bimtekJadwalLocationsDatasetSelector, getBimtekJadwalLocationsData } from 'containers/BimTekJadwal/reducer';
+import {
+  bimtekJadwalDatasetSelector,
+  bimtekJadwalLocationsDatasetSelector,
+  getBimtekJadwalData,
+  getBimtekJadwalLocationsData,
+} from 'containers/BimTekJadwal/reducer';
 
 const BimtekKota = () => {
   const { control, watch } = useForm({});
@@ -21,18 +25,18 @@ const BimtekKota = () => {
   const [filterNamaBimtek, setFilterNamaBimtek] = useState();
 
   useEffect(() => {
-    dispatch(getBimtekDokumentasi());
+    dispatch(getBimtekJadwalData());
     dispatch(getBimtekJadwalLocationsData());
   }, []);
 
   useEffect(() => {
     const params = {
-      ...(filterNamaBimtek ? { nama: filterNamaBimtek } : {}),
+      ...(filterNamaBimtek ? { namaBimtek: filterNamaBimtek } : {}),
       ...(watchNamaBimtek?.value ? { kota: watchNamaBimtek?.value } : {}),
     };
-    dispatch(getBimtekDokumentasi(params));
+    dispatch(getBimtekJadwalData(params));
   }, [watchNamaBimtek, filterNamaBimtek]);
-  const { records: dataKota } = useSelector(bimtekDokumentasiDatasetSelector);
+  const { records: dataKota } = useSelector(bimtekJadwalDatasetSelector);
   const kotaFilterData = useSelector(bimtekJadwalLocationsDatasetSelector);
 
   const changeNamaBimtek = (e) => {

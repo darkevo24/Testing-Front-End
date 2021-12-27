@@ -88,7 +88,6 @@ export const apiUrls = {
   bimtekMateriTerdekatDownload: getApiEndpoint('file/public-download'),
   beritaLayout: getPublicV1Endpoint('layout'),
   updateKiriLayout: getPublicV1Endpoint('layout/code/kiri'),
-  bimtekDokumentasi: getPortalEndpoint('v1/bimtek/dokumentasi'),
   bimtekDokumentasiMingguIni: getPortalEndpoint('v1/bimtek/dokumentasi/minggu-ini'),
   bimtekDokumentasiMingguLalu: getPortalEndpoint('v1/bimtek/dokumentasi/minggu-lalu'),
   bimtekDokumentasiBulanIni: getPortalEndpoint('v1/bimtek/dokumentasi/bulan-ini'),

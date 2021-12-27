@@ -45,12 +45,11 @@ const Button = styled.div`
   cursor: pointer;
 `;
 
-const BimTekJadwalItem = ({ title, startDate, endDate, city, location, speaker, materi }) => {
+const BimTekJadwalItem = ({ title, startDate, endDate, city, location, speaker, id, materi }) => {
   const [collapse, setCollapse] = useState(false);
-  const materiFile = materi.map((item) => item.fileName);
   const downloadMateri = async (file) => {
     try {
-      await get(`${apiUrls.bimtekMateriTerdekatDownload}/${file}`);
+      await get(`${apiUrls.bimtekMateriDownload}/${file}`);
     } catch (e) {}
   };
   return (
@@ -81,14 +80,26 @@ const BimTekJadwalItem = ({ title, startDate, endDate, city, location, speaker, 
             <div className="mb-3">{location}</div>
             <div className="mb-3">
               <div className="bimtek-jadwal-title">Pembicara</div>
-              <div>{speaker.map((item) => item.nama)}</div>
+              <div>
+                <ol type="1" className="bimtek-jadwal-title-ol">
+                  {speaker?.map((item, key) => (
+                    <li key={key}>{item.nama}</li>
+                  ))}
+                </ol>
+              </div>
             </div>
             <div>
               <div className="bimtek-jadwal-title">Materi</div>
-              <div>{materi.map((item) => item.nama)}</div>
+              <div>
+                <ol type="1" className="bimtek-jadwal-title-ol">
+                  {materi?.map((item, key) => (
+                    <li key={key}>{item.nama}</li>
+                  ))}
+                </ol>
+              </div>
             </div>
             <div className="text-end mt-2">
-              <Button onClick={() => downloadMateri(materiFile)}>
+              <Button onClick={() => downloadMateri(id)}>
                 <Download className="mr-10" /> Download Materi
               </Button>
             </div>

@@ -46,7 +46,7 @@ const CMSJadwalBaru = () => {
   }, []);
 
   useEffect(() => {
-    return dispatch(getJadwalBimtekDetail(BimtekId));
+    if (BimtekId != 0) return dispatch(getJadwalBimtekDetail(BimtekId));
   }, [BimtekId]);
 
   const tanggalMulaiDisetujui = moment(dataDetailBimtek.records.tanggalMulaiDisetujui).format('DD/MM/YYYY');
@@ -54,13 +54,14 @@ const CMSJadwalBaru = () => {
   const tanggalSelesaiDisetujui = moment(dataDetailBimtek.records.tanggalSelesaiDisetujui).format('DD/MM/YYYY');
   const waktuSelesaiDisetujui = moment(dataDetailBimtek.records.tanggalSelesaiDisetujui).format('hh:mm');
   useEffect(() => {
-    reset({
-      default: dataDetailBimtek.records,
-      waktuMulaiDisetujui,
-      waktuSelesaiDisetujui,
-      tanggalMulaiDisetujui,
-      tanggalSelesaiDisetujui,
-    });
+    if (BimtekId != 0)
+      reset({
+        default: dataDetailBimtek.records,
+        waktuMulaiDisetujui,
+        waktuSelesaiDisetujui,
+        tanggalMulaiDisetujui,
+        tanggalSelesaiDisetujui,
+      });
   }, [dataDetailBimtek]);
 
   const schema = yup
@@ -329,17 +330,17 @@ const CMSJadwalBaru = () => {
           <TextEditor onChange={(e) => setIsiDokumentasi(e)} />
         </Form>
       </div>
-      <Modal
-        showHeader={false}
-        title="Tambah Pembicari Baru"
-        visible={showCreateDokumentasi}
-        onClose={() => setCreateDokumentasi(false)}>
+      <Modal showHeader={false} title="Tambah Pembicari Baru" visible={showCreateDokumentasi}>
         <div className="mt-20 mb-20">
           <p className="mb-0"> Simpan Perubahan Data? </p>
         </div>
         <Form onSubmit={handleSubmit(postDokumentasi)} noValidate>
           <div className="d-flex justify-content-end mt-20">
-            <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setCreateDokumentasi()}>
+            <Button
+              className="mr-10"
+              variant="secondary"
+              style={{ width: '112px' }}
+              onClick={() => setCreateDokumentasi(false)}>
               Batal
             </Button>
             <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>

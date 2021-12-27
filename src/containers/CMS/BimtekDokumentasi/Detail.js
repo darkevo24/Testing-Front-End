@@ -653,7 +653,7 @@ const CMSDokumentasiDetail = (props) => {
         <Col sm={3}>
           <LogStatus data={logAktifitas} />
         </Col>
-        <Modal showHeader={false} visible={showDeleteDokumentasi} onClose={() => setDeleteDokumentasi(false)}>
+        <Modal showHeader={false} visible={showDeleteDokumentasi}>
           <div className="mt-20 mb-20">
             <p className="mb-0"> Apakah Anda yakin ingin menghapus Data? </p>
           </div>
@@ -672,7 +672,7 @@ const CMSDokumentasiDetail = (props) => {
             </div>
           </Form>
         </Modal>
-        <Modal showHeader={false} visible={showUpdateDokumentasi} onClose={() => setUpdateDokumentasi(false)}>
+        <Modal showHeader={false} visible={showUpdateDokumentasi}>
           <div className="mt-20 mb-20">
             <p className="mb-0"> Apakah Anda yakin ingin memperbarui Data? </p>
           </div>
@@ -689,11 +689,7 @@ const CMSDokumentasiDetail = (props) => {
             </Button>
           </div>
         </Modal>
-        <Modal
-          showHeader={false}
-          className="cms-bimtek-permintaan-detail"
-          visible={showModalUnpublish}
-          onClose={() => setModalUnpublish(false)}>
+        <Modal showHeader={false} className="cms-bimtek-permintaan-detail" visible={showModalUnpublish}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
@@ -703,7 +699,11 @@ const CMSDokumentasiDetail = (props) => {
           </div>
           <Form onSubmit={handleSubmit(onSubmitUnpublish)} noValidate>
             <div className="d-flex justify-content-end">
-              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalUnpublish()}>
+              <Button
+                className="mr-10"
+                variant="secondary"
+                style={{ width: '112px' }}
+                onClick={() => setModalUnpublish(false)}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
@@ -712,11 +712,7 @@ const CMSDokumentasiDetail = (props) => {
             </div>
           </Form>
         </Modal>
-        <Modal
-          showHeader={false}
-          className="cms-bimtek-permintaan-detail"
-          visible={showModalSimpan}
-          onClose={() => setModalSimpan(false)}>
+        <Modal showHeader={false} className="cms-bimtek-permintaan-detail" visible={showModalSimpan}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
@@ -726,7 +722,7 @@ const CMSDokumentasiDetail = (props) => {
           </div>
           <Form onSubmit={handleSubmit(onSubmitSimpan)} noValidate>
             <div className="d-flex justify-content-end">
-              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalSimpan()}>
+              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalSimpan(false)}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
@@ -735,11 +731,7 @@ const CMSDokumentasiDetail = (props) => {
             </div>
           </Form>
         </Modal>
-        <Modal
-          showHeader={false}
-          className="cms-bimtek-permintaan-detail"
-          visible={showModalWaitingApproval}
-          onClose={() => setModalWaitingApproval(false)}>
+        <Modal showHeader={false} className="cms-bimtek-permintaan-detail" visible={showModalWaitingApproval}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
@@ -753,7 +745,7 @@ const CMSDokumentasiDetail = (props) => {
                 className="mr-10"
                 variant="secondary"
                 style={{ width: '112px' }}
-                onClick={() => setModalWaitingApproval()}>
+                onClick={() => setModalWaitingApproval(false)}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
@@ -762,11 +754,7 @@ const CMSDokumentasiDetail = (props) => {
             </div>
           </Form>
         </Modal>
-        <Modal
-          showHeader={false}
-          className="cms-bimtek-permintaan-detail"
-          visible={showModalPublish}
-          onClose={() => setModalPublish(false)}>
+        <Modal showHeader={false} className="cms-bimtek-permintaan-detail" visible={showModalPublish}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
@@ -776,7 +764,11 @@ const CMSDokumentasiDetail = (props) => {
           </div>
           <Form onSubmit={handleSubmit(onSubmitPublish)} noValidate>
             <div className="d-flex justify-content-end mt-20">
-              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalPublish()}>
+              <Button
+                className="mr-10"
+                variant="secondary"
+                style={{ width: '112px' }}
+                onClick={() => setModalPublish(false)}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
@@ -785,11 +777,7 @@ const CMSDokumentasiDetail = (props) => {
             </div>
           </Form>
         </Modal>
-        <Modal
-          showHeader={false}
-          className="cms-bimtek-permintaan-detail"
-          visible={showModalTolak}
-          onClose={() => setModalTolak(false)}>
+        <Modal showHeader={false} className="cms-bimtek-permintaan-detail" visible={showModalTolak}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin

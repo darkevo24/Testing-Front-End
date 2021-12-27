@@ -53,7 +53,7 @@ const permintaanDataDetailSlice = createSlice({
     builder.addCase(getPermintaanData.fulfilled, (state, action) => {
       state.dataset.loading = false;
       state.dataset.records = action.payload.data.content.records;
-      state.dataset.page = action.payload.data.content.page;
+      state.dataset.page = action.payload.data.content.page - 1;
       state.dataset.totalPages = action.payload.data.content.totalPages;
       state.dataset.totalRecords = action.payload.data.content.totalRecords;
     });

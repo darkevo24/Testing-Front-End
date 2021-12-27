@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-// import cx from 'classnames';
+import cx from 'classnames';
 import moment from 'moment';
 import { useHistory, useParams } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
@@ -7,11 +7,12 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 import { ReadOnlyInputs } from 'components';
-import { /*FilledSquareSvg,*/ LeftChevron /*, Trash*/ } from 'components/Icons';
+import { FilledSquareSvg, LeftChevron, Trash } from 'components/Icons';
 import { CMSModal } from 'components/CMSStatusModals';
-import { /*getStatusClass,*/ prefixID } from 'utils/helper';
+import { getStatusClass, prefixID } from 'utils/helper';
 import { apiUrls, deleteRequest, put } from 'utils/request';
 import RowLoader from 'components/Loader/RowLoader';
+import { jadwalPermutakhiranOptions } from 'utils/constants';
 // import DataVariableTable from 'containers/DataVariable/DataVariableTable';
 
 export const DaftarDetailPage = ({ ...props }) => {
@@ -20,7 +21,7 @@ export const DaftarDetailPage = ({ ...props }) => {
   const [apiError, setAPIError] = useState('');
 
   const { loading, result, error } = props.dafterDataWithId;
-  // const { loading: logLoading, record: logRecord } = props.dafterLogDataWithId;
+  const { loading: logLoading, record: logRecord } = props.dafterLogDataWithId;
 
   const history = useHistory();
   const { id } = useParams();
@@ -66,7 +67,6 @@ export const DaftarDetailPage = ({ ...props }) => {
     setModal('');
   };
 
-  // const handleKodeReferensiChange = () => {};
   const list = [
     {
       label: 'Instansi',
@@ -82,7 +82,7 @@ export const DaftarDetailPage = ({ ...props }) => {
     },
     {
       label: 'Jadwal Pemutakhiran',
-      value: result?.jadwalPemutakhiran || '',
+      value: jadwalPermutakhiranOptions?.[result?.jadwalPemutakhiran]?.label || '',
     },
     {
       label: 'Definisi',
@@ -141,7 +141,7 @@ export const DaftarDetailPage = ({ ...props }) => {
     },
   ];
 
-  // const isEnable = result?.kodePNRKP || result?.kodePPRKP || result?.kodeTujuan || result?.kodePilar;
+  const isEnable = result?.kodePNRKP || result?.kodePPRKP || result?.kodeTujuan || result?.kodePilar;
   return (
     <div className="sdp-dafter-data-container">
       <div className="d-flex">
@@ -156,47 +156,48 @@ export const DaftarDetailPage = ({ ...props }) => {
         <Col xs={12} md={7} className="ml-184">
           <div className="d-flex align-items-center justify-content-between">
             <label className="fw-bold fs-24 lh-29 p-32">Detail</label>
-            {/*{!loading && (*/}
-            {/*  <div className="d-flex">*/}
-            {/*    <Button*/}
-            {/*      key="delete"*/}
-            {/*      variant="light"*/}
-            {/*      className="mr-16 br-4 bg-gray border-0 p-13"*/}
-            {/*      onClick={() => setModal('delete')}>*/}
-            {/*      <Trash />*/}
-            {/*    </Button>*/}
-            {/*    <Button*/}
-            {/*      key="edit"*/}
-            {/*      variant="outline-light"*/}
-            {/*      className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4 px-40 py-13"*/}
-            {/*      onClick={() => history.push(`/cms/daftar/manage-dafter-data/${result.id}`)}>*/}
-            {/*      Ubah*/}
-            {/*    </Button>*/}
-            {/*    <Button*/}
-            {/*      variant=""*/}
-            {/*      key="prioritis"*/}
-            {/*      disabled={true}*/}
-            {/*      className={cx('mr-16 br-4 pr-40 py-13 border-gray-stroke flex-item-center', {*/}
-            {/*        'sdp-text-blue': isEnable,*/}
-            {/*        'sdp-text-disable': !isEnable,*/}
-            {/*      })}>*/}
-            {/*      <FilledSquareSvg variant={isEnable ? 'blue' : 'stroke'} />*/}
-            {/*      <label className="ml-10">Prioritis</label>*/}
-            {/*    </Button>*/}
-            {/*    <Button*/}
-            {/*      key="verifikansi"*/}
-            {/*      variant={''}*/}
-            {/*      className={cx('mr-16 br-4 pr-40 py-13 border-gray-stroke flex-item-center', {*/}
-            {/*        'sdp-text-blue': false,*/}
-            {/*        'sdp-text-disable': true,*/}
-            {/*      })}*/}
-            {/*      disabled={!isEnable}*/}
-            {/*      onClick={() => setModal('verifikansi')}>*/}
-            {/*      <FilledSquareSvg variant={false ? 'blue' : 'stroke'} />*/}
-            {/*      <label className="ml-10">Verifikansi</label>*/}
-            {/*    </Button>*/}
-            {/*  </div>*/}
-            {/*)}*/}
+            {!loading && (
+              <div className="d-flex">
+                <Button
+                  key="delete"
+                  variant="light"
+                  className="mr-16 br-4 bg-gray border-0 p-13"
+                  onClick={() => setModal('delete')}>
+                  <Trash />
+                </Button>
+                <Button
+                  key="edit"
+                  variant="outline-light"
+                  className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4 px-40 py-13"
+                  onClick={() => history.push(`/cms/daftar/manage-dafter-data/${result.id}`)}>
+                  Ubah
+                </Button>
+                <Button
+                  variant=""
+                  key="prioritis"
+                  disabled={true}
+                  className={cx('mr-16 br-4 pr-40 py-13 border-gray-stroke flex-item-center', {
+                    'sdp-text-blue': isEnable,
+                    'sdp-text-disable': !isEnable,
+                  })}>
+                  <FilledSquareSvg variant={isEnable ? 'blue' : 'stroke'} />
+                  <label className="ml-10">Prioritis</label>
+                </Button>
+                <Button
+                  key="verifikansi"
+                  variant=""
+                  className={cx('mr-16 br-4 pr-40 py-13 border-gray-stroke flex-item-center', {
+                    'sdp-text-blue': false,
+                    'sdp-text-disable': true,
+                  })}
+                  disabled={!isEnable}
+                  onClick={() => setModal('verifikansi')}>
+                  // TODO change color based on API response
+                  <FilledSquareSvg variant={false ? 'blue' : 'stroke'} />
+                  <label className="ml-10">Verifikansi</label>
+                </Button>
+              </div>
+            )}
           </div>
           <div className="mb-3 px-24 pb-100">
             {apiError || error ? <label className="sdp-error mb-20">{apiError || error}</label> : null}
@@ -205,37 +206,37 @@ export const DaftarDetailPage = ({ ...props }) => {
             )}
           </div>
         </Col>
-        {/*<Col xs={4} md={2} className="">*/}
-        {/*  <label className="fs-20 lh-25 pt-32 fw-bold">Log Status</label>*/}
-        {/*  <div className="d-flex flex-column mt-24">*/}
-        {/*    {logLoading ? (*/}
-        {/*      <RowLoader />*/}
-        {/*    ) : (*/}
-        {/*      (logRecord || []).map((item) => {*/}
-        {/*        const status = (item?.data?.status || '').toLowerCase();*/}
-        {/*        const classDetail = getStatusClass(status);*/}
-        {/*        return (*/}
-        {/*          <div className="mb-24">*/}
-        {/*            <div className="d-flex align-items-center">*/}
-        {/*              <span className="fs-14 lh-17 sdp-text-black-dark w-100">*/}
-        {/*                {moment(item.createdAt).format('DD MMMM YYYY')}*/}
-        {/*              </span>*/}
-        {/*              <div className="border-gray-stroke h-0 w-100" />*/}
-        {/*            </div>*/}
-        {/*            <div className="d-flex mt-12 ">*/}
-        {/*              <div className={`br-2 py-4 px-6 mr-8 h-fit-content ${classDetail?.divBG || ''}`}>*/}
-        {/*                <span className={`fs-14 lh-17 ${classDetail?.textColor || ''}`}>*/}
-        {/*                  {classDetail?.text || item.data.status}*/}
-        {/*                </span>*/}
-        {/*              </div>*/}
-        {/*              <span className="sdp-text-disable">{item.remark}</span>*/}
-        {/*            </div>*/}
-        {/*          </div>*/}
-        {/*        );*/}
-        {/*      })*/}
-        {/*    )}*/}
-        {/*  </div>*/}
-        {/*</Col>*/}
+        <Col xs={4} md={2} className="">
+          <label className="fs-20 lh-25 pt-32 fw-bold">Log Status</label>
+          <div className="d-flex flex-column mt-24">
+            {logLoading ? (
+              <RowLoader />
+            ) : (
+              (logRecord || []).map((item) => {
+                const status = (item?.data?.status || '').toLowerCase();
+                const classDetail = getStatusClass(status);
+                return (
+                  <div className="mb-24">
+                    <div className="d-flex align-items-center">
+                      <span className="fs-14 lh-17 sdp-text-black-dark w-100">
+                        {item?.createdAt ? null : moment(item.createdAt).format('DD MMMM YYYY')}
+                      </span>
+                      <div className="border-gray-stroke h-0 w-100" />
+                    </div>
+                    <div className="d-flex mt-12 ">
+                      <div className={`br-2 py-4 px-6 mr-8 h-fit-content ${classDetail?.divBG || ''}`}>
+                        <span className={`fs-14 lh-17 ${classDetail?.textColor || ''}`}>
+                          {classDetail?.text || item?.data?.status || ''}
+                        </span>
+                      </div>
+                      <span className="sdp-text-disable">{item?.remark || ''}</span>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </Col>
       </Row>
       <div className="border-bottom" />
       {/*<DataVariableTable cms cmsDetail />*/}
@@ -257,7 +258,7 @@ export const DaftarDetailPage = ({ ...props }) => {
           label={
             <>
               Apakah anda yakin ingin <span className="sdp-error">menghapus</span> Daftar Data{' '}
-              <b>{prefixID(result.id, 'KA')}</b>?
+              <b>{prefixID(result.id, 'DD')}</b>?
             </>
           }
           loader={loader}

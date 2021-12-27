@@ -19,7 +19,8 @@ const bem = bn('content-table');
 const CMSStrukturOrganisasi = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { loading, page, totalPages, records } = useSelector(strukturDatasetSelector);
+  const [page, setPage] = useState(1);
+  const { loading, totalPages, records } = useSelector(strukturDatasetSelector);
   const [searchQuery, setSearchQuery] = useState('');
 
   const fetchData = (params) => {
@@ -28,10 +29,17 @@ const CMSStrukturOrganisasi = () => {
 
   useEffect(() => {
     fetchData({
-      page: page,
+      page: 1,
       q: searchQuery,
     });
   }, [searchQuery]);
+
+  useEffect(() => {
+    fetchData({
+      page: page,
+      q: searchQuery,
+    });
+  }, [page]);
 
   return (
     <div className={bem.e('section')}>
@@ -72,6 +80,7 @@ const CMSStrukturOrganisasi = () => {
             return value;
           })}
           pagination={{ page: page, totalPages: totalPages }}
+          handlePageChange={setPage}
         />
       ) : null}
     </div>

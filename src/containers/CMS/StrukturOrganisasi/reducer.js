@@ -6,7 +6,7 @@ export const initialState = {
   dataset: {
     loading: false,
     error: null,
-    page: 0,
+    page: 1,
     records: [],
     size: null,
     totalRecords: 0,
@@ -76,6 +76,7 @@ const strukturOrganisasiSlice = createSlice({
       state.dataset.loading = false;
       state.dataset.records = action.payload.records;
       state.dataset.totalRecords = action.payload.totalRecords;
+      state.dataset.totalPages = action.payload.totalPages;
       state.dataset.page = action.payload.page;
     });
     builder.addCase(getStrukturOrganisasi.rejected, (state) => {

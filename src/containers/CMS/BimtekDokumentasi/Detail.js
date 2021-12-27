@@ -147,10 +147,10 @@ const CMSDokumentasiDetail = (props) => {
     }
   };
 
-  function deleteFotoDokumentasi(e) {
+  const deleteFotoDokumentasi = (e) => {
     const filter = fotoDokumentasi.filter((item, index) => index !== e);
     setFotoDokumentasi(filter);
-  }
+  };
 
   const openUploadForm = (id) => {
     const elmButton = document.getElementById(id);
@@ -259,7 +259,7 @@ const CMSDokumentasiDetail = (props) => {
   const SuccessText = () => {
     return (
       <div className="d-flex">
-        <div className="icon-box px-10" onClick={backToTable}>
+        <div className="icon-box-md" onClick={backToTable}>
           <LeftChevron />
         </div>
         <Row className="permintaan-data-form-success fw-bold justify-content-center align-items-center">
@@ -272,7 +272,7 @@ const CMSDokumentasiDetail = (props) => {
   const WaitingApproval = () => {
     return (
       <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
+        <div className="icon-box-md" onClick={backToTable}>
           <LeftChevron />
         </div>
         <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">
@@ -285,7 +285,7 @@ const CMSDokumentasiDetail = (props) => {
   const ApprovedText = () => {
     return (
       <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
+        <div className="icon-box-md" onClick={backToTable}>
           <LeftChevron />
         </div>
         <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Approved</Row>
@@ -295,7 +295,7 @@ const CMSDokumentasiDetail = (props) => {
   const UnpublishText = () => {
     return (
       <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
+        <div className="icon-box-md" onClick={backToTable}>
           <LeftChevron />
         </div>
         <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Unpublish</Row>
@@ -306,7 +306,7 @@ const CMSDokumentasiDetail = (props) => {
   const DraftText = () => {
     return (
       <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
+        <div className="icon-box-md" onClick={backToTable}>
           <LeftChevron />
         </div>
         <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">DRAFT</Row>
@@ -317,7 +317,7 @@ const CMSDokumentasiDetail = (props) => {
   const RejectedText = () => {
     return (
       <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
+        <div className="icon-box-md" onClick={backToTable}>
           <LeftChevron />
         </div>
         <Row className="permintaan-data-form-ditolak fw-bold justify-content-center align-items-center">REJECTED</Row>

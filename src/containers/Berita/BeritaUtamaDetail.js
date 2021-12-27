@@ -20,7 +20,6 @@ import BeritaLainnya from './BeritaLainnya';
 import Populer from './Populer';
 import Tweets from './Tweets';
 import { newsDetailSelector, getNewsDetail } from './reducer';
-import './berita.scss';
 
 const components = {
   search: Search,
@@ -86,7 +85,7 @@ const BeritaUtamaDetail = (props) => {
           </div>
           <div className="d-flex flex-row justify-content-between">
             <img src={clockIcon} className="mx-8" />
-            <div className="sdp-text-disable mb-24 fs-14">{formatDate(record?.publishDate)}</div>
+            <div className="sdp-text-disable mb-24 fs-14">{formatDate(record?.tanggalPublis)}</div>
             <div className="mr-8 my-12">
               <img src={worldIcon} className="mx-8" />
               <img src={fbIcon} className="mx-8" />

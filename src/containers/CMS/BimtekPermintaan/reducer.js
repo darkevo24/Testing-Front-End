@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, defaultNumberOfRows, get, post } from 'utils/request';
+import { apiUrls, defaultNumberOfRows, get, post, put } from 'utils/request';
 
 export const initialState = {
   dataset: {
@@ -37,8 +37,6 @@ export const getPermintaanData = createAsyncThunk('bimtek-permintaan/getListBimt
   const response = await get(apiUrls.cmsBimtekPermintaanData, {
     query: { page: params.page + 1, size: 10, namaBimtek: params.q, instansiId: params.instansiId },
   });
-  console.log(params.page);
-  console.log(response);
   return response;
 });
 
@@ -63,7 +61,7 @@ export const postStatusApprove = createAsyncThunk('/bimtek-permintaan/changeStat
 });
 
 export const postStatusReject = createAsyncThunk('/bimtek-permintaan/changeStatusDetailRejected', async (params) => {
-  const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/ubah-status/REJECTED`, { catatan: 'test' });
+  const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/ubah-status/REJECTED`, { catatan: params.catatan });
   return response;
 });
 
@@ -78,7 +76,19 @@ export const postStatusPublish = createAsyncThunk('/bimtek-permintaan/changeStat
 });
 
 export const postStatusUnpublish = createAsyncThunk('/bimtek-permintaan/changeStatusDetailUnpublish', async (params) => {
-  const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/ubah-status/UNPUBLISH`, { catatan: 'test' });
+  const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/ubah-status/UNPUBLISHED`, { catatan: 'test' });
+  return response;
+});
+
+export const updateStatusBimtekSetujui = createAsyncThunk('/bimtek-permintaan/changeStatusBimtekSetujui', async (params) => {
+  const response = await put(`${apiUrls.cmsBimtekJadwal}/${params.id}`, {
+    namaBimtek: params.namaBimtek,
+    tagMateri: params.tagMateri,
+    tanggalMulaiDisetujui: params.tanggalMulaiDisetujui,
+    tanggalSelesaiDisetujui: params.tanggalSelesaiDisetujui,
+    kota: params.kota,
+    alamat: 'test',
+  });
   return response;
 });
 
@@ -187,6 +197,17 @@ const BimtekPermintaanDataDetailSlice = createSlice({
       state.status = action.payload;
     });
     builder.addCase(postStatusUnpublish.rejected, (state, action) => {
+      state.loading = false;
+      state.error = 'Invalid data';
+    });
+    builder.addCase(updateStatusBimtekSetujui.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(updateStatusBimtekSetujui.fulfilled, (state, action) => {
+      state.loading = false;
+      state.status = action.payload;
+    });
+    builder.addCase(updateStatusBimtekSetujui.rejected, (state, action) => {
       state.loading = false;
       state.error = 'Invalid data';
     });

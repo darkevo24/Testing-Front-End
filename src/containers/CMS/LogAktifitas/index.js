@@ -27,31 +27,14 @@ const schema = yup
 
 const LogActivity = () => {
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const { q, startDate, endDate, size, loading, page, records, totalRecords, totalPages } =
+  const { q, startDate, endDate, size, loading, records, totalRecords, totalPages, status } =
     useSelector(cmsLogAktifitasDataSelector);
 
   useEffect(() => {
-    handleAPICall({
-      page: page,
-      q,
-      startDate,
-      endDate,
-    });
-  }, []);
-
-  const handleAPICall = (params) => {
-    dispatch(getCMSLogActifitasData(params));
-  };
-
-  const handleSearch = (value = '') => {
-    handleAPICall({
-      page: page,
-      q: value.trim(),
-      ...(startDate && { startDate: startDate }),
-      ...(endDate && { endDate: endDate }),
-    });
-  };
+    dispatch(getCMSLogActifitasData({ page: currentPage, q, startDate, endDate }));
+  }, [dispatch, q, startDate, endDate, currentPage]);
 
   const [modalProfile, setModalProfile] = useState(false);
   const {
@@ -73,7 +56,15 @@ const LogActivity = () => {
   const columns = [
     {
       Header: 'ID Pengguna',
-      accessor: 'id_user',
+      accessor: 'email',
+      Cell: ({
+        row: {
+          original: { data },
+        },
+      }) => {
+        const { email = '' } = data.user;
+        return <span>{email}</span>;
+      },
     },
     {
       Header: 'Alamat IP',
@@ -81,14 +72,16 @@ const LogActivity = () => {
     },
     {
       Header: 'Waktu',
-      accessor: 'tanggalTarget',
+      accessor: 'createdAt',
       Cell: ({ ...rest }) => (
-        <span> {rest.row.original?.tanggalTarget ? moment(rest.row.original?.time).format('DD MMMM YYYY') : '---'} </span>
+        <span>
+          {rest.row.original?.createdAt ? moment(rest.row.original?.createdAt).format('DD/MM YYYY : HH:MM') : '---'}{' '}
+        </span>
       ),
     },
     {
       Header: 'Activity',
-      accessor: 'activity',
+      accessor: 'remark',
     },
     {
       Header: 'Status',
@@ -123,13 +116,13 @@ const LogActivity = () => {
     totalCount: totalRecords || null,
     pageCount: totalPages || null,
     pageSize: size,
-    currentPage: page,
+    currentPage: currentPage,
     manualPagination: true,
     onRowClick: rowClick,
     rowClass: getRowClass,
-    onPageIndexChange: (currentPage) => {
-      if (currentPage !== page) {
-        handleAPICall({ page: currentPage, q, startDate, endDate });
+    onPageIndexChange: (nextPage) => {
+      if (nextPage !== currentPage) {
+        setCurrentPage(nextPage);
       }
     },
   };
@@ -175,12 +168,7 @@ const LogActivity = () => {
               />
             </div>
             <InputGroup>
-              <Form.Control
-                variant="normal"
-                type="text"
-                placeholder="Pencarian"
-                onChange={(e) => handleSearch(e.target.value)}
-              />
+              <Form.Control variant="normal" type="text" placeholder="Pencarian" />
               <Search />
             </InputGroup>
           </div>

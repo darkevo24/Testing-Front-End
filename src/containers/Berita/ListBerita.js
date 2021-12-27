@@ -73,22 +73,23 @@ const ListBerita = (props) => {
   return (
     <Wrapper>
       <BeritaGrid columns={props.columns}>
-        {records.length &&
-          records.map((content, i) => {
-            const { judul, slug, image, kategori, id } = content;
-            return (
-              <BeritaItem className="row" key={'lb' + i}>
-                <div className="col-lg-4" style={{ paddingRight: '24px' }}>
-                  <Image src={image} />
-                </div>
-                <div className="col-lg-8">
-                  <Topik>{kategori}</Topik>
-                  <Judul onClick={(event) => handleDetail(event, id)}>{judul}</Judul>
-                  <Konten>{slug}</Konten>
-                </div>
-              </BeritaItem>
-            );
-          })}
+        {records.length
+          ? records.map((content, i) => {
+              const { judul, slug, image, kategori, id } = content;
+              return (
+                <BeritaItem className="row" key={'lb' + i}>
+                  <div className="col-lg-4" style={{ paddingRight: '24px' }}>
+                    <Image src={image} />
+                  </div>
+                  <div className="col-lg-8">
+                    <Topik>{kategori}</Topik>
+                    <Judul onClick={(event) => handleDetail(event, id)}>{judul}</Judul>
+                    <Konten>{slug}</Konten>
+                  </div>
+                </BeritaItem>
+              );
+            })
+          : null}
       </BeritaGrid>
       {records.length > 3 && <ButtonLoadMore onClick={handleLoadMore}>Muat Lebih Banyak</ButtonLoadMore>}
     </Wrapper>

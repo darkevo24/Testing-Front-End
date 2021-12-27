@@ -17,8 +17,10 @@ export const LogStatus = ({ data }) => (
               <div className={bem.e('date-line')}>{}</div>
             </div>
             <div className="d-flex align-items-center">
-              <div className={cx(bem.e('status'), item.data?.status.toLowerCase())}>{item.data?.status}</div>
-              <div className={bem.e('content')}>{item.remark}</div>
+              <div className={cx(bem.e('status'), item.data?.status.toLowerCase() || item?.status.toLowerCase())}>
+                {item.data?.status || item?.status}
+              </div>
+              <div className={bem.e('content')}>{item.remark || item?.diplayMessage}</div>
             </div>
           </div>
         ))}

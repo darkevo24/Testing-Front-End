@@ -110,11 +110,11 @@
       margin-right: 8px;
       height: 28px;
 
-      &.selesai {
+      &.selesai, &.published {
         background: rgba(21, 165, 95, 0.12);
         color: #15A55F;
       }
-      &.diproses {
+      &.diproses, &.waiting_request_approval, &.waiting_approval, &.draft {
         background: rgba(222, 136, 19, 0.12);
         color: #DE8813;
       }
@@ -185,7 +185,7 @@
             background: $gray-bg;
             color: $gray;
           }
-          &.dibatalkan, &.ditolak {
+          &.dibatalkan, &.ditolak, &.unpublish {
             background: rgba(255, 0, 0, 0.12);
             color: $red
           }

@@ -115,7 +115,6 @@ const CMSBimtekPermintaan = () => {
       }
     },
   };
-  console.log(page);
   return (
     <div className={bem.e('section')}>
       <div className={bem.e('header')}>

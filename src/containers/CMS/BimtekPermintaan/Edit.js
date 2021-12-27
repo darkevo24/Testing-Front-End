@@ -325,7 +325,7 @@ const CMSBimtekPermintaanEdit = (props) => {
   const ButtonStatusWaitingApproval = () => {
     return (
       <div>
-        <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => setModalDraft(true)}>
+        <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => setModalWaitingSetujui(true)}>
           Kirim
         </Button>
       </div>
@@ -485,7 +485,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
-                Konfirmasi
+                Setujui
               </Button>
             </div>
           </Form>
@@ -562,7 +562,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
-                Konfirmasi
+                Unpublish
               </Button>
             </div>
           </Form>

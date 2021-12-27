@@ -46,7 +46,7 @@ const CMSJadwalBaru = () => {
   }, []);
 
   useEffect(() => {
-    if (BimtekId != 0) return dispatch(getJadwalBimtekDetail(BimtekId));
+    return dispatch(getJadwalBimtekDetail(BimtekId));
   }, [BimtekId]);
 
   const tanggalMulaiDisetujui = moment(dataDetailBimtek.records.tanggalMulaiDisetujui).format('DD/MM/YYYY');
@@ -54,15 +54,14 @@ const CMSJadwalBaru = () => {
   const tanggalSelesaiDisetujui = moment(dataDetailBimtek.records.tanggalSelesaiDisetujui).format('DD/MM/YYYY');
   const waktuSelesaiDisetujui = moment(dataDetailBimtek.records.tanggalSelesaiDisetujui).format('hh:mm');
   useEffect(() => {
-    if (BimtekId != 0)
-      reset({
-        default: dataDetailBimtek.records,
-        waktuMulaiDisetujui,
-        waktuSelesaiDisetujui,
-        tanggalMulaiDisetujui,
-        tanggalSelesaiDisetujui,
-      });
-  }, [dataDetailBimtek]);
+    reset({
+      default: dataDetailBimtek.records,
+      waktuMulaiDisetujui,
+      waktuSelesaiDisetujui,
+      tanggalMulaiDisetujui,
+      tanggalSelesaiDisetujui,
+    });
+  }, [dataDetailBimtek, BimtekId]);
 
   const schema = yup
     .object({

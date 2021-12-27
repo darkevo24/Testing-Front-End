@@ -12,7 +12,7 @@ import { useHistory } from 'react-router-dom';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import Notification from 'components/Notification';
 import { DatePicker, Input, Modal, Table, TextEditor } from 'components';
-import { bimtekListSelector, getDokumentasiList, postImageDokumentasi } from './reducer';
+import { bimtekListSelector, getJadwalBimtekList, postImageDokumentasi } from './reducer';
 import { bimtekJadwalDetailSelector, getJadwalBimtekDetail } from 'containers/CMS/BimtekJadwal/reducer';
 import { apiUrls, post } from 'utils/request';
 
@@ -33,7 +33,7 @@ const CMSJadwalBaru = () => {
   const DetailBimtek = useSelector(bimtekJadwalDetailSelector);
 
   const fetchDokumentasiList = () => {
-    return dispatch(getDokumentasiList());
+    return dispatch(getJadwalBimtekList());
   };
 
   const dataListBimtek = records;
@@ -53,7 +53,6 @@ const CMSJadwalBaru = () => {
   const waktuMulaiDisetujui = moment(dataDetailBimtek.records.tanggalMulaiDisetujui).format('hh:mm');
   const tanggalSelesaiDisetujui = moment(dataDetailBimtek.records.tanggalSelesaiDisetujui).format('DD/MM/YYYY');
   const waktuSelesaiDisetujui = moment(dataDetailBimtek.records.tanggalSelesaiDisetujui).format('hh:mm');
-  console.log(tanggalMulaiDisetujui);
   useEffect(() => {
     reset({
       default: dataDetailBimtek.records,
@@ -106,6 +105,11 @@ const CMSJadwalBaru = () => {
       });
     }
   };
+
+  function deleteFotoDokumentasi(e) {
+    const filter = fotoDokumentasi.filter((item, index) => index !== e);
+    setFotoDokumentasi(filter);
+  }
 
   const openUploadForm = (id) => {
     const elmButton = document.getElementById(id);
@@ -173,7 +177,7 @@ const CMSJadwalBaru = () => {
       urlVidio,
       images: fotoDokumentasi,
     };
-    return dispatch(postImageDokumentasi(obj)).then((res) => {
+    dispatch(postImageDokumentasi(obj)).then((res) => {
       res.payload
         ? Notification.show({
             type: 'secondary',
@@ -306,7 +310,12 @@ const CMSJadwalBaru = () => {
               {fotoDokumentasi.map((foto, index) => {
                 return (
                   <Col key={index} sm={4}>
-                    <img src={foto.location} className="doc-foto" alt="img" />
+                    <div className="doc-foto">
+                      <img src={foto.location} alt="img" />
+                      <Button onClick={() => deleteFotoDokumentasi(index)}>
+                        <span> Remove Photo </span>
+                      </Button>
+                    </div>
                   </Col>
                 );
               })}

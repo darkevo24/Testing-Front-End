@@ -24,6 +24,7 @@ import {
   postStatusDraft,
   postStatusPublish,
   postStatusUnpublish,
+  updateStatusBimtekSetujui,
 } from './reducer';
 
 const bem = bn('content-detail');
@@ -34,12 +35,14 @@ const CMSBimtekPermintaanEdit = (props) => {
   const dispatch = useDispatch();
   const { records } = useSelector(bimtekLogSelector);
   const detailPermintaan = useSelector(bimtekPermintaanDataDetail);
+  const [trigger, setTrigger] = useState(false);
+  const [objRequired, setObjRequired] = useState({});
   const [showModalSetuju, setModalSetuju] = useState(false);
+  const [showModalWaitingSetujui, setModalWaitingSetujui] = useState(false);
   const [showModalTolak, setModalTolak] = useState(false);
   const [showModalDraft, setModalDraft] = useState(false);
   const [showModalPublish, setModalPublish] = useState(false);
   const [showModalUnpublish, setModalUnpublish] = useState(false);
-  console.log(detailPermintaan);
   const fetchBimtekLog = (params) => {
     return dispatch(getListLogAktifitas(params));
   };
@@ -50,19 +53,14 @@ const CMSBimtekPermintaanEdit = (props) => {
   useEffect(() => {
     fetchBimtekLog({ id });
     fetchPermintaanDetail({ id });
-  }, []);
+  }, [trigger]);
 
   const data = useMemo(() => detailPermintaan || {}, [detailPermintaan]);
 
   useEffect(() => {
     reset(data);
   }, [data]);
-
-  const schema = yup
-    .object({
-      // name: yup.string().required(),
-    })
-    .required();
+  const schema = yup.object(objRequired).required();
 
   const {
     control,
@@ -73,9 +71,28 @@ const CMSBimtekPermintaanEdit = (props) => {
     resolver: yupResolver(schema),
     defaultValues: {
       ...data,
-      waktuMulai: moment(data?.tanggalRequest).format('HH:mm'),
+      // tanggalMulaiDisetujui,
     },
   });
+
+  const onSetModalWaitingSetujui = () => {
+    setObjRequired({
+      namaBimbinganTeknis: yup.string().required(),
+      tempatBimbinganTeknis: yup.string().required(),
+      tanggalMulaiDisetujuiUpdate: yup.string().required(),
+      tanggalSelesaiDisetujuiUpdate: yup.string().required(),
+      jamMulaiDisetujuiUpdate: yup.string().required(),
+      jamSelesaiDisetujuiUpdate: yup.string().required(),
+    });
+    setModalWaitingSetujui(true);
+  };
+
+  const onSetModalTolak = () => {
+    setObjRequired({
+      catatanTolak: yup.string().required(),
+    });
+    setModalTolak(true);
+  };
 
   const onSubmitProses = (data) => {
     let obj = {
@@ -100,6 +117,7 @@ const CMSBimtekPermintaanEdit = (props) => {
   const onSubmitTolak = (data) => {
     let obj = {
       id,
+      catatan: data.catatanTolak,
     };
     dispatch(postStatusReject(obj)).then((res) => {
       res?.error
@@ -175,6 +193,39 @@ const CMSBimtekPermintaanEdit = (props) => {
           });
     });
     setModalUnpublish(false);
+  };
+
+  const onSubmitSetujuiBimbingan = (data) => {
+    const tanggalMulaiDisetujui = `${moment(data.tanggalMulaiDisetujuiUpdate).format('YYYY-MM-DD')} ${
+      data.jamMulaiDisetujuiUpdate
+    }:00`;
+    const tanggalSelesaiDisetujui = `${moment(data.tanggalSelesaiDisetujuiUpdate).format('YYYY-MM-DD')} ${
+      data.jamSelesaiDisetujuiUpdate
+    }:00`;
+    let obj = {
+      id: data.id,
+      namaBimtek: data.namaBimbinganTeknis,
+      tagMateri: data.tagMateri,
+      tanggalMulaiDisetujui,
+      tanggalSelesaiDisetujui,
+      kota: data.kotaId,
+      alamat: data.tempatBimbinganTeknis,
+    };
+    dispatch(updateStatusBimtekSetujui(obj)).then((res) => {
+      res.payload
+        ? Notification.show({
+            type: 'secondary',
+            message: <div> Berhasil Menyetujui Bimbingan Teknis </div>,
+            icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Gagal Menyetujui Bimbingan Teknis </div>,
+            icon: 'cross',
+          });
+    });
+    setModalWaitingSetujui(false);
+    setTrigger(true);
   };
 
   const SuccessText = () => {
@@ -279,11 +330,11 @@ const CMSBimtekPermintaanEdit = (props) => {
   const ButtonStatusWaitingRequestApproval = () => {
     return (
       <div>
-        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalTolak(true)}>
+        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => onSetModalTolak()}>
           Tolak
         </Button>
-        <Button className="ml-10" variant="info" onClick={() => setModalDraft(true)}>
-          Kirim Pengajuan
+        <Button className="ml-10" variant="info" onClick={() => onSetModalWaitingSetujui()}>
+          Setujui
         </Button>
       </div>
     );
@@ -378,15 +429,29 @@ const CMSBimtekPermintaanEdit = (props) => {
               <Input readOnly group label="Email" name="requestor.email" control={control} />
               <Input readOnly group label="Ekspektasi Jumlah Peserta" name="ekspektasiJumlahPeserta" control={control} />
               <Input readOnly group label="Tagging Materi" name="tagMateri" control={control} />
+              <Input
+                group
+                label="Nama Bimbingan Teknis"
+                name="namaBimbinganTeknis"
+                control={control}
+                error={errors.namaBimbinganTeknis?.message}
+              />
+              <Input
+                group
+                label="Tempat"
+                name="tempatBimbinganTeknis"
+                control={control}
+                error={errors.tempatBimbinganTeknis?.message}
+              />
               <Row className="align-items-end">
                 <Col>
                   <DatePicker
                     group
                     label="Tanggal Mulai Pelaksanaan Disetujui"
-                    name=""
+                    name="tanggalMulaiDisetujuiUpdate"
                     control={control}
                     rules={{ required: false }}
-                    error={errors.publishedDate?.message}
+                    error={errors.tanggalMulaiDisetujuiUpdate?.message}
                   />
                 </Col>
                 <Col>
@@ -395,10 +460,10 @@ const CMSBimtekPermintaanEdit = (props) => {
                     className="m-0"
                     type="time"
                     label=""
-                    name="waktuMulai"
+                    name="jamMulaiDisetujuiUpdate"
                     control={control}
                     rules={{ required: false }}
-                    error={errors.publishedTime?.message}
+                    error={errors.jamMulaiDisetujuiUpdate?.message}
                   />
                 </Col>
               </Row>
@@ -407,10 +472,10 @@ const CMSBimtekPermintaanEdit = (props) => {
                   <DatePicker
                     group
                     label="Tanggal Selesai Pelaksanaan Disetujui"
-                    name=""
+                    name="tanggalSelesaiDisetujuiUpdate"
                     control={control}
                     rules={{ required: false }}
-                    error={errors.publishedDate?.message}
+                    error={errors.tanggalSelesaiDisetujuiUpdate?.message}
                   />
                 </Col>
                 <Col>
@@ -419,10 +484,10 @@ const CMSBimtekPermintaanEdit = (props) => {
                     className="m-0"
                     type="time"
                     label=""
-                    name="publishedTime"
+                    name="jamSelesaiDisetujuiUpdate"
                     control={control}
                     rules={{ required: false }}
-                    error={errors.publishedTime?.message}
+                    error={errors.jamSelesaiDisetujuiUpdate?.message}
                   />
                 </Col>
               </Row>
@@ -542,13 +607,41 @@ const CMSBimtekPermintaanEdit = (props) => {
             </p>
           </div>
           <Form onSubmit={handleSubmit(onSubmitTolak)} noValidate>
-            <Input as="textarea" control={control} />
+            <Input as="textarea" name="catatanTolak" control={control} error={errors.catatanTolak?.message} />
             <div className="d-flex justify-content-end mt-20">
               <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalTolak()}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
                 Tolak
+              </Button>
+            </div>
+          </Form>
+        </Modal>
+        <Modal
+          showHeader={false}
+          className="cms-bimtek-permintaan-detail"
+          title="Tambah Pembicari Baru"
+          visible={showModalWaitingSetujui}
+          onClose={() => setModalWaitingSetujui(false)}>
+          <div className="mt-20 mb-20">
+            <p className="mb-0">
+              Apakah anda yakin ingin
+              <span className="sdp-text-blue"> Menyetujui </span>
+              Permintaan Bimbingan Teknis {id} ?
+            </p>
+          </div>
+          <Form onSubmit={handleSubmit(onSubmitSetujuiBimbingan)} noValidate>
+            <div className="d-flex justify-content-end mt-20">
+              <Button
+                className="mr-10"
+                variant="secondary"
+                style={{ width: '112px' }}
+                onClick={() => setModalWaitingSetujui()}>
+                Batal
+              </Button>
+              <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
+                Konfirmasi
               </Button>
             </div>
           </Form>

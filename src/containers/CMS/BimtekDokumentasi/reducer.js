@@ -33,6 +33,11 @@ export const initialState = {
     error: null,
     logAktifitas: [],
   },
+  status: {
+    loading: false,
+    error: null,
+    status: null,
+  },
 };
 
 export const BIMTEK_DOKUMENTASI = 'BIMTEK_DOKUMENTASI';
@@ -49,8 +54,8 @@ export const getDokumentasiDetail = createAsyncThunk('bimtek-dokumentasi/getList
   return response;
 });
 
-export const getDokumentasiList = createAsyncThunk('bimtek-dokumentasi/getListDokumentasi', async (params) => {
-  const response = await get(apiUrls.cmsBimtekJadwal);
+export const getJadwalBimtekList = createAsyncThunk('bimtek-dokumentasi/getListDokumentasi', async (params) => {
+  const response = await get(`${apiUrls.cmsBimtekJadwal}/select-list`);
   return response;
 });
 
@@ -77,7 +82,6 @@ export const updateDokumentasiDetail = createAsyncThunk('bimtek-dokumentasi/post
     isiDokumentasi: params.isiDokumentasi,
     urlVidio: params.urlVidio,
   });
-  console.log(response);
   return response;
 });
 
@@ -85,7 +89,6 @@ export const deleteDokumentasiDetail = createAsyncThunk(
   'bimtek-dokumentasi/deleteBimtekDokumentasiDetail',
   async (params) => {
     const response = await deleteRequest(`${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}`);
-    console.log(response);
     return response;
   },
 );
@@ -96,10 +99,52 @@ export const postImageDokumentasiDetail = createAsyncThunk(
     const response = await post(`${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}/images`, {
       images: params.images,
     });
-    console.log(response);
     return response;
   },
 );
+
+export const postStatusDraft = createAsyncThunk('/bimtek-dokumentasi/changeStatusDraft', async (params) => {
+  const response = await post(
+    `${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}/ubah-status/WAITING_APPROVAL`,
+    { catatan: 'Ubah ke waiting Approval' },
+  );
+  return response;
+});
+
+export const postStatusWaitingApproval = createAsyncThunk(
+  '/bimtek-dokumentasi/changeStatusWaitingApproval',
+  async (params) => {
+    const response = await post(
+      `${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}/ubah-status/APPROVED`,
+      { catatan: 'Ubah ke Approved' },
+    );
+    return response;
+  },
+);
+
+export const postStatusApproved = createAsyncThunk('/bimtek-dokumentasi/changeStatusApproved', async (params) => {
+  const response = await post(
+    `${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}/ubah-status/PUBLISHED`,
+    { catatan: 'Ubah ke Publish' },
+  );
+  return response;
+});
+
+export const postStatusPublish = createAsyncThunk('/bimtek-dokumentasi/changeStatusPublish', async (params) => {
+  const response = await post(
+    `${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}/ubah-status/UNPUBLISHED`,
+    { catatan: 'Ubah ke Unpublish' },
+  );
+  return response;
+});
+
+export const postStatusRejected = createAsyncThunk('/bimtek-dokumentasi/changeStatusPublish', async (params) => {
+  const response = await post(
+    `${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}/ubah-status/REJECTED`,
+    { catatan: 'Ubah ke Rejected' },
+  );
+  return response;
+});
 
 const BimtekDokumentasiSlice = createSlice({
   name: BIMTEK_DOKUMENTASI,
@@ -142,14 +187,14 @@ const BimtekDokumentasiSlice = createSlice({
       state.logs.loading = false;
       state.logs.error = 'Invalid data';
     });
-    builder.addCase(getDokumentasiList.pending, (state, action) => {
+    builder.addCase(getJadwalBimtekList.pending, (state, action) => {
       state.list.loading = true;
     });
-    builder.addCase(getDokumentasiList.fulfilled, (state, action) => {
+    builder.addCase(getJadwalBimtekList.fulfilled, (state, action) => {
       state.list.loading = false;
       state.list.records = action.payload.data.content.records;
     });
-    builder.addCase(getDokumentasiList.rejected, (state, action) => {
+    builder.addCase(getJadwalBimtekList.rejected, (state, action) => {
       state.list.loading = false;
       state.list.error = 'Invalid data';
     });
@@ -196,6 +241,50 @@ const BimtekDokumentasiSlice = createSlice({
     builder.addCase(deleteDokumentasiDetail.rejected, (state, action) => {
       state.deleteDokumentasi.loading = false;
       state.deleteDokumentasi.error = 'Invalid data';
+    });
+    builder.addCase(postStatusDraft.pending, (state, action) => {
+      state.status.loading = true;
+    });
+    builder.addCase(postStatusDraft.fulfilled, (state, action) => {
+      state.status.loading = false;
+      state.status.status = action.payload;
+    });
+    builder.addCase(postStatusDraft.rejected, (state, action) => {
+      state.status.loading = false;
+      state.status.error = 'Invalid data';
+    });
+    builder.addCase(postStatusWaitingApproval.pending, (state, action) => {
+      state.status.loading = true;
+    });
+    builder.addCase(postStatusWaitingApproval.fulfilled, (state, action) => {
+      state.status.loading = false;
+      state.status.status = action.payload;
+    });
+    builder.addCase(postStatusWaitingApproval.rejected, (state, action) => {
+      state.status.loading = false;
+      state.status.error = 'Invalid data';
+    });
+    builder.addCase(postStatusApproved.pending, (state, action) => {
+      state.status.loading = true;
+    });
+    builder.addCase(postStatusApproved.fulfilled, (state, action) => {
+      state.status.loading = false;
+      state.status.status = action.payload;
+    });
+    builder.addCase(postStatusApproved.rejected, (state, action) => {
+      state.status.loading = false;
+      state.status.error = 'Invalid data';
+    });
+    builder.addCase(postStatusPublish.pending, (state, action) => {
+      state.status.loading = true;
+    });
+    builder.addCase(postStatusPublish.fulfilled, (state, action) => {
+      state.status.loading = false;
+      state.status.status = action.payload;
+    });
+    builder.addCase(postStatusPublish.rejected, (state, action) => {
+      state.status.loading = false;
+      state.status.error = 'Invalid data';
     });
   },
 });

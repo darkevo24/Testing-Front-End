@@ -252,10 +252,13 @@ const CMSDokumentasiDetail = (props) => {
     onSearch: () => {},
     variant: 'link',
   };
+
   const onTest = (data) => {};
+
   const backToTable = () => {
     history.push('/cms/bimtek-dokumentasi');
   };
+
   const SuccessText = () => {
     return (
       <div className="d-flex">
@@ -292,6 +295,7 @@ const CMSDokumentasiDetail = (props) => {
       </div>
     );
   };
+
   const UnpublishText = () => {
     return (
       <div className="d-flex">
@@ -324,6 +328,7 @@ const CMSDokumentasiDetail = (props) => {
       </div>
     );
   };
+
   const ButtonStatusPublish = () => {
     return (
       <div>
@@ -377,6 +382,116 @@ const CMSDokumentasiDetail = (props) => {
     );
   };
 
+  const onSubmitSimpan = (data) => {
+    let obj = {
+      id: data.id,
+      idDokumentasi: data.idDokumentasi,
+    };
+    dispatch(postStatusDraft(obj)).then((res) => {
+      !res.error
+        ? Notification.show({
+            type: 'secondary',
+            message: <div> Berhasil Menyimpan Dokumentasi </div>,
+            icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Gagal Menyimpan Dokumentasi </div>,
+            icon: 'cross',
+          });
+    });
+    setTrigger(true);
+    setModalSimpan(false);
+  };
+
+  const onSubmitApproved = (data) => {
+    let obj = {
+      id: data.id,
+      idDokumentasi: data.idDokumentasi,
+    };
+    dispatch(postStatusWaitingApproval(obj)).then((res) => {
+      !res.error
+        ? Notification.show({
+            type: 'secondary',
+            message: <div> Berhasil, Dokumentasi Disetujui </div>,
+            icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Gagal Merubah Status Menjadi Disetujui </div>,
+            icon: 'cross',
+          });
+    });
+    setTrigger(true);
+    setModalWaitingApproval(false);
+  };
+
+  const onSubmitPublish = (data) => {
+    let obj = {
+      id: data.id,
+      idDokumentasi: data.idDokumentasi,
+    };
+    dispatch(postStatusApproved(obj)).then((res) => {
+      !res.error
+        ? Notification.show({
+            type: 'secondary',
+            message: <div> Berhasil, Dokumentasi Ditayangkan </div>,
+            icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Gagal, Dokumentasi Gagal Ditayangkan </div>,
+            icon: 'cross',
+          });
+    });
+    setTrigger(true);
+    setModalPublish(false);
+  };
+
+  const onSubmitUnpublish = (data) => {
+    let obj = {
+      id: data.id,
+      idDokumentasi: data.idDokumentasi,
+    };
+    dispatch(postStatusPublish(obj)).then((res) => {
+      !res.error
+        ? Notification.show({
+            type: 'secondary',
+            message: <div> Berhasil, Dokumentasi Tidak Ditayangkan </div>,
+            icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Gagal Merubah Status Menjadi Tidak Ditayangkan </div>,
+            icon: 'cross',
+          });
+    });
+    setTrigger(true);
+    setModalUnpublish(false);
+  };
+
+  const onSubmitRejected = (data) => {
+    let obj = {
+      id: data.id,
+      idDokumentasi: data.idDokumentasi,
+    };
+    dispatch(postStatusRejected(obj)).then((res) => {
+      !res.error
+        ? Notification.show({
+            type: 'secondary',
+            message: <div> Berhasil, Dokumentasi Ditolak </div>,
+            icon: 'check',
+          })
+        : Notification.show({
+            type: 'secondary',
+            message: <div> Gagal, Dokumentasi Gagal Ditolak </div>,
+            icon: 'cross',
+          });
+    });
+    setTrigger(true);
+    setModalTolak(false);
+  };
+
   const StatusBar = () => {
     switch (dataDetailDokumentasi.status) {
       case 'DRAFT':
@@ -413,112 +528,6 @@ const CMSDokumentasiDetail = (props) => {
       default:
         return null;
     }
-  };
-
-  const onSubmitSimpan = (data) => {
-    let obj = {
-      id: data.id,
-      idDokumentasi: data.idDokumentasi,
-    };
-    dispatch(postStatusDraft(obj)).then((res) => {
-      !res.error
-        ? Notification.show({
-            type: 'secondary',
-            message: <div> Berhasil Menyimpan Dokumentasi </div>,
-            icon: 'check',
-          })
-        : Notification.show({
-            type: 'secondary',
-            message: <div> Gagal Menyimpan Dokumentasi </div>,
-            icon: 'cross',
-          });
-    });
-    setTrigger(true);
-    setModalSimpan(false);
-  };
-  const onSubmitApproved = (data) => {
-    let obj = {
-      id: data.id,
-      idDokumentasi: data.idDokumentasi,
-    };
-    dispatch(postStatusWaitingApproval(obj)).then((res) => {
-      !res.error
-        ? Notification.show({
-            type: 'secondary',
-            message: <div> Berhasil, Dokumentasi Disetujui </div>,
-            icon: 'check',
-          })
-        : Notification.show({
-            type: 'secondary',
-            message: <div> Gagal Merubah Status Menjadi Disetujui </div>,
-            icon: 'cross',
-          });
-    });
-    setTrigger(true);
-    setModalWaitingApproval(false);
-  };
-  const onSubmitPublish = (data) => {
-    let obj = {
-      id: data.id,
-      idDokumentasi: data.idDokumentasi,
-    };
-    dispatch(postStatusApproved(obj)).then((res) => {
-      !res.error
-        ? Notification.show({
-            type: 'secondary',
-            message: <div> Berhasil, Dokumentasi Ditayangkan </div>,
-            icon: 'check',
-          })
-        : Notification.show({
-            type: 'secondary',
-            message: <div> Gagal, Dokumentasi Gagal Ditayangkan </div>,
-            icon: 'cross',
-          });
-    });
-    setTrigger(true);
-    setModalPublish(false);
-  };
-  const onSubmitUnpublish = (data) => {
-    let obj = {
-      id: data.id,
-      idDokumentasi: data.idDokumentasi,
-    };
-    dispatch(postStatusPublish(obj)).then((res) => {
-      !res.error
-        ? Notification.show({
-            type: 'secondary',
-            message: <div> Berhasil, Dokumentasi Tidak Ditayangkan </div>,
-            icon: 'check',
-          })
-        : Notification.show({
-            type: 'secondary',
-            message: <div> Gagal Merubah Status Menjadi Tidak Ditayangkan </div>,
-            icon: 'cross',
-          });
-    });
-    setTrigger(true);
-    setModalUnpublish(false);
-  };
-  const onSubmitRejected = (data) => {
-    let obj = {
-      id: data.id,
-      idDokumentasi: data.idDokumentasi,
-    };
-    dispatch(postStatusRejected(obj)).then((res) => {
-      !res.error
-        ? Notification.show({
-            type: 'secondary',
-            message: <div> Berhasil, Dokumentasi Ditolak </div>,
-            icon: 'check',
-          })
-        : Notification.show({
-            type: 'secondary',
-            message: <div> Gagal, Dokumentasi Gagal Ditolak </div>,
-            icon: 'cross',
-          });
-    });
-    setTrigger(true);
-    setModalTolak(false);
   };
 
   return (

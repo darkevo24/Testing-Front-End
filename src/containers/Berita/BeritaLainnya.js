@@ -69,7 +69,7 @@ const BeritaLainnya = () => {
               </span>
               <span>–</span>
               <span>{value.year}</span>
-              <span style={{ color: '#858A8F' }}>({value.jumlah})</span>
+              <span style={{ color: 'var(--gray)' }}>({value.jumlah})</span>
             </TopikItem>
           ))
         : null}

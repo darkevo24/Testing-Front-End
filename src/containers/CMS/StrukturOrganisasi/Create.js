@@ -75,7 +75,7 @@ const CMSJadwalBaru = () => {
           type: 'secondary',
           message: (
             <div>
-              Bidang <span className="fw-bold">{res.payload.content.judul}</span> Berhasil Disimpan
+              Bidang <span className="fw-bold">{res.payload?.content?.nama}</span> Berhasil Disimpan
             </div>
           ),
           icon: 'check',

@@ -316,7 +316,7 @@ const CMSBimtekPermintaanEdit = (props) => {
           Tolak
         </Button>
         <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={onSetModalWaitingSetujui}>
-          Simpan
+          Setujui
         </Button>
       </div>
     );
@@ -598,7 +598,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
-                Simpan
+                Setujui
               </Button>
             </div>
           </Form>

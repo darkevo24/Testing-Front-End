@@ -35,7 +35,7 @@ export const BIMTEK_PERMINTAAN_DATA = 'BIMTEK_PERMINTAAN_DATA';
 
 export const getPermintaanData = createAsyncThunk('bimtek-permintaan/getListBimtek', async (params) => {
   const response = await get(apiUrls.cmsBimtekPermintaanData, {
-    query: { page: params.page + 1, size: 10, namaBimtek: params.q, instansiId: params.instansiId },
+    query: { page: params.page + 1, size: 10, namaBimtek: params.q, instansi: params.instansiId },
   });
   return response;
 });

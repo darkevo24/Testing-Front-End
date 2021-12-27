@@ -14,6 +14,8 @@ import { ReactComponent as Plus } from 'assets/plus.svg';
 import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
 import bn from 'utils/bemNames';
 import { DatePicker, Input, Modal, Table, TextEditor, Notification } from 'components';
+import { ComponentAccessibility } from 'components/ComponentAccess';
+import { USER_ROLES } from 'utils/constants';
 import {
   bimtekDokumentasiDetailSelector,
   bimtekLogAktifitas,
@@ -339,10 +341,23 @@ const CMSDokumentasiDetail = (props) => {
     );
   };
 
-  const ButtonPublish = () => {
+  const ButtonStatusApproved = () => {
     return (
       <div>
         <Button className="ml-10" variant="info" onClick={() => setModalPublish(true)}>
+          Publish
+        </Button>
+      </div>
+    );
+  };
+
+  const ButtonStatusUnpublish = () => {
+    return (
+      <div>
+        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => setUpdateDokumentasi(true)}>
+          Perbarui
+        </Button>
+        <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => setModalPublish(true)}>
           Publish
         </Button>
       </div>
@@ -517,18 +532,27 @@ const CMSDokumentasiDetail = (props) => {
     }
   };
 
-  const ButtonStatusAction = () => {
+  const ButtonStatusActionCreator = () => {
+    switch (dataDetailDokumentasi.status) {
+      case 'DRAFT':
+        return <ButtonStatusDraft />;
+      default:
+        return null;
+    }
+  };
+
+  const ButtonStatusActionEditor = () => {
     switch (dataDetailDokumentasi.status) {
       case 'WAITING_APPROVAL':
         return <ButtonStatusWaitingApproval />;
       case 'PUBLISHED':
         return <ButtonStatusPublish />;
       case 'UNPUBLISHED':
-        return <ButtonPublish />;
+        return <ButtonStatusUnpublish />;
       case 'DRAFT':
         return <ButtonStatusDraft />;
       case 'APPROVED':
-        return <ButtonPublish />;
+        return <ButtonStatusApproved />;
       default:
         return null;
     }
@@ -543,7 +567,12 @@ const CMSDokumentasiDetail = (props) => {
             <div className="d-flex justify-content-between mb-4">
               <div className={bem.e('title')}>Dokumentasi Bimbingan Teknis</div>
               <div className="d-flex justify-content-center">
-                <ButtonStatusAction />
+                <ComponentAccessibility roles={[USER_ROLES.CONTENT_CREATOR]}>
+                  <ButtonStatusActionCreator />
+                </ComponentAccessibility>
+                <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR]}>
+                  <ButtonStatusActionEditor />
+                </ComponentAccessibility>
               </div>
             </div>
             <Form className="sdp-form" onSubmit={handleSubmit(onTest)}>

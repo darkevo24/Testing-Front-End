@@ -1,60 +1,29 @@
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { useSelector, useDispatch } from 'react-redux';
+import cx from 'classnames';
 
 import Logo from 'assets/logo-satu-data-id.png';
+import bn from 'utils/bemNames';
 
 import ContactUs from './form.js';
 import TentangProfile from './profile.js';
-import bn from 'utils/bemNames';
-import cx from 'classnames';
-
-import { getTentang, tentangPublicSelector } from './reducer';
-import { useEffect } from 'react';
+import { getTentang, tentangPublicSelector, getStruktur, strukturPublicSelector } from './reducer';
 
 const bem = bn('tentang');
 
 const TentangSDI = () => {
   let dispatch = useDispatch();
   const { dataset, error } = useSelector(tentangPublicSelector);
+  const { records } = useSelector(strukturPublicSelector);
 
-  useEffect(() => dispatch(getTentang()), []);
+  const fetchData = () => {
+    dispatch(getTentang());
+    dispatch(getStruktur());
+  };
 
-  let strukturOrganisasi = [
-    {
-      name: 'Oktorialdi, Ph.D',
-      position: 'Kordinator SDI',
-      url_photo: 'https://i.ibb.co/hgvr24T/Pak-Oktorialdi.jpg',
-      level: 1,
-    },
-    {
-      name: 'Hari Dwi Korianto, S.Kom, MSi',
-      position: 'Sekretaris SDI',
-      url_photo: 'https://i.ibb.co/PNCK5RB/Pak-Hari2.jpg',
-      level: 2,
-    },
-    {
-      name: 'Ervan Maksum, ST, M.Sc,',
-      position: 'Wakil Kordinator SDI',
-      url_photo: 'https://i.ibb.co/gjHSpmh/Pak-Ervan2.jpg',
-      level: 2,
-    },
-  ];
-
-  let arrayLevel = [];
-  for (var i = 0; i < strukturOrganisasi.length; i++) {
-    if (arrayLevel.indexOf(strukturOrganisasi[i].level) === -1) {
-      arrayLevel.push(strukturOrganisasi[i].level);
-    }
-  }
-
-  let bidangOperasional = [
-    'Bidang Perencanaan, Analisis dan Pemanfaatan Data',
-    'Bidang Tata Kelola',
-    'Bidang Aplikasi dan Teknologi',
-    'Bidang Hukum dan Kebijakan Publik',
-    'Bidang Komunikasi',
-  ];
+  useEffect(() => fetchData(), []);
 
   const getYoutubeEmbed = (url) => {
     // eslint-disable-next-line
@@ -93,7 +62,7 @@ const TentangSDI = () => {
           </div>
         )}
         <div className="mt-100">
-          <Row className="align-items-center mb-5">
+          <Row className="align-items-center mb-3">
             <Col>
               <div className={bem.e('red-line')}></div>
             </Col>
@@ -104,20 +73,20 @@ const TentangSDI = () => {
               <div className={bem.e('red-line')}></div>
             </Col>
           </Row>
-          {arrayLevel.map((level) => (
+          {[1, 2].map((level) => (
             <div className="text-center">
-              {strukturOrganisasi
-                .filter((item) => {
-                  return item.level === level;
-                })
-                .map((item, key) => (
-                  <TentangProfile name={item.name} position={item.position} urlPhoto={item.url_photo} />
-                ))}
+              {records
+                .filter((item) => item.level === level)
+                .map((bidang) => {
+                  return bidang.profil.map((profil, key) => (
+                    <TentangProfile key={key} name={profil.nama} position={bidang.nama} urlPhoto={profil.foto} />
+                  ));
+                })}
             </div>
           ))}
         </div>
-        <div className="mt-5">
-          <Row className="align-items-center mb-5">
+        <div className="mt-3">
+          <Row className="align-items-center mb-3">
             <Col xs={3}>
               <div className={bem.e('title-sm')}>Bidang Operational</div>
             </Col>
@@ -126,12 +95,15 @@ const TentangSDI = () => {
             </Col>
           </Row>
           <div className="d-flex flex-wrap">
-            {bidangOperasional.map((item, key) => (
-              <div key={key}>
-                <div className={bem.e('card-top')}></div>
-                <div className={bem.e('card')}>{item}</div>
-              </div>
-            ))}
+            {records
+              .filter((item) => item.level !== 1 && item.level !== 2)
+              .sort((a, b) => a.level - b.level)
+              .map((item, key) => (
+                <div key={key}>
+                  <div className={bem.e('card-top')}></div>
+                  <div className={bem.e('card')}>{item.nama}</div>
+                </div>
+              ))}
           </div>
         </div>
       </div>

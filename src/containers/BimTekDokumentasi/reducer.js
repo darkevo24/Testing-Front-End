@@ -147,13 +147,10 @@ const SLICE_OBJ = createSlice({
     });
     builder.addCase(getBimtekAllDokumentasi.fulfilled, (state, action) => {
       state.detailDataset.loading = false;
-      state.documentasiDataset.records = action.payload.records;
-      state.documentasiDataset.page = action.payload.page;
-      state.documentasiDataset.size = action.payload.size;
-      state.documentasiDataset.totalPages = action.payload.totalPages;
-      state.documentasiDataset.totalRecords = action.payload.totalRecords;
-      if (!action.payload.records) {
+      if (!action?.payload?.records) {
         state.documentasiDataset.singleRecord = action.payload;
+      } else {
+        state.documentasiDataset.records = action.payload.records;
       }
     });
     builder.addCase(getBimtekAllDokumentasi.rejected, (state, action) => {

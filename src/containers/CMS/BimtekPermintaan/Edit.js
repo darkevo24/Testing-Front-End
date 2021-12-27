@@ -43,6 +43,7 @@ const CMSBimtekPermintaanEdit = (props) => {
   const [showModalDraft, setModalDraft] = useState(false);
   const [showModalPublish, setModalPublish] = useState(false);
   const [showModalUnpublish, setModalUnpublish] = useState(false);
+  console.log(detailPermintaan);
   const fetchBimtekLog = (params) => {
     return dispatch(getListLogAktifitas(params));
   };
@@ -405,7 +406,7 @@ const CMSBimtekPermintaanEdit = (props) => {
               <Input readOnly group label="Tagging Materi" name="default.tagMateri" control={control} />
               <Input
                 group
-                readOnly={data.status === 'waiting_request_approval' ? false : true}
+                readOnly={data.status === 'WAITING_REQUEST_APPROVAL' ? false : true}
                 label="Nama Bimbingan Teknis"
                 name="namaBimbinganTeknis"
                 control={control}
@@ -413,7 +414,7 @@ const CMSBimtekPermintaanEdit = (props) => {
               />
               <Input
                 group
-                readOnly={data.status === 'waiting_request_approval' ? false : true}
+                readOnly={data.status === 'WAITING_REQUEST_APPROVAL' ? false : true}
                 label="Tempat"
                 name="tempatBimbinganTeknis"
                 control={control}
@@ -423,7 +424,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                 <Col>
                   <DatePicker
                     group
-                    readOnly={data.status === 'waiting_request_approval' ? false : true}
+                    readOnly={data.status === 'WAITING_REQUEST_APPROVAL' ? false : true}
                     label="Tanggal Mulai Pelaksanaan Disetujui"
                     name="tanggalMulaiDisetujuiUpdate"
                     control={control}
@@ -434,7 +435,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                 <Col>
                   <Input
                     group
-                    readOnly={data.status === 'waiting_request_approval' ? false : true}
+                    readOnly={data.status === 'WAITING_REQUEST_APPROVAL' ? false : true}
                     className="m-0"
                     type="time"
                     label=""
@@ -449,7 +450,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                 <Col>
                   <DatePicker
                     group
-                    readOnly={data.status === 'waiting_request_approval' ? false : true}
+                    readOnly={data.status === 'WAITING_REQUEST_APPROVAL' ? false : true}
                     label="Tanggal Selesai Pelaksanaan Disetujui"
                     name="tanggalSelesaiDisetujuiUpdate"
                     control={control}
@@ -460,7 +461,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                 <Col>
                   <Input
                     group
-                    readOnly={data.status === 'waiting_request_approval' ? false : true}
+                    readOnly={data.status === 'WAITING_REQUEST_APPROVAL' ? false : true}
                     className="m-0"
                     type="time"
                     label=""

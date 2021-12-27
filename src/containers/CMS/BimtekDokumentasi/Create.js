@@ -106,10 +106,10 @@ const CMSJadwalBaru = () => {
     }
   };
 
-  function deleteFotoDokumentasi(e) {
+  const deleteFotoDokumentasi = (e) => {
     const filter = fotoDokumentasi.filter((item, index) => index !== e);
     setFotoDokumentasi(filter);
-  }
+  };
 
   const openUploadForm = (id) => {
     const elmButton = document.getElementById(id);

@@ -30,19 +30,18 @@ export const prosesFormId = 'proses-form-id';
 export const selesaiFormId = 'selesai-form-id';
 
 const CMSPermintaanDataView = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { result, dataLog } = useSelector(permintaanDataDetailSelector);
   const [objRequired, setObjRequired] = useState({});
   const [showTolakModal, isSetShowTolakModal] = useState(false);
   const [showProsesModal, isSetShowProsesModal] = useState(false);
   const [showSelesaiModal, isSetShowSelesaiModal] = useState(false);
-  const { id } = useParams();
-  const dispatch = useDispatch();
-  const { result, dataLog } = useSelector(permintaanDataDetailSelector);
-
+  const history = useHistory();
+  const backToTable = () => {
+    history.push('/cms/permintaan-data');
+  };
   const SuccessText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/permintaan-data');
-    };
     return (
       <div className="d-flex">
         <div className="icon-box" onClick={backToTable}>
@@ -54,10 +53,6 @@ const CMSPermintaanDataView = () => {
   };
 
   const TerkirimText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/permintaan-data');
-    };
     return (
       <div className="d-flex">
         <div className="icon-box" onClick={backToTable}>
@@ -69,10 +64,6 @@ const CMSPermintaanDataView = () => {
   };
 
   const DiprosesText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/permintaan-data');
-    };
     return (
       <div className="d-flex">
         <div className="icon-box" onClick={backToTable}>
@@ -84,10 +75,6 @@ const CMSPermintaanDataView = () => {
   };
 
   const DraftText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/permintaan-data');
-    };
     return (
       <div className="d-flex">
         <div className="icon-box" onClick={backToTable}>

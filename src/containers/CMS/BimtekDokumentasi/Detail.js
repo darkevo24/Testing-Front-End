@@ -45,7 +45,6 @@ const CMSDokumentasiDetail = (props) => {
   const [isiDokumentasi, setIsiDokumentasi] = useState('');
   const [showModalSimpan, setModalSimpan] = useState(false);
   const [showModalWaitingApproval, setModalWaitingApproval] = useState(false);
-  const [showModalDraft, setModalDraft] = useState(false);
   const [showModalPublish, setModalPublish] = useState(false);
   const [showModalUnpublish, setModalUnpublish] = useState(false);
   const [showModalTolak, setModalTolak] = useState(false);
@@ -60,12 +59,12 @@ const CMSDokumentasiDetail = (props) => {
     return dispatch(getListLogAktifitas(params));
   };
 
-  const dataDetailDokumentasi = records || [];
+  const dataDetailDokumentasi = records;
   const materiBimtek = useMemo(() => dataDetailDokumentasi.materi || [], [records]);
   const pembicaraBimtek = useMemo(() => dataDetailDokumentasi.pembicara || [], [records]);
   useEffect(() => {
     if (id === 'null') {
-      history.push('/cms/bimtek-dokumentasi');
+      history.goBack();
       Notification.show({
         type: 'secondary',
         message: <div> Dokumentasi tidak ditemukan </div>,
@@ -91,7 +90,7 @@ const CMSDokumentasiDetail = (props) => {
       tanggalSelesaiDisetujui,
       dataTempat,
     });
-  }, [dataDetailDokumentasi]);
+  }, [dataDetailDokumentasi, trigger]);
   const schema = yup
     .object({
       // name: yup.string().required(),
@@ -167,7 +166,7 @@ const CMSDokumentasiDetail = (props) => {
     };
     setUpdateDokumentasi(false);
     return dispatch(updateDokumentasiDetail(obj)).then((res) => {
-      res.payload
+      !res.error
         ? Notification.show({
             type: 'secondary',
             message: <div> Berhasil Update Dokumentasi </div>,
@@ -187,7 +186,7 @@ const CMSDokumentasiDetail = (props) => {
     };
     setDeleteDokumentasi(false);
     dispatch(deleteDokumentasiDetail(obj)).then((res) => {
-      res.payload
+      !res.error
         ? Notification.show({
             type: 'secondary',
             message: <div> Berhasil Menghapus Dokumentasi </div>,
@@ -199,9 +198,6 @@ const CMSDokumentasiDetail = (props) => {
             icon: 'cross',
           });
     });
-    setTimeout(() => {
-      history.push('/cms/bimtek-dokumentasi');
-    }, 1000);
   };
   const columnsMateri = [
     {
@@ -257,16 +253,14 @@ const CMSDokumentasiDetail = (props) => {
     variant: 'link',
   };
   const onTest = (data) => {};
-
+  const backToTable = () => {
+    history.push('/cms/bimtek-dokumentasi');
+  };
   const SuccessText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-dokumentasi');
-    };
     return (
       <div className="d-flex">
         <div className="icon-box px-10" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-success fw-bold justify-content-center align-items-center">
           {dataDetailDokumentasi.status}
@@ -276,14 +270,10 @@ const CMSDokumentasiDetail = (props) => {
   };
 
   const WaitingApproval = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-dokumentasi');
-    };
     return (
       <div className="d-flex">
         <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">
           Waiting Approval
@@ -291,43 +281,33 @@ const CMSDokumentasiDetail = (props) => {
       </div>
     );
   };
+
   const ApprovedText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-dokumentasi');
-    };
     return (
       <div className="d-flex">
         <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Approved</Row>
       </div>
     );
   };
   const UnpublishText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-dokumentasi');
-    };
     return (
       <div className="d-flex">
         <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Unpublish</Row>
       </div>
     );
   };
+
   const DraftText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-dokumentasi');
-    };
     return (
       <div className="d-flex">
         <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">DRAFT</Row>
       </div>
@@ -335,14 +315,10 @@ const CMSDokumentasiDetail = (props) => {
   };
 
   const RejectedText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-dokumentasi');
-    };
     return (
       <div className="d-flex">
         <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-ditolak fw-bold justify-content-center align-items-center">REJECTED</Row>
       </div>
@@ -358,17 +334,7 @@ const CMSDokumentasiDetail = (props) => {
     );
   };
 
-  const ButtonStatusApproved = () => {
-    return (
-      <div>
-        <Button className="ml-10" variant="info" onClick={() => setModalPublish(true)}>
-          Publish
-        </Button>
-      </div>
-    );
-  };
-
-  const ButtonStatusUnpublish = () => {
+  const ButtonPublish = () => {
     return (
       <div>
         <Button className="ml-10" variant="info" onClick={() => setModalPublish(true)}>
@@ -437,11 +403,11 @@ const CMSDokumentasiDetail = (props) => {
       case 'PUBLISHED':
         return <ButtonStatusPublish />;
       case 'UNPUBLISHED':
-        return <ButtonStatusUnpublish />;
+        return <ButtonPublish />;
       case 'DRAFT':
         return <ButtonStatusDraft />;
       case 'APPROVED':
-        return <ButtonStatusApproved />;
+        return <ButtonPublish />;
       case 'REJECTED':
         return <ButtonStatusRejected />;
       default:
@@ -455,7 +421,7 @@ const CMSDokumentasiDetail = (props) => {
       idDokumentasi: data.idDokumentasi,
     };
     dispatch(postStatusDraft(obj)).then((res) => {
-      res.payload
+      !res.error
         ? Notification.show({
             type: 'secondary',
             message: <div> Berhasil Menyimpan Dokumentasi </div>,
@@ -476,7 +442,7 @@ const CMSDokumentasiDetail = (props) => {
       idDokumentasi: data.idDokumentasi,
     };
     dispatch(postStatusWaitingApproval(obj)).then((res) => {
-      res.payload
+      !res.error
         ? Notification.show({
             type: 'secondary',
             message: <div> Berhasil, Dokumentasi Disetujui </div>,
@@ -497,7 +463,7 @@ const CMSDokumentasiDetail = (props) => {
       idDokumentasi: data.idDokumentasi,
     };
     dispatch(postStatusApproved(obj)).then((res) => {
-      res.payload
+      !res.error
         ? Notification.show({
             type: 'secondary',
             message: <div> Berhasil, Dokumentasi Ditayangkan </div>,
@@ -518,7 +484,7 @@ const CMSDokumentasiDetail = (props) => {
       idDokumentasi: data.idDokumentasi,
     };
     dispatch(postStatusPublish(obj)).then((res) => {
-      res.payload
+      !res.error
         ? Notification.show({
             type: 'secondary',
             message: <div> Berhasil, Dokumentasi Tidak Ditayangkan </div>,
@@ -539,7 +505,7 @@ const CMSDokumentasiDetail = (props) => {
       idDokumentasi: data.idDokumentasi,
     };
     dispatch(postStatusRejected(obj)).then((res) => {
-      res.payload
+      !res.error
         ? Notification.show({
             type: 'secondary',
             message: <div> Berhasil, Dokumentasi Ditolak </div>,
@@ -688,7 +654,7 @@ const CMSDokumentasiDetail = (props) => {
                 className="mr-10"
                 variant="secondary"
                 style={{ width: '112px' }}
-                onClick={() => setDeleteDokumentasi()}>
+                onClick={() => setDeleteDokumentasi(false)}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
@@ -701,20 +667,18 @@ const CMSDokumentasiDetail = (props) => {
           <div className="mt-20 mb-20">
             <p className="mb-0"> Apakah Anda yakin ingin memperbarui Data? </p>
           </div>
-          <Form onSubmit={handleSubmit(updateDokumentasi)} noValidate>
-            <div className="d-flex justify-content-end mt-20">
-              <Button
-                className="mr-10"
-                variant="secondary"
-                style={{ width: '112px' }}
-                onClick={() => setUpdateDokumentasi()}>
-                Batal
-              </Button>
-              <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
-                Perbarui
-              </Button>
-            </div>
-          </Form>
+          <div className="d-flex justify-content-end mt-20">
+            <Button
+              className="mr-10"
+              variant="secondary"
+              style={{ width: '112px' }}
+              onClick={() => setUpdateDokumentasi(false)}>
+              Batal
+            </Button>
+            <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }} onClick={updateDokumentasi}>
+              Perbarui
+            </Button>
+          </div>
         </Modal>
         <Modal
           showHeader={false}

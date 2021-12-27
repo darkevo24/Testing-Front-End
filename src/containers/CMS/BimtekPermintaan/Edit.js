@@ -49,7 +49,6 @@ const CMSBimtekPermintaanEdit = (props) => {
   const fetchPermintaanDetail = (params) => {
     return dispatch(getPermintaanDataDetail(params));
   };
-
   useEffect(() => {
     fetchBimtekLog({ id });
     fetchPermintaanDetail({ id });
@@ -71,10 +70,11 @@ const CMSBimtekPermintaanEdit = (props) => {
     resolver: yupResolver(schema),
     defaultValues: {
       ...data,
-      // tanggalMulaiDisetujui,
     },
   });
-
+  const backToTable = () => {
+    history.push('/cms/bimtek-permintaan');
+  };
   const onSetModalWaitingSetujui = () => {
     setObjRequired({
       namaBimbinganTeknis: yup.string().required(),
@@ -229,14 +229,10 @@ const CMSBimtekPermintaanEdit = (props) => {
   };
 
   const SuccessText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-permintaan');
-    };
     return (
       <div className="d-flex">
         <div className="icon-box px-10" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-success fw-bold justify-content-center align-items-center">{data.status}</Row>
       </div>
@@ -244,14 +240,10 @@ const CMSBimtekPermintaanEdit = (props) => {
   };
 
   const WaitingApproval = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-permintaan');
-    };
     return (
       <div className="d-flex">
         <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">
           Waiting Approval
@@ -261,14 +253,10 @@ const CMSBimtekPermintaanEdit = (props) => {
   };
 
   const WaitingRequestApproval = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-permintaan');
-    };
     return (
       <div className="d-flex">
         <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">
           Waiting Request Approval
@@ -278,14 +266,10 @@ const CMSBimtekPermintaanEdit = (props) => {
   };
 
   const DraftText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-permintaan');
-    };
     return (
       <div className="d-flex">
         <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">DRAFT</Row>
       </div>
@@ -293,14 +277,10 @@ const CMSBimtekPermintaanEdit = (props) => {
   };
 
   const RejectedText = () => {
-    const history = useHistory();
-    const backToTable = () => {
-      history.push('/cms/bimtek-permintaan');
-    };
     return (
       <div className="d-flex">
         <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+          <LeftChevron />
         </div>
         <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">REJECTED</Row>
       </div>
@@ -330,10 +310,10 @@ const CMSBimtekPermintaanEdit = (props) => {
   const ButtonStatusWaitingRequestApproval = () => {
     return (
       <div>
-        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => onSetModalTolak()}>
+        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={onSetModalTolak}>
           Tolak
         </Button>
-        <Button className="ml-10" variant="info" onClick={() => onSetModalWaitingSetujui()}>
+        <Button className="ml-10" variant="info" onClick={onSetModalWaitingSetujui}>
           Setujui
         </Button>
       </div>
@@ -501,8 +481,7 @@ const CMSBimtekPermintaanEdit = (props) => {
           showHeader={false}
           className="cms-bimtek-permintaan-detail"
           title="Tambah Pembicari Baru"
-          visible={showModalSetuju}
-          onClose={() => setModalSetuju(false)}>
+          visible={showModalSetuju}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
@@ -512,7 +491,7 @@ const CMSBimtekPermintaanEdit = (props) => {
           </div>
           <Form onSubmit={handleSubmit(onSubmitProses)} noValidate>
             <div className="d-flex justify-content-end">
-              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalSetuju()}>
+              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalSetuju(false)}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
@@ -525,8 +504,7 @@ const CMSBimtekPermintaanEdit = (props) => {
           showHeader={false}
           className="cms-bimtek-permintaan-detail"
           title="Tambah Pembicari Baru"
-          visible={showModalDraft}
-          onClose={() => setModalDraft(false)}>
+          visible={showModalDraft}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
@@ -536,7 +514,7 @@ const CMSBimtekPermintaanEdit = (props) => {
           </div>
           <Form onSubmit={handleSubmit(onSubmitDraft)} noValidate>
             <div className="d-flex justify-content-end">
-              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalDraft()}>
+              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalDraft(false)}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
@@ -549,8 +527,7 @@ const CMSBimtekPermintaanEdit = (props) => {
           showHeader={false}
           className="cms-bimtek-permintaan-detail"
           title="Tambah Pembicari Baru"
-          visible={showModalPublish}
-          onClose={() => setModalPublish(false)}>
+          visible={showModalPublish}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
@@ -560,7 +537,11 @@ const CMSBimtekPermintaanEdit = (props) => {
           </div>
           <Form onSubmit={handleSubmit(onSubmitPublish)} noValidate>
             <div className="d-flex justify-content-end">
-              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalPublish()}>
+              <Button
+                className="mr-10"
+                variant="secondary"
+                style={{ width: '112px' }}
+                onClick={() => setModalPublish(false)}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
@@ -573,8 +554,7 @@ const CMSBimtekPermintaanEdit = (props) => {
           showHeader={false}
           className="cms-bimtek-permintaan-detail"
           title="Tambah Pembicari Baru"
-          visible={showModalUnpublish}
-          onClose={() => setModalUnpublish(false)}>
+          visible={showModalUnpublish}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
@@ -584,7 +564,11 @@ const CMSBimtekPermintaanEdit = (props) => {
           </div>
           <Form onSubmit={handleSubmit(onSubmitUnpublish)} noValidate>
             <div className="d-flex justify-content-end">
-              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalUnpublish()}>
+              <Button
+                className="mr-10"
+                variant="secondary"
+                style={{ width: '112px' }}
+                onClick={() => setModalUnpublish(false)}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
@@ -597,8 +581,7 @@ const CMSBimtekPermintaanEdit = (props) => {
           showHeader={false}
           className="cms-bimtek-permintaan-detail"
           title="Tambah Pembicari Baru"
-          visible={showModalTolak}
-          onClose={() => setModalTolak(false)}>
+          visible={showModalTolak}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
@@ -609,7 +592,7 @@ const CMSBimtekPermintaanEdit = (props) => {
           <Form onSubmit={handleSubmit(onSubmitTolak)} noValidate>
             <Input as="textarea" name="catatanTolak" control={control} error={errors.catatanTolak?.message} />
             <div className="d-flex justify-content-end mt-20">
-              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalTolak()}>
+              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => setModalTolak(false)}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
@@ -622,8 +605,7 @@ const CMSBimtekPermintaanEdit = (props) => {
           showHeader={false}
           className="cms-bimtek-permintaan-detail"
           title="Tambah Pembicari Baru"
-          visible={showModalWaitingSetujui}
-          onClose={() => setModalWaitingSetujui(false)}>
+          visible={showModalWaitingSetujui}>
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
@@ -637,7 +619,7 @@ const CMSBimtekPermintaanEdit = (props) => {
                 className="mr-10"
                 variant="secondary"
                 style={{ width: '112px' }}
-                onClick={() => setModalWaitingSetujui()}>
+                onClick={() => setModalWaitingSetujui(false)}>
                 Batal
               </Button>
               <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>

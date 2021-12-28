@@ -12,7 +12,7 @@ import BeritaLainnya from './BeritaLainnya';
 import Populer from './Populer';
 import Tweets from './Tweets';
 import { beritaLayoutSelector, getBertaLayout } from 'containers/CMS/BeritaLayout/reducer';
-import { newsByMonthSelector, getNewsByMonth } from './reducer';
+import { popularNewsSelector, getPopularNews } from './reducer';
 const components = {
   search: Search,
   beritaUtama: BeritaUtama,
@@ -27,23 +27,21 @@ const components = {
 const renderComp = (el) => {
   return React.createElement(components[el.component], { ...el.props, key: el.component });
 };
-const BeritaPerBulan = () => {
+const BeritaPopular = () => {
   const [size, setSize] = useState(10);
   const [kanan, setKanan] = useState([]);
 
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { date } = useParams();
   const beritaLayoutState = useSelector(beritaLayoutSelector);
-  const { records, loading } = useSelector(newsByMonthSelector);
+  const { records, loading } = useSelector(popularNewsSelector);
   const fetchBeritaLayoutData = () => {
     dispatch(getBertaLayout());
   };
   useEffect(() => {
-    const parmaValue = date.replace('-', '/');
-    dispatch(getNewsByMonth(`perbulan/${parmaValue}?size=${size}`));
-  }, [dispatch, date, size]);
+    dispatch(getPopularNews(size));
+  }, [dispatch, size]);
 
   useEffect(() => {
     fetchBeritaLayoutData();
@@ -106,4 +104,4 @@ const BeritaPerBulan = () => {
     </div>
   );
 };
-export default BeritaPerBulan;
+export default BeritaPopular;

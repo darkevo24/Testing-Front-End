@@ -81,7 +81,6 @@ const BeritaLayout = () => {
       inactive: inactiveRef.current.state.items,
     };
     dispatch(updateBertalayout({ code: 'kiri', content: JSON.stringify(obj) }));
-    window.location.reload();
     alert('Layout berhasil disimpan');
   };
 

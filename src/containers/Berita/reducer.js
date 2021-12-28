@@ -63,6 +63,12 @@ export const initialState = {
     error: null,
     records: [],
   },
+  popularNews: {
+    status: 'idel',
+    loading: false,
+    error: null,
+    records: [],
+  },
 };
 
 export const USER_NEWS_PORTAL = 'USER_NEWS_PORTAL';
@@ -105,6 +111,10 @@ export const getPopularTopic = createAsyncThunk('userNewsPortal/getPopularTopic'
 });
 
 export const getOtherNews = createAsyncThunk('userNewsPortal/getOtherNews', async (param) => {
+  const response = await get(`${apiUrls.userBeritaPopular}/${param}`);
+  return response?.data?.content;
+});
+export const getPopularNews = createAsyncThunk('userNewsPortal/getPopularNews', async (param) => {
   const response = await get(`${apiUrls.userBeritaPopular}/${param}`);
   return response?.data?.content;
 });
@@ -222,6 +232,23 @@ const userNewsPortal = createSlice({
       state.otherNews.status = 'failed';
     });
 
+    /***
+     * Get Popular News
+     */
+    builder.addCase(getPopularNews.pending, (state, action) => {
+      state.popularNews.loading = true;
+      state.popularNews.status = 'loading';
+    });
+    builder.addCase(getPopularNews.fulfilled, (state, action) => {
+      state.popularNews.loading = false;
+      state.popularNews.records = action.payload || [];
+      state.popularNews.status = 'success';
+    });
+    builder.addCase(getPopularNews.rejected, (state) => {
+      state.popularNews.loading = false;
+      state.popularNews.status = 'failed';
+    });
+
     /**
      * get news via Month
      */
@@ -287,4 +314,5 @@ export const otherNewsSelector = (state) => state.userPortalBerita?.otherNews;
 export const newsByMonthSelector = (state) => state.userPortalBerita?.newsByMonth;
 export const monthlyNewsSelector = (state) => state.userPortalBerita?.monthlyNews;
 export const tweetSelector = (state) => state.userPortalBerita?.tweet;
+export const popularNewsSelector = (state) => state.userPortalBerita?.popularNews;
 export default userNewsPortal.reducer;

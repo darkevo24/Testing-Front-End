@@ -84,8 +84,10 @@ const BeritaUtamaDetail = (props) => {
             <span className="userProfile fs-16 mt-8">{record?.createBy}</span>
           </div>
           <div className="d-flex flex-row justify-content-between">
-            <img src={clockIcon} className="mx-8" />
-            <div className="sdp-text-disable mb-24 fs-14">{formatDate(record?.tanggalPublis)}</div>
+            <div className="d-flex pt-20" style={{ minWidth: '300px' }}>
+              <img src={clockIcon} className="mx-8 w-16 h-16" />
+              <div className="sdp-text-disable mb-24 fs-14">{formatDate(record?.tanggalPublis)}</div>
+            </div>
             <div className="mr-8 my-12">
               <img src={worldIcon} className="mx-8" />
               <img src={fbIcon} className="mx-8" />

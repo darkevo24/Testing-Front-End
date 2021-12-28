@@ -89,9 +89,10 @@ const LogActivity = () => {
 
       Cell: ({
         row: {
-          original: { status = '' },
+          original: { data = {} },
         },
       }) => {
+        const { status = '' } = data;
         return (
           <span
             className={cx({

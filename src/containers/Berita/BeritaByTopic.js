@@ -73,7 +73,7 @@ const BeritaByTopik = () => {
     <div className="row mt-24">
       {loading && <Loader fullscreen />}
       <div className="col-lg-2"></div>
-      <div className="col-lg-6 wrapper pr-5.5">
+      <div className="col-lg-6 wrapper pr-5">
         {records.length
           ? records.map((record, i) => {
               return (

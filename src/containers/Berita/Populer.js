@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BeritaGrid, SectionTitle } from '.';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +16,7 @@ const Header = styled.div`
   position: absolute;
   top: 26.4px;
   right: 0;
+  cursor: pointer;
 `;
 
 const BeritaItem = styled.div`
@@ -60,23 +61,25 @@ const Topik = styled.div`
 const Populer = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { records, status } = useSelector(otherNewsSelector);
+  const { records } = useSelector(otherNewsSelector);
+  const [size] = useState(3);
 
   useEffect(() => {
-    if (status === 'idel') {
-      dispatch(getOtherNews(3));
-    }
-  }, [dispatch, status]);
+    dispatch(getOtherNews(size));
+  }, [dispatch, size]);
 
   const handleDetail = (event, title) => {
     event.preventDefault();
     history.push(`/berita/${title}`);
   };
-
+  const handletGetAll = (e) => {
+    e.preventDefault();
+    history.push(`/berita-populer`);
+  };
   return (
     <Wrapper>
       <SectionTitle>Populer</SectionTitle>
-      <Header>Lihat Semua</Header>
+      <Header onClick={handletGetAll}>Lihat Semua</Header>
       <BeritaGrid columns={props.columns}>
         {records?.length
           ? records.map((record, i) => {

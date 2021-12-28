@@ -125,6 +125,7 @@ const CMSBimtekPermintaan = () => {
             <div className="mr-10">Instansi</div>
             <div className="mr-10">
               <Form.Select aria-label="Default select example" onChange={(e) => setInstansiId(e.target.value)}>
+                <option value=""> SEMUA </option>
                 {instansi &&
                   instansi.map((data, index) => {
                     return (

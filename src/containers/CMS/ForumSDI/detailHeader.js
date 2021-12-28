@@ -15,7 +15,7 @@ export const DetailHeader = ({ record, status, history, handleModal }) => {
     case 'draft':
       return (
         <div>
-          <ComponentAccessibility roles={roles} flag={isOwner}>
+          <ComponentAccessibility roles={roles} flag={!isOwner}>
             <Button
               key="delete"
               variant="light"

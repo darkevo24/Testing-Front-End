@@ -35,7 +35,7 @@ export const BIMTEK_PERMINTAAN_DATA = 'BIMTEK_PERMINTAAN_DATA';
 
 export const getPermintaanData = createAsyncThunk('bimtek-permintaan/getListBimtek', async (params) => {
   const response = await get(apiUrls.cmsBimtekPermintaanData, {
-    query: { page: params.page + 1, size: 10, namaBimtek: params.q, instansiId: params.instansiId },
+    query: { page: params.page + 1, size: 10, namaBimtek: params.q, instansi: params.instansiId },
   });
   return response;
 });
@@ -87,7 +87,7 @@ export const updateStatusBimtekSetujui = createAsyncThunk('/bimtek-permintaan/ch
     tanggalMulaiDisetujui: params.tanggalMulaiDisetujui,
     tanggalSelesaiDisetujui: params.tanggalSelesaiDisetujui,
     kota: params.kota,
-    alamat: 'test',
+    alamat: params.alamat,
   });
   return response;
 });
@@ -144,72 +144,6 @@ const BimtekPermintaanDataDetailSlice = createSlice({
     builder.addCase(getPermintaanDataDetail.rejected, (state, action) => {
       state.detail.loading = false;
       state.detail.error = 'Invalid data';
-    });
-    builder.addCase(postStatusApprove.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(postStatusApprove.fulfilled, (state, action) => {
-      state.loading = false;
-      state.status = action.payload;
-    });
-    builder.addCase(postStatusApprove.rejected, (state, action) => {
-      state.loading = false;
-      state.error = 'Invalid data';
-    });
-    builder.addCase(postStatusReject.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(postStatusReject.fulfilled, (state, action) => {
-      state.loading = false;
-      state.status = action.payload;
-    });
-    builder.addCase(postStatusReject.rejected, (state, action) => {
-      state.loading = false;
-      state.error = 'Invalid data';
-    });
-    builder.addCase(postStatusDraft.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(postStatusDraft.fulfilled, (state, action) => {
-      state.loading = false;
-      state.status = action.payload;
-    });
-    builder.addCase(postStatusDraft.rejected, (state, action) => {
-      state.loading = false;
-      state.error = 'Invalid data';
-    });
-    builder.addCase(postStatusPublish.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(postStatusPublish.fulfilled, (state, action) => {
-      state.loading = false;
-      state.status = action.payload;
-    });
-    builder.addCase(postStatusPublish.rejected, (state, action) => {
-      state.loading = false;
-      state.error = 'Invalid data';
-    });
-    builder.addCase(postStatusUnpublish.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(postStatusUnpublish.fulfilled, (state, action) => {
-      state.loading = false;
-      state.status = action.payload;
-    });
-    builder.addCase(postStatusUnpublish.rejected, (state, action) => {
-      state.loading = false;
-      state.error = 'Invalid data';
-    });
-    builder.addCase(updateStatusBimtekSetujui.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(updateStatusBimtekSetujui.fulfilled, (state, action) => {
-      state.loading = false;
-      state.status = action.payload;
-    });
-    builder.addCase(updateStatusBimtekSetujui.rejected, (state, action) => {
-      state.loading = false;
-      state.error = 'Invalid data';
     });
   },
 });

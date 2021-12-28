@@ -54,7 +54,7 @@ const TopikPopuler = () => {
           return (
             <TopikItem className="child" key={index}>
               <span>{value.keterangan}</span>
-              <span style={{ cursor: 'pointer' }}>
+              <span className="cursor-pointer">
                 <ArrowRightRed onClick={(e) => handleClick(e, value.id)} />
               </span>
             </TopikItem>

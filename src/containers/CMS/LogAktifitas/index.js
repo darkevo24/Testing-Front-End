@@ -52,7 +52,7 @@ const LogActivity = () => {
   const endDateValue = watch('endDate');
 
   useEffect(() => {
-    if (startDateValue !== undefined && endDateValue !== undefined) {
+    if (startDateValue && endDateValue) {
       dispatch(
         getCMSLogActifitasData({
           page: 0,

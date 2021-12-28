@@ -73,14 +73,14 @@ const BeritaByTopik = () => {
     <div className="row mt-24">
       {loading && <Loader fullscreen />}
       <div className="col-lg-2"></div>
-      <div className="col-lg-6 wrapper" style={{ paddingRight: '5.5%' }}>
+      <div className="col-lg-6 wrapper pr-5.5">
         {records.length
           ? records.map((record, i) => {
               return (
                 <div key={i}>
                   <div className="row my-20 border-bottom pb-10 ">
-                    <div className="col-lg-4" style={{ paddingRight: '24px' }}>
-                      <img className="image" src={record.image} style={{ width: '100%' }} />
+                    <div className="col-lg-4 pr-24">
+                      <img className="image w-100" src={record.image} />
                     </div>
                     <div className="col-lg-8">
                       <div className="topik">{record.kategori}</div>

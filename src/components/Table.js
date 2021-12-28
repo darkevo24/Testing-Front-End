@@ -183,7 +183,10 @@ const Table = ({
   };
 
   const handleSortHeader = (column) => () => {
-    onSortChange(column);
+    const ignoreSortFor = [column.disableSortBy, column.id === 'actions'].filter(Boolean);
+    if (!ignoreSortFor.length) {
+      onSortChange(column);
+    }
   };
 
   return (

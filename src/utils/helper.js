@@ -239,6 +239,18 @@ export const getStatusClass = (status) => {
         text: 'Ditolak',
         divText: 'Ditolak',
       };
+    case 'deleted':
+      return {
+        ...redText,
+        text: 'Dihapus',
+        divText: 'Dihapus',
+      };
+    case 'rejected':
+      return {
+        ...redText,
+        text: 'Ditolak',
+        divText: 'Ditolak',
+      };
     case 'terkirim':
       return {
         ...purpleText,

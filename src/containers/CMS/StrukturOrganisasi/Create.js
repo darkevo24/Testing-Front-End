@@ -52,6 +52,7 @@ const CMSJadwalBaru = () => {
     if (action === 'kirim') {
       // edit
       if (bidang.id) {
+        delete bidang.profil;
         return dispatch(setStrukturOrganisasi({ payload: bidang, id: bidang.id }))
           .then((res) => dispatch(updateStatus({ id: res.payload.content.id, action: action })))
           .then((res) => notifyResponse(res));
@@ -63,6 +64,7 @@ const CMSJadwalBaru = () => {
     }
     // edit
     if (bidang.id) {
+      delete bidang.profil;
       return dispatch(setStrukturOrganisasi({ payload: bidang, id: bidang.id })).then((res) => notifyResponse(res));
     }
     // create

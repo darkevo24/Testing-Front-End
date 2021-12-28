@@ -57,7 +57,7 @@ export const createStrukturOrganisasi = createAsyncThunk('cms/createStrukturOrga
 });
 
 export const updateStatus = createAsyncThunk('cms/updateStatusStruktur', async (params) => {
-  const response = await post(`${apiUrls.strukturData}/${params.id}/${params.action}`, {});
+  const response = await post(`${apiUrls.strukturData}/${params.id}/${params.action}?notes=${params.notes}`, {});
   return response?.data;
 });
 

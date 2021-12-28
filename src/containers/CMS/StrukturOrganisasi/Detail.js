@@ -9,6 +9,7 @@ import { PencilSvg, Trash } from 'components/Icons';
 import { Loader, CMSTopDetail, CMSModal } from 'components';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import Notification from 'components/Notification';
+import Modal from 'components/Modal';
 import bn from 'utils/bemNames';
 import { STATUS_DATA } from 'utils/constants';
 import CMSStrukturForm, { submitStrukturForm } from './Form.js';
@@ -31,6 +32,7 @@ const CMSStrukturDetail = (props) => {
   const [action, setAction] = useState('');
   const [modalConfirm, setModalConfirm] = useState(false);
   const [modalLabel, setModalLabel] = useState('');
+  const [notes, setNotes] = useState('');
 
   useEffect(() => {
     fetchData(id);
@@ -44,6 +46,13 @@ const CMSStrukturDetail = (props) => {
   const updateData = () => {
     setModalConfirm(false);
     dispatch(updateStatus({ id: id, action: action }))
+      .then((res) => notifyResponse(res))
+      .then(() => fetchData(id));
+  };
+
+  const onTolak = () => {
+    setModalConfirm(false);
+    dispatch(updateStatus({ id: id, action: action, notes: notes }))
       .then((res) => notifyResponse(res))
       .then(() => fetchData(id));
   };
@@ -69,11 +78,6 @@ const CMSStrukturDetail = (props) => {
         );
         break;
       case 'tolak':
-        label = (
-          <span>
-            Apakah anda yakin ingin <b className="sdp-text-blue">menolak</b> {record?.nama}?
-          </span>
-        );
         break;
       case 'setujui':
         label = (
@@ -194,13 +198,36 @@ const CMSStrukturDetail = (props) => {
         </Col>
         <Col sm={3}>{logLoading ? null : <LogStatus data={logRecord} />}</Col>
         {(loading || logLoading) && <Loader fullscreen={true} />}
-        {modalConfirm ? (
+        {modalConfirm && action !== 'tolak' ? (
           <CMSModal
             loader={false}
             onClose={() => setModalConfirm(false)}
             confirmButtonAction={updateData}
             label={modalLabel}
           />
+        ) : modalConfirm && action === 'tolak' ? (
+          <Modal visible={true} onClose={() => setModalConfirm(false)} title="" showHeader={false} centered={true}>
+            Apakah anda yakin ingin <span className="sdp-text-red">menolak</span> Bidang?
+            <textarea
+              placeholder="Tulis Catatan"
+              name="catatan"
+              value={notes}
+              onChange={({ target: { value = '' } = {} }) => setNotes(value.trim())}
+              className="border-gray-stroke br-4 w-100 mt-24 mb-24 h-214"
+              required
+            />
+            <div className="d-flex justify-content-end">
+              <Button
+                className="br-4 mr-8 px-57 py-13 bg-transparent"
+                variant="light"
+                onClick={() => setModalConfirm(false)}>
+                Batal
+              </Button>
+              <Button className="br-4 px-39 py-13" variant="info" disabled={!notes.trim()} onClick={onTolak}>
+                Konfirmasi
+              </Button>
+            </div>
+          </Modal>
         ) : null}
       </Row>
     </div>

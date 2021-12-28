@@ -62,6 +62,7 @@ export const apiUrls = {
   sdgPillers: getV1Endpoint('settings/key/SDGS'),
   rkpPN: getV1Endpoint('settings/key/RKP'),
   strukturData: getCMSEndpoint('bidang'),
+  strukturDataPublic: getApiEndpoint('public/bidang'),
   cmsBeritaData: getCMSEndpoint('berita'),
   cmsBimtekJadwal: getCMSEndpoint('bimtek'),
   cmsBimtekPermintaanData: getCMSEndpoint('bimtek/permintaan'),

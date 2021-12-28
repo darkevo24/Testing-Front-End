@@ -6,10 +6,11 @@ export const initialState = {
   dataset: {
     loading: false,
     error: null,
-    page: 0,
+    page: 1,
     records: [],
     size: null,
-    totalRecords: null,
+    totalRecords: 0,
+    totalPages: 1,
   },
   detaildataSet: {
     loading: false,
@@ -55,6 +56,10 @@ export const updateStatus = createAsyncThunk('cms/updateStatusStruktur', async (
   return response?.data;
 });
 
+export const setPreviewBidang = createAsyncThunk('cms/setPreviewBidang', async (params) => {
+  return params;
+});
+
 const strukturOrganisasiSlice = createSlice({
   name: STRUKTUR_ORGANISASI_SLICE,
   initialState,
@@ -71,6 +76,7 @@ const strukturOrganisasiSlice = createSlice({
       state.dataset.loading = false;
       state.dataset.records = action.payload.records;
       state.dataset.totalRecords = action.payload.totalRecords;
+      state.dataset.totalPages = action.payload.totalPages;
       state.dataset.page = action.payload.page;
     });
     builder.addCase(getStrukturOrganisasi.rejected, (state) => {
@@ -124,6 +130,10 @@ const strukturOrganisasiSlice = createSlice({
     builder.addCase(createStrukturOrganisasi.rejected, (state, action) => {
       state.detaildataSet.loading = false;
       state.detaildataSet.error = action.error.message;
+    });
+
+    builder.addCase(setPreviewBidang.fulfilled, (state, action) => {
+      state.detaildataSet.record = action.payload;
     });
   },
 });

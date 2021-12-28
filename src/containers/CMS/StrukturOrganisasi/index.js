@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Search } from 'components/Icons';
 import { CMSTable } from 'components';
-import { getStrukturOrganisasi, strukturDatasetSelector } from './reducer';
+import { getStrukturOrganisasi, strukturDatasetSelector, setPreviewBidang } from './reducer';
 
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import { useHistory } from 'react-router-dom';
@@ -19,7 +19,8 @@ const bem = bn('content-table');
 const CMSStrukturOrganisasi = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { loading, page, records } = useSelector(strukturDatasetSelector);
+  const [page, setPage] = useState(1);
+  const { loading, totalPages, records } = useSelector(strukturDatasetSelector);
   const [searchQuery, setSearchQuery] = useState('');
 
   const fetchData = (params) => {
@@ -28,10 +29,17 @@ const CMSStrukturOrganisasi = () => {
 
   useEffect(() => {
     fetchData({
-      page: page,
+      page: 1,
       q: searchQuery,
     });
   }, [searchQuery]);
+
+  useEffect(() => {
+    fetchData({
+      page: page,
+      q: searchQuery,
+    });
+  }, [page]);
 
   return (
     <div className={bem.e('section')}>
@@ -39,7 +47,10 @@ const CMSStrukturOrganisasi = () => {
         <div className={cx(bem.e('title'), 'mb-3')}>Struktur Organisasi</div>
         <Row className="justify-content-between">
           <Col xs={2}>
-            <Button variant="info" className="text-center" onClick={() => history.push('/cms/struktur-baru')}>
+            <Button
+              variant="info"
+              className="text-center"
+              onClick={() => dispatch(setPreviewBidang({})).then(() => history.push('/cms/struktur-form'))}>
               <Plus /> Buat Bidang
             </Button>
           </Col>
@@ -68,6 +79,8 @@ const CMSStrukturOrganisasi = () => {
             };
             return value;
           })}
+          pagination={{ page: page, totalPages: totalPages }}
+          handlePageChange={setPage}
         />
       ) : null}
     </div>

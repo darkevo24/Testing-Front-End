@@ -69,6 +69,16 @@ export const initialState = {
     error: null,
     records: [],
   },
+  newsByTopic: {
+    loading: false,
+    error: null,
+    status: 'idel',
+    records: [],
+    page: 1,
+    totalRecords: null,
+    totalPages: null,
+    hasNext: false,
+  },
 };
 
 export const USER_NEWS_PORTAL = 'USER_NEWS_PORTAL';
@@ -106,6 +116,11 @@ export const getNewsDetail = createAsyncThunk('userNewsPortal/getNewsDetail', as
 });
 
 export const getPopularTopic = createAsyncThunk('userNewsPortal/getPopularTopic', async (param) => {
+  const response = await get(`${apiUrls.userBeritaPortal}/${param}`);
+  return response?.data?.content;
+});
+
+export const getNewsByTopic = createAsyncThunk('userNewsPortal/getNewsByTopic', async (param) => {
   const response = await get(`${apiUrls.userBeritaPortal}/${param}`);
   return response?.data?.content;
 });
@@ -214,6 +229,24 @@ const userNewsPortal = createSlice({
       state.popularTopic.status = 'failed';
     });
 
+    /**
+     * GET News By Topic
+     */
+    builder.addCase(getNewsByTopic.pending, (state, action) => {
+      state.newsByTopic.loading = true;
+      state.newsByTopic.status = 'loading';
+    });
+    builder.addCase(getNewsByTopic.fulfilled, (state, action) => {
+      state.newsByTopic.loading = false;
+      state.newsByTopic.records = action.payload.records || [];
+      state.newsByTopic.status = 'success';
+      state.newsByTopic.totalRecords = action.meta?.totalRecords;
+      state.newsByTopic.totalPages = action.meta?.totalPages;
+    });
+    builder.addCase(getNewsByTopic.rejected, (state) => {
+      state.newsByTopic.loading = false;
+      state.newsByTopic.status = 'failed';
+    });
     /***
      * Get Other News
      *
@@ -315,4 +348,5 @@ export const newsByMonthSelector = (state) => state.userPortalBerita?.newsByMont
 export const monthlyNewsSelector = (state) => state.userPortalBerita?.monthlyNews;
 export const tweetSelector = (state) => state.userPortalBerita?.tweet;
 export const popularNewsSelector = (state) => state.userPortalBerita?.popularNews;
+export const newsByTopicSelector = (state) => state.userPortalBerita?.newsByTopic;
 export default userNewsPortal.reducer;

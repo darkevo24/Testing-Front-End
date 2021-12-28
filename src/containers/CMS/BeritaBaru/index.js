@@ -7,7 +7,7 @@ import { CMSModal, Loader } from 'components';
 import Notification from 'components/Notification';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
-import { setNewBerita, setPreviewBerita, detailDataSelector, setEditBerita } from './reducer';
+import { setNewBerita, setPreviewBerita, detailDataSelector, setEditBerita, setStatusBerita } from './reducer';
 import { useDispatch, useSelector } from 'react-redux';
 
 const bem = bn('content-create');
@@ -84,9 +84,18 @@ const CMSBeritaBaru = () => {
   const sendData = () => {
     if (dataBerita.id) {
       // edit berita
-      const idBerita = dataBerita.id;
-      // delete dataBerita.id;
-      return dispatch(setEditBerita({ payload: dataBerita, id: idBerita })).then((res) => notifyResponse(res));
+      if (dataBerita.status === 2) {
+        return dispatch(setEditBerita({ payload: dataBerita, id: dataBerita.id }))
+          .then(() =>
+            dispatch(
+              setStatusBerita({
+                payload: { id: [dataBerita.id], status: dataBerita.status, note: dataBerita.note ? dataBerita.note : '' },
+              }),
+            ),
+          )
+          .then((res) => notifyResponse(res));
+      }
+      return dispatch(setEditBerita({ payload: dataBerita, id: dataBerita.id })).then((res) => notifyResponse(res));
     }
     // kirim
     if (dataBerita.status === 2) {

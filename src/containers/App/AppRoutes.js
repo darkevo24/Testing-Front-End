@@ -17,6 +17,7 @@ const BimTekFormPage = lazy(() => import('containers/BimTekForm'));
 const BimTekJadwalPage = lazy(() => import('containers/BimTekJadwal'));
 const BimTekMateriPage = lazy(() => import('containers/BimTekMateri'));
 const BimTekPermintaanPage = lazy(() => import('containers/BimtekPermintaan'));
+const BimTekPermintaanDetailPage = lazy(() => import('containers/BimtekPermintaan/permintaanDetail'));
 const BimTekKotaPage = lazy(() => import('containers/BimTekKota'));
 const BimTekDokumentasiPage = lazy(() => import('containers/BimTekDokumentasi'));
 const TentangPage = lazy(() => import('containers/TentangSDI'));
@@ -69,6 +70,7 @@ function AppRoutes(props) {
         <Route exact path="/bimtek-jadwal" component={BimTekJadwalPage} />
         <Route exact path="/bimtek-materi" component={BimTekMateriPage} />
         <Route exact path="/bimtek-permintaan" component={BimTekPermintaanPage} />
+        <Route exact path="/bimtek-permintaan/:id" component={BimTekPermintaanDetailPage} />
         <Route exact path="/bimtek-kota-pelaksanaan" component={BimTekKotaPage} />
         <Route exact path="/bimtek-dokumentasi" component={BimTekDokumentasiPage} />
         <Route exact path="/tentang" component={TentangPage} />

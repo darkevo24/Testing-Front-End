@@ -62,6 +62,7 @@ export const apiUrls = {
   sdgPillers: getV1Endpoint('settings/key/SDGS'),
   rkpPN: getV1Endpoint('settings/key/RKP'),
   strukturData: getCMSEndpoint('bidang'),
+  strukturDataPublic: getApiEndpoint('public/bidang'),
   cmsBeritaData: getCMSEndpoint('berita'),
   cmsBimtekJadwal: getCMSEndpoint('bimtek'),
   cmsBimtekPermintaanData: getCMSEndpoint('bimtek/permintaan'),
@@ -91,8 +92,9 @@ export const apiUrls = {
   bimtekDokumentasiMingguIni: getPortalEndpoint('v1/bimtek/dokumentasi/minggu-ini'),
   bimtekDokumentasiMingguLalu: getPortalEndpoint('v1/bimtek/dokumentasi/minggu-lalu'),
   bimtekDokumentasiBulanIni: getPortalEndpoint('v1/bimtek/dokumentasi/bulan-ini'),
-  bimtekPermintaan: getCMSEndpoint('bimtek/permintaan'),
+  bimtekPermintaan: getPortalEndpoint('v1/bimtek/permintaan'),
   sosialMedia: getCMSEndpoint('sosial-media'),
+  bimtekLogs: getPortalEndpoint('v1/bimtek/logs'),
 };
 
 export const priorityOptions = [

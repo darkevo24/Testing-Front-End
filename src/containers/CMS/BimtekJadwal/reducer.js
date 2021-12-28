@@ -13,13 +13,18 @@ export const initialState = {
     totalRecords: null,
   },
   detail: {
-    loading: false,
+    loadingJadwalDetail: false,
     records: [],
   },
   log: {
     loading: false,
     error: null,
     dataLog: [],
+  },
+  bimtekJadwalTags: {
+    tagsResult: [],
+    tagsLoading: false,
+    tagsError: null,
   },
 };
 
@@ -42,6 +47,11 @@ export const getListLogAktifitas = createAsyncThunk('bimtek-jadwal/getListLogs',
   return response?.data?.content?.records;
 });
 
+export const getListBimtekTags = createAsyncThunk('bimtek-jadwal/getListTags', async (params) => {
+  const response = await get(`${apiUrls.cmsBimtekJadwal}/tags`);
+  return response?.data?.content;
+});
+
 const BimtekJadwalSlice = createSlice({
   name: BIMTEK_JADWAL,
   initialState,
@@ -62,14 +72,14 @@ const BimtekJadwalSlice = createSlice({
       state.dataset.error = 'Invalid data';
     });
     builder.addCase(getJadwalBimtekDetail.pending, (state, action) => {
-      state.detail.loading = true;
+      state.detail.loadingJadwalDetail = true;
     });
     builder.addCase(getJadwalBimtekDetail.fulfilled, (state, action) => {
-      state.detail.loading = false;
+      state.detail.loadingJadwalDetail = false;
       state.detail.records = action.payload.data?.content;
     });
     builder.addCase(getJadwalBimtekDetail.rejected, (state, action) => {
-      state.loading = false;
+      state.loadingJadwalDetail = false;
       state.error = 'Invalid data';
     });
     builder.addCase(getListLogAktifitas.pending, (state, action) => {
@@ -78,11 +88,21 @@ const BimtekJadwalSlice = createSlice({
     builder.addCase(getListLogAktifitas.fulfilled, (state, action) => {
       state.log.loading = false;
       state.log.dataLog = action.payload;
-      console.log(action.payload);
     });
     builder.addCase(getListLogAktifitas.rejected, (state, action) => {
       state.log.loading = false;
       state.log.error = 'Invalid data';
+    });
+    builder.addCase(getListBimtekTags.pending, (state, action) => {
+      state.bimtekJadwalTags.tagsLoading = true;
+    });
+    builder.addCase(getListBimtekTags.fulfilled, (state, action) => {
+      state.bimtekJadwalTags.tagsLoading = false;
+      state.bimtekJadwalTags.tagsResult = action.payload;
+    });
+    builder.addCase(getListBimtekTags.rejected, (state, action) => {
+      state.bimtekJadwalTags.tagsLoading = false;
+      state.bimtekJadwalTags.tagsError = 'Invalid data';
     });
   },
 });
@@ -90,5 +110,6 @@ const BimtekJadwalSlice = createSlice({
 export const bimtekJadwalSelector = (state) => state.cmsBimtekJadwal.dataset;
 export const bimtekJadwalDetailSelector = (state) => state.cmsBimtekJadwal.detail;
 export const bimtekLogAktifitas = (state) => state.cmsBimtekJadwal.log;
+export const bimtekJadwalTags = (state) => state.cmsBimtekJadwal.bimtekJadwalTags;
 
 export default BimtekJadwalSlice.reducer;

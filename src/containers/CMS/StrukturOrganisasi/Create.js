@@ -95,7 +95,7 @@ const CMSJadwalBaru = () => {
     <div className={bem.e('section')}>
       <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
         <div className={bem.e('title')}>
-          Bidang Baru
+          {record.id ? 'Edit Bidang' : 'Bidang Baru'}
           <Button
             onClick={() => history.goBack()}
             className="ml-24 bg-white sdp-text-grey-dark border-gray-stroke"

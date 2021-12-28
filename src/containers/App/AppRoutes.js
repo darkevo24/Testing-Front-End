@@ -26,6 +26,7 @@ const BeritaDetailPage = lazy(() => import('containers/Berita/BeritaUtamaDetail'
 const BeritaPreviewPage = lazy(() => import('containers/Berita/Preview'));
 const BeritaPerBulan = lazy(() => import('containers/Berita/BeritaPerBulan'));
 const BeritaPopular = lazy(() => import('containers/Berita/BeritaPopular'));
+const BeritaByTopic = lazy(() => import('containers/Berita/BeritaByTopic'));
 const KesiapanSDI = lazy(() => import('containers/Dashboard/KesiapanSDI'));
 const DashboardEksekutif = lazy(() => import('containers/Dashboard/DashboardEksekutif'));
 const DashboardSaya = lazy(() => import('containers/Dashboard/DashboardSaya'));
@@ -60,6 +61,7 @@ function AppRoutes(props) {
         <Route exact path="/berita" component={BeritaPage} />
         <Route exact path="/berita/preview" component={BeritaPreviewPage} />
         <Route exact path="/berita-populer" component={BeritaPopular} />
+        <Route exact path="/berita-topik/:id" component={BeritaByTopic} />
         <Route exact path="/berita/:id" component={BeritaDetailPage} />
         <Route exact path="/berita/perbulan/:date" component={BeritaPerBulan} />
         <Route exact path="/bimtek-summary" component={BimTekSummaryPage} />

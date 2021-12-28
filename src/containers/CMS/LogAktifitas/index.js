@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import moment from 'moment';
 import cx from 'classnames';
+import debounce from 'lodash/debounce';
 import { useDispatch, useSelector } from 'react-redux';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
@@ -14,6 +15,7 @@ import { Modal, Table } from 'components';
 import TableLoader from 'components/Loader/TableLoader';
 import bn from 'utils/bemNames';
 import { getCMSLogActifitasData, cmsLogAktifitasDataSelector } from './reducer';
+const DEBOUNCE_DELAY = 1500;
 
 const bem = bn('log-activity');
 
@@ -28,6 +30,7 @@ const schema = yup
 const LogActivity = () => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
+  const [query, setQuery] = useState('');
 
   const { q, startDate, endDate, size, loading, records, totalRecords, totalPages, status } =
     useSelector(cmsLogAktifitasDataSelector);
@@ -40,10 +43,27 @@ const LogActivity = () => {
   const {
     control,
     formState: { errors },
+    watch,
     // handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const startDateValue = watch('startDate');
+  const endDateValue = watch('endDate');
+
+  useEffect(() => {
+    if (startDateValue !== undefined && endDateValue !== undefined) {
+      dispatch(
+        getCMSLogActifitasData({
+          page: 0,
+          q: query,
+          startDate: moment(startDateValue).format('YYYY-MM-DD'),
+          endDate: moment(endDateValue).format('YYYY-MM-DD'),
+        }),
+      );
+    }
+  }, [startDateValue, endDateValue]);
+
   const rowClick = (data) => {
     // history.push(`/cms/permintaan-data/${data.id}`);
   };
@@ -52,6 +72,21 @@ const LogActivity = () => {
     // if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
     // return 'bg-gray';
   };
+
+  const handleSearch = () => {
+    dispatch(getCMSLogActifitasData({ page: 0, q: query, startDate, endDate }));
+  };
+  const handleUserInputChange = (event) => {
+    const { value } = event.target;
+    setQuery(value);
+  };
+  const delayedQuery = useCallback(debounce(handleSearch, DEBOUNCE_DELAY), [query]);
+
+  useEffect(() => {
+    delayedQuery();
+
+    return delayedQuery.cancel;
+  }, [query, delayedQuery]);
 
   const columns = [
     {
@@ -62,7 +97,7 @@ const LogActivity = () => {
           original: { data },
         },
       }) => {
-        const { email = '' } = data.user;
+        const { email = '' } = data?.user;
         return <span>{email}</span>;
       },
     },
@@ -169,7 +204,7 @@ const LogActivity = () => {
               />
             </div>
             <InputGroup>
-              <Form.Control variant="normal" type="text" placeholder="Pencarian" />
+              <Form.Control variant="normal" type="text" placeholder="Pencarian" onChange={handleUserInputChange} />
               <Search />
             </InputGroup>
           </div>

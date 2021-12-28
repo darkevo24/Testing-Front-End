@@ -11,7 +11,7 @@ const CMSStrukturProfile = ({ handleClose, show, title, data = null, idBidang = 
   const schema = yup
     .object({
       nama: yup.string().required(),
-      jabatan: yup.string().required(),
+      foto: yup.string().required(),
     })
     .required();
 

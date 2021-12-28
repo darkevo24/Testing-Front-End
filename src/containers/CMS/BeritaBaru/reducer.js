@@ -40,7 +40,9 @@ export const initialState = {
 export const BERITA_CMS_SLICE = 'BERITA_CMS_SLICE';
 
 export const getListBerita = createAsyncThunk('cms/getListBerita', async (params) => {
-  const response = await post(`${apiUrls.cmsBeritaData}/list?size=10&page=${params.page}`, { judul: params.judul });
+  const response = await post(`${apiUrls.cmsBeritaData}/list?size=10&page=${params.page}&sortDirection=DESC`, {
+    judul: params.judul,
+  });
   return response?.data?.content;
 });
 

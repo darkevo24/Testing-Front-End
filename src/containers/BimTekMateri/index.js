@@ -13,26 +13,33 @@ import { NoPerminataanData } from 'components/Icons';
 import { getBimtekMateri, bimtekMateri } from './reducer';
 import moment from 'moment';
 import { apiUrls, get } from 'utils/request';
+import Pagination from 'components/Pagination';
+
+const paginateParams = {
+  page: 1,
+  size: 10,
+};
 
 const BimtekMateri = () => {
   const dispatch = useDispatch();
-  const { records: materiRecords, allRecords: allMateriRecords } = useSelector(bimtekMateri);
+  const { records: materiRecords, allRecords: allMateriRecords, totalPages: pageNumber } = useSelector(bimtekMateri);
   const { control, watch } = useForm({});
   const watchDate = watch('tgl');
   const watchNamaBimtek = watch('namaBimtek');
 
   useEffect(() => {
-    dispatch(getBimtekMateri());
-  }, []);
-
-  useEffect(() => {
     const params = {
+      ...paginateParams,
       ...(watchNamaBimtek?.value ? { namaBimtek: watchNamaBimtek.value } : {}),
       ...(watchDate ? { tgl: moment(watchDate).format('YYYY-MM-DD') } : {}),
     };
 
     dispatch(getBimtekMateri(params));
   }, [watchDate, watchNamaBimtek]);
+
+  const changePage = (props) => {
+    dispatch(getBimtekMateri({ ...paginateParams, page: props.page }));
+  };
 
   return (
     <BimtekLayout className="sdp-bimtek-materi">
@@ -68,6 +75,7 @@ const BimtekMateri = () => {
           urlFile={item.materi.fileName}
         />
       ))}
+      {materiRecords?.length && <Pagination totalPages={pageNumber} onChangePage={changePage} />}
     </BimtekLayout>
   );
 };

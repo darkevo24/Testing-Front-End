@@ -17,6 +17,12 @@ import {
   getBimtekJadwalData,
   getBimtekJadwalLocationsData,
 } from 'containers/BimTekJadwal/reducer';
+import Pagination from 'components/Pagination';
+
+const paginateParams = {
+  page: 1,
+  size: 10,
+};
 
 const BimtekKota = () => {
   const { control, watch } = useForm({});
@@ -25,23 +31,29 @@ const BimtekKota = () => {
   const [filterNamaBimtek, setFilterNamaBimtek] = useState();
 
   useEffect(() => {
-    dispatch(getBimtekJadwalData());
     dispatch(getBimtekJadwalLocationsData());
   }, []);
 
   useEffect(() => {
     const params = {
+      ...paginateParams,
       ...(filterNamaBimtek ? { namaBimtek: filterNamaBimtek } : {}),
       ...(watchNamaBimtek?.value ? { kota: watchNamaBimtek?.value } : {}),
     };
     dispatch(getBimtekJadwalData(params));
   }, [watchNamaBimtek, filterNamaBimtek]);
-  const { records: dataKota } = useSelector(bimtekJadwalDatasetSelector);
+
+  const { records: dataKota, totalPages: pageNumber } = useSelector(bimtekJadwalDatasetSelector);
   const kotaFilterData = useSelector(bimtekJadwalLocationsDatasetSelector);
 
   const changeNamaBimtek = (e) => {
     setFilterNamaBimtek(e.target.value);
   };
+
+  const changePage = (props) => {
+    dispatch(getBimtekJadwalData({ ...paginateParams, page: props.page }));
+  };
+
   return (
     <BimtekLayout className="sdp-bimtek-kota">
       <div className="fw-bold fs-32 mb-12">Kota Pelaksana</div>
@@ -67,17 +79,24 @@ const BimtekKota = () => {
         </Col>
       </Row>
       <Row>
-        {!dataKota?.length && (
+        {!dataKota?.length ? (
           <div className="d-flex justify-content-center align-items-center h-100 flex-column">
             <NoPerminataanData />
             <div className="text-black-50 mb-2 mt-2">No Data</div>
             <div className="text-black-50 mb-2 mt-2">Pilih kota atau cari bimtek untuk menampilkan data</div>
           </div>
+        ) : (
+          dataKota?.map((item, key) => (
+            <KotaItem
+              key={key}
+              nama={item.namaBimtek}
+              tanggal={moment(item.tanggal).format('YYYY-MM-D')}
+              lokasi={item.kota}
+            />
+          ))
         )}
-        {dataKota?.map((item, key) => (
-          <KotaItem key={key} nama={item.namaBimtek} tanggal={moment(item.tanggal).format('YYYY-MM-D')} lokasi={item.kota} />
-        ))}
       </Row>
+      {dataKota?.length && <Pagination totalPages={pageNumber} onChangePage={changePage} />}
     </BimtekLayout>
   );
 };

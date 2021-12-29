@@ -138,7 +138,6 @@ const CMSJadwalDetail = (props) => {
         data.jamSelesaiDisetujuiUpdate
       }:00`,
     };
-    console.log(data.tagsKota);
     handleAPICall(put, `${apiUrls.cmsBimtekJadwal}/${id}`, { data: obj });
   };
 
@@ -235,7 +234,6 @@ const CMSJadwalDetail = (props) => {
     setListMateri(listMateri.filter((item) => item !== selected));
   };
   let filterKota = tagsResultKabupaten.filter((item) => item.label === records.kota);
-  console.log(filterKota);
   useEffect(() => {
     reset({
       default: records,
@@ -252,7 +250,7 @@ const CMSJadwalDetail = (props) => {
         ? ''
         : moment(records.tanggalSelesaiDisetujui).format('DD/MM/YYYY'),
     });
-  }, [records]);
+  }, [records, listKabupaten]);
 
   const schema = yup.object({}).required();
 

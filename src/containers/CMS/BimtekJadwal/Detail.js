@@ -126,11 +126,10 @@ const CMSJadwalDetail = (props) => {
   };
 
   const onUpdate = async (data) => {
-    let newKota = data.tagsKota.map((elem) => elem.value) || 1;
     let obj = {
       namaBimtek: data.default.namaBimtek,
       tagMateri: data.tags.map((elem) => elem.label) || [],
-      kota: newKota[0],
+      kota: data.tagsKota[0]?.value || data.tagsKota.value,
       alamat: data.default.tempat,
       tanggalMulaiDisetujui: `${moment(data.tanggalMulaiDisetujuiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
         data.jamMulaiDisetujuiUpdate
@@ -139,6 +138,7 @@ const CMSJadwalDetail = (props) => {
         data.jamSelesaiDisetujuiUpdate
       }:00`,
     };
+    console.log(data.tagsKota);
     handleAPICall(put, `${apiUrls.cmsBimtekJadwal}/${id}`, { data: obj });
   };
 
@@ -234,12 +234,13 @@ const CMSJadwalDetail = (props) => {
     let selected = listMateri[index];
     setListMateri(listMateri.filter((item) => item !== selected));
   };
-
+  let filterKota = tagsResultKabupaten.filter((item) => item.label === records.kota);
+  console.log(filterKota);
   useEffect(() => {
     reset({
       default: records,
       tags: (records.tagMateri || []).map((elem) => ({ value: elem, label: elem })),
-      tagsKota: ([records.kota] || []).map((elem) => ({ value: 1, label: elem })),
+      tagsKota: filterKota[0],
       jamMulaiDisetujuiUpdate: !records.tanggalMulaiDisetujui ? '' : moment(records.tanggalMulaiDisetujui).format('hh:mm'),
       jamSelesaiDisetujuiUpdate: !records.tanggalSelesaiDisetujui
         ? ''
@@ -498,7 +499,7 @@ const CMSJadwalDetail = (props) => {
                   placeholder=""
                   name="tagsKota"
                   control={control}
-                  data={tagsResultKabupaten}
+                  data={[{ value: '', label: 'All' }, ...tagsResultKabupaten]}
                   loading={tagsLoading}
                   isCreatable={true}
                 />

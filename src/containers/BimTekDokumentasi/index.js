@@ -14,17 +14,23 @@ import { getBimtekDokumentasi, bimtekDokumentasi } from './reducer';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 import moment from 'moment';
+import Pagination from 'components/Pagination';
 
 const bem = bn('bimtek-dokumentasi');
+
+const paginateParams = {
+  page: 1,
+  size: 10,
+};
 
 const BimTekDokumentasi = () => {
   const dispatch = useDispatch();
   const [docDetail, setDocDetail] = useState(false);
-  const [params, setParams] = useState({});
+  const [params, setParams] = useState({ ...paginateParams });
   const { control, watch } = useForm({});
   const watchDate = watch('filterDate');
 
-  const { records: dokumentasiRecords } = useSelector(bimtekDokumentasi);
+  const { records: dokumentasiRecords, totalPages: pageNumber } = useSelector(bimtekDokumentasi);
   const { singleRecord: singleDokumentasiRecords } = useSelector(bimtekDokumentasi);
 
   useEffect(() => {
@@ -61,6 +67,10 @@ const BimTekDokumentasi = () => {
     } else {
       if (activePhoto > 0) setActivePhoto(activePhoto - 1);
     }
+  };
+
+  const changePage = (props) => {
+    dispatch(getBimtekDokumentasi({ ...paginateParams, page: props.page }));
   };
 
   return (
@@ -154,6 +164,8 @@ const BimTekDokumentasi = () => {
           <div className="sdp-text-grey-dark fs-16 mb-16">{singleDokumentasiRecords.isiDokumentasi}</div>
         </Modal.Body>
       </Modal>
+
+      {dokumentasiRecords?.length && <Pagination totalPages={pageNumber} onChangePage={(props) => changePage(props)} />}
     </BimtekLayout>
   );
 };

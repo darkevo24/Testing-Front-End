@@ -59,7 +59,6 @@ export const getListBimtekTags = createAsyncThunk('bimtek-jadwal/getListTags', a
 
 export const getListBimtekKabupaten = createAsyncThunk('bimtek-jadwal/getListKabupaten', async (params) => {
   const response = await get(apiUrls.bimtekJadwalLocations);
-  console.log(response);
   return response?.data?.content?.records;
 });
 

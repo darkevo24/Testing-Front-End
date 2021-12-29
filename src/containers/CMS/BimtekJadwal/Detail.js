@@ -129,7 +129,7 @@ const CMSJadwalDetail = (props) => {
     let obj = {
       namaBimtek: data.default.namaBimtek,
       tagMateri: data.tags.map((elem) => elem.label) || [],
-      kota: kotaId,
+      kota: data.tagsKota[0]?.value || data.tagsKota.value,
       alamat: data.default.tempat,
       tanggalMulaiDisetujui: `${moment(data.tanggalMulaiDisetujuiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
         data.jamMulaiDisetujuiUpdate
@@ -233,11 +233,12 @@ const CMSJadwalDetail = (props) => {
     let selected = listMateri[index];
     setListMateri(listMateri.filter((item) => item !== selected));
   };
-
+  let filterKota = tagsResultKabupaten.filter((item) => item.label === records.kota);
   useEffect(() => {
     reset({
       default: records,
       tags: (records.tagMateri || []).map((elem) => ({ value: elem, label: elem })),
+      tagsKota: filterKota[0],
       jamMulaiDisetujuiUpdate: !records.tanggalMulaiDisetujui ? '' : moment(records.tanggalMulaiDisetujui).format('hh:mm'),
       jamSelesaiDisetujuiUpdate: !records.tanggalSelesaiDisetujui
         ? ''
@@ -249,7 +250,7 @@ const CMSJadwalDetail = (props) => {
         ? ''
         : moment(records.tanggalSelesaiDisetujui).format('DD/MM/YYYY'),
     });
-  }, [records]);
+  }, [records, listKabupaten]);
 
   const schema = yup.object({}).required();
 
@@ -487,13 +488,18 @@ const CMSJadwalDetail = (props) => {
               <RowLoader />
             ) : (
               <div className="mb-15">
-                <label className="mb-5">Kota Pelaksana</label>
-                <SingleDropDown
+                <SingleSelectDropDown
                   group
+                  groupClass="mb-16"
                   control={control}
-                  name="namaKota"
+                  label="Kota Pelaksana"
+                  labelClass="sdp-form-label fw-normal"
+                  placeholder=""
+                  name="tagsKota"
+                  control={control}
                   data={[{ value: '', label: 'All' }, ...tagsResultKabupaten]}
-                  onChange={handleTagKota}
+                  loading={tagsLoading}
+                  isCreatable={true}
                 />
               </div>
             )}

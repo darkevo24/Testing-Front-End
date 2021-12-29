@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 import { useForm } from 'react-hook-form';
+import { remove } from 'lodash';
 import * as yup from 'yup';
 import isFunction from 'lodash/isFunction';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -23,15 +24,52 @@ const bem = bn('content-create');
 const CMSJadwalBaru = () => {
   const history = useHistory();
   const [showModal, setShowModal] = useState('');
+  const [idPembicara, setIdPembicara] = useState('');
   const [listMateri, setListMateri] = useState([]);
   const [dataMateri, setDataMateri] = useState([]);
   const [dataPembicara, setDataPembicara] = useState([]);
 
-  const onModalEditPembicara = () => {};
-  const onDeletePembicara = () => {};
+  const onModalEditPembicara = (data) => {
+    setIdPembicara(data.id);
+    setShowModal('editPembicara');
+  };
 
-  const onModalEditMateri = () => {};
-  const onDeleteMateri = () => {};
+  const onEditPembicara = async (data) => {
+    console.log(idPembicara);
+    const nama = data.tambahPembicara;
+    const tanggalMulai = `${moment(data.tambahPembicaraWaktuMulai, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
+      data.tambahPembicaraJamMulai
+    }:00`;
+    const tanggalSelesai = `${moment(data.tambahPembicaraWaktuSelesai, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
+      data.tambahPembicaraJamSelesai
+    }:00`;
+    let obj = [
+      {
+        id: (Math.random() + 1).toString(36).substring(7),
+        nama,
+        tanggalMulai,
+        tanggalSelesai,
+      },
+    ];
+    let newDataPembicara = dataPembicara.filter((x) => x.id !== idPembicara);
+    setDataPembicara([...newDataPembicara, obj[0]]);
+    handleCloseModal();
+  };
+
+  const onDeletePembicara = (data) => {
+    let newData = remove(dataPembicara, (x) => {
+      return x.id !== data;
+    });
+    setDataPembicara(newData);
+    console.log(newData);
+  };
+
+  const onDeleteMateri = (data) => {
+    let newData = remove(dataMateri, (x) => {
+      return x.id !== data;
+    });
+    setDataMateri(newData);
+  };
 
   const handleAPICall = async (method, url, params, callBack) => {
     try {
@@ -50,16 +88,23 @@ const CMSJadwalBaru = () => {
   };
 
   const onProses = (data) => {
-    console.log(data);
+    let listPembicara = dataPembicara;
+    listPembicara.map((x) => {
+      delete x['id'];
+    });
+    let listMateri = dataMateri;
+    listMateri.map((x) => {
+      delete x['id'];
+    });
     let obj = {
       namaBimtek: data.namaBimtek,
       tagMateri: ['teknologi', 'keuangan'],
       tanggalMulaiDisetujui: `${moment(data.tanggalMulaiDisetujui).format('YYYY-MM-DD')} ${data.jamMulaiDisetujui}:00`,
       tanggalSelesaiDisetujui: `${moment(data.tanggalSelesaiDisetujui).format('YYYY-MM-DD')} ${data.jamSelesaiDisetujui}:00`,
       kota: 1,
-      alamat: data.tempat,
-      pembicara: dataPembicara,
-      materi: dataMateri,
+      alamat: 'test',
+      pembicara: listPembicara,
+      materi: listMateri,
       dokumentasi: [
         {
           isiDokumentasi: 'test',
@@ -75,6 +120,7 @@ const CMSJadwalBaru = () => {
         },
       ],
     };
+    console.log(JSON.stringify(obj));
     handleAPICall(post, `${apiUrls.cmsBimtekJadwal}`, { data: obj });
   };
 
@@ -82,9 +128,12 @@ const CMSJadwalBaru = () => {
     let newMateri = listMateri.map((item) => ({
       ...item,
       nama: data.materi,
+      id: (Math.random() + 1).toString(36).substring(7),
     }));
     setListMateri([]);
-    setDataMateri(newMateri);
+    setDataMateri([...dataMateri, newMateri[0]]);
+    console.log(newMateri[0]);
+    console.log(dataMateri);
     handleCloseModal();
   };
 
@@ -96,12 +145,13 @@ const CMSJadwalBaru = () => {
     }:00`;
     let obj = [
       {
+        id: (Math.random() + 1).toString(36).substring(7),
         nama,
         tanggalMulai,
         tanggalSelesai,
       },
     ];
-    setDataPembicara(obj);
+    setDataPembicara([...dataPembicara, obj[0]]);
     handleCloseModal();
   };
 
@@ -167,7 +217,7 @@ const CMSJadwalBaru = () => {
           <Button
             variant="outline-none"
             className="bg-white sdp-text-grey-dark p-0"
-            onClick={() => onDeletePembicara(rest.row.original?.id)}>
+            onClick={() => onDeletePembicara(rest.row.original.id)}>
             Delete
           </Button>
         </div>
@@ -197,7 +247,7 @@ const CMSJadwalBaru = () => {
           <Button
             variant="outline-none"
             className="bg-white sdp-text-grey-dark p-0"
-            onClick={() => onDeleteMateri(rest.row.original?.id)}>
+            onClick={() => onDeleteMateri(rest.row.original.id)}>
             Delete
           </Button>
         </div>
@@ -398,6 +448,41 @@ const CMSJadwalBaru = () => {
           visible={handleCloseModal}
           onClose={handleCloseModal}>
           <Form onSubmit={handleSubmit(onAddPembicara)}>
+            <div className="mb-10">
+              <Row>
+                <Input group label="Nama Pembicara" name="tambahPembicara" control={control} />
+              </Row>
+              <Row className="align-items-end">
+                <Col>
+                  <DatePicker group label="Tanggal Mulai Sesi" name="tambahPembicaraWaktuMulai" control={control} />
+                </Col>
+                <Col>
+                  <Input group className="m-0" type="time" label="" name="tambahPembicaraJamMulai" control={control} />
+                </Col>
+              </Row>
+              <Row className="align-items-end">
+                <Col>
+                  <DatePicker group label="Tanggal Selesai Sesi" name="tambahPembicaraWaktuSelesai" control={control} />
+                </Col>
+                <Col>
+                  <Input group className="m-0" type="time" label="" name="tambahPembicaraJamSelesai" control={control} />
+                </Col>
+              </Row>
+            </div>
+            <div className="d-flex justify-content-end">
+              <Button className="br-4 mr-8 px-57 py-13 bg-transparent" variant="light" onClick={handleCloseModal}>
+                Batal
+              </Button>
+              <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
+                Simpan
+              </Button>
+            </div>
+          </Form>
+        </Modal>
+      )}
+      {showModal === 'editPembicara' && (
+        <Modal className="cms-bimtek-materi" title="Ubah Pembicara" visible={handleCloseModal} onClose={handleCloseModal}>
+          <Form onSubmit={handleSubmit(onEditPembicara)}>
             <div className="mb-10">
               <Row>
                 <Input group label="Nama Pembicara" name="tambahPembicara" control={control} />

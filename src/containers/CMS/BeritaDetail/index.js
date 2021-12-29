@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useHistory } from 'react-router-dom';
-import { setDetailBerita, detailDataSelector, setPreviewBerita, setStatusBerita } from '../BeritaBaru/reducer';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { DetailHeader } from './detailHeader';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import { CMSForm, Loader, CMSTopDetail, CMSModal } from 'components';
 import { submitBeritaForm, getDate } from 'components/CMSForm';
 import Notification from 'components/Notification';
 import bn from 'utils/bemNames';
+import { DetailHeader } from './detailHeader';
+import {
+  setDetailBerita,
+  detailDataSelector,
+  setPreviewBerita,
+  setStatusBerita,
+  getLogBerita,
+  logBeritaSelector,
+} from '../BeritaBaru/reducer';
 
 const bem = bn('content-detail');
 
@@ -19,8 +25,10 @@ const CMSBeritaDetail = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { loading, record } = useSelector(detailDataSelector);
+  const { loading: loadingLog, records: logRecords } = useSelector(logBeritaSelector);
   const fetchData = (params) => {
     dispatch(setDetailBerita(params));
+    dispatch(getLogBerita(params));
   };
 
   useEffect(() => {
@@ -159,7 +167,15 @@ const CMSBeritaDetail = (props) => {
           </div>
         </Col>
         <Col sm={3}>
-          <LogStatus data={[]} />
+          <LogStatus
+            data={logRecords.map((log) => {
+              return {
+                status: log.status.split(' ').join('_'),
+                createdAt: log.createdAt,
+                displayMessage: log.displayMessage,
+              };
+            })}
+          />
         </Col>
         {loading && <Loader fullscreen={true} />}
       </Row>

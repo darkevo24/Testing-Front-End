@@ -45,7 +45,7 @@ export const apiUrls = {
   bidangData: getCMSEndpoint('komunitas-ahli/bidang-keahlian'),
   daerahData: getV1Endpoint('kabupatenkota/search'),
   produenData: getV1Endpoint('katalog/produsendata'),
-  dataindukData: getV1Endpoint('katalog/datainduk'),
+  dataindukData: getV1Endpoint('katalog/all'),
   katalogData: getV1Endpoint('katalog'),
   listPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
   detailPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),

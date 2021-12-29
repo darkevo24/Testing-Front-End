@@ -25,7 +25,8 @@
       "searchPlaceholder": "Pencarian"
     },
     "variable": {
-      "title": "Variabel",
+      "title": "Variable",
+      "cmsTitle": "Data Variable",
       "reference": "Kode Referensi",
       "searchPlaceholder": "Pencarian",
       "addVariable": "Tambah Variabel"

@@ -273,9 +273,8 @@ const Table = ({
             <RightChevron variant={canNextPage ? 'dim' : 'light'} />
           </div>
         </div>
-      ) : (
-        <div className="empty-data flex-center">{t('common.noData')}</div>
-      )}
+      ) : null}
+      {data?.length ? null : <div className="empty-data flex-center">{t('common.noData')}</div>}
     </div>
   );
 };
@@ -322,6 +321,16 @@ Table.Card = ({ cell }) => {
   return (
     <div className="sdp-card-wrapped d-flex p-16 justify-content-between border-top-gray-stroke" key={item.id}>
       {renderChild && renderChild(item)}
+    </div>
+  );
+};
+
+Table.CheckBox = ({ cell }) => {
+  const { column: { action, isChecked, label = '' } = {}, row } = cell;
+  const { original: item } = row;
+  return (
+    <div className="sdp-table-checkbox" key={item.id}>
+      <Form.Check type="checkbox" label={label} checked={isChecked(item)} onChange={() => action(item)} />
     </div>
   );
 };

@@ -11,6 +11,7 @@
             display: none;
         }
     }
+    
     .wrapper-upload {
         padding-bottom: 30px;
         .wrapper-title {
@@ -52,6 +53,20 @@
                     border-radius: 7px;
                 }
             }
+        }
+    }
+
+    .pembicara, .materi {
+        svg {
+            width: 22px;
+            cursor: pointer;
+
+            path {
+                fill: $red;
+            }
+        }
+        span {
+            font-size: 13px;
         }
     }
 }

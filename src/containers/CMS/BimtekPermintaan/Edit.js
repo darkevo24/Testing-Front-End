@@ -43,7 +43,6 @@ const CMSBimtekPermintaanEdit = (props) => {
   const [showModalDraft, setModalDraft] = useState(false);
   const [showModalPublish, setModalPublish] = useState(false);
   const [showModalUnpublish, setModalUnpublish] = useState(false);
-  console.log(detailPermintaan);
   const fetchBimtekLog = (params) => {
     return dispatch(getListLogAktifitas(params));
   };
@@ -208,7 +207,6 @@ const CMSBimtekPermintaanEdit = (props) => {
     });
     setModalUnpublish(false);
   };
-
   const onSubmitSetujuiBimbingan = (data) => {
     const tanggalMulaiDisetujui = `${moment(data.tanggalMulaiDisetujuiUpdate).format('YYYY-MM-DD')} ${
       data.jamMulaiDisetujuiUpdate
@@ -217,12 +215,12 @@ const CMSBimtekPermintaanEdit = (props) => {
       data.jamSelesaiDisetujuiUpdate
     }:00`;
     let obj = {
-      id: data.id,
+      id: data.default.id,
       namaBimtek: data.namaBimbinganTeknis,
-      tagMateri: data.tagMateri,
+      tagMateri: data.default.tagMateri,
       tanggalMulaiDisetujui,
       tanggalSelesaiDisetujui,
-      kota: data.kotaId,
+      kota: data.default.kotaId,
       alamat: data.tempatBimbinganTeknis,
     };
     dispatch(updateStatusBimtekSetujui(obj)).then((res) => {

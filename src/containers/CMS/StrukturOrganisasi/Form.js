@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 // import Form from 'react-bootstrap/Form';
-import bn from 'utils/bemNames';
 import cx from 'classnames';
 
-import { Input } from 'components';
+import bn from 'utils/bemNames';
+import { submitForm } from 'utils/helper';
+import { Input, CMSModal } from 'components';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import CMSStrukturProfile from './FormProfile';
-import { submitForm } from 'utils/helper';
+import { createProfile, updateProfile, deleteProfile } from './reducer';
 
 const bem = bn('bimtek-form');
 
@@ -23,8 +25,10 @@ export const formStrukturId = 'form-struktur-id';
 export const submitStrukturForm = submitForm(formStrukturId);
 
 const CMSStrukturForm = ({ disabled = false, dataValue, handleData = () => {} }) => {
+  const dispatch = useDispatch();
   const [modalAdd, setModalAdd] = useState(false);
   const [modalEdit, setModalEdit] = useState(false);
+  const [modalDelete, setModalDelete] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [listProfile, setListProfile] = useState([]);
 
@@ -58,9 +62,19 @@ const CMSStrukturForm = ({ disabled = false, dataValue, handleData = () => {} })
     handleData(data);
   };
 
-  const removeProfile = (index) => {
+  const removeProfile = () => {
+    if (selectedProfile.id && dataValue.id) {
+      // send data
+      dispatch(deleteProfile({ idBidang: dataValue.id, idProfil: selectedProfile.id }));
+    }
+    setListProfile(listProfile.filter((item) => item !== selectedProfile));
+    setModalDelete(false);
+  };
+
+  const openDeleteModal = (index) => {
     let selected = listProfile[index];
-    setListProfile(listProfile.filter((item) => item !== selected));
+    setSelectedProfile(selected);
+    setModalDelete(true);
   };
 
   const openModal = (index = -1) => {
@@ -79,11 +93,19 @@ const CMSStrukturForm = ({ disabled = false, dataValue, handleData = () => {} })
   };
 
   const addProfile = (data) => {
+    if (dataValue.id) {
+      // send data
+      dispatch(createProfile({ payload: data, id: dataValue.id }));
+    }
     setListProfile([...listProfile, data]);
     setModalAdd(false);
   };
 
   const editProfile = (data) => {
+    if (dataValue.id && data.id) {
+      // send data
+      dispatch(updateProfile({ payload: data, id: dataValue.id }));
+    }
     let edit = [...listProfile];
     edit[data.index] = data;
     setListProfile(edit);
@@ -151,12 +173,16 @@ const CMSStrukturForm = ({ disabled = false, dataValue, handleData = () => {} })
                   <td>{row.nama ? row.nama : ''}</td>
                   <td>{row.jabatan ? row.jabatan : ''}</td>
                   <td>
-                    <span className="cursor-pointer sdp-text-blue mr-12" onClick={() => openModal(key)}>
-                      Edit
-                    </span>
-                    <span className="cursor-pointer sdp-text-disable" onClick={() => removeProfile(key)}>
-                      Delete
-                    </span>
+                    {!disabled && (
+                      <>
+                        <span className="cursor-pointer sdp-text-blue mr-12" onClick={() => openModal(key)}>
+                          Edit
+                        </span>
+                        <span className="cursor-pointer sdp-text-disable" onClick={() => openDeleteModal(key)}>
+                          Delete
+                        </span>
+                      </>
+                    )}
                   </td>
                 </tr>
               ))
@@ -179,6 +205,18 @@ const CMSStrukturForm = ({ disabled = false, dataValue, handleData = () => {} })
           title="Edit Profil"
           data={selectedProfile}
           onSubmit={editProfile}
+        />
+      ) : null}
+      {modalDelete ? (
+        <CMSModal
+          loader={false}
+          onClose={() => setModalDelete(false)}
+          confirmButtonAction={removeProfile}
+          label={
+            <span>
+              Apakah anda yakin ingin <b className="sdp-text-blue">menghapus</b> Profil?
+            </span>
+          }
         />
       ) : null}
       <Button className="invisible" type="submit" />

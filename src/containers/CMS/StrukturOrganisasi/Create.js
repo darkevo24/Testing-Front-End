@@ -52,6 +52,7 @@ const CMSJadwalBaru = () => {
     if (action === 'kirim') {
       // edit
       if (bidang.id) {
+        delete bidang.profil;
         return dispatch(setStrukturOrganisasi({ payload: bidang, id: bidang.id }))
           .then((res) => dispatch(updateStatus({ id: res.payload.content.id, action: action })))
           .then((res) => notifyResponse(res));
@@ -63,6 +64,7 @@ const CMSJadwalBaru = () => {
     }
     // edit
     if (bidang.id) {
+      delete bidang.profil;
       return dispatch(setStrukturOrganisasi({ payload: bidang, id: bidang.id })).then((res) => notifyResponse(res));
     }
     // create
@@ -95,7 +97,7 @@ const CMSJadwalBaru = () => {
     <div className={bem.e('section')}>
       <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
         <div className={bem.e('title')}>
-          Bidang Baru
+          {record.id ? 'Edit Bidang' : 'Bidang Baru'}
           <Button
             onClick={() => history.goBack()}
             className="ml-24 bg-white sdp-text-grey-dark border-gray-stroke"

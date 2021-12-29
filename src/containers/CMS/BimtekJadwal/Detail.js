@@ -16,6 +16,7 @@ import { LogStatus } from 'components/Sidebars/LogStatus';
 import { LeftChevron, Galery, Close } from 'components/Icons';
 import { getStatusClass, prefixID } from 'utils/helper';
 import { CMSModal } from 'components/CMSStatusModals';
+import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
 import SingleDropDown from 'components/DropDown/SingleDropDown';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import RowLoader from 'components/Loader/RowLoader';
@@ -24,11 +25,13 @@ import { DetailHeader } from './detailHeader';
 import bn from 'utils/bemNames';
 import {
   bimtekJadwalDetailSelector,
+  bimtekListKabupaten,
   bimtekLogAktifitas,
   bimtekJadwalTags,
   getListLogAktifitas,
   getJadwalBimtekDetail,
   getListBimtekTags,
+  getListBimtekKabupaten,
 } from './reducer';
 
 const bem = bn('content-detail');
@@ -39,15 +42,18 @@ const CMSJadwalDetail = (props) => {
   const dispatch = useDispatch();
 
   const { records, loadingJadwalDetail } = useSelector(bimtekJadwalDetailSelector);
+  const { listKabupaten } = useSelector(bimtekListKabupaten);
   const { tagsResult, tagsLoading } = useSelector(bimtekJadwalTags);
   const { dataLog } = useSelector(bimtekLogAktifitas);
   const [idPembicara, setIdPembicara] = useState('');
   const [loader, setLoader] = useState(false);
+  const [readOnly, setReadOnly] = useState(true);
+  const [kotaId, setKotaId] = useState('');
+  const [buttonUpdate, setButtonUpdate] = useState(false);
   const [showModal, setShowModal] = useState('');
   const [apiError, setAPIError] = useState('');
   const [listMateri, setListMateri] = useState([]);
   const status = (records?.status || '').toLowerCase();
-
   const goBack = () => {
     history.push('/cms/bimtek-jadwal');
   };
@@ -61,7 +67,10 @@ const CMSJadwalDetail = (props) => {
     dispatch(getJadwalBimtekDetail(id));
     dispatch(getListLogAktifitas(id));
     dispatch(getListBimtekTags());
+    dispatch(getListBimtekKabupaten());
   };
+
+  const tagsResultKabupaten = (listKabupaten || []).map((tag) => ({ value: tag.id, label: tag.nama }));
 
   const handleAPICall = async (method, url, params, callBack) => {
     try {
@@ -82,9 +91,10 @@ const CMSJadwalDetail = (props) => {
     }
   };
 
-  const handleTagChange = (selected) => {
-    // console.log(selected);
+  const handleTagKota = (data) => {
+    setKotaId(data.value);
   };
+
   const onKirim = async () => {
     handleAPICall(post, `${apiUrls.cmsBimtekJadwal}/${id}/ubah-status/WAITING_APPROVAL`, { data: { note: '' } });
   };
@@ -109,12 +119,17 @@ const CMSJadwalDetail = (props) => {
     handleAPICall(post, `${apiUrls.cmsBimtekJadwal}/${id}/ubah-status/UNPUBLISHED`, { data: { note: '' } });
   };
 
+  const handleUpdate = () => {
+    setReadOnly(false);
+    setButtonUpdate(true);
+    handleCloseModal();
+  };
+
   const onUpdate = async (data) => {
-    console.log(data);
     let obj = {
       namaBimtek: data.default.namaBimtek,
-      tagMateri: data.default.tagMateri,
-      kota: data.default.kotaId,
+      tagMateri: data.tags.map((elem) => elem.label) || [],
+      kota: kotaId,
       alamat: data.default.tempat,
       tanggalMulaiDisetujui: `${moment(data.tanggalMulaiDisetujuiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
         data.jamMulaiDisetujuiUpdate
@@ -164,7 +179,6 @@ const CMSJadwalDetail = (props) => {
         tanggalSelesai,
       },
     ];
-    console.log(obj);
     handleAPICall(post, `${apiUrls.cmsBimtekJadwal}/${id}/pembicara`, { data: { pembicara: obj } });
   };
 
@@ -223,6 +237,7 @@ const CMSJadwalDetail = (props) => {
   useEffect(() => {
     reset({
       default: records,
+      tags: (records.tagMateri || []).map((elem) => ({ value: elem, label: elem })),
       jamMulaiDisetujuiUpdate: !records.tanggalMulaiDisetujui ? '' : moment(records.tanggalMulaiDisetujui).format('hh:mm'),
       jamSelesaiDisetujuiUpdate: !records.tanggalSelesaiDisetujui
         ? ''
@@ -349,7 +364,6 @@ const CMSJadwalDetail = (props) => {
 
   const divClass = getStatusClass(status || '');
   const tagsResultList = (tagsResult || []).map((tag) => ({ value: tag, label: tag }));
-  // console.log(records);
   return (
     <div>
       <div className="d-flex align-items-center">
@@ -372,6 +386,7 @@ const CMSJadwalDetail = (props) => {
                     record={records}
                     history={history}
                     status={status}
+                    buttonUpdate={buttonUpdate}
                   />
                 ) : null}
               </div>
@@ -379,14 +394,25 @@ const CMSJadwalDetail = (props) => {
             {loadingJadwalDetail ? (
               <RowLoader />
             ) : (
-              <Input group label="Nama Bimtek" name="default.namaBimtek" control={control} />
+              <Input readOnly={readOnly} group label="Nama Bimtek" name="default.namaBimtek" control={control} />
             )}
             {tagsLoading ? (
               <RowLoader />
             ) : (
               <div className="mb-15">
-                <label className="mb-5">Kategori Bimtek</label>
-                <SingleDropDown data={[{ value: '', label: 'All' }, ...tagsResultList]} onChange={handleTagChange} />
+                <SingleSelectDropDown
+                  group
+                  groupClass="mb-16"
+                  isMulti
+                  control={control}
+                  label="Kategori Bimtek"
+                  labelClass="sdp-form-label fw-normal"
+                  placeholder=""
+                  name="tags"
+                  data={tagsResultList}
+                  loading={tagsLoading}
+                  isCreatable={true}
+                />
               </div>
             )}
             <Row className="align-items-end">
@@ -395,6 +421,7 @@ const CMSJadwalDetail = (props) => {
                   <RowLoader />
                 ) : (
                   <DatePicker
+                    readOnly={readOnly}
                     group
                     label="Tanggal Mulai Pelaksanaan Disetujui"
                     name="tanggalMulaiDisetujuiUpdate"
@@ -409,6 +436,7 @@ const CMSJadwalDetail = (props) => {
                   <RowLoader />
                 ) : (
                   <Input
+                    readOnly={readOnly}
                     group
                     className="m-0"
                     type="time"
@@ -427,6 +455,7 @@ const CMSJadwalDetail = (props) => {
                   <RowLoader />
                 ) : (
                   <DatePicker
+                    readOnly={readOnly}
                     group
                     label="Tanggal Selesai Pelaksanaan Disetujui"
                     name="tanggalSelesaiDisetujuiUpdate"
@@ -441,6 +470,7 @@ const CMSJadwalDetail = (props) => {
                   <RowLoader />
                 ) : (
                   <Input
+                    readOnly={readOnly}
                     group
                     className="m-0"
                     type="time"
@@ -456,9 +486,22 @@ const CMSJadwalDetail = (props) => {
             {loadingJadwalDetail ? (
               <RowLoader />
             ) : (
-              <Input group label="Kota Pelaksana" name="default.kota" control={control} />
+              <div className="mb-15">
+                <label className="mb-5">Kota Pelaksana</label>
+                <SingleDropDown
+                  group
+                  control={control}
+                  name="namaKota"
+                  data={[{ value: '', label: 'All' }, ...tagsResultKabupaten]}
+                  onChange={handleTagKota}
+                />
+              </div>
             )}
-            {loadingJadwalDetail ? <RowLoader /> : <Input group label="Tempat" name="default.tempat" control={control} />}
+            {loadingJadwalDetail ? (
+              <RowLoader />
+            ) : (
+              <Input readOnly={readOnly} group label="Tempat" name="default.tempat" control={control} />
+            )}
             {loadingJadwalDetail ? (
               <TableLoader />
             ) : (
@@ -506,6 +549,19 @@ const CMSJadwalDetail = (props) => {
           }
           loader={loader}
           confirmButtonAction={onSetujui}
+        />
+      )}
+      {showModal === 'updateBimtek' && (
+        <CMSModal
+          onClose={handleCloseModal}
+          label={
+            <>
+              Apakah anda yakin ingin <span className="sdp-text-blue">Memperbarui</span> Jadwal Bimtek
+              <b> {prefixID(id, 'JB')}</b>?
+            </>
+          }
+          loader={loader}
+          confirmButtonAction={handleSubmit(onUpdate)}
         />
       )}
       {showModal === 'delete' && (
@@ -562,14 +618,9 @@ const CMSJadwalDetail = (props) => {
       {showModal === 'perbarui' && (
         <CMSModal
           onClose={handleCloseModal}
-          label={
-            <>
-              Apakah anda yakin ingin <span className="sdp-text-blue">Memperbarui </span>
-              Jadwal Bimtek <b>{prefixID(id, 'JB')}</b>?
-            </>
-          }
+          label={<> Apakah anda yakin ingin mengedit data? </>}
           loader={loader}
-          confirmButtonAction={handleSubmit(onUpdate)}
+          confirmButtonAction={handleUpdate}
         />
       )}
       {showModal === 'materi' && (

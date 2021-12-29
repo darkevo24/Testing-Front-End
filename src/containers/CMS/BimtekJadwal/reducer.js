@@ -26,6 +26,11 @@ export const initialState = {
     tagsLoading: false,
     tagsError: null,
   },
+  bimtekListKabupaten: {
+    listKabupaten: [],
+    tagsLoading: false,
+    tagsError: null,
+  },
 };
 
 export const BIMTEK_JADWAL = 'BIMTEK_JADWAL';
@@ -50,6 +55,12 @@ export const getListLogAktifitas = createAsyncThunk('bimtek-jadwal/getListLogs',
 export const getListBimtekTags = createAsyncThunk('bimtek-jadwal/getListTags', async (params) => {
   const response = await get(`${apiUrls.cmsBimtekJadwal}/tags`);
   return response?.data?.content;
+});
+
+export const getListBimtekKabupaten = createAsyncThunk('bimtek-jadwal/getListKabupaten', async (params) => {
+  const response = await get(apiUrls.bimtekJadwalLocations);
+  console.log(response);
+  return response?.data?.content?.records;
 });
 
 const BimtekJadwalSlice = createSlice({
@@ -104,6 +115,17 @@ const BimtekJadwalSlice = createSlice({
       state.bimtekJadwalTags.tagsLoading = false;
       state.bimtekJadwalTags.tagsError = 'Invalid data';
     });
+    builder.addCase(getListBimtekKabupaten.pending, (state, action) => {
+      state.bimtekListKabupaten.tagsLoading = true;
+    });
+    builder.addCase(getListBimtekKabupaten.fulfilled, (state, action) => {
+      state.bimtekListKabupaten.tagsLoading = false;
+      state.bimtekListKabupaten.listKabupaten = action.payload;
+    });
+    builder.addCase(getListBimtekKabupaten.rejected, (state, action) => {
+      state.bimtekListKabupaten.tagsLoading = false;
+      state.bimtekListKabupaten.tagsError = 'Invalid data';
+    });
   },
 });
 
@@ -111,5 +133,6 @@ export const bimtekJadwalSelector = (state) => state.cmsBimtekJadwal.dataset;
 export const bimtekJadwalDetailSelector = (state) => state.cmsBimtekJadwal.detail;
 export const bimtekLogAktifitas = (state) => state.cmsBimtekJadwal.log;
 export const bimtekJadwalTags = (state) => state.cmsBimtekJadwal.bimtekJadwalTags;
+export const bimtekListKabupaten = (state) => state.cmsBimtekJadwal.bimtekListKabupaten;
 
 export default BimtekJadwalSlice.reducer;

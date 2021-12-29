@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { useForm } from 'react-hook-form';
 import { remove } from 'lodash';
@@ -13,8 +14,11 @@ import Form from 'react-bootstrap/Form';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import { CMSModal } from 'components/CMSStatusModals';
 import { Galery, Close } from 'components/Icons';
+import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
 import { apiUrls, post, put, deleteRequest } from 'utils/request';
+import SingleDropDown from 'components/DropDown/SingleDropDown';
 import { DatePicker, Input, Modal, Table, TextEditor, Notification } from 'components';
+import { bimtekJadwalTags, bimtekListKabupaten, getListBimtekTags, getListBimtekKabupaten } from './reducer';
 
 import bn from 'utils/bemNames';
 import cx from 'classnames';
@@ -23,11 +27,27 @@ const bem = bn('content-create');
 
 const CMSJadwalBaru = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState('');
+  const [kotaId, setKotaId] = useState('');
   const [idPembicara, setIdPembicara] = useState('');
   const [listMateri, setListMateri] = useState([]);
   const [dataMateri, setDataMateri] = useState([]);
   const [dataPembicara, setDataPembicara] = useState([]);
+  const { tagsResult, tagsLoading } = useSelector(bimtekJadwalTags);
+  const { listKabupaten } = useSelector(bimtekListKabupaten);
+
+  const tagsResultList = (tagsResult || []).map((tag) => ({ value: tag, label: tag }));
+  const tagsResultKabupaten = (listKabupaten || []).map((tag) => ({ value: tag.id, label: tag.nama }));
+
+  useEffect(() => {
+    initialCall();
+  }, []);
+
+  const initialCall = () => {
+    dispatch(getListBimtekTags());
+    dispatch(getListBimtekKabupaten());
+  };
 
   const onModalEditPembicara = (data) => {
     setIdPembicara(data.id);
@@ -75,6 +95,11 @@ const CMSJadwalBaru = () => {
     try {
       await method(url, {}, params);
       handleCloseModal();
+      Notification.show({
+        type: 'secondary',
+        message: <div> Berhasil Menyimpan Jadwal </div>,
+        icon: 'check',
+      });
       isFunction(callBack) && callBack();
     } catch (e) {
       console.log(e);
@@ -98,11 +123,11 @@ const CMSJadwalBaru = () => {
     });
     let obj = {
       namaBimtek: data.namaBimtek,
-      tagMateri: ['teknologi', 'keuangan'],
+      tagMateri: data.tags.map((elem) => elem.label) || [],
       tanggalMulaiDisetujui: `${moment(data.tanggalMulaiDisetujui).format('YYYY-MM-DD')} ${data.jamMulaiDisetujui}:00`,
       tanggalSelesaiDisetujui: `${moment(data.tanggalSelesaiDisetujui).format('YYYY-MM-DD')} ${data.jamSelesaiDisetujui}:00`,
-      kota: 1,
-      alamat: 'test',
+      kota: kotaId,
+      alamat: data.dataTempat,
       pembicara: listPembicara,
       materi: listMateri,
       dokumentasi: [
@@ -120,8 +145,12 @@ const CMSJadwalBaru = () => {
         },
       ],
     };
-    console.log(JSON.stringify(obj));
+    console.log(data);
     handleAPICall(post, `${apiUrls.cmsBimtekJadwal}`, { data: obj });
+  };
+
+  const handleTagChange = (data) => {
+    setKotaId(data.value);
   };
 
   const onAddMateri = (data) => {
@@ -315,6 +344,19 @@ const CMSJadwalBaru = () => {
             control={control}
             rules={{ required: false }}
           />
+          <SingleSelectDropDown
+            group
+            groupClass="mb-16"
+            isMulti
+            control={control}
+            label="Kategori Bimtek"
+            labelClass="sdp-form-label fw-normal"
+            placeholder=""
+            name="tags"
+            data={tagsResultList}
+            loading={tagsLoading}
+            isCreatable={true}
+          />
           <Row className="align-items-end mb-15">
             <Col>
               <DatePicker
@@ -359,15 +401,16 @@ const CMSJadwalBaru = () => {
               />
             </Col>
           </Row>
-          <Input
-            group
-            className="mb-10"
-            type="text"
-            label="Kota Pelaksana"
-            name="dataKota"
-            control={control}
-            rules={{ required: false }}
-          />
+          <div className="mb-15">
+            <label className="mb-5">Kota Pelaksana</label>
+            <SingleDropDown
+              group
+              control={control}
+              name="namaKota"
+              data={[{ value: '', label: 'All' }, ...tagsResultKabupaten]}
+              onChange={handleTagChange}
+            />
+          </div>
           <Input
             group
             className="mb-10"

@@ -1,8 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, get, put, post } from 'utils/request';
+import { apiUrls, get } from 'utils/request';
 
 export const getListKontak = createAsyncThunk('cms/getListKontak', async (params) => {
   const response = await get(apiUrls.cmsContactUs);
+  return response?.data?.content;
+});
+
+export const getDetailKontak = createAsyncThunk('cms/getDetailKontak', async (params) => {
+  const response = await get(`${apiUrls.cmsContactUs}/${params.id}`);
+  return response?.data?.content;
+});
+
+export const getLogKontak = createAsyncThunk('cms/getLogKontak', async (params) => {
+  const response = await get(`${apiUrls.cmsContactUs}/${params.id}/logs`);
   return response?.data?.content;
 });
 
@@ -38,7 +48,7 @@ const SLICE_OBJ = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getListKontak.pending, (state, action) => {
+    builder.addCase(getListKontak.pending, (state) => {
       state.dataset.loading = true;
     });
     builder.addCase(getListKontak.fulfilled, (state, action) => {
@@ -51,9 +61,30 @@ const SLICE_OBJ = createSlice({
       state.dataset.loading = false;
       state.dataset.message = action.error.message;
     });
+
+    builder.addCase(getDetailKontak.pending, (state) => {
+      state.detailDataset.loading = true;
+    });
+    builder.addCase(getDetailKontak.fulfilled, (state, action) => {
+      state.detailDataset.loading = false;
+      state.detailDataset.record = action.payload;
+    });
+    builder.addCase(getDetailKontak.rejected, (state, action) => {
+      state.detailDataset.loading = false;
+      state.detailDataset.message = action.error.message;
+    });
+
+    builder.addCase(getLogKontak.fulfilled, (state, action) => {
+      state.logdataset.record = action.payload.records;
+    });
+    builder.addCase(getLogKontak.rejected, (state, action) => {
+      state.logdataset.message = action.error.message;
+    });
   },
 });
 
 export const contactListSelector = (state) => state.cmsContactUs?.dataset;
+export const contactDetailSelector = (state) => state.cmsContactUs?.detailDataset;
+export const logDataSelector = (state) => state.cmsContactUs?.logdataset;
 export const { updateResult } = SLICE_OBJ.actions;
 export default SLICE_OBJ.reducer;

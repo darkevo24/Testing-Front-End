@@ -94,6 +94,7 @@ export const apiUrls = {
   bimtekPermintaan: getPortalEndpoint('v1/bimtek/permintaan'),
   sosialMedia: getCMSEndpoint('sosial-media'),
   bimtekLogs: getPortalEndpoint('v1/bimtek/logs'),
+  cmsContactUs: getCMSEndpoint('hubungi-kami-setting'),
 };
 
 export const priorityOptions = [

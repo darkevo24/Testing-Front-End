@@ -10,7 +10,7 @@ import { BimtekLayout } from 'layouts/BimtekLayout';
 import { useForm } from 'react-hook-form';
 import { DatePicker } from 'components';
 import { Search, NoPerminataanData, Close } from 'components/Icons';
-import { getBimtekAllDokumentasi, bimtekAllDokumentasi } from './reducer';
+import { getBimtekDokumentasi, bimtekDokumentasi } from './reducer';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 import moment from 'moment';
@@ -24,8 +24,8 @@ const BimTekDokumentasi = () => {
   const { control, watch } = useForm({});
   const watchDate = watch('filterDate');
 
-  const { records: dokumentasiRecords } = useSelector(bimtekAllDokumentasi);
-  const { singleRecord: singleDokumentasiRecords } = useSelector(bimtekAllDokumentasi);
+  const { records: dokumentasiRecords } = useSelector(bimtekDokumentasi);
+  const { singleRecord: singleDokumentasiRecords } = useSelector(bimtekDokumentasi);
 
   useEffect(() => {
     if (watchDate !== undefined) {
@@ -42,14 +42,14 @@ const BimTekDokumentasi = () => {
   }, [watchDate]);
 
   useEffect(() => {
-    dispatch(getBimtekAllDokumentasi(params));
+    dispatch(getBimtekDokumentasi(params));
   }, [params]);
 
   const [activePhoto, setActivePhoto] = useState(0);
 
   const openDetail = (dokumentasiId) => {
     setDocDetail(true);
-    dispatch(getBimtekAllDokumentasi({ id: dokumentasiId }));
+    dispatch(getBimtekDokumentasi({ id: dokumentasiId }));
     setActivePhoto(0);
   };
 

@@ -324,11 +324,8 @@ const CMSJadwalBaru = () => {
           <Button onClick={() => history.goBack()} className="ml-24" variant="secondary" style={{ width: '112px' }}>
             Batal
           </Button>
-          <Button className="ml-10" variant="secondary" style={{ width: '112px' }}>
-            Simpan
-          </Button>
           <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => setShowModal('proses')}>
-            Kirim
+            Simpan
           </Button>
         </div>
         <div>Saved 1 minutes ago Draft</div>

@@ -126,10 +126,11 @@ const CMSJadwalDetail = (props) => {
   };
 
   const onUpdate = async (data) => {
+    let newKota = data.tagsKota.map((elem) => elem.value) || 1;
     let obj = {
       namaBimtek: data.default.namaBimtek,
       tagMateri: data.tags.map((elem) => elem.label) || [],
-      kota: kotaId,
+      kota: newKota[0],
       alamat: data.default.tempat,
       tanggalMulaiDisetujui: `${moment(data.tanggalMulaiDisetujuiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
         data.jamMulaiDisetujuiUpdate
@@ -238,6 +239,7 @@ const CMSJadwalDetail = (props) => {
     reset({
       default: records,
       tags: (records.tagMateri || []).map((elem) => ({ value: elem, label: elem })),
+      tagsKota: ([records.kota] || []).map((elem) => ({ value: 1, label: elem })),
       jamMulaiDisetujuiUpdate: !records.tanggalMulaiDisetujui ? '' : moment(records.tanggalMulaiDisetujui).format('hh:mm'),
       jamSelesaiDisetujuiUpdate: !records.tanggalSelesaiDisetujui
         ? ''
@@ -487,13 +489,18 @@ const CMSJadwalDetail = (props) => {
               <RowLoader />
             ) : (
               <div className="mb-15">
-                <label className="mb-5">Kota Pelaksana</label>
-                <SingleDropDown
+                <SingleSelectDropDown
                   group
+                  groupClass="mb-16"
                   control={control}
-                  name="namaKota"
-                  data={[{ value: '', label: 'All' }, ...tagsResultKabupaten]}
-                  onChange={handleTagKota}
+                  label="Kota Pelaksana"
+                  labelClass="sdp-form-label fw-normal"
+                  placeholder=""
+                  name="tagsKota"
+                  control={control}
+                  data={tagsResultKabupaten}
+                  loading={tagsLoading}
+                  isCreatable={true}
                 />
               </div>
             )}

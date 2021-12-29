@@ -44,13 +44,6 @@ export const DetailHeader = ({ record, status, history, handleModal, buttonUpdat
       return (
         <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR]}>
           <div>
-            <Button
-              key="tolak"
-              variant="outline-light"
-              className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4 px-40"
-              onClick={() => handleModal('tolak')}>
-              Tolak
-            </Button>
             {buttonUpdate ? (
               <Button
                 key="edit"
@@ -68,6 +61,13 @@ export const DetailHeader = ({ record, status, history, handleModal, buttonUpdat
                 <PencilSvg />
               </Button>
             )}
+            <Button
+              key="tolak"
+              variant="outline-light"
+              className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4 px-40"
+              onClick={() => handleModal('tolak')}>
+              Tolak
+            </Button>
             <Button
               key="Setujui"
               variant="info"
@@ -110,6 +110,23 @@ export const DetailHeader = ({ record, status, history, handleModal, buttonUpdat
       return (
         <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR]}>
           <div>
+            {buttonUpdate ? (
+              <Button
+                key="edit"
+                variant="outline-light"
+                className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
+                onClick={() => handleModal('updateBimtek')}>
+                Perbarui
+              </Button>
+            ) : (
+              <Button
+                key="edit"
+                variant="outline-light"
+                className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
+                onClick={() => handleModal('perbarui')}>
+                <PencilSvg />
+              </Button>
+            )}
             <Button
               key="publish"
               variant="info"

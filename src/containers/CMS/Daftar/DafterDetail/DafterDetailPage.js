@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import cx from 'classnames';
 import moment from 'moment';
+import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -9,21 +10,23 @@ import Button from 'react-bootstrap/Button';
 import { ReadOnlyInputs } from 'components';
 import { FilledSquareSvg, LeftChevron, Trash } from 'components/Icons';
 import { CMSModal } from 'components/CMSStatusModals';
+// import Notification from 'components/Notification';
+import RowLoader from 'components/Loader/RowLoader';
+import DataVariable from 'containers/DataVariable';
 import { getStatusClass, prefixID } from 'utils/helper';
 import { apiUrls, deleteRequest, put } from 'utils/request';
-import RowLoader from 'components/Loader/RowLoader';
 import { jadwalPermutakhiranOptions } from 'utils/constants';
-// import DataVariableTable from 'containers/DataVariable/DataVariableTable';
-
+import { resetDaftarData } from 'containers/Daftar/reducer';
 export const DaftarDetailPage = ({ ...props }) => {
   const [showModal, setModal] = useState('');
   const [loader, setLoader] = useState(false);
   const [apiError, setAPIError] = useState('');
 
   const { loading, result, error } = props.dafterDataWithId;
-  const { loading: logLoading, record: logRecord } = props.dafterLogDataWithId;
+  const { loading: logLoading, result: logRecord } = props.dafterLogDataWithId;
 
   const history = useHistory();
+  const dispatch = useDispatch();
   const { id } = useParams();
 
   const goBack = () => {
@@ -31,9 +34,27 @@ export const DaftarDetailPage = ({ ...props }) => {
   };
 
   useEffect(() => {
-    if (!id) goBack();
-    initialCall();
+    if (id) initialCall();
+    return () => {
+      dispatch(resetDaftarData());
+    };
   }, []);
+
+  useEffect(() => {
+    if (id && error) {
+      goBack();
+      // TODO: DISCUSS HOW TO HANDLE THIS
+      // Notification.show({
+      //   type: 'secondary',
+      //   message: (
+      //     <div>
+      //       <span className="fw-bold">Data Not Found</span>
+      //     </div>
+      //   ),
+      //   icon: 'cross',
+      // });
+    }
+  }, [error]);
 
   const initialCall = () => {
     props.getDafterDataById(id);
@@ -152,8 +173,8 @@ export const DaftarDetailPage = ({ ...props }) => {
           <span className="fs-14 lh-17 sdp-text-orange">Unverified</span>
         </div>
       </div>
-      <Row className="mt-40">
-        <Col xs={12} md={7} className="ml-184">
+      <Row className="mt-40 justify-content-md-center">
+        <Col xs={12} md={7}>
           <div className="d-flex align-items-center justify-content-between">
             <label className="fw-bold fs-24 lh-29 p-32">Detail</label>
             {!loading && (
@@ -175,7 +196,6 @@ export const DaftarDetailPage = ({ ...props }) => {
                 <Button
                   variant=""
                   key="prioritis"
-                  disabled={true}
                   className={cx('mr-16 br-4 pr-40 py-13 border-gray-stroke flex-item-center', {
                     'sdp-text-blue': isEnable,
                     'sdp-text-disable': !isEnable,
@@ -187,13 +207,12 @@ export const DaftarDetailPage = ({ ...props }) => {
                   key="verifikansi"
                   variant=""
                   className={cx('mr-16 br-4 pr-40 py-13 border-gray-stroke flex-item-center', {
-                    'sdp-text-blue': false,
-                    'sdp-text-disable': true,
+                    'sdp-text-blue': result?.status,
+                    'sdp-text-disable': !result?.status || !isEnable,
                   })}
                   disabled={!isEnable}
-                  onClick={() => setModal('verifikansi')}>
-                  // TODO change color based on API response
-                  <FilledSquareSvg variant={false ? 'blue' : 'stroke'} />
+                  onClick={() => !result?.status && setModal('verifikansi')}>
+                  <FilledSquareSvg variant={result?.status ? 'blue' : 'stroke'} />
                   <label className="ml-10">Verifikansi</label>
                 </Button>
               </div>
@@ -213,23 +232,23 @@ export const DaftarDetailPage = ({ ...props }) => {
               <RowLoader />
             ) : (
               (logRecord || []).map((item) => {
-                const status = (item?.data?.status || '').toLowerCase();
+                const status = (item?.status || '').toLowerCase();
                 const classDetail = getStatusClass(status);
                 return (
                   <div className="mb-24">
                     <div className="d-flex align-items-center">
                       <span className="fs-14 lh-17 sdp-text-black-dark w-100">
-                        {item?.createdAt ? null : moment(item.createdAt).format('DD MMMM YYYY')}
+                        {!item?.createdAt ? null : moment(item.createdAt).format('DD MMMM YYYY')}
                       </span>
                       <div className="border-gray-stroke h-0 w-100" />
                     </div>
                     <div className="d-flex mt-12 ">
                       <div className={`br-2 py-4 px-6 mr-8 h-fit-content ${classDetail?.divBG || ''}`}>
                         <span className={`fs-14 lh-17 ${classDetail?.textColor || ''}`}>
-                          {classDetail?.text || item?.data?.status || ''}
+                          {classDetail?.text || item?.status || ''}
                         </span>
                       </div>
-                      <span className="sdp-text-disable">{item?.remark || ''}</span>
+                      <span className="sdp-text-disable">{item?.displayMessage || ''}</span>
                     </div>
                   </div>
                 );
@@ -239,7 +258,7 @@ export const DaftarDetailPage = ({ ...props }) => {
         </Col>
       </Row>
       <div className="border-bottom" />
-      {/*<DataVariableTable cms cmsDetail />*/}
+      <DataVariable cms cmsDetail id={id} />
       {showModal === 'verifikansi' && (
         <CMSModal
           onClose={handleCloseModal}

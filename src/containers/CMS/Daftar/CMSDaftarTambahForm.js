@@ -13,7 +13,7 @@ import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
 const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit }) => {
   const schema = yup.object({
     nama: yup.string().required(),
-    idKonsep: yup.number().required(),
+    idKonsep: yup.string().required(),
     konsep: yup.string().required(),
     definisi: yup.string().required(),
     pengaturanAkses: yup.mixed().required(),
@@ -31,6 +31,7 @@ const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit 
       konsep: '',
       definisi: '',
       pengaturanAkses: {},
+      id: '',
     },
   });
 
@@ -45,6 +46,7 @@ const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit 
       { name: 'konsep', value: data.konsep },
       { name: 'definisi', value: data.definisi || '' },
       { name: 'pengaturanAkses', value: { value: data.pengaturanAkses, label: data.pengaturanAkses } },
+      { name: 'id', value: data.id },
     ];
     fields.forEach(({ name, value }) => setValue(name, value));
   };
@@ -56,6 +58,7 @@ const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit 
           <Input
             group
             label="Nama Variabel"
+            labelClass="sdp-form-label  fw-normal"
             name="nama"
             error={errors?.nama?.message ? 'Nama is required' : ''}
             control={control}
@@ -65,8 +68,9 @@ const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit 
           <Input
             group
             label="ID Konsep"
+            labelClass="sdp-form-label  fw-normal"
             name="idKonsep"
-            error={errors?.idKonsep?.message ? 'ID Konsep is required' : ''}
+            error={errors?.idKonsep?.message ? 'Only numbers are allowed' : ''}
             control={control}
           />
         </Row>
@@ -74,6 +78,7 @@ const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit 
           <Input
             group
             label="Konsep"
+            labelClass="sdp-form-label  fw-normal"
             name="konsep"
             error={errors?.konsep?.message ? 'Konsep is required' : ''}
             control={control}
@@ -83,6 +88,7 @@ const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit 
           <Input
             group
             label="Definisi"
+            labelClass="sdp-form-label  fw-normal"
             name="definisi"
             error={errors?.definisi?.message ? 'definisi is required' : ''}
             control={control}
@@ -92,8 +98,9 @@ const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit 
           <label className="sdp-form-label py-8">Pengaturan Akses</label>
           <SingleSelectDropdown
             data={[
-              { value: 1, label: 'aa' },
-              { value: 2, label: 'bb' },
+              { value: '0', label: 'Terbuka' },
+              { value: '1', label: 'Terbatas' },
+              { value: '2', label: 'Tertutup' },
             ]}
             placeHolder=""
             error={errors?.pengaturanAkses?.message ? 'Pengaturan Akses is required' : ''}

@@ -31,3 +31,12 @@
     max-width: 500px;
   }
 }
+
+.sdp-daftar-table {
+  .sdp-table__header-wrapper {
+    justify-content: end;
+    .input-group {
+      width: 30%;
+    }
+  }
+}

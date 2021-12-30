@@ -49,7 +49,7 @@ export const initialState = {
 
 export const BERANDA_REDUCER = 'BERANDA_REDUCER';
 
-export const getDataSet = createAsyncThunk('beranda/getDataset', async (params, getState) => {
+export const getDataSet = createAsyncThunk('beranda/getDataset', async (params, { getState }) => {
   const state = getState();
   const token = tokenSelector(state);
   let data = cloneDeep(params);

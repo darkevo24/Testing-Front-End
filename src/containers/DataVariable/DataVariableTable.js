@@ -118,7 +118,7 @@ const DataVariableTable = ({
     manualPagination: manualPagination,
     currentPage: params?.page || null,
     highlightOnHover: true,
-    searchRightComponent: true,
+    searchRightComponent: !!cms,
     searchPlaceholder: t('sandbox.variable.searchPlaceholder'),
     searchButtonText: t('sandbox.variable.addVariable'),
     onSearch: (filterText) => {

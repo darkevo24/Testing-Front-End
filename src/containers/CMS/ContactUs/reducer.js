@@ -1,18 +1,29 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, get } from 'utils/request';
+import { apiUrls, get, put, post } from 'utils/request';
 
-export const getListKontak = createAsyncThunk('cms/getListKontak', async (params) => {
+export const getListKontak = createAsyncThunk('cmsContactUs/getListKontak', async (params) => {
   const response = await get(apiUrls.cmsContactUs);
   return response?.data?.content;
 });
 
-export const getDetailKontak = createAsyncThunk('cms/getDetailKontak', async (params) => {
+export const getDetailKontak = createAsyncThunk('cmsContactUs/getDetailKontak', async (params) => {
   const response = await get(`${apiUrls.cmsContactUs}/${params.id}`);
   return response?.data?.content;
 });
 
-export const getLogKontak = createAsyncThunk('cms/getLogKontak', async (params) => {
+export const getLogKontak = createAsyncThunk('cmsContactUs/getLogKontak', async (params) => {
   const response = await get(`${apiUrls.cmsContactUs}/${params.id}/logs`);
+  return response?.data?.content;
+});
+
+export const updateKontak = createAsyncThunk('cmsContactUs/updateKontak', async (params) => {
+  const response = await put(`${apiUrls.cmsContactUs}/${params.payload.id}`, params.payload);
+  return response?.data?.content;
+});
+
+export const updateStatusKontak = createAsyncThunk('cmsContactUs/updateStatusKontak', async (params) => {
+  const notes = params.note ? params.note : '';
+  const response = await post(`${apiUrls.cmsContactUs}/${params.id}/${params.action}?notes=${notes}`);
   return response?.data?.content;
 });
 
@@ -75,7 +86,7 @@ const SLICE_OBJ = createSlice({
     });
 
     builder.addCase(getLogKontak.fulfilled, (state, action) => {
-      state.logdataset.record = action.payload.records;
+      state.logdataset.records = action.payload.reverse();
     });
     builder.addCase(getLogKontak.rejected, (state, action) => {
       state.logdataset.message = action.error.message;

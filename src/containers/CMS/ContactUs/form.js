@@ -1,16 +1,21 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Input } from 'components';
 import { NoPerminataanData } from 'components/Icons';
 import { ReactComponent as Plus } from 'assets/plus.svg';
+import { submitForm } from 'utils/helper';
 
 const schema = yup
   .object({
     alamatLine1: yup.string().required(),
   })
   .required();
+
+export const formContactId = 'form-contact-id';
+export const submitContactForm = submitForm(formContactId);
 
 const CMSContactForm = ({ data, disabled, onSubmit = () => {} }) => {
   const {
@@ -25,7 +30,7 @@ const CMSContactForm = ({ data, disabled, onSubmit = () => {} }) => {
   });
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form id={formContactId} onSubmit={handleSubmit(onSubmit)}>
       <Input
         group
         label="Alamat Line 1"
@@ -75,10 +80,11 @@ const CMSContactForm = ({ data, disabled, onSubmit = () => {} }) => {
               <div className="text-black-50 mb-2 mt-2">No Data</div>
             </div>
           ) : (
-            data.sosialMedia.map((sosmed, index) => <div>{sosmed.tipe}</div>)
+            data.sosialMedia.map((sosmed, index) => <div key={index}>{sosmed.tipe}</div>)
           )}
         </div>
       </div>
+      <Button className="invisible" type="submit" />
     </Form>
   );
 };

@@ -109,7 +109,7 @@ const DataVariableTable = ({
     totalCount: result?.totalRecords || null,
     title: (
       <>
-        <span className="sdp-text-disable">{cms ? t('sandbox.variable.cmsTitle') : t('sandbox.variable.title')}</span>
+        <span className="sdp-text-disable mr-8">{cms ? t('sandbox.variable.cmsTitle') : t('sandbox.variable.title')}</span>
         <span>{!cms ? daftar?.nama : ''}</span>
       </>
     ),

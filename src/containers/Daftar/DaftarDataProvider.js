@@ -31,6 +31,8 @@ import {
   getInstansiData,
   getSDGPillers,
   getRKPpn,
+  dataindukKatalogOptionsSelector,
+  getKatlogDatainduk,
 } from 'containers/App/reducer';
 import { /* createFileAndDownload, fileTypes,*/ prepareFormPayload } from 'utils/helper';
 
@@ -41,6 +43,7 @@ const DaftarDataProvider = ({ children }) => {
   const produenOptions = useSelector(produenOptionsSelector);
 
   const dataindukOptions = useSelector(dataindukOptionsSelector);
+  const dataindukKatalogOptions = useSelector(dataindukKatalogOptionsSelector);
   const instansiOptions = useSelector(instansiOptionsSelector);
   const sdgPillerOptions = useSelector(sdgPillerOptionsSelector);
   const rkpPNOptions = useSelector(rkpPNOptionsSelector);
@@ -55,6 +58,7 @@ const DaftarDataProvider = ({ children }) => {
     if (!instansiOptions?.length) dispatch(getInstansiData());
     if (!produenOptions?.length) dispatch(getProduen());
     if (!dataindukOptions?.length) dispatch(getDatainduk());
+    if (!dataindukKatalogOptions?.length) dispatch(getKatlogDatainduk());
     if (!sdgPillerOptions?.length) dispatch(getSDGPillers());
     if (!rkpPPOptions?.length) dispatch(getRKPpn());
   }, []);
@@ -139,6 +143,7 @@ const DaftarDataProvider = ({ children }) => {
     katalogVariableData,
     sdgPillerOptions,
     tujuanSDGPillerOptions,
+    dataindukKatalogOptions,
     rkpPNOptions,
     rkpPPOptions,
     dafterDataWithId,

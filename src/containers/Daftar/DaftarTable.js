@@ -24,7 +24,7 @@ import { usePrevious } from 'utils/hooks';
 const DaftarTable = ({
   bem,
   textSearch,
-  dataindukOptions = [],
+  dataindukKatalogOptions = [],
   instansiOptions = [],
   priorityOptions = [],
   produenOptions = [],
@@ -249,7 +249,7 @@ const DaftarTable = ({
             <label className="sdp-form-label py-8">Data Induk</label>
             <SingleSelectDropdown
               onChange={handleDropdownFilter('dataInduk')}
-              data={dataindukOptions}
+              data={dataindukKatalogOptions}
               isClearable
               placeHolder="Semua"
               isLoading={false}

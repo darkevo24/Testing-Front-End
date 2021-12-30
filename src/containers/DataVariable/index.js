@@ -195,8 +195,8 @@ const DataVariable = ({ cms = false, cmsDetail = false, id }) => {
         <Col sm={{ span: 10, offset: 1 }} md={!cms && { span: 8, offset: 2 }}>
           <DataVariableTable
             manualPagination={true}
-            cms
-            cmsDetail
+            cms={cms}
+            cmsDetail={cmsDetail}
             search={!cms || cmsDetail}
             showDeleteModal={showDeleteModal}
             showDataVariableFormModal={showDataVariableFormModal}
@@ -226,7 +226,7 @@ const DataVariable = ({ cms = false, cmsDetail = false, id }) => {
         size="lg"
         visible={isDataVariableFormVisible}
         onClose={hideDataVariableFormModal}
-        icon="splitTriangle"
+        icon="splitCircle"
         title={selectedRecord ? 'Edit Variable' : 'Tambah Variable'}
         subtitle={selectedRecord ? 'Isi form dibawah untuk menambah Variabel' : 'ID UMKM'}
         actions={[

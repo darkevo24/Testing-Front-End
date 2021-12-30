@@ -4,53 +4,40 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
+import cloneDeep from 'lodash/cloneDeep';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Input } from 'components';
-import Modal from 'components/Modal';
+import { Input, Modal } from 'components';
 import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
 import { pengaturanAksesOptions } from 'utils/constants';
+import { findOption } from 'utils/helper';
+
+const schema = yup.object({
+  nama: yup.string().required('Nama is required'),
+  pengaturanAkses: yup.object().required('Pengaturan akses is required'),
+});
 
 const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit }) => {
-  const schema = yup.object({
-    nama: yup.string().required('Nama is required'),
-    idKonsep: yup.string().required('IDKonsep is required'),
-    konsep: yup.string().required('Konsep is required'),
-    definisi: yup.string().required('Definisi is required'),
-    pengaturanAkses: yup.mixed().required('Pengaturan akses is required'),
-  });
+  const isEdit = !!data?.id;
+  const variable = cloneDeep(data || {});
+  if (isEdit) {
+    variable.pengaturanAkses = findOption(pengaturanAksesOptions, variable.pengaturanAkses);
+  }
   const {
     control,
     handleSubmit,
-    setValue,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      nama: '',
-      idKonsep: '',
-      konsep: '',
-      definisi: '',
-      pengaturanAkses: {},
-      id: '',
+      ...variable,
     },
   });
 
   useEffect(() => {
-    setDefaultData();
+    reset(variable);
   }, [selectedRecord]);
-
-  const setDefaultData = () => {
-    const fields = [
-      { name: 'nama', value: data.nama || '' },
-      { name: 'idKonsep', value: data.idKonsep || '' },
-      { name: 'konsep', value: data.konsep },
-      { name: 'definisi', value: data.definisi || '' },
-      { name: 'pengaturanAkses', value: { value: data.pengaturanAkses, label: data.pengaturanAkses } },
-      { name: 'id', value: data.id },
-    ];
-    fields.forEach(({ name, value }) => setValue(name, value));
-  };
 
   return (
     <Modal visible={visible} title="Tambah Variabel" size="lg" onClose={() => setModal(false)} centered={true}>

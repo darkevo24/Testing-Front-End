@@ -22,10 +22,15 @@ const DataVariableTable = ({
   pageSize = null,
   manualPagination = false,
   fetchKatalogVariableData,
+  handleTableReferensiChange,
 }) => {
   const { t } = useTranslation();
 
   const handleReferensiChange = async (item) => {
+    if (cmsCreateForm) {
+      handleTableReferensiChange(item);
+      return;
+    }
     try {
       await put(`${apiUrls.variable}/referensi`, { idVariable: item.id, idKatalog: daftar.id });
       fetchKatalogVariableData();
@@ -78,11 +83,6 @@ const DataVariableTable = ({
       },
     ];
 
-    if (cmsCreateForm) {
-      const index = cols.findIndex((item) => item.Header === 'Kode Referensi');
-      cols.splice(index, 1);
-    }
-
     if (!cmsDetail) {
       cols.push({
         id: 'actions',
@@ -109,7 +109,7 @@ const DataVariableTable = ({
     totalCount: result?.totalRecords || null,
     title: (
       <>
-        <span className="sdp-text-disable">{cms ? t('sandbox.variable.cmsTitle') : t('sandbox.variable.title')}</span>
+        <span className="sdp-text-disable mr-8">{cms ? t('sandbox.variable.cmsTitle') : t('sandbox.variable.title')}</span>
         <span>{!cms ? daftar?.nama : ''}</span>
       </>
     ),
@@ -118,7 +118,7 @@ const DataVariableTable = ({
     manualPagination: manualPagination,
     currentPage: params?.page || null,
     highlightOnHover: true,
-    searchRightComponent: true,
+    searchRightComponent: !!cms,
     searchPlaceholder: t('sandbox.variable.searchPlaceholder'),
     searchButtonText: t('sandbox.variable.addVariable'),
     onSearch: (filterText) => {

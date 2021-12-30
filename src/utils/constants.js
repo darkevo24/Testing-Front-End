@@ -46,7 +46,7 @@ export const apiUrls = {
   daerahData: getV1Endpoint('kabupatenkota/search'),
   produenData: getV1Endpoint('katalog/produsendata'),
   dataindukAllData: getV1Endpoint('katalog/all'),
-  dataindukKatalogData: getV1Endpoint('katalog/datainduk'),
+  dataindukData: getV1Endpoint('katalog/datainduk'),
   katalogData: getV1Endpoint('katalog'),
   listPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
   detailPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),

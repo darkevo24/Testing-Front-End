@@ -74,7 +74,7 @@ export const DaftarDetailPage = ({ ...props }) => {
   const onVerifikansi = async () => {
     setLoader(true);
     try {
-      await put(`${apiUrls.katalogData}/${id}/verifikasi`, { status: 1, note: '' });
+      await put(`${apiUrls.katalogData}/${id}/verifikasi`, { status: result?.status === 1 ? 0 : 1, note: '' });
       initialCall();
       handleCloseModal();
     } catch (e) {
@@ -163,14 +163,25 @@ export const DaftarDetailPage = ({ ...props }) => {
   ];
 
   const isEnable = result?.kodePNRKP || result?.kodePPRKP || result?.kodeTujuan || result?.kodePilar;
+  const isVerified = result?.status === 1;
   return (
     <div className="sdp-dafter-data-container">
       <div className="d-flex">
         <Button variant="light" className="bg-white border-gray-stroke" onClick={goBack}>
           <LeftChevron variant="gray" />
         </Button>
-        <div className={'br-2 p-12 flex-grow-1 flex-center bg-orange-light'}>
-          <span className="fs-14 lh-17 sdp-text-orange">Unverified</span>
+        <div
+          className={cx('br-2 p-12 flex-grow-1 flex-center', {
+            'bg-orange-light': !isVerified,
+            'bg-green-light': isVerified,
+          })}>
+          <span
+            className={cx('fs-14 lh-17', {
+              'sdp-text-orange': !isVerified,
+              'sdp-text-green': isVerified,
+            })}>
+            {!isVerified ? 'Unverified' : 'Verified'}
+          </span>
         </div>
       </div>
       <Row className="mt-40 justify-content-md-center">
@@ -211,7 +222,7 @@ export const DaftarDetailPage = ({ ...props }) => {
                     'sdp-text-disable': !result?.status || !isEnable,
                   })}
                   disabled={!isEnable}
-                  onClick={() => !result?.status && setModal('verifikansi')}>
+                  onClick={() => setModal('verifikansi')}>
                   <FilledSquareSvg variant={result?.status ? 'blue' : 'stroke'} />
                   <label className="ml-10">Verifikansi</label>
                 </Button>
@@ -264,7 +275,15 @@ export const DaftarDetailPage = ({ ...props }) => {
           onClose={handleCloseModal}
           label={
             <>
-              Apakah anda yakin ingin <span className="sdp-text-blue">membatalkan</span> verifikasi Daftar Data <b>UMKM</b>?
+              Apakah anda yakin ingin{' '}
+              <span
+                className={cx({
+                  'sdp-text-blue': !result?.status,
+                  'sdp-error': result?.status,
+                })}>
+                {result?.status ? 'membatalkan' : 'memverifikasi'}
+              </span>{' '}
+              verifikasi Daftar Data <b>UMKM</b>?
             </>
           }
           loader={loader}

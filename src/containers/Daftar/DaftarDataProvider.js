@@ -31,8 +31,8 @@ import {
   getInstansiData,
   getSDGPillers,
   getRKPpn,
-  dataindukKatalogOptionsSelector,
-  getKatlogDatainduk,
+  dataindukAllOptionsSelector,
+  getAllDatainduk,
 } from 'containers/App/reducer';
 import { /* createFileAndDownload, fileTypes,*/ prepareFormPayload } from 'utils/helper';
 
@@ -42,8 +42,8 @@ const DaftarDataProvider = ({ children }) => {
   const dispatch = useDispatch();
   const produenOptions = useSelector(produenOptionsSelector);
 
-  const dataindukOptions = useSelector(dataindukOptionsSelector);
-  const dataindukKatalogOptions = useSelector(dataindukKatalogOptionsSelector);
+  const dataindukAllOptions = useSelector(dataindukAllOptionsSelector);
+  const dataIndukOptions = useSelector(dataindukOptionsSelector);
   const instansiOptions = useSelector(instansiOptionsSelector);
   const sdgPillerOptions = useSelector(sdgPillerOptionsSelector);
   const rkpPNOptions = useSelector(rkpPNOptionsSelector);
@@ -57,8 +57,8 @@ const DaftarDataProvider = ({ children }) => {
   useEffect(() => {
     if (!instansiOptions?.length) dispatch(getInstansiData());
     if (!produenOptions?.length) dispatch(getProduen());
-    if (!dataindukOptions?.length) dispatch(getDatainduk());
-    if (!dataindukKatalogOptions?.length) dispatch(getKatlogDatainduk());
+    if (!dataIndukOptions?.length) dispatch(getDatainduk());
+    if (!dataindukAllOptions?.length) dispatch(getAllDatainduk());
     if (!sdgPillerOptions?.length) dispatch(getSDGPillers());
     if (!rkpPPOptions?.length) dispatch(getRKPpn());
   }, []);
@@ -135,7 +135,7 @@ const DaftarDataProvider = ({ children }) => {
 
   const daftarProps = {
     bem,
-    dataindukOptions,
+    dataIndukOptions,
     instansiOptions,
     priorityOptions,
     dataVariableSubmit,
@@ -143,7 +143,7 @@ const DaftarDataProvider = ({ children }) => {
     katalogVariableData,
     sdgPillerOptions,
     tujuanSDGPillerOptions,
-    dataindukKatalogOptions,
+    dataindukAllOptions,
     rkpPNOptions,
     rkpPPOptions,
     dafterDataWithId,

@@ -38,7 +38,7 @@ const DaftarForm = ({
   daftarId,
   onSubmit,
   userInstansi,
-  dataindukOptions = [],
+  dataindukAllOptions = [],
   instansiOptions = [],
   sdgPillerOptions = [],
   rkpPNOptions = [],
@@ -59,7 +59,7 @@ const DaftarForm = ({
   daftar.instansi = findOption(instansiOptions, userInstansi?.id);
   if (isEdit) {
     daftar.jadwalPemutakhiran = findOption(jadwalPermutakhiranOptions, daftar.jadwalPemutakhiran);
-    daftar.indukData = findOption(dataindukOptions, daftar.indukData);
+    daftar.indukData = findOption(dataindukAllOptions, daftar.indukData);
     daftar.format = findOption(formatOptions, daftar.format ? daftar.format.split(', ') : daftar.format);
     daftar.kodePilar = findOption(sdgPillerOptions, daftar.kodePilar);
     daftar.kodeTujuan = findOption(tujuanSDGPillerOptions, daftar.kodeTujuan);
@@ -210,7 +210,7 @@ const DaftarForm = ({
             control={control}
             rules={{ required: true }}
             placeholder="Select"
-            options={dataindukOptions}
+            options={dataindukAllOptions}
             error={errors.indukData?.message}
           />
           <Dropdown

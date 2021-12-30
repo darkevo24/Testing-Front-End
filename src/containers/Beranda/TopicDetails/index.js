@@ -9,6 +9,7 @@ import { useLocation } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import NumberFormat from 'react-number-format';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import isArray from 'lodash/isArray';
@@ -19,7 +20,7 @@ import { ReactComponent as SearchSvg } from 'assets/search.svg';
 import { TOPIC_LIST } from 'utils/constants';
 import { Loader } from 'components';
 import { Breadcrumbs } from 'components/Breadcrumb';
-import { FilledSquareSvg, Search } from 'components/Icons';
+import { Circle, FilledSquareSvg, Search } from 'components/Icons';
 import Table from 'components/Table';
 import { Tags } from 'components/Tags';
 import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
@@ -368,6 +369,17 @@ const TopicDetail = () => {
               </Badge>
             ))}
           </div>
+          {(result?.count || !loading) && (
+            <div className="d-flex align-items-center fs-20 fw-bold mb-18">
+              <Circle />
+              <div className="ml-12 sdp-text-black-dark">
+                <NumberFormat displayType="text" thousandSeparator="." decimalSeparator="," value={result?.count || 0} />
+              </div>
+              <div className="text-nowrap mr-80 ml-6 sdp-text-disable">
+                Datasets Found {params?.q ? `for "${params.q}"` : ''}
+              </div>
+            </div>
+          )}
         </div>
       );
     },

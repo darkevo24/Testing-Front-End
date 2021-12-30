@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import cloneDeep from 'lodash/cloneDeep';
+import { tokenSelector } from 'containers/Login/reducer';
 import { apiUrls, defaultNumberOfRows, get, paginationParams, post } from 'utils/request';
 import {
   mapOrStringsToFq,
@@ -48,14 +49,18 @@ export const initialState = {
 
 export const BERANDA_REDUCER = 'BERANDA_REDUCER';
 
-export const getDataSet = createAsyncThunk('beranda/getDataset', async (params) => {
+export const getDataSet = createAsyncThunk('beranda/getDataset', async (params, getState) => {
+  const state = getState();
+  const token = tokenSelector(state);
   let data = cloneDeep(params);
-  data.q = [data.q];
-  if (data.kategori?.length) {
-    data.kategori.forEach(({ id }) => data.q.push(`kategori=${id}`));
+  if (!token) {
+    data.q = [data.q];
+    if (data.kategori?.length) {
+      data.kategori.forEach(({ id }) => data.q.push(`kategori=${id}`));
+    }
+    delete data.kategori;
+    data.q = data.q.filter(Boolean).join('&');
   }
-  delete data.kategori;
-  data.q = data.q.filter(Boolean).join('&');
   data = mapParamsToJsonString(data, ['facet.field']);
   data = mapParamsToOrString(data, facetFields);
   data = mapOrStringsToFq(data, facetFields);

@@ -144,7 +144,7 @@ const CMSBimtekPermintaan = () => {
           </Col>
         </Row>
       </div>
-      <div className="p-30"> {<Table {...tableConfig} />} </div>
+      <div className="px-30"> {<Table {...tableConfig} />} </div>
     </div>
   );
 };

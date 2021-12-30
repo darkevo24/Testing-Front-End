@@ -15,9 +15,6 @@ export const submitDataVariableForm = submitForm(dataVariableFormId);
 const schema = yup
   .object({
     nama: yup.string().required(),
-    idKonsep: yup.string().required(),
-    konsep: yup.string().required(),
-    definisi: yup.string().required(),
     pengaturanAkses: yup.mixed().required(),
   })
   .required();

@@ -14,7 +14,7 @@ import { getSayaDaftarData, sayaDataSelector, deleteDaftarData } from './reducer
 const DaftarDataSayaTable = ({
   bem,
   textSearch,
-  dataindukOptions = [],
+  dataIndukOptions = [],
   instansiOptions = [],
   priorityOptions = [],
   produenOptions = [],
@@ -217,7 +217,7 @@ const DaftarDataSayaTable = ({
             <label className="sdp-form-label py-8">Data Induk</label>
             <SingleSelectDropdown
               onChange={handleDropdownFilter('dataInduk')}
-              data={dataindukOptions}
+              data={dataIndukOptions}
               placeHolder="Semua"
               isLoading={false}
               noValue={true}

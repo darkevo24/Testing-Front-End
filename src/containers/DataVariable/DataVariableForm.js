@@ -14,11 +14,8 @@ export const dataVariableFormId = 'daftar-form-id';
 export const submitDataVariableForm = submitForm(dataVariableFormId);
 const schema = yup
   .object({
-    nama: yup.string().required(),
-    idKonsep: yup.string().required(),
-    konsep: yup.string().required(),
-    definisi: yup.string().required(),
-    pengaturanAkses: yup.mixed().required(),
+    nama: yup.string().required('Nama is required'),
+    pengaturanAkses: yup.mixed().required('Pengaturan Akses is required'),
   })
   .required();
 

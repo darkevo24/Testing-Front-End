@@ -55,7 +55,7 @@ const CMSDaftarPage = ({ ...props }) => {
   const history = useHistory();
   const { result, error } = props.dafterDataWithId;
   const instansiOptions = props.instansiOptions;
-  const dataindukOptions = props.dataindukOptions;
+  const dataindukAllOptions = props.dataindukAllOptions;
   const sdgPillerOptions = props.sdgPillerOptions;
   const rkpPNOptions = props.rkpPNOptions;
   const tujuanSDGPillerOptions = useSelector(addTujuanSDGPillerOptionsSelector);
@@ -107,8 +107,10 @@ const CMSDaftarPage = ({ ...props }) => {
   };
 
   useEffect(() => {
-    if (id) fetchKatalogVariableData();
-    if (id && result?.id !== +id) props.getDafterDataById(id);
+    if (id) {
+      fetchKatalogVariableData();
+      props.getDafterDataById(id);
+    }
   }, [id]);
 
   useEffect(() => {
@@ -147,10 +149,11 @@ const CMSDaftarPage = ({ ...props }) => {
   };
 
   const handleDataSubmit = async (formData) => {
+    const params = { ...formData, kodeReferensi: 0 };
     let clone = [...tableData];
-    formData.pengaturanAkses = formData.pengaturanAkses.label;
+    params.pengaturanAkses = params.pengaturanAkses.label;
     if (id) {
-      await dispatch(props.dataVariableSubmit({ ...formData, idKatalog: id })).then((response) => {
+      await dispatch(props.dataVariableSubmit({ ...params, idKatalog: id })).then((response) => {
         if ((response?.type || '').includes('rejected')) {
           setAPIError(response.error.message);
           return;
@@ -160,14 +163,11 @@ const CMSDaftarPage = ({ ...props }) => {
     } else {
       if (selectedRecord.nama) {
         const index = clone.indexOf(selectedRecord);
-        clone[index] = formData;
+        clone[index] = params;
         setTableData([...clone]);
       } else {
-        if (tableData.length) {
-          setTableData([...tableData, formData]);
-        } else {
-          setTableData([formData]);
-        }
+        clone.push(params);
+        setTableData([...clone]);
       }
     }
     setSelectedRecord({});
@@ -177,6 +177,15 @@ const CMSDaftarPage = ({ ...props }) => {
   const handleEditModal = (formData) => {
     setShowAddModal(true);
     setSelectedRecord(formData);
+  };
+
+  const handleTableReferensiChange = (item) => {
+    let clone = [...tableData];
+    const index = clone.indexOf(item);
+    if (index === -1) return false;
+    clone = clone.map((detail) => ({ ...detail, kodeReferensi: 0 }));
+    clone[index] = { ...item, kodeReferensi: 1 };
+    setTableData(clone);
   };
 
   const handleDelete = (formData) => {
@@ -439,7 +448,7 @@ const CMSDaftarPage = ({ ...props }) => {
                     placeholder=""
                     error={errors.indukData ? 'Data Induk is required' : null}
                     rules={{ required: true }}
-                    data={dataindukOptions}
+                    data={dataindukAllOptions}
                     name="indukData"
                     isLoading={false}
                     control={control}
@@ -573,6 +582,7 @@ const CMSDaftarPage = ({ ...props }) => {
                 params={params}
                 pageSize={pageSize}
                 daftar={result}
+                handleTableReferensiChange={handleTableReferensiChange}
               />
               <Button variant="success" onClick={() => setShowAddModal(true)}>
                 Tambah Variabel

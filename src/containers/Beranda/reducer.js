@@ -13,6 +13,7 @@ const facetFields = ['organization', 'kategori', 'tags', 'res_format'];
 export const getInitialParams = () => ({
   currentPage: 0,
   'facet.field': facetFields,
+  'facet.limit': 500,
   ...paginationParams,
 });
 
@@ -49,6 +50,12 @@ export const BERANDA_REDUCER = 'BERANDA_REDUCER';
 
 export const getDataSet = createAsyncThunk('beranda/getDataset', async (params) => {
   let data = cloneDeep(params);
+  data.q = [data.q];
+  if (data.kategori?.length) {
+    data.kategori.forEach(({ id }) => data.q.push(`kategori=${id}`));
+  }
+  delete data.kategori;
+  data.q = data.q.filter(Boolean).join('&');
   data = mapParamsToJsonString(data, ['facet.field']);
   data = mapParamsToOrString(data, facetFields);
   data = mapOrStringsToFq(data, facetFields);

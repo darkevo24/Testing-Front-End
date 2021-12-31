@@ -148,7 +148,6 @@ const CMSJadwalBaru = () => {
       namaMateriUpdate: yup.string().required(),
     });
     setIdMateri(data.id);
-    console.log(idMateri);
     setValue('namaMateriUpdate', data.nama);
     setListMateri([data]);
     setShowModal('editMateri');
@@ -168,8 +167,6 @@ const CMSJadwalBaru = () => {
       size: item.size,
     }));
     let newDataMateri = dataMateri.filter((x) => x.id !== idMateri);
-    console.log(obj);
-    console.log(newDataMateri);
     setDataMateri([...newDataMateri, obj[0]]);
     handleCloseModal();
     setObjectRequired({});
@@ -284,9 +281,9 @@ const CMSJadwalBaru = () => {
   };
 
   const onProses = (data) => {
-    if (dataMateri.length < 1 || dataPembicara.length < 1) {
+    if (dataPembicara.length < 1) {
       handleCloseModal();
-      return handleNotification('secondary', 'Gagal, Materi atau Pembicara Harus Diisi', 'cross');
+      return handleNotification('secondary', 'Gagal, Pembicara Harus Diisi', 'cross');
     }
     if (!data.namaKota.value) {
       handleCloseModal();

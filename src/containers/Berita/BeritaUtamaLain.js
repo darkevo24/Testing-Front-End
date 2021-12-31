@@ -2,14 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SectionTitle, BeritaGrid } from '.';
 import { getLatestNews, latestNewsSelector } from './reducer';
-import {
-  BeritaCard,
-  BeritaCardImage,
-  BeritaCardContent,
-  BeritaCardTanggal,
-  BeritaCardJudul,
-  BeritaCardImageWrapper,
-} from './BeritaCard';
+import { BeritaCard, BeritaCardImage, BeritaCardContent, BeritaCardJudul, BeritaCardImageWrapper } from './BeritaCard';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 

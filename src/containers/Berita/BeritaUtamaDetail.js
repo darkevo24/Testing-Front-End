@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
+import { TwitterShareButton, TwitterIcon, FacebookIcon, FacebookShareButton } from 'react-share';
 import Loader from 'components/Loader';
 import { beritaLayoutSelector, getBertaLayout } from 'containers/CMS/BeritaLayout/reducer';
 import userIcon from 'assets/user.svg';
@@ -16,7 +17,7 @@ import BeritaLainnya from './BeritaLainnya';
 import Populer from './Populer';
 import Tweets from './Tweets';
 import { newsDetailSelector, getNewsDetail } from './reducer';
-import { TwitterShareButton, TwitterIcon, FacebookIcon, FacebookShareButton } from 'react-share';
+import { appId } from 'utils/constants';
 
 const components = {
   search: Search,
@@ -33,8 +34,6 @@ const components = {
 const renderComp = (el) => {
   return React.createElement(components[el.component], { ...el.props, key: el.component });
 };
-
-const appId = process.env.FACEBOOK_APP_ID;
 
 const BeritaUtamaDetail = (props) => {
   const { id } = useParams();
@@ -78,7 +77,7 @@ const BeritaUtamaDetail = (props) => {
     <div className="row mt-24">
       {isLoading && <Loader fullscreen />}
       <div className="col-lg-2"></div>
-      <div className="col-lg-6" style={{ paddingRight: '5.5%' }}>
+      <div className="col-lg-6 pr-5">
         <div>
           <div className="fs-32 fw-600 mb-24">{record?.judul}</div>
           <div className="d-flex flex-row">

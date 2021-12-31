@@ -1,3 +1,4 @@
+export { default as Button } from './Button';
 export { default as Breadcrumb } from './Breadcrumb';
 export { default as CMSBimtekForm } from './CMSBimtekForm';
 export { default as CMSForm } from './CMSForm';

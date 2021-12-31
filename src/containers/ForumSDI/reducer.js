@@ -12,6 +12,11 @@ export const initialState = {
     size: defaultNumberOfRows,
     totalRecords: null,
   },
+  forumSDIDetail: {
+    loading: null,
+    error: null,
+    detail: null,
+  },
   error: null,
 };
 
@@ -19,6 +24,11 @@ export const FORUM_SDI_SLICE = 'FORUM_SDI_SLICE';
 
 export const getForumSDIData = createAsyncThunk('portal/getForumSDIData', async ({ page, ...rest }) => {
   const response = await get(apiUrls.portalForumSDI, { query: { page: page + 1, size: 10, ...rest.payload } });
+  return response?.data?.content;
+});
+
+export const getForumSDIDataByID = createAsyncThunk('portal/getForumSDIDataByID', async (param) => {
+  const response = await get(`${apiUrls.portalForumSDI}/${param}`);
   return response?.data?.content;
 });
 
@@ -44,8 +54,21 @@ const forumSDISlice = createSlice({
       state.dataset.totalRecords = 0;
       state.dataset.error = 'Error in fetching forum sdi data!';
     });
+    builder.addCase(getForumSDIDataByID.pending, (state, action) => {
+      state.forumSDIDetail.loading = true;
+    });
+    builder.addCase(getForumSDIDataByID.fulfilled, (state, action) => {
+      state.forumSDIDetail.loading = false;
+      state.forumSDIDetail.detail = action.payload.records;
+    });
+    builder.addCase(getForumSDIDataByID.rejected, (state) => {
+      state.forumSDIDetail.loading = false;
+      state.forumSDIDetail.error = 'Error in fetching forum sdi Detail!';
+    });
   },
 });
 
 export const forumSDIDatasetSelector = (state) => state.forumSDI?.dataset;
+export const forumSDIDetailSelector = (state) => state.forumSDI?.forumSDIDetail;
+
 export default forumSDISlice.reducer;

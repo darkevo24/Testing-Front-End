@@ -64,19 +64,22 @@ const PermintaanItem = ({ id, kodeBimtek, namaBimtek, kota, tanggal, status }) =
 
   return (
     <Row className={bem.e('item', 'ml p-10 d-flex align-items-center')} onClick={() => handlePermintaan(id)}>
-      <Col lg={2} className="fs-16">
+      <Col lg={1} className="fs-16">
         {kodeBimtek}
       </Col>
       <Col lg={3} className="fs-16">
         {namaBimtek}
       </Col>
-      <Col lg={2} className="fs-16">
+      <Col lg={1} className="fs-16">
+        -
+      </Col>
+      <Col lg={1} className="fs-16">
         {kota}
       </Col>
       <Col lg={2} className="fs-16">
         {tanggal}
       </Col>
-      <Col lg={3} className="fs-16 d-flex align-items-center justify-content-start w-134">
+      <Col lg={4} className="fs-16 d-flex align-items-center justify-content-start w-134">
         <hr className={bem.e('status')} />
         <span> {status} </span>
       </Col>

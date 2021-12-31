@@ -10,8 +10,8 @@
     overflow-x: scroll;
     width: 744px;
     white-space: nowrap;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 
     &-item {
       display: inline-block;
@@ -99,9 +99,31 @@
     }
 
     &-page {
-      bottom: 8px;
-      left: 50%;
       position: absolute;
+      left: 50%;
+      bottom: 8px;
+      transform: translateX(-50%);
+      color: white;
+      mix-blend-mode: difference;
     }
   }
+
+  &__scroll-img {
+    max-width: 100%;
+    width: 100%;
+    img {
+      height: 660px;
+    }
+  }
+}
+
+.carousel.slide {
+  max-width: 100%;
+  width: 100%;
+}
+
+.close-button {
+  position: absolute;
+  z-index: 110;
+  opacity: 0.7;
 }

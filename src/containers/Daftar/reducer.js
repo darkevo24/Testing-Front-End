@@ -272,7 +272,7 @@ export const daftarDataSubmit = createAsyncThunk('daftarData/daftarDataSubmit', 
     methodToCall = put;
   }
   const response = await methodToCall(url, payload);
-  return response;
+  return response?.data?.content;
 });
 
 export const getSDGTujuan = createAsyncThunk('daftarData/getSDGTujuan', async (id) => {
@@ -479,6 +479,7 @@ const daftarSlice = createSlice({
     builder.addCase(daftarDataSubmit.fulfilled, (state, action) => {
       state.daftarDataSubmit.loading = false;
       state.daftarDataSubmit.result = action.payload;
+      state.daftarDetails.result[action.payload.id] = action.payload;
     });
     builder.addCase(daftarDataSubmit.rejected, (state) => {
       state.daftarDataSubmit.loading = false;

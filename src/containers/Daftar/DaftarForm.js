@@ -187,7 +187,14 @@ const DaftarForm = ({
             rules={{ required: true }}
             error={errors.tanggalDibuat?.message}
           />
-          <DatePicker group label="Diperbarui" name="tanggalDiperbaharui" control={control} rules={{ required: true }} />
+          <DatePicker
+            group
+            label="Diperbarui"
+            name="tanggalDiperbaharui"
+            control={control}
+            rules={{ required: true }}
+            error={errors.tanggalDiperbaharui?.message}
+          />
           <Input
             group
             label="Produsen Data"

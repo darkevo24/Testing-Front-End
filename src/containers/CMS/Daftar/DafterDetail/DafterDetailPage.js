@@ -133,7 +133,7 @@ export const DaftarDetailPage = ({ ...props }) => {
     },
     {
       label: 'Data Induk',
-      value: result?.indukData?.nama || '',
+      value: Object.values(result?.indukData || {})?.[0] || '',
     },
     {
       label: 'Format',

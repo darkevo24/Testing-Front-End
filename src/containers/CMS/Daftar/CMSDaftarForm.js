@@ -31,15 +31,8 @@ import cloneDeep from 'lodash/cloneDeep';
 const schema = yup.object({
   instansi: yup.mixed().required(),
   nama: yup.string().required(),
-  idKonsep: yup.string().required(),
-  konsep: yup.string().required(),
   jadwalPemutakhiran: yup.mixed().required(),
-  definisi: yup.string().required(),
-  sumberDefinisi: yup.string().required(),
-  tanggalDibuat: yup.date().required(),
-  tanggalDiperbaharui: yup.date().required(),
   produsenData: yup.string().required(),
-  indukData: yup.mixed().required(),
   format: yup.mixed().required(),
   linkAkses: yup.string().required(),
 });
@@ -114,7 +107,7 @@ const CMSDaftarPage = ({ ...props }) => {
   }, [id]);
 
   useEffect(() => {
-    if (id && katalogResult?.records?.length) {
+    if (id && katalogResult?.records) {
       setTableData(katalogResult?.records);
     }
   }, [katalogResult]);
@@ -320,7 +313,6 @@ const CMSDaftarPage = ({ ...props }) => {
                     }}
                     labelClass="sdp-form-label fw-normal"
                     label="ID Konsep"
-                    error={errors.idKonsep ? 'ID Konsep is required' : null}
                     name="idKonsep"
                     control={control}
                   />
@@ -333,7 +325,6 @@ const CMSDaftarPage = ({ ...props }) => {
                       md: 12,
                       as: Col,
                     }}
-                    error={errors.konsep ? 'Konsep is required' : null}
                     labelClass="sdp-form-label fw-normal"
                     label="Konsep"
                     name="konsep"
@@ -374,7 +365,6 @@ const CMSDaftarPage = ({ ...props }) => {
                     }}
                     labelClass="sdp-form-label fw-normal"
                     label="Definisi"
-                    error={errors.definisi ? 'Definisi is required' : null}
                     name="definisi"
                     as="textarea"
                     control={control}
@@ -390,7 +380,6 @@ const CMSDaftarPage = ({ ...props }) => {
                     }}
                     labelClass="sdp-form-label fw-normal"
                     label="Sumber Definisi"
-                    error={errors.sumberDefinisi ? 'Sumber Definisi is required' : null}
                     as="textarea"
                     name="sumberDefinisi"
                     control={control}
@@ -404,7 +393,6 @@ const CMSDaftarPage = ({ ...props }) => {
                     label="Dibuat"
                     labelClass="sdp-form-label fw-normal"
                     control={control}
-                    error={errors.tanggalDibuat ? 'Dibuat is required' : null}
                     name="tanggalDibuat"
                   />
                 </Col>
@@ -413,7 +401,6 @@ const CMSDaftarPage = ({ ...props }) => {
                     group
                     label="Diperbarui"
                     labelClass="sdp-form-label fw-normal"
-                    error={errors.tanggalDiperbaharui ? 'Diperbarui is required' : null}
                     control={control}
                     name="tanggalDiperbaharui"
                   />
@@ -446,8 +433,6 @@ const CMSDaftarPage = ({ ...props }) => {
                     label="Data Induk"
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    error={errors.indukData ? 'Data Induk is required' : null}
-                    rules={{ required: true }}
                     data={dataindukAllOptions}
                     name="indukData"
                     isLoading={false}

@@ -33,6 +33,7 @@ import bimtekMateriReducer from 'containers/BimTekMateri/reducer';
 import bimtekDokumentasiReducer from 'containers/BimTekDokumentasi/reducer';
 import bimtekPermintaanReducer from 'containers/BimtekPermintaan/reducer';
 import sosialMediaReducer from 'containers/CMS/MediaSosial/reducer';
+import contactUsReducer from 'containers/CMS/ContactUs/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -66,6 +67,7 @@ export default function createReducer(injectedReducers) {
     bimtekDokumentasi: bimtekDokumentasiReducer,
     bimtekPermintaan: bimtekPermintaanReducer,
     sosialMedia: sosialMediaReducer,
+    cmsContactUs: contactUsReducer,
     router: connectRouter(history),
     ...injectedReducers,
   });

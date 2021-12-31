@@ -38,7 +38,7 @@ const BeritaUtama = () => {
   const { records, status } = useSelector(highlightedNewsSelector);
 
   useEffect(() => {
-    if (status === 'idel') dispatch(gethighlightedNews('latest/category'));
+    if (status === 'idel') dispatch(gethighlightedNews('latest'));
   }, [dispatch, status]);
 
   const handleDetail = (event, title) => {
@@ -51,7 +51,7 @@ const BeritaUtama = () => {
         records.map((value, index) => {
           const { image, judul, partContent, tanggalPublis, id } = value;
           const truncatedParagrapData = truncate(partContent, {
-            length: 200,
+            length: 250,
             separator: ' ',
           });
           return (

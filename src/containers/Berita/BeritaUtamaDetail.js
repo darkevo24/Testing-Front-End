@@ -2,13 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
+import { TwitterShareButton, TwitterIcon, FacebookIcon, FacebookShareButton } from 'react-share';
 import Loader from 'components/Loader';
 import { beritaLayoutSelector, getBertaLayout } from 'containers/CMS/BeritaLayout/reducer';
 import userIcon from 'assets/user.svg';
-import worldIcon from 'assets/world.svg';
-import fbIcon from 'assets/fb.svg';
-import twitterIcon from 'assets/twitterIcon.svg';
-import shareIcon from 'assets/share.svg';
 import clockIcon from 'assets/clock.svg';
 import Search from './Search';
 import BeritaUtama from './BeritaUtama';
@@ -20,6 +17,7 @@ import BeritaLainnya from './BeritaLainnya';
 import Populer from './Populer';
 import Tweets from './Tweets';
 import { newsDetailSelector, getNewsDetail } from './reducer';
+import { appId } from 'utils/constants';
 
 const components = {
   search: Search,
@@ -41,6 +39,9 @@ const BeritaUtamaDetail = (props) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { record, isLoading } = useSelector(newsDetailSelector);
+
+  const shareUrl = window.location.origin + window.location.pathname;
+  const shareTitle = record.title;
 
   useEffect(() => {
     if (!isLoading) {
@@ -76,7 +77,7 @@ const BeritaUtamaDetail = (props) => {
     <div className="row mt-24">
       {isLoading && <Loader fullscreen />}
       <div className="col-lg-2"></div>
-      <div className="col-lg-6" style={{ paddingRight: '5.5%' }}>
+      <div className="col-lg-6 pr-5">
         <div>
           <div className="fs-32 fw-600 mb-24">{record?.judul}</div>
           <div className="d-flex flex-row">
@@ -89,14 +90,16 @@ const BeritaUtamaDetail = (props) => {
               <div className="sdp-text-disable mb-24 fs-14">{formatDate(record?.tanggalPublis)}</div>
             </div>
             <div className="mr-8 my-12">
-              <img src={worldIcon} className="mx-8" />
-              <img src={fbIcon} className="mx-8" />
-              <img src={twitterIcon} className="mx-8" />
-              <img src={shareIcon} className="mx-8" />
+              <TwitterShareButton className="mx-4" url={shareUrl} title={shareTitle}>
+                <TwitterIcon size={32} round={true} />
+              </TwitterShareButton>
+              <FacebookShareButton className="mx-4" url={shareUrl} appId={appId}>
+                <FacebookIcon size={32} round={true} />
+              </FacebookShareButton>
             </div>
           </div>
           <img className="w-100" src={record.mainImage} />
-          <div className="fs-18 mt-32" dangerouslySetInnerHTML={{ __html: record?.content }}></div>
+          <div className="fs-18 mt-32 beritaDetailContent" dangerouslySetInnerHTML={{ __html: record?.content }}></div>
         </div>
       </div>
       <div className="col-lg-2">{kanan.length > 0 && kanan.map((el) => renderComp(el))}</div>

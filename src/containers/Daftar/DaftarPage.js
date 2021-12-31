@@ -20,7 +20,7 @@ import SdgTable from './SdgTable';
 import RkpTable from './RkpTable';
 import DaftarDataSayaTable from './DaftarDataSayaTable';
 import { useThrottle } from 'utils/hooks';
-import { refetchDaftarData, getDaftarDataSummary, daftarDataSummarySelector } from './reducer';
+import { daftarDataSubmitSelector, daftarDataSummarySelector, getDaftarDataSummary, refetchDaftarData } from './reducer';
 
 const Daftar = (props) => {
   const {
@@ -49,6 +49,7 @@ const Daftar = (props) => {
   const fullDaftarData = useSelector((state) => state.daftar);
   const daftarSummaryData = useSelector(daftarDataSummarySelector);
   const userInstansi = useSelector(userInstansiSelector);
+  const daftarDataSubmit = useSelector(daftarDataSubmitSelector);
 
   const sayaKey = t('sandbox.daftar.tabs.daftarSafa.key');
   const activeTitle = t(`sandbox.daftar.tabs.${activeTab}.${activeTab === sayaKey ? 'tableTitle' : 'title'}`, {
@@ -234,7 +235,7 @@ const Daftar = (props) => {
         subtitle="Isi form dibawah untuk menambah data"
         actions={[
           { variant: 'secondary', text: 'Batal', onClick: hideDaftarFormModal },
-          { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDaftarForm },
+          { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDaftarForm, loading: daftarDataSubmit.loading },
         ]}>
         <DaftarForm
           daftarId={selectedRecord?.id}

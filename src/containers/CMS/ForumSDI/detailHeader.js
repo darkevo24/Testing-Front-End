@@ -67,7 +67,7 @@ export const DetailHeader = ({ record, status, history, handleModal }) => {
               key="edit"
               variant="outline-light"
               className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
-              onClick={() => history.push(`/cms/manage-komunitas-ahli/${record.id}`)}>
+              onClick={() => history.push(`/cms/forum-sdi/manage-forum-sdi/${record.id}`)}>
               <PencilSvg />
             </Button>
           </ComponentAccessibility>

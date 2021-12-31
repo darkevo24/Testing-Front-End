@@ -17,7 +17,6 @@ import { LeftChevron, Galery, Close } from 'components/Icons';
 import { getStatusClass, prefixID } from 'utils/helper';
 import { CMSModal } from 'components/CMSStatusModals';
 import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
-import SingleDropDown from 'components/DropDown/SingleDropDown';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import RowLoader from 'components/Loader/RowLoader';
 import TableLoader from 'components/Loader/TableLoader';
@@ -49,7 +48,6 @@ const CMSJadwalDetail = (props) => {
   const [idMateri, setIdMateri] = useState(false);
   const [loader, setLoader] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
-  const [kotaId, setKotaId] = useState('');
   const [buttonUpdate, setButtonUpdate] = useState(false);
   const [showModal, setShowModal] = useState('');
   const [apiError, setAPIError] = useState('');
@@ -81,14 +79,8 @@ const CMSJadwalDetail = (props) => {
       initialCall();
       isFunction(callBack) && callBack();
     } catch (e) {
-      console.log(e);
-      Notification.show({
-        type: 'secondary',
-        message: <div> Error, {e.message} </div>,
-        icon: 'cross',
-      });
       handleCloseModal();
-      setAPIError(e.message);
+      return handleNotification('secondary', `Error, ${e.message}`, 'cross');
     }
   };
 
@@ -127,6 +119,7 @@ const CMSJadwalDetail = (props) => {
   const handleUpdate = () => {
     setReadOnly(false);
     setButtonUpdate(true);
+    setIdMateri('');
     handleCloseModal();
   };
 
@@ -189,8 +182,6 @@ const CMSJadwalDetail = (props) => {
       fileType: item.fileType,
       size: item.size,
     }));
-    console.log(obj[0]);
-    console.log(idMateri);
     handleCloseModal();
     handleAPICall(put, `${apiUrls.cmsBimtekJadwal}/${id}/materi/${idMateri}`, { data: obj[0] });
     setListMateri([]);
@@ -226,12 +217,12 @@ const CMSJadwalDetail = (props) => {
   };
 
   const onEditPembicara = (data) => {
-    const nama = data.tambahPembicara;
-    const tanggalMulai = `${moment(data.tambahPembicaraWaktuMulai, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
-      data.tambahPembicaraJamMulai
+    const nama = data.tambahPembicaraUpdate;
+    const tanggalMulai = `${moment(data.tambahPembicaraWaktuMulaiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
+      data.tambahPembicaraJamMulaiUpdate
     }:00`;
-    const tanggalSelesai = `${moment(data.tambahPembicaraWaktuSelesai, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
-      data.tambahPembicaraJamSelesai
+    const tanggalSelesai = `${moment(data.tambahPembicaraWaktuSelesaiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
+      data.tambahPembicaraJamSelesaiUpdate
     }:00`;
     let obj = {
       nama,
@@ -243,8 +234,10 @@ const CMSJadwalDetail = (props) => {
 
   const openUploadForm = (id) => {
     if (idMateri) {
-      if (listMateri.length >= 1) handleCloseModal();
-      return handleNotification('secondary', 'Error, Maksimal File Edit 1', 'cross');
+      if (listMateri.length >= 1) {
+        handleCloseModal();
+        return handleNotification('secondary', 'Error, Maksimal File Edit 1', 'cross');
+      }
     }
     const elmButton = document.getElementById(id);
     elmButton.click();
@@ -260,6 +253,7 @@ const CMSJadwalDetail = (props) => {
       });
     } catch (e) {
       console.log(e);
+      return handleNotification(`secondary', 'Error, ${e.message}', 'cross`);
     }
   };
 
@@ -320,18 +314,22 @@ const CMSJadwalDetail = (props) => {
       accessor: 'action',
       Cell: ({ ...rest }) => (
         <div>
-          <Button
-            variant="outline-none"
-            className="bg-white sdp-text-blue p-0 mr-10"
-            onClick={() => onModalEditMateri(rest.row.original)}>
-            Edit
-          </Button>
-          <Button
-            variant="outline-none"
-            className="bg-white sdp-text-grey-dark p-0"
-            onClick={() => onDeleteMateri(rest.row.original?.id)}>
-            Delete
-          </Button>
+          {buttonUpdate ? (
+            <>
+              <Button
+                variant="outline-none"
+                className="bg-white sdp-text-blue p-0 mr-10"
+                onClick={() => onModalEditMateri(rest.row.original)}>
+                Edit
+              </Button>
+              <Button
+                variant="outline-none"
+                className="bg-white sdp-text-grey-dark p-0"
+                onClick={() => onDeleteMateri(rest.row.original?.id)}>
+                Delete
+              </Button>
+            </>
+          ) : null}
         </div>
       ),
     },
@@ -366,18 +364,22 @@ const CMSJadwalDetail = (props) => {
       accessor: 'action',
       Cell: ({ ...rest }) => (
         <div>
-          <Button
-            variant="outline-none"
-            className="bg-white sdp-text-blue p-0 mr-10"
-            onClick={() => onModalEditPembicara(rest.row.original)}>
-            Edit
-          </Button>
-          <Button
-            variant="outline-none"
-            className="bg-white sdp-text-grey-dark p-0"
-            onClick={() => onDeletePembicara(rest.row.original?.id)}>
-            Delete
-          </Button>
+          {buttonUpdate ? (
+            <>
+              <Button
+                variant="outline-none"
+                className="bg-white sdp-text-blue p-0 mr-10"
+                onClick={() => onModalEditPembicara(rest.row.original)}>
+                Edit
+              </Button>
+              <Button
+                variant="outline-none"
+                className="bg-white sdp-text-grey-dark p-0"
+                onClick={() => onDeletePembicara(rest.row.original?.id)}>
+                Delete
+              </Button>
+            </>
+          ) : null}
         </div>
       ),
     },
@@ -424,6 +426,7 @@ const CMSJadwalDetail = (props) => {
                 {!loadingJadwalDetail ? (
                   <DetailHeader
                     handleModal={(type) => setShowModal(type)}
+                    handleUpdate={handleUpdate}
                     record={records}
                     history={history}
                     status={status}
@@ -439,7 +442,7 @@ const CMSJadwalDetail = (props) => {
             )}
             {tagsLoading ? (
               <RowLoader />
-            ) : (
+            ) : buttonUpdate ? (
               <div className="mb-15">
                 <SingleSelectDropDown
                   group
@@ -455,6 +458,17 @@ const CMSJadwalDetail = (props) => {
                   isCreatable={true}
                 />
               </div>
+            ) : (
+              <Form.Group>
+                <label className="sdp-form-label mb-8">Kategori Bimtek</label>
+                <div className="tag-data d-flex align-items-center bg-gray-dark border-gray-stroke p-9 br-4">
+                  {(records.tagMateri || []).map((elem, index) => (
+                    <label className="sdp-text-blue mr-6 px-10 bg-light-blue" key={`tag-label-${index}`}>
+                      {elem}
+                    </label>
+                  ))}
+                </div>
+              </Form.Group>
             )}
             <Row className="align-items-end">
               <Col>
@@ -526,7 +540,7 @@ const CMSJadwalDetail = (props) => {
             </Row>
             {loadingJadwalDetail ? (
               <RowLoader />
-            ) : (
+            ) : buttonUpdate ? (
               <div className="mb-15">
                 <SingleSelectDropDown
                   group
@@ -542,6 +556,13 @@ const CMSJadwalDetail = (props) => {
                   isCreatable={true}
                 />
               </div>
+            ) : (
+              <Form.Group className="mb-15">
+                <label className="sdp-form-label mb-8">Kota Pelaksana</label>
+                <div className="tag-data d-flex align-items-center bg-gray-dark border-gray-stroke p-9 br-4">
+                  <label className="sdp-text-blue mr-6 px-10 bg-light-blue"> {records?.kota} </label>
+                </div>
+              </Form.Group>
             )}
             {loadingJadwalDetail ? (
               <RowLoader />
@@ -554,9 +575,11 @@ const CMSJadwalDetail = (props) => {
               <div className="pembicara">
                 <div className="d-flex justify-content-between">
                   <span className="fw-bold mb-10 d-block"> Pembicara </span>
-                  <Button variant="outline-none" onClick={() => setShowModal('pembicara')}>
-                    <Plus /> <span className="fw-bold text-danger"> Tambah Pembicara </span>
-                  </Button>
+                  {buttonUpdate ? (
+                    <Button variant="outline-none" onClick={() => setShowModal('pembicara')}>
+                      <Plus /> <span className="fw-bold text-danger"> Tambah Pembicara </span>
+                    </Button>
+                  ) : null}
                 </div>
                 <Table {...tableConfigPembicara} />
               </div>
@@ -567,9 +590,11 @@ const CMSJadwalDetail = (props) => {
               <div className="materi">
                 <div className="d-flex justify-content-between">
                   <span className="fw-bold mb-10 d-block"> Materi </span>
-                  <Button variant="outline-none" onClick={() => setShowModal('materi')}>
-                    <Plus /> <span className="fw-bold text-danger"> Tambah Materi </span>
-                  </Button>
+                  {buttonUpdate ? (
+                    <Button variant="outline-none" onClick={() => setShowModal('materi')}>
+                      <Plus /> <span className="fw-bold text-danger"> Tambah Materi </span>
+                    </Button>
+                  ) : null}
                 </div>
                 <span className="fw-bold mb-10 d-block"> Materi </span>
                 <Table {...tableConfigMateri} />
@@ -659,14 +684,6 @@ const CMSJadwalDetail = (props) => {
           }
           loader={loader}
           confirmButtonAction={onTolak}
-        />
-      )}
-      {showModal === 'perbarui' && (
-        <CMSModal
-          onClose={handleCloseModal}
-          label={<> Apakah anda yakin ingin mengedit data? </>}
-          loader={loader}
-          confirmButtonAction={handleUpdate}
         />
       )}
       {showModal === 'materi' && (

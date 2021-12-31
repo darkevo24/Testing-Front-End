@@ -30,9 +30,11 @@ const CMSJadwalBaru = () => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState('');
   const [objectRequired, setObjectRequired] = useState({});
+  const [defaultRequired, setDefaultRequired] = useState(false);
   const [records, setRecords] = useState({});
   const [kotaId, setKotaId] = useState('');
   const [idPembicara, setIdPembicara] = useState('');
+  const [idMateri, setIdMateri] = useState(false);
   const [listMateri, setListMateri] = useState([]);
   const [dataMateri, setDataMateri] = useState([]);
   const [dataPembicara, setDataPembicara] = useState([]);
@@ -45,6 +47,19 @@ const CMSJadwalBaru = () => {
   useEffect(() => {
     initialCall();
   }, []);
+
+  useEffect(() => {
+    setObjectRequired({
+      namaBimtek: yup.string().required(),
+      tags: yup.array().required().min(1),
+      namaKota: yup.object().required(),
+      tanggalMulaiDisetujui: yup.string().required(),
+      jamMulaiDisetujui: yup.string().required(),
+      tanggalSelesaiDisetujui: yup.string().required(),
+      jamSelesaiDisetujui: yup.string().required(),
+      dataTempat: yup.string().required(),
+    });
+  }, [defaultRequired]);
 
   const initialCall = () => {
     dispatch(getListBimtekTags());
@@ -62,6 +77,12 @@ const CMSJadwalBaru = () => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
+      namaMateri: '',
+      tambahPembicara: '',
+      tambahPembicaraWaktuMulai: '',
+      tambahPembicaraJamMulai: '',
+      tambahPembicaraWaktuSelesai: '',
+      tambahPembicaraJamSelesai: '',
       tambahPembicaraUpdate: '',
       tambahPembicaraWaktuMulaiUpdate: '',
       tambahPembicaraWaktuSelesaiUpdate: '',
@@ -69,6 +90,141 @@ const CMSJadwalBaru = () => {
       tambahPembicaraJamSelesaiUpdate: '',
     },
   });
+
+  const handleNotification = (type, message, icon) => {
+    Notification.show({
+      type,
+      message,
+      icon,
+    });
+  };
+
+  const handleAPICall = async (method, url, params, callBack) => {
+    try {
+      await method(url, {}, params);
+      handleCloseModal();
+      handleNotification('secondary', 'Berhasil Menyimpan Jadwal', 'check');
+      isFunction(callBack) && callBack();
+    } catch (e) {
+      console.log(e);
+      handleNotification('secondary', `Error, ${e.message}`, 'cross');
+      handleCloseModal();
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal('');
+    setListMateri([]);
+    setDefaultRequired(!defaultRequired);
+  };
+
+  // ======== Materi Action =========
+  const handleAddMateri = () => {
+    setObjectRequired({
+      namaMateri: yup.string().required(),
+    });
+    setShowModal('materi');
+  };
+
+  const onAddMateri = (data) => {
+    if (listMateri.length < 1) {
+      handleCloseModal();
+      return handleNotification('secondary', 'File Tidak Boleh Kosong', 'cross');
+    }
+    let newMateri = listMateri.map((item) => ({
+      ...item,
+      nama: data.namaMateri,
+      id: (Math.random() + 1).toString(36).substring(7),
+    }));
+    setDataMateri([...dataMateri, newMateri[0]]);
+    setValue('namaMateri', '');
+    handleCloseModal();
+    setListMateri([]);
+    return handleNotification('secondary', 'Berhasil Menambahkan Materi', 'check');
+  };
+
+  const onModalEditMateri = (data) => {
+    setObjectRequired({
+      namaMateriUpdate: yup.string().required(),
+    });
+    setIdMateri(data.id);
+    console.log(idMateri);
+    setValue('namaMateriUpdate', data.nama);
+    setListMateri([data]);
+    setShowModal('editMateri');
+  };
+
+  const onEditMateri = (data) => {
+    if (!idMateri) {
+      handleCloseModal();
+      return handleNotification('secondary', 'Gagal Merubah Materi ', 'cross');
+    }
+    let obj = listMateri.map((item) => ({
+      id: idMateri,
+      nama: data.namaMateriUpdate,
+      fileName: item.fileName,
+      location: item.location,
+      fileType: item.fileType,
+      size: item.size,
+    }));
+    let newDataMateri = dataMateri.filter((x) => x.id !== idMateri);
+    console.log(obj);
+    console.log(newDataMateri);
+    setDataMateri([...newDataMateri, obj[0]]);
+    handleCloseModal();
+    setObjectRequired({});
+    setListMateri([]);
+    return handleNotification('secondary', 'Berhasil Merubah Materi ', 'check');
+  };
+
+  const onDeleteMateri = (data) => {
+    let newData = remove(dataMateri, (x) => {
+      return x.id !== data;
+    });
+    setDataMateri(newData);
+  };
+
+  // ======== End Materi Action =========
+
+  // ======== Pembicara Action =========
+  const handleAddPembicara = () => {
+    setObjectRequired({
+      tambahPembicara: yup.string().required(),
+      tambahPembicaraWaktuMulai: yup.string().required(),
+      tambahPembicaraJamMulai: yup.string().required(),
+      tambahPembicaraWaktuSelesai: yup.string().required(),
+      tambahPembicaraJamSelesai: yup.string().required(),
+    });
+    setShowModal('pembicara');
+  };
+
+  const onAddPembicara = (data) => {
+    const nama = data.tambahPembicara;
+    const tanggalMulai = `${moment(data.tambahPembicaraWaktuMulai).format('YYYY-MM-DD')} ${data.tambahPembicaraJamMulai}:00`;
+    const tanggalSelesai = `${moment(data.tambahPembicaraWaktuSelesai).format('YYYY-MM-DD')} ${
+      data.tambahPembicaraJamSelesai
+    }:00`;
+    if (!moment(tanggalSelesai).isAfter(tanggalMulai)) {
+      handleCloseModal();
+      return handleNotification('secondary', 'Gagal, Rentang Waktu Tidak Valid', 'cross');
+    }
+    let obj = [
+      {
+        id: (Math.random() + 1).toString(36).substring(7),
+        nama,
+        tanggalMulai,
+        tanggalSelesai,
+      },
+    ];
+    setDataPembicara([...dataPembicara, obj[0]]);
+    handleCloseModal();
+    setValue('tambahPembicara', '');
+    setValue('tambahPembicaraWaktuMulai', '');
+    setValue('tambahPembicaraWaktuSelesai', '');
+    setValue('tambahPembicaraJamMulai', '');
+    setValue('tambahPembicaraJamSelesai', '');
+    return handleNotification('secondary', 'Berhasil Menambahkan Pembicara', 'check');
+  };
 
   const onModalEditPembicara = (data) => {
     setIdPembicara(data.id);
@@ -111,6 +267,7 @@ const CMSJadwalBaru = () => {
     setDataPembicara([...newDataPembicara, obj[0]]);
     handleCloseModal();
     setObjectRequired({});
+    return handleNotification('secondary', 'Berhasil Merubah Pembicara ', 'check');
   };
 
   const onDeletePembicara = (data) => {
@@ -118,55 +275,22 @@ const CMSJadwalBaru = () => {
       return x.id !== data;
     });
     setDataPembicara(newData);
-    console.log(newData);
+    return handleNotification('secondary', 'Berhasil Menghapus Pembicara', 'check');
   };
-
-  const onDeleteMateri = (data) => {
-    let newData = remove(dataMateri, (x) => {
-      return x.id !== data;
-    });
-    setDataMateri(newData);
-  };
-
-  const handleNotification = (type, message, icon) => {
-    Notification.show({
-      type,
-      message,
-      icon,
-    });
-  };
-
-  const handleAPICall = async (method, url, params, callBack) => {
-    try {
-      await method(url, {}, params);
-      handleCloseModal();
-      handleNotification('secondary', 'Berhasil Menyimpan Jadwal', 'check');
-      isFunction(callBack) && callBack();
-    } catch (e) {
-      console.log(e);
-      handleNotification('secondary', `Error, ${e.message}`, 'cross');
-      handleCloseModal();
-    }
-  };
+  // ======== End Pembicara Action =========
 
   const handleProses = () => {
-    setObjectRequired({
-      namaBimtek: yup.string().required(),
-      tags: yup.array().required().min(1),
-      namaKota: yup.object().required(),
-      tanggalMulaiDisetujui: yup.string().required(),
-      jamMulaiDisetujui: yup.string().required(),
-      tanggalSelesaiDisetujui: yup.string().required(),
-      jamSelesaiDisetujui: yup.string().required(),
-      dataTempat: yup.string().required(),
-    });
     setShowModal('proses');
   };
 
   const onProses = (data) => {
     if (dataMateri.length < 1 || dataPembicara.length < 1) {
       handleCloseModal();
-      return handleNotification('secondary', 'Gagal, Materi atau Pembicara harus diisi', 'cross');
+      return handleNotification('secondary', 'Gagal, Materi atau Pembicara Harus Diisi', 'cross');
+    }
+    if (!data.namaKota.value) {
+      handleCloseModal();
+      return handleNotification('secondary', 'Gagal, Kota Pelaksana Harus Diisi', 'cross');
     }
     let listPembicara = dataPembicara;
     listPembicara.map((x) => {
@@ -176,11 +300,19 @@ const CMSJadwalBaru = () => {
     listMateri.map((x) => {
       delete x['id'];
     });
+    let tanggalMulaiDisetujui = `${moment(data.tanggalMulaiDisetujui).format('YYYY-MM-DD')} ${data.jamMulaiDisetujui}:00`,
+      tanggalSelesaiDisetujui = `${moment(data.tanggalSelesaiDisetujui).format('YYYY-MM-DD')} ${
+        data.jamSelesaiDisetujui
+      }:00`;
+    if (!moment(tanggalSelesaiDisetujui).isAfter(tanggalMulaiDisetujui)) {
+      handleCloseModal();
+      return handleNotification('secondary', 'Gagal, Rentang Waktu Tidak Valid', 'cross');
+    }
     let obj = {
       namaBimtek: data.namaBimtek,
       tagMateri: data.tags.map((elem) => elem.label) || [],
-      tanggalMulaiDisetujui: `${moment(data.tanggalMulaiDisetujui).format('YYYY-MM-DD')} ${data.jamMulaiDisetujui}:00`,
-      tanggalSelesaiDisetujui: `${moment(data.tanggalSelesaiDisetujui).format('YYYY-MM-DD')} ${data.jamSelesaiDisetujui}:00`,
+      tanggalMulaiDisetujui,
+      tanggalSelesaiDisetujui,
       kota: data.namaKota.value,
       alamat: data.dataTempat,
       pembicara: listPembicara,
@@ -204,62 +336,11 @@ const CMSJadwalBaru = () => {
     setObjectRequired({});
   };
 
-  const onAddMateri = (data) => {
-    if (dataMateri.length < 1) {
-      handleCloseModal();
-      return handleNotification('secondary', 'File Tidak Boleh Kosong', 'cross');
-    }
-    let newMateri = listMateri.map((item) => ({
-      ...item,
-      nama: data.namaMateri,
-      id: (Math.random() + 1).toString(36).substring(7),
-    }));
-    setListMateri([]);
-    setDataMateri([...dataMateri, newMateri[0]]);
-    handleCloseModal();
-  };
-
-  const handleAddPembicara = () => {
-    setObjectRequired({
-      tambahPembicara: yup.string().required(),
-      tambahPembicaraWaktuMulai: yup.string().required(),
-      tambahPembicaraJamMulai: yup.string().required(),
-      tambahPembicaraWaktuSelesai: yup.string().required(),
-      tambahPembicaraJamSelesai: yup.string().required(),
-    });
-    setShowModal('pembicara');
-  };
-
-  const handleAddMateri = () => {
-    setObjectRequired({
-      namaMateri: yup.string().required(),
-    });
-    setShowModal('materi');
-  };
-
-  const onAddPembicara = (data) => {
-    const nama = data.tambahPembicara;
-    const tanggalMulai = `${moment(data.tambahPembicaraWaktuMulai).format('YYYY-MM-DD')} ${data.tambahPembicaraJamMulai}:00`;
-    const tanggalSelesai = `${moment(data.tambahPembicaraWaktuSelesai).format('YYYY-MM-DD')} ${
-      data.tambahPembicaraJamSelesai
-    }:00`;
-    let obj = [
-      {
-        id: (Math.random() + 1).toString(36).substring(7),
-        nama,
-        tanggalMulai,
-        tanggalSelesai,
-      },
-    ];
-    setDataPembicara([...dataPembicara, obj[0]]);
-    handleCloseModal();
-  };
-
-  const handleCloseModal = () => {
-    setShowModal('');
-  };
-
   const openUploadForm = (id) => {
+    if (idMateri) {
+      if (listMateri.length >= 1) handleCloseModal();
+      return handleNotification('secondary', 'Error, Maksimal File Edit 1', 'cross');
+    }
     const elmButton = document.getElementById(id);
     elmButton.click();
   };
@@ -292,16 +373,11 @@ const CMSJadwalBaru = () => {
       accessor: 'tanggalMulai',
       Cell: ({ ...rest }) => (
         <span>
-          {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('DD MMMM YYYY') : '---'}
-        </span>
-      ),
-    },
-    {
-      Header: 'Sesi',
-      accessor: 'sesi',
-      Cell: ({ ...rest }) => (
-        <span>
+          {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('DD MMMM YYYY') + ' ' : '---'}
           {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('HH:mm') : '---'} -
+          {rest.row.original?.tanggalSelesai
+            ? moment(rest.row.original?.tanggalSelesai).format('DD MMMM YYYY') + ' '
+            : '---'}
           {rest.row.original?.tanggalSelesai ? moment(rest.row.original?.tanggalSelesai).format('HH:mm') : '---'}
         </span>
       ),
@@ -344,7 +420,10 @@ const CMSJadwalBaru = () => {
       accessor: 'action',
       Cell: ({ ...rest }) => (
         <div>
-          <Button variant="outline-none" className="bg-white sdp-text-blue p-0 mr-10">
+          <Button
+            variant="outline-none"
+            className="bg-white sdp-text-blue p-0 mr-10"
+            onClick={() => onModalEditMateri(rest.row.original)}>
             Edit
           </Button>
           <Button
@@ -386,7 +465,7 @@ const CMSJadwalBaru = () => {
           <Button onClick={() => history.goBack()} className="ml-24" variant="secondary" style={{ width: '112px' }}>
             Batal
           </Button>
-          <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={handleProses}>
+          <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={handleSubmit(handleProses)}>
             Simpan
           </Button>
         </div>
@@ -552,7 +631,50 @@ const CMSJadwalBaru = () => {
                 </div>
               </div>
               <div className="d-flex justify-content-end">
-                <Button className="br-4 mr-8 px-57 py-13 bg-transparent" variant="light" onClick={handleCloseModal}>
+                <Button className="br-4 mr-8 px-40 py-5 bg-transparent" variant="outline-none" onClick={handleCloseModal}>
+                  Batal
+                </Button>
+                <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
+                  Simpan
+                </Button>
+              </div>
+            </div>
+          </Form>
+        </Modal>
+      )}
+      {showModal === 'editMateri' && (
+        <Modal className="cms-bimtek-materi" title="Ubah Materi" onClose={handleCloseModal} visible={handleCloseModal}>
+          <Form onSubmit={handleSubmit(onEditMateri)}>
+            <div>
+              <Input
+                group
+                label="Materi"
+                name="namaMateriUpdate"
+                control={control}
+                error={errors.namaMateriUpdate?.message}
+                rules={{ required: true }}
+              />
+              <div>
+                <label>Lampiran</label>
+                <input id="sdp-upload-materi" multiple type="file" style={{ display: 'none' }} onChange={addFile} />
+              </div>
+              <div className="wrapper-lampiran">
+                <div className="wrapper-lampiran-header" onClick={() => openUploadForm('sdp-upload-materi')}>
+                  <span className="upload"> Upload </span>
+                  <span className="cta"> Upload Image (format .png, .jpeg, .jpg max. 512KB) </span>
+                </div>
+                <div className="wrapper-lampiran-file">
+                  {listMateri.map((data, index) => {
+                    return (
+                      <span className="file mr-10 mb-10" key={index} onClick={() => removeFile(index)}>
+                        <Galery /> <span> {data.fileName} </span> <Close />
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="d-flex justify-content-end">
+                <Button className="br-4 mr-8 px-40 py-5 bg-transparent" variant="outline-none" onClick={handleCloseModal}>
                   Batal
                 </Button>
                 <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
@@ -631,7 +753,7 @@ const CMSJadwalBaru = () => {
               </Row>
             </div>
             <div className="d-flex justify-content-end">
-              <Button className="br-4 mr-8 px-57 py-13 bg-transparent" variant="light" onClick={handleCloseModal}>
+              <Button className="br-4 mr-8 px-40 py-5 bg-transparent" variant="outline-none" onClick={handleCloseModal}>
                 Batal
               </Button>
               <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
@@ -705,7 +827,7 @@ const CMSJadwalBaru = () => {
               </Row>
             </div>
             <div className="d-flex justify-content-end">
-              <Button className="br-4 mr-8 px-57 py-13 bg-transparent" variant="light" onClick={handleCloseModal}>
+              <Button className="br-4 mr-8 px-40 py-5 bg-transparent" variant="outline-none" onClick={handleCloseModal}>
                 Batal
               </Button>
               <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>

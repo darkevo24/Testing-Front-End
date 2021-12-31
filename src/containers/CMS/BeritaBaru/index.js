@@ -85,11 +85,12 @@ const CMSBeritaBaru = () => {
     if (dataBerita.id) {
       // edit berita
       if (dataBerita.status === 2) {
+        dataBerita.status = 0;
         return dispatch(setEditBerita({ payload: dataBerita, id: dataBerita.id }))
           .then(() =>
             dispatch(
               setStatusBerita({
-                payload: { id: [dataBerita.id], status: dataBerita.status, note: dataBerita.note ? dataBerita.note : '' },
+                payload: { id: [dataBerita.id], status: 2, note: '' },
               }),
             ),
           )
@@ -100,7 +101,13 @@ const CMSBeritaBaru = () => {
     // kirim
     if (dataBerita.status === 2) {
       return dispatch(setNewBerita({ payload: dataBerita }))
-        .then((res) => dispatch(setEditBerita({ payload: dataBerita, id: res.payload.content.id })))
+        .then((res) =>
+          dispatch(
+            setStatusBerita({
+              payload: { id: [res.payload.content.id], status: 2, note: '' },
+            }),
+          ),
+        )
         .then((res) => notifyResponse(res));
     }
     // simpan

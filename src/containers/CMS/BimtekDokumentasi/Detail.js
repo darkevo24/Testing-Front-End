@@ -204,22 +204,25 @@ const CMSDokumentasiDetail = (props) => {
   const columnsMateri = [
     {
       Header: 'Materi',
-      accessor: 'nama',
+      accessor: '',
+      Cell: ({ ...rest }) => <span> {rest.row?.original?.nama} </span>,
     },
     {
       Header: 'Lampiran',
-      accessor: 'fileType',
+      accessor: '',
+      Cell: ({ ...rest }) => <span> {rest.row?.original?.fileType} </span>,
     },
   ];
 
   const columnsPembicara = [
     {
       Header: 'Nama Pembicara',
-      accessor: 'nama',
+      accessor: '',
+      Cell: ({ ...rest }) => <span> {rest.row.original?.nama} </span>,
     },
     {
       Header: 'Tanggal',
-      accessor: 'tanggalMulai',
+      accessor: '',
       Cell: ({ ...rest }) => (
         <span>
           {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('DD MMMM YYYY') : '---'}
@@ -228,27 +231,29 @@ const CMSDokumentasiDetail = (props) => {
     },
     {
       Header: 'Sesi',
-      accessor: 'sesi',
+      accessor: '',
       Cell: ({ ...rest }) => (
         <span> {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('hh:mm:ss') : '---'} </span>
       ),
     },
   ];
-
+  const filterMateriBimtek = materiBimtek.filter((data) => data !== null);
+  const filterPembicaraBimtek = pembicaraBimtek.filter((data) => data !== null);
   const tableConfigMateri = {
     className: 'cms-bimtek-table',
     columns: columnsMateri,
-    data: materiBimtek,
+    data: filterMateriBimtek,
     title: '',
     showSearch: false,
     onSearch: () => {},
     variant: 'link',
   };
 
+  console.log(materiBimtek);
   const tableConfigPembicara = {
     className: 'cms-bimtek-table',
     columns: columnsPembicara,
-    data: pembicaraBimtek,
+    data: filterPembicaraBimtek,
     title: '',
     showSearch: false,
     onSearch: () => {},

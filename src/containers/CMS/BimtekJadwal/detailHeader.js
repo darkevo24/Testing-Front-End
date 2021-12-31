@@ -21,7 +21,7 @@ export const DetailHeader = ({ record, status, history, handleModal, buttonUpdat
               <Button
                 key="edit"
                 variant="outline-light"
-                className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
+                className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke px-30 py-8 br-4"
                 onClick={() => handleModal('updateBimtek')}>
                 Perbarui
               </Button>
@@ -48,7 +48,7 @@ export const DetailHeader = ({ record, status, history, handleModal, buttonUpdat
               <Button
                 key="edit"
                 variant="outline-light"
-                className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
+                className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke px-30 py-8 br-4"
                 onClick={() => handleModal('updateBimtek')}>
                 Perbarui
               </Button>
@@ -114,7 +114,7 @@ export const DetailHeader = ({ record, status, history, handleModal, buttonUpdat
               <Button
                 key="edit"
                 variant="outline-light"
-                className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
+                className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke px-30 py-8 br-4"
                 onClick={() => handleModal('updateBimtek')}>
                 Perbarui
               </Button>

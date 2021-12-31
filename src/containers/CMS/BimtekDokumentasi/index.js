@@ -64,7 +64,7 @@ const CMSBimtekPermintaan = () => {
       Cell: ({ ...rest }) => (
         <span>
           {rest.row.original?.pembicara?.map((data) => {
-            return data.nama;
+            return data?.nama;
           })}
         </span>
       ),
@@ -75,7 +75,7 @@ const CMSBimtekPermintaan = () => {
       Cell: ({ ...rest }) => (
         <span>
           {rest.row.original?.materi?.map((data) => {
-            return data.nama;
+            return data?.nama;
           })}
         </span>
       ),

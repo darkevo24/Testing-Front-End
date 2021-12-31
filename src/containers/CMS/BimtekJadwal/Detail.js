@@ -45,12 +45,13 @@ const CMSJadwalDetail = (props) => {
   const { tagsResult, tagsLoading } = useSelector(bimtekJadwalTags);
   const { dataLog } = useSelector(bimtekLogAktifitas);
   const [idPembicara, setIdPembicara] = useState('');
+  const [objectRequired, setObjectRequired] = useState({});
   const [idMateri, setIdMateri] = useState(false);
   const [loader, setLoader] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
   const [buttonUpdate, setButtonUpdate] = useState(false);
   const [showModal, setShowModal] = useState('');
-  const [apiError, setAPIError] = useState('');
+  const [apiError, setAPIError] = useState(false);
   const [listMateri, setListMateri] = useState([]);
   const status = (records?.status || '').toLowerCase();
   const goBack = () => {
@@ -61,6 +62,20 @@ const CMSJadwalDetail = (props) => {
     if (!id) goBack();
     initialCall();
   }, []);
+
+  const schema = yup.object(objectRequired).required();
+
+  const {
+    control,
+    formState: { errors },
+    reset,
+    handleSubmit,
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      ...records,
+    },
+  });
 
   const initialCall = () => {
     dispatch(getJadwalBimtekDetail(id));
@@ -79,6 +94,7 @@ const CMSJadwalDetail = (props) => {
       initialCall();
       isFunction(callBack) && callBack();
     } catch (e) {
+      setAPIError(true);
       handleCloseModal();
       return handleNotification('secondary', `Error, ${e.message}`, 'cross');
     }
@@ -124,19 +140,31 @@ const CMSJadwalDetail = (props) => {
   };
 
   const onUpdate = async (data) => {
+    let tanggalMulaiDisetujui = `${moment(data.tanggalMulaiDisetujuiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
+        data.jamMulaiDisetujuiUpdate
+      }:00`,
+      tanggalSelesaiDisetujui = `${moment(data.tanggalSelesaiDisetujuiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
+        data.jamSelesaiDisetujuiUpdate
+      }:00`;
+    if (!moment(tanggalSelesaiDisetujui).isAfter(tanggalMulaiDisetujui)) {
+      handleCloseModal();
+      return handleNotification('secondary', 'Gagal, Rentang Waktu Tidak Valid', 'cross');
+    }
     let obj = {
       namaBimtek: data.default.namaBimtek,
       tagMateri: data.tags.map((elem) => elem.label) || [],
       kota: data.tagsKota[0]?.value || data.tagsKota.value,
       alamat: data.default.tempat,
-      tanggalMulaiDisetujui: `${moment(data.tanggalMulaiDisetujuiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
-        data.jamMulaiDisetujuiUpdate
-      }:00`,
-      tanggalSelesaiDisetujui: `${moment(data.tanggalSelesaiDisetujuiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
-        data.jamSelesaiDisetujuiUpdate
-      }:00`,
+      tanggalMulaiDisetujui,
+      tanggalSelesaiDisetujui,
     };
     handleAPICall(put, `${apiUrls.cmsBimtekJadwal}/${id}`, { data: obj });
+    if (apiError) {
+      setReadOnly(true);
+      setButtonUpdate(false);
+      setIdMateri('');
+      setAPIError(false);
+    }
   };
 
   const onDeleteMateri = async (idMateri) => {
@@ -193,6 +221,10 @@ const CMSJadwalDetail = (props) => {
     const tanggalSelesai = `${moment(data.tambahPembicaraWaktuSelesai).format('YYYY-MM-DD')} ${
       data.tambahPembicaraJamSelesai
     }:00`;
+    if (!moment(tanggalSelesai).isAfter(tanggalMulai)) {
+      handleCloseModal();
+      return handleNotification('secondary', 'Gagal, Rentang Waktu Tidak Valid', 'cross');
+    }
     let obj = [
       {
         nama,
@@ -280,20 +312,6 @@ const CMSJadwalDetail = (props) => {
     });
   }, [records, listKabupaten]);
 
-  const schema = yup.object({}).required();
-
-  const {
-    control,
-    formState: { errors },
-    reset,
-    handleSubmit,
-  } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      ...records,
-    },
-  });
-
   const materiBimtek = useMemo(() => records.materi || [], [records]);
   const pembicaraBimtek = useMemo(() => records.pembicara || [], [records]);
   const filterMateriBimtek = materiBimtek.filter((data) => data !== null);
@@ -344,19 +362,19 @@ const CMSJadwalDetail = (props) => {
       Header: 'Tanggal',
       accessor: 'tanggalMulai',
       Cell: ({ ...rest }) => (
-        <span>
-          {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('DD MMMM YYYY') : '---'}
-        </span>
-      ),
-    },
-    {
-      Header: 'Sesi',
-      accessor: 'sesi',
-      Cell: ({ ...rest }) => (
-        <span>
-          {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('HH:mm') : '---'} -
-          {rest.row.original?.tanggalSelesai ? moment(rest.row.original?.tanggalSelesai).format('HH:mm') : '---'}
-        </span>
+        <div className="d-flex">
+          <span className="pr-5">
+            {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('DD MMMM YYYY') + ' ' : '---'}
+            {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('HH:mm') : '---' + ' '}
+          </span>
+          <span>-</span>
+          <span className="pl-5">
+            {rest.row.original?.tanggalSelesai
+              ? moment(rest.row.original?.tanggalSelesai).format('DD MMMM YYYY') + ' '
+              : '---'}
+            {rest.row.original?.tanggalSelesai ? moment(rest.row.original?.tanggalSelesai).format('HH:mm') : '---'}
+          </span>
+        </div>
       ),
     },
     {
@@ -715,7 +733,7 @@ const CMSJadwalDetail = (props) => {
                 </div>
               </div>
               <div className="d-flex justify-content-end">
-                <Button className="br-4 mr-8 px-57 py-13 bg-transparent" variant="light" onClick={handleCloseModal}>
+                <Button className="br-4 mr-8 px-40 py-10 bg-transparent" variant="outline-none" onClick={handleCloseModal}>
                   Batal
                 </Button>
                 <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
@@ -751,7 +769,7 @@ const CMSJadwalDetail = (props) => {
                 </div>
               </div>
               <div className="d-flex justify-content-end">
-                <Button className="br-4 mr-8 px-40 py-13 bg-transparent" variant="light" onClick={handleCloseModal}>
+                <Button className="br-4 mr-8 px-40 py-13 bg-transparent" variant="outline-none" onClick={handleCloseModal}>
                   Batal
                 </Button>
                 <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
@@ -791,7 +809,7 @@ const CMSJadwalDetail = (props) => {
               </Row>
             </div>
             <div className="d-flex justify-content-end">
-              <Button className="br-4 mr-8 px-57 py-13 bg-transparent" variant="light" onClick={handleCloseModal}>
+              <Button className="br-4 mr-8 px-40 py-10 bg-transparent" variant="outline-none" onClick={handleCloseModal}>
                 Batal
               </Button>
               <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
@@ -838,7 +856,7 @@ const CMSJadwalDetail = (props) => {
               </Row>
             </div>
             <div className="d-flex justify-content-end">
-              <Button className="br-4 mr-8 px-57 py-13 bg-transparent" variant="light" onClick={handleCloseModal}>
+              <Button className="br-4 mr-8 px-40 py-10 bg-transparent" variant="outline-none" onClick={handleCloseModal}>
                 Batal
               </Button>
               <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>

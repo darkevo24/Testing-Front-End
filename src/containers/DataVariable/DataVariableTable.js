@@ -48,15 +48,17 @@ const DataVariableTable = ({
       {
         Header: 'ID Konsep',
         accessor: 'idKonsep',
+        Cell: ({ cell: { value = '-' } = {} }) => value,
       },
       {
         Header: 'Konsep',
         accessor: 'konsep',
+        Cell: ({ cell: { value = '-' } = {} }) => value,
       },
       {
         Header: 'Definisi',
         accessor: 'definisi',
-        Cell: ({ cell: { value } = {} }) => {
+        Cell: ({ cell: { value = '-' } = {} }) => {
           return cms ? (
             value
           ) : (

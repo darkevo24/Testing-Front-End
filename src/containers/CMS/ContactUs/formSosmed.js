@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Modal, Input, Dropdown } from 'components';
+import { Modal, Input } from 'components';
 import SingleDropDown from 'components/DropDown/SingleDropDown';
 
 import { getListSosMed, getListSelector } from '../MediaSosial/reducer';

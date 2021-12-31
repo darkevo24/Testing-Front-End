@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
@@ -22,7 +23,7 @@ import {
 const bem = bn('content-detail');
 
 const CMSContactDetail = (props) => {
-  const idContact = props.match.params.id;
+  const { id: idContact } = useParams();
   const dispatch = useDispatch();
   const { loading, record } = useSelector(contactDetailSelector);
   const { records: logRecords } = useSelector(logDataSelector);
@@ -145,7 +146,7 @@ const CMSContactDetail = (props) => {
                   <Button
                     variant="outline-light"
                     className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4 px-40"
-                    onClick={() => setCanEdit(false)}>
+                    onClick={() => fetchData({ id: idContact })}>
                     Batal
                   </Button>
                   <Button variant="info" className="mr-16 br-4 px-40 border-0" onClick={() => actionClick('simpan')}>

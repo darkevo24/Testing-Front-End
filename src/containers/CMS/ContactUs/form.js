@@ -8,7 +8,6 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { Input } from 'components';
 import { NoPerminataanData, Trash } from 'components/Icons';
 import { ReactComponent as Plus } from 'assets/plus.svg';
-import { Kontak_list } from 'utils/constants';
 import { submitForm } from 'utils/helper';
 
 import CMSContactSosmed from './formSosmed';
@@ -51,10 +50,9 @@ const CMSContactForm = ({ data, disabled, onSubmit = () => {} }) => {
     setListSosmed(listSosmed.filter((item) => item !== data));
   };
 
-  const changeSosmed = (e, index) => {
-    const data = listSosmed[index];
+  const changeSosmed = (data, index) => {
     let edit = [...listSosmed];
-    edit[index] = { ...data, url: e.target.value };
+    edit[index] = data;
     setListSosmed(edit);
   };
 
@@ -114,11 +112,22 @@ const CMSContactForm = ({ data, disabled, onSubmit = () => {} }) => {
                 <InputGroup.Text className="bg-white">
                   <img src={sosmed.image} alt="logo" />
                 </InputGroup.Text>
-                <Form.Control disabled={disabled} defaultValue={sosmed.url} onChange={(e) => changeSosmed(e, index)} />
+                <Form.Control
+                  disabled={disabled}
+                  defaultValue={sosmed.url}
+                  onChange={(e) => changeSosmed({ ...sosmed, url: e.target.value }, index)}
+                />
                 {!disabled ? (
                   <InputGroup.Text className="bg-white">
-                    <Form.Check className="mr-16" />
-                    <span className="cursor-pointer" onClick={() => removeSosmed(index)}>
+                    <Form.Check
+                      className="mr-16"
+                      type="switch"
+                      defaultChecked={sosmed.aktif}
+                      onChange={(e) => changeSosmed({ ...sosmed, aktif: e.target.checked }, index)}
+                    />
+                    <span
+                      className="cursor-pointer"
+                      onClick={() => (window.confirm(`Hapus ${sosmed.tipe}?`) ? removeSosmed(index) : null)}>
                       <Trash />
                     </span>
                   </InputGroup.Text>

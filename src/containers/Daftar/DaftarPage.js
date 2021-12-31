@@ -25,6 +25,7 @@ import { refetchDaftarData, getDaftarDataSummary, daftarDataSummarySelector } fr
 const Daftar = (props) => {
   const {
     bem,
+    dataindukAllOptions,
     dataIndukOptions,
     instansiOptions,
     priorityOptions,
@@ -240,7 +241,7 @@ const Daftar = (props) => {
           instansiOptions={instansiOptions}
           rkpPNOptions={rkpPNOptions}
           sdgPillerOptions={sdgPillerOptions}
-          dataIndukOptions={dataIndukOptions}
+          dataindukAllOptions={dataindukAllOptions}
           userInstansi={userInstansi}
           onSubmit={onDaftarFormSubmit}
         />

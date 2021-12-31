@@ -21,6 +21,18 @@
   cursor: pointer;
   
 }
+.beritaDetailContent{
+  p {
+    font-size: 16px;
+    line-height: 24px;
+    color: $gray-dark;
+
+    img{
+       max-width: fit-content;
+       margin: 15px 0;
+    }
+  }
+}
 
 // berita per bulan 
 .wrapper {

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import { Loader } from 'components';
+import moment from 'moment';
+import { ReactComponent as ArrowLeft } from 'assets/arrow-left.svg';
 import Search from './Search';
 import BeritaUtama from './BeritaUtama';
 import BeritaUtamaLain from './BeritaUtamaLain';
@@ -13,6 +15,8 @@ import Populer from './Populer';
 import Tweets from './Tweets';
 import { beritaLayoutSelector, getBertaLayout } from 'containers/CMS/BeritaLayout/reducer';
 import { newsByMonthSelector, getNewsByMonth } from './reducer';
+import { SectionTitle } from '.';
+
 const components = {
   search: Search,
   beritaUtama: BeritaUtama,
@@ -30,11 +34,19 @@ const renderComp = (el) => {
 const BeritaPerBulan = () => {
   const [size, setSize] = useState(10);
   const [kanan, setKanan] = useState([]);
+  const [monthName, setMonthName] = useState('');
+
+  const { date } = useParams();
+  useEffect(() => {
+    if (date) {
+      const month = moment(date, 'MM-YYYY').format('MMMM-YYYY');
+      setMonthName(month);
+    }
+  }, [date]);
 
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { date } = useParams();
   const beritaLayoutState = useSelector(beritaLayoutSelector);
   const { records, loading } = useSelector(newsByMonthSelector);
   const fetchBeritaLayoutData = () => {
@@ -68,11 +80,22 @@ const BeritaPerBulan = () => {
   const handleLoadMore = () => {
     setSize(size + 10);
   };
+  const handleBack = () => {
+    history.goBack();
+  };
   return (
     <div className="row mt-24">
       {loading && <Loader fullscreen />}
       <div className="col-lg-2"></div>
-      <div className="col-lg-6 wrapper" style={{ paddingRight: '5.5%' }}>
+      <div className="col-lg-6" style={{ paddingRight: '5.5%' }}>
+        <div className="row">
+          <div className="col-lg-12">
+            <SectionTitle>
+              <ArrowLeft onClick={handleBack} className="cursor-pointer" />
+              <strong className="ml-8">{monthName}</strong>
+            </SectionTitle>
+          </div>
+        </div>
         {records.length
           ? records.map((record, i) => {
               return (

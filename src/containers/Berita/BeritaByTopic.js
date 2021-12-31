@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import { Loader } from 'components';
+import { ReactComponent as ArrowLeft } from 'assets/arrow-left.svg';
+import { beritaLayoutSelector, getBertaLayout } from 'containers/CMS/BeritaLayout/reducer';
 import Search from './Search';
 import BeritaUtama from './BeritaUtama';
 import BeritaUtamaLain from './BeritaUtamaLain';
@@ -11,8 +13,9 @@ import TopikPopuler from './TopikPopuler';
 import BeritaLainnya from './BeritaLainnya';
 import Populer from './Populer';
 import Tweets from './Tweets';
-import { beritaLayoutSelector, getBertaLayout } from 'containers/CMS/BeritaLayout/reducer';
-import { getNewsByTopic, newsByTopicSelector } from './reducer';
+import { getNewsByTopic, newsByTopicSelector, popularTopicSelector } from './reducer';
+import { SectionTitle } from '.';
+
 const components = {
   search: Search,
   beritaUtama: BeritaUtama,
@@ -32,12 +35,22 @@ const BeritaByTopik = () => {
   const [kanan, setKanan] = useState([]);
   const [pageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [topic, setTopic] = useState('');
 
   const dispatch = useDispatch();
   const history = useHistory();
 
   const beritaLayoutState = useSelector(beritaLayoutSelector);
   const { records, loading } = useSelector(newsByTopicSelector);
+  const { records: dataPopularTopic } = useSelector(popularTopicSelector);
+
+  useEffect(() => {
+    if (id) {
+      const topic = dataPopularTopic.find((el) => el.id === parseInt(id));
+      setTopic(topic?.keterangan);
+    }
+  }, [id, dataPopularTopic]);
+
   const fetchBeritaLayoutData = () => {
     dispatch(getBertaLayout());
   };
@@ -68,12 +81,22 @@ const BeritaByTopik = () => {
   const handleLoadMore = () => {
     setPageSize(pageSize + 10);
   };
-
+  const handleBack = () => {
+    history.goBack();
+  };
   return (
     <div className="row mt-24">
       {loading && <Loader fullscreen />}
       <div className="col-lg-2"></div>
-      <div className="col-lg-6 wrapper pr-5">
+      <div className="col-lg-6  pr-5">
+        <div className="row">
+          <div className="col-lg-12">
+            <SectionTitle>
+              <ArrowLeft onClick={handleBack} className="cursor-pointer" />
+              <strong className="ml-8">Topic: {topic}</strong>
+            </SectionTitle>
+          </div>
+        </div>
         {records.length
           ? records.map((record, i) => {
               return (

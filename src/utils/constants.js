@@ -45,6 +45,7 @@ export const apiUrls = {
   bidangData: getCMSEndpoint('komunitas-ahli/bidang-keahlian'),
   daerahData: getV1Endpoint('kabupatenkota/search'),
   produenData: getV1Endpoint('katalog/produsendata'),
+  dataindukAllData: getV1Endpoint('katalog/all'),
   dataindukData: getV1Endpoint('katalog/datainduk'),
   katalogData: getV1Endpoint('katalog'),
   listPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
@@ -89,12 +90,11 @@ export const apiUrls = {
   bimtekMateriTerdekatDownload: getApiEndpoint('file/public-download'),
   beritaLayout: getPublicV1Endpoint('layout'),
   updateKiriLayout: getPublicV1Endpoint('layout/code/kiri'),
-  bimtekDokumentasiMingguIni: getPortalEndpoint('v1/bimtek/dokumentasi/minggu-ini'),
-  bimtekDokumentasiMingguLalu: getPortalEndpoint('v1/bimtek/dokumentasi/minggu-lalu'),
-  bimtekDokumentasiBulanIni: getPortalEndpoint('v1/bimtek/dokumentasi/bulan-ini'),
+  bimtekDokumentasi: getPortalEndpoint('v1/bimtek/dokumentasi'),
   bimtekPermintaan: getPortalEndpoint('v1/bimtek/permintaan'),
   sosialMedia: getCMSEndpoint('sosial-media'),
   bimtekLogs: getPortalEndpoint('v1/bimtek/logs'),
+  cmsContactUs: getCMSEndpoint('hubungi-kami-setting'),
 };
 
 export const priorityOptions = [

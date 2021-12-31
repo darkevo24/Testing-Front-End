@@ -6,12 +6,12 @@ import Button from 'react-bootstrap/Button';
 import SingleDropDown from 'components/DropDown/SingleDropDown';
 import Table, { FilterSearchInput } from 'components/Table';
 import {
-  getCMSForumSDITags,
+  getCMSForumSDITopik,
   getCMSForumSDIStatus,
   getCMSForumSDIListData,
   cmsForumSDIGetListSelector,
   cmsForumSDIGetStatusSelector,
-  cmsForumSDIGetTagsSelector,
+  cmsForumSDIGetTopikSelector,
 } from './reducer';
 import TableLoader from 'components/Loader/TableLoader';
 import { ComponentAccessibility } from 'components/ComponentAccess';
@@ -23,16 +23,16 @@ const CMSForumSDI = () => {
 
   const { payload, size, loading, page, records, totalRecords, totalPages } = useSelector(cmsForumSDIGetListSelector);
   const { statusResult, statusLoading } = useSelector(cmsForumSDIGetStatusSelector);
-  const { tagsResult, tagsLoading } = useSelector(cmsForumSDIGetTagsSelector);
+  const { topikResult, topikLoading } = useSelector(cmsForumSDIGetTopikSelector);
 
   const gotoFormPage = () => {
     history.push('/cms/forum-sdi/manage-forum-sdi');
   };
 
   useEffect(() => {
-    dispatch(getCMSForumSDITags());
+    dispatch(getCMSForumSDITopik());
     dispatch(getCMSForumSDIStatus());
-    handleAPICall({ page: 0, payload: { q: '', status: '', tag: '' } });
+    handleAPICall({ page: 0, payload: { judul: '', status: '', topik: '' } });
   }, []);
 
   const redirectToDetail = (data) => {
@@ -43,12 +43,12 @@ const CMSForumSDI = () => {
     dispatch(getCMSForumSDIListData(params));
   };
 
-  const handleTagChange = (selected) => {
-    handleAPICall({ page: 0, payload: { ...payload, tag: selected?.value || '' } });
+  const handleTopikChange = (selected) => {
+    handleAPICall({ page: 0, payload: { ...payload, topik: selected?.value || '' } });
   };
 
-  const handleSearch = (value) => {
-    handleAPICall({ page: 0, payload: { ...payload, q: value } });
+  const handleSearch = (value = '') => {
+    handleAPICall({ page: 0, payload: { ...payload, judul: value } });
   };
 
   const handleStatusChange = (selected) => {
@@ -129,7 +129,7 @@ const CMSForumSDI = () => {
     },
   };
 
-  const tagsResultList = (tagsResult?.content || []).map((tag) => ({ value: tag, label: tag }));
+  const topikResultList = (topikResult || []).map((topik) => ({ value: topik.nama, label: topik.nama }));
   const statusResultList = (statusResult || [])?.map((status) => ({ value: status, label: status }));
 
   return (
@@ -145,9 +145,9 @@ const CMSForumSDI = () => {
           <div className="d-flex align-items-center">
             <label className="mr-12">Topik</label>
             <SingleDropDown
-              isLoading={tagsLoading}
-              data={[{ value: '', label: 'All' }, ...tagsResultList]}
-              onChange={handleTagChange}
+              isLoading={topikLoading}
+              data={[{ value: '', label: 'All' }, ...topikResultList]}
+              onChange={handleTopikChange}
             />
           </div>
           <div className="d-flex align-items-center ml-16">

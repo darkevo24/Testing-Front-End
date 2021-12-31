@@ -7,6 +7,7 @@ import bn from 'utils/bemNames';
 import { priorityOptions } from 'utils/constants';
 import {
   daftarDataSubmit,
+  dataVariableSubmit,
   getProduen,
   getSDGTujuan,
   getRKPpp,
@@ -18,6 +19,8 @@ import {
   dafterLogDataWithIdSelector,
   getDaftarDataDetailById,
   getDaftarDataDetailLog,
+  getKatalogVariables,
+  katalogVariableDataSelector,
 } from './reducer';
 import {
   dataindukOptionsSelector,
@@ -28,6 +31,8 @@ import {
   getInstansiData,
   getSDGPillers,
   getRKPpn,
+  dataindukAllOptionsSelector,
+  getAllDatainduk,
 } from 'containers/App/reducer';
 import { /* createFileAndDownload, fileTypes,*/ prepareFormPayload } from 'utils/helper';
 
@@ -37,7 +42,8 @@ const DaftarDataProvider = ({ children }) => {
   const dispatch = useDispatch();
   const produenOptions = useSelector(produenOptionsSelector);
 
-  const dataindukOptions = useSelector(dataindukOptionsSelector);
+  const dataindukAllOptions = useSelector(dataindukAllOptionsSelector);
+  const dataIndukOptions = useSelector(dataindukOptionsSelector);
   const instansiOptions = useSelector(instansiOptionsSelector);
   const sdgPillerOptions = useSelector(sdgPillerOptionsSelector);
   const rkpPNOptions = useSelector(rkpPNOptionsSelector);
@@ -46,11 +52,13 @@ const DaftarDataProvider = ({ children }) => {
   const tujuanSDGPillerOptions = useSelector(tujuanSDGPillerOptionsSelector);
   const dafterDataWithId = useSelector(dafterDataWithIdSelector);
   const dafterLogDataWithId = useSelector(dafterLogDataWithIdSelector);
+  const katalogVariableData = useSelector(katalogVariableDataSelector);
 
   useEffect(() => {
     if (!instansiOptions?.length) dispatch(getInstansiData());
     if (!produenOptions?.length) dispatch(getProduen());
-    if (!dataindukOptions?.length) dispatch(getDatainduk());
+    if (!dataIndukOptions?.length) dispatch(getDatainduk());
+    if (!dataindukAllOptions?.length) dispatch(getAllDatainduk());
     if (!sdgPillerOptions?.length) dispatch(getSDGPillers());
     if (!rkpPPOptions?.length) dispatch(getRKPpn());
   }, []);
@@ -58,6 +66,7 @@ const DaftarDataProvider = ({ children }) => {
   const getDafterDataById = (id) => {
     dispatch(getDaftarDataDetailById(id));
     dispatch(getDaftarDataDetailLog(id));
+    dispatch(getKatalogVariables({ daftarId: id }));
   };
 
   const onPilarSdgChange = (pilarSDG) => {
@@ -126,17 +135,21 @@ const DaftarDataProvider = ({ children }) => {
 
   const daftarProps = {
     bem,
-    dataindukOptions,
+    dataIndukOptions,
     instansiOptions,
     priorityOptions,
+    dataVariableSubmit,
     produenOptions,
+    katalogVariableData,
     sdgPillerOptions,
     tujuanSDGPillerOptions,
+    dataindukAllOptions,
     rkpPNOptions,
     rkpPPOptions,
     dafterDataWithId,
     dafterLogDataWithId,
     getDafterDataById,
+    getKatalogVariables,
     onPilarSdgChange,
     onPnRKPChange,
     onDownloadData,

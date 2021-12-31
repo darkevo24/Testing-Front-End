@@ -18,20 +18,10 @@ export const initialState = {
     error: '',
     record: {},
   },
-  tagline: {
+  logBerita: {
     loading: false,
     error: '',
     records: [],
-  },
-  kategori: {
-    loading: false,
-    error: '',
-    records: [],
-  },
-  file: {
-    loading: false,
-    error: '',
-    record: {},
   },
   user: null,
   error: null,
@@ -73,6 +63,11 @@ export const deleteBerita = createAsyncThunk('cms/deleteBerita', async (params) 
 
 export const setPreviewBerita = createAsyncThunk('cms/setPreviewBerita', async (params) => {
   return params;
+});
+
+export const getLogBerita = createAsyncThunk('cmsBerita/getLogBerita', async (params) => {
+  const response = await get(`${apiUrls.cmsBeritaData}/logs/${params.id}`);
+  return response?.data?.content;
 });
 
 const beritaCmsSlice = createSlice({
@@ -161,11 +156,24 @@ const beritaCmsSlice = createSlice({
     builder.addCase(setPreviewBerita.fulfilled, (state, action) => {
       state.detaildataSet.record = action.payload;
     });
+
+    builder.addCase(getLogBerita.pending, (state) => {
+      state.logBerita.loading = true;
+    });
+    builder.addCase(getLogBerita.fulfilled, (state, action) => {
+      state.logBerita.loading = false;
+      state.logBerita.records = action.payload;
+    });
+    builder.addCase(getLogBerita.rejected, (state, action) => {
+      state.logBerita.loading = false;
+      state.logBerita.error = action.error.message;
+    });
   },
 });
 
 export const beritaCmsListSelector = (state) => state.cmsBerita?.dataset;
 export const detailDataSelector = (state) => state.cmsBerita?.detaildataSet;
+export const logBeritaSelector = (state) => state.cmsBerita?.logBerita;
 
 export const { updateResult } = beritaCmsSlice.actions;
 export default beritaCmsSlice.reducer;

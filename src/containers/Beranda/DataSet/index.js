@@ -11,14 +11,14 @@ import find from 'lodash/find';
 import map from 'lodash/map';
 import uniqBy from 'lodash/uniqBy';
 import remove from 'lodash/remove';
+import moment from 'moment';
 
 import { ReactComponent as SearchSvg } from 'assets/search.svg';
 import { Breadcrumb, Loader, MapTile, SectionList, Table, Tags } from 'components';
 import { Circle, Close } from 'components/Icons';
-import moment from 'moment';
-import { datasetSelector, getDataSet, logHomeTrendingOrPopular } from '../reducer';
 import bn from 'utils/bemNames';
 import { getDatasetUrl, parseQueryString } from 'utils/helper';
+import { datasetSelector, getDataSet, logHomeTrendingOrPopular } from '../reducer';
 
 const bem = bn('dataset');
 

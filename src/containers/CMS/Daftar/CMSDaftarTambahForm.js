@@ -4,50 +4,40 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
+import cloneDeep from 'lodash/cloneDeep';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Input } from 'components';
-import Modal from 'components/Modal';
+import { Input, Modal } from 'components';
 import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
+import { pengaturanAksesOptions } from 'utils/constants';
+import { findOption } from 'utils/helper';
+
+const schema = yup.object({
+  nama: yup.string().required('Nama is required'),
+  pengaturanAkses: yup.object().required('Pengaturan akses is required'),
+});
 
 const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit }) => {
-  const schema = yup.object({
-    nama: yup.string().required(),
-    idKonsep: yup.number().required(),
-    konsep: yup.string().required(),
-    definisi: yup.string().required(),
-    pengaturanAkses: yup.mixed().required(),
-  });
+  const isEdit = !!data?.id;
+  const variable = cloneDeep(data || {});
+  if (isEdit) {
+    variable.pengaturanAkses = findOption(pengaturanAksesOptions, variable.pengaturanAkses);
+  }
   const {
     control,
     handleSubmit,
-    setValue,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      nama: '',
-      idKonsep: '',
-      konsep: '',
-      definisi: '',
-      pengaturanAkses: {},
+      ...variable,
     },
   });
 
   useEffect(() => {
-    setDefaultData();
+    reset(variable);
   }, [selectedRecord]);
-
-  const setDefaultData = () => {
-    const fields = [
-      { name: 'nama', value: data.nama || '' },
-      { name: 'idKonsep', value: data.idKonsep || '' },
-      { name: 'konsep', value: data.konsep },
-      { name: 'definisi', value: data.definisi || '' },
-      { name: 'pengaturanAkses', value: { value: data.pengaturanAkses, label: data.pengaturanAkses } },
-    ];
-    fields.forEach(({ name, value }) => setValue(name, value));
-  };
 
   return (
     <Modal visible={visible} title="Tambah Variabel" size="lg" onClose={() => setModal(false)} centered={true}>
@@ -56,8 +46,9 @@ const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit 
           <Input
             group
             label="Nama Variabel"
+            labelClass="sdp-form-label  fw-normal"
             name="nama"
-            error={errors?.nama?.message ? 'Nama is required' : ''}
+            error={errors?.nama?.message}
             control={control}
           />
         </Row>
@@ -65,8 +56,9 @@ const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit 
           <Input
             group
             label="ID Konsep"
+            labelClass="sdp-form-label  fw-normal"
             name="idKonsep"
-            error={errors?.idKonsep?.message ? 'ID Konsep is required' : ''}
+            error={errors?.idKonsep?.message}
             control={control}
           />
         </Row>
@@ -74,8 +66,9 @@ const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit 
           <Input
             group
             label="Konsep"
+            labelClass="sdp-form-label  fw-normal"
             name="konsep"
-            error={errors?.konsep?.message ? 'Konsep is required' : ''}
+            error={errors?.konsep?.message}
             control={control}
           />
         </Row>
@@ -83,20 +76,18 @@ const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit 
           <Input
             group
             label="Definisi"
+            labelClass="sdp-form-label  fw-normal"
             name="definisi"
-            error={errors?.definisi?.message ? 'definisi is required' : ''}
+            error={errors?.definisi?.message}
             control={control}
           />
         </Row>
         <Row>
           <label className="sdp-form-label py-8">Pengaturan Akses</label>
           <SingleSelectDropdown
-            data={[
-              { value: 1, label: 'aa' },
-              { value: 2, label: 'bb' },
-            ]}
+            data={pengaturanAksesOptions}
             placeHolder=""
-            error={errors?.pengaturanAkses?.message ? 'Pengaturan Akses is required' : ''}
+            error={errors?.pengaturanAkses?.message}
             control={control}
             name="pengaturanAkses"
           />

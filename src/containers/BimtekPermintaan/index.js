@@ -9,16 +9,25 @@ import { getBimtekPermintaan, bimtekPermintaan } from './reducer';
 import { NoPerminataanData } from 'components/Icons';
 import bn from 'utils/bemNames';
 import moment from 'moment';
+import Pagination from 'components/Pagination';
 
 const bem = bn('bimtek-permintaan');
+const paginateParams = {
+  page: 1,
+  size: 10,
+};
 
 const BimtekPermintaan = () => {
   const dispatch = useDispatch();
-  const { records: permintaanRecords } = useSelector(bimtekPermintaan);
+  const { records: permintaanRecords, totalPages: pageNumber } = useSelector(bimtekPermintaan);
 
   useEffect(() => {
-    dispatch(getBimtekPermintaan());
+    dispatch(getBimtekPermintaan(paginateParams));
   }, []);
+
+  const changePage = (props) => {
+    dispatch(getBimtekPermintaan({ ...paginateParams, page: props.page }));
+  };
 
   return (
     <BimtekLayout className="bimtek-permintaan">
@@ -42,6 +51,7 @@ const BimtekPermintaan = () => {
           ))
         )}
       </Row>
+      {permintaanRecords?.length && <Pagination totalPages={pageNumber} onChangePage={(props) => changePage(props)} />}
     </BimtekLayout>
   );
 };

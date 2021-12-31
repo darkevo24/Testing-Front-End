@@ -87,11 +87,13 @@ const KomunitasAhliPage = () => {
   };
 
   const handleFilterChange = (data) => {
-    let payload_clone = { ...payload };
-    if (data.nama.trim()) payload_clone = { ...payload_clone, nama: data.nama };
-    if (data.bidangKeahlian?.value) payload_clone = { ...payload_clone, bidangKeahlian: data.bidangKeahlian.value };
-    if (data.instansiId?.value) payload_clone = { ...payload_clone, instansiId: data.instansiId.value };
-    if (data.daerahId?.value) payload_clone = { ...payload_clone, daerahId: data.daerahId.value };
+    let payload_clone = {
+      nama: data.nama.trim(),
+      bidangKeahlian: data?.bidangKeahlian?.value || '',
+      instansiId: data?.instansiId?.value || '',
+      daerahId: data?.daerahId?.value || '',
+    };
+
     handleAPICall({
       page: 0,
       payload: payload_clone,
@@ -113,20 +115,21 @@ const KomunitasAhliPage = () => {
   const handleOutSideClick = () => {
     setShowFilter(false);
     setValue('nama', payload?.nama || '');
+
     if (payload?.bidangKeahlian) {
-      const rec = bidangKeahlianData.forEach((item) => item.bidangKeahlian === payload.bidangKeahlian);
-      setValue('bidangKeahlian', { value: rec.bidangKeahlian, label: rec.bidangKeahlian });
+      const rec = bidangKeahlianData.find((item) => item.nama === payload.bidangKeahlian);
+      setValue('bidangKeahlian', { value: rec.nama, label: rec.nama });
     } else {
       setValue('bidangKeahlian', null);
     }
     if (payload?.instansiId) {
-      const rec = instansiData.forEach((item) => item.bidangKeahlian === payload.bidangKeahlian);
+      const rec = (instansiData?.result || []).find((item) => +item.id === payload.instansiId);
       setValue('instansiId', { value: rec.id, label: rec.nama });
     } else {
       setValue('instansiId', null);
     }
     if (payload?.daerahId) {
-      const rec = daerahData.forEach((item) => +item.id === +payload.daerahId);
+      const rec = daerahData.find((item) => +item.id === +payload.daerahId);
       setValue('daerahId', { value: rec.id, label: rec.nama });
     } else {
       setValue('daerahId', null);
@@ -224,9 +227,10 @@ const KomunitasAhliPage = () => {
                   key="bidangKeahlian"
                   name="bidangKeahlian"
                   control={control}
-                  data={bidangKeahlianData.map((item) => ({ value: item.id, label: item.nama }))}
+                  data={bidangKeahlianData.map((item) => ({ value: item.nama, label: item.nama }))}
                   placeholder="Bidang Keahlian"
                   className="mb-15 bg-gray"
+                  isClearable={true}
                 />
                 <SingleSelectDropDown
                   key="daerahId"
@@ -236,6 +240,7 @@ const KomunitasAhliPage = () => {
                   placeholder="Daerah"
                   onInputChange={debounceSearch}
                   className="mb-15"
+                  isClearable={true}
                 />
                 <SingleSelectDropDown
                   key="instansiId"
@@ -245,6 +250,7 @@ const KomunitasAhliPage = () => {
                   placeholder="Instansi / Lembaga"
                   isLoading={instansiData?.loading}
                   className="mb-15"
+                  isClearable={true}
                 />
               </div>
 

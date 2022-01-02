@@ -49,6 +49,10 @@
 }
 
 .cms-permintaan-data {
+  .basic-single{
+    width: 100%;
+  }
+
   .sdp-table__table-wrapper {
     padding-top: 30px;
     th {
@@ -104,7 +108,7 @@
         display: grid;
         grid-template-columns: 33% 33% 33%;
         .unit-kerja {
-          width:120px;
+          width:100px;
           margin:0px;
         }
       }

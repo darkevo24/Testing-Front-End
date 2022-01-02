@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router-dom';
+import moment from 'moment';
+import isFunction from 'lodash/isFunction';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -9,207 +11,64 @@ import Form from 'react-bootstrap/Form';
 import * as yup from 'yup';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  getPermintaanDataDetail,
-  getPermintaanDataDetailLog,
-  permintaanDataDetailSelector,
-  postPermintaanDataProses,
-  postPermintaanDataSelesai,
-  postPermintaanDataTolak,
-} from './reducer';
+import { getPermintaanDataDetail, getPermintaanDataDetailLog, permintaanDataDetailSelector } from './reducer';
+import { getStatusClass, prefixID } from 'utils/helper';
+import { apiUrls, post } from 'utils/request';
 import Notification from 'components/Notification';
 import { Input } from 'components';
+import { DetailHeader } from './detailHeader';
 import bn from 'utils/bemNames';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import { LeftChevron } from 'components/Icons';
 import Modal from 'components/Modal';
 
 const bem = bn('content-detail');
-export const tolakFormId = 'tolak-form-id';
-export const prosesFormId = 'proses-form-id';
-export const selesaiFormId = 'selesai-form-id';
 
 const CMSPermintaanDataView = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { result, dataLog } = useSelector(permintaanDataDetailSelector);
   const [objRequired, setObjRequired] = useState({});
-  const [showTolakModal, isSetShowTolakModal] = useState(false);
-  const [showProsesModal, isSetShowProsesModal] = useState(false);
-  const [showSelesaiModal, isSetShowSelesaiModal] = useState(false);
+  const [showModal, setShowModal] = useState('');
+
   const history = useHistory();
-  const backToTable = () => {
+  const status = (result?.status || '').toLowerCase();
+  const goBack = () => {
     history.push('/cms/permintaan-data');
   };
-  const SuccessText = () => {
-    return (
-      <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
-        </div>
-        <Row className="permintaan-data-form-success fw-bold justify-content-center align-items-center">Selesai</Row>
-      </div>
-    );
-  };
 
-  const TerkirimText = () => {
-    return (
-      <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
-        </div>
-        <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Terkirim</Row>
-      </div>
-    );
-  };
-
-  const DiprosesText = () => {
-    return (
-      <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
-        </div>
-        <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">Terproses</Row>
-      </div>
-    );
-  };
-
-  const DraftText = () => {
-    return (
-      <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
-        </div>
-        <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">Draft</Row>
-      </div>
-    );
-  };
-
-  const TerkirimButton = ({ onTolak, onProses }) => {
-    return (
-      <div>
-        <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={onTolak}>
-          Tolak
-        </Button>
-        <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={onProses}>
-          Proses
-        </Button>
-      </div>
-    );
-  };
-
-  const DiprosesButton = ({ onSelesai }) => {
-    return (
-      <div>
-        <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={onSelesai}>
-          Selesai
-        </Button>
-      </div>
-    );
-  };
-
-  const setShowTolakModal = () => {
-    isSetShowTolakModal(true);
-  };
-
-  const hideTolakModal = () => {
-    isSetShowTolakModal(false);
-  };
-
-  const setShowProsesModal = () => {
-    isSetShowProsesModal(true);
-  };
-
-  const hideProsesModal = () => {
-    isSetShowProsesModal(false);
-  };
-
-  const setShowSelesaiModal = () => {
-    isSetShowSelesaiModal(true);
-  };
-
-  const hideSelesaiModal = () => {
-    isSetShowSelesaiModal(false);
-  };
-  const fetchDataset = () => {
-    return dispatch(getPermintaanDataDetail(id));
-  };
-  const fetchDatasetLog = () => {
-    return dispatch(getPermintaanDataDetailLog(id));
-  };
-
-  const onSubmitTolak = (data) => {
-    let obj = {
-      id,
-      catatan: data.catatan,
-    };
-    dispatch(postPermintaanDataTolak(obj)).then((res) => {
-      !res.status === 'FAILED'
-        ? Notification.show({
-            type: 'secondary',
-            message: <div> Permintaan Data Berhasi Ditolak </div>,
-            icon: 'check',
-          })
-        : Notification.show({
-            type: 'secondary',
-            message: <div> Permintaan Data Gagal Ditolak </div>,
-            icon: 'cross',
-          });
-    });
-    hideTolakModal();
-  };
-
-  const onSubmitProses = (data) => {
-    let obj = {
-      id,
-      catatan: data.catatan,
-    };
-    dispatch(postPermintaanDataProses(obj)).then((res) => {
-      !res.status === 'FAILED'
-        ? Notification.show({
-            type: 'secondary',
-            message: <div> Permintaan Data Berhasil Diproses </div>,
-            icon: 'check',
-          })
-        : Notification.show({
-            type: 'secondary',
-            message: <div> Permintaan Data Gagal Diproses </div>,
-            icon: 'cross',
-          });
-    });
-    hideProsesModal();
-  };
-
-  const onSubmitSelesai = (data) => {
-    let obj = {
-      id,
-      catatan: data.catatan,
-      url: data.urlDatasetNew,
-    };
-    dispatch(postPermintaanDataSelesai(obj)).then((res) => {
-      !res.status === 'FAILED'
-        ? Notification.show({
-            type: 'secondary',
-            message: <div> Permintaan Data Berhasil Diselesaikan </div>,
-            icon: 'check',
-          })
-        : Notification.show({
-            type: 'secondary',
-            message: <div> Permintaan Data Gagal Diselesaikan </div>,
-            icon: 'cross',
-          });
-    });
-    hideSelesaiModal();
+  const initialCall = () => {
+    dispatch(getPermintaanDataDetail(id));
+    dispatch(getPermintaanDataDetailLog(id));
   };
 
   const data = useMemo(() => result || {}, [result]);
   useEffect(() => {
-    fetchDataset();
-    fetchDatasetLog();
+    initialCall();
   }, []);
 
+  const schema = yup.object(objRequired).required();
+
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    reset,
+    setValue,
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      ...data,
+    },
+  });
+
   useEffect(() => {
-    reset(data);
+    setValue('deskripsi', data?.deskripsi);
+    setValue('tujuanPermintaan', data?.tujuanPermintaan);
+    setValue('instansi.nama', data?.instansi?.nama);
+    setValue('tanggalTarget', moment(data?.tanggalTarget).format('DD/MM/YYYY'));
+    setValue('jenisData', data?.jenisData);
+    setValue('urlDataset', data?.urlDataset);
     switch (data.status) {
       case 'TERKIRIM':
         return setObjRequired({
@@ -224,51 +83,80 @@ const CMSPermintaanDataView = () => {
         return null;
     }
   }, [data]);
-  const schema = yup.object(objRequired).required();
 
-  const {
-    control,
-    formState: { errors },
-    handleSubmit,
-    reset,
-  } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      ...data,
-    },
-  });
+  const handleCloseModal = () => {
+    setShowModal('');
+  };
 
-  const StatusBar = () => {
-    switch (data.status) {
-      case 'SELESAI':
-        return <SuccessText />;
-      case 'TERKIRIM':
-        return <TerkirimText />;
-      case 'DIPROSES':
-        return <DiprosesText />;
-      case 'DRAFT':
-        return <DraftText />;
-      default:
-        return null;
+  const handleNotification = (type, message, icon) => {
+    Notification.show({
+      type,
+      message,
+      icon,
+    });
+  };
+
+  const handleAPICall = async (method, url, params, message, callBack) => {
+    try {
+      await method(url, {}, params);
+      handleCloseModal();
+      handleNotification('secondary', `${message}`, 'check');
+      initialCall();
+      isFunction(callBack) && callBack();
+    } catch (e) {
+      console.log(e);
+      handleNotification('secondary', `Error, ${e.message}`, 'cross');
+      handleCloseModal();
     }
   };
 
+  const onSubmitTolak = (data) => {
+    let obj = {
+      catatan: data.catatan,
+    };
+    handleAPICall(post, `${apiUrls.detailPermintaanData}/${id}/tolak`, { data: obj }, 'Permintaan Data Berhasil Ditolak');
+  };
+
+  const onSubmitProses = (data) => {
+    let obj = {
+      catatan: data.catatan,
+    };
+    handleAPICall(post, `${apiUrls.detailPermintaanData}/${id}/proses`, { data: obj }, 'Permintaan Data Berhasil Diproses');
+  };
+
+  const onSubmitSelesai = (data) => {
+    let obj = {
+      catatan: data.catatan,
+      urlDataset: data.urlDatasetNew,
+    };
+    handleAPICall(
+      post,
+      `${apiUrls.detailPermintaanData}/${id}/selesai`,
+      { data: obj },
+      'Permintaan Data Berhasil Diselesaikan',
+    );
+  };
+
+  const divClass = getStatusClass(status || '');
   return (
     <div className={bem.e('cms-permintaan-data')}>
-      <StatusBar />
+      <div className="d-flex align-items-center">
+        <button className="bg-white border-gray-stroke p-10" onClick={goBack}>
+          <LeftChevron />
+        </button>
+        <div className={`br-2 p-12 flex-grow-1 flex-center  ${divClass?.divBG || ''}`}>
+          <span className={`fs-14 lh-17 ${divClass?.textColor || ''}`}>{divClass?.text || result?.status || ''}</span>
+        </div>
+      </div>
       <Row className={bem.e('section')}>
         <Col sm={9} className="my-5">
           <div>
             <div className="d-flex justify-content-between mb-4">
               <div className={bem.e('title')}>Detail</div>
               <div>
-                {data.status === 'TERKIRIM' ? (
-                  <TerkirimButton onTolak={setShowTolakModal} onProses={setShowProsesModal} />
-                ) : null}
-                {data.status === 'DIPROSES' ? <DiprosesButton onSelesai={setShowSelesaiModal} /> : null}
+                <DetailHeader handleModal={(type) => setShowModal(type)} history={history} status={status} />
               </div>
             </div>
-
             <Form className="sdp-form" noValidate>
               <Input disabled group label="Deskripsi Data" name="deskripsi" control={control} />
               <Input disabled group label="Tujuan Permintaan data" name="tujuanPermintaan" control={control} />
@@ -293,7 +181,7 @@ const CMSPermintaanDataView = () => {
                     <p className="fw-bold">NIP/NIK</p>
                   </div>
                   <div className="col-2">
-                    <p className="fw-light">{data.user?.nik}</p>
+                    <p className="fw-light">{data?.user?.nik}</p>
                   </div>
                 </div>
                 <div className="d-flex flex-row">
@@ -301,7 +189,7 @@ const CMSPermintaanDataView = () => {
                     <p className="fw-bold">Instansi</p>
                   </div>
                   <div className="col-2">
-                    <p className="fw-light">{data.instansi?.nama}</p>
+                    <p className="fw-light">{data?.instansi?.nama}</p>
                   </div>
                 </div>
                 <div className="d-flex flex-row">
@@ -309,7 +197,7 @@ const CMSPermintaanDataView = () => {
                     <p className="fw-bold">Unit Kerja</p>
                   </div>
                   <div className="col-2">
-                    <p className="fw-light">{data.user?.unitKerja}</p>
+                    <p className="fw-light">{data?.user?.unitKerja?.nama}</p>
                   </div>
                 </div>
                 <div className="d-flex flex-row">
@@ -317,7 +205,7 @@ const CMSPermintaanDataView = () => {
                     <p className="fw-bold">Status Kepegawaian</p>
                   </div>
                   <div className="col-2">
-                    <p className="fw-light">{data.status}</p>
+                    <p className="fw-light">{data?.user?.status}</p>
                   </div>
                 </div>
               </ul>
@@ -327,126 +215,124 @@ const CMSPermintaanDataView = () => {
         <Col sm={3} className="my-5">
           <LogStatus data={dataLog} />
         </Col>
-        <Modal
-          className="modal-permintaan-detail"
-          showHeader={false}
-          visible={showTolakModal}
-          onClose={() => hideTolakModal()}>
-          <div className="mt-20 mb-20">
-            <p className="font-weight-bold mb-0">
-              Apakah anda yakin ingin
-              <span className="text-danger"> menolak </span>
-              Permintaan Data
-            </p>
-            {id} ?
-          </div>
-          <Form onSubmit={handleSubmit(onSubmitTolak)} noValidate>
-            <Form.Group as={Col} md="12" className="mb-16">
-              <Input
-                name="catatan"
-                as="textarea"
-                control={control}
-                rules={{ required: true }}
-                placeholder="Tulis catatan"
-                type="text"
-                error={errors.catatan?.message}
-              />
-              <span className="length">0/140</span>
-            </Form.Group>
-            <div className="d-flex justify-content-end">
-              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => hideTolakModal()}>
-                Batal
-              </Button>
-              <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
-                Proses
-              </Button>
+        {showModal === 'tolak' && (
+          <Modal className="modal-permintaan-detail" showHeader={false} visible={showModal} onClose={handleCloseModal}>
+            <div className="mt-20 mb-20">
+              <p className="font-weight-bold mb-0">
+                Apakah anda yakin ingin
+                <span className="text-danger"> menolak </span>
+                Permintaan Data
+              </p>
+              {prefixID(id, 'PD')} ?
             </div>
-          </Form>
-        </Modal>
-        <Modal
-          className="modal-permintaan-detail"
-          showHeader={false}
-          visible={showProsesModal}
-          onClose={() => hideProsesModal()}
-          title="">
-          <div className="mt-20 mb-20">
-            <p className="font-weight-bold mb-0">
-              Apakah anda yakin ingin
-              <span className="sdp-text-blue"> memproses </span>
-              Permintaan Data
-            </p>
-            {id} ?
-          </div>
-          <Form onSubmit={handleSubmit(onSubmitProses)} noValidate>
-            <Form.Group as={Col} md="12" className="mb-16">
-              <Input
-                name="catatan"
-                as="textarea"
-                control={control}
-                rules={{ required: true }}
-                placeholder="Tulis catatan"
-                type="text"
-                error={errors.catatan?.message}
-              />
-              <span className="length">0/140</span>
-            </Form.Group>
-            <div className="d-flex justify-content-end">
-              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => hideProsesModal()}>
-                Batal
-              </Button>
-              <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
-                Proses
-              </Button>
+            <Form onSubmit={handleSubmit(onSubmitTolak)} noValidate>
+              <Form.Group as={Col} md="12" className="mb-16">
+                <Input
+                  name="catatan"
+                  as="textarea"
+                  control={control}
+                  rules={{ required: true }}
+                  placeholder="Tulis catatan"
+                  type="text"
+                  error={errors.catatan?.message}
+                />
+                <span className="length">0/140</span>
+              </Form.Group>
+              <div className="d-flex justify-content-end">
+                <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={handleCloseModal}>
+                  Batal
+                </Button>
+                <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
+                  Proses
+                </Button>
+              </div>
+            </Form>
+          </Modal>
+        )}
+        {showModal === 'proses' && (
+          <Modal
+            className="modal-permintaan-detail"
+            showHeader={false}
+            visible={showModal}
+            onClose={handleCloseModal}
+            title="">
+            <div className="mt-20 mb-20">
+              <p className="font-weight-bold mb-0">
+                Apakah anda yakin ingin
+                <span className="sdp-text-blue"> memproses </span>
+                Permintaan Data
+              </p>
+              {prefixID(id, 'PD')} ?
             </div>
-          </Form>
-        </Modal>
-        <Modal
-          showHeader={false}
-          className="modal-permintaan-data-proses"
-          visible={showSelesaiModal}
-          onClose={() => hideSelesaiModal(false)}>
-          <div className="mt-20 mb-20">
-            <p className="mb-0">
-              Apakah anda yakin ingin
-              <span className="sdp-text-blue"> Menyelesaikan </span>
-              Permintaan Data
-            </p>
-            <span className="font-weight-bold"> {id} </span>?
-          </div>
-          <div className="alert"> Masukan url dataset terkait pada kolom berikut </div>
-          <Form id={prosesFormId} onSubmit={handleSubmit(onSubmitSelesai)} noValidate>
-            <InputGroup>
-              <div className="url">URL</div>
-              <Input
-                name="urlDatasetNew"
-                control={control}
-                type="text"
-                rules={{ required: true }}
-                error={errors.urlDatasetNew?.message}
-              />
-            </InputGroup>
-            <Form.Group as={Col} md="12" className="mb-16 mt-15">
-              <Input
-                name="catatan"
-                as="textarea"
-                control={control}
-                rules={{ required: true }}
-                placeholder="Tulis catatan"
-                type="text"
-                error={errors.catatan?.message}
-              />
-              <span className="length">0/140</span>
-            </Form.Group>
-            <div className="d-flex justify-content-end">
-              <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={() => hideSelesaiModal()}>
-                Batal
-              </Button>
-              <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
-                Selesai
-              </Button>
+            <Form onSubmit={handleSubmit(onSubmitProses)} noValidate>
+              <Form.Group as={Col} md="12" className="mb-16">
+                <Input
+                  name="catatan"
+                  as="textarea"
+                  control={control}
+                  rules={{ required: true }}
+                  placeholder="Tulis catatan"
+                  type="text"
+                  error={errors.catatan?.message}
+                />
+                <span className="length">0/140</span>
+              </Form.Group>
+              <div className="d-flex justify-content-end">
+                <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={handleCloseModal}>
+                  Batal
+                </Button>
+                <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
+                  Proses
+                </Button>
+              </div>
+            </Form>
+          </Modal>
+        )}
+        {showModal === 'selesai' && (
+          <Modal showHeader={false} className="modal-permintaan-data-proses" visible={showModal} onClose={handleCloseModal}>
+            <div className="mt-20 mb-20">
+              <p className="mb-0">
+                Apakah anda yakin ingin
+                <span className="sdp-text-blue"> Menyelesaikan </span>
+                Permintaan Data
+              </p>
+              <span className="font-weight-bold"> {prefixID(id, 'PD')} </span>?
             </div>
-          </Form>
-        </Modal>
+            <div className="alert"> Masukan url dataset terkait pada kolom berikut </div>
+            <Form onSubmit={handleSubmit(onSubmitSelesai)} noValidate>
+              <InputGroup>
+                <div className="url">URL</div>
+                <Input
+                  name="urlDatasetNew"
+                  control={control}
+                  type="text"
+                  rules={{ required: true }}
+                  error={errors.urlDatasetNew?.message}
+                />
+              </InputGroup>
+              <Form.Group as={Col} md="12" className="mb-16 mt-15">
+                <Input
+                  name="catatan"
+                  as="textarea"
+                  control={control}
+                  rules={{ required: true }}
+                  placeholder="Tulis catatan"
+                  type="text"
+                  error={errors.catatan?.message}
+                />
+                <span className="length">0/140</span>
+              </Form.Group>
+              <div className="d-flex justify-content-end">
+                <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={handleCloseModal}>
+                  Batal
+                </Button>
+                <Button type="submit" className="ml-10" variant="info" style={{ width: '112px' }}>
+                  Selesai
+                </Button>
+              </div>
+            </Form>
+          </Modal>
+        )}
       </Row>
     </div>
   );

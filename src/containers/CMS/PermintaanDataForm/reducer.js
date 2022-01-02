@@ -22,24 +22,6 @@ export const getPermintaanDataDetailLog = createAsyncThunk('/permintaan-data/det
   return response?.data.content;
 });
 
-export const postPermintaanDataTolak = createAsyncThunk('/permintaan-data/tolak', async (params) => {
-  const response = await post(`${apiUrls.detailPermintaanData}/${params.id}/tolak`, { catatan: params.catatan });
-  return response?.result;
-});
-
-export const postPermintaanDataProses = createAsyncThunk('/permintaan-data/proses', async (params) => {
-  const response = await post(`${apiUrls.detailPermintaanData}/${params.id}/proses`, { catatan: params.catatan });
-  return response?.result;
-});
-
-export const postPermintaanDataSelesai = createAsyncThunk('permintaan-data/selesai', async (params) => {
-  const response = await post(`${apiUrls.detailPermintaanData}/${params.id}/selesai`, {
-    catatan: params.catatan,
-    urlDataset: params.url,
-  });
-  return response?.result;
-});
-
 const permintaanDataDetailSlice = createSlice({
   name: PERMINTAAN_DATA_DETAIL,
   initialState,
@@ -64,39 +46,6 @@ const permintaanDataDetailSlice = createSlice({
       state.dataLog = action.payload;
     });
     builder.addCase(getPermintaanDataDetailLog.rejected, (state, action) => {
-      state.loading = false;
-      state.error = 'Invalid data';
-    });
-    builder.addCase(postPermintaanDataTolak.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(postPermintaanDataTolak.fulfilled, (state, action) => {
-      state.loading = false;
-      state.result = action.payload;
-    });
-    builder.addCase(postPermintaanDataTolak.rejected, (state, action) => {
-      state.loading = false;
-      state.error = 'Invalid data';
-    });
-    builder.addCase(postPermintaanDataProses.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(postPermintaanDataProses.fulfilled, (state, action) => {
-      state.loading = false;
-      state.result = action.payload;
-    });
-    builder.addCase(postPermintaanDataProses.rejected, (state, action) => {
-      state.loading = false;
-      state.error = 'Invalid data';
-    });
-    builder.addCase(postPermintaanDataSelesai.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(postPermintaanDataSelesai.fulfilled, (state, action) => {
-      state.loading = false;
-      state.result = action.payload;
-    });
-    builder.addCase(postPermintaanDataSelesai.rejected, (state, action) => {
       state.loading = false;
       state.error = 'Invalid data';
     });

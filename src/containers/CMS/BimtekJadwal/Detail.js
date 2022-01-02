@@ -109,6 +109,8 @@ const CMSJadwalDetail = (props) => {
       handleNotification('secondary', `${message}`, 'check');
       initialCall();
       isFunction(callBack) && callBack();
+      setReadOnly(true);
+      setButtonUpdate(false);
     } catch (e) {
       setAPIError(true);
       handleCloseModal();

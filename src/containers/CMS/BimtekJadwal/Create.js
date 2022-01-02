@@ -31,8 +31,6 @@ const CMSJadwalBaru = () => {
   const [showModal, setShowModal] = useState('');
   const [objectRequired, setObjectRequired] = useState({});
   const [defaultRequired, setDefaultRequired] = useState(false);
-  const [records, setRecords] = useState({});
-  const [kotaId, setKotaId] = useState('');
   const [idPembicara, setIdPembicara] = useState('');
   const [idMateri, setIdMateri] = useState(false);
   const [listMateri, setListMateri] = useState([]);
@@ -43,6 +41,9 @@ const CMSJadwalBaru = () => {
 
   const tagsResultList = (tagsResult || []).map((tag) => ({ value: tag, label: tag }));
   const tagsResultKabupaten = (listKabupaten || []).map((tag) => ({ value: tag.id, label: tag.nama }));
+  const goBack = () => {
+    history.push('/cms/bimtek-jadwal');
+  };
 
   useEffect(() => {
     initialCall();
@@ -329,7 +330,7 @@ const CMSJadwalBaru = () => {
         },
       ],
     };
-    handleAPICall(post, `${apiUrls.cmsBimtekJadwal}`, { data: obj });
+    handleAPICall(post, `${apiUrls.cmsBimtekJadwal}`, { data: obj }, goBack);
     setObjectRequired({});
   };
 

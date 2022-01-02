@@ -40,6 +40,9 @@ const LogActivity = lazy(() => import('containers/CMS/LogAktifitas'));
 const ForumSDIPage = lazy(() => import('containers/CMS/ForumSDI'));
 const ForumSDIFormPage = lazy(() => import('containers/CMS/ForumSDI/CMSForumSDIForm'));
 const CMSForumSDIDetailPage = lazy(() => import('containers/CMS/ForumSDI/CMSForumSDIDetail'));
+const MediaSosialPage = lazy(() => import('containers/CMS/MediaSosial'));
+const ContactUsPage = lazy(() => import('containers/CMS/ContactUs'));
+const ContactUsDetailPage = lazy(() => import('containers/CMS/ContactUs/detail'));
 
 function CMSRoutes() {
   return (
@@ -59,7 +62,7 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/dashboard" component={DashboardPage} />
         <PrivateRoute exact path="/cms/about-us" component={AboutUsPage} />
         <PrivateRoute exact path="/cms/struktur" component={StrukturOrganisasiPage} />
-        <PrivateRoute exact path="/cms/struktur-baru" component={StrukturBaruPage} />
+        <PrivateRoute exact path="/cms/struktur-form" component={StrukturBaruPage} />
         <PrivateRoute exact path="/cms/struktur-detail/:id" component={StrukturDetailPage} />
         <PrivateRoute exact path="/cms/about-us/edit/:id?" component={AboutUsEditPage} />
         <PrivateRoute exact path="/cms/berita-layout" component={BeritaLayout} />
@@ -87,6 +90,9 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/forum-sdi/manage-forum-sdi" component={ForumSDIFormPage} />
         <PrivateRoute exact path="/cms/forum-sdi-detail/:id" component={CMSForumSDIDetailPage} />
         <PrivateRoute exact path="/cms/forum-sdi" component={ForumSDIPage} />
+        <PrivateRoute exact path="/cms/media-sosial" component={MediaSosialPage} />
+        <PrivateRoute exact path="/cms/contact-us" component={ContactUsPage} />
+        <PrivateRoute exact path="/cms/contact-us/:id" component={ContactUsDetailPage} />
         <Route exact path="/cms" render={() => <Redirect to="/cms/dashboard" />} />
       </Switch>
     </CMSLayout>

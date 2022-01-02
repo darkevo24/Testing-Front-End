@@ -19,11 +19,12 @@ import {
   setRKPppData,
   setSDGsData,
 } from './reducer';
+import { usePrevious } from 'utils/hooks';
 
 const DaftarTable = ({
   bem,
   textSearch,
-  dataindukOptions = [],
+  dataIndukOptions = [],
   instansiOptions = [],
   priorityOptions = [],
   produenOptions = [],
@@ -40,7 +41,7 @@ const DaftarTable = ({
   const selector = cms ? sekreteriatDaftarDataSelector : daftarDataSelector;
   const { pageSize, loading, params, bodyParams, result } = useSelector(selector);
   const dispatch = useDispatch();
-
+  const prevTextSearch = usePrevious(textSearch);
   const fetchDaftarData = (filterOverride = {}, reset = false) => {
     const { params: paramsOverride = {}, bodyParams: bodyParamsOverride = {} } = filterOverride;
     const filterParams = {
@@ -67,6 +68,12 @@ const DaftarTable = ({
 
   useEffect(() => {
     fetchDaftarData({ bodyParams: { textSearch } }, true);
+  }, []);
+
+  useEffect(() => {
+    if (textSearch !== prevTextSearch) {
+      fetchDaftarData({ bodyParams: { textSearch } });
+    }
   }, [textSearch]);
 
   const showDaftarDetailPage = (data) => {
@@ -124,6 +131,7 @@ const DaftarTable = ({
       {
         Header: 'Label',
         accessor: 'label',
+        disableSortBy: true,
         Cell: ({ cell: { row: { id: rowId, original: item } = {} } = {} }) => (
           <div className={bem.e('tag-wrapper')}>
             {[item.labelKodePilar, item.labelKodePnrkp].filter(Boolean).map((label) => (
@@ -137,6 +145,7 @@ const DaftarTable = ({
       {
         Header: 'Status',
         accessor: 'status',
+        disableSortBy: true,
         Cell: (data) => (data.cell.value ? <Check variant="green" /> : <Check variant="stroke" />),
       },
     ];
@@ -240,7 +249,7 @@ const DaftarTable = ({
             <label className="sdp-form-label py-8">Data Induk</label>
             <SingleSelectDropdown
               onChange={handleDropdownFilter('dataInduk')}
-              data={dataindukOptions}
+              data={dataIndukOptions}
               isClearable
               placeHolder="Semua"
               isLoading={false}

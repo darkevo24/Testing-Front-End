@@ -3,14 +3,18 @@ import Button from 'react-bootstrap/Button';
 import { PencilSvg, Trash } from 'components/Icons';
 import { ComponentAccessibility } from 'components/ComponentAccess';
 import { USER_ROLES } from 'utils/constants';
+import { useSelector } from 'react-redux';
+import { userSelector } from 'containers/Login/reducer';
 
 export const DetailHeader = ({ record, status, history, handleModal }) => {
+  const user = useSelector(userSelector);
+  const isOwner = user?.email === record?.createdBy?.email;
   const roles = [USER_ROLES.CONTENT_CREATOR, USER_ROLES.CONTENT_EDITOR];
   switch (status) {
     case 'draft':
       return (
         <div>
-          <ComponentAccessibility roles={roles}>
+          <ComponentAccessibility roles={roles} flag={!isOwner}>
             <Button
               key="delete"
               variant="light"
@@ -25,6 +29,8 @@ export const DetailHeader = ({ record, status, history, handleModal }) => {
               onClick={() => history.push(`/cms/manage-komunitas-ahli/${record.id}`)}>
               <PencilSvg />
             </Button>
+          </ComponentAccessibility>
+          <ComponentAccessibility roles={roles}>
             <Button key="kirim" variant="info" className="mr-16 br-4 px-40 border-0" onClick={() => handleModal('kirim')}>
               Kirim
             </Button>
@@ -105,6 +111,8 @@ export const DetailHeader = ({ record, status, history, handleModal }) => {
               onClick={() => history.push(`/cms/manage-komunitas-ahli/${record.id}`)}>
               <PencilSvg />
             </Button>
+          </ComponentAccessibility>
+          <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR]}>
             <Button
               key="publish"
               variant="info"

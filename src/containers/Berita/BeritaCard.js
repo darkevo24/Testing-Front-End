@@ -34,4 +34,5 @@ export const BeritaCardJudul = styled.div`
   font-size: 16px;
   line-height: 22px;
   color: #2d2627;
+  cursor: pointer;
 `;

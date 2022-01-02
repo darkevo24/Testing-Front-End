@@ -142,7 +142,7 @@ export const CMSSidebar = () => {
         <SidebarItem title="Log Aktivitas" pathname="/cms/log-activity" />
         <SidebarItem title="Sekuriti" pathname="#" />
         <SidebarItem title="Aset" pathname="#" />
-        <SidebarItem title="Media Sosial" pathname="#" />
+        <SidebarItem title="Media Sosial" pathname="/cms/media-sosial" />
       </div>
     </div>
   );

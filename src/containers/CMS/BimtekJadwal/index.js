@@ -13,6 +13,7 @@ import { useHistory } from 'react-router-dom';
 import { bimtekJadwalSelector, getJadwalBimtek } from './reducer';
 import { getStatusClass } from 'utils/helper';
 import { ReactComponent as Plus } from 'assets/plus.svg';
+import TableLoader from 'components/Loader/TableLoader';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 
@@ -22,8 +23,7 @@ const CMSBimtekPermintaan = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [query, setQuery] = useState('');
-  const { size, page, records, totalRecords } = useSelector(bimtekJadwalSelector);
-  console.log(records);
+  const { loading, size, page, records, totalRecords } = useSelector(bimtekJadwalSelector);
   const fetchJadwalBimtek = (params) => {
     let obj = {
       page: params.page,
@@ -166,7 +166,7 @@ const CMSBimtekPermintaan = () => {
           </Col>
         </Row>
       </div>
-      <div className="px-30"> {<Table {...tableConfig} />} </div>
+      <div className="px-30"> {!loading ? <Table {...tableConfig} /> : <TableLoader />} </div>
     </div>
   );
 };

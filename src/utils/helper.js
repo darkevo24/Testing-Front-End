@@ -226,6 +226,12 @@ export const getStatusClass = (status) => {
         text: 'Diprosses',
         divText: 'Permintaan sedang Diproses',
       };
+    case 'rejected':
+      return {
+        ...redText,
+        text: 'Rejected',
+        divText: 'Rejected',
+      };
     case 'dibatalkan':
       return {
         ...redText,

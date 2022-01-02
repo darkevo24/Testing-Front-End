@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
-import { setDetailBerita, detailDataSelector, setPreviewBerita, setStatusBerita } from '../BeritaBaru/reducer';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { DetailHeader } from './detailHeader';
 import { LogStatus } from 'components/Sidebars/LogStatus';
-import { CMSForm, Loader, CMSTopDetail, CMSModal } from 'components';
+import { CMSForm, Loader, CMSTopDetail, CMSModal, Modal } from 'components';
 import { submitBeritaForm, getDate } from 'components/CMSForm';
 import Notification from 'components/Notification';
 import bn from 'utils/bemNames';
+import { DetailHeader } from './detailHeader';
+import {
+  setDetailBerita,
+  detailDataSelector,
+  setPreviewBerita,
+  setStatusBerita,
+  getLogBerita,
+  logBeritaSelector,
+} from '../BeritaBaru/reducer';
 
 const bem = bn('content-detail');
 
@@ -19,8 +26,10 @@ const CMSBeritaDetail = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { loading, record } = useSelector(detailDataSelector);
+  const { loading: loadingLog, records: logRecords } = useSelector(logBeritaSelector);
   const fetchData = (params) => {
     dispatch(setDetailBerita(params));
+    dispatch(getLogBerita(params));
   };
 
   useEffect(() => {
@@ -33,6 +42,7 @@ const CMSBeritaDetail = (props) => {
   const [modalLabel, setModalLabel] = useState('');
   const [modalConfirm, setModalConfirm] = useState(false);
   const [dataBerita, setDataBerita] = useState({});
+  const [notes, setNotes] = useState('');
 
   const onSubmit = (data) => {
     // preview berita
@@ -70,11 +80,6 @@ const CMSBeritaDetail = (props) => {
         );
         break;
       case 4:
-        label = (
-          <span>
-            Apakah anda yakin ingin <b className="sdp-text-blue">menolak</b> Berita?
-          </span>
-        );
         break;
       case 5:
         label = (
@@ -111,7 +116,7 @@ const CMSBeritaDetail = (props) => {
 
     return dispatch(
       setStatusBerita({
-        payload: { id: [idBerita], status: dataBerita.status, note: dataBerita.note ? dataBerita.note : '' },
+        payload: { id: [idBerita], status: dataBerita.status, note: notes || '' },
       }),
     )
       .then((res) => notifyResponse(res))
@@ -159,17 +164,45 @@ const CMSBeritaDetail = (props) => {
           </div>
         </Col>
         <Col sm={3}>
-          <LogStatus data={[]} />
+          <LogStatus
+            data={logRecords.map((log) => {
+              return {
+                status: log.status.split(' ').join('_'),
+                createdAt: log.createdAt,
+                displayMessage: log.displayMessage,
+              };
+            })}
+          />
         </Col>
         {loading && <Loader fullscreen={true} />}
       </Row>
-      {modalConfirm ? (
+      {modalConfirm && beritaStatus !== 4 ? (
         <CMSModal
           loader={false}
           onClose={() => setModalConfirm(false)}
           confirmButtonAction={submitEditBerita}
           label={modalLabel}
         />
+      ) : modalConfirm && beritaStatus === 4 ? (
+        <Modal visible={true} onClose={() => setModalConfirm(false)} title="" showHeader={false} centered={true}>
+          Apakah anda yakin ingin <span className="sdp-text-red">menolak</span> Berita?
+          <textarea
+            placeholder="Tulis Catatan"
+            name="catatan"
+            value={notes}
+            onChange={({ target: { value = '' } = {} }) => setNotes(value)}
+            className="border-gray-stroke br-4 w-100 mt-24 mb-24 h-214"
+            required
+          />
+          <div className="d-flex justify-content-end">
+            <Button className="br-4 mr-8 px-57 py-13 bg-transparent" variant="light" onClick={() => setModalConfirm(false)}>
+              Batal
+            </Button>
+            <Button className="br-4 px-39 py-13" variant="info" disabled={!notes.trim()} onClick={submitEditBerita}>
+              Konfirmasi
+            </Button>
+          </div>
+        </Modal>
       ) : null}
     </div>
   );

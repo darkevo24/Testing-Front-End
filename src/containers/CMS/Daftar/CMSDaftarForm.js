@@ -22,31 +22,19 @@ import {
   getAddDaftarRKPpp,
   addTujuanSDGPillerOptionsSelector,
   addRkpPPOptionsSelector,
-  // kodeReferensiOptionsSelector,
-  // dataVariableSubmit,
+  katalogVariableDataSelector,
+  getKatalogVariables,
+  deleteVariableData,
 } from 'containers/Daftar/reducer';
-// import DataVariableForm, { submitDataVariableForm } from '../../DataVariable/DataVariableForm';
-// import Modal from '../../../components/Modal';
-import DataVariable from '../../DataVariable';
+import cloneDeep from 'lodash/cloneDeep';
 
 const schema = yup.object({
   instansi: yup.mixed().required(),
   nama: yup.string().required(),
-  idKonsep: yup.string().required(),
-  konsep: yup.string().required(),
   jadwalPemutakhiran: yup.mixed().required(),
-  definisi: yup.string().required(),
-  sumberDefinisi: yup.string().required(),
-  tanggalDibuat: yup.date().required(),
-  tanggalDiperbaharui: yup.date().required(),
   produsenData: yup.string().required(),
-  indukData: yup.mixed().required(),
   format: yup.mixed().required(),
   linkAkses: yup.string().required(),
-  kodePilar: yup.mixed().required(),
-  kodeTujuan: yup.mixed().required(),
-  kodePNRKP: yup.mixed().required(),
-  kodePPRKP: yup.mixed().required(),
 });
 
 const CMSDaftarPage = ({ ...props }) => {
@@ -60,35 +48,12 @@ const CMSDaftarPage = ({ ...props }) => {
   const history = useHistory();
   const { result, error } = props.dafterDataWithId;
   const instansiOptions = props.instansiOptions;
-  const dataindukOptions = props.dataindukOptions;
+  const dataindukAllOptions = props.dataindukAllOptions;
   const sdgPillerOptions = props.sdgPillerOptions;
   const rkpPNOptions = props.rkpPNOptions;
   const tujuanSDGPillerOptions = useSelector(addTujuanSDGPillerOptionsSelector);
   const rkpPPOptions = useSelector(addRkpPPOptionsSelector);
-
-  useEffect(async () => {
-    if (result?.id !== +id || !id) return;
-    // if (result?.id !== +id) props.getDafterDataById(id);
-    reset({
-      instansi: { value: result?.instansiId, label: result?.instansi } || {},
-      nama: result?.nama || '',
-      idKonsep: result?.idKonsep || '',
-      konsep: result?.konsep || '',
-      jadwalPemutakhiran: { value: result?.jadwalPemutakhiran, label: result?.jadwalPemutakhiran } || {},
-      definisi: result?.definisi || '',
-      sumberDefinisi: result?.sumberDefinisi || '',
-      tanggalDibuat: moment(result?.tanggalDibuat || new Date()).toDate() || '',
-      tanggalDiperbaharui: moment(result?.tanggalDiperbaharui || new Date()).toDate() || '',
-      produsenData: result?.produsenData || '',
-      indukData: result?.indukData || {},
-      format: { value: result?.format, label: result?.format } || {},
-      linkAkses: result?.linkAkses || '',
-      kodePilar: { value: result?.kodePilar, label: result?.kodePilarDeskripsi } || {},
-      kodeTujuan: { value: result?.kodeTujuan, label: result?.kodeTujuanDeskripsi } || {},
-      kodePNRKP: { value: result?.kodePNRKP, label: result?.kodePNRKPDeskripsi } || {},
-      kodePPRKP: { value: result?.kodePPRKP, label: result?.kodePPRKPDeskripsi } || {},
-    });
-  }, [result, id]);
+  const { pageSize, params, bodyParams, result: katalogResult } = useSelector(katalogVariableDataSelector);
 
   const {
     control,
@@ -112,35 +77,125 @@ const CMSDaftarPage = ({ ...props }) => {
       indukData: null,
       format: null,
       linkAkses: '',
-      kodePilar: null,
-      kodeTujuan: null,
-      kodePNRKP: null,
-      kodePPRKP: null,
     },
   });
 
-  const handleDataSubmit = (formData) => {
-    let clone = [...tableData];
-    formData.pengaturanAkses = formData.pengaturanAkses.label;
-    if (selectedRecord.idKonsep) {
-      const index = clone.indexOf(selectedRecord);
-      clone[index] = formData;
-      setTableData([...clone]);
-      setSelectedRecord({});
-    } else {
-      setSelectedRecord({});
-      clone.push({ ...formData, id: clone.length + 1 });
-      setTableData([...clone]);
+  const fetchKatalogVariableData = (filterOverride = {}, reset = false) => {
+    const { params: paramsOverride = {}, bodyParams: bodyParamsOverride = {} } = filterOverride;
+    const filterParams = {
+      ...cloneDeep(params),
+      ...cloneDeep(paramsOverride),
+    };
+    if (reset) {
+      filterParams.start = 0;
+      filterParams.currentPage = 0;
     }
+    const filterBodyParams = {
+      ...cloneDeep(bodyParams),
+      ...cloneDeep(bodyParamsOverride),
+    };
+    const filters = { params: filterParams, bodyParams: filterBodyParams };
+    const daftarId = id;
+    dispatch(getKatalogVariables({ daftarId, filters }));
+  };
+
+  useEffect(() => {
+    if (id) {
+      fetchKatalogVariableData();
+      props.getDafterDataById(id);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (id && katalogResult?.records) {
+      setTableData(katalogResult?.records);
+    }
+  }, [katalogResult]);
+
+  useEffect(async () => {
+    if (!id) return;
+    const [indukDataObjectKey] = Object.keys(result?.indukData || {});
+    reset({
+      instansi: { value: result?.instansiId, label: result?.instansi } || {},
+      nama: result?.nama || '',
+      idKonsep: result?.idKonsep || '',
+      konsep: result?.konsep || '',
+      jadwalPemutakhiran: jadwalPermutakhiranOptions.find((elem) => result?.jadwalPemutakhiran === elem.value) || {},
+      definisi: result?.definisi || '',
+      sumberDefinisi: result?.sumberDefinisi || '',
+      tanggalDibuat: moment(result?.tanggalDibuat || new Date()).toDate() || '',
+      tanggalDiperbaharui: moment(result?.tanggalDiperbaharui || new Date()).toDate() || '',
+      produsenData: result?.produsenData || '',
+      indukData: { value: indukDataObjectKey, label: result?.indukData[indukDataObjectKey] } || {},
+      format: { value: result?.format, label: result?.format } || {},
+      linkAkses: result?.linkAkses || '',
+      kodePilar: { value: result?.kodePilar, label: result?.kodePilarDeskripsi } || {},
+      kodeTujuan: { value: result?.kodeTujuan, label: result?.kodeTujuanDeskripsi } || {},
+      kodePNRKP: { value: result?.kodePNRKP, label: result?.kodePNRKPDeskripsi } || {},
+      kodePPRKP: { value: result?.kodePPRKP, label: result?.kodePPRKPDeskripsi } || {},
+    });
+  }, [result, id]);
+
+  const goBack = () => {
+    if (id) history.push(`/cms/daftar/${id}`);
+    else history.push('/cms/daftar/');
+  };
+
+  const handleDataSubmit = async (formData) => {
+    const params = { ...formData, kodeReferensi: 0 };
+    let clone = [...tableData];
+    params.pengaturanAkses = params.pengaturanAkses.label;
+    if (id) {
+      await dispatch(props.dataVariableSubmit({ ...params, idKatalog: id })).then((response) => {
+        if ((response?.type || '').includes('rejected')) {
+          setAPIError(response.error.message);
+          return;
+        }
+        fetchKatalogVariableData();
+      });
+    } else {
+      if (selectedRecord.nama) {
+        const index = clone.indexOf(selectedRecord);
+        clone[index] = params;
+        setTableData([...clone]);
+      } else {
+        clone.push(params);
+        setTableData([...clone]);
+      }
+    }
+    setSelectedRecord({});
     setShowAddModal(false);
   };
 
   const handleEditModal = (formData) => {
-    //TODO handle EDIT
+    setShowAddModal(true);
+    setSelectedRecord(formData);
+  };
+
+  const handleTableReferensiChange = (item) => {
+    let clone = [...tableData];
+    const index = clone.indexOf(item);
+    if (index === -1) return false;
+    clone = clone.map((detail) => ({ ...detail, kodeReferensi: 0 }));
+    clone[index] = { ...item, kodeReferensi: 1 };
+    setTableData(clone);
   };
 
   const handleDelete = (formData) => {
-    // TODO handle DELETE
+    if (id && formData.id) {
+      dispatch(deleteVariableData({ id: formData.id })).then((response) => {
+        if ((response?.type || '').includes('rejected')) {
+          setAPIError(response.error.message);
+          return;
+        }
+        fetchKatalogVariableData();
+      });
+    } else {
+      const clone = [...tableData];
+      const index = clone.indexOf(formData);
+      clone.splice(index, 1);
+      setTableData([...clone]);
+    }
   };
 
   const handleSubmitCallBack = async (apiResponse, hasError) => {
@@ -148,18 +203,27 @@ const CMSDaftarPage = ({ ...props }) => {
       setAPIError(apiResponse.error.message);
       return null;
     }
-    // const apiCall = [];
-    // tableData.forEach((item) => {
-    //   if (!id) delete item.id;
-    //   apiCall.push(dispatch(dataVariableSubmit(item)));
-    // });
-    // const response = await Promise.all(apiCall);
-    // TODO handle variable response
+    if (!tableData?.length) goBack();
+    if (!apiResponse?.payload?.data?.content?.id) return null;
+    const apiCall = tableData.map((item) => {
+      if (!item.id) item.idKatalog = apiResponse.payload.data.content.id;
+      return dispatch(props.dataVariableSubmit(item));
+    });
+    const response = await Promise.all(apiCall);
+    const flag = false;
+    response.forEach((item) => {
+      if (!flag && (item?.type || '').includes('rejected')) {
+        setAPIError(item.error.message);
+      }
+      if (!flag) goBack();
+
+      return null;
+    });
   };
 
   const handleDaftarFormSubmit = async (daftarFormData) => {
     if (id) daftarFormData.id = id;
-    if (!id) daftarFormData['status'] = 1;
+    if (!id) daftarFormData['status'] = 0;
     props.handleDaftarFromSubmit(daftarFormData, handleSubmitCallBack, true);
   };
 
@@ -181,26 +245,27 @@ const CMSDaftarPage = ({ ...props }) => {
   return (
     <>
       <Form noValidate onSubmit={handleSubmit(handleDaftarFormSubmit)}>
-        <Row className="bg-gray-lighter pl-24">
-          <Col>
-            <div className="d-flex justify-content-between p-26 border-bottom">
-              <div className="d-flex">
-                <div className="sdp-heading mb-4">Data Baru</div>
-                <div className="ml-24">
-                  <Button variant="outline-secondary" className="mr-16" onClick={() => history.push('/cms/daftar')}>
-                    Batal
-                  </Button>
-                  <Button variant="secondary" type="submit">
-                    Simpan
-                  </Button>
-                </div>
+        <Row className="bg-gray-lighter ml-0">
+          <Col className="pl-0">
+            <div className="d-flex px-32 py-24 align-items-center border-bottom">
+              <div className="sdp-heading mb-4">Data Baru</div>
+              <div className="ml-24">
+                <Button
+                  variant="outline-secondary"
+                  className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4 py-13 px-40"
+                  onClick={goBack}>
+                  Batal
+                </Button>
+                <Button variant="light" type="submit" className="mr-16 bg-gray sdp-text-grey-dark br-4 py-13 px-32 border-0">
+                  Simpan
+                </Button>
               </div>
             </div>
           </Col>
-          <Col lg="11">
+          <Col lg="11" className="pl-32">
             <div className="py-32 pt-32">
               {error || apiError ? <label className="sdp-error mb-20">{error || apiError}</label> : null}
-              <Row>
+              <Row className="mb-16">
                 <Col>
                   <SingleSelectDropdown
                     group
@@ -237,7 +302,7 @@ const CMSDaftarPage = ({ ...props }) => {
                   />
                 </Col>
               </Row>
-              <Row>
+              <Row className="mb-16">
                 <Col>
                   <Input
                     group
@@ -248,7 +313,6 @@ const CMSDaftarPage = ({ ...props }) => {
                     }}
                     labelClass="sdp-form-label fw-normal"
                     label="ID Konsep"
-                    error={errors.idKonsep ? 'ID Konsep is required' : null}
                     name="idKonsep"
                     control={control}
                   />
@@ -261,7 +325,6 @@ const CMSDaftarPage = ({ ...props }) => {
                       md: 12,
                       as: Col,
                     }}
-                    error={errors.konsep ? 'Konsep is required' : null}
                     labelClass="sdp-form-label fw-normal"
                     label="Konsep"
                     name="konsep"
@@ -269,7 +332,7 @@ const CMSDaftarPage = ({ ...props }) => {
                   />
                 </Col>
               </Row>
-              <Row className="mb-3">
+              <Row className="mb-16">
                 <Col xs="6">
                   <SingleSelectDropdown
                     group
@@ -291,7 +354,7 @@ const CMSDaftarPage = ({ ...props }) => {
                   />
                 </Col>
               </Row>
-              <Row>
+              <Row className="mb-16">
                 <Col>
                   <Input
                     group
@@ -302,7 +365,6 @@ const CMSDaftarPage = ({ ...props }) => {
                     }}
                     labelClass="sdp-form-label fw-normal"
                     label="Definisi"
-                    error={errors.definisi ? 'Definisi is required' : null}
                     name="definisi"
                     as="textarea"
                     control={control}
@@ -318,21 +380,19 @@ const CMSDaftarPage = ({ ...props }) => {
                     }}
                     labelClass="sdp-form-label fw-normal"
                     label="Sumber Definisi"
-                    error={errors.sumberDefinisi ? 'Sumber Definisi is required' : null}
                     as="textarea"
                     name="sumberDefinisi"
                     control={control}
                   />
                 </Col>
               </Row>
-              <Row>
+              <Row className="mb-16">
                 <Col>
                   <DatePicker
                     group
                     label="Dibuat"
                     labelClass="sdp-form-label fw-normal"
                     control={control}
-                    error={errors.tanggalDibuat ? 'Dibuat is required' : null}
                     name="tanggalDibuat"
                   />
                 </Col>
@@ -341,13 +401,12 @@ const CMSDaftarPage = ({ ...props }) => {
                     group
                     label="Diperbarui"
                     labelClass="sdp-form-label fw-normal"
-                    error={errors.tanggalDiperbaharui ? 'Diperbarui is required' : null}
                     control={control}
                     name="tanggalDiperbaharui"
                   />
                 </Col>
               </Row>
-              <Row>
+              <Row className="mb-16">
                 <Col>
                   <Input
                     group
@@ -374,9 +433,7 @@ const CMSDaftarPage = ({ ...props }) => {
                     label="Data Induk"
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    error={errors.indukData ? 'Data Induk is required' : null}
-                    rules={{ required: true }}
-                    data={dataindukOptions}
+                    data={dataindukAllOptions}
                     name="indukData"
                     isLoading={false}
                     control={control}
@@ -384,7 +441,7 @@ const CMSDaftarPage = ({ ...props }) => {
                   />
                 </Col>
               </Row>
-              <Row>
+              <Row className="mb-16">
                 <Col>
                   <SingleSelectDropdown
                     group
@@ -422,10 +479,9 @@ const CMSDaftarPage = ({ ...props }) => {
                   />
                 </Col>
               </Row>
-              <Row className="mb-3">
+              <Row className="mb-16">
                 <Col>
                   <SingleSelectDropdown
-                    placeHolder="-"
                     name="kodePilar"
                     isLoading={false}
                     noValue={true}
@@ -438,15 +494,12 @@ const CMSDaftarPage = ({ ...props }) => {
                     label="Pilar SDGs"
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    rules={{ required: true }}
-                    error={errors.pilarsdgs ? 'Pilar SDGs is required' : null}
                     data={sdgPillerOptions}
                     control={control}
                   />
                 </Col>
                 <Col>
                   <SingleSelectDropdown
-                    placeHolder="-"
                     group
                     groupClass="mb-16"
                     groupProps={{
@@ -456,20 +509,16 @@ const CMSDaftarPage = ({ ...props }) => {
                     label="Tujuan SDGs"
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    rules={{ required: true }}
-                    error={errors.tujuansdgs ? 'Tujuan SDGs is required' : null}
                     data={tujuanSDGPillerOptions}
                     name="kodeTujuan"
-                    isLoading={false}
                     control={control}
                     noValue={true}
                   />
                 </Col>
               </Row>
-              <Row>
+              <Row className="mb-16">
                 <Col>
                   <SingleSelectDropdown
-                    placeHolder="-"
                     name="kodePNRKP"
                     isLoading={false}
                     noValue={true}
@@ -482,15 +531,12 @@ const CMSDaftarPage = ({ ...props }) => {
                     label="PN RKP"
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    rules={{ required: true }}
-                    error={errors.pnrkp ? 'PN RKP is required' : null}
                     data={rkpPNOptions}
                     control={control}
                   />
                 </Col>
                 <Col>
                   <SingleSelectDropdown
-                    placeHolder="-"
                     name="kodePPRKP"
                     control={control}
                     noValue={true}
@@ -501,28 +547,28 @@ const CMSDaftarPage = ({ ...props }) => {
                       as: Col,
                     }}
                     label="PP RKP"
-                    error={errors.pprkp ? 'PP RKP is required' : null}
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    rules={{ required: true }}
                     data={rkpPPOptions}
-                    isLoading={false}
                   />
                 </Col>
               </Row>
             </div>
-            <div className="pl-32  pt-32 pb-42 pr-32">
-              {id ? (
-                <DataVariable cms />
-              ) : (
-                <DataVariableTable
-                  manualPagination={false}
-                  search={false}
-                  showDeleteModal={handleDelete}
-                  showDataVariableFormModal={handleEditModal}
-                  data={tableData}
-                />
-              )}
+            <div className="pl-32 pt-32 pb-42 pr-32">
+              <DataVariableTable
+                manualPagination={false}
+                search={!!id}
+                showDeleteModal={handleDelete}
+                showDataVariableFormModal={handleEditModal}
+                fetchKatalogVariableData={fetchKatalogVariableData}
+                data={tableData}
+                cms
+                cmsCreateForm={!id}
+                params={params}
+                pageSize={pageSize}
+                daftar={result}
+                handleTableReferensiChange={handleTableReferensiChange}
+              />
               <Button variant="success" onClick={() => setShowAddModal(true)}>
                 Tambah Variabel
               </Button>

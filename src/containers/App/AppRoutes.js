@@ -12,11 +12,13 @@ const { Perminataan } = lazily(() => import('containers/Perminataan'));
 const { PerminataanDetail } = lazily(() => import('containers/Perminataan/detail'));
 const PerminataanForumPage = lazy(() => import('containers/Perminataan/Forum'));
 const { ForumSDI } = lazily(() => import('containers/ForumSDI'));
+const { ForumSDIDetail } = lazily(() => import('containers/ForumSDI/ForumSDIDetail'));
 const BimTekSummaryPage = lazy(() => import('containers/BimTekSummary'));
 const BimTekFormPage = lazy(() => import('containers/BimTekForm'));
 const BimTekJadwalPage = lazy(() => import('containers/BimTekJadwal'));
 const BimTekMateriPage = lazy(() => import('containers/BimTekMateri'));
 const BimTekPermintaanPage = lazy(() => import('containers/BimtekPermintaan'));
+const BimTekPermintaanDetailPage = lazy(() => import('containers/BimtekPermintaan/permintaanDetail'));
 const BimTekKotaPage = lazy(() => import('containers/BimTekKota'));
 const BimTekDokumentasiPage = lazy(() => import('containers/BimTekDokumentasi'));
 const TentangPage = lazy(() => import('containers/TentangSDI'));
@@ -24,6 +26,9 @@ const KomunitasPage = lazy(() => import('containers/Komunitas'));
 const BeritaPage = lazy(() => import('containers/Berita'));
 const BeritaDetailPage = lazy(() => import('containers/Berita/BeritaUtamaDetail'));
 const BeritaPreviewPage = lazy(() => import('containers/Berita/Preview'));
+const BeritaPerBulan = lazy(() => import('containers/Berita/BeritaPerBulan'));
+const BeritaPopular = lazy(() => import('containers/Berita/BeritaPopular'));
+const BeritaByTopic = lazy(() => import('containers/Berita/BeritaByTopic'));
 const KesiapanSDI = lazy(() => import('containers/Dashboard/KesiapanSDI'));
 const DashboardEksekutif = lazy(() => import('containers/Dashboard/DashboardEksekutif'));
 const DashboardSaya = lazy(() => import('containers/Dashboard/DashboardSaya'));
@@ -47,6 +52,7 @@ function AppRoutes(props) {
         <Route exact path="/api" component={ManagementApiPage} />
         <PrivateRoute exact path="/permintaan-data-detail/:id" component={PerminataanDetail} />
         <PrivateRoute exact path="/permintaan-data" component={Perminataan} />
+        <PrivateRoute exact path="/forum-sdi/:id" component={ForumSDIDetail} />
         <PrivateRoute exact path="/forum-sdi" component={ForumSDI} />
         <PrivateRoute exact path="/forum" component={PerminataanForumPage} />
         <Route exact path="/home" component={BerandaPage} />
@@ -57,12 +63,16 @@ function AppRoutes(props) {
         <PrivateRoute exact path="/komunitas-ahli" component={KomunitasPage} />
         <Route exact path="/berita" component={BeritaPage} />
         <Route exact path="/berita/preview" component={BeritaPreviewPage} />
+        <Route exact path="/berita-populer" component={BeritaPopular} />
+        <Route exact path="/berita-topik/:id" component={BeritaByTopic} />
         <Route exact path="/berita/:id" component={BeritaDetailPage} />
+        <Route exact path="/berita/perbulan/:date" component={BeritaPerBulan} />
         <Route exact path="/bimtek-summary" component={BimTekSummaryPage} />
         <Route exact path="/bimtek-form" component={BimTekFormPage} />
         <Route exact path="/bimtek-jadwal" component={BimTekJadwalPage} />
         <Route exact path="/bimtek-materi" component={BimTekMateriPage} />
         <Route exact path="/bimtek-permintaan" component={BimTekPermintaanPage} />
+        <Route exact path="/bimtek-permintaan/:id" component={BimTekPermintaanDetailPage} />
         <Route exact path="/bimtek-kota-pelaksanaan" component={BimTekKotaPage} />
         <Route exact path="/bimtek-dokumentasi" component={BimTekDokumentasiPage} />
         <Route exact path="/tentang" component={TentangPage} />

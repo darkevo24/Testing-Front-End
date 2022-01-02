@@ -1,0 +1,116 @@
+.sdp-bimtek-permintaan {
+  &__item {
+    border: 1px solid $stroke;
+    border-radius: 4px;
+    margin-top: 12px;
+    background: $white;
+    border: 1px solid $stroke;
+    box-sizing: border-box;
+    box-shadow: 0px 1px 2px $black-shadow;
+    border-radius: 4px;
+  }
+  &__info-data {
+    padding: 0 14px;
+  }
+  &__info-data-wrapper,
+  &__main-data-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px 0 0 0;
+    padding: 0 14px;
+  }
+  &__terkim-div {
+    width: 100%;
+    padding: 12px;
+    background: $purple-bg;
+    border-radius: 0 0 4px 4px;
+    text-align: center;
+    font-size: 14px;
+    color: $purple;
+  }
+  &__bimtek-tekins-wrapper,
+  &__log-status {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__info-permit-data {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    color: $gray;
+    padding: 0 14px 14px;
+    border-bottom: 1px solid $stroke;
+  }
+  &__api-data {
+    font-family: Myriad Pro;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    color: $black-dark-10;
+    flex: none;
+    order: 8;
+    flex-grow: 0;
+    margin: 16px 0px;
+    padding: 10px 10px;
+  }
+  &__back-link {
+    font-family: Myriad Pro;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    color: $blue;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    margin: 0px 12px;
+  }
+  &__log-status-wrapper {
+    margin-top: 20px;
+  }
+  &__log-status-terkim {
+    background: $purple-bg;
+    border-radius: 2px;
+    margin: 0px 8px;
+    min-height: 17px;
+    display: flex;
+    align-items: center;
+    max-width: 210px;
+    font-size: 14px;
+    line-height: 17px;
+    color: $purple;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+  &__log-message-terkim {
+    color: $gray;
+  }
+  &__after-content-hr {
+    position: relative;
+  }
+  &__after-content-hr:after {
+    content: '';
+    content: '';
+    position: absolute;
+    width: 70%;
+    height: 1px;
+    background: $stroke;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 0;
+    right: -30%;
+  }
+  &__status {
+    width: 24px;
+    height: 4px;
+    color: $blue;
+    opacity: 1;
+    border-radius: 100px;
+    border: solid;
+    margin-right: 10px;
+  }
+}

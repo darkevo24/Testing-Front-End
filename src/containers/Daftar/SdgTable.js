@@ -13,7 +13,7 @@ const SdgTable = ({
   bem,
   textSearch,
   onPilarSdgChange,
-  dataindukOptions = [],
+  dataIndukOptions = [],
   instansiOptions = [],
   priorityOptions = [],
   produenOptions = [],
@@ -168,7 +168,7 @@ const SdgTable = ({
             <label className="sdp-form-label py-8">Data Induk</label>
             <SingleSelectDropdown
               onChange={handleDropdownFilter('dataInduk')}
-              data={dataindukOptions}
+              data={dataIndukOptions}
               placeHolder="Semua"
               isLoading={false}
               noValue={true}

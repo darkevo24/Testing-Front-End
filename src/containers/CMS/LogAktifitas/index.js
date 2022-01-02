@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import moment from 'moment';
 import cx from 'classnames';
+import debounce from 'lodash/debounce';
 import { useDispatch, useSelector } from 'react-redux';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
@@ -14,6 +15,7 @@ import { Modal, Table } from 'components';
 import TableLoader from 'components/Loader/TableLoader';
 import bn from 'utils/bemNames';
 import { getCMSLogActifitasData, cmsLogAktifitasDataSelector } from './reducer';
+const DEBOUNCE_DELAY = 1500;
 
 const bem = bn('log-activity');
 
@@ -27,40 +29,41 @@ const schema = yup
 
 const LogActivity = () => {
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [query, setQuery] = useState('');
 
-  const { q, startDate, endDate, size, loading, page, records, totalRecords, totalPages } =
+  const { q, startDate, endDate, size, loading, records, totalRecords, totalPages, status } =
     useSelector(cmsLogAktifitasDataSelector);
 
   useEffect(() => {
-    handleAPICall({
-      page: page,
-      q,
-      startDate,
-      endDate,
-    });
-  }, []);
-
-  const handleAPICall = (params) => {
-    dispatch(getCMSLogActifitasData(params));
-  };
-
-  const handleSearch = (value = '') => {
-    handleAPICall({
-      page: page,
-      q: value.trim(),
-      ...(startDate && { startDate: startDate }),
-      ...(endDate && { endDate: endDate }),
-    });
-  };
+    dispatch(getCMSLogActifitasData({ page: currentPage, q, startDate, endDate }));
+  }, [dispatch, q, startDate, endDate, currentPage]);
 
   const [modalProfile, setModalProfile] = useState(false);
   const {
     control,
     formState: { errors },
+    watch,
     // handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const startDateValue = watch('startDate');
+  const endDateValue = watch('endDate');
+
+  useEffect(() => {
+    if (startDateValue && endDateValue) {
+      dispatch(
+        getCMSLogActifitasData({
+          page: 0,
+          q: query,
+          startDate: moment(startDateValue).format('YYYY-MM-DD'),
+          endDate: moment(endDateValue).format('YYYY-MM-DD'),
+        }),
+      );
+    }
+  }, [startDateValue, endDateValue]);
+
   const rowClick = (data) => {
     // history.push(`/cms/permintaan-data/${data.id}`);
   };
@@ -70,10 +73,33 @@ const LogActivity = () => {
     // return 'bg-gray';
   };
 
+  const handleSearch = () => {
+    dispatch(getCMSLogActifitasData({ page: 0, q: query, startDate, endDate }));
+  };
+  const handleUserInputChange = (event) => {
+    const { value } = event.target;
+    setQuery(value);
+  };
+  const delayedQuery = useCallback(debounce(handleSearch, DEBOUNCE_DELAY), [query]);
+
+  useEffect(() => {
+    delayedQuery();
+
+    return delayedQuery.cancel;
+  }, [query, delayedQuery]);
+
   const columns = [
     {
       Header: 'ID Pengguna',
-      accessor: 'id_user',
+      accessor: 'email',
+      Cell: ({
+        row: {
+          original: { data },
+        },
+      }) => {
+        const { email = '' } = data?.user;
+        return <span>{email}</span>;
+      },
     },
     {
       Header: 'Alamat IP',
@@ -81,14 +107,16 @@ const LogActivity = () => {
     },
     {
       Header: 'Waktu',
-      accessor: 'tanggalTarget',
+      accessor: 'createdAt',
       Cell: ({ ...rest }) => (
-        <span> {rest.row.original?.tanggalTarget ? moment(rest.row.original?.time).format('DD MMMM YYYY') : '---'} </span>
+        <span>
+          {rest.row.original?.createdAt ? moment(rest.row.original?.createdAt).format('DD/MM YYYY : HH:MM') : '---'}{' '}
+        </span>
       ),
     },
     {
       Header: 'Activity',
-      accessor: 'activity',
+      accessor: 'remark',
     },
     {
       Header: 'Status',
@@ -96,9 +124,10 @@ const LogActivity = () => {
 
       Cell: ({
         row: {
-          original: { status = '' },
+          original: { data = {} },
         },
       }) => {
+        const { status = '' } = data;
         return (
           <span
             className={cx({
@@ -123,13 +152,13 @@ const LogActivity = () => {
     totalCount: totalRecords || null,
     pageCount: totalPages || null,
     pageSize: size,
-    currentPage: page,
+    currentPage: currentPage,
     manualPagination: true,
     onRowClick: rowClick,
     rowClass: getRowClass,
-    onPageIndexChange: (currentPage) => {
-      if (currentPage !== page) {
-        handleAPICall({ page: currentPage, q, startDate, endDate });
+    onPageIndexChange: (nextPage) => {
+      if (nextPage !== currentPage) {
+        setCurrentPage(nextPage);
       }
     },
   };
@@ -175,12 +204,7 @@ const LogActivity = () => {
               />
             </div>
             <InputGroup>
-              <Form.Control
-                variant="normal"
-                type="text"
-                placeholder="Pencarian"
-                onChange={(e) => handleSearch(e.target.value)}
-              />
+              <Form.Control variant="normal" type="text" placeholder="Pencarian" onChange={handleUserInputChange} />
               <Search />
             </InputGroup>
           </div>

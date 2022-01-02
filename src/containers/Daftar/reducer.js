@@ -169,7 +169,7 @@ export const initialState = {
       kodeReferensi: null,
     },
   },
-  dataVariableSubmit: {
+  dataVariable: {
     loading: false,
     error: null,
     result: null,
@@ -272,7 +272,7 @@ export const daftarDataSubmit = createAsyncThunk('daftarData/daftarDataSubmit', 
     methodToCall = put;
   }
   const response = await methodToCall(url, payload);
-  return response;
+  return response?.data?.content;
 });
 
 export const getSDGTujuan = createAsyncThunk('daftarData/getSDGTujuan', async (id) => {
@@ -307,7 +307,7 @@ export const getKodeReferensi = createAsyncThunk('daftarData/getKodeReferensi', 
 
 export const getKatalogVariables = createAsyncThunk('daftarData/getKatalogVariables', async ({ daftarId, filters }) => {
   const query = incrementPageParams(filters.params);
-  const response = await post(`${apiUrls.katalogVariable}/${daftarId}`, filters.bodyParams, { query });
+  const response = await post(`${apiUrls.katalogVariable}/${daftarId}/list`, filters.bodyParams, { query });
   return response?.data?.content;
 });
 
@@ -324,18 +324,10 @@ export const deleteVariableData = createAsyncThunk('daftar/deleteVariableData', 
 
 export const dataVariableSubmit = createAsyncThunk('daftarData/dataVariableSubmit', async (payload) => {
   const isEdit = !!payload.id;
-  let url = apiUrls.katalogVariable;
-  let methodToCall = post;
-  if (isEdit) {
-    url = `${url}/${payload.id}`;
-    methodToCall = put;
-  }
-  // if (isEdit) {
-  //   delete payload.id;
-  //   delete payload.idKatalog;
-  // }
-  const response = await methodToCall(url, payload);
-  return response;
+  let url = isEdit ? `${apiUrls.variable}/${payload.id}` : `${apiUrls.katalogVariable}/${payload.idKatalog}`;
+  const methodToCall = isEdit ? put : post;
+  payload.kodeReferensi = payload.kodeReferensi || 0;
+  return methodToCall(url, payload);
 });
 
 const daftarSlice = createSlice({
@@ -347,6 +339,11 @@ const daftarSlice = createSlice({
     },
     setRKPppData: (state) => {
       state.rkpPP.result = [];
+    },
+    resetDaftarData: (state) => {
+      state.dafterDataWithId.loading = false;
+      state.dafterDataWithId.error = '';
+      state.dafterDataWithId.result = null;
     },
   },
   extraReducers: (builder) => {
@@ -482,6 +479,7 @@ const daftarSlice = createSlice({
     builder.addCase(daftarDataSubmit.fulfilled, (state, action) => {
       state.daftarDataSubmit.loading = false;
       state.daftarDataSubmit.result = action.payload;
+      state.daftarDetails.result[action.payload.id] = action.payload;
     });
     builder.addCase(daftarDataSubmit.rejected, (state) => {
       state.daftarDataSubmit.loading = false;
@@ -544,6 +542,7 @@ const daftarSlice = createSlice({
     });
     builder.addCase(getDaftarDataDetailById.pending, (state) => {
       state.dafterDataWithId.loading = true;
+      state.dafterDataWithId.error = '';
     });
     builder.addCase(getDaftarDataDetailById.fulfilled, (state, { payload }) => {
       state.dafterDataWithId.loading = false;
@@ -551,7 +550,7 @@ const daftarSlice = createSlice({
     });
     builder.addCase(getDaftarDataDetailById.rejected, (state) => {
       state.dafterDataWithId.loading = false;
-      state.dafterDataWithId.error = 'Error while updating data';
+      state.dafterDataWithId.error = 'Error while fetching data';
     });
     builder.addCase(getDaftarDataDetailLog.pending, (state) => {
       state.dafterDataLogWithId.loading = true;
@@ -562,7 +561,7 @@ const daftarSlice = createSlice({
     });
     builder.addCase(getDaftarDataDetailLog.rejected, (state) => {
       state.dafterDataLogWithId.loading = false;
-      state.dafterDataLogWithId.error = 'Error while updating data';
+      state.dafterDataLogWithId.error = 'Error while fetching data';
     });
     builder.addCase(getKodeReferensi.pending, (state) => {
       state.kodeReferensi.loading = true;
@@ -594,15 +593,15 @@ const daftarSlice = createSlice({
       state.katalogVariableData.error = 'Error in fetching katalog variable data details!';
     });
     builder.addCase(dataVariableSubmit.pending, (state) => {
-      state.dataVariableSubmit.loading = true;
+      state.dataVariable.loading = true;
     });
     builder.addCase(dataVariableSubmit.fulfilled, (state, action) => {
-      state.dataVariableSubmit.loading = false;
-      state.dataVariableSubmit.result = action.payload;
+      state.dataVariable.loading = false;
+      state.dataVariable.result = action.payload;
     });
     builder.addCase(dataVariableSubmit.rejected, (state) => {
-      state.dataVariableSubmit.loading = false;
-      state.dataVariableSubmit.error = 'Error while adding data';
+      state.dataVariable.loading = false;
+      state.dataVariable.error = 'Error while adding data';
     });
     builder.addCase(deleteVariableData.pending, (state) => {
       state.deleteVariableData.loading = true;
@@ -658,5 +657,5 @@ export const kodeReferensiOptionsSelector = createSelector(
   dataOptionsMapperCurry(idNameOptionsMapper),
 );
 
-export const { setRKPppData, setSDGsData } = daftarSlice.actions;
+export const { setRKPppData, setSDGsData, resetDaftarData } = daftarSlice.actions;
 export default daftarSlice.reducer;

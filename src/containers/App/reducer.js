@@ -20,6 +20,11 @@ export const initialState = {
     error: null,
     result: null,
   },
+  dataindukAll: {
+    loading: false,
+    error: null,
+    result: null,
+  },
   sdgPillers: {
     loading: false,
     error: null,
@@ -57,8 +62,13 @@ export const getInstansiData = createAsyncThunk('portal/getInstansiData', async 
   return response?.data?.content?.records;
 });
 
+export const getAllDatainduk = createAsyncThunk('daftar/getAllDatainduk', async () => {
+  const response = await get(apiUrls.dataindukAllData);
+  return response?.data?.content?.records;
+});
+
 export const getDatainduk = createAsyncThunk('daftar/getDatainduk', async () => {
-  const response = await post(apiUrls.dataindukData);
+  const response = await get(apiUrls.dataindukData);
   return response?.data?.content?.records;
 });
 
@@ -124,6 +134,17 @@ const AppSlice = createSlice({
     builder.addCase(getDatainduk.rejected, (state) => {
       state.datainduk.loading = false;
       state.datainduk.error = 'Error in getting datainduk data';
+    });
+    builder.addCase(getAllDatainduk.pending, (state) => {
+      state.dataindukAll.loading = true;
+    });
+    builder.addCase(getAllDatainduk.fulfilled, (state, action) => {
+      state.dataindukAll.loading = false;
+      state.dataindukAll.result = action.payload;
+    });
+    builder.addCase(getAllDatainduk.rejected, (state) => {
+      state.dataindukAll.loading = false;
+      state.dataindukAll.error = 'Error in getting katalog induk data';
     });
     builder.addCase(getSDGPillers.pending, (state) => {
       state.sdgPillers.loading = true;
@@ -202,6 +223,7 @@ export const { setLoader, setNotificationOptions } = AppSlice.actions;
 export const notificationsSelector = (state) => state.global.notificationOptions;
 export const instansiDataSelector = (state) => state.global.instansi;
 export const dataindukSelector = (state) => state.global.datainduk;
+export const dataindukAllSelector = (state) => state.global.dataindukAll;
 export const sdgPillersSelector = (state) => state.global.sdgPillers;
 export const rkpPNSelector = (state) => state.global.rkpPN;
 export const kategoriSelector = (state) => state.global?.kategori;
@@ -209,6 +231,7 @@ export const taglineSelector = (state) => state.global?.tagline;
 export const fotoSelector = (state) => state.global?.file;
 
 export const instansiOptionsSelector = createSelector(instansiDataSelector, dataOptionsMapperCurry(idNameOptionsMapper));
+export const dataindukAllOptionsSelector = createSelector(dataindukAllSelector, dataOptionsMapperCurry(idNameOptionsMapper));
 export const dataindukOptionsSelector = createSelector(dataindukSelector, dataOptionsMapperCurry(idNameOptionsMapper));
 export const sdgPillerOptionsSelector = createSelector(
   sdgPillersSelector,

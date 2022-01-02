@@ -12,6 +12,7 @@ import { Table } from 'components';
 import { useHistory } from 'react-router-dom';
 import { bimtekDokumentasiSelector, getDokumentasi } from './reducer';
 import { ReactComponent as Plus } from 'assets/plus.svg';
+import TableLoader from 'components/Loader/TableLoader';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 
@@ -22,7 +23,7 @@ const CMSBimtekPermintaan = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { size, page, records, totalRecords } = useSelector(bimtekDokumentasiSelector);
+  const { loading, size, page, records, totalRecords } = useSelector(bimtekDokumentasiSelector);
   const updateQuery = setSearch.debounce((val) => {
     setQuery(val);
   }, 500);
@@ -144,7 +145,7 @@ const CMSBimtekPermintaan = () => {
           </Col>
         </Row>
       </div>
-      <div className="px-30"> {<Table {...tableConfig} />} </div>
+      <div className="px-30"> {!loading ? <Table {...tableConfig} /> : <TableLoader />} </div>
     </div>
   );
 };

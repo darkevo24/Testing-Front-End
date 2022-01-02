@@ -30,6 +30,7 @@
 @import './components/highlight-words';
 @import './components/icon';
 @import './components/input';
+@import './components/loader';
 @import './components/map-tile';
 @import './components/modal';
 @import './components/notification';
@@ -64,3 +65,6 @@
 @import './pages/cmsBimtek';
 @import './pages/cmsBimtekDokumentasi';
 @import './pages/bimtek-pendaftran';
+@import './pages/berita';
+@import './pages/bimtek-permintaan';
+@import './pages/bimtek-pagination';

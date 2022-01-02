@@ -21,8 +21,9 @@ export const getAboutUsLogs = createAsyncThunk('cms/aboutUs/getDetailLogs', asyn
   return response?.data?.content;
 });
 
-export const doAboutUs = createAsyncThunk('cms/aboutUs/doAboutUs', async ({ id, action }) => {
-  const response = await post(`${apiUrls.cmsAboutUs}/${id}/${action}`, {});
+export const doAboutUs = createAsyncThunk('cms/aboutUs/doAboutUs', async (params) => {
+  const notes = params.notes ? params.notes : '';
+  const response = await post(`${apiUrls.cmsAboutUs}/${params.id}/${params.action}`, { note: notes });
   return response?.data?.content;
 });
 

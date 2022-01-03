@@ -117,11 +117,13 @@ const BeritaPerBulan = () => {
             })
           : null}
         <div className="row">
-          {records.length >= 10 && (
-            <button className="loadMoreBUtton" onClick={handleLoadMore}>
-              Muat Lebih Banyak
-            </button>
-          )}
+          <div className="col-md-12 text-center my-10">
+            {records.length >= 10 && (
+              <button className="loadMoreBUtton" onClick={handleLoadMore}>
+                Muat Lebih Banyak
+              </button>
+            )}
+          </div>
         </div>
       </div>
 

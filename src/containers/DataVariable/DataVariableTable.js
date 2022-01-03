@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import isFunction from 'lodash/isFunction';
-
+import { useSelector } from 'react-redux';
+import { userInstansiSelector } from 'containers/App/reducer';
 import Popover from 'components/Popover';
 import Table from 'components/Table';
 import truncate from 'lodash/truncate';
@@ -25,6 +26,8 @@ const DataVariableTable = ({
   handleTableReferensiChange,
 }) => {
   const { t } = useTranslation();
+  const userInstansi = useSelector(userInstansiSelector);
+  const hasAccess = daftar?.instansiId === userInstansi?.id;
 
   const handleReferensiChange = async (item) => {
     if (cmsCreateForm) {
@@ -80,12 +83,13 @@ const DataVariableTable = ({
         accessor: 'kodeReferensi',
         action: handleReferensiChange,
         isChecked: (row) => row.kodeReferensi === 1,
+        isDisabled: !hasAccess,
         label: '',
         Cell: Table.CheckBox,
       },
     ];
 
-    if (!cmsDetail) {
+    if (hasAccess && !cmsDetail) {
       cols.push({
         id: 'actions',
         actions: [
@@ -102,7 +106,7 @@ const DataVariableTable = ({
       });
     }
     return cols;
-  }, [data, daftar]);
+  }, [data, daftar, userInstansi]);
 
   const tableConfig = {
     variant: 'spaced',
@@ -120,7 +124,7 @@ const DataVariableTable = ({
     manualPagination: manualPagination,
     currentPage: params?.page || null,
     highlightOnHover: true,
-    searchRightComponent: !!cms,
+    searchRightComponent: !!cms || !hasAccess,
     searchPlaceholder: t('sandbox.variable.searchPlaceholder'),
     searchButtonText: t('sandbox.variable.addVariable'),
     onSearch: (filterText) => {

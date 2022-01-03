@@ -22,7 +22,8 @@ export const analyticsUrl = 'https://analitik.data.go.id';
 export const katalogUrl = 'https://katalog.satudata.go.id';
 export const apiUrl = '/api-be';
 export const dataUrl = `${katalogUrl}/api`;
-export const facebookAppId = process.env.FACEBOOK_APP_ID;
+export const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
+console.log({ facebookAppId });
 
 export const getAnalyticsUrl = (path) => `${analyticsUrl}/${path}`;
 export const getApiEndpoint = (path) => `${apiUrl}/${path}`;

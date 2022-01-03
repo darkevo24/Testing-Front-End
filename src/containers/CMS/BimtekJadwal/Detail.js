@@ -189,12 +189,17 @@ const CMSJadwalDetail = (props) => {
   };
 
   const onUpdate = async (data) => {
-    let tanggalMulaiDisetujui = `${moment(data.tanggalMulaiDisetujuiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
-        data.jamMulaiDisetujuiUpdate
-      }:00`,
-      tanggalSelesaiDisetujui = `${moment(data.tanggalSelesaiDisetujuiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
-        data.jamSelesaiDisetujuiUpdate
-      }:00`;
+    console.log(data);
+    let tanggalMulai = moment(data.tanggalMulaiDisetujuiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+    let tanggalSelesai = moment(data.tanggalSelesaiDisetujuiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+    if (tanggalMulai === 'Invalid date') {
+      tanggalMulai = moment(data.tanggalMulaiDisetujuiUpdate).format('YYYY-MM-DD');
+    }
+    if (tanggalSelesai === 'Invalid date') {
+      tanggalSelesai = moment(data.tanggalSelesaiDisetujuiUpdate).format('YYYY-MM-DD');
+    }
+    let tanggalMulaiDisetujui = `${tanggalMulai} ${data.jamMulaiDisetujuiUpdate}:00`,
+      tanggalSelesaiDisetujui = `${tanggalSelesai} ${data.jamSelesaiDisetujuiUpdate}:00`;
     if (!moment(tanggalSelesaiDisetujui).isAfter(tanggalMulaiDisetujui)) {
       handleCloseModal();
       return handleNotification('secondary', 'Gagal, Rentang Waktu Tidak Valid', 'cross');
@@ -331,13 +336,22 @@ const CMSJadwalDetail = (props) => {
   };
 
   const onEditPembicara = (data) => {
+    let tanggalMulaiCheck = moment(data.tambahPembicaraWaktuMulaiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+    let tanggalSelesaiCheck = moment(data.tambahPembicaraWaktuSelesaiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+    if (tanggalMulaiCheck === 'Invalid date') {
+      tanggalMulaiCheck = moment(data.tambahPembicaraWaktuMulaiUpdate).format('YYYY-MM-DD');
+    }
+    if (tanggalSelesaiCheck === 'Invalid date') {
+      tanggalSelesaiCheck = moment(data.tambahPembicaraWaktuSelesaiUpdate).format('YYYY-MM-DD');
+    }
+
     const nama = data.tambahPembicaraUpdate;
-    const tanggalMulai = `${moment(data.tambahPembicaraWaktuMulaiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
-      data.tambahPembicaraJamMulaiUpdate
-    }:00`;
-    const tanggalSelesai = `${moment(data.tambahPembicaraWaktuSelesaiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
-      data.tambahPembicaraJamSelesaiUpdate
-    }:00`;
+    const tanggalMulai = `${tanggalMulaiCheck} ${data.tambahPembicaraJamMulaiUpdate}:00`;
+    const tanggalSelesai = `${tanggalSelesaiCheck} ${data.tambahPembicaraJamSelesaiUpdate}:00`;
+    if (!moment(tanggalSelesai).isAfter(tanggalMulai)) {
+      handleCloseModal();
+      return handleNotification('secondary', 'Gagal, Rentang Waktu Tidak Valid', 'cross');
+    }
     let obj = {
       nama,
       tanggalMulai,

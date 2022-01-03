@@ -107,7 +107,6 @@
       mix-blend-mode: difference;
     }
   }
-
   &__scroll-img {
     max-width: 100%;
     width: 100%;
@@ -115,15 +114,13 @@
       height: 660px;
     }
   }
-}
-
-.carousel.slide {
-  max-width: 100%;
-  width: 100%;
-}
-
-.close-button {
-  position: absolute;
-  z-index: 110;
-  opacity: 0.7;
+  &__detail-close {
+    position: absolute;
+    z-index: 110;
+    opacity: 0.7;
+  }
+  &__dokumentasi-slider {
+    max-width: 100%;
+    width: 100%;
+  }
 }

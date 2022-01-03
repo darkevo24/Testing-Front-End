@@ -136,12 +136,11 @@ const BimTekDokumentasi = () => {
 
       <Modal show={docDetail} onHide={setDocDetail} dialogClassName={bem.e('modal')}>
         <Modal.Header className="p-0 position-relative mw-100 w-100">
-          <div
-            onClick={() => setDocDetail(false)}
-            className={cx(bem.e('detail-close'), 'bg-white rounded-circle close-button')}>
+          <div onClick={() => setDocDetail(false)} className={cx(bem.e('detail-close'), 'bg-white rounded-circle')}>
             <Close />
           </div>
           <Carousel
+            className={bem.e('dokumentasi-slider')}
             prevIcon={
               <div
                 onClick={() => handleImageScroll('decrement')}

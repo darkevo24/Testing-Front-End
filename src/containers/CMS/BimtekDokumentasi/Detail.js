@@ -335,12 +335,6 @@ const CMSDokumentasiDetail = (props) => {
             <div className="d-flex justify-content-between mb-4">
               <div className={bem.e('title')}>Dokumentasi Bimbingan Teknis</div>
               <div className="d-flex justify-content-center">
-                {/* <ComponentAccessibility roles={[USER_ROLES.CONTENT_CREATOR]}>
-                  <ButtonStatusActionCreator />
-                </ComponentAccessibility>
-                <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR]}>
-                  <ButtonStatusActionEditor />
-                </ComponentAccessibility> */}
                 <DetailHeader handleModal={(type) => setShowModal(type)} history={history} status={status} />
               </div>
             </div>

@@ -132,7 +132,7 @@ export const CMSSidebar = () => {
           <SidebarUserIcon className="mr-10" /> User Management
         </div>
         <SidebarItem title="Pengguna" pathname="#" />
-        <SidebarItem title="Instansi" pathname="#" />
+        <SidebarItem title="Instansi" pathname="/cms/instansi" />
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>

@@ -43,12 +43,14 @@ const CMSForumSDIDetailPage = lazy(() => import('containers/CMS/ForumSDI/CMSForu
 const MediaSosialPage = lazy(() => import('containers/CMS/MediaSosial'));
 const ContactUsPage = lazy(() => import('containers/CMS/ContactUs'));
 const ContactUsDetailPage = lazy(() => import('containers/CMS/ContactUs/detail'));
+const Instansi = lazy(() => import('containers/CMS/Instansi'));
 
 function CMSRoutes() {
   return (
     <CMSLayout>
       <Switch>
         <PrivateRoute exact path="/cms/log-activity" component={LogActivity} />
+        <PrivateRoute exact path="/cms/instansi" component={Instansi} />
         <PrivateRoute exact path="/cms/manage-komunitas-ahli/:id" component={ManageKomunitasAhliPage} />
         <PrivateRoute exact path="/cms/manage-komunitas-ahli/" component={ManageKomunitasAhliPage} />
         <PrivateRoute exact path="/cms/api/edit/:id?" component={ManagementApiEdit} />

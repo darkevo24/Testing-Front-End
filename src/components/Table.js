@@ -326,11 +326,18 @@ Table.Card = ({ cell }) => {
 };
 
 Table.CheckBox = ({ cell }) => {
-  const { column: { action, isChecked, label = '' } = {}, row } = cell;
+  const { column: { action, isChecked, isDisabled, label = '' } = {}, row } = cell;
   const { original: item } = row;
+  const checkedValue = isFunction(isChecked) ? isChecked(item) : isChecked;
+  const disabledValue = isFunction(isDisabled) ? isDisabled(item) : isDisabled;
+  const handleAction = () => {
+    if (isFunction(action)) {
+      action(item);
+    }
+  };
   return (
     <div className="sdp-table-checkbox" key={item.id}>
-      <Form.Check type="checkbox" label={label} checked={isChecked(item)} onChange={() => action(item)} />
+      <Form.Check type="checkbox" label={label} checked={checkedValue} disabled={disabledValue} onChange={handleAction} />
     </div>
   );
 };

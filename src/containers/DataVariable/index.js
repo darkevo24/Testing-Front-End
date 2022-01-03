@@ -122,16 +122,6 @@ const DataVariable = ({ cms = false, cmsDetail = false, id }) => {
   };
 
   const handleDataVariableFormSubmit = (data) => {
-    hideDataVariableFormModal();
-    Notification.show({
-      type: 'secondary',
-      message: (
-        <div>
-          Variabel <span className="fw-bold">{data.name}</span> Berhasil Ditambahkan
-        </div>
-      ),
-      icon: 'check',
-    });
     const payload = prepareFormPayload(data, {
       dropdowns: ['pengaturanAkses'],
     });
@@ -143,6 +133,7 @@ const DataVariable = ({ cms = false, cmsDetail = false, id }) => {
     dispatch(dataVariableSubmit(payload)).then((res) => {
       const hasError = res?.type?.includes('rejected');
       const isEdit = !!data.id;
+      hideDataVariableFormModal();
       if (hasError) {
         return Notification.show({
           message: (

@@ -311,15 +311,8 @@ export const getKatalogVariables = createAsyncThunk('daftarData/getKatalogVariab
   return response?.data?.content;
 });
 
-export const refetchVariableData = createAsyncThunk('daftarData/refetchDaftarData', async (_, { dispatch, getState }) => {
-  const state = getState()?.daftar;
-  // TODO: fix this and refetch the data
-});
-
-export const deleteVariableData = createAsyncThunk('daftar/deleteVariableData', async (params, { dispatch }) => {
-  const response = await deleteRequest(`${apiUrls.variable}/${params.id}`);
-  dispatch(refetchVariableData());
-  return response;
+export const deleteVariableData = createAsyncThunk('daftar/deleteVariableData', async (params) => {
+  return deleteRequest(`${apiUrls.variable}/${params.id}`);
 });
 
 export const dataVariableSubmit = createAsyncThunk('daftarData/dataVariableSubmit', async (payload) => {

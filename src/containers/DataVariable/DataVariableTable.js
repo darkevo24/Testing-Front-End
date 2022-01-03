@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import cx from 'classnames';
 import isFunction from 'lodash/isFunction';
 import { useSelector } from 'react-redux';
 import { userInstansiSelector } from 'containers/App/reducer';
+import { kodeReferensiSelector } from 'containers/Daftar/reducer';
 import Popover from 'components/Popover';
 import Table from 'components/Table';
 import truncate from 'lodash/truncate';
@@ -27,6 +29,7 @@ const DataVariableTable = ({
 }) => {
   const { t } = useTranslation();
   const userInstansi = useSelector(userInstansiSelector);
+  const kodeReferensi = useSelector(kodeReferensiSelector);
   const hasAccess = daftar?.instansiId === userInstansi?.id;
 
   const handleReferensiChange = async (item) => {
@@ -124,6 +127,14 @@ const DataVariableTable = ({
     manualPagination: manualPagination,
     currentPage: params?.page || null,
     highlightOnHover: true,
+    searchLeftComponent: (
+      <span className="mr-auto">
+        Kode Referensi
+        <span className={cx('ml-16', { 'sdp-text-blue': !!kodeReferensi?.result?.nama })}>
+          {kodeReferensi?.result?.nama || '-'}
+        </span>
+      </span>
+    ),
     searchRightComponent: !!cms || !hasAccess,
     searchPlaceholder: t('sandbox.variable.searchPlaceholder'),
     searchButtonText: t('sandbox.variable.addVariable'),

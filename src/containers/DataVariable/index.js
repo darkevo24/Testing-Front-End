@@ -16,7 +16,7 @@ import {
   deleteVariableData,
   getDaftarDetail,
   getKatalogVariables,
-  kodeReferensiOptionsSelector,
+  getKodeReferensi,
   katalogVariableDataSelector,
 } from 'containers/Daftar/reducer';
 import DataVariableForm, { submitDataVariableForm } from './DataVariableForm';
@@ -34,7 +34,6 @@ const DataVariable = ({ cms = false, cmsDetail = false, id }) => {
   const [isDataVariableFormVisible, setIsDataVariableFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [kodeReferensi, setKodeReferensi] = useState(null);
-  const kodeReferensiOptions = useSelector(kodeReferensiOptionsSelector);
 
   const data = useMemo(() => result?.records || [], [result]);
 
@@ -59,6 +58,7 @@ const DataVariable = ({ cms = false, cmsDetail = false, id }) => {
   useEffect(() => {
     if (recordId) {
       fetchKatalogVariableData();
+      dispatch(getKodeReferensi(recordId));
       if (isEmpty(daftar)) {
         dispatch(getDaftarDetail(recordId));
       }
@@ -194,7 +194,6 @@ const DataVariable = ({ cms = false, cmsDetail = false, id }) => {
             daftar={daftar}
             fetchKatalogVariableData={fetchKatalogVariableData}
             handleKodeReferensiChange={handleKodeReferensiChange}
-            kodeReferensiOptions={kodeReferensiOptions}
             pageSize={pageSize}
             params={params}
           />

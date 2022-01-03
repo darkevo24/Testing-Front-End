@@ -300,6 +300,11 @@ export const downloadDaftarData = createAsyncThunk('daftarData/downloadDaftarDat
   return response?.data;
 });
 
+export const getKodeReferensi = createAsyncThunk('daftarData/getKodeReferensi', async (daftarId) => {
+  const response = await get(`${apiUrls.katalogVariable}/${daftarId}/kodereferensi`);
+  return response?.data?.content;
+});
+
 export const getKatalogVariables = createAsyncThunk('daftarData/getKatalogVariables', async ({ daftarId, filters }) => {
   const query = incrementPageParams(filters.params);
   const response = await post(`${apiUrls.katalogVariable}/${daftarId}/list`, filters.bodyParams, { query });
@@ -551,6 +556,18 @@ const daftarSlice = createSlice({
       state.dafterDataLogWithId.loading = false;
       state.dafterDataLogWithId.error = 'Error while fetching data';
     });
+    builder.addCase(getKodeReferensi.pending, (state) => {
+      state.kodeReferensi.loading = true;
+    });
+    builder.addCase(getKodeReferensi.fulfilled, (state, action) => {
+      state.kodeReferensi.loading = false;
+      state.kodeReferensi.result = action.payload;
+      state.kodeReferensi.error = '';
+    });
+    builder.addCase(getKodeReferensi.rejected, (state) => {
+      state.kodeReferensi.loading = false;
+      state.kodeReferensi.error = 'Error while fetching kodeReferensi data';
+    });
     builder.addCase(getKatalogVariables.pending, (state, action) => {
       const {
         filters: { bodyParams, params },
@@ -625,11 +642,6 @@ export const addTujuanSDGPillerOptionsSelector = createSelector(
 export const addRkpPPOptionsSelector = createSelector(
   addDaftarRkpPPSelector,
   dataOptionsMapperCurry(idKeteranganOptionsMapper),
-);
-
-export const kodeReferensiOptionsSelector = createSelector(
-  kodeReferensiSelector,
-  dataOptionsMapperCurry(idNameOptionsMapper),
 );
 
 export const { setRKPppData, setSDGsData, resetDaftarData } = daftarSlice.actions;

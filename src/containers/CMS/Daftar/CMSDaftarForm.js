@@ -204,9 +204,9 @@ const CMSDaftarPage = ({ ...props }) => {
       return null;
     }
     if (!tableData?.length) goBack();
-    if (!apiResponse?.payload?.data?.content?.id) return null;
+    if (!apiResponse?.payload?.id) return null;
     const apiCall = tableData.map((item) => {
-      if (!item.id) item.idKatalog = apiResponse.payload.data.content.id;
+      if (!item.id) item.idKatalog = apiResponse.payload.id;
       return dispatch(props.dataVariableSubmit(item));
     });
     const response = await Promise.all(apiCall);
@@ -241,6 +241,11 @@ const CMSDaftarPage = ({ ...props }) => {
       dispatch(getAddDaftarRKPpp(watchKodePNRKP.value));
     }
   }, [watchKodePNRKP]);
+
+  const handleCloseModal = () => {
+    setShowAddModal(false);
+    setSelectedRecord({});
+  };
 
   return (
     <>
@@ -578,10 +583,9 @@ const CMSDaftarPage = ({ ...props }) => {
       </Form>
       <TambahFormModal
         visible={showAddModal}
-        data={selectedRecord}
+        data={{ ...selectedRecord }}
         handleDataSubmit={handleDataSubmit}
-        setModal={setShowAddModal}
-        selectedRecord={selectedRecord}
+        handleCloseModal={handleCloseModal}
       />
     </>
   );

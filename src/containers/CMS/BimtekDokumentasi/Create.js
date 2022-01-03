@@ -150,10 +150,13 @@ const CMSJadwalBaru = () => {
     },
   ];
 
+  const filterMateriBimtek = materiBimtek.filter((data) => data !== null);
+  const filterPembicaraBimtek = pembicaraBimtek.filter((data) => data !== null);
+
   const tableConfigMateri = {
     className: 'cms-bimtek-table',
     columns: columnsMateri,
-    data: materiBimtek,
+    data: filterMateriBimtek,
     title: '',
     showSearch: false,
     onSearch: () => {},
@@ -163,7 +166,7 @@ const CMSJadwalBaru = () => {
   const tableConfigPembicara = {
     className: 'cms-bimtek-table',
     columns: columnsPembicara,
-    data: pembicaraBimtek,
+    data: filterPembicaraBimtek,
     title: '',
     showSearch: false,
     onSearch: () => {},

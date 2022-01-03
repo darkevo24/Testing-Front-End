@@ -15,6 +15,7 @@ import bn from 'utils/bemNames';
 import cx from 'classnames';
 import moment from 'moment';
 import Pagination from 'components/Pagination';
+import { Carousel } from 'react-bootstrap';
 
 const bem = bn('bimtek-dokumentasi');
 
@@ -101,7 +102,11 @@ const BimTekDokumentasi = () => {
       ) : (
         dokumentasiRecords.map((list, dokumentasiDataiIndex) => (
           <div key={dokumentasiDataiIndex} className="mb-40">
-            <div className={cx(bem.e('title'), 'fw-bold fs-18')}>{list.sectionName}</div>
+            <div className={cx(bem.e('title'), 'fw-bold fs-18')}>
+              {moment(list.sectionName, 'YYYY-MM').isValid()
+                ? moment(list.sectionName).format('MMMM YYYY')
+                : list?.sectionName}
+            </div>
             <div className={cx(bem.e('title-border'), 'mb-16')}></div>
             {!list?.sectionData?.length ? (
               <div className="d-flex justify-content-center align-items-center flex-column">
@@ -130,38 +135,49 @@ const BimTekDokumentasi = () => {
       )}
 
       <Modal show={docDetail} onHide={setDocDetail} dialogClassName={bem.e('modal')}>
-        {singleDokumentasiRecords?.images?.map((img, index) => (
-          <Modal.Header
-            key={index}
-            className={bem.e('modal-header')}
-            style={{ backgroundImage: `url('${img?.location ?? ''}')` }}>
-            <div onClick={() => setDocDetail(false)} className={cx(bem.e('detail-close'), 'bg-white rounded-circle')}>
-              <Close />
-            </div>
-            <div
-              onClick={() => handleImageScroll('decrement')}
-              className={cx(bem.e('detail-left'), 'bg-white rounded-circle')}>
-              <div></div>
-            </div>
-            <div
-              onClick={() => handleImageScroll('increment')}
-              className={cx(bem.e('detail-right'), 'bg-white rounded-circle')}>
-              <div></div>
-            </div>
-            <div className={cx(bem.e('detail-page'), 'sdp-text-black fs-16')}>
-              {`Image ${activePhoto + 1}
-               /
-              ${img.length ?? 1}`}
-            </div>
-          </Modal.Header>
-        ))}
+        <Modal.Header className="p-0 position-relative mw-100 w-100">
+          <div onClick={() => setDocDetail(false)} className={cx(bem.e('detail-close'), 'bg-white rounded-circle')}>
+            <Close />
+          </div>
+          <Carousel
+            className={bem.e('dokumentasi-slider')}
+            prevIcon={
+              <div
+                onClick={() => handleImageScroll('decrement')}
+                className={cx(bem.e('detail-left'), 'bg-white rounded-circle')}>
+                <div></div>
+              </div>
+            }
+            nextIcon={
+              <div
+                onClick={() => handleImageScroll('increment')}
+                className={cx(bem.e('detail-right'), 'bg-white rounded-circle')}>
+                <div></div>
+              </div>
+            }
+            indicators={false}
+            onSlid={setActivePhoto}>
+            {singleDokumentasiRecords?.images?.map((img, index) => (
+              <Carousel.Item key={index} className={bem.e('scroll-img')}>
+                <img className="d-block w-100" src={img.location} alt="First slide" />
+              </Carousel.Item>
+            ))}
+          </Carousel>
+          <div className={cx(bem.e('detail-page'), 'sdp-text-black fs-16')}>
+            {`Image ${activePhoto + 1}
+                /
+                ${singleDokumentasiRecords?.images?.length ?? 1}`}
+          </div>
+        </Modal.Header>
 
         <Modal.Body>
           <div className="sdp-text-grey-dark fs-14 mb-16">
             {moment(singleDokumentasiRecords.tanggalMulaiDisetujui).format('DD MMMM YYYY')}
           </div>
           <div className="sdp-text-black-dark fs-24 fw-bold mb-16">{singleDokumentasiRecords.namaBimtek}</div>
-          <div className="sdp-text-grey-dark fs-16 mb-16">{singleDokumentasiRecords.isiDokumentasi}</div>
+          <div
+            className="sdp-text-grey-dark fs-16 mb-16"
+            dangerouslySetInnerHTML={{ __html: singleDokumentasiRecords.isiDokumentasi }}></div>
         </Modal.Body>
       </Modal>
 

@@ -300,11 +300,6 @@ export const downloadDaftarData = createAsyncThunk('daftarData/downloadDaftarDat
   return response?.data;
 });
 
-export const getKodeReferensi = createAsyncThunk('daftarData/getKodeReferensi', async (daftarId) => {
-  const response = await get(`${apiUrls.katalogVariable}/${daftarId}/parent`);
-  return response?.data?.content;
-});
-
 export const getKatalogVariables = createAsyncThunk('daftarData/getKatalogVariables', async ({ daftarId, filters }) => {
   const query = incrementPageParams(filters.params);
   const response = await post(`${apiUrls.katalogVariable}/${daftarId}/list`, filters.bodyParams, { query });
@@ -555,19 +550,6 @@ const daftarSlice = createSlice({
     builder.addCase(getDaftarDataDetailLog.rejected, (state) => {
       state.dafterDataLogWithId.loading = false;
       state.dafterDataLogWithId.error = 'Error while fetching data';
-    });
-    builder.addCase(getKodeReferensi.pending, (state) => {
-      state.kodeReferensi.loading = true;
-    });
-    builder.addCase(getKodeReferensi.fulfilled, (state, action) => {
-      state.kodeReferensi.loading = false;
-      // Note: update this when arif changes the response
-      state.kodeReferensi.result = action.payload?.records;
-      state.kodeReferensi.error = '';
-    });
-    builder.addCase(getKodeReferensi.rejected, (state) => {
-      state.kodeReferensi.loading = false;
-      state.kodeReferensi.error = 'Error while fetching kodeReferensi data';
     });
     builder.addCase(getKatalogVariables.pending, (state, action) => {
       const {

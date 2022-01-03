@@ -16,7 +16,6 @@ import {
   deleteVariableData,
   getDaftarDetail,
   getKatalogVariables,
-  getKodeReferensi,
   kodeReferensiOptionsSelector,
   katalogVariableDataSelector,
 } from 'containers/Daftar/reducer';
@@ -60,7 +59,6 @@ const DataVariable = ({ cms = false, cmsDetail = false, id }) => {
   useEffect(() => {
     if (recordId) {
       fetchKatalogVariableData();
-      dispatch(getKodeReferensi(recordId));
       if (isEmpty(daftar)) {
         dispatch(getDaftarDetail(recordId));
       }

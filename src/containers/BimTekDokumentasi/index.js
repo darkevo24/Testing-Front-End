@@ -195,7 +195,9 @@ const BimTekDokumentasi = () => {
           </Modal.Body>
         </Modal>
 
-        {dokumentasiRecords?.length && <Pagination totalPages={pageNumber} onChangePage={(props) => changePage(props)} />}
+        {dokumentasiRecords?.length > 0 && (
+          <Pagination totalPages={pageNumber} onChangePage={(props) => changePage(props)} />
+        )}
       </div>
     </BimtekLayout>
   );

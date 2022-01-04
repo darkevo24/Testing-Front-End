@@ -96,7 +96,7 @@ const BimtekKota = () => {
           ))
         )}
       </Row>
-      {dataKota?.length && <Pagination totalPages={pageNumber} onChangePage={changePage} />}
+      {dataKota?.length > 0 && <Pagination totalPages={pageNumber} onChangePage={changePage} />}
     </BimtekLayout>
   );
 };

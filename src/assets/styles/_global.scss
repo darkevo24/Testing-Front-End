@@ -3,6 +3,7 @@
 // All vendor styles goes here
 @import './vendors/bootstrap';
 @import './vendors/date-picker';
+@import './vendors/react-slick';
 
 // All utility styles goes here
 @import './utilities/background';
@@ -68,7 +69,3 @@
 @import './pages/berita';
 @import './pages/bimtek-permintaan';
 @import './pages/bimtek-pagination';
-
-// slick-carousel styles
-@import 'slick-carousel/slick/slick.css';
-@import 'slick-carousel/slick/slick-theme.css';

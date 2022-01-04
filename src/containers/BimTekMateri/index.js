@@ -75,7 +75,7 @@ const BimtekMateri = () => {
           urlFile={item.materi.fileName}
         />
       ))}
-      {materiRecords?.length && <Pagination totalPages={pageNumber} onChangePage={changePage} />}
+      {materiRecords?.length > 0 && <Pagination totalPages={pageNumber} onChangePage={changePage} />}
     </BimtekLayout>
   );
 };

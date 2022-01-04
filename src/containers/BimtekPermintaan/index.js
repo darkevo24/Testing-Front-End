@@ -47,6 +47,7 @@ const BimtekPermintaan = () => {
               kota={item.kota}
               tanggal={moment(item.tanggalRequest).format('YYYY-MM-DD')}
               status={item.status}
+              tagMateri={item.tagMateri}
             />
           ))
         )}
@@ -56,7 +57,7 @@ const BimtekPermintaan = () => {
   );
 };
 
-const PermintaanItem = ({ id, kodeBimtek, namaBimtek, kota, tanggal, status }) => {
+const PermintaanItem = ({ id, kodeBimtek, namaBimtek, kota, tanggal, status, tagMateri }) => {
   const history = useHistory();
   const handlePermintaan = (id) => {
     history.push(`/bimtek-permintaan/${id}`);
@@ -67,11 +68,11 @@ const PermintaanItem = ({ id, kodeBimtek, namaBimtek, kota, tanggal, status }) =
       <Col lg={1} className="fs-16">
         {kodeBimtek}
       </Col>
-      <Col lg={3} className="fs-16">
+      <Col lg={2} className="fs-16">
         {namaBimtek}
       </Col>
-      <Col lg={1} className="fs-16">
-        -
+      <Col lg={2} className="fs-16">
+        {tagMateri.join()}
       </Col>
       <Col lg={1} className="fs-16">
         {kota}

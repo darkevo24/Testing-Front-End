@@ -96,6 +96,12 @@ export const apiUrls = {
   sosialMedia: getCMSEndpoint('sosial-media'),
   bimtekLogs: getPortalEndpoint('v1/bimtek/logs'),
   cmsContactUs: getCMSEndpoint('hubungi-kami-setting'),
+  penggunaManagement: getApiEndpoint('sekretariat/user'),
+  detailPenggunaManagement: getApiEndpoint('sekretariat/user'),
+  penggunaRoleList: getApiEndpoint('sekretariat/user/role-list'),
+  penggunaStatusList: getApiEndpoint('sekretariat/user/status-list'),
+  penggunaInstansiList: getApiEndpoint('/v1/instansi'),
+  penggunaLogs: getApiEndpoint('sekretariat/user'),
 };
 
 export const priorityOptions = [

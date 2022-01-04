@@ -1,11 +1,8 @@
-// import Select, { components } from 'react-select';
+import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-// import CreatableSelect from 'react-select/creatable';
 import Form from 'react-bootstrap/Form';
 import { Controller } from 'react-hook-form';
-import React from 'react';
-// import cx from 'classnames';
-// import isFunction from 'lodash/isFunction';
+import { apiUrls } from 'utils/constants';
 
 const EditorConfig = {
   height: 500,
@@ -22,7 +19,7 @@ const EditorConfig = {
     alignleft aligncenter alignright alignjustify | \
     numlist bullist outdent indent | \
     image',
-  images_upload_url: process.env.REACT_APP_API_URL + '/file/public-upload',
+  images_upload_url: `${apiUrls.publicFileUpload}`,
   file_picker_types: 'image media',
 };
 
@@ -33,15 +30,10 @@ export const TextEditorController = ({
   error,
   labelClass = '',
   label,
-  defaultValue,
   disabled,
-  // onChange = () => {},
   group,
   groupClass = 'mb-3',
   groupProps,
-  onInputChange,
-  isCreatable = false,
-  // ...rest
 }) => {
   const dropdownNode = (
     <>
@@ -55,11 +47,9 @@ export const TextEditorController = ({
             apiKey="ne6hq4p5tdn0hwuirba4i005nv3yavpgeahao9yy58ka476c"
             init={EditorConfig}
             className="tinymce-custom"
-            initialValue={defaultValue}
+            // initialValue={defaultValue}
             disabled={disabled}
-            onEditorChange={(newValue, editor) => {
-              field.onChange(editor.getContent({ format: 'text' }));
-            }}
+            onEditorChange={field.onChange}
           />
         )}
       />

@@ -437,3 +437,8 @@ export const convertTitleToSlug = (title) => {
     .replace(/[-]+/g, '-')
     .replace(/[^\w-]+/g, '');
 };
+
+export const splitByLastChar = (src, char) => {
+  const lastIndex = src.lastIndexOf(char);
+  return src.substr(0, lastIndex);
+};

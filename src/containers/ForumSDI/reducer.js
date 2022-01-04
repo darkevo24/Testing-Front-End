@@ -29,7 +29,7 @@ export const getForumSDIData = createAsyncThunk('portal/getForumSDIData', async 
 
 export const getForumSDIDataByID = createAsyncThunk('portal/getForumSDIDataByID', async (param) => {
   const response = await get(`${apiUrls.portalForumSDI}/${param}`);
-  return response?.data?.content;
+  return response?.data;
 });
 
 const forumSDISlice = createSlice({
@@ -59,7 +59,7 @@ const forumSDISlice = createSlice({
     });
     builder.addCase(getForumSDIDataByID.fulfilled, (state, action) => {
       state.forumSDIDetail.loading = false;
-      state.forumSDIDetail.detail = action.payload.records;
+      state.forumSDIDetail.detail = action.payload.content;
     });
     builder.addCase(getForumSDIDataByID.rejected, (state) => {
       state.forumSDIDetail.loading = false;

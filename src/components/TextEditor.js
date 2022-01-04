@@ -16,7 +16,7 @@ const EditorConfig = {
     alignleft aligncenter alignright alignjustify | \
     numlist bullist outdent indent | \
     image preview',
-  images_upload_url: apiUrls.publiFileUpload,
+  images_upload_url: apiUrls.publicFileUpload,
   file_picker_types: 'image media',
 };
 

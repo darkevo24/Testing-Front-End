@@ -23,7 +23,7 @@ const DataVariableTable = ({
   daftar = {},
   params = {},
   pageSize = null,
-  manualPagination = false,
+  manualPagination = true,
   fetchKatalogVariableData,
   handleTableReferensiChange,
 }) => {

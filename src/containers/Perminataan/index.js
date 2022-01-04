@@ -76,20 +76,20 @@ export const Perminataan = () => {
 
   const columns = [
     {
-      Header: '',
+      Header: 'ID',
       accessor: 'perminataanID',
       Cell: ({ ...rest }) => <span>{prefixID(rest?.row?.original?.id || '', 'PD')}</span>,
     },
     {
-      Header: '',
+      Header: 'Deskripsi Data',
       accessor: 'deskripsi',
     },
     {
-      Header: '',
+      Header: 'Jenis Data',
       accessor: 'jenisData',
     },
     {
-      Header: '',
+      Header: 'Target Waktu',
       accessor: 'tanggalTarget',
       Cell: ({ ...rest }) => (
         <span>
@@ -98,7 +98,7 @@ export const Perminataan = () => {
       ),
     },
     {
-      Header: '',
+      Header: 'Status',
       accessor: 'statusInfo',
       Cell: ({ ...rest }) => {
         const className = {

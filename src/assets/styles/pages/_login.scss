@@ -5,4 +5,14 @@
   .login-form {
     max-width: 440px;
   }
+  .forgot-password {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding-top: 10px;
+    &:hover {
+      color: $red;
+      text-decoration: underline;
+    }
+  }
 }

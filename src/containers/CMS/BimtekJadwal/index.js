@@ -96,10 +96,8 @@ const CMSBimtekPermintaan = () => {
     {
       Header: 'Status',
       accessor: 'status',
-      Cell: ({ ...rest }) => (
-        <span className={getStatusClass(rest.row.original.status.toLowerCase() || '').textColor}>
-          {rest.row.original?.status}
-        </span>
+      Cell: ({ row: { original } }) => (
+        <span className={getStatusClass(original?.status.toLowerCase() || '').textColor}> {original?.status} </span>
       ),
     },
     {

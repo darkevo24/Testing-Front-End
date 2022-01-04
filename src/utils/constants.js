@@ -30,6 +30,7 @@ export const getDataEndpoint = (path) => `${dataUrl}/${path}`;
 export const getPortalEndpoint = (path) => `${apiUrl}/portal/${path}`;
 export const getV1Endpoint = (path) => `${apiUrl}/v1/${path}`;
 export const getCMSEndpoint = (path) => `${apiUrl}/cms/v1/${path}`;
+export const getPublicEndpoint = (path) => `${apiUrl}/public/${path}`;
 export const getPublicV1Endpoint = (path) => `${apiUrl}/public/v1/${path}`;
 
 export const apiUrls = {
@@ -96,6 +97,8 @@ export const apiUrls = {
   sosialMedia: getCMSEndpoint('sosial-media'),
   bimtekLogs: getPortalEndpoint('v1/bimtek/logs'),
   cmsContactUs: getCMSEndpoint('hubungi-kami-setting'),
+  requestForgotPassword: getPublicEndpoint('request-forgot-password'),
+  forgotPassword: getPublicEndpoint('forgot-password'),
 };
 
 export const priorityOptions = [

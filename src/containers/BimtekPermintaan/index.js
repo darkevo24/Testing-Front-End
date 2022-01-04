@@ -52,7 +52,7 @@ const BimtekPermintaan = () => {
           ))
         )}
       </Row>
-      {permintaanRecords?.length > 0 && <Pagination totalPages={pageNumber} onChangePage={(props) => changePage(props)} />}
+      {!permintaanRecords?.length? null : <Pagination totalPages={pageNumber} onChangePage={(props) => changePage(props)} />}
     </BimtekLayout>
   );
 };

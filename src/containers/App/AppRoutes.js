@@ -40,6 +40,7 @@ const ManagementApiAddPage = lazy(() => import('containers/ManagementApi/Form'))
 const ManagementApiDetailPage = lazy(() => import('containers/ManagementApi/DetailApi'));
 const ManagementApiUpdatePage = lazy(() => import('containers/ManagementApi/UpdateApi'));
 // const NotFoundPage = lazy(() => import('containers/NotFound'));
+const KebijakanPrivasiPage = lazy(() => import('containers/KebijakanPrivasi'));
 
 function AppRoutes(props) {
   return (
@@ -55,6 +56,7 @@ function AppRoutes(props) {
         <PrivateRoute exact path="/forum-sdi/:id" component={ForumSDIDetail} />
         <PrivateRoute exact path="/forum-sdi" component={ForumSDI} />
         <PrivateRoute exact path="/forum" component={PerminataanForumPage} />
+        <PrivateRoute exact path="/policy" component={KebijakanPrivasiPage} />
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
         <PrivateRoute exact path="/dataset" component={DataSetPage} />

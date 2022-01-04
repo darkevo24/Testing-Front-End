@@ -29,7 +29,7 @@ const schema = yup
     judul: yup.string().required(),
     topik: yup.mixed().required(),
     tags: yup.array().required().min(1),
-    isi: yup.string().required(),
+    isi: yup.mixed().required(),
   })
   .required();
 
@@ -54,18 +54,16 @@ const CMSForumSDIForm = () => {
     formState: { errors },
     handleSubmit,
     setValue,
-    getValues,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       judul: '',
       topik: null,
       tags: [],
-      isi: '',
+      isi: null,
     },
   });
 
-  const value = getValues();
   useEffect(() => {
     if (!topikResult?.length) dispatch(getCMSForumSDITopik());
     if (!tagsResult?.length) dispatch(getCMSForumSDITags());
@@ -86,7 +84,7 @@ const CMSForumSDIForm = () => {
   }, [detailResult]);
 
   useEffect(() => {
-    if (!detailResult?.id) return;
+    if (!id) return;
     const topikResID = topikResult.find((elem) => detailResult?.topik === elem?.nama);
     setValue('topik', { value: topikResID?.id, label: topikResID?.nama });
   }, [topikResult]);
@@ -95,7 +93,7 @@ const CMSForumSDIForm = () => {
     const topikResID = topikResult.find((elem) => detailResult?.topik === elem?.nama);
     const fields = [
       { name: 'judul', value: detailResult?.judul || '' },
-      { name: 'topik', value: { value: topikResID?.id, label: topikResID?.nama } || '' },
+      { name: 'topik', value: { value: topikResID?.id, label: topikResID?.nama } || {} },
       { name: 'tags', value: detailResult?.tags.map((elem) => ({ value: elem, label: elem })) },
       { name: 'isi', value: detailResult?.isi || '' },
     ];
@@ -118,18 +116,25 @@ const CMSForumSDIForm = () => {
   };
 
   const handleFiles = (files) => {
-    const isValid = isValidFile(524288, files, 'lampiran', 'Only File with Max 512KB');
-    if (isValid) setLampiran(files);
+    let flag = false;
+    Object.values(files).forEach((file) => {
+      if (flag) return;
+      const isValid = isValidFile(524288, file, 'lampiran', 'Only File with Max 512KB');
+      if (!isValid) flag = true;
+    });
+    if (!flag) setLampiran(Object.values(files));
   };
 
   const uplodFile = async () => {
     try {
       let fileFormData = new FormData();
-      fileFormData.append('file', lampiran);
-      const response = await post(`${apiUrls.publiFileUpload}`, fileFormData, {
+      lampiran.forEach((file) => {
+        fileFormData.append('files', file);
+      });
+      const response = await post(`${apiUrls.multipleFileUpload}`, fileFormData, {
         headers: { 'Content-Type': undefined },
       });
-      return [response?.data] || [{}];
+      return response?.data || [{}];
     } catch (e) {
       setAPIError(e.message);
     }
@@ -145,7 +150,7 @@ const CMSForumSDIForm = () => {
 
   const handleDataSubmit = (data) => {
     const clone = { ...errorInfo };
-    if ((!id && !lampiran) || (id && !detailResult?.lampiran?.[0]?.fileName && !lampiran)) {
+    if ((!id && !lampiran) || (id && !detailResult?.lampiran?.length && !lampiran)) {
       clone['lampiran'] = 'lampiran is required';
     }
     if (!isEmpty(clone)) {
@@ -237,7 +242,6 @@ const CMSForumSDIForm = () => {
               labelClass="sdp-form-label  fw-normal"
               data={topikResult.map((elem) => ({ value: elem?.id, label: elem?.nama }))}
               placeholder=""
-              rules={{ required: true }}
               error={errors?.topik?.message ? 'Topik is required' : ''}
               isCreatable={true}
               loading={topikLoading}
@@ -254,7 +258,6 @@ const CMSForumSDIForm = () => {
               label="Tag"
               labelClass="sdp-form-label fw-normal"
               placeholder=""
-              rules={{ required: true }}
               error={errors?.tags?.message ? 'Tag is required' : ''}
               name="tags"
               data={tagsResult.map((elem) => ({ value: elem, label: elem }))}
@@ -262,14 +265,11 @@ const CMSForumSDIForm = () => {
               isCreatable={true}
             />
             <TextEditorController
-              rules={{ required: true }}
               control={control}
               error={errors?.isi?.message ? 'Isi Forum is required' : ''}
               labelClass="sdp-form-label fw-normal"
               label="Isi Forum"
               name="isi"
-              onChange={(e) => setValue({ isi: e })}
-              defaultValue={(id && (detailResult?.isi || '')) || value.isi || ''}
               group
               groupClass="mb-16"
               groupProps={{
@@ -305,6 +305,7 @@ const CMSForumSDIForm = () => {
                 uploadInfo="Upload file (max. 512KB)"
                 handleOnChange={handleFiles}
                 className="h-100"
+                multiple
               />
             )}
           </Row>

@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-
+import isEmpty from 'lodash/isEmpty';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -46,7 +46,7 @@ const CMSDaftarPage = ({ ...props }) => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const history = useHistory();
-  const { result, error } = props.dafterDataWithId;
+  const { result: daftar, error } = props.dafterDataWithId;
   const instansiOptions = props.instansiOptions;
   const dataindukAllOptions = props.dataindukAllOptions;
   const sdgPillerOptions = props.sdgPillerOptions;
@@ -114,27 +114,27 @@ const CMSDaftarPage = ({ ...props }) => {
 
   useEffect(async () => {
     if (!id) return;
-    const [indukDataObjectKey] = Object.keys(result?.indukData || {});
+    const [indukDataObjectKey] = Object.keys(daftar?.indukData || {});
     reset({
-      instansi: { value: result?.instansiId, label: result?.instansi } || {},
-      nama: result?.nama || '',
-      idKonsep: result?.idKonsep || '',
-      konsep: result?.konsep || '',
-      jadwalPemutakhiran: jadwalPermutakhiranOptions.find((elem) => result?.jadwalPemutakhiran === elem.value) || {},
-      definisi: result?.definisi || '',
-      sumberDefinisi: result?.sumberDefinisi || '',
-      tanggalDibuat: moment(result?.tanggalDibuat || new Date()).toDate() || '',
-      tanggalDiperbaharui: moment(result?.tanggalDiperbaharui || new Date()).toDate() || '',
-      produsenData: result?.produsenData || '',
-      indukData: { value: indukDataObjectKey, label: result?.indukData[indukDataObjectKey] } || {},
-      format: { value: result?.format, label: result?.format } || {},
-      linkAkses: result?.linkAkses || '',
-      kodePilar: { value: result?.kodePilar, label: result?.kodePilarDeskripsi } || {},
-      kodeTujuan: { value: result?.kodeTujuan, label: result?.kodeTujuanDeskripsi } || {},
-      kodePNRKP: { value: result?.kodePNRKP, label: result?.kodePNRKPDeskripsi } || {},
-      kodePPRKP: { value: result?.kodePPRKP, label: result?.kodePPRKPDeskripsi } || {},
+      instansi: { value: daftar?.instansiId, label: daftar?.instansi } || {},
+      nama: daftar?.nama || '',
+      idKonsep: daftar?.idKonsep || '',
+      konsep: daftar?.konsep || '',
+      jadwalPemutakhiran: jadwalPermutakhiranOptions.find((elem) => daftar?.jadwalPemutakhiran === elem.value) || {},
+      definisi: daftar?.definisi || '',
+      sumberDefinisi: daftar?.sumberDefinisi || '',
+      tanggalDibuat: moment(daftar?.tanggalDibuat || new Date()).toDate() || '',
+      tanggalDiperbaharui: moment(daftar?.tanggalDiperbaharui || new Date()).toDate() || '',
+      produsenData: daftar?.produsenData || '',
+      indukData: { value: indukDataObjectKey, label: daftar?.indukData[indukDataObjectKey] } || {},
+      format: { value: daftar?.format, label: daftar?.format } || {},
+      linkAkses: daftar?.linkAkses || '',
+      kodePilar: { value: daftar?.kodePilar, label: daftar?.kodePilarDeskripsi } || {},
+      kodeTujuan: { value: daftar?.kodeTujuan, label: daftar?.kodeTujuanDeskripsi } || {},
+      kodePNRKP: { value: daftar?.kodePNRKP, label: daftar?.kodePNRKPDeskripsi } || {},
+      kodePPRKP: { value: daftar?.kodePPRKP, label: daftar?.kodePPRKPDeskripsi } || {},
     });
-  }, [result, id]);
+  }, [daftar, id]);
 
   const goBack = () => {
     if (id) history.push(`/cms/daftar/${id}`);
@@ -561,7 +561,6 @@ const CMSDaftarPage = ({ ...props }) => {
             </div>
             <div className="pl-32 pt-32 pb-42 pr-32">
               <DataVariableTable
-                manualPagination={false}
                 search={!!id}
                 showDeleteModal={handleDelete}
                 showDataVariableFormModal={handleEditModal}
@@ -571,7 +570,8 @@ const CMSDaftarPage = ({ ...props }) => {
                 cmsCreateForm={!id}
                 params={params}
                 pageSize={pageSize}
-                daftar={result}
+                daftar={daftar}
+                result={!id ? {} : katalogResult}
                 handleTableReferensiChange={handleTableReferensiChange}
               />
               <Button variant="success" onClick={() => setShowAddModal(true)}>

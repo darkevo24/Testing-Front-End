@@ -7,8 +7,7 @@
   }
 
   &__list {
-    overflow-x: scroll;
-    width: 744px;
+    width: 844px;
     white-space: nowrap;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
@@ -123,4 +122,18 @@
     max-width: 100%;
     width: 100%;
   }
+}
+.slick-prev {
+  left: 3% !important;
+  z-index: 1;
+}
+
+.slick-arrow::before {
+  color: black !important;
+}
+
+.slick-next {
+  right: 3% !important;
+  z-index: 1;
+  color: black;
 }

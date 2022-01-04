@@ -16,6 +16,7 @@ import cx from 'classnames';
 import moment from 'moment';
 import Pagination from 'components/Pagination';
 import { Carousel } from 'react-bootstrap';
+import Slider from 'react-slick';
 
 const bem = bn('bimtek-dokumentasi');
 
@@ -30,6 +31,16 @@ const BimTekDokumentasi = () => {
   const [params, setParams] = useState({ ...paginateParams });
   const { control, watch } = useForm({});
   const watchDate = watch('filterDate');
+  const settings = {
+    className: 'slider variable-width',
+    infinite: false,
+    centerMode: true,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    variableWidth: true,
+    focusOnSelect: true,
+    arrows: true,
+  };
 
   const { records: dokumentasiRecords, totalPages: pageNumber } = useSelector(bimtekDokumentasi);
   const { singleRecord: singleDokumentasiRecords } = useSelector(bimtekDokumentasi);
@@ -115,19 +126,21 @@ const BimTekDokumentasi = () => {
               </div>
             ) : (
               <div className={bem.e('list')}>
-                {list.sectionData.map((dokumentasi, index) => (
-                  <DokumentasiItem
-                    key={index}
-                    title={dokumentasi.namaBimtek}
-                    urlPhoto={dokumentasi?.image?.location ?? null}
-                    date={
-                      dokumentasi?.tanggalMulaiDisetujui
-                        ? moment(dokumentasi.tanggalMulaiDisetujui).format('DD MMMM YYYY')
-                        : null
-                    }
-                    onClick={() => openDetail(dokumentasi.dokumentasiId)}
-                  />
-                ))}
+                <Slider {...settings}>
+                  {list.sectionData.map((dokumentasi, index) => (
+                    <DokumentasiItem
+                      key={index}
+                      title={dokumentasi.namaBimtek}
+                      urlPhoto={dokumentasi?.image?.location ?? null}
+                      date={
+                        dokumentasi?.tanggalMulaiDisetujui
+                          ? moment(dokumentasi.tanggalMulaiDisetujui).format('DD MMMM YYYY')
+                          : null
+                      }
+                      onClick={() => openDetail(dokumentasi.dokumentasiId)}
+                    />
+                  ))}
+                </Slider>
               </div>
             )}
           </div>

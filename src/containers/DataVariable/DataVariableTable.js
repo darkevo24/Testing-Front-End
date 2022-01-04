@@ -2,9 +2,9 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import cx from 'classnames';
 import isFunction from 'lodash/isFunction';
-import { useSelector } from 'react-redux';
-import { userInstansiSelector } from 'containers/App/reducer';
-import { kodeReferensiSelector } from 'containers/Daftar/reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { userSelector } from 'containers/Login/reducer';
+import { getKodeReferensi, kodeReferensiSelector } from 'containers/Daftar/reducer';
 import Popover from 'components/Popover';
 import Table from 'components/Table';
 import truncate from 'lodash/truncate';
@@ -28,9 +28,10 @@ const DataVariableTable = ({
   handleTableReferensiChange,
 }) => {
   const { t } = useTranslation();
-  const userInstansi = useSelector(userInstansiSelector);
+  const dispatch = useDispatch();
+  const user = useSelector(userSelector);
   const kodeReferensi = useSelector(kodeReferensiSelector);
-  const hasAccess = daftar?.instansiId === userInstansi?.id;
+  const hasAccess = daftar?.instansiId === user?.instansi;
 
   const handleReferensiChange = async (item) => {
     if (cmsCreateForm) {
@@ -40,6 +41,7 @@ const DataVariableTable = ({
     try {
       await put(`${apiUrls.variable}/referensi`, { idVariable: item.id, idKatalog: daftar.id });
       fetchKatalogVariableData();
+      dispatch(getKodeReferensi(daftar.id));
     } catch (e) {
       //
     }
@@ -109,7 +111,7 @@ const DataVariableTable = ({
       });
     }
     return cols;
-  }, [data, daftar, userInstansi]);
+  }, [data, daftar, user]);
 
   const tableConfig = {
     variant: 'spaced',

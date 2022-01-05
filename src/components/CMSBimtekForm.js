@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
+// import moment from 'moment';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
@@ -15,7 +15,7 @@ import * as yup from 'yup';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
-import { postImageDokumentasi } from 'containers/CMS/BimtekDokumentasi/reducer';
+// import { postImageDokumentasi } from 'containers/CMS/BimtekDokumentasi/reducer';
 import { getJadwalBimtekDetail, bimtekJadwalDetailSelector } from 'containers/CMS/BimtekJadwal/reducer';
 import { apiUrls, post } from 'utils/request';
 
@@ -79,14 +79,14 @@ const CMSBimtekForm = ({
   const [listFoto, setListFoto] = useState([]);
   const [foto, setFoto] = useState([]);
   const [dokumentasi, setDokumentasi] = useState('');
-  const [urlVideo, setUrlVideo] = useState('');
-  const [listMateri, setListMateri] = useState([]);
+  // const [urlVideo, setUrlVideo] = useState('');
+  // const [listMateri, setListMateri] = useState([]);
   const [modalMateri, setModalMateri] = useState(false);
   const [modalPembicara, setModalPembicara] = useState(false);
   const [detailBimtekId, setDetailBimtekId] = useState('');
   const dispatch = useDispatch();
   const { records } = useSelector(bimtekJadwalDetailSelector);
-  console.log(dokumentasi);
+  // console.log(dokumentasi);
   useEffect(() => {
     return dispatch(getJadwalBimtekDetail(detailBimtekId));
   }, [detailBimtekId]);
@@ -117,7 +117,7 @@ const CMSBimtekForm = ({
       ...dataDokumentasiDetail,
       listFoto,
       dokumentasi,
-      urlVideo,
+      // urlVideo,
     },
   });
 
@@ -129,21 +129,21 @@ const CMSBimtekForm = ({
     // setListFoto([...listFoto, fileData]);
     // e.target.value = '';
     // console.log(fileData);
-    console.log(e.target.files[0]);
-    console.log(e);
+    // console.log(e.target.files[0]);
+    // console.log(e);
     try {
       let fotoFormData = new FormData();
       fotoFormData.append('file', e.target.files[0]);
       await post(apiUrls.uploadFoto, fotoFormData, { headers: { 'Content-Type': undefined } }).then((res) => {
-        console.log(res);
+        // console.log(res);
         setFoto([...foto, res.data]);
       });
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
-  console.log(foto);
+  // console.log(foto);
 
   const removeFoto = (index) => {
     let selected = listFoto[index];

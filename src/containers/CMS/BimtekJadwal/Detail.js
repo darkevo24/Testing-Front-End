@@ -10,14 +10,15 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { DatePicker, Input, Modal, Table, TextEditor, Notification } from 'components';
+// import { DatePicker, Input, Modal, Table, TextEditor, Notification } from 'components';
+import { DatePicker, Input, Modal, Table, Notification } from 'components';
 import { apiUrls, post, put, deleteRequest } from 'utils/request';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import { LeftChevron, Galery, Close } from 'components/Icons';
 import { getStatusClass, prefixID } from 'utils/helper';
 import { CMSModal } from 'components/CMSStatusModals';
 import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
-import SingleDropDown from 'components/DropDown/SingleDropDown';
+// import SingleDropDown from 'components/DropDown/SingleDropDown';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import RowLoader from 'components/Loader/RowLoader';
 import TableLoader from 'components/Loader/TableLoader';
@@ -48,10 +49,10 @@ const CMSJadwalDetail = (props) => {
   const [idPembicara, setIdPembicara] = useState('');
   const [loader, setLoader] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
-  const [kotaId, setKotaId] = useState('');
+  // const [kotaId, setKotaId] = useState('');
   const [buttonUpdate, setButtonUpdate] = useState(false);
   const [showModal, setShowModal] = useState('');
-  const [apiError, setAPIError] = useState('');
+  // const [apiError, setAPIError] = useState('');
   const [listMateri, setListMateri] = useState([]);
   const status = (records?.status || '').toLowerCase();
   const goBack = () => {
@@ -80,20 +81,20 @@ const CMSJadwalDetail = (props) => {
       initialCall();
       isFunction(callBack) && callBack();
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       Notification.show({
         type: 'secondary',
         message: <div> Error, {e.message} </div>,
         icon: 'cross',
       });
       handleCloseModal();
-      setAPIError(e.message);
+      // setAPIError(e.message);
     }
   };
 
-  const handleTagKota = (data) => {
-    setKotaId(data.value);
-  };
+  // const handleTagKota = (data) => {
+  //   setKotaId(data.value);
+  // };
 
   const onKirim = async () => {
     handleAPICall(post, `${apiUrls.cmsBimtekJadwal}/${id}/ubah-status/WAITING_APPROVAL`, { data: { note: '' } });
@@ -225,7 +226,7 @@ const CMSJadwalDetail = (props) => {
         setListMateri([...listMateri, res.data]);
       });
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -496,7 +497,6 @@ const CMSJadwalDetail = (props) => {
                   labelClass="sdp-form-label fw-normal"
                   placeholder=""
                   name="tagsKota"
-                  control={control}
                   data={[{ value: '', label: 'All' }, ...tagsResultKabupaten]}
                   loading={tagsLoading}
                   isCreatable={true}

@@ -11,7 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import { ReactComponent as Plus } from 'assets/plus.svg';
-import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
+// import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
 import bn from 'utils/bemNames';
 import { DatePicker, Input, Modal, Table, TextEditor, Notification } from 'components';
 import { ComponentAccessibility } from 'components/ComponentAccess';
@@ -50,7 +50,7 @@ const CMSDokumentasiDetail = (props) => {
   const [showModalPublish, setModalPublish] = useState(false);
   const [showModalUnpublish, setModalUnpublish] = useState(false);
   const [showModalTolak, setModalTolak] = useState(false);
-  const [trigger, setTrigger] = useState(false);
+  // const [trigger, setTrigger] = useState(false);
 
   const { records } = useSelector(bimtekDokumentasiDetailSelector);
   const { logAktifitas } = useSelector(bimtekLogAktifitas);
@@ -75,7 +75,7 @@ const CMSDokumentasiDetail = (props) => {
     }
     fetchDokumentasiDetail(id);
     fetchLogAktifitas(id);
-  }, [trigger]);
+  }, []);
 
   const tanggalMulaiDisetujui = moment(dataDetailDokumentasi?.tanggalMulaiDisetujui).format('DD/MM/YYYY');
   const waktuMulaiDisetujui = moment(dataDetailDokumentasi?.tanggalMulaiDisetujui).format('hh:mm');
@@ -92,7 +92,7 @@ const CMSDokumentasiDetail = (props) => {
       tanggalSelesaiDisetujui,
       dataTempat,
     });
-  }, [dataDetailDokumentasi, trigger]);
+  }, [dataDetailDokumentasi]);
   const schema = yup
     .object({
       // name: yup.string().required(),
@@ -101,9 +101,9 @@ const CMSDokumentasiDetail = (props) => {
 
   const {
     control,
-    formState: { errors },
+    // formState: { errors },
     reset,
-    setValue,
+    // setValue,
     handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),

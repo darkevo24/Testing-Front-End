@@ -73,7 +73,7 @@ const CMSJadwalBaru = () => {
     control,
     formState: { errors },
     reset,
-    setValue,
+    // setValue,
     handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),

@@ -22,24 +22,6 @@ const TopikItem = styled.div`
   }
 `;
 
-const bulan = [
-  {
-    month: 'Oktober',
-    year: 2021,
-    news: 232,
-  },
-  {
-    month: 'September',
-    year: 2021,
-    news: 56,
-  },
-  {
-    month: 'Agustus',
-    year: 2021,
-    news: 16,
-  },
-];
-
 const BeritaLainnya = () => {
   const dispatch = useDispatch();
   const { records, status } = useSelector(monthlyNewsSelector);

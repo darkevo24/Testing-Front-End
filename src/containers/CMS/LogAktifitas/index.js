@@ -32,7 +32,8 @@ const LogActivity = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [query, setQuery] = useState('');
 
-  const { q, startDate, endDate, size, loading, records, totalRecords, totalPages, status } =
+  // const { q, startDate, endDate, size, loading, records, totalRecords, totalPages, status } =
+  const { q, startDate, endDate, size, loading, records, totalRecords, totalPages } =
     useSelector(cmsLogAktifitasDataSelector);
 
   useEffect(() => {

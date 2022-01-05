@@ -56,7 +56,7 @@ const BimtekKota = () => {
 
   return (
     <BimtekLayout className="sdp-bimtek-kota">
-      <div className="fw-bold fs-32 mb-12">Kota Pelaksana</div>
+      <div className="fw-bold fs-32 mb-12">Kota Pelaksanaan</div>
       <Row className="mb-3">
         <Col xs={3}>
           <Dropdown

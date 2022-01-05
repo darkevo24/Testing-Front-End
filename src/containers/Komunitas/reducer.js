@@ -18,7 +18,9 @@ export const initialState = {
 export const KOMUNITAS_AHLI_SLICE = 'KOMUNITAS_AHLI_SLICE';
 
 export const getKomunitasAhliData = createAsyncThunk('cms/getKomunitasAhliData', async ({ page, ...rest }) => {
-  const response = await get(apiUrls.portalKomunitasAhliData, { query: { page: page + 1, size: 10, ...rest.payload } });
+  const response = await get(apiUrls.portalKomunitasAhliData, {
+    query: { page: page + 1, size: 10, sort: 'id', sort_direction: 'DESC', ...rest.payload },
+  });
   return response?.data?.content;
 });
 

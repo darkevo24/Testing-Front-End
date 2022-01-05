@@ -15,7 +15,7 @@ export const DetailHeader = ({ record, status, history, handleModal }) => {
           <Button className="ml-10" variant="secondary" onClick={() => handleModal('perbarui')}>
             <PencilSvg />
           </Button>
-          <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => handleModal('kirim')}>
+          <Button className="ml-10 px-35" variant="info" onClick={() => handleModal('kirim')}>
             Kirim
           </Button>
         </ComponentAccessibility>
@@ -23,10 +23,10 @@ export const DetailHeader = ({ record, status, history, handleModal }) => {
     case 'waiting_approval':
       return (
         <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR]}>
-          <Button className="ml-10" variant="secondary" style={{ width: '112px' }} onClick={() => handleModal('tolak')}>
+          <Button className="ml-10 px-35" variant="secondary" onClick={() => handleModal('tolak')}>
             Tolak
           </Button>
-          <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => handleModal('setujui')}>
+          <Button className="ml-10 px-35" variant="info" onClick={() => handleModal('setujui')}>
             Setujui
           </Button>
         </ComponentAccessibility>
@@ -34,7 +34,7 @@ export const DetailHeader = ({ record, status, history, handleModal }) => {
     case 'approved':
       return (
         <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR]}>
-          <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => handleModal('publish')}>
+          <Button className="ml-10 px-35" variant="info" onClick={() => handleModal('publish')}>
             Publish
           </Button>
         </ComponentAccessibility>
@@ -42,7 +42,7 @@ export const DetailHeader = ({ record, status, history, handleModal }) => {
     case 'published':
       return (
         <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR]}>
-          <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => handleModal('unpublish')}>
+          <Button className="ml-10 px-35" variant="info" onClick={() => handleModal('unpublish')}>
             Unpublish
           </Button>
         </ComponentAccessibility>
@@ -50,7 +50,7 @@ export const DetailHeader = ({ record, status, history, handleModal }) => {
     case 'unpublished':
       return (
         <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR]}>
-          <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => handleModal('publish')}>
+          <Button className="ml-10 px-35" variant="info" onClick={() => handleModal('publish')}>
             Publish
           </Button>
         </ComponentAccessibility>

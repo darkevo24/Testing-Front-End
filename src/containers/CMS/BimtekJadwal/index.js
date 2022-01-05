@@ -36,7 +36,6 @@ const CMSBimtekPermintaan = () => {
     fetchJadwalBimtek({ page: 0 });
   }, [query]);
 
-  console.log(records);
   const columns = [
     {
       Header: 'Nama Bimbingan',
@@ -45,22 +44,18 @@ const CMSBimtekPermintaan = () => {
     {
       Header: 'Tanggal Mulai',
       accessor: 'tanggalMulaiDisetujui',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <span>
-          {rest.row.original?.tanggalMulaiDisetujui
-            ? moment(rest.row.original?.tanggalMulaiDisetujui).format('DD MMMM YYYY')
-            : '---'}
+          {original?.tanggalMulaiDisetujui ? moment(original?.tanggalMulaiDisetujui).format('DD MMMM YYYY') : '---'}
         </span>
       ),
     },
     {
       Header: 'Tanggal Berakhir',
       accessor: 'tanggalSelesaiDisetujui',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <span>
-          {rest.row.original?.tanggalSelesaiDisetujui
-            ? moment(rest.row.original?.tanggalSelesaiDisetujui).format('DD MMMM YYYY')
-            : '---'}
+          {original?.tanggalSelesaiDisetujui ? moment(original?.tanggalSelesaiDisetujui).format('DD MMMM YYYY') : '---'}
         </span>
       ),
     },
@@ -71,11 +66,12 @@ const CMSBimtekPermintaan = () => {
     {
       Header: 'Pembicara',
       accessor: 'pembicara',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <span>
-          {rest.row.original?.pembicara?.map((data, index) => {
-            return <span key={index}>{data?.nama},</span>;
-          })}
+          {original.pembicara &&
+            original.pembicara.map((data, index) => {
+              return <span key={index}>{data?.nama},</span>;
+            })}
         </span>
       ),
     },
@@ -84,11 +80,12 @@ const CMSBimtekPermintaan = () => {
       accessor: 'materi',
       Cell: ({ row: { original } }) => (
         <div>
-          {original?.materi
-            .filter((data) => data !== null)
-            .map((data, index) => {
-              return <span key={index}>{data?.nama},</span>;
-            })}
+          {original.materi &&
+            original.materi
+              .filter((data) => data !== null)
+              .map((data, index) => {
+                return <span key={index}>{data?.nama},</span>;
+              })}
         </div>
       ),
     },

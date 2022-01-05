@@ -29,11 +29,11 @@ const CMSPermintaanData = () => {
   const fetchDataset = (params) => {
     let obj = {
       page: params.page,
-      unitKerjaId,
-      instansiId,
-      status,
-      q: query,
     };
+    if (instansiId) obj['instansiId'] = instansiId;
+    if (unitKerjaId) obj['unitKerjaId'] = unitKerjaId;
+    if (status) obj['status'] = status;
+    if (query) obj['q'] = query;
     return dispatch(getPermintaanData(obj));
   };
   const fetchInstansiData = () => {

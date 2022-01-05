@@ -14,8 +14,8 @@ import Form from 'react-bootstrap/Form';
 import { DatePicker, Input, Modal, Table, TextEditor, Notification } from 'components';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import { Galery, Close } from 'components/Icons';
-import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
 import { CMSModal } from 'components/CMSStatusModals';
+import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
 import { apiUrls, post } from 'utils/request';
 import { bimtekJadwalTags, bimtekListKabupaten, getListBimtekTags, getListBimtekKabupaten } from './reducer';
 
@@ -205,7 +205,6 @@ const CMSJadwalBaru = () => {
     setListMateri([]);
   };
 
-  // ======== Materi Action =========
   const onAddMateri = (data) => {
     if (listMateri.length < 1) {
       handleCloseModal();
@@ -257,9 +256,6 @@ const CMSJadwalBaru = () => {
     setDataMateri(newData);
   };
 
-  // ======== End Materi Action =========
-
-  // ======== Pembicara Action =========
   const onAddPembicara = (data) => {
     const nama = data.tambahPembicara;
     const tanggalMulai = `${moment(data.tambahPembicaraWaktuMulai).format('YYYY-MM-DD')} ${data.tambahPembicaraJamMulai}:00`;
@@ -339,7 +335,6 @@ const CMSJadwalBaru = () => {
     setDataPembicara(newData);
     return handleNotification('secondary', 'Berhasil Menghapus Pembicara', 'check');
   };
-  // ======== End Pembicara Action =========
 
   const handleProses = () => {
     setShowModal('proses');

@@ -48,11 +48,9 @@ const CMSBimtekPermintaan = () => {
     {
       Header: 'Tanggal Pelaksanaan',
       accessor: 'tanggalMulaiDisetujui',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <span>
-          {rest.row.original?.tanggalMulaiDisetujui
-            ? moment(rest.row.original.tanggalMulaiDisetujui).format('DD MMMM YYYY')
-            : '---'}
+          {original?.tanggalMulaiDisetujui ? moment(original.tanggalMulaiDisetujui).format('DD MMMM YYYY') : '---'}
         </span>
       ),
     },
@@ -63,23 +61,24 @@ const CMSBimtekPermintaan = () => {
     {
       Header: 'Pembicara',
       accessor: 'pembicara',
-      Cell: ({ ...rest }) => (
-        <span>
-          {rest.row.original?.pembicara?.map((data) => {
-            return data?.nama;
-          })}
-        </span>
-      ),
+      Cell: ({
+        row: {
+          original: { nama },
+        },
+      }) => <span> {nama} </span>,
     },
     {
       Header: 'Materi',
       accessor: 'materi',
-      Cell: ({ ...rest }) => (
-        <span>
-          {rest.row.original?.materi?.map((data) => {
-            return data?.nama;
-          })}
-        </span>
+      Cell: ({ row: { original } }) => (
+        <div>
+          {original.materi &&
+            original.materi
+              .filter((data) => data !== null)
+              .map((data, index) => {
+                return <span key={index}>{data?.nama},</span>;
+              })}
+        </div>
       ),
     },
     {
@@ -100,11 +99,6 @@ const CMSBimtekPermintaan = () => {
     history.push(`/cms/bimtek-dokumentasi/${data?.dokumentasiId}`);
   };
 
-  const getRowClass = (data) => {
-    // if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
-    // return 'bg-gray';
-  };
-
   const tableConfig = {
     className: 'cms-permintaan-data',
     columns,
@@ -118,7 +112,6 @@ const CMSBimtekPermintaan = () => {
     currentPage: page,
     manualPagination: true,
     onRowClick: rowClick,
-    rowClass: getRowClass,
     onPageIndexChange: (currentPage) => {
       if (currentPage !== page) {
         fetchDokumentasi({ page: currentPage });

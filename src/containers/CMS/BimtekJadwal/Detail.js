@@ -182,19 +182,6 @@ const CMSJadwalDetail = (props) => {
     },
   });
 
-  // useEffect(() => {
-  //   setObjectRequired({
-  //     namaBimtek: yup.string().required(),
-  //     tags: yup.array().required().min(1),
-  //     tagsKota: yup.object().required(),
-  //     tanggalMulaiDisetujuiUpdate: yup.string().required(),
-  //     jamMulaiDisetujuiUpdate: yup.string().required(),
-  //     tanggalSelesaiDisetujuiUpdate: yup.string().required(),
-  //     jamSelesaiDisetujuiUpdate: yup.string().required(),
-  //     tempat: yup.string().required(),
-  //   });
-  // }, [defaultRequired]);
-
   const initialCall = () => {
     dispatch(getJadwalBimtekDetail(id));
     dispatch(getListLogAktifitas(id));
@@ -341,13 +328,6 @@ const CMSJadwalDetail = (props) => {
     setDefaultRequired(!defaultRequired);
   };
 
-  const handleAddMateri = () => {
-    setObjectRequired({
-      materi: yup.string().required(),
-    });
-    setShowModal('materi');
-  };
-
   const onAddMateri = (data) => {
     let obj = listMateri.map((item) => ({
       nama: data.materi,
@@ -379,17 +359,6 @@ const CMSJadwalDetail = (props) => {
     handleAPICall(put, `${apiUrls.cmsBimtekJadwal}/${id}/materi/${idMateri}`, { data: obj[0] }, 'Berhasil Merubah Materi');
     setListMateri([]);
   };
-
-  // const handleAddPembicara = () => {
-  //   setObjectRequired({
-  //     tambahPembicara: yup.string().required(),
-  //     tambahPembicaraWaktuMulai: yup.string().required(),
-  //     tambahPembicaraWaktuSelesai: yup.string().required(),
-  //     tambahPembicaraJamMulai: yup.string().required(),
-  //     tambahPembicaraJamSelesai: yup.string().required(),
-  //   });
-  // setShowModal('pembicara');
-  // };
 
   const onAddPembicara = (data) => {
     const nama = data.tambahPembicara;
@@ -527,30 +496,38 @@ const CMSJadwalDetail = (props) => {
     {
       Header: 'Materi',
       accessor: '',
-      Cell: ({ ...rest }) => <span>{rest?.row?.original?.nama}</span>,
+      Cell: ({
+        row: {
+          original: { nama },
+        },
+      }) => <span> {nama} </span>,
     },
     {
       Header: 'Lampiran',
       accessor: '',
-      Cell: ({ ...rest }) => <span>{rest?.row?.original?.fileType}</span>,
+      Cell: ({
+        row: {
+          original: { fileType },
+        },
+      }) => <span> {fileType} </span>,
     },
     {
       Header: '',
       accessor: 'action',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <div>
           {buttonUpdate ? (
             <>
               <Button
                 variant="outline-none"
                 className="bg-white sdp-text-blue p-0 mr-10"
-                onClick={() => handleEditMateri(rest.row.original)}>
+                onClick={() => handleEditMateri(original)}>
                 Edit
               </Button>
               <Button
                 variant="outline-none"
                 className="bg-white sdp-text-grey-dark p-0"
-                onClick={() => onDeleteMateri(rest.row.original?.id)}>
+                onClick={() => onDeleteMateri(original?.id)}>
                 Delete
               </Button>
             </>
@@ -568,18 +545,16 @@ const CMSJadwalDetail = (props) => {
     {
       Header: 'Tanggal',
       accessor: 'tanggalMulai',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <div className="d-flex">
           <span className="pr-5">
-            {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('DD MMMM YYYY') + ' ' : '---'}
-            {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('HH:mm') : '---' + ' '}
+            {original?.tanggalMulai ? moment(original?.tanggalMulai).format('DD MMMM YYYY') : '---'}
+            {original?.tanggalMulai ? moment(original?.tanggalMulai).format('HH:mm') : '---'}
           </span>
           <span>-</span>
           <span className="pl-5">
-            {rest.row.original?.tanggalSelesai
-              ? moment(rest.row.original?.tanggalSelesai).format('DD MMMM YYYY') + ' '
-              : '---'}
-            {rest.row.original?.tanggalSelesai ? moment(rest.row.original?.tanggalSelesai).format('HH:mm') : '---'}
+            {original?.tanggalSelesai ? moment(original?.tanggalSelesai).format('DD MMMM YYYY') : '---'}
+            {original?.tanggalSelesai ? moment(original?.tanggalSelesai).format('HH:mm') : '---'}
           </span>
         </div>
       ),
@@ -587,20 +562,20 @@ const CMSJadwalDetail = (props) => {
     {
       Header: '',
       accessor: 'action',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <div>
           {buttonUpdate ? (
             <>
               <Button
                 variant="outline-none"
                 className="bg-white sdp-text-blue p-0 mr-10"
-                onClick={() => onModalEditPembicara(rest.row.original)}>
+                onClick={() => onModalEditPembicara(original)}>
                 Edit
               </Button>
               <Button
                 variant="outline-none"
                 className="bg-white sdp-text-grey-dark p-0"
-                onClick={() => onDeletePembicara(rest.row.original?.id)}>
+                onClick={() => onDeletePembicara(original?.id)}>
                 Delete
               </Button>
             </>
@@ -834,7 +809,7 @@ const CMSJadwalDetail = (props) => {
                 <div className="d-flex justify-content-between">
                   <span className="fw-bold mb-10 d-block"> Materi </span>
                   {buttonUpdate ? (
-                    <Button variant="outline-none" onClick={handleAddMateri}>
+                    <Button variant="outline-none" onClick={() => setShowModal('materi')}>
                       <Plus /> <span className="fw-bold text-danger"> Tambah Materi </span>
                     </Button>
                   ) : null}

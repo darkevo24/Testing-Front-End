@@ -3,11 +3,43 @@ import { Button } from 'react-bootstrap';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 import CMSpenggunaForm, { submitpenggunaForm } from './CMSPenggunaForm';
+import { post } from 'utils/request';
+import { apiUrls } from 'utils/constants';
+import Notification from 'components/Notification';
 
 const bem = bn('content-create');
 
 const TambahPengguna = () => {
-  const submitData = (Pdata) => {};
+  const submitData = async (userData) => {
+    const addData = {
+      ...userData,
+      employeeStatus: userData.employeeStatus.value,
+      instansi: { id: userData.instansi.value },
+      unitKerja: { id: userData.unitKerja.value },
+    };
+    try {
+      const response = await post(apiUrls.penggunaManagement, addData);
+      if (response.data.status === 'FAILED') {
+        Notification.show({
+          type: 'warning',
+          message: `${response.data.message}`,
+          icon: 'cross',
+        });
+      } else {
+        Notification.show({
+          type: 'secondary',
+          message: 'User Added Successfully',
+          icon: 'check',
+        });
+      }
+    } catch (err) {
+      Notification.show({
+        type: 'warning',
+        message: 'Something went wrong',
+        icon: 'cross',
+      });
+    }
+  };
 
   return (
     <div className={bem.b()}>
@@ -23,7 +55,7 @@ const TambahPengguna = () => {
         </div>
       </div>
       <div className={bem.e('body')}>
-        <CMSpenggunaForm onsubmit={submitData} />
+        <CMSpenggunaForm onSubmit={submitData} />
       </div>
     </div>
   );

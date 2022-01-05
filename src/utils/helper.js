@@ -251,12 +251,6 @@ export const getStatusClass = (status) => {
         text: 'Dihapus',
         divText: 'Dihapus',
       };
-    case 'rejected':
-      return {
-        ...redText,
-        text: 'Ditolak',
-        divText: 'Ditolak',
-      };
     case 'terkirim':
       return {
         ...purpleText,

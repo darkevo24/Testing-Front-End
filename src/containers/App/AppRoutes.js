@@ -56,7 +56,7 @@ function AppRoutes(props) {
         <PrivateRoute exact path="/forum-sdi/:id" component={ForumSDIDetail} />
         <PrivateRoute exact path="/forum-sdi" component={ForumSDI} />
         <PrivateRoute exact path="/forum" component={PerminataanForumPage} />
-        <PrivateRoute exact path="/policy" component={KebijakanPrivasiPage} />
+        <Route exact path="/policy" component={KebijakanPrivasiPage} />
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
         <PrivateRoute exact path="/dataset" component={DataSetPage} />

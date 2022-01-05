@@ -91,6 +91,10 @@ export const Top = ({ history, token }) => {
           link: '/tentang#tentang-form',
         },
         {
+          title: 'Kebijakan Privasi',
+          link: '/policy',
+        },
+        {
           title: 'FAQ',
           link: '',
           disabled: true,

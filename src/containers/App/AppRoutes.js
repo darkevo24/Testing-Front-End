@@ -78,10 +78,10 @@ function AppRoutes(props) {
         <Route exact path="/bimtek-kota-pelaksanaan" component={BimTekKotaPage} />
         <Route exact path="/bimtek-dokumentasi" component={BimTekDokumentasiPage} />
         <Route exact path="/tentang" component={TentangPage} />
-        <Route exact path="/kesiapan-sdi" component={KesiapanSDI} />
-        <Route exact path="/dashboard-eksekutif" component={DashboardEksekutif} />
-        <Route exact path="/dashboard-saya" component={DashboardSaya} />
-        <Route exact path="/data-analytic" component={DataAnalytic} />
+        <PrivateRoute exact path="/kesiapan-sdi" component={KesiapanSDI} />
+        <PrivateRoute exact path="/dashboard-eksekutif" component={DashboardEksekutif} />
+        <PrivateRoute exact path="/dashboard-saya" component={DashboardSaya} />
+        <PrivateRoute exact path="/data-analytic" component={DataAnalytic} />
         <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
         <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
         <Route exact path="/api/form" component={ManagementApiAddPage} />

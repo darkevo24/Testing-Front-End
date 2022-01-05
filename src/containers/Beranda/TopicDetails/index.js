@@ -210,10 +210,12 @@ const TopicDetail = () => {
             <div className="row sdp-card-wrapped d-flex py-8 justify-content-between" key={item.id}>
               <div className="col-8 flex-column">
                 <div className="sdp-left-wrapper mb-27">
-                  {/* eslint-disable-next-line */}
-                  <a title="dataset" href="#" className="sdp-link" onClick={logToTrendingAPI(item, dispatch)}>
+                  <button
+                    title="dataset"
+                    className="sdp-link border-0 bg-white p-0"
+                    onClick={logToTrendingAPI(item, dispatch)}>
                     <div className="mb-8 fs-16 fw-600 lh-19 sdp-text-black-dark">{item.title}</div>
-                  </a>
+                  </button>
                   <div className="fs-14 lh-17 sdp-text-black-dark">{item.notes}</div>
                 </div>
                 <div className="fw-600 fs-13 lh-13 text-nowrap sdp-text-disable invisible invisible">

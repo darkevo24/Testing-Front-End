@@ -15,9 +15,11 @@ import { ReactComponent as Plus } from 'assets/plus.svg';
 import { CMSModal } from 'components/CMSStatusModals';
 import { Galery, Close } from 'components/Icons';
 import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
-import { apiUrls, post, put, deleteRequest } from 'utils/request';
+// import { apiUrls, post, put, deleteRequest } from 'utils/request';
+import { apiUrls, post } from 'utils/request';
 import SingleDropDown from 'components/DropDown/SingleDropDown';
-import { DatePicker, Input, Modal, Table, TextEditor, Notification } from 'components';
+// import { DatePicker, Input, Modal, Table, TextEditor, Notification } from 'components';
+import { DatePicker, Input, Modal, Table, Notification } from 'components';
 import { bimtekJadwalTags, bimtekListKabupaten, getListBimtekTags, getListBimtekKabupaten } from './reducer';
 
 import bn from 'utils/bemNames';
@@ -55,7 +57,7 @@ const CMSJadwalBaru = () => {
   };
 
   const onEditPembicara = async (data) => {
-    console.log(idPembicara);
+    // console.log(idPembicara);
     const nama = data.tambahPembicara;
     const tanggalMulai = `${moment(data.tambahPembicaraWaktuMulai, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
       data.tambahPembicaraJamMulai
@@ -81,7 +83,7 @@ const CMSJadwalBaru = () => {
       return x.id !== data;
     });
     setDataPembicara(newData);
-    console.log(newData);
+    // console.log(newData);
   };
 
   const onDeleteMateri = (data) => {
@@ -102,7 +104,7 @@ const CMSJadwalBaru = () => {
       });
       isFunction(callBack) && callBack();
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       Notification.show({
         type: 'secondary',
         message: <div> Error, {e.message} </div>,
@@ -116,10 +118,12 @@ const CMSJadwalBaru = () => {
     let listPembicara = dataPembicara;
     listPembicara.map((x) => {
       delete x['id'];
+      return x;
     });
     let listMateri = dataMateri;
     listMateri.map((x) => {
       delete x['id'];
+      return x;
     });
     let obj = {
       namaBimtek: data.namaBimtek,
@@ -145,7 +149,7 @@ const CMSJadwalBaru = () => {
         },
       ],
     };
-    console.log(data);
+    // console.log(data);
     handleAPICall(post, `${apiUrls.cmsBimtekJadwal}`, { data: obj });
   };
 
@@ -161,8 +165,8 @@ const CMSJadwalBaru = () => {
     }));
     setListMateri([]);
     setDataMateri([...dataMateri, newMateri[0]]);
-    console.log(newMateri[0]);
-    console.log(dataMateri);
+    // console.log(newMateri[0]);
+    // console.log(dataMateri);
     handleCloseModal();
   };
 
@@ -202,7 +206,7 @@ const CMSJadwalBaru = () => {
         setListMateri([...listMateri, res.data]);
       });
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -308,8 +312,8 @@ const CMSJadwalBaru = () => {
 
   const {
     control,
-    formState: { errors },
-    reset,
+    // formState: { errors },
+    // reset,
     handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),

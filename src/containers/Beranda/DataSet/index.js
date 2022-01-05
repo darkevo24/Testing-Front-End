@@ -155,10 +155,12 @@ const DataSet = () => {
             <div className="sdp-card-wrapped d-flex p-16 justify-content-between" key={item.id}>
               <div className="flex-column">
                 <div className="sdp-left-wrapper mb-27 mr-16">
-                  {/* eslint-disable-next-line */}
-                  <a title="dataset" href="#" className="sdp-link" onClick={logToTrendingAPI(item, dispatch)}>
+                  <button
+                    title="dataset"
+                    className="sdp-link border-0 bg-white p-0"
+                    onClick={logToTrendingAPI(item, dispatch)}>
                     <div className="mb-8 fs-16 fw-600 lh-19">{item.title}</div>
-                  </a>
+                  </button>
                   <div className="fs-14 lh-17 sdp-text-black-dark">{item.notes}</div>
                 </div>
                 <div className="d-flex flex-wrap mt-n8">

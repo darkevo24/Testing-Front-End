@@ -17,13 +17,13 @@ const TambahPengguna = () => {
           <Button className="ml-24" variant="secondary" style={{ width: '112px' }}>
             Batal
           </Button>
-          <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => submitpenggunaForm()}>
+          <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={submitpenggunaForm}>
             Kirim
           </Button>
         </div>
       </div>
       <div className={bem.e('body')}>
-        <CMSpenggunaForm disabled={false} onsubmit={submitData} />
+        <CMSpenggunaForm onsubmit={submitData} />
       </div>
     </div>
   );

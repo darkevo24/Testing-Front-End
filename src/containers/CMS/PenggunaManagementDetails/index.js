@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory, useParams } from 'react-router-dom';
 import { LeftChevron, Trash } from 'components/Icons';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
+import { Button, Row, Col } from 'react-bootstrap';
 import bn from 'utils/bemNames';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import { useDispatch, useSelector } from 'react-redux';

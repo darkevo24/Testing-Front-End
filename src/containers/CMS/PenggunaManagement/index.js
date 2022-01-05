@@ -62,8 +62,8 @@ const CMSPenggunaManagement = () => {
     setQuery(val);
   }, 500);
 
-  const rowClick = (data) => {
-    history.push(`/cms/pengguna-management/${data.id}`);
+  const viewDetail = (id) => {
+    history.push(`/cms/pengguna-management/${id}`);
   };
 
   const getRowClass = (data) => {
@@ -103,12 +103,20 @@ const CMSPenggunaManagement = () => {
     {
       Header: 'Status',
       accessor: 'status',
-      Cell: ({ row }) => <span className={`status ${row?.original?.status.toLowerCase()}`}> {row?.original?.status}</span>,
+      Cell: ({
+        row: {
+          original: { status = '' },
+        },
+      }) => <span className={`status ${status.toLowerCase()}`}> {status}</span>,
     },
     {
       Header: '',
       accessor: 'button',
-      Cell: () => <Button variant="info">Detail</Button>,
+      Cell: ({ row }) => (
+        <Button variant="info" onClick={() => viewDetail(row?.original?.id)}>
+          Detail
+        </Button>
+      ),
     },
   ];
 
@@ -124,7 +132,6 @@ const CMSPenggunaManagement = () => {
     pageSize: size,
     currentPage: page,
     manualPagination: true,
-    onRowClick: rowClick,
     rowClass: getRowClass,
     onPageIndexChange: (currentPage) => {
       if (currentPage !== page) {

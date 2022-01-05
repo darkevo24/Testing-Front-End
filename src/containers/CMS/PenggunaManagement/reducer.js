@@ -79,30 +79,36 @@ const penggunaManagementDetailSlice = createSlice({
       state.penggunaDataset.loading = false;
       state.penggunaDataset.error = 'Invalid data';
     });
+
     builder.addCase(getPenggunaRoleList.pending, (state, action) => {
       state.penggunaRoleDataset.loading = true;
     });
     builder.addCase(getPenggunaRoleList.fulfilled, (state, action) => {
+      state.penggunaRoleDataset.loading = false;
       state.penggunaRoleDataset.records = action.payload;
     });
     builder.addCase(getPenggunaRoleList.rejected, (state, action) => {
       state.penggunaRoleDataset.loading = false;
       state.penggunaRoleDataset.error = 'Invalid data';
     });
+
     builder.addCase(getPenggunaStatusList.pending, (state, action) => {
       state.penggunaStatusDataset.loading = true;
     });
     builder.addCase(getPenggunaStatusList.fulfilled, (state, action) => {
+      state.penggunaStatusDataset.loading = false;
       state.penggunaStatusDataset.records = action.payload;
     });
     builder.addCase(getPenggunaStatusList.rejected, (state, action) => {
       state.penggunaStatusDataset.loading = false;
       state.penggunaStatusDataset.error = 'Invalid data';
     });
+
     builder.addCase(getInstansiData.pending, (state, action) => {
       state.instansiDataset.loading = true;
     });
     builder.addCase(getInstansiData.fulfilled, (state, action) => {
+      state.instansiDataset.loading = false;
       state.instansiDataset.records = action.payload.records;
     });
     builder.addCase(getInstansiData.rejected, (state, action) => {

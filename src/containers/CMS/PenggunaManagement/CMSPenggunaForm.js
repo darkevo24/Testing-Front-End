@@ -1,10 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { FileInput, Input } from 'components';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
 import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
-import { useEffect } from 'react';
 import { getPenggunaDetails, penggunanDataDetailSelector } from '../PenggunaManagementDetails/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPenggunaRoleList, getPenggunaStatusList, penggunaRoleDataSelector, penggunaStatusDataSelector } from './reducer';
@@ -24,7 +22,7 @@ const CMSpenggunaForm = ({ disabled, onsubmit, data }) => {
   const { records: penggunaRoleData } = useSelector(penggunaRoleDataSelector);
   const { records: penggunaStatusData } = useSelector(penggunaStatusDataSelector);
   const { result: penggunaInstansiData } = useSelector(instansiDataSelector);
-  let { records: _penggunaDetails } = useSelector(penggunanDataDetailSelector);
+  const { records: _penggunaDetails } = useSelector(penggunanDataDetailSelector);
 
   useEffect(() => {
     if (_penggunaDetails && !isEmpty(_penggunaDetails)) {
@@ -104,7 +102,7 @@ const CMSpenggunaForm = ({ disabled, onsubmit, data }) => {
   ];
 
   const selectRole = (e) => {
-    if (e.target.checked === true) {
+    if (e.target.checked) {
       setCheckRole([...checkRole, e.target.value]);
     } else {
       let index = checkRole.indexOf(e.target.value);

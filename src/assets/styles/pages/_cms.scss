@@ -61,6 +61,7 @@
             }
             &.diarsipkan, &.draft, &.tidak_ditayangkan {
               color: $gray;
+              background: none;
             }
             &.dibatalkan, &.ditolak, &.dihapus {
               color: $red

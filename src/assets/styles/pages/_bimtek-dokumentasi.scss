@@ -122,18 +122,18 @@
     max-width: 100%;
     width: 100%;
   }
-}
-.slick-prev {
-  left: 3% !important;
-  z-index: 1;
-}
+  .slick-prev {
+    left: 3% !important;
+    z-index: 1;
+  }
 
-.slick-arrow::before {
-  color: black !important;
-}
+  .slick-arrow::before {
+    color: black !important;
+  }
 
-.slick-next {
-  right: 3% !important;
-  z-index: 1;
-  color: black;
+  .slick-next {
+    right: 3% !important;
+    z-index: 1;
+    color: black;
+  }
 }

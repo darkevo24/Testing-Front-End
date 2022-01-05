@@ -13,6 +13,7 @@ import { useHistory } from 'react-router-dom';
 import { bimtekDokumentasiSelector, getDokumentasi } from './reducer';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import TableLoader from 'components/Loader/TableLoader';
+import { getStatusClass } from 'utils/helper';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 
@@ -84,6 +85,9 @@ const CMSBimtekPermintaan = () => {
     {
       Header: 'Status',
       accessor: 'status',
+      Cell: ({ row: { original } }) => (
+        <span className={getStatusClass(original?.status.toLowerCase() || '').textColor}> {original?.status} </span>
+      ),
     },
     {
       Header: '',

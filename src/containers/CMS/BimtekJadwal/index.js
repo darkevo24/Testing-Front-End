@@ -110,11 +110,6 @@ const CMSBimtekPermintaan = () => {
     history.push(`/cms/bimtek-jadwal/${data.id}`);
   };
 
-  const getRowClass = (data) => {
-    // if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
-    // return 'bg-gray';
-  };
-
   const updateQuery = setSearch.debounce((val) => {
     setQuery(val);
   }, 500);
@@ -132,7 +127,6 @@ const CMSBimtekPermintaan = () => {
     currentPage: page,
     manualPagination: true,
     onRowClick: rowClick,
-    rowClass: getRowClass,
     onPageIndexChange: (currentPage) => {
       if (currentPage !== page) {
         fetchJadwalBimtek({ page: currentPage });

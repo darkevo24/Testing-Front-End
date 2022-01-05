@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { apiUrls, defaultNumberOfRows, get } from 'utils/request';
 
 export const getPenggunaData = createAsyncThunk('penggunaManagement/penggunaData', async (params) => {
-  const response = await get(`${apiUrls.penggunaManagement}`, {
+  const response = await get(apiUrls.penggunaManagement, {
     query: {
       page: params.page + 1,
       size: 10,
@@ -16,12 +16,12 @@ export const getPenggunaData = createAsyncThunk('penggunaManagement/penggunaData
 });
 
 export const getPenggunaRoleList = createAsyncThunk('penggunaManagement/penggunaRoleList', async (params) => {
-  const response = await get(`${apiUrls.penggunaRoleList}`);
+  const response = await get(apiUrls.penggunaRoleList);
   return response?.data?.content;
 });
 
 export const getPenggunaStatusList = createAsyncThunk('penggunaManagement/penggunaStatusList', async (params) => {
-  const response = await get(`${apiUrls.penggunaStatusList}`);
+  const response = await get(apiUrls.penggunaStatusList);
   return response?.data?.content;
 });
 

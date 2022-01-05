@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import * as setSearch from 'lodash';
+import debounce from 'lodash/debounce';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -44,7 +44,7 @@ const CMSPenggunaManagement = () => {
   const { records: penggunaInstansiData } = useSelector(instansiDataSelector);
 
   const fetchDataset = (params) => {
-    let obj = {
+    const obj = {
       page: params.page,
       roles,
       instansiId,
@@ -58,7 +58,7 @@ const CMSPenggunaManagement = () => {
     fetchDataset({ page: page || 0 });
   }, [query, instansiId, roles, status]);
 
-  const updateQuery = setSearch.debounce((val) => {
+  const updateQuery = debounce((val) => {
     setQuery(val);
   }, 500);
 
@@ -103,14 +103,12 @@ const CMSPenggunaManagement = () => {
     {
       Header: 'Status',
       accessor: 'status',
-      Cell: ({ ...rest }) => (
-        <span className={`status ${rest?.row?.original?.status.toLowerCase()}`}> {rest?.row?.original?.status}</span>
-      ),
+      Cell: ({ row }) => <span className={`status ${row?.original?.status.toLowerCase()}`}> {row?.original?.status}</span>,
     },
     {
       Header: '',
       accessor: 'button',
-      Cell: ({ ...rest }) => <Button variant="info">Detail</Button>,
+      Cell: () => <Button variant="info">Detail</Button>,
     },
   ];
 
@@ -136,75 +134,77 @@ const CMSPenggunaManagement = () => {
   };
 
   return (
-    <div className={bem.e('section cms-permintaan-data')}>
-      <div className={bem.e('header')}>
-        <div className={bem.e('title pb-20')}>Pengguna</div>
-        <Row className="justify-content-between">
-          <Col xs={3} className="d-flex align-items-center">
-            <InputGroup>
-              <Button className="br-4" variant="info" onClick={() => history.push('/cms/pengguna-management/add')}>
-                Tambah Pengguna
-              </Button>
-            </InputGroup>
-            <InputGroup>
-              <Button variant="outline-secondary" className="br-6 hpx-35">
-                Upload
-              </Button>
-            </InputGroup>
-          </Col>
-          <Col className="option" md={5}>
-            <Form.Group className="d-flex align-items-center mr-10">
-              <Form.Label className="mb-0 pr-10">Role</Form.Label>
-              <Form.Select onChange={(e) => setRoles(e.target.value)}>
-                <option value="">All</option>
-                {penggunaRoleData.map((role, key) => (
-                  <option key={key} value={role}>
-                    {role}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-            <Form.Group className="d-flex align-items-center mr-10">
-              <Form.Label className="unit-kerja">Instansi</Form.Label>
-              <Form.Select onChange={(e) => setIntansiId(e.target.value)}>
-                <option value="">Badan Pusat</option>
-                {penggunaInstansiData &&
-                  penggunaInstansiData.map((data, index) => (
-                    <option key={index} value={data?.id}>
-                      {data?.nama}
+    <div className={bem.b()}>
+      <div className={bem.e('section cms-permintaan-data')}>
+        <div className={bem.e('header')}>
+          <div className={bem.e('title pb-20')}>Pengguna</div>
+          <Row className="justify-content-between">
+            <Col xs={3} className="d-flex align-items-center">
+              <InputGroup>
+                <Button className="br-4" variant="info" onClick={() => history.push('/cms/pengguna-management/add')}>
+                  Tambah Pengguna
+                </Button>
+              </InputGroup>
+              <InputGroup>
+                <Button variant="outline-secondary" className="br-6 hpx-35">
+                  Upload
+                </Button>
+              </InputGroup>
+            </Col>
+            <Col className="option" md={5}>
+              <Form.Group className="d-flex align-items-center mr-10">
+                <Form.Label className="mb-0 pr-10">Role</Form.Label>
+                <Form.Select onChange={(e) => setRoles(e.target.value)}>
+                  <option value="">All</option>
+                  {penggunaRoleData.map((role, key) => (
+                    <option key={key} value={role}>
+                      {role}
                     </option>
                   ))}
-              </Form.Select>
-            </Form.Group>
-            <Form.Group className="d-flex align-items-center mr-10">
-              <Form.Label className="mb-0 pr-10">Status</Form.Label>
-              <Form.Select aria-label="Default select example" onChange={(e) => setStatus(e.target.value)}>
-                <option value="">SEMUA</option>
-                {penggunaStatusData &&
-                  penggunaStatusData?.map((status, index) => {
-                    return (
-                      <option key={index} value={status}>
-                        {status}
+                </Form.Select>
+              </Form.Group>
+              <Form.Group className="d-flex align-items-center mr-10">
+                <Form.Label className="unit-kerja">Instansi</Form.Label>
+                <Form.Select onChange={(e) => setIntansiId(e.target.value)}>
+                  <option value="">Badan Pusat</option>
+                  {penggunaInstansiData &&
+                    penggunaInstansiData.map((data, index) => (
+                      <option key={index} value={data?.id}>
+                        {data?.nama}
                       </option>
-                    );
-                  })}
-              </Form.Select>
-            </Form.Group>
-          </Col>
-          <Col xs={4} className="d-flex align-items-center">
-            <InputGroup>
-              <Form.Control
-                variant="normal"
-                type="text"
-                onChange={(e) => updateQuery(e.target.value)}
-                placeholder="Cari Permintaan Data"
-              />
-              <Search />
-            </InputGroup>
-          </Col>
-        </Row>
+                    ))}
+                </Form.Select>
+              </Form.Group>
+              <Form.Group className="d-flex align-items-center mr-10">
+                <Form.Label className="mb-0 pr-10">Status</Form.Label>
+                <Form.Select aria-label="Default select example" onChange={(e) => setStatus(e.target.value)}>
+                  <option value="">SEMUA</option>
+                  {penggunaStatusData &&
+                    penggunaStatusData?.map((status, index) => {
+                      return (
+                        <option key={index} value={status}>
+                          {status}
+                        </option>
+                      );
+                    })}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col xs={4} className="d-flex align-items-center">
+              <InputGroup>
+                <Form.Control
+                  variant="normal"
+                  type="text"
+                  onChange={(e) => updateQuery(e.target.value)}
+                  placeholder="Cari Permintaan Data"
+                />
+                <Search />
+              </InputGroup>
+            </Col>
+          </Row>
+        </div>
+        <div className="px-30 pt-0"> {!loading ? <Table {...tableConfig} /> : <Loader fullscreen={true} />} </div>
       </div>
-      <div className="px-30 pt-0"> {!loading ? <Table {...tableConfig} /> : <Loader fullscreen={true} />} </div>
     </div>
   );
 };

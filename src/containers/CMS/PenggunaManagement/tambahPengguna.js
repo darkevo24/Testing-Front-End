@@ -10,7 +10,7 @@ const TambahPengguna = () => {
   const submitData = (Pdata) => {};
 
   return (
-    <div className={bem.e('section')}>
+    <div className={bem.b()}>
       <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
         <div className={bem.e('title')}>
           Tambah Pengguna Baru

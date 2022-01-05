@@ -48,7 +48,7 @@ const CMSPenggunaManagementView = () => {
     setEditable(true);
   };
   return (
-    <div className={bem.e('cms-permintaan-data')}>
+    <div className={bem.b()}>
       <StatusBar />
       <Row className={bem.e('section')}>
         <Col sm={9} className="my-5">

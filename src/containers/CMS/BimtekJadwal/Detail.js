@@ -10,7 +10,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { DatePicker, Input, Modal, Table, TextEditor, Notification } from 'components';
+import { DatePicker, Input, Modal, Table, Notification } from 'components';
 import { apiUrls, post, put, deleteRequest } from 'utils/request';
 import { LogStatus } from 'components/Sidebars/LogStatus';
 import { LeftChevron, Galery, Close } from 'components/Icons';
@@ -64,23 +64,8 @@ const CMSJadwalDetail = (props) => {
     initialCall();
   }, []);
 
-  const schema = yup.object(objectRequired).required();
-
-  const {
-    control,
-    formState: { errors },
-    reset,
-    setValue,
-    handleSubmit,
-  } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      ...records,
-    },
-  });
-
-  useEffect(() => {
-    setObjectRequired({
+  const schemaEdit = yup
+    .object({
       namaBimtek: yup.string().required(),
       tags: yup.array().required().min(1),
       tagsKota: yup.object().required(),
@@ -89,8 +74,126 @@ const CMSJadwalDetail = (props) => {
       tanggalSelesaiDisetujuiUpdate: yup.string().required(),
       jamSelesaiDisetujuiUpdate: yup.string().required(),
       tempat: yup.string().required(),
-    });
-  }, [defaultRequired]);
+    })
+    .required();
+
+  const schemaPembicara = yup
+    .object({
+      tambahPembicara: yup.string().required(),
+      tambahPembicaraWaktuMulai: yup.string().required(),
+      tambahPembicaraJamMulai: yup.string().required(),
+      tambahPembicaraWaktuSelesai: yup.string().required(),
+      tambahPembicaraJamSelesai: yup.string().required(),
+    })
+    .required();
+
+  const schemaEditPembicara = yup
+    .object({
+      tambahPembicaraUpdate: yup.string().required(),
+      tambahPembicaraWaktuMulaiUpdate: yup.string().required(),
+      tambahPembicaraJamMulaiUpdate: yup.string().required(),
+      tambahPembicaraWaktuSelesaiUpdate: yup.string().required(),
+      tambahPembicaraJamSelesaiUpdate: yup.string().required(),
+    })
+    .required();
+
+  const schemaMateri = yup
+    .object({
+      materi: yup.string().required(),
+    })
+    .required();
+
+  const schemaEditMateri = yup
+    .object({
+      materiUpdate: yup.string().required(),
+    })
+    .required();
+
+  const {
+    control,
+    formState: { errors },
+    reset,
+    setValue,
+    handleSubmit,
+  } = useForm({
+    resolver: yupResolver(schemaEdit),
+    defaultValues: {
+      ...records,
+    },
+  });
+
+  const {
+    control: controlPembicara,
+    formState: { errors: errorsPembicara },
+    reset: resetPembicara,
+    setValue: setValuePembicara,
+    handleSubmit: handleSubmitPembicara,
+  } = useForm({
+    resolver: yupResolver(schemaPembicara),
+    defaultValues: {
+      tambahPembicara: '',
+      tambahPembicaraWaktuMulai: '',
+      tambahPembicaraJamMulai: '',
+      tambahPembicaraWaktuSelesai: '',
+      tambahPembicaraJamSelesai: '',
+    },
+  });
+
+  const {
+    control: controlEditPembicara,
+    formState: { errors: errorsEditPembicara },
+    reset: resetEditPembicara,
+    setValue: setValueEditPembicara,
+    handleSubmit: handleSubmitEditPembicara,
+  } = useForm({
+    resolver: yupResolver(schemaEditPembicara),
+    defaultValues: {
+      tambahPembicara: '',
+      tambahPembicaraWaktuMulai: '',
+      tambahPembicaraJamMulai: '',
+      tambahPembicaraWaktuSelesai: '',
+      tambahPembicaraJamSelesai: '',
+    },
+  });
+
+  const {
+    control: controlMateri,
+    formState: { errors: errorsMateri },
+    reset: resetMateri,
+    setValue: setValueMateri,
+    handleSubmit: handleSubmitMateri,
+  } = useForm({
+    resolver: yupResolver(schemaMateri),
+    defaultValues: {
+      materi: '',
+    },
+  });
+
+  const {
+    control: controlEditMateri,
+    formState: { errors: errorsEditMateri },
+    reset: resetEditMateri,
+    setValue: setValueEditMateri,
+    handleSubmit: handleSubmitEditMateri,
+  } = useForm({
+    resolver: yupResolver(schemaEditMateri),
+    defaultValues: {
+      materiUpdate: '',
+    },
+  });
+
+  // useEffect(() => {
+  //   setObjectRequired({
+  //     namaBimtek: yup.string().required(),
+  //     tags: yup.array().required().min(1),
+  //     tagsKota: yup.object().required(),
+  //     tanggalMulaiDisetujuiUpdate: yup.string().required(),
+  //     jamMulaiDisetujuiUpdate: yup.string().required(),
+  //     tanggalSelesaiDisetujuiUpdate: yup.string().required(),
+  //     jamSelesaiDisetujuiUpdate: yup.string().required(),
+  //     tempat: yup.string().required(),
+  //   });
+  // }, [defaultRequired]);
 
   const initialCall = () => {
     dispatch(getJadwalBimtekDetail(id));
@@ -109,8 +212,7 @@ const CMSJadwalDetail = (props) => {
       handleNotification('secondary', `${message}`, 'check');
       initialCall();
       isFunction(callBack) && callBack();
-      setReadOnly(true);
-      setButtonUpdate(false);
+      setAPIError(false);
     } catch (e) {
       setAPIError(true);
       handleCloseModal();
@@ -213,10 +315,9 @@ const CMSJadwalDetail = (props) => {
       tanggalSelesaiDisetujui,
     };
     handleAPICall(put, `${apiUrls.cmsBimtekJadwal}/${id}`, { data: obj }, 'Berhasil Merubah Data');
-    if (apiError) {
+    if (!apiError) {
       setReadOnly(true);
       setButtonUpdate(false);
-      setAPIError(false);
     }
   };
 
@@ -260,10 +361,7 @@ const CMSJadwalDetail = (props) => {
   };
 
   const handleEditMateri = (data) => {
-    setObjectRequired({
-      materiUpdate: yup.string().required(),
-    });
-    setValue('materiUpdate', data.nama);
+    setValueEditMateri('materiUpdate', data.nama);
     setIdMateri(data.id);
     setListMateri([data]);
     setShowModal('editMateri');
@@ -282,16 +380,16 @@ const CMSJadwalDetail = (props) => {
     setListMateri([]);
   };
 
-  const handleAddPembicara = () => {
-    setObjectRequired({
-      tambahPembicara: yup.string().required(),
-      tambahPembicaraWaktuMulai: yup.string().required(),
-      tambahPembicaraWaktuSelesai: yup.string().required(),
-      tambahPembicaraJamMulai: yup.string().required(),
-      tambahPembicaraJamSelesai: yup.string().required(),
-    });
-    setShowModal('pembicara');
-  };
+  // const handleAddPembicara = () => {
+  //   setObjectRequired({
+  //     tambahPembicara: yup.string().required(),
+  //     tambahPembicaraWaktuMulai: yup.string().required(),
+  //     tambahPembicaraWaktuSelesai: yup.string().required(),
+  //     tambahPembicaraJamMulai: yup.string().required(),
+  //     tambahPembicaraJamSelesai: yup.string().required(),
+  //   });
+  // setShowModal('pembicara');
+  // };
 
   const onAddPembicara = (data) => {
     const nama = data.tambahPembicara;
@@ -316,22 +414,22 @@ const CMSJadwalDetail = (props) => {
       { data: { pembicara: obj } },
       'Berhasil Menambah Pembicara',
     );
+    if (!apiError) {
+      setValuePembicara('tambahPembicara', '');
+      setValuePembicara('tambahPembicaraWaktuMulai', '');
+      setValuePembicara('tambahPembicaraWaktuSelesai', '');
+      setValuePembicara('tambahPembicaraJamMulai', '');
+      setValuePembicara('tambahPembicaraJamSelesai', '');
+    }
   };
 
   const onModalEditPembicara = (data) => {
     setIdPembicara(data.id);
-    setValue('tambahPembicaraUpdate', data.nama);
-    setValue('tambahPembicaraWaktuMulaiUpdate', moment(data.tanggalMulai).format('DD/MM/YYYY'));
-    setValue('tambahPembicaraWaktuSelesaiUpdate', moment(data.tanggalSelesai).format('DD/MM/YYYY'));
-    setValue('tambahPembicaraJamMulaiUpdate', moment(data.tanggalMulai).format('HH:mm'));
-    setValue('tambahPembicaraJamSelesaiUpdate', moment(data.tanggalSelesai).format('HH:mm'));
-    setObjectRequired({
-      tambahPembicaraUpdate: yup.string().required(),
-      tambahPembicaraWaktuMulaiUpdate: yup.string().required(),
-      tambahPembicaraWaktuSelesaiUpdate: yup.string().required(),
-      tambahPembicaraJamMulaiUpdate: yup.string().required(),
-      tambahPembicaraJamSelesaiUpdate: yup.string().required(),
-    });
+    setValueEditPembicara('tambahPembicaraUpdate', data.nama);
+    setValueEditPembicara('tambahPembicaraWaktuMulaiUpdate', moment(data.tanggalMulai).format('DD/MM/YYYY'));
+    setValueEditPembicara('tambahPembicaraWaktuSelesaiUpdate', moment(data.tanggalSelesai).format('DD/MM/YYYY'));
+    setValueEditPembicara('tambahPembicaraJamMulaiUpdate', moment(data.tanggalMulai).format('HH:mm'));
+    setValueEditPembicara('tambahPembicaraJamSelesaiUpdate', moment(data.tanggalSelesai).format('HH:mm'));
     setShowModal('editPembicara');
   };
 
@@ -721,7 +819,7 @@ const CMSJadwalDetail = (props) => {
                 <div className="d-flex justify-content-between">
                   <span className="fw-bold mb-10 d-block"> Pembicara </span>
                   {buttonUpdate ? (
-                    <Button variant="outline-none" onClick={handleAddPembicara}>
+                    <Button variant="outline-none" onClick={() => setShowModal('pembicara')}>
                       <Plus /> <span className="fw-bold text-danger"> Tambah Pembicara </span>
                     </Button>
                   ) : null}
@@ -837,14 +935,14 @@ const CMSJadwalDetail = (props) => {
           title="Tambah Materi Baru"
           onClose={handleCloseModal}
           visible={handleCloseModal}>
-          <Form onSubmit={handleSubmit(onAddMateri)}>
+          <Form onSubmit={handleSubmitMateri(onAddMateri)}>
             <div>
               <Input
                 group
                 label="Materi"
                 name="materi"
-                control={control}
-                error={errors.materi?.message}
+                control={controlMateri}
+                error={errorsMateri.materi?.message}
                 rules={{ required: true }}
               />
               <div>
@@ -880,9 +978,16 @@ const CMSJadwalDetail = (props) => {
       )}
       {showModal === 'editMateri' && (
         <Modal className="cms-bimtek-materi" title="Ubah Materi" onClose={handleCloseModal} visible={handleCloseModal}>
-          <Form onSubmit={handleSubmit(onEditMateri)}>
+          <Form onSubmit={handleSubmitEditMateri(onEditMateri)}>
             <div>
-              <Input group label="Materi" name="materiUpdate" control={control} />
+              <Input
+                group
+                label="Materi"
+                name="materiUpdate"
+                control={controlEditMateri}
+                error={errorsEditMateri.materi?.message}
+                rules={{ required: true }}
+              />
               <div>
                 <label>Lampiran</label>
                 <input id="sdp-upload-materi" multiple type="file" style={{ display: 'none' }} onChange={addFile} />
@@ -917,18 +1022,18 @@ const CMSJadwalDetail = (props) => {
       {showModal === 'pembicara' && (
         <Modal
           className="cms-bimtek-materi"
-          title="Tambah Pembicari Baru"
+          title="Tambah Pembicara Baru"
           visible={handleCloseModal}
           onClose={handleCloseModal}>
-          <Form onSubmit={handleSubmit(onAddPembicara)}>
+          <Form onSubmit={handleSubmitPembicara(onAddPembicara)}>
             <div className="mb-10">
               <Row>
                 <Input
                   group
                   label="Nama Pembicara"
                   name="tambahPembicara"
-                  control={control}
-                  error={errors.tambahPembicara?.message}
+                  control={controlPembicara}
+                  error={errorsPembicara.tambahPembicara?.message}
                   rules={{ required: true }}
                 />
               </Row>
@@ -938,8 +1043,8 @@ const CMSJadwalDetail = (props) => {
                     group
                     label="Tanggal Mulai Sesi"
                     name="tambahPembicaraWaktuMulai"
-                    control={control}
-                    error={errors.tambahPembicaraWaktuMulai?.message}
+                    control={controlPembicara}
+                    error={errorsPembicara.tambahPembicaraWaktuMulai?.message}
                     rules={{ required: true }}
                   />
                 </Col>
@@ -950,8 +1055,8 @@ const CMSJadwalDetail = (props) => {
                     type="time"
                     label=""
                     name="tambahPembicaraJamMulai"
-                    control={control}
-                    error={errors.tambahPembicaraJamMulai?.message}
+                    control={controlPembicara}
+                    error={errorsPembicara.tambahPembicaraJamMulai?.message}
                     rules={{ required: true }}
                   />
                 </Col>
@@ -962,8 +1067,8 @@ const CMSJadwalDetail = (props) => {
                     group
                     label="Tanggal Selesai Sesi"
                     name="tambahPembicaraWaktuSelesai"
-                    control={control}
-                    error={errors.tambahPembicaraWaktuSelesai?.message}
+                    control={controlPembicara}
+                    error={errorsPembicara.tambahPembicaraWaktuSelesai?.message}
                     rules={{ required: true }}
                   />
                 </Col>
@@ -974,8 +1079,8 @@ const CMSJadwalDetail = (props) => {
                     type="time"
                     label=""
                     name="tambahPembicaraJamSelesai"
-                    control={control}
-                    error={errors.tambahPembicaraJamSelesai?.message}
+                    control={controlPembicara}
+                    error={errorsPembicara.tambahPembicaraJamSelesai?.message}
                     rules={{ required: true }}
                   />
                 </Col>
@@ -994,15 +1099,15 @@ const CMSJadwalDetail = (props) => {
       )}
       {showModal === 'editPembicara' && (
         <Modal className="cms-bimtek-materi" title="Ubah Pembicara" visible={handleCloseModal} onClose={handleCloseModal}>
-          <Form onSubmit={handleSubmit(onEditPembicara)}>
+          <Form onSubmit={handleSubmitEditPembicara(onEditPembicara)}>
             <div className="mb-10">
               <Row>
                 <Input
                   group
                   label="Nama Pembicara"
                   name="tambahPembicaraUpdate"
-                  control={control}
-                  error={errors.tambahPembicaraUpdate?.message}
+                  control={controlEditPembicara}
+                  error={errorsEditPembicara.tambahPembicaraUpdate?.message}
                   rules={{ required: true }}
                 />
               </Row>
@@ -1012,8 +1117,8 @@ const CMSJadwalDetail = (props) => {
                     group
                     label="Tanggal Mulai Sesi"
                     name="tambahPembicaraWaktuMulaiUpdate"
-                    control={control}
-                    error={errors.tambahPembicaraWaktuMulaiUpdate?.message}
+                    control={controlEditPembicara}
+                    error={errorsEditPembicara.tambahPembicaraWaktuMulaiUpdate?.message}
                     rules={{ required: true }}
                   />
                 </Col>
@@ -1024,8 +1129,8 @@ const CMSJadwalDetail = (props) => {
                     type="time"
                     label=""
                     name="tambahPembicaraJamMulaiUpdate"
-                    control={control}
-                    error={errors.tambahPembicaraJamMulaiUpdate?.message}
+                    control={controlEditPembicara}
+                    error={errorsEditPembicara.tambahPembicaraJamMulaiUpdate?.message}
                     rules={{ required: true }}
                   />
                 </Col>
@@ -1036,8 +1141,8 @@ const CMSJadwalDetail = (props) => {
                     group
                     label="Tanggal Selesai Sesi"
                     name="tambahPembicaraWaktuSelesaiUpdate"
-                    control={control}
-                    error={errors.tambahPembicaraWaktuSelesaiUpdate?.message}
+                    control={controlEditPembicara}
+                    error={errorsEditPembicara.tambahPembicaraWaktuSelesaiUpdate?.message}
                     rules={{ required: true }}
                   />
                 </Col>
@@ -1048,8 +1153,8 @@ const CMSJadwalDetail = (props) => {
                     type="time"
                     label=""
                     name="tambahPembicaraJamSelesaiUpdate"
-                    control={control}
-                    error={errors.tambahPembicaraJamSelesaiUpdate?.message}
+                    control={controlEditPembicara}
+                    error={errorsEditPembicara.tambahPembicaraJamSelesaiUpdate?.message}
                     rules={{ required: true }}
                   />
                 </Col>

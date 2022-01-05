@@ -36,6 +36,7 @@ const CMSBimtekPermintaan = () => {
     fetchJadwalBimtek({ page: 0 });
   }, [query]);
 
+  console.log(records);
   const columns = [
     {
       Header: 'Nama Bimbingan',
@@ -80,17 +81,15 @@ const CMSBimtekPermintaan = () => {
     },
     {
       Header: 'Materi',
-      accessor: 'tagMateri',
-      Cell: ({ ...rest }) => (
-        <span>
-          {rest.row.original?.tagMateri?.map((data, index) => {
-            return (
-              <div key={index}>
-                <span>{data},</span>
-              </div>
-            );
-          })}
-        </span>
+      accessor: 'materi',
+      Cell: ({ row: { original } }) => (
+        <div>
+          {original?.materi
+            .filter((data) => data !== null)
+            .map((data, index) => {
+              return <span key={index}>{data?.nama},</span>;
+            })}
+        </div>
       ),
     },
     {

@@ -18,9 +18,11 @@ import BackgroundBatik from 'assets/background-batiklogin.png';
 
 const schema = yup
   .object({
-    // password: yup.string().required(),
     passwordNew: yup.string().required(),
-    confirmPassword: yup.string().required(),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref('passwordNew'), null], 'Confirm password is not the same')
+      .required(),
   })
   .required();
 

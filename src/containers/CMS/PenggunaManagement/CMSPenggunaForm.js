@@ -3,8 +3,12 @@ import { Button, Form } from 'react-bootstrap';
 import { FileInput, Input } from 'components';
 import { useForm } from 'react-hook-form';
 import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
-import { getPenggunaDetails, penggunanDataDetailSelector } from '../PenggunaManagementDetails/reducer';
 import { useDispatch, useSelector } from 'react-redux';
+import { isEmpty } from 'lodash';
+import { submitForm } from 'utils/helper';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { getPenggunaDetails, penggunanDataDetailSelector } from '../PenggunaManagementDetails/reducer';
 import {
   getPenggunaRoleList,
   getPenggunaStatusList,
@@ -15,10 +19,6 @@ import {
   instansiDataSelector,
   unitKerjaDataSelector,
 } from './reducer';
-import { isEmpty } from 'lodash';
-import { submitForm } from 'utils/helper';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 
 export const penggunaFormId = 'pengguna-form-id';
 export const submitpenggunaForm = submitForm(penggunaFormId);

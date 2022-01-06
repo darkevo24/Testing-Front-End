@@ -18,7 +18,7 @@ export const initialState = {
     error: '',
     record: {},
   },
-  logBerita: {
+  logAnalitik: {
     loading: false,
     error: '',
     records: [],
@@ -30,9 +30,19 @@ export const initialState = {
 export const DATA_ANALYTIC_SLICE = 'DATA_ANALYTIC_SLICE';
 
 export const getListAnalitik = createAsyncThunk('cms/getListAnalitik', async (params) => {
-  const response = await post(`${apiUrls.getListAnalitik}/list?size=10&page=${params.page}&sortDirection=DESC`, {
+  const response = await post(`${apiUrls.cmsAnalitikData}/list?size=10&page=${params.page}`, {
     title: params.judul,
   });
+  return response?.data?.content;
+});
+
+export const setNewAnalitik = createAsyncThunk('cms/setNewAnalitik', async (params) => {
+  const response = await post(`${apiUrls.cmsAnalitikData}/create`, params.payload);
+  return response?.data?.content;
+});
+
+export const setEditAnalitik = createAsyncThunk('cms/setEditAnalitik', async (params) => {
+  const response = await post(`${apiUrls.cmsAnalitikData}/update`, params.payload);
   return response?.data?.content;
 });
 
@@ -59,10 +69,35 @@ const dataAnalyticSlice = createSlice({
       state.dataset.loading = false;
       state.dataset.error = 'Error in fetching analitik!';
     });
+
+    builder.addCase(setNewAnalitik.pending, (state, action) => {
+      state.detaildataSet.loading = true;
+    });
+    builder.addCase(setNewAnalitik.fulfilled, (state, action) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.record = action.payload;
+    });
+    builder.addCase(setNewAnalitik.rejected, (state) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.error = 'Error in fetching create analitik data!';
+    });
+
+    builder.addCase(setEditAnalitik.pending, (state, action) => {
+      state.detaildataSet.loading = true;
+    });
+    builder.addCase(setEditAnalitik.fulfilled, (state, action) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.record = action.payload;
+    });
+    builder.addCase(setEditAnalitik.rejected, (state) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.error = 'Error in fetching edit berita!';
+    });
   },
 });
 
 export const analitikCmsListSelector = (state) => state.cmsDataAnalytic?.dataset;
+export const detailDataSelector = (state) => state.cmsDataAnalytic?.detaildataSet;
 
 export const { updateResult } = dataAnalyticSlice.actions;
 export default dataAnalyticSlice.reducer;

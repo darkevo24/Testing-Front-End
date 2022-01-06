@@ -14,6 +14,7 @@ import SingleDropDown from 'components/DropDown/SingleDropDown';
 import TableLoader from 'components/Loader/TableLoader';
 import { Search } from 'components/Icons';
 import { prefixID } from './constant';
+import { getStatusClass } from 'utils/helper';
 import { getInstansi, getUnitkerja, getPermintaanData, permintaanDataSelector } from './reducer';
 
 const bem = bn('content-table');
@@ -107,11 +108,23 @@ const CMSPermintaanData = () => {
     },
     {
       Header: 'Instansi',
-      accessor: 'instansi.nama',
+      Cell: ({
+        row: {
+          original: {
+            user: { instansi },
+          },
+        },
+      }) => <span>{instansi?.nama}</span>,
     },
     {
       Header: 'Unit Kerja',
-      accessor: 'instansi.unitKerja[0]',
+      Cell: ({
+        row: {
+          original: {
+            user: { unitKerja },
+          },
+        },
+      }) => <span>{unitKerja?.nama}</span>,
     },
     {
       Header: 'Deskripsi Data',
@@ -139,7 +152,7 @@ const CMSPermintaanData = () => {
       Header: 'Status',
       accessor: 'status',
       Cell: ({ row: { original } }) => (
-        <span className={`status ${original?.status.toLowerCase()}`}> {original?.status} </span>
+        <span className={getStatusClass(original?.status.toLowerCase() || '').textColor}> {original?.status} </span>
       ),
     },
     {

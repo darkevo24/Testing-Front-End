@@ -3,8 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Galery, Close } from 'components/Icons';
-import { DatePicker, Input, Modal, Table, Notification } from 'components';
-import { CMSModal } from 'components/CMSStatusModals';
+import { DatePicker, Input, Modal, Notification } from 'components';
 
 export const ModalsDetail = ({
   statusModal,

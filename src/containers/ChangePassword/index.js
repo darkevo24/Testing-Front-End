@@ -52,7 +52,7 @@ const ChangePassword = () => {
       await method(url, {}, params);
       handleNotification('secondary', 'Berhasil Merubah Password', 'check');
     } catch (e) {
-      console.log(e);
+      handleNotification('secondary', `Error, ${e.message}`, 'cross');
     }
   };
 
@@ -72,7 +72,7 @@ const ChangePassword = () => {
     };
     handleAPICall(post, `${apiUrls.forgotPassword}`, { data: obj });
   };
-  console.log(key);
+
   return (
     <Row className="change-password relative">
       <button className="back-chevron" onClick={goBack}>

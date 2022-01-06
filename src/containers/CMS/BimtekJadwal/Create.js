@@ -186,7 +186,6 @@ const CMSJadwalBaru = () => {
       handleNotification('secondary', 'Berhasil Menyimpan Jadwal', 'check');
       isFunction(callBack) && callBack();
     } catch (e) {
-      console.log(e);
       handleNotification('secondary', `Error, ${e.message}`, 'cross');
       handleCloseModal();
     }
@@ -393,7 +392,7 @@ const CMSJadwalBaru = () => {
         setListMateri([...listMateri, res.data]);
       });
     } catch (e) {
-      console.log(e);
+      handleNotification('secondary', `Error, ${e.message}`, 'cross');
     }
   };
 

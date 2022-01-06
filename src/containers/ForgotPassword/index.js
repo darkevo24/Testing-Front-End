@@ -41,7 +41,6 @@ const ForgotPassword = () => {
       await method(url, {}, params);
       handleNotification('secondary', 'Berhasil, Silahkan Cek Email Anda Untuk Melanjutkan Perubahan Password', 'check');
     } catch (e) {
-      console.log(e);
       handleNotification('secondary', 'Gagal, Email/Akun Tidak Valid', 'cross');
     }
   };

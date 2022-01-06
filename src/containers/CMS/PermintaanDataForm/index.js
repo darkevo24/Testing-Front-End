@@ -104,7 +104,6 @@ const CMSPermintaanDataView = () => {
       initialCall();
       isFunction(callBack) && callBack();
     } catch (e) {
-      console.log(e);
       handleNotification('secondary', `Error, ${e.message}`, 'cross');
       handleCloseModal();
     }

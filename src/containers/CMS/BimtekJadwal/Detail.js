@@ -273,7 +273,6 @@ const CMSJadwalDetail = (props) => {
   };
 
   const onUpdate = async (data) => {
-    console.log(data);
     let tanggalMulai = moment(data.tanggalMulaiDisetujuiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD');
     let tanggalSelesai = moment(data.tanggalSelesaiDisetujuiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD');
     if (tanggalMulai === 'Invalid date') {
@@ -436,7 +435,6 @@ const CMSJadwalDetail = (props) => {
         setListMateri([...listMateri, res.data]);
       });
     } catch (e) {
-      console.log(e);
       return handleNotification(`secondary', 'Error, ${e.message}', 'cross`);
     }
   };

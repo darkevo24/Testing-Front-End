@@ -38,7 +38,6 @@ const CMSPermintaanData = () => {
     if (query) obj['q'] = query;
     return dispatch(getPermintaanData(obj));
   };
-  console.log(records);
   const fetchInstansiData = () => {
     return dispatch(getInstansi());
   };

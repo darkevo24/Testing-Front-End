@@ -10,13 +10,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Form from 'react-bootstrap/Form';
-import { DatePicker, Input, Modal, Table, TextEditor, Notification } from 'components';
+import { DatePicker, Input, Table, Notification } from 'components';
 import { ReactComponent as Plus } from 'assets/plus.svg';
-import { Galery, Close } from 'components/Icons';
-import { CMSModal } from 'components/CMSStatusModals';
 import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
 import { apiUrls, post } from 'utils/request';
+import { Modals } from './Modals';
 import { bimtekJadwalTags, bimtekListKabupaten, getListBimtekTags, getListBimtekKabupaten } from './reducer';
 
 import bn from 'utils/bemNames';
@@ -99,8 +97,6 @@ const CMSJadwalBaru = () => {
   const {
     control: controlCreate,
     formState: { errors: errorsCreate },
-    reset: resetCreate,
-    setValue: setValueCreate,
     handleSubmit: handleSubmitCreate,
   } = useForm({
     resolver: yupResolver(schemaCreate),
@@ -122,7 +118,6 @@ const CMSJadwalBaru = () => {
   const {
     control: controlPembicara,
     formState: { errors: errorsPembicara },
-    reset: resetPembicara,
     setValue: setValuePembicara,
     handleSubmit: handleSubmitPembicara,
   } = useForm({
@@ -139,7 +134,6 @@ const CMSJadwalBaru = () => {
   const {
     control: controlEditPembicara,
     formState: { errors: errorsEditPembicara },
-    reset: resetEditPembicara,
     setValue: setValueEditPembicara,
     handleSubmit: handleSubmitEditPembicara,
   } = useForm({
@@ -156,7 +150,6 @@ const CMSJadwalBaru = () => {
   const {
     control: controlMateri,
     formState: { errors: errorsMateri },
-    reset: resetMateri,
     setValue: setValueMateri,
     handleSubmit: handleSubmitMateri,
   } = useForm({
@@ -169,7 +162,6 @@ const CMSJadwalBaru = () => {
   const {
     control: controlEditMateri,
     formState: { errors: errorsEditMateri },
-    reset: resetEditMateri,
     setValue: setValueEditMateri,
     handleSubmit: handleSubmitEditMateri,
   } = useForm({
@@ -392,15 +384,6 @@ const CMSJadwalBaru = () => {
     handleAPICall(post, `${apiUrls.cmsBimtekJadwal}`, { data: obj }, goBack);
   };
 
-  const openUploadForm = (id) => {
-    if (idMateri) {
-      if (listMateri.length >= 1) handleCloseModal();
-      return handleNotification('secondary', 'Error, Maksimal File Edit 1', 'cross');
-    }
-    const elmButton = document.getElementById(id);
-    elmButton.click();
-  };
-
   const addFile = async (e) => {
     let file = e.target.files[0];
     try {
@@ -427,37 +410,35 @@ const CMSJadwalBaru = () => {
     {
       Header: 'Tanggal',
       accessor: 'tanggalMulai',
-      Cell: ({ ...rest }) => (
-        <>
-          <span>
-            {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('DD MMMM YYYY') + ' ' : '---'}
-            {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('HH:mm') : '---'}
+      Cell: ({ row: { original } }) => (
+        <div className="d-flex">
+          <span className="pr-5">
+            {original?.tanggalMulai ? moment(original?.tanggalMulai).format('DD MMMM YYYY') + ' ' : '---'}
+            {original?.tanggalMulai ? moment(original?.tanggalMulai).format('HH:mm') : '---'}
           </span>
-          <span> - </span>
-          <span>
-            {rest.row.original?.tanggalSelesai
-              ? moment(rest.row.original?.tanggalSelesai).format('DD MMMM YYYY') + ' '
-              : '---'}
-            {rest.row.original?.tanggalSelesai ? moment(rest.row.original?.tanggalSelesai).format('HH:mm') : '---'}
+          <span>-</span>
+          <span className="pl-5">
+            {original?.tanggalSelesai ? moment(original?.tanggalSelesai).format('DD MMMM YYYY') + ' ' : '---'}
+            {original?.tanggalSelesai ? moment(original?.tanggalSelesai).format('HH:mm') : '---'}
           </span>
-        </>
+        </div>
       ),
     },
     {
       Header: '',
       accessor: 'action',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <div>
           <Button
             variant="outline-none"
             className="bg-white sdp-text-blue p-0 mr-10"
-            onClick={() => onModalEditPembicara(rest.row.original)}>
+            onClick={() => onModalEditPembicara(original)}>
             Edit
           </Button>
           <Button
             variant="outline-none"
             className="bg-white sdp-text-grey-dark p-0"
-            onClick={() => onDeletePembicara(rest.row.original.id)}>
+            onClick={() => onDeletePembicara(original?.id)}>
             Delete
           </Button>
         </div>
@@ -469,28 +450,36 @@ const CMSJadwalBaru = () => {
     {
       Header: 'Materi',
       accessor: '',
-      Cell: ({ ...rest }) => <span>{rest?.row?.original?.nama}</span>,
+      Cell: ({
+        row: {
+          original: { nama },
+        },
+      }) => <span>{nama}</span>,
     },
     {
       Header: 'Lampiran',
       accessor: '',
-      Cell: ({ ...rest }) => <span>{rest?.row?.original?.fileType}</span>,
+      Cell: ({
+        row: {
+          original: { fileType },
+        },
+      }) => <span>{fileType}</span>,
     },
     {
       Header: '',
       accessor: 'action',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <div>
           <Button
             variant="outline-none"
             className="bg-white sdp-text-blue p-0 mr-10"
-            onClick={() => onModalEditMateri(rest.row.original)}>
+            onClick={() => onModalEditMateri(original)}>
             Edit
           </Button>
           <Button
             variant="outline-none"
             className="bg-white sdp-text-grey-dark p-0"
-            onClick={() => onDeleteMateri(rest.row.original.id)}>
+            onClick={() => onDeleteMateri(original.id)}>
             Delete
           </Button>
         </div>
@@ -654,253 +643,50 @@ const CMSJadwalBaru = () => {
         </Col>
       </div>
       {showModal === 'proses' && (
-        <CMSModal
-          onClose={handleCloseModal}
-          label="Simpan Jadwal Bimtek?"
-          confirmButtonAction={handleSubmitCreate(onProses)}
-        />
+        <Modals statusModal={showModal} visible={handleCloseModal} onSubmit={handleSubmitCreate(onProses)} />
       )}
       {showModal === 'materi' && (
-        <Modal
-          className="cms-bimtek-materi"
-          title="Tambah Materi Baru"
-          onClose={handleCloseModal}
-          visible={handleCloseModal}>
-          <Form onSubmit={handleSubmitMateri(onAddMateri)}>
-            <div>
-              <Input
-                group
-                label="Materi"
-                name="namaMateri"
-                control={controlMateri}
-                error={errorsMateri.namaMateri?.message}
-                rules={{ required: true }}
-              />
-              <div>
-                <label>Lampiran</label>
-                <input id="sdp-upload-materi" multiple type="file" style={{ display: 'none' }} onChange={addFile} />
-              </div>
-              <div className="wrapper-lampiran">
-                <div className="wrapper-lampiran-header" onClick={() => openUploadForm('sdp-upload-materi')}>
-                  <span className="upload"> Upload </span>
-                  <span className="cta"> Upload Image (format .png, .jpeg, .jpg max. 512KB) </span>
-                </div>
-                <div className="wrapper-lampiran-file">
-                  {listMateri.map((data, index) => {
-                    return (
-                      <span className="file mr-10 mb-10" key={index} onClick={() => removeFile(index)}>
-                        <Galery /> <span> {data.fileName} </span> <Close />
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
-              <div className="d-flex justify-content-end">
-                <Button className="br-4 mr-8 px-40 py-5 bg-transparent" variant="outline-none" onClick={handleCloseModal}>
-                  Batal
-                </Button>
-                <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
-                  Simpan
-                </Button>
-              </div>
-            </div>
-          </Form>
-        </Modal>
+        <Modals
+          statusModal={showModal}
+          visible={handleCloseModal}
+          onSubmit={handleSubmitMateri(onAddMateri)}
+          control={controlMateri}
+          errors={errorsMateri}
+          listMateri={listMateri}
+          removeFile={(index) => removeFile(index)}
+          addFile={addFile}
+        />
       )}
       {showModal === 'editMateri' && (
-        <Modal className="cms-bimtek-materi" title="Ubah Materi" onClose={handleCloseModal} visible={handleCloseModal}>
-          <Form onSubmit={handleSubmitEditMateri(onEditMateri)}>
-            <div>
-              <Input
-                group
-                label="Materi"
-                name="namaMateriUpdate"
-                control={controlEditMateri}
-                error={errorsEditMateri.namaMateriUpdate?.message}
-                rules={{ required: true }}
-              />
-              <div>
-                <label>Lampiran</label>
-                <input id="sdp-upload-materi" multiple type="file" style={{ display: 'none' }} onChange={addFile} />
-              </div>
-              <div className="wrapper-lampiran">
-                <div className="wrapper-lampiran-header" onClick={() => openUploadForm('sdp-upload-materi')}>
-                  <span className="upload"> Upload </span>
-                  <span className="cta"> Upload Image (format .png, .jpeg, .jpg max. 512KB) </span>
-                </div>
-                <div className="wrapper-lampiran-file">
-                  {listMateri.map((data, index) => {
-                    return (
-                      <span className="file mr-10 mb-10" key={index} onClick={() => removeFile(index)}>
-                        <Galery /> <span> {data.fileName} </span> <Close />
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
-              <div className="d-flex justify-content-end">
-                <Button className="br-4 mr-8 px-40 py-5 bg-transparent" variant="outline-none" onClick={handleCloseModal}>
-                  Batal
-                </Button>
-                <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
-                  Simpan
-                </Button>
-              </div>
-            </div>
-          </Form>
-        </Modal>
+        <Modals
+          statusModal={showModal}
+          visible={handleCloseModal}
+          onSubmit={handleSubmitEditMateri(onEditMateri)}
+          control={controlEditMateri}
+          errors={errorsEditMateri}
+          listMateri={listMateri}
+          idMateri={idMateri}
+          removeFile={(index) => removeFile(index)}
+          addFile={addFile}
+        />
       )}
       {showModal === 'pembicara' && (
-        <Modal
-          className="cms-bimtek-materi"
-          title="Tambah Pembicara Baru"
+        <Modals
+          statusModal={showModal}
           visible={handleCloseModal}
-          onClose={handleCloseModal}>
-          <Form onSubmit={handleSubmitPembicara(onAddPembicara)}>
-            <div className="mb-10">
-              <Row>
-                <Input
-                  group
-                  label="Nama Pembicara"
-                  name="tambahPembicara"
-                  control={controlPembicara}
-                  error={errorsPembicara.tambahPembicara?.message}
-                  rules={{ required: true }}
-                />
-              </Row>
-              <Row className="align-items-end">
-                <Col>
-                  <DatePicker
-                    group
-                    label="Tanggal Mulai Sesi"
-                    name="tambahPembicaraWaktuMulai"
-                    control={controlPembicara}
-                    error={errorsPembicara.tambahPembicaraWaktuMulai?.message}
-                    rules={{ required: true }}
-                  />
-                </Col>
-                <Col>
-                  <Input
-                    group
-                    className="m-0"
-                    type="time"
-                    label=""
-                    name="tambahPembicaraJamMulai"
-                    control={controlPembicara}
-                    error={errorsPembicara.tambahPembicaraJamMulai?.message}
-                    rules={{ required: true }}
-                  />
-                </Col>
-              </Row>
-              <Row className="align-items-end">
-                <Col>
-                  <DatePicker
-                    group
-                    label="Tanggal Selesai Sesi"
-                    name="tambahPembicaraWaktuSelesai"
-                    control={controlPembicara}
-                    error={errorsPembicara.tambahPembicaraWaktuSelesai?.message}
-                    rules={{ required: true }}
-                  />
-                </Col>
-                <Col>
-                  <Input
-                    group
-                    className="m-0"
-                    type="time"
-                    label=""
-                    name="tambahPembicaraJamSelesai"
-                    control={controlPembicara}
-                    error={errorsPembicara.tambahPembicaraJamSelesai?.message}
-                    rules={{ required: true }}
-                  />
-                </Col>
-              </Row>
-            </div>
-            <div className="d-flex justify-content-end">
-              <Button className="br-4 mr-8 px-40 py-5 bg-transparent" variant="outline-none" onClick={handleCloseModal}>
-                Batal
-              </Button>
-              <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
-                Simpan
-              </Button>
-            </div>
-          </Form>
-        </Modal>
+          onSubmit={handleSubmitPembicara(onAddPembicara)}
+          control={controlPembicara}
+          errors={errorsPembicara}
+        />
       )}
       {showModal === 'editPembicara' && (
-        <Modal className="cms-bimtek-materi" title="Ubah Pembicara" visible={handleCloseModal} onClose={handleCloseModal}>
-          <Form onSubmit={handleSubmitEditPembicara(onEditPembicara)}>
-            <div className="mb-10">
-              <Row>
-                <Input
-                  group
-                  label="Nama Pembicara"
-                  name="tambahPembicaraUpdate"
-                  control={controlEditPembicara}
-                  error={errorsEditPembicara.tambahPembicaraUpdate?.message}
-                  rules={{ required: true }}
-                />
-              </Row>
-              <Row className="align-items-end">
-                <Col>
-                  <DatePicker
-                    group
-                    label="Tanggal Mulai Sesi"
-                    name="tambahPembicaraWaktuMulaiUpdate"
-                    control={controlEditPembicara}
-                    error={errorsEditPembicara.tambahPembicaraWaktuMulaiUpdate?.message}
-                    rules={{ required: true }}
-                  />
-                </Col>
-                <Col>
-                  <Input
-                    group
-                    className="m-0"
-                    type="time"
-                    label=""
-                    name="tambahPembicaraJamMulaiUpdate"
-                    control={controlEditPembicara}
-                    error={errorsEditPembicara.tambahPembicaraJamMulaiUpdate?.message}
-                    rules={{ required: true }}
-                  />
-                </Col>
-              </Row>
-              <Row className="align-items-end">
-                <Col>
-                  <DatePicker
-                    group
-                    label="Tanggal Selesai Sesi"
-                    name="tambahPembicaraWaktuSelesaiUpdate"
-                    error={errorsEditPembicara.tambahPembicaraWaktuSelesaiUpdate?.message}
-                    rules={{ required: true }}
-                    control={controlEditPembicara}
-                  />
-                </Col>
-                <Col>
-                  <Input
-                    group
-                    className="m-0"
-                    type="time"
-                    label=""
-                    name="tambahPembicaraJamSelesaiUpdate"
-                    error={errorsEditPembicara.tambahPembicaraJamSelesaiUpdate?.message}
-                    rules={{ required: true }}
-                    control={controlEditPembicara}
-                  />
-                </Col>
-              </Row>
-            </div>
-            <div className="d-flex justify-content-end">
-              <Button className="br-4 mr-8 px-40 py-5 bg-transparent" variant="outline-none" onClick={handleCloseModal}>
-                Batal
-              </Button>
-              <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
-                Simpan
-              </Button>
-            </div>
-          </Form>
-        </Modal>
+        <Modals
+          statusModal={showModal}
+          visible={handleCloseModal}
+          onSubmit={handleSubmitEditPembicara(onEditPembicara)}
+          control={controlEditPembicara}
+          errors={errorsEditPembicara}
+        />
       )}
     </div>
   );

@@ -114,14 +114,26 @@ const CMSPermintaanDataView = () => {
     let obj = {
       catatan: data.catatan,
     };
-    handleAPICall(post, `${apiUrls.detailPermintaanData}/${id}/tolak`, { data: obj }, 'Permintaan Data Berhasil Ditolak');
+    handleAPICall(
+      post,
+      `${apiUrls.detailPermintaanData}/${id}/tolak`,
+      { data: obj },
+      'Permintaan Data Berhasil Ditolak',
+      goBack,
+    );
   };
 
   const onSubmitProses = (data) => {
     let obj = {
       catatan: data.catatan,
     };
-    handleAPICall(post, `${apiUrls.detailPermintaanData}/${id}/proses`, { data: obj }, 'Permintaan Data Berhasil Diproses');
+    handleAPICall(
+      post,
+      `${apiUrls.detailPermintaanData}/${id}/proses`,
+      { data: obj },
+      'Permintaan Data Berhasil Diproses',
+      goBack,
+    );
   };
 
   const onSubmitSelesai = (data) => {
@@ -134,6 +146,7 @@ const CMSPermintaanDataView = () => {
       `${apiUrls.detailPermintaanData}/${id}/selesai`,
       { data: obj },
       'Permintaan Data Berhasil Diselesaikan',
+      goBack,
     );
   };
 

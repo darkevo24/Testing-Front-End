@@ -36,6 +36,7 @@ const CMSPermintaanData = () => {
     if (query) obj['q'] = query;
     return dispatch(getPermintaanData(obj));
   };
+  console.log(records);
   const fetchInstansiData = () => {
     return dispatch(getInstansi());
   };
@@ -97,7 +98,7 @@ const CMSPermintaanData = () => {
     {
       Header: 'Id',
       accessor: 'id',
-      Cell: ({ ...rest }) => <span>{prefixID(rest?.row?.original?.id || '')}</span>,
+      Cell: ({ row: { original } }) => <span>{prefixID(original?.id || '')}</span>,
     },
     {
       Header: 'Nama Peminta',
@@ -109,7 +110,7 @@ const CMSPermintaanData = () => {
     },
     {
       Header: 'Unit Kerja',
-      accessor: 'instansi?.unitKerja[0]',
+      accessor: 'instansi.unitKerja[0]',
     },
     {
       Header: 'Deskripsi Data',
@@ -117,29 +118,27 @@ const CMSPermintaanData = () => {
     },
     {
       Header: 'Target Waktu',
-      accessor: 'tanggalTarget?',
-      Cell: ({ ...rest }) => (
-        <span>
-          {rest.row.original?.tanggalTarget ? moment(rest.row.original?.tanggalTarget).format('DD MMMM YYYY') : '---'}
-        </span>
+      accessor: 'tanggalTarget',
+      Cell: ({ row: { original } }) => (
+        <span> {original?.tanggalTarget ? moment(original?.tanggalTarget).format('DD MMMM YYYY') : '---'} </span>
       ),
     },
     {
       Header: 'Jenis Data',
-      accessor: 'jenisData?',
+      accessor: 'jenisData',
     },
     {
       Header: 'Tanggal Permintaan',
       accessor: 'tanggalPermintaan?',
-      Cell: ({ ...rest }) => (
-        <span> {rest.row.original?.createdAt ? moment(rest.row.original?.createdAt).format('DD MMMM YYYY') : '---'} </span>
+      Cell: ({ row: { original } }) => (
+        <span> {original?.createdAt ? moment(original?.createdAt).format('DD MMMM YYYY') : '---'} </span>
       ),
     },
     {
       Header: 'Status',
       accessor: 'status',
-      Cell: ({ ...rest }) => (
-        <span className={`status ${rest?.row?.original?.status.toLowerCase()}`}> {rest?.row?.original?.status} </span>
+      Cell: ({ row: { original } }) => (
+        <span className={`status ${original?.status.toLowerCase()}`}> {original?.status} </span>
       ),
     },
     {

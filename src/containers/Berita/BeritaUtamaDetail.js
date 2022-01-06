@@ -47,7 +47,7 @@ const BeritaUtamaDetail = (props) => {
     if (!isLoading) {
       dispatch(getNewsDetail(`${id}`));
     }
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   const [kanan, setKanan] = useState([]);
 

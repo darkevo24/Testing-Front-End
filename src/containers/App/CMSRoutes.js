@@ -44,6 +44,11 @@ const MediaSosialPage = lazy(() => import('containers/CMS/MediaSosial'));
 const ContactUsPage = lazy(() => import('containers/CMS/ContactUs'));
 const ContactUsDetailPage = lazy(() => import('containers/CMS/ContactUs/detail'));
 const Instansi = lazy(() => import('containers/CMS/Instansi'));
+const InstansiDetail = lazy(() => import('containers/CMS/Instansi/Detail'));
+const NewInstansi = lazy(() => import('containers/CMS/Instansi/NewInstansi'));
+const NewUnitKerja = lazy(() => import('containers/CMS/Instansi/UnitKerja/NewUnitKerja'));
+const EditInstansi = lazy(() => import('containers/CMS/Instansi/EditInstansi'));
+const EditUnitKerja = lazy(() => import('containers/CMS/Instansi/UnitKerja/EditUnitKerja'));
 
 function CMSRoutes() {
   return (
@@ -51,6 +56,11 @@ function CMSRoutes() {
       <Switch>
         <PrivateRoute exact path="/cms/log-activity" component={LogActivity} />
         <PrivateRoute exact path="/cms/instansi" component={Instansi} />
+        <PrivateRoute exact path="/cms/instansi/form" component={NewInstansi} />
+        <PrivateRoute exact path="/cms/instansi/:id" component={InstansiDetail} />
+        <PrivateRoute exact path="/cms/instansi/:id/new-unit-kerja" component={NewUnitKerja} />
+        <PrivateRoute exact path="/cms/instansi/:id/edit-unit-kerja/:unitId" component={EditUnitKerja} />
+        <PrivateRoute exact path="/cms/instansi/edit/:id" component={EditInstansi} />
         <PrivateRoute exact path="/cms/manage-komunitas-ahli/:id" component={ManageKomunitasAhliPage} />
         <PrivateRoute exact path="/cms/manage-komunitas-ahli/" component={ManageKomunitasAhliPage} />
         <PrivateRoute exact path="/cms/api/edit/:id?" component={ManagementApiEdit} />

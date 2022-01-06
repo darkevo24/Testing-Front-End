@@ -22,7 +22,7 @@ export const analyticsUrl = 'https://analitik.data.go.id';
 export const katalogUrl = 'https://katalog.satudata.go.id';
 export const apiUrl = '/api-be';
 export const dataUrl = `${katalogUrl}/api`;
-export const appId = process.env.FACEBOOK_APP_ID;
+export const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
 
 export const getAnalyticsUrl = (path) => `${analyticsUrl}/${path}`;
 export const getApiEndpoint = (path) => `${apiUrl}/${path}`;
@@ -42,7 +42,8 @@ export const apiUrls = {
   portalKomunitasAhliData: getPortalEndpoint('komunitas-ahli'),
   cmsAuditTrialData: getCMSEndpoint('audit-trail'),
   fileUpload: getApiEndpoint('file/upload'),
-  publiFileUpload: getApiEndpoint('file/public-upload'),
+  publicFileUpload: getApiEndpoint('file/public-upload'),
+  multipleFileUpload: getApiEndpoint('file/uploadMultiple'),
   uploadFoto: getApiEndpoint('file/public-image-upload'),
   bidangData: getCMSEndpoint('komunitas-ahli/bidang-keahlian'),
   daerahData: getV1Endpoint('kabupatenkota/search'),
@@ -97,6 +98,12 @@ export const apiUrls = {
   sosialMedia: getCMSEndpoint('sosial-media'),
   bimtekLogs: getPortalEndpoint('v1/bimtek/logs'),
   cmsContactUs: getCMSEndpoint('hubungi-kami-setting'),
+  penggunaManagement: getApiEndpoint('sekretariat/user'),
+  detailPenggunaManagement: getApiEndpoint('sekretariat/user'),
+  penggunaRoleList: getApiEndpoint('sekretariat/user/role-list'),
+  penggunaStatusList: getApiEndpoint('sekretariat/user/status-list'),
+  penggunaInstansiList: getApiEndpoint('/v1/instansi'),
+  penggunaLogs: getApiEndpoint('sekretariat/user'),
 };
 
 export const priorityOptions = [

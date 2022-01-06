@@ -49,6 +49,9 @@ const NewInstansi = lazy(() => import('containers/CMS/Instansi/NewInstansi'));
 const NewUnitKerja = lazy(() => import('containers/CMS/Instansi/UnitKerja/NewUnitKerja'));
 const EditInstansi = lazy(() => import('containers/CMS/Instansi/EditInstansi'));
 const EditUnitKerja = lazy(() => import('containers/CMS/Instansi/UnitKerja/EditUnitKerja'));
+const PenggunaManagementPage = lazy(() => import('containers/CMS/PenggunaManagement'));
+const PenggunaManagementDetailPage = lazy(() => import('containers/CMS/PenggunaManagementDetails'));
+const PenggunaFormPage = lazy(() => import('containers/CMS/PenggunaManagement/tambahPengguna'));
 
 function CMSRoutes() {
   return (
@@ -105,6 +108,9 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/media-sosial" component={MediaSosialPage} />
         <PrivateRoute exact path="/cms/contact-us" component={ContactUsPage} />
         <PrivateRoute exact path="/cms/contact-us/:id" component={ContactUsDetailPage} />
+        <PrivateRoute exact path="/cms/pengguna-management" component={PenggunaManagementPage} />
+        <PrivateRoute exact path="/cms/pengguna-management/add" component={PenggunaFormPage} />
+        <PrivateRoute exact path="/cms/pengguna-management/:id" component={PenggunaManagementDetailPage} />
         <Route exact path="/cms" render={() => <Redirect to="/cms/dashboard" />} />
       </Switch>
     </CMSLayout>

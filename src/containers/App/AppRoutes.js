@@ -40,6 +40,7 @@ const ManagementApiAddPage = lazy(() => import('containers/ManagementApi/Form'))
 const ManagementApiDetailPage = lazy(() => import('containers/ManagementApi/DetailApi'));
 const ManagementApiUpdatePage = lazy(() => import('containers/ManagementApi/UpdateApi'));
 // const NotFoundPage = lazy(() => import('containers/NotFound'));
+const KebijakanPrivasiPage = lazy(() => import('containers/KebijakanPrivasi'));
 
 function AppRoutes(props) {
   return (
@@ -55,6 +56,7 @@ function AppRoutes(props) {
         <PrivateRoute exact path="/forum-sdi/:id" component={ForumSDIDetail} />
         <PrivateRoute exact path="/forum-sdi" component={ForumSDI} />
         <PrivateRoute exact path="/forum" component={PerminataanForumPage} />
+        <Route exact path="/policy" component={KebijakanPrivasiPage} />
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
         <PrivateRoute exact path="/dataset" component={DataSetPage} />
@@ -76,10 +78,10 @@ function AppRoutes(props) {
         <Route exact path="/bimtek-kota-pelaksanaan" component={BimTekKotaPage} />
         <Route exact path="/bimtek-dokumentasi" component={BimTekDokumentasiPage} />
         <Route exact path="/tentang" component={TentangPage} />
-        <Route exact path="/kesiapan-sdi" component={KesiapanSDI} />
-        <Route exact path="/dashboard-eksekutif" component={DashboardEksekutif} />
-        <Route exact path="/dashboard-saya" component={DashboardSaya} />
-        <Route exact path="/data-analytic" component={DataAnalytic} />
+        <PrivateRoute exact path="/kesiapan-sdi" component={KesiapanSDI} />
+        <PrivateRoute exact path="/dashboard-eksekutif" component={DashboardEksekutif} />
+        <PrivateRoute exact path="/dashboard-saya" component={DashboardSaya} />
+        <PrivateRoute exact path="/data-analytic" component={DataAnalytic} />
         <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
         <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
         <Route exact path="/api/form" component={ManagementApiAddPage} />

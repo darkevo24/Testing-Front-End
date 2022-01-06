@@ -17,7 +17,6 @@ import {
   getDaftarDetail,
   getKatalogVariables,
   getKodeReferensi,
-  kodeReferensiOptionsSelector,
   katalogVariableDataSelector,
 } from 'containers/Daftar/reducer';
 import DataVariableForm, { submitDataVariableForm } from './DataVariableForm';
@@ -35,7 +34,6 @@ const DataVariable = ({ cms = false, cmsDetail = false, id }) => {
   const [isDataVariableFormVisible, setIsDataVariableFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [kodeReferensi, setKodeReferensi] = useState(null);
-  const kodeReferensiOptions = useSelector(kodeReferensiOptionsSelector);
 
   const data = useMemo(() => result?.records || [], [result]);
 
@@ -122,16 +120,6 @@ const DataVariable = ({ cms = false, cmsDetail = false, id }) => {
   };
 
   const handleDataVariableFormSubmit = (data) => {
-    hideDataVariableFormModal();
-    Notification.show({
-      type: 'secondary',
-      message: (
-        <div>
-          Variabel <span className="fw-bold">{data.name}</span> Berhasil Ditambahkan
-        </div>
-      ),
-      icon: 'check',
-    });
     const payload = prepareFormPayload(data, {
       dropdowns: ['pengaturanAkses'],
     });
@@ -143,6 +131,7 @@ const DataVariable = ({ cms = false, cmsDetail = false, id }) => {
     dispatch(dataVariableSubmit(payload)).then((res) => {
       const hasError = res?.type?.includes('rejected');
       const isEdit = !!data.id;
+      hideDataVariableFormModal();
       if (hasError) {
         return Notification.show({
           message: (
@@ -205,7 +194,6 @@ const DataVariable = ({ cms = false, cmsDetail = false, id }) => {
             daftar={daftar}
             fetchKatalogVariableData={fetchKatalogVariableData}
             handleKodeReferensiChange={handleKodeReferensiChange}
-            kodeReferensiOptions={kodeReferensiOptions}
             pageSize={pageSize}
             params={params}
           />

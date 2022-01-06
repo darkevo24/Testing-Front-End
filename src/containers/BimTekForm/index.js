@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
@@ -29,6 +29,7 @@ const bem = bn('bimtek-form');
 
 const BimTekForm = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [peserta, setPeserta] = useState('');
   const [materiTagData, setMateriTagData] = useState([]);
   const [kotaData, setKotaData] = useState(null);
@@ -92,6 +93,9 @@ const BimTekForm = () => {
           message: <div> Permintaan Bimbingan Teknis {response.data.content.id} berhasil terkirim </div>,
           icon: 'check',
         });
+        setTimeout(() => {
+          history.push(`/bimtek-permintaan`);
+        }, 1000);
       } catch (er) {
         Notification.show({
           type: 'warning',

@@ -43,6 +43,7 @@ const CMSBeritaDetail = (props) => {
   const [modalConfirm, setModalConfirm] = useState(false);
   const [dataBerita, setDataBerita] = useState({});
   const [notes, setNotes] = useState('');
+  const [labelNotif, setLabelNotif] = useState('');
 
   const onSubmit = (data) => {
     // preview berita
@@ -71,6 +72,7 @@ const CMSBeritaDetail = (props) => {
     switch (data.status) {
       case 2:
         label = <span>Kirim Berita?</span>;
+        setLabelNotif('Dikirim');
         break;
       case 3:
         label = (
@@ -78,6 +80,7 @@ const CMSBeritaDetail = (props) => {
             Apakah anda yakin ingin <b className="sdp-text-blue">menyetujui</b> Berita?
           </span>
         );
+        setLabelNotif('Disetujui');
         break;
       case 4:
         break;
@@ -87,6 +90,7 @@ const CMSBeritaDetail = (props) => {
             Apakah anda yakin ingin <b className="sdp-text-blue">menayangkan</b> Berita?
           </span>
         );
+        setLabelNotif('Ditayangkan');
         break;
       case 6:
         label = (
@@ -94,6 +98,7 @@ const CMSBeritaDetail = (props) => {
             Apakah anda yakin ingin <b className="sdp-text-blue">tidak menayangkan</b> Berita?
           </span>
         );
+        setLabelNotif('Tidak Ditayangkan');
         break;
       case 7:
         label = (
@@ -101,6 +106,7 @@ const CMSBeritaDetail = (props) => {
             Apakah anda yakin ingin <b className="sdp-text-blue">menghapus</b> Berita?
           </span>
         );
+        setLabelNotif('Dihapus');
         break;
       default:
         return;
@@ -129,7 +135,7 @@ const CMSBeritaDetail = (props) => {
           type: 'secondary',
           message: (
             <div>
-              Berita <span className="fw-bold">{res.meta.arg?.payload?.judul}</span> Berhasil Diubah
+              Berita <span className="fw-bold">{res.meta.arg?.payload?.judul}</span> Berhasil {labelNotif}
             </div>
           ),
           icon: 'check',

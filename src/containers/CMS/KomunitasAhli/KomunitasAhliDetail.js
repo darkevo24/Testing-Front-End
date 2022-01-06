@@ -399,7 +399,7 @@ const KomunitasAhli = () => {
             placeholder="Tulis Catatan"
             name="catatan"
             value={notes}
-            onChange={({ target: { value = '' } = {} }) => setNotes(value.trim())}
+            onChange={({ target: { value = '' } = {} }) => setNotes(value)}
             className="border-gray-stroke br-4 w-100 mt-24 mb-24 h-214"
             required
           />

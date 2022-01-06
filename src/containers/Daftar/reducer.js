@@ -301,7 +301,7 @@ export const downloadDaftarData = createAsyncThunk('daftarData/downloadDaftarDat
 });
 
 export const getKodeReferensi = createAsyncThunk('daftarData/getKodeReferensi', async (daftarId) => {
-  const response = await get(`${apiUrls.katalogVariable}/${daftarId}/parent`);
+  const response = await get(`${apiUrls.katalogVariable}/${daftarId}/kodereferensi`);
   return response?.data?.content;
 });
 
@@ -311,15 +311,8 @@ export const getKatalogVariables = createAsyncThunk('daftarData/getKatalogVariab
   return response?.data?.content;
 });
 
-export const refetchVariableData = createAsyncThunk('daftarData/refetchDaftarData', async (_, { dispatch, getState }) => {
-  const state = getState()?.daftar;
-  // TODO: fix this and refetch the data
-});
-
-export const deleteVariableData = createAsyncThunk('daftar/deleteVariableData', async (params, { dispatch }) => {
-  const response = await deleteRequest(`${apiUrls.variable}/${params.id}`);
-  dispatch(refetchVariableData());
-  return response;
+export const deleteVariableData = createAsyncThunk('daftar/deleteVariableData', async (params) => {
+  return deleteRequest(`${apiUrls.variable}/${params.id}`);
 });
 
 export const dataVariableSubmit = createAsyncThunk('daftarData/dataVariableSubmit', async (payload) => {
@@ -568,8 +561,7 @@ const daftarSlice = createSlice({
     });
     builder.addCase(getKodeReferensi.fulfilled, (state, action) => {
       state.kodeReferensi.loading = false;
-      // Note: update this when arif changes the response
-      state.kodeReferensi.result = action.payload?.records;
+      state.kodeReferensi.result = action.payload;
       state.kodeReferensi.error = '';
     });
     builder.addCase(getKodeReferensi.rejected, (state) => {
@@ -650,11 +642,6 @@ export const addTujuanSDGPillerOptionsSelector = createSelector(
 export const addRkpPPOptionsSelector = createSelector(
   addDaftarRkpPPSelector,
   dataOptionsMapperCurry(idKeteranganOptionsMapper),
-);
-
-export const kodeReferensiOptionsSelector = createSelector(
-  kodeReferensiSelector,
-  dataOptionsMapperCurry(idNameOptionsMapper),
 );
 
 export const { setRKPppData, setSDGsData, resetDaftarData } = daftarSlice.actions;

@@ -17,7 +17,7 @@ import BeritaLainnya from './BeritaLainnya';
 import Populer from './Populer';
 import Tweets from './Tweets';
 import { newsDetailSelector, getNewsDetail } from './reducer';
-import { appId } from 'utils/constants';
+import { facebookAppId } from 'utils/constants';
 
 const components = {
   search: Search,
@@ -93,7 +93,7 @@ const BeritaUtamaDetail = (props) => {
               <TwitterShareButton className="mx-4" url={shareUrl} title={shareTitle}>
                 <TwitterIcon size={32} round={true} />
               </TwitterShareButton>
-              <FacebookShareButton className="mx-4" url={shareUrl} appId={appId}>
+              <FacebookShareButton className="mx-4" url={shareUrl} appId={facebookAppId}>
                 <FacebookIcon size={32} round={true} />
               </FacebookShareButton>
             </div>

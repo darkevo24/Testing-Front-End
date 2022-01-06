@@ -29,6 +29,7 @@ const CMSPermintaanData = () => {
   const fetchDataset = (params) => {
     let obj = {
       page: params.page,
+      sort_direction: 'DESC',
     };
     if (instansiId) obj['instansiId'] = instansiId;
     if (unitKerjaId) obj['unitKerjaId'] = unitKerjaId;

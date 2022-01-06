@@ -26,10 +26,10 @@ import {
 
 const schema = yup
   .object({
-    judul: yup.string().required(),
-    topik: yup.mixed().required(),
-    tags: yup.array().required().min(1),
-    isi: yup.mixed().required(),
+    judul: yup.string().required('Judul is required'),
+    topik: yup.mixed().required('Topik is required'),
+    tags: yup.array().required('Tag is required').min(1),
+    isi: yup.mixed().required('Isi Forum is required'),
   })
   .required();
 
@@ -227,7 +227,7 @@ const CMSForumSDIForm = () => {
               labelClass="sdp-form-label fw-normal"
               control={control}
               name="judul"
-              error={errors?.judul?.message ? 'Judul is required' : ''}
+              error={errors?.judul?.message}
             />
             <SingleSelectDropDown
               group
@@ -242,7 +242,7 @@ const CMSForumSDIForm = () => {
               labelClass="sdp-form-label  fw-normal"
               data={topikResult.map((elem) => ({ value: elem?.id, label: elem?.nama }))}
               placeholder=""
-              error={errors?.topik?.message ? 'Topik is required' : ''}
+              error={errors?.topik?.message}
               isCreatable={true}
               loading={topikLoading}
             />
@@ -258,7 +258,7 @@ const CMSForumSDIForm = () => {
               label="Tag"
               labelClass="sdp-form-label fw-normal"
               placeholder=""
-              error={errors?.tags?.message ? 'Tag is required' : ''}
+              error={errors?.tags?.message}
               name="tags"
               data={tagsResult.map((elem) => ({ value: elem, label: elem }))}
               loading={tagsLoading}
@@ -266,7 +266,7 @@ const CMSForumSDIForm = () => {
             />
             <TextEditorController
               control={control}
-              error={errors?.isi?.message ? 'Isi Forum is required' : ''}
+              error={errors?.isi?.message}
               labelClass="sdp-form-label fw-normal"
               label="Isi Forum"
               name="isi"

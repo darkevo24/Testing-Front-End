@@ -28,18 +28,17 @@ import Spinner from 'react-bootstrap/Spinner';
 import { cmsKomunitasAhliDetailDatasetSelector, getCMSKomunitasAhliDataById } from './reducer';
 import { getValue } from './KomunitasAhliDetail';
 
-const schema = yup
-  .object({
-    nama: yup.string().required(),
-    riwayat: yup.string().required(),
-    bidangKeahlian: yup.mixed().required(),
-    daerah: yup.mixed().required(),
-    instansi: yup.mixed().required(),
-    penyelenggara: yup.mixed().required(),
-    pendidikan: yup.mixed().required(),
-    level: yup.mixed().required(),
-  })
-  .required();
+const schema = yup.object({
+  nama: yup.string().required('Nama is required'),
+  riwayat: yup.string().required('Riwayat is required'),
+  bidangKeahlian: yup.mixed().required('Bidang Keahlian is required'),
+  daerah: yup.mixed().required('Daerah is required'),
+  instansi: yup.mixed().required('Instansi is required'),
+  penyelenggara: yup.mixed().required('Penyelenggara is required'),
+  pendidikan: yup.mixed().required('Pendidikan is required'),
+  level: yup.mixed().required('Level is required'),
+  email: yup.string().email('Must be a valid email'),
+});
 
 const KomunitasAhli = () => {
   const [showModal, setShowModal] = useState(false);
@@ -91,6 +90,22 @@ const KomunitasAhli = () => {
   });
   const values = watch();
   const prevValues = usePrevious(values);
+
+  useEffect(() => {
+    let inputBox = document.getElementById('inputBox');
+
+    let invalidChars = ['-', '+', 'e'];
+
+    inputBox.addEventListener('input', () => {
+      this.value = this.value.replace(/[e]/gi, '');
+    });
+
+    inputBox.addEventListener('keydown', (e) => {
+      if (invalidChars.includes(e.key)) {
+        e.preventDefault();
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -247,7 +262,7 @@ const KomunitasAhli = () => {
       try {
         const method = id ? put : post;
         const url = id ? `${apiUrls.cmsKomunitasAhliData}/${+id}` : apiUrls.cmsKomunitasAhliData;
-        await method(url, {
+        let params = {
           nama: formData.nama,
           bidangKeahlian: formData?.bidangKeahlian?.value || '',
           daerah: {
@@ -270,7 +285,14 @@ const KomunitasAhli = () => {
             { title: '', image: '', tipe: 'instagram', value: formData?.instagram || '' },
             { title: '', image: '', tipe: 'youtube', value: formData?.youtube || '' },
           ],
-        });
+        };
+        if (id) {
+          params = {
+            ...params,
+            kode: record.kode,
+          };
+        }
+        await method(url, params);
         goBack();
       } catch (e) {
         setLoader(false);
@@ -305,7 +327,7 @@ const KomunitasAhli = () => {
         <div className="bg-gray-lighter p-32">
           <Row className="mb-3 px-24">
             {apiError || errorInfo?.all || error ? (
-              <label className="sdp-error mb-20">{apiError || errorInfo.all || error}</label>
+              <label className="sdp-error mb-20">{apiError || errorInfo?.all || error}</label>
             ) : null}
             <Input
               group
@@ -318,7 +340,7 @@ const KomunitasAhli = () => {
               labelClass="sdp-form-label fw-normal"
               control={control}
               name="nama"
-              error={errors?.nama?.message ? 'Nama Ahli is required' : ''}
+              error={errors?.nama?.message}
             />
             <SingleSelectDropDown
               group
@@ -333,8 +355,7 @@ const KomunitasAhli = () => {
               labelClass="sdp-form-label  fw-normal"
               data={bidangKeahlianData.map((item) => ({ value: item.id, label: item.nama }))}
               placeholder=""
-              rules={{ required: true }}
-              error={errors?.bidangKeahlian?.message ? 'Bidang Keahlian is required' : ''}
+              error={errors?.bidangKeahlian?.message}
               isCreatable={true}
             />
             <SingleSelectDropDown
@@ -351,8 +372,7 @@ const KomunitasAhli = () => {
               data={daerahData.map((item) => ({ label: item.nama, value: item.id }))}
               placeholder=""
               onInputChange={debounceSearch}
-              rules={{ required: true }}
-              error={errors?.daerah?.message ? 'Daerah is required' : ''}
+              error={errors?.daerah?.message}
             />
             <SingleSelectDropDown
               group
@@ -365,11 +385,10 @@ const KomunitasAhli = () => {
               control={control}
               label="Instansi / Lembaga"
               labelClass="sdp-form-label  fw-normal"
-              error={errors?.instansi?.message ? 'Instansi is required' : ''}
+              error={errors?.instansi?.message}
               data={(instansiData?.result || []).map((item) => ({ value: item.id, label: item.nama }))}
               placeholder=""
               isLoading={instansiData?.loading}
-              rules={{ required: true }}
             />
             <SingleSelectDropDown
               group
@@ -382,10 +401,9 @@ const KomunitasAhli = () => {
               control={control}
               label="Level"
               labelClass="sdp-form-label  fw-normal"
-              error={errors?.level?.message ? 'Level is required' : ''}
+              error={errors?.level?.message}
               data={CMS_KOMUNITAS_LEVEL.map((item) => ({ value: item, label: item }))}
               placeholder=""
-              rules={{ required: true }}
             />
             <SingleSelectDropDown
               group
@@ -398,7 +416,7 @@ const KomunitasAhli = () => {
               control={control}
               label="Penyelenggara"
               labelClass="sdp-form-label  fw-normal"
-              error={errors?.penyelenggara?.message ? 'Penyelenggara is required' : ''}
+              error={errors?.penyelenggara?.message}
               data={(values?.level?.value === 'Pusat' ? CMS_KOMUNITAS_LEVEL_PUSAT : CMS_KOMUNITAS_LEVEL_DAERAH).map(
                 (item) => ({
                   value: item,
@@ -406,7 +424,6 @@ const KomunitasAhli = () => {
                 }),
               )}
               placeholder=""
-              rules={{ required: true }}
             />
             <SingleSelectDropDown
               group
@@ -419,10 +436,9 @@ const KomunitasAhli = () => {
               control={control}
               label="Pendidikan"
               labelClass="sdp-form-label  fw-normal"
-              error={errors?.pendidikan?.message ? 'Pendidikan is required' : ''}
+              error={errors?.pendidikan?.message}
               data={CMS_KOMUNITAS_PENDIDIKAN.map((item) => ({ value: item, label: item }))}
               placeholder=""
-              rules={{ required: true }}
             />
             <Input
               group
@@ -436,11 +452,10 @@ const KomunitasAhli = () => {
               labelClass="sdp-form-label fw-normal"
               control={control}
               name="riwayat"
-              rules={{ required: true }}
               type="text"
               as="textarea"
               maxLength={500}
-              error={errors?.riwayat?.message ? 'Riwayat Singkat is required' : ''}
+              error={errors?.riwayat?.message}
             />
             {id ? (
               <Form.Group as={Col} className="mt-5 mb-10" md="8">
@@ -522,20 +537,25 @@ const KomunitasAhli = () => {
 
               <Form.Group md="4" as={Col} className="mb-16 d-flex flex-column justify-content-end pr-0">
                 <div className="d-flex">
-                  <Input control={control} name="handphone" type="number" wrapperClass="flex-grow-1" />
+                  <Input id="inputBox" control={control} name="handphone" type="number" wrapperClass="flex-grow-1" />
                 </div>
               </Form.Group>
             </Row>
             <Row md="8" className="d-flex mb-16">
-              <Form.Group md="4" as={Col} className="mb-16">
+              <Form.Group md="12" as={Col} className="mb-16">
                 <label className="sdp-form-label py-8">Kontak 2</label>
-                <Form.Control type="text" name="kontak1" readOnly value="Email" />
               </Form.Group>
-
-              <Form.Group md="4" as={Col} className="mb-16 d-flex flex-column justify-content-end pr-0">
-                <div className="d-flex">
-                  <Input control={control} name="email" type="email" wrapperClass="flex-grow-1" />
-                </div>
+              <Form.Group md="4" as={Col} className="mb-16 d-flex">
+                <Form.Control type="text" name="kontak1" className="email-input" readOnly value="Email" />
+              </Form.Group>
+              <Form.Group md="4" as={Col} className="mb-16 d-flex flex-column">
+                <Input
+                  control={control}
+                  name="email"
+                  error={errors?.email?.message}
+                  type="email"
+                  wrapperClass="flex-grow-1"
+                />
               </Form.Group>
             </Row>
             {Kontak_list.map((kontak, index) => (
@@ -543,6 +563,7 @@ const KomunitasAhli = () => {
                 <Col md="12">
                   <Input
                     label={`Kontak ${index + 3}`}
+                    labelClass="fw-normal"
                     control={control}
                     name={kontak.name}
                     type="text"

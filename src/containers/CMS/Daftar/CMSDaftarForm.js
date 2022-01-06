@@ -29,12 +29,12 @@ import {
 import cloneDeep from 'lodash/cloneDeep';
 
 const schema = yup.object({
-  instansi: yup.mixed().required(),
-  nama: yup.string().required(),
-  jadwalPemutakhiran: yup.mixed().required(),
-  produsenData: yup.string().required(),
-  format: yup.mixed().required(),
-  linkAkses: yup.string().required(),
+  instansi: yup.mixed().required('Instansi is required'),
+  nama: yup.string().required('Nama Data is required'),
+  jadwalPemutakhiran: yup.mixed().required('Jadwal Pemutakhiran is required'),
+  produsenData: yup.string().required('Produsen Data is required'),
+  format: yup.mixed().required('Format is required'),
+  linkAkses: yup.string().required('Link Akses is required'),
 });
 
 const CMSDaftarPage = ({ ...props }) => {
@@ -282,8 +282,7 @@ const CMSDaftarPage = ({ ...props }) => {
                     label="Instansi"
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    rules={{ required: true }}
-                    error={errors.instansi ? 'Instansi is required' : null}
+                    error={errors?.instansi?.message}
                     data={instansiOptions}
                     name="instansi"
                     isLoading={false}
@@ -301,7 +300,7 @@ const CMSDaftarPage = ({ ...props }) => {
                     }}
                     labelClass="sdp-form-label fw-normal"
                     label="Nama Data"
-                    error={errors.nama ? 'Nama Data is required' : null}
+                    error={errors?.nama?.message}
                     name="nama"
                     control={control}
                   />
@@ -349,8 +348,7 @@ const CMSDaftarPage = ({ ...props }) => {
                     label="Jadwal Pemutakhiran"
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    rules={{ required: true }}
-                    error={errors.jadwalPemutakhiran ? 'Jadwal Pemutakhiran is required' : null}
+                    error={errors?.jadwalPemutakhiran?.message}
                     data={jadwalPermutakhiranOptions}
                     name="jadwalPemutakhiran"
                     isLoading={false}
@@ -420,7 +418,7 @@ const CMSDaftarPage = ({ ...props }) => {
                       md: 12,
                       as: Col,
                     }}
-                    error={errors.produsenData ? 'Produsen Data is required' : null}
+                    error={errors?.produsenData?.message}
                     labelClass="sdp-form-label fw-normal"
                     label="Produsen Data"
                     name="produsenData"
@@ -458,8 +456,7 @@ const CMSDaftarPage = ({ ...props }) => {
                     label="Format"
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    rules={{ required: true }}
-                    error={errors.format ? 'Format is required' : null}
+                    error={errors?.format?.message}
                     data={formatOptions}
                     name="format"
                     isLoading={false}
@@ -477,7 +474,7 @@ const CMSDaftarPage = ({ ...props }) => {
                     labelClass="sdp-form-label fw-normal"
                     group
                     label="Link Akses"
-                    error={errors.linkAkses ? 'Link Akses is required' : null}
+                    error={errors?.linkAkses?.message}
                     name="linkAkses"
                     rightIcon="copy"
                     control={control}

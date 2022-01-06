@@ -36,6 +36,13 @@ export const getListAnalitik = createAsyncThunk('cms/getListAnalitik', async (pa
   return response?.data?.content;
 });
 
+export const getAllAnalitik = createAsyncThunk('cms/getAllAnalitik', async () => {
+  const response = await post(`${apiUrls.cmsAnalitikData}/list?size=1000&page=1`, {
+    title: '',
+  });
+  return response?.data?.content;
+});
+
 export const setNewAnalitik = createAsyncThunk('cms/setNewAnalitik', async (params) => {
   const response = await post(`${apiUrls.cmsAnalitikData}/create`, params.payload);
   return response?.data?.content;
@@ -66,6 +73,21 @@ const dataAnalyticSlice = createSlice({
       state.dataset.totalPages = action.payload.totalPages;
     });
     builder.addCase(getListAnalitik.rejected, (state) => {
+      state.dataset.loading = false;
+      state.dataset.error = 'Error in fetching analitik!';
+    });
+
+    builder.addCase(getAllAnalitik.pending, (state, action) => {
+      state.dataset.loading = true;
+    });
+    builder.addCase(getAllAnalitik.fulfilled, (state, action) => {
+      state.dataset.loading = false;
+      state.dataset.page = action.payload.page;
+      state.dataset.records = action.payload.records;
+      state.dataset.totalRecords = action.payload.totalRecords;
+      state.dataset.totalPages = action.payload.totalPages;
+    });
+    builder.addCase(getAllAnalitik.rejected, (state) => {
       state.dataset.loading = false;
       state.dataset.error = 'Error in fetching analitik!';
     });

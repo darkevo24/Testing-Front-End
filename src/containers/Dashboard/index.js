@@ -1,7 +1,7 @@
 import { Breadcrumbs } from 'components/Breadcrumb';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
 
 import 'assets/styles/pages/_dashboard.scss';
@@ -23,6 +23,10 @@ const Dashboard = (props) => {
     },
   ];
 
+  useEffect(() => {
+    setCurrentDashboard(props.options[0]);
+  }, [props]);
+
   return (
     <div className="kesiapan-sd-pusat-wrapper dashboard">
       <Breadcrumbs breadcrumbsList={breadcrumbsList} />
@@ -40,7 +44,7 @@ const Dashboard = (props) => {
                         <Dropdown.Item
                           key={'option-' + i}
                           onClick={() => setCurrentDashboard(el)}
-                          active={currentDashboard.title === el.title}>
+                          active={currentDashboard?.title === el.title}>
                           {el.title}
                         </Dropdown.Item>
                       ))}
@@ -48,13 +52,13 @@ const Dashboard = (props) => {
                   </Dropdown>
                 </Col>
                 <Col className="p-0">
-                  <div className="fw-600 fs-16">{currentDashboard.title}</div>
+                  <div className="fw-600 fs-16">{currentDashboard?.title}</div>
                 </Col>
               </Row>
             </div>
             <Row className="mb-3">
               <Col className="justify-content-center align-items-center">
-                <iframe frameBorder="0" seamless title={currentDashboard.title} src={currentDashboard.url}></iframe>
+                <iframe frameBorder="0" seamless title={currentDashboard?.title} src={currentDashboard?.url}></iframe>
               </Col>
             </Row>
           </Col>

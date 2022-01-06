@@ -97,10 +97,10 @@ const CMSDataAnalytic = () => {
     {
       title: 'Status',
       key: 'status',
-      width: '15%',
+      width: '20%',
       render: (text, record) => (
         <Row>
-          <Col xs={6}>{record.status === 0 ? 'Unpublished' : 'Published'}</Col>
+          <Col xs={6}>{record.publish ? 'Published' : 'Unpublished'}</Col>
           <Col xs={6}>
             <Switch defaultChecked={record.publish} onChange={() => publishAction(record)} />
           </Col>

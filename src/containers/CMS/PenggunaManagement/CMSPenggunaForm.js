@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { FileInput, Input } from 'components';
-import { useForm } from 'react-hook-form';
-import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
+import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { submitForm } from 'utils/helper';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
 import { getPenggunaDetails, penggunanDataDetailSelector } from '../PenggunaManagementDetails/reducer';
 import {
   getPenggunaRoleList,
@@ -26,6 +26,8 @@ export const submitpenggunaForm = submitForm(penggunaFormId);
 const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
   const [disableForm, setDisableForm] = useState(false);
   const [penggunaDetails, setPenggunaDetails] = useState({});
+  const [instansiErr, setInstansiErr] = useState(false);
+  const [role, setRole] = useState('');
   const dispatch = useDispatch();
 
   const { records: penggunaRoleData } = useSelector(penggunaRoleDataSelector);
@@ -33,17 +35,24 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
   const { records: penggunaInstansiData } = useSelector(instansiDataSelector);
   const { records: penggunaUnitKerjaData } = useSelector(unitKerjaDataSelector);
   const { records: _penggunaDetails } = useSelector(penggunanDataDetailSelector);
+
+  useEffect(() => {
+    setValue('roles', role);
+  }, [role]);
+
   const schema = yup
     .object({
       employeeIdNumber: yup.number().positive().required(),
       employeeStatus: yup.mixed().required(),
+      name: yup.string().required(),
       instansi: yup.mixed().required(),
       unitKerja: yup.mixed().required(),
       email: yup.string().email().required(),
-      phoneArea: yup.number().positive().required(),
+      phoneArea: yup.string().required(),
       phoneNumber: yup.string().length(10).required(),
       supervisorName: yup.mixed().required(),
-      officialMemo: yup.mixed(),
+      roles: yup.string().required(),
+      officialMemo: yup.mixed().required(),
     })
     .required();
 
@@ -66,8 +75,10 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
           label: _penggunaDetails.unitKerja?.nama,
           value: _penggunaDetails.unitKerja?.id,
         },
+        roles: _penggunaDetails.roles,
       };
       setPenggunaDetails(updatedData);
+      setRole(_penggunaDetails.roles);
     }
   }, [_penggunaDetails]);
 
@@ -107,6 +118,8 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
   const changeInstansi = (e) => {
     setValue('instansi', e);
     dispatch(getUnitKerjaData(e.value));
+    setInstansiErr(true);
+    setValue('unitKerja', '');
   };
 
   const uploadMemo = (e) => {
@@ -152,7 +165,9 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
         className="mb-3"
         onChange={changeInstansi}
       />
-      <div className="sdp-error">{errors.instansi?.message}</div>
+      <div className="sdp-error" hidden={instansiErr}>
+        {errors.instansi?.message}
+      </div>
 
       <Form.Label>Unit Kerja</Form.Label>
       <SingleSelectDropdown
@@ -207,33 +222,44 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
       <Form.Label>Role</Form.Label>
       <Form.Group>
         <div className="radio-group">
-          {penggunaRoleData.map((data, index) => {
-            return (
-              <Form.Check
-                key={index}
-                inline
-                label={data}
-                name="roles"
-                type="radio"
-                disabled={disableForm}
-                value={data}
-                error={errors.roles?.message}
-              />
-            );
-          })}
+          <Controller
+            name="roles"
+            control={control}
+            render={({ field }) =>
+              penggunaRoleData.map((data, index) => {
+                return (
+                  <Form.Check
+                    key={index}
+                    {...field}
+                    inline
+                    label={data}
+                    value={role}
+                    checked={data === role}
+                    type="radio"
+                    disabled={disableForm}
+                    onChange={() => setRole(data)}
+                  />
+                );
+              })
+            }
+          />
         </div>
+        <div className="sdp-error">{errors.roles?.message}</div>
       </Form.Group>
-
-      <FileInput
-        group
-        disabled={disableForm}
-        label="Nota Dinas"
-        name="officialMemo"
-        control={control}
-        uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
-        onChange={uploadMemo}
-      />
-
+      {disableForm ? (
+        <div>{_penggunaDetails?.officialMemo?.fileName} is Selected</div>
+      ) : (
+        <FileInput
+          group
+          disabled={disableForm}
+          label="Nota Dinas"
+          name="officialMemo"
+          control={control}
+          uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
+          onChange={uploadMemo}
+          error={errors.officialMemo?.message}
+        />
+      )}
       <Button className="invisible" type="submit" />
     </Form>
   );

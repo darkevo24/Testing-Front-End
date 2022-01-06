@@ -101,7 +101,7 @@ export const apiUrls = {
   detailPenggunaManagement: getApiEndpoint('sekretariat/user'),
   penggunaRoleList: getApiEndpoint('sekretariat/user/role-list'),
   penggunaStatusList: getApiEndpoint('sekretariat/user/status-list'),
-  penggunaInstansiList: getApiEndpoint('/v1/instansi'),
+  penggunaInstansiList: getApiEndpoint('v1/instansi'),
   penggunaLogs: getApiEndpoint('sekretariat/user'),
 };
 

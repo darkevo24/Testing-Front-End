@@ -76,7 +76,7 @@ async function parseResponse(response, download, fileName) {
  * @return {object|undefined} Returns either the response, or throws an error
  */
 function checkStatus(response) {
-  if ((response.status >= 200 && response.status < 300) || response.status === 400) {
+  if (response.status >= 200 && response.status < 300) {
     return response;
   }
   if ([401].includes(response.status)) {

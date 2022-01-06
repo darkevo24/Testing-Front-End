@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 import CMSpenggunaForm, { submitpenggunaForm } from './CMSPenggunaForm';
@@ -10,6 +11,8 @@ import Notification from 'components/Notification';
 const bem = bn('content-create');
 
 const TambahPengguna = () => {
+  const history = useHistory();
+
   const submitData = async (userData) => {
     const addData = {
       ...userData,
@@ -18,20 +21,13 @@ const TambahPengguna = () => {
       unitKerja: { id: userData.unitKerja.value },
     };
     try {
-      const response = await post(apiUrls.penggunaManagement, addData);
-      if (response.data.status === 'FAILED') {
-        Notification.show({
-          type: 'warning',
-          message: `${response.data.message}`,
-          icon: 'cross',
-        });
-      } else {
-        Notification.show({
-          type: 'secondary',
-          message: 'User Added Successfully',
-          icon: 'check',
-        });
-      }
+      await post(apiUrls.penggunaManagement, addData);
+      Notification.show({
+        type: 'secondary',
+        message: 'User Added Successfully',
+        icon: 'check',
+      });
+      history.push('/cms/pengguna-management');
     } catch (err) {
       Notification.show({
         type: 'warning',

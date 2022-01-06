@@ -149,7 +149,7 @@ export const Header = () => {
         <NavDropdown title={user?.name || 'Achmad Adam'} id="user-nav-dropdown" className="user-nav h-100">
           <NavDropdown.Item>{t('header.userNav.changePassword')}</NavDropdown.Item>
           <NavDropdown.Item onClick={goTo('/cms')}>{t('header.userNav.cmsApplication')}</NavDropdown.Item>
-          <NavDropdown.Item>{t('header.userNav.privacyPolicy')}</NavDropdown.Item>
+          <NavDropdown.Item onClick={goTo('/policy')}>{t('header.userNav.privacyPolicy')}</NavDropdown.Item>
           <NavDropdown.Item onClick={handleLogout}>{t('header.userNav.signOut')}</NavDropdown.Item>
         </NavDropdown>
       </Nav>

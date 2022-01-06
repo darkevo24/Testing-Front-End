@@ -44,7 +44,9 @@ export const initialState = {
 export const CMS_FORUM_SDI_SLICE = 'CMS_FORUM_SDI_SLICE';
 
 export const getCMSForumSDIListData = createAsyncThunk('cms/getCMSForumSDIListData', async ({ page, payload }) => {
-  const response = await get(apiUrls.cmsForumSDI, { query: { page: page + 1, size: 10, ...payload } });
+  const response = await get(apiUrls.cmsForumSDI, {
+    query: { page: page + 1, size: 10, sort: 'id', sort_direction: 'DESC', ...payload },
+  });
   return response?.data?.content;
 });
 export const getCMSForumSDIDataById = createAsyncThunk('cms/getCMSForumSDIDataById', async (params) => {

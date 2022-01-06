@@ -23,13 +23,15 @@ export const initialState = {
 export const FORUM_SDI_SLICE = 'FORUM_SDI_SLICE';
 
 export const getForumSDIData = createAsyncThunk('portal/getForumSDIData', async ({ page, ...rest }) => {
-  const response = await get(apiUrls.portalForumSDI, { query: { page: page + 1, size: 10, ...rest.payload } });
+  const response = await get(apiUrls.portalForumSDI, {
+    query: { page: page + 1, size: 10, sort: 'id', sort_direction: 'DESC', ...rest.payload },
+  });
   return response?.data?.content;
 });
 
 export const getForumSDIDataByID = createAsyncThunk('portal/getForumSDIDataByID', async (param) => {
   const response = await get(`${apiUrls.portalForumSDI}/${param}`);
-  return response?.data?.content;
+  return response?.data;
 });
 
 const forumSDISlice = createSlice({
@@ -59,7 +61,7 @@ const forumSDISlice = createSlice({
     });
     builder.addCase(getForumSDIDataByID.fulfilled, (state, action) => {
       state.forumSDIDetail.loading = false;
-      state.forumSDIDetail.detail = action.payload.records;
+      state.forumSDIDetail.detail = action.payload.content;
     });
     builder.addCase(getForumSDIDataByID.rejected, (state) => {
       state.forumSDIDetail.loading = false;

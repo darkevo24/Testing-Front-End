@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-
+import isEmpty from 'lodash/isEmpty';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -29,12 +29,12 @@ import {
 import cloneDeep from 'lodash/cloneDeep';
 
 const schema = yup.object({
-  instansi: yup.mixed().required(),
-  nama: yup.string().required(),
-  jadwalPemutakhiran: yup.mixed().required(),
-  produsenData: yup.string().required(),
-  format: yup.mixed().required(),
-  linkAkses: yup.string().required(),
+  instansi: yup.mixed().required('Instansi is required'),
+  nama: yup.string().required('Nama Data is required'),
+  jadwalPemutakhiran: yup.mixed().required('Jadwal Pemutakhiran is required'),
+  produsenData: yup.string().required('Produsen Data is required'),
+  format: yup.mixed().required('Format is required'),
+  linkAkses: yup.string().required('Link Akses is required'),
 });
 
 const CMSDaftarPage = ({ ...props }) => {
@@ -46,7 +46,7 @@ const CMSDaftarPage = ({ ...props }) => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const history = useHistory();
-  const { result, error } = props.dafterDataWithId;
+  const { result: daftar, error } = props.dafterDataWithId;
   const instansiOptions = props.instansiOptions;
   const dataindukAllOptions = props.dataindukAllOptions;
   const sdgPillerOptions = props.sdgPillerOptions;
@@ -114,27 +114,27 @@ const CMSDaftarPage = ({ ...props }) => {
 
   useEffect(async () => {
     if (!id) return;
-    const [indukDataObjectKey] = Object.keys(result?.indukData || {});
+    const [indukDataObjectKey] = Object.keys(daftar?.indukData || {});
     reset({
-      instansi: { value: result?.instansiId, label: result?.instansi } || {},
-      nama: result?.nama || '',
-      idKonsep: result?.idKonsep || '',
-      konsep: result?.konsep || '',
-      jadwalPemutakhiran: jadwalPermutakhiranOptions.find((elem) => result?.jadwalPemutakhiran === elem.value) || {},
-      definisi: result?.definisi || '',
-      sumberDefinisi: result?.sumberDefinisi || '',
-      tanggalDibuat: moment(result?.tanggalDibuat || new Date()).toDate() || '',
-      tanggalDiperbaharui: moment(result?.tanggalDiperbaharui || new Date()).toDate() || '',
-      produsenData: result?.produsenData || '',
-      indukData: { value: indukDataObjectKey, label: result?.indukData[indukDataObjectKey] } || {},
-      format: { value: result?.format, label: result?.format } || {},
-      linkAkses: result?.linkAkses || '',
-      kodePilar: { value: result?.kodePilar, label: result?.kodePilarDeskripsi } || {},
-      kodeTujuan: { value: result?.kodeTujuan, label: result?.kodeTujuanDeskripsi } || {},
-      kodePNRKP: { value: result?.kodePNRKP, label: result?.kodePNRKPDeskripsi } || {},
-      kodePPRKP: { value: result?.kodePPRKP, label: result?.kodePPRKPDeskripsi } || {},
+      instansi: { value: daftar?.instansiId, label: daftar?.instansi } || {},
+      nama: daftar?.nama || '',
+      idKonsep: daftar?.idKonsep || '',
+      konsep: daftar?.konsep || '',
+      jadwalPemutakhiran: jadwalPermutakhiranOptions.find((elem) => daftar?.jadwalPemutakhiran === elem.value) || {},
+      definisi: daftar?.definisi || '',
+      sumberDefinisi: daftar?.sumberDefinisi || '',
+      tanggalDibuat: moment(daftar?.tanggalDibuat || new Date()).toDate() || '',
+      tanggalDiperbaharui: moment(daftar?.tanggalDiperbaharui || new Date()).toDate() || '',
+      produsenData: daftar?.produsenData || '',
+      indukData: { value: indukDataObjectKey, label: daftar?.indukData[indukDataObjectKey] } || {},
+      format: { value: daftar?.format, label: daftar?.format } || {},
+      linkAkses: daftar?.linkAkses || '',
+      kodePilar: { value: daftar?.kodePilar, label: daftar?.kodePilarDeskripsi } || {},
+      kodeTujuan: { value: daftar?.kodeTujuan, label: daftar?.kodeTujuanDeskripsi } || {},
+      kodePNRKP: { value: daftar?.kodePNRKP, label: daftar?.kodePNRKPDeskripsi } || {},
+      kodePPRKP: { value: daftar?.kodePPRKP, label: daftar?.kodePPRKPDeskripsi } || {},
     });
-  }, [result, id]);
+  }, [daftar, id]);
 
   const goBack = () => {
     if (id) history.push(`/cms/daftar/${id}`);
@@ -204,9 +204,9 @@ const CMSDaftarPage = ({ ...props }) => {
       return null;
     }
     if (!tableData?.length) goBack();
-    if (!apiResponse?.payload?.data?.content?.id) return null;
+    if (!apiResponse?.payload?.id) return null;
     const apiCall = tableData.map((item) => {
-      if (!item.id) item.idKatalog = apiResponse.payload.data.content.id;
+      if (!item.id) item.idKatalog = apiResponse.payload.id;
       return dispatch(props.dataVariableSubmit(item));
     });
     const response = await Promise.all(apiCall);
@@ -241,6 +241,11 @@ const CMSDaftarPage = ({ ...props }) => {
       dispatch(getAddDaftarRKPpp(watchKodePNRKP.value));
     }
   }, [watchKodePNRKP]);
+
+  const handleCloseModal = () => {
+    setShowAddModal(false);
+    setSelectedRecord({});
+  };
 
   return (
     <>
@@ -277,8 +282,7 @@ const CMSDaftarPage = ({ ...props }) => {
                     label="Instansi"
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    rules={{ required: true }}
-                    error={errors.instansi ? 'Instansi is required' : null}
+                    error={errors?.instansi?.message}
                     data={instansiOptions}
                     name="instansi"
                     isLoading={false}
@@ -296,7 +300,7 @@ const CMSDaftarPage = ({ ...props }) => {
                     }}
                     labelClass="sdp-form-label fw-normal"
                     label="Nama Data"
-                    error={errors.nama ? 'Nama Data is required' : null}
+                    error={errors?.nama?.message}
                     name="nama"
                     control={control}
                   />
@@ -344,8 +348,7 @@ const CMSDaftarPage = ({ ...props }) => {
                     label="Jadwal Pemutakhiran"
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    rules={{ required: true }}
-                    error={errors.jadwalPemutakhiran ? 'Jadwal Pemutakhiran is required' : null}
+                    error={errors?.jadwalPemutakhiran?.message}
                     data={jadwalPermutakhiranOptions}
                     name="jadwalPemutakhiran"
                     isLoading={false}
@@ -415,7 +418,7 @@ const CMSDaftarPage = ({ ...props }) => {
                       md: 12,
                       as: Col,
                     }}
-                    error={errors.produsenData ? 'Produsen Data is required' : null}
+                    error={errors?.produsenData?.message}
                     labelClass="sdp-form-label fw-normal"
                     label="Produsen Data"
                     name="produsenData"
@@ -453,8 +456,7 @@ const CMSDaftarPage = ({ ...props }) => {
                     label="Format"
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    rules={{ required: true }}
-                    error={errors.format ? 'Format is required' : null}
+                    error={errors?.format?.message}
                     data={formatOptions}
                     name="format"
                     isLoading={false}
@@ -472,7 +474,7 @@ const CMSDaftarPage = ({ ...props }) => {
                     labelClass="sdp-form-label fw-normal"
                     group
                     label="Link Akses"
-                    error={errors.linkAkses ? 'Link Akses is required' : null}
+                    error={errors?.linkAkses?.message}
                     name="linkAkses"
                     rightIcon="copy"
                     control={control}
@@ -556,7 +558,6 @@ const CMSDaftarPage = ({ ...props }) => {
             </div>
             <div className="pl-32 pt-32 pb-42 pr-32">
               <DataVariableTable
-                manualPagination={false}
                 search={!!id}
                 showDeleteModal={handleDelete}
                 showDataVariableFormModal={handleEditModal}
@@ -566,7 +567,8 @@ const CMSDaftarPage = ({ ...props }) => {
                 cmsCreateForm={!id}
                 params={params}
                 pageSize={pageSize}
-                daftar={result}
+                daftar={daftar}
+                result={!id ? {} : katalogResult}
                 handleTableReferensiChange={handleTableReferensiChange}
               />
               <Button variant="success" onClick={() => setShowAddModal(true)}>
@@ -578,10 +580,9 @@ const CMSDaftarPage = ({ ...props }) => {
       </Form>
       <TambahFormModal
         visible={showAddModal}
-        data={selectedRecord}
+        data={{ ...selectedRecord }}
         handleDataSubmit={handleDataSubmit}
-        setModal={setShowAddModal}
-        selectedRecord={selectedRecord}
+        handleCloseModal={handleCloseModal}
       />
     </>
   );

@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import cloneDeep from 'lodash/cloneDeep';
-import isEmpty from 'lodash/isEmpty';
 import { Dropdown, Input } from 'components';
 import { pengaturanAksesOptions } from 'utils/constants';
 import { submitForm, findOption } from 'utils/helper';
@@ -20,7 +19,7 @@ const schema = yup
   .required();
 
 const DataVariableForm = ({ data, onSubmit }) => {
-  const isEdit = !isEmpty(data?.id);
+  const isEdit = !!data?.id;
   const variable = cloneDeep(data || {});
   if (isEdit) {
     variable.pengaturanAkses = findOption(pengaturanAksesOptions, variable.pengaturanAkses);

@@ -14,7 +14,7 @@
   }
 }
 
-.permintaan-data-form-success{
+.permintaan-data-form-success {
   width: 100%;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -23,29 +23,29 @@
   background-color: rgb(226, 244, 235);
 }
 
-.permintaan-data-form-terkirim{
+.permintaan-data-form-terkirim {
   width: 100%;
   padding-top: 10px;
   padding-bottom: 10px;
-  color:$purple;
+  color: $purple;
   font-weight: 600;
-  background-color: rgb(237, 233, 248);;
+  background-color: rgb(237, 233, 248);
 }
 
-.permintaan-data-form-terproses{
-    width: 100%;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    color: $orange-dark;
-    background-color: rgb(251, 241, 227);
+.permintaan-data-form-terproses {
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: $orange-dark;
+  background-color: rgb(251, 241, 227);
 }
 
-.permintaan-data-form-ditolak{
-    width: 100%;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    color: $red;
-    background-color: rgba(255, 0, 0, 0.12);
+.permintaan-data-form-ditolak {
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: $red;
+  background-color: rgba(255, 0, 0, 0.12);
 }
 
 .cms-permintaan-data {
@@ -71,10 +71,16 @@
           color: $green-light;
         }
         &.terkirim {
-          color:$purple;
+          color: $purple;
         }
         &.diproses {
           color: $orange-dark;
+        }
+        &.active {
+          color: $green-light;
+        }
+        &.rejected {
+          color: $red;
         }
       }
       thead {
@@ -87,15 +93,15 @@
       tbody {
         tr {
           td {
-            border-top : 1px solid $stroke !important;
+            border-top: 1px solid $stroke !important;
           }
           td:first-child {
-            border-left : 1px solid $stroke !important;
+            border-left: 1px solid $stroke !important;
             border-top-left-radius: 4px;
             border-bottom-left-radius: 4px;
           }
           td:last-child {
-            border-right : 1px solid $stroke !important;
+            border-right: 1px solid $stroke !important;
             border-top-right-radius: 4px;
             border-bottom-right-radius: 4px;
           }
@@ -125,65 +131,104 @@
 .sdp-modal__modal-permintaan-detail {
   .modal-dialog {
     width: 382px;
-  .modal-body {
-    width: 382px;
-    .sdp-input-wrapper {
-      position: relative;
-    }
-    .length{
-      position: absolute;
-      right: 23px;
-      bottom: 74px;
-      color: $gray;
-      font-size: 14px;
-    }
-  }
-}
-}
-.sdp-modal__modal-permintaan-data-proses {
-   .modal-dialog {
-      max-width: 400px;
-      display: flex;
-      align-items: center;
-      min-height: 100vh;
-      .font-weight-bold{
-          font-weight: bold;
-      }
-      .alert {
-          text-align: center;
-          background: rgba(255, 0, 0, 0.12);
-          color :$red;
-          margin: 1rem -1rem;
-      }
+    .modal-body {
+      width: 382px;
       .sdp-input-wrapper {
         position: relative;
       }
-      .length{
+      .length {
         position: absolute;
         right: 23px;
         bottom: 74px;
         color: $gray;
         font-size: 14px;
       }
-      .input-group {
-          .url {
-              padding: 10px;
-              position: absolute;
-              left: 0;
-              border-right: 1px solid $stroke;
-              z-index: 9999;
-          }
-          input {
-              padding-left: 55px;
-              position: relative;
-              overflow: hidden;
-          }
+    }
+  }
+}
+.sdp-modal__modal-permintaan-data-proses {
+  .modal-dialog {
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    .font-weight-bold {
+      font-weight: bold;
+    }
+    .alert {
+      text-align: center;
+      background: rgba(255, 0, 0, 0.12);
+      color: $red;
+      margin: 1rem -1rem;
+    }
+    .sdp-input-wrapper {
+      position: relative;
+    }
+    .length {
+      position: absolute;
+      right: 23px;
+      bottom: 74px;
+      color: $gray;
+      font-size: 14px;
+    }
+    .input-group {
+      .url {
+        padding: 10px;
+        position: absolute;
+        left: 0;
+        border-right: 1px solid $stroke;
+        z-index: 9999;
+      }
+      input {
+        padding-left: 55px;
+        position: relative;
+        overflow: hidden;
       }
     }
+  }
 }
 .sdp-content-detail__cms-permintaan-data {
   .icon-box {
-      width: 3rem;
-      height: 3rem;
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+.sdp-form-phone {
+  display: flex;
+}
+.sdp-form-phone div:first-child {
+  width: 100%;
+  max-width: 100px;
+  margin-right: 15px;
+}
+.sdp-form-phone div:last-child {
+  width: 100%;
+  max-width: 100%;
+}
+.checkbox-group {
+  background: $white;
+  border: 1px solid $stroke;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  display: flex;
+  justify-content: start;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+  .form-check.form-check-inline {
+    padding: 13px 0 12px 33px;
+    width: 127px;
+  }
+  .form-check-input:checked {
+    background: $blue;
+    border-radius: 3px;
+    border-color: none;
+    border: none;
+  }
+  .form-check-input:checked[type='checkbox'] {
+    background-image: none;
+  }
+  .form-check-input:focus {
+    box-shadow: none;
   }
 }

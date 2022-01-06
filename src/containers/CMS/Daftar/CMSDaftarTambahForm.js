@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-import cloneDeep from 'lodash/cloneDeep';
+import isEmpty from 'lodash/isEmpty';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Input, Modal } from 'components';
@@ -17,12 +17,10 @@ const schema = yup.object({
   pengaturanAkses: yup.object().required('Pengaturan akses is required'),
 });
 
-const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit }) => {
-  const isEdit = !!data?.id;
-  const variable = cloneDeep(data || {});
-  if (isEdit) {
-    variable.pengaturanAkses = findOption(pengaturanAksesOptions, variable.pengaturanAkses);
-  }
+const TambahForm = ({ visible, handleCloseModal, data, handleDataSubmit }) => {
+  const selectedRecord = { ...data };
+  const isEdit = !isEmpty(data);
+
   const {
     control,
     handleSubmit,
@@ -31,16 +29,25 @@ const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit 
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      ...variable,
+      ...selectedRecord,
     },
   });
 
   useEffect(() => {
-    reset(variable);
-  }, [selectedRecord]);
+    const data_clone = { ...data };
+    if (isEdit) {
+      data_clone.pengaturanAkses = findOption(pengaturanAksesOptions, data.pengaturanAkses);
+    }
+    reset(data_clone);
+  }, [data]);
 
   return (
-    <Modal visible={visible} title="Tambah Variabel" size="lg" onClose={() => setModal(false)} centered={true}>
+    <Modal
+      visible={visible}
+      title={`${isEdit ? 'Ubah' : 'Tambah'} Variabel`}
+      size="lg"
+      onClose={handleCloseModal}
+      centered={true}>
       <Form noValidate onSubmit={handleSubmit(handleDataSubmit)}>
         <Row>
           <Input
@@ -94,7 +101,7 @@ const TambahForm = ({ visible, setModal, selectedRecord, data, handleDataSubmit 
         </Row>
         <Row className="d-flex mt-32 mb-16">
           <Col className="d-flex justify-content-end">
-            <Button variant="secondary" className="wpx-90" onClick={() => setModal(false)}>
+            <Button variant="secondary" className="wpx-90" onClick={handleCloseModal}>
               Batal
             </Button>
             <Button className="ml-8 wpx-90 btn-info" type="submit">

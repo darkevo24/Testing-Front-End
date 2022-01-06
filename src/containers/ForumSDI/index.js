@@ -5,7 +5,7 @@ import truncate from 'lodash/truncate';
 import { ReactComponent as ForumSDIImage } from 'assets/ForumSDIImage.svg';
 import { ForumSearch } from './ForumSearch';
 import { useDispatch, useSelector } from 'react-redux';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { forumSDIDatasetSelector, getForumSDIData } from './reducer';
 import { getCMSForumSDITags } from '../CMS/ForumSDI/reducer';
 import RowLoader from 'components/Loader/RowLoader';
@@ -14,7 +14,7 @@ import UserImage from 'assets/userImage.png';
 
 export const ForumSDI = () => {
   const dispatch = useDispatch();
-  // const history = useHistory();
+  const history = useHistory();
   const { payload, loading, records } = useSelector(forumSDIDatasetSelector);
 
   useEffect(() => {
@@ -67,8 +67,7 @@ export const ForumSDI = () => {
                           className="m-8 cursor-pointer"
                           style={{ width: '300px', height: '115px' }}
                           key={`tag-${dataIndex}`}
-                          // onClick={() => history.push(`/forum-sdi/${dataItem.id}`)}
-                        >
+                          onClick={() => history.push(`/forum-sdi/${dataItem.id}`)}>
                           <Card.Title className="h6 fw-600">{truncate(dataItem.judul)}</Card.Title>
                           <Card.Body className="d-flex pt-10 pl-0">
                             <Card.Img

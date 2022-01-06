@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 import moment from 'moment';
 import isFunction from 'lodash/isFunction';
+import truncate from 'lodash/truncate';
 import { ReadOnlyInputs } from 'components';
 import { LeftChevron } from 'components/Icons';
 import Modal from 'components/Modal';
@@ -19,7 +20,7 @@ import {
 } from './reducer';
 import { apiUrls, post } from 'utils/request';
 import { DetailHeader } from './detailHeader';
-import { getStatusClass, prefixID } from 'utils/helper';
+import { getStatusClass, prefixID, splitByLastChar } from 'utils/helper';
 import RowLoader from 'components/Loader/RowLoader';
 import { CMSModal } from 'components/CMSStatusModals';
 
@@ -164,15 +165,7 @@ const CMSForumSDIDetail = () => {
                 {detailLoading ? (
                   <RowLoader />
                 ) : (
-                  <ReadOnlyInputs
-                    group
-                    rows={3}
-                    label="Isi Forum"
-                    labelClass="sdp-form-label fw-normal"
-                    type="text"
-                    as="textarea"
-                    value={detailResult?.isi}
-                  />
+                  <div dangerouslySetInnerHTML={{ __html: detailResult?.isi }} className="mt-44 sdp-text-editor-control" />
                 )}
                 {detailLoading ? (
                   <RowLoader />
@@ -181,8 +174,8 @@ const CMSForumSDIDetail = () => {
                     <label className="sdp-form-label mb-8">Lampiran</label>
                     <div className="input-data d-flex align-items-center bg-gray border-gray-stroke p-9 br-4">
                       {detailResult?.lampiran.map((elem, index) => (
-                        <label className="sdp-text-blue bg-light-blue" key={`topik-label-${index}`}>
-                          {elem?.fileName}
+                        <label className="sdp-text-blue bg-light-blue mr-10" key={`topik-label-${index}`}>
+                          {truncate(splitByLastChar(elem.fileName, '_'))}
                         </label>
                       ))}
                     </div>

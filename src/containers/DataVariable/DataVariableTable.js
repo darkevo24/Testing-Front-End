@@ -1,7 +1,10 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import cx from 'classnames';
 import isFunction from 'lodash/isFunction';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { userSelector } from 'containers/Login/reducer';
+import { getKodeReferensi, kodeReferensiSelector } from 'containers/Daftar/reducer';
 import Popover from 'components/Popover';
 import Table from 'components/Table';
 import truncate from 'lodash/truncate';
@@ -20,11 +23,15 @@ const DataVariableTable = ({
   daftar = {},
   params = {},
   pageSize = null,
-  manualPagination = false,
+  manualPagination = true,
   fetchKatalogVariableData,
   handleTableReferensiChange,
 }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const user = useSelector(userSelector);
+  const kodeReferensi = useSelector(kodeReferensiSelector);
+  const hasAccess = daftar?.instansiId === user?.instansi;
 
   const handleReferensiChange = async (item) => {
     if (cmsCreateForm) {
@@ -34,6 +41,7 @@ const DataVariableTable = ({
     try {
       await put(`${apiUrls.variable}/referensi`, { idVariable: item.id, idKatalog: daftar.id });
       fetchKatalogVariableData();
+      dispatch(getKodeReferensi(daftar.id));
     } catch (e) {
       //
     }
@@ -80,12 +88,13 @@ const DataVariableTable = ({
         accessor: 'kodeReferensi',
         action: handleReferensiChange,
         isChecked: (row) => row.kodeReferensi === 1,
+        isDisabled: !hasAccess,
         label: '',
         Cell: Table.CheckBox,
       },
     ];
 
-    if (!cmsDetail) {
+    if (hasAccess && !cmsDetail) {
       cols.push({
         id: 'actions',
         actions: [
@@ -102,7 +111,7 @@ const DataVariableTable = ({
       });
     }
     return cols;
-  }, [data, daftar]);
+  }, [data, daftar, user]);
 
   const tableConfig = {
     variant: 'spaced',
@@ -120,7 +129,15 @@ const DataVariableTable = ({
     manualPagination: manualPagination,
     currentPage: params?.page || null,
     highlightOnHover: true,
-    searchRightComponent: !!cms,
+    searchLeftComponent: (
+      <span className="mr-auto">
+        Kode Referensi
+        <span className={cx('ml-16', { 'sdp-text-blue': !!kodeReferensi?.result?.nama })}>
+          {kodeReferensi?.result?.nama || '-'}
+        </span>
+      </span>
+    ),
+    searchRightComponent: !!cms || !hasAccess,
     searchPlaceholder: t('sandbox.variable.searchPlaceholder'),
     searchButtonText: t('sandbox.variable.addVariable'),
     onSearch: (filterText) => {

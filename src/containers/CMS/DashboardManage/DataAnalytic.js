@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getListBerita, beritaCmsListSelector, setPreviewBerita } from './reducer';
+import { getListAnalitik, analitikCmsListSelector, setPreviewBerita } from './reducer';
 import { defaultNumberOfRows } from 'utils/request';
 
 import Form from 'react-bootstrap/Form';
@@ -30,9 +30,9 @@ const CMSDataAnalytic = () => {
 
   const [searchQuery, setSearch] = useState('');
   const [page, setPage] = useState(1);
-  const { totalRecords, records, loading } = useSelector(beritaCmsListSelector);
+  const { totalRecords, records, loading } = useSelector(analitikCmsListSelector);
   const fetchData = (params) => {
-    return dispatch(getListBerita(params));
+    return dispatch(getListAnalitik(params));
   };
 
   useEffect(() => {

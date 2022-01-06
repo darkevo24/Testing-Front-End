@@ -29,9 +29,9 @@ export const initialState = {
 
 export const DATA_ANALYTIC_SLICE = 'DATA_ANALYTIC_SLICE';
 
-export const getListBerita = createAsyncThunk('cms/getListBerita', async (params) => {
-  const response = await post(`${apiUrls.cmsBeritaData}/list?size=10&page=${params.page}&sortDirection=DESC`, {
-    judul: params.judul,
+export const getListAnalitik = createAsyncThunk('cms/getListAnalitik', async (params) => {
+  const response = await post(`${apiUrls.getListAnalitik}/list?size=10&page=${params.page}&sortDirection=DESC`, {
+    title: params.judul,
   });
   return response?.data?.content;
 });
@@ -45,24 +45,24 @@ const dataAnalyticSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getListBerita.pending, (state, action) => {
+    builder.addCase(getListAnalitik.pending, (state, action) => {
       state.dataset.loading = true;
     });
-    builder.addCase(getListBerita.fulfilled, (state, action) => {
+    builder.addCase(getListAnalitik.fulfilled, (state, action) => {
       state.dataset.loading = false;
       state.dataset.page = action.payload.page;
       state.dataset.records = action.payload.records;
       state.dataset.totalRecords = action.payload.totalRecords;
       state.dataset.totalPages = action.payload.totalPages;
     });
-    builder.addCase(getListBerita.rejected, (state) => {
+    builder.addCase(getListAnalitik.rejected, (state) => {
       state.dataset.loading = false;
-      state.dataset.error = 'Error in fetching berita cms!';
+      state.dataset.error = 'Error in fetching analitik!';
     });
   },
 });
 
-export const beritaCmsListSelector = (state) => state.cmsBerita?.dataset;
+export const analitikCmsListSelector = (state) => state.cmsDataAnalytic?.dataset;
 
 export const { updateResult } = dataAnalyticSlice.actions;
 export default dataAnalyticSlice.reducer;

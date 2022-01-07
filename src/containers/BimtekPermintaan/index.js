@@ -1,32 +1,95 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { Loader } from 'components';
 
 import { BimtekLayout } from 'layouts/BimtekLayout';
 import { getBimtekPermintaan, bimtekPermintaan } from './reducer';
 import { NoPerminataanData } from 'components/Icons';
 import bn from 'utils/bemNames';
 import moment from 'moment';
-import Pagination from 'components/Pagination';
+import { Table } from 'components';
 
 const bem = bn('bimtek-permintaan');
-const paginateParams = {
-  page: 1,
-  size: 10,
-};
 
 const BimtekPermintaan = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
-  const { records: permintaanRecords, totalPages: pageNumber } = useSelector(bimtekPermintaan);
+  const { records: permintaanRecords, totalRecords, page, size, loading } = useSelector(bimtekPermintaan);
 
+  const fetchDataset = (params) => {
+    const obj = {
+      page: params.page,
+    };
+    return dispatch(getBimtekPermintaan(obj));
+  };
   useEffect(() => {
-    dispatch(getBimtekPermintaan(paginateParams));
-  }, []);
+    fetchDataset({ page: page || 0 });
+  }, [page]);
 
-  const changePage = (props) => {
-    dispatch(getBimtekPermintaan({ ...paginateParams, page: props.page }));
+  const handlePermintaan = (data) => {
+    history.push(`/bimtek-permintaan/${data.id}`);
+  };
+
+  const getRowClass = (data) => {
+    if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
+    return 'bg-gray';
+  };
+  const columns = [
+    {
+      Header: 'ID',
+      accessor: 'kodeBimtek',
+    },
+    {
+      Header: 'Nama Bimtek',
+      accessor: 'namaBimtek',
+    },
+    {
+      Header: 'Kategori',
+      accessor: 'tagMateri',
+    },
+    {
+      Header: 'Kota Pelaksanaan',
+      accessor: 'kota',
+    },
+    {
+      Header: 'Tanggal Pengajuan',
+      accessor: 'tanggalRequest',
+      Cell: ({ row: { original } }) => (
+        <span> {original?.tanggalRequest ? moment(original?.tanggalRequest).format('DD MMMM YYYY') : '---'} </span>
+      ),
+    },
+    {
+      Header: 'Status',
+      Cell: ({ row: { original } }) => (
+        <div className="d-flex align-items-center justify-content-start">
+          <hr className={bem.e('status')} />
+          <div> {original?.status ? original?.status : '-'} </div>,
+        </div>
+      ),
+    },
+  ];
+
+  const tableConfig = {
+    className: 'cms-permintaan-data',
+    columns,
+    data: permintaanRecords,
+    title: '',
+    showSearch: false,
+    onSearch: () => {},
+    variant: 'link',
+    totalCount: totalRecords,
+    pageSize: size,
+    currentPage: page,
+    manualPagination: true,
+    rowClass: getRowClass,
+    onRowClick: handlePermintaan,
+    onPageIndexChange: (currentPage) => {
+      if (currentPage !== page) {
+        fetchDataset({ page: currentPage });
+      }
+    },
   };
 
   return (
@@ -38,55 +101,10 @@ const BimtekPermintaan = () => {
             <div className="text-black-50">No Data</div>
           </div>
         ) : (
-          permintaanRecords.map((item, key) => (
-            <PermintaanItem
-              key={key}
-              id={item.id}
-              kodeBimtek={item.kodeBimtek}
-              namaBimtek={item.namaBimtek}
-              kota={item.kota}
-              tanggal={moment(item.tanggalRequest).format('YYYY-MM-DD')}
-              status={item.status}
-              tagMateri={item.tagMateri}
-            />
-          ))
+          <div className="px-30 pt-0"> {!loading ? <Table {...tableConfig} /> : <Loader fullscreen={true} />} </div>
         )}
       </Row>
-      {!permintaanRecords?.length ? null : (
-        <Pagination totalPages={pageNumber} onChangePage={(props) => changePage(props)} />
-      )}
     </BimtekLayout>
-  );
-};
-
-const PermintaanItem = ({ id, kodeBimtek, namaBimtek, kota, tanggal, status, tagMateri }) => {
-  const history = useHistory();
-  const handlePermintaan = (id) => {
-    history.push(`/bimtek-permintaan/${id}`);
-  };
-
-  return (
-    <Row className={bem.e('item', 'ml p-10 d-flex align-items-center')} onClick={() => handlePermintaan(id)}>
-      <Col lg={1} className="fs-16">
-        {kodeBimtek}
-      </Col>
-      <Col lg={2} className="fs-16">
-        {namaBimtek}
-      </Col>
-      <Col lg={2} className="fs-16">
-        {tagMateri.join()}
-      </Col>
-      <Col lg={1} className="fs-16">
-        {kota}
-      </Col>
-      <Col lg={2} className="fs-16">
-        {tanggal}
-      </Col>
-      <Col lg={4} className="fs-16 d-flex align-items-center justify-content-start w-134">
-        <hr className={bem.e('status')} />
-        <span> {status} </span>
-      </Col>
-    </Row>
   );
 };
 

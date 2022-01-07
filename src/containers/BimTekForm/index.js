@@ -121,7 +121,7 @@ const BimTekForm = () => {
   return (
     <BimtekLayout>
       <Card className="bimtek-form">
-        <Card.Header>Formulir Pendaftaran</Card.Header>
+        <Card.Header>Formulir Permintaan</Card.Header>
         <Card.Body>
           <Form onSubmit={getFormulirData}>
             <Row>

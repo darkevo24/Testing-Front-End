@@ -26,7 +26,11 @@ export const getPenggunaStatusList = createAsyncThunk('penggunaManagement/penggu
 });
 
 export const getInstansiData = createAsyncThunk('penggunaManagement/instansiData', async (params) => {
-  const response = await get(apiUrls.penggunaInstansiList);
+  const response = await get(apiUrls.instansiData);
+  return response?.data?.content;
+});
+export const getUnitKerjaData = createAsyncThunk('penggunaManagement/UnitKerjaData', async (params) => {
+  const response = await get(`${apiUrls.instansiData}/${params}/unit-kerja`);
   return response?.data?.content;
 });
 
@@ -52,6 +56,11 @@ export const initialState = {
     records: [],
   },
   instansiDataset: {
+    loading: false,
+    error: null,
+    records: [],
+  },
+  unitKerjaDataset: {
     loading: false,
     error: null,
     records: [],
@@ -115,6 +124,17 @@ const penggunaManagementDetailSlice = createSlice({
       state.instansiDataset.loading = false;
       state.instansiDataset.error = 'Invalid data';
     });
+    builder.addCase(getUnitKerjaData.pending, (state, action) => {
+      state.unitKerjaDataset.loading = true;
+    });
+    builder.addCase(getUnitKerjaData.fulfilled, (state, action) => {
+      state.unitKerjaDataset.loading = false;
+      state.unitKerjaDataset.records = action.payload.records;
+    });
+    builder.addCase(getUnitKerjaData.rejected, (state, action) => {
+      state.unitKerjaDataset.loading = false;
+      state.unitKerjaDataset.error = 'Invalid data';
+    });
   },
 });
 
@@ -122,5 +142,6 @@ export const penggunaDataSelector = (state) => state.penggunaManagement?.penggun
 export const penggunaRoleDataSelector = (state) => state.penggunaManagement?.penggunaRoleDataset;
 export const penggunaStatusDataSelector = (state) => state.penggunaManagement?.penggunaStatusDataset;
 export const instansiDataSelector = (state) => state.penggunaManagement?.instansiDataset;
+export const unitKerjaDataSelector = (state) => state.penggunaManagement?.unitKerjaDataset;
 
 export default penggunaManagementDetailSlice.reducer;

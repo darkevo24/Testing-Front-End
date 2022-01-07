@@ -37,6 +37,7 @@ export const apiUrls = {
   dataset: getDataEndpoint('3/action/package_search'),
   perminataanData: getPortalEndpoint('permintaan-data'),
   instansiData: getV1Endpoint('instansi'),
+  cmsIntansiData: getCMSEndpoint('instansi'),
   cmsKomunitasAhliData: getCMSEndpoint('komunitas-ahli'),
   portalKomunitasAhliData: getPortalEndpoint('komunitas-ahli'),
   cmsAuditTrialData: getCMSEndpoint('audit-trail'),
@@ -101,7 +102,6 @@ export const apiUrls = {
   detailPenggunaManagement: getApiEndpoint('sekretariat/user'),
   penggunaRoleList: getApiEndpoint('sekretariat/user/role-list'),
   penggunaStatusList: getApiEndpoint('sekretariat/user/status-list'),
-  penggunaInstansiList: getApiEndpoint('/v1/instansi'),
   penggunaLogs: getApiEndpoint('sekretariat/user'),
   cmsAnalitikData: getCMSEndpoint('analitik'),
 };
@@ -137,6 +137,20 @@ export const formatOptions = FORMATS.map(arrayToOptionsMapper());
 
 export const pengaturanAksesOptions = ['Terbuka', 'Terbatas', 'Tertutup'].map(arrayToOptionsMapper());
 
+export const levelInstansi = [
+  {
+    label: 'NASIONAL',
+    value: 'NASIONAL',
+  },
+  {
+    label: 'PROVINSI',
+    value: 'PROVINSI',
+  },
+  {
+    label: 'KABUPATEN_KOTA',
+    value: 'KABUPATEN_KOTA',
+  },
+];
 export const TOPIC_LIST = [
   { title: 'Semua', items: [], icon: <SplitCircle /> },
   { title: 'Pertahanan dan Luar Negeri', items: ['Pertahanan', 'Luar Negeri'], icon: <EkonomiSvg /> },

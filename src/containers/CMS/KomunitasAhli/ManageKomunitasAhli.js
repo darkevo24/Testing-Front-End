@@ -18,6 +18,7 @@ import {
   CMS_KOMUNITAS_LEVEL_PUSAT,
   CMS_KOMUNITAS_PENDIDIKAN,
   Kontak_list,
+  Social_Media_Prefix_Links,
 } from 'utils/constants';
 import { apiUrls, get, post, put } from 'utils/request';
 import { getInstansiData, instansiDataSelector } from 'containers/App/reducer';
@@ -27,6 +28,13 @@ import { usePrevious } from 'utils/hooks';
 import Spinner from 'react-bootstrap/Spinner';
 import { cmsKomunitasAhliDetailDatasetSelector, getCMSKomunitasAhliDataById } from './reducer';
 import { getValue } from './KomunitasAhliDetail';
+
+const getValidURL = (url) => (value) => {
+  if (value.includes('http://')) return false;
+  const count = value.split('https');
+  if (count.length > 2) return false;
+  return !(value.includes('https://') && !value.includes(url));
+};
 
 const schema = yup.object({
   nama: yup.string().required('Nama is required'),
@@ -38,6 +46,22 @@ const schema = yup.object({
   pendidikan: yup.mixed().required('Pendidikan is required'),
   level: yup.mixed().required('Level is required'),
   email: yup.string().email('Must be a valid email'),
+  facebook: yup.string().test({
+    message: 'Link is not valid',
+    test: getValidURL(Social_Media_Prefix_Links['facebook']),
+  }),
+  instagram: yup.string().test({
+    message: 'Link is not valid',
+    test: getValidURL(Social_Media_Prefix_Links['instagram']),
+  }),
+  youtube: yup.string().test({
+    message: 'Link is not valid',
+    test: getValidURL(Social_Media_Prefix_Links['youtube']),
+  }),
+  twitter: yup.string().test({
+    message: 'Link is not valid',
+    test: getValidURL(Social_Media_Prefix_Links['twitter']),
+  }),
 });
 
 const KomunitasAhli = () => {
@@ -95,10 +119,6 @@ const KomunitasAhli = () => {
     let inputBox = document.getElementById('inputBox');
 
     let invalidChars = ['-', '+', 'e'];
-
-    inputBox.addEventListener('input', () => {
-      this.value = this.value.replace(/[e]/gi, '');
-    });
 
     inputBox.addEventListener('keydown', (e) => {
       if (invalidChars.includes(e.key)) {
@@ -248,6 +268,12 @@ const KomunitasAhli = () => {
     setFormData(data);
   };
 
+  const getKontakValue = (value, url) => {
+    if (!value.includes(url)) return value;
+    const item = value.split(url);
+    return !item?.[1] ? '' : item?.[1];
+  };
+
   const onSubmit = async () => {
     setLoader(true);
     let fotoLink, cvLink;
@@ -280,10 +306,30 @@ const KomunitasAhli = () => {
           kontak: [
             { title: 'No Handphone', image: '', tipe: 'handphone', value: formData?.handphone || '' },
             { title: 'Email', image: '', tipe: 'email', value: formData?.email || '' },
-            { title: '', image: '', tipe: 'facebook', value: formData?.facebook || '' },
-            { title: '', image: '', tipe: 'twitter', value: formData?.twitter || '' },
-            { title: '', image: '', tipe: 'instagram', value: formData?.instagram || '' },
-            { title: '', image: '', tipe: 'youtube', value: formData?.youtube || '' },
+            {
+              title: '',
+              image: '',
+              tipe: 'facebook',
+              value: getKontakValue(formData?.facebook, Social_Media_Prefix_Links['facebook']) || '',
+            },
+            {
+              title: '',
+              image: '',
+              tipe: 'twitter',
+              value: getKontakValue(formData?.twitter, Social_Media_Prefix_Links['twitter']) || '',
+            },
+            {
+              title: '',
+              image: '',
+              tipe: 'instagram',
+              value: getKontakValue(formData?.instagram, Social_Media_Prefix_Links['instagram']) || '',
+            },
+            {
+              title: '',
+              image: '',
+              tipe: 'youtube',
+              value: getKontakValue(formData?.youtube, Social_Media_Prefix_Links['youtube']) || '',
+            },
           ],
         };
         if (id) {
@@ -353,7 +399,7 @@ const KomunitasAhli = () => {
               control={control}
               label="Bidang Keahlian"
               labelClass="sdp-form-label  fw-normal"
-              data={bidangKeahlianData.map((item) => ({ value: item.id, label: item.nama }))}
+              data={bidangKeahlianData.map((item) => ({ value: item.nama, label: item.nama }))}
               placeholder=""
               error={errors?.bidangKeahlian?.message}
               isCreatable={true}
@@ -570,6 +616,8 @@ const KomunitasAhli = () => {
                     wrapperClass="flex-grow-1"
                     leftIcon={kontak.icon}
                     leftIconClass="py-15 px-20"
+                    prefixText={kontak.prefixText}
+                    error={errors?.[kontak.name]?.message}
                   />
                 </Col>
               </Form.Group>

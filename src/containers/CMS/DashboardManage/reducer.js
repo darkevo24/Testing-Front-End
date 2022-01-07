@@ -1,17 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, defaultNumberOfRows, post, put, get, deleteRequest } from 'utils/request';
+import { apiUrls, defaultNumberOfRows, post } from 'utils/request';
 
 export const initialState = {
   loading: false,
   dataset: {
     loading: false,
     error: null,
-    page: 1,
+    page: 0,
     status: '',
     records: [],
     size: defaultNumberOfRows,
-    totalRecords: 0,
-    totalPages: 1,
+    totalRecords: null,
+    totalPages: null,
   },
   detaildataSet: {
     loading: false,
@@ -30,7 +30,7 @@ export const initialState = {
 export const DATA_ANALYTIC_SLICE = 'DATA_ANALYTIC_SLICE';
 
 export const getListAnalitik = createAsyncThunk('cms/getListAnalitik', async (params) => {
-  const response = await post(`${apiUrls.cmsAnalitikData}/list?size=10&page=${params.page}`, {
+  const response = await post(`${apiUrls.cmsAnalitikData}/list?size=10&page=${params.page + 1}`, {
     title: params.judul,
   });
   return response?.data?.content;
@@ -67,7 +67,7 @@ const dataAnalyticSlice = createSlice({
     });
     builder.addCase(getListAnalitik.fulfilled, (state, action) => {
       state.dataset.loading = false;
-      state.dataset.page = action.payload.page;
+      state.dataset.page = action.payload.page - 1;
       state.dataset.records = action.payload.records;
       state.dataset.totalRecords = action.payload.totalRecords;
       state.dataset.totalPages = action.payload.totalPages;

@@ -1,44 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getListAnalitik, analitikCmsListSelector, setNewAnalitik, setEditAnalitik } from './reducer';
-import { defaultNumberOfRows } from 'utils/request';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Modal from 'react-bootstrap/Modal';
+
 import { Search } from 'components/Icons';
-import Notification from 'components/Notification';
+import { Loader, Modal, Notification, Table } from 'components';
+import bn from 'utils/bemNames';
+import cx from 'classnames';
 
 import { ReactComponent as LogoIcon } from 'assets/logo-icon.svg';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import { ReactComponent as Edit } from 'assets/edit.svg';
 import { ReactComponent as CrossRed } from 'assets/cross-red.svg';
-import { useHistory } from 'react-router-dom';
-import bn from 'utils/bemNames';
-import cx from 'classnames';
-import { Table } from 'ant-table-extensions';
-import { Space, Switch } from 'antd';
 
-import './index.scss';
+import { getListAnalitik, analitikCmsListSelector, setNewAnalitik, setEditAnalitik } from './reducer';
+
+import 'assets/styles/pages/_cmsManageDashboard.scss';
 
 const bem = bn('content-table');
 
 const CMSDataAnalytic = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const [searchQuery, setSearch] = useState('');
-  const [page, setPage] = useState(1);
   const [show, setShow] = useState(false);
   const [data, setData] = useState(null);
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
   const [showDelete, setShowDelete] = useState(false);
 
-  const { totalRecords, records, loading } = useSelector(analitikCmsListSelector);
+  const { totalRecords, records, loading, size, page } = useSelector(analitikCmsListSelector);
   const fetchData = (params) => {
     return dispatch(getListAnalitik(params));
   };
@@ -67,14 +62,7 @@ const CMSDataAnalytic = () => {
 
   useEffect(() => {
     fetchData({
-      page: page,
-      judul: searchQuery,
-    });
-  }, [page]);
-
-  useEffect(() => {
-    fetchData({
-      page: 1,
+      page: 0,
       judul: searchQuery,
     });
   }, [searchQuery]);
@@ -85,48 +73,46 @@ const CMSDataAnalytic = () => {
 
   const columns = [
     {
-      title: 'Judul Dashboard',
-      dataIndex: 'title',
-      key: 'judul',
+      Header: 'Judul Dashboard',
+      accessor: 'title',
     },
     {
-      title: 'URL',
-      key: 'url',
-      render: (text, record) => <a href={record.url}>{record.url}</a>,
+      Header: 'URL',
+      accessor: 'url',
     },
     {
-      title: 'Status',
-      key: 'status',
-      width: '20%',
-      render: (text, record) => (
+      Header: 'Status',
+      accessor: 'status',
+      Cell: ({ ...rest }) => (
         <Row>
-          <Col xs={6}>{record.publish ? 'Published' : 'Unpublished'}</Col>
+          <Col xs={6}>{rest?.row?.original?.publish ? 'Published' : 'Unpublished'}</Col>
           <Col xs={6}>
-            <Switch defaultChecked={record.publish} onChange={() => publishAction(record)} />
+            <Form.Check
+              type="switch"
+              id={'publish' + rest?.row?.original?.id}
+              checked={rest?.row?.original?.publish}
+              onChange={() => publishAction(rest?.row?.original)}
+            />
           </Col>
         </Row>
       ),
     },
+    ,
     {
-      title: '',
-      key: 'action',
-      width: '15%',
-      render: (text, record) => (
-        <Space size="middle">
-          <Button variant="secondary" onClick={() => editAction(record)}>
+      Header: '',
+      accessor: 'action',
+      Cell: ({ ...rest }) => (
+        <>
+          <Button variant="secondary" className="mr-8" onClick={() => editAction(rest?.row?.original)}>
             <Edit />
           </Button>
-          <Button className="btn-delete" onClick={() => deleteAction(record)}>
-            <CrossRed style={{ width: '15px' }} />
+          <Button className="btn-delete" onClick={() => deleteAction(rest?.row?.original)}>
+            <CrossRed />
           </Button>
-        </Space>
+        </>
       ),
     },
   ];
-
-  const handleTableChange = (pagination, filters, sorter) => {
-    setPage(pagination.current);
-  };
 
   const createAction = () => {
     setData(null);
@@ -228,6 +214,27 @@ const CMSDataAnalytic = () => {
     }
   };
 
+  const tableConfig = {
+    columns,
+    data: records,
+    title: '',
+    showSearch: false,
+    onSearch: () => {},
+    variant: 'spaced',
+    totalCount: totalRecords,
+    pageSize: size,
+    currentPage: page,
+    manualPagination: true,
+    onPageIndexChange: (currentPage) => {
+      if (currentPage !== page) {
+        fetchData({
+          page: currentPage,
+          judul: searchQuery,
+        });
+      }
+    },
+  };
+
   return (
     <div className={bem.e('section')}>
       <div className={bem.e('header')}>
@@ -237,10 +244,7 @@ const CMSDataAnalytic = () => {
             <Button variant="info" className="text-center mr-16 d-inline-flex align-items-center" onClick={createAction}>
               <Plus className="mr-4" /> Dashboard Baru
             </Button>
-            <Button
-              variant="secondary"
-              className="text-center d-inline-flex align-items-center"
-              style={{ color: '#515154' }}>
+            <Button variant="secondary" className="text-center d-inline-flex align-items-center">
               <LogoIcon className="mr-4" /> Analytics
             </Button>
           </Col>
@@ -253,64 +257,56 @@ const CMSDataAnalytic = () => {
         </Row>
       </div>
       <div className={cx(bem.e('body'), 'cms-data-analytic')}>
-        <Table
-          rowKey={(record) => record.id}
-          dataSource={records}
-          columns={columns}
-          pagination={{ current: page, pageSize: defaultNumberOfRows, total: totalRecords, showSizeChanger: false }}
-          loading={loading}
-          onChange={handleTableChange}
-        />
+        {!loading ? <Table {...tableConfig} /> : <Loader fullscreen={true} />}
       </div>
-      <Modal show={show} onHide={handleClose} className="cms-data-analytic-form">
-        <Modal.Header closeButton>
-          <Modal.Title>{data?.id ? 'Ubah Dashboard' : 'Tambah Dashboard'}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={handleSubmit} id="data-analytic-form">
-            <Form.Group className="mb-3" controlId="title">
-              <Form.Label>Judul Dashboard</Form.Label>
-              <Form.Control
-                defaultValue={data?.title}
-                onChange={(e) => setField('title', e.target.value)}
-                isInvalid={!!errors.title}
-              />
-              <Form.Control.Feedback type="invalid">{errors.title}</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="url">
-              <Form.Label>URL</Form.Label>
-              <Form.Control
-                defaultValue={data?.url}
-                onChange={(e) => setField('url', e.target.value)}
-                isInvalid={!!errors.url}
-              />
-              <Form.Text>Contoh URL : http://www.google.com</Form.Text>
-              <Form.Control.Feedback type="invalid">{errors.url}</Form.Control.Feedback>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Batal
-          </Button>
-          <Button variant="info" form="data-analytic-form" type="submit">
-            Simpan
-          </Button>
-        </Modal.Footer>
+      <Modal
+        visible={show}
+        onClose={handleClose}
+        className="cms-data-analytic-form"
+        title={data?.id ? 'Ubah Dashboard' : 'Tambah Dashboard'}>
+        <Form onSubmit={handleSubmit} id="data-analytic-form">
+          <Form.Group className="mb-3" controlId="title">
+            <Form.Label>Judul Dashboard</Form.Label>
+            <Form.Control
+              defaultValue={data?.title}
+              onChange={(e) => setField('title', e.target.value)}
+              isInvalid={!!errors.title}
+            />
+            <Form.Control.Feedback type="invalid">{errors.title}</Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="url">
+            <Form.Label>URL</Form.Label>
+            <Form.Control
+              defaultValue={data?.url}
+              onChange={(e) => setField('url', e.target.value)}
+              isInvalid={!!errors.url}
+            />
+            <Form.Text>Contoh URL : http://www.google.com</Form.Text>
+            <Form.Control.Feedback type="invalid">{errors.url}</Form.Control.Feedback>
+          </Form.Group>
+          <div className="d-flex justify-content-end mt-16">
+            <Button variant="secondary" onClick={handleClose} className="mr-4">
+              Batal
+            </Button>
+            <Button variant="info" form="data-analytic-form" type="submit">
+              Simpan
+            </Button>
+          </div>
+        </Form>
       </Modal>
-      <Modal show={showDelete} onHide={handleClose}>
-        <Modal.Body>
-          Apakah anda yakin ingin <span style={{ color: 'red', fontWeight: 'bold' }}>menghapus</span> Dashboard{' '}
-          <span style={{ fontWeight: 'bold' }}>{data?.title}</span>?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+      <Modal visible={showDelete} onClose={handleClose} showHeader={false}>
+        <div>
+          Apakah anda yakin ingin <span className="fw-bold sdp-text-red">menghapus</span> Dashboard{' '}
+          <span className="fw-bold">{data?.title}</span>?
+        </div>
+        <div className="d-flex justify-content-end mt-16">
+          <Button variant="secondary" onClick={handleClose} className="mr-4">
             Batal
           </Button>
           <Button variant="info" onClick={sendData}>
             Konfirmasi
           </Button>
-        </Modal.Footer>
+        </div>
       </Modal>
     </div>
   );

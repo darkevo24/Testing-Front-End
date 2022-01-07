@@ -19,7 +19,6 @@ import App from './containers/App';
 
 import './styles.scss';
 import './locales/i18n';
-import 'antd/dist/antd.css';
 
 const initialState = {};
 const store = configureAppStore(initialState, history);

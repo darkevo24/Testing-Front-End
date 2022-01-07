@@ -63,7 +63,7 @@ const CMSPenggunaManagementView = () => {
       supervisorName: data.supervisorName,
       officialMemo: data.officialMemo,
       instansi: {
-        id: data.instansi.id,
+        id: data.instansi.value,
       },
       unitKerja: {
         id: data.unitKerja.value,
@@ -82,7 +82,7 @@ const CMSPenggunaManagementView = () => {
     } catch (e) {
       Notification.show({
         type: 'warning',
-        message: 'Something went wrong',
+        message: e.data.message,
         icon: 'cross',
       });
     }

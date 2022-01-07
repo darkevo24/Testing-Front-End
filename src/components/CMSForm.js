@@ -12,7 +12,8 @@ import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
 import { submitForm } from 'utils/helper';
 import { useDispatch, useSelector } from 'react-redux';
 import { apiUrls, post } from 'utils/request';
-
+import { ComponentAccessibility } from 'components/ComponentAccess';
+import { USER_ROLES } from 'utils/constants';
 import { getListKategori, getListTagline, setNewTagline, kategoriSelector, taglineSelector } from 'containers/App/reducer';
 
 export const beritaFormId = 'berita-form-id';
@@ -205,30 +206,32 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
         error={errors.issn?.message}
         disabled={disabled}
       />
-      <Row>
-        <Col>
-          <Form.Group className="mb-3">
-            <Form.Label>Tanggal Publish</Form.Label>
-            <Form.Control
-              type="date"
-              onChange={(e) => setValue('publishDate', e.target.value)}
-              defaultValue={getDate(data.publishDate)}
-              disabled={disabled}
-            />
-          </Form.Group>
-        </Col>
-        <Col>
-          <Form.Group className="mb-3">
-            <Form.Label>Jam Publish</Form.Label>
-            <Form.Control
-              type="time"
-              onChange={(e) => setValue('publishTime', e.target.value)}
-              defaultValue={getTime(data.publishDate)}
-              disabled={disabled}
-            />
-          </Form.Group>
-        </Col>
-      </Row>
+      <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR]}>
+        <Row>
+          <Col>
+            <Form.Group className="mb-3">
+              <Form.Label>Tanggal Publish</Form.Label>
+              <Form.Control
+                type="date"
+                onChange={(e) => setValue('publishDate', e.target.value)}
+                defaultValue={getDate(data.publishDate)}
+                disabled={disabled}
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-3">
+              <Form.Label>Jam Publish</Form.Label>
+              <Form.Control
+                type="time"
+                onChange={(e) => setValue('publishTime', e.target.value)}
+                defaultValue={getTime(data.publishDate)}
+                disabled={disabled}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+      </ComponentAccessibility>
       <Button className="invisible" type="submit" />
     </Form>
   );

@@ -10,8 +10,6 @@ import EditIcon from 'assets/edit.svg';
 import { Row, Col, Form, Button } from 'react-bootstrap';
 import { Input } from 'components';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 import Modal from 'components/Modal';
 import Notification from 'components/Notification';
 import {
@@ -31,7 +29,7 @@ import { getCookieByName, cookieKeys } from 'utils/cookie';
 const INSTANSI_STATUS = {
   accepted: 'APPROVED',
   rejected: 'REJECTED',
-  delete: 'DELETE',
+  deleted: 'DELETED',
 };
 
 const bem = bn('instansi-data');
@@ -113,20 +111,20 @@ const InstansiDetail = () => {
     setCurrentUnitKejira(unitId);
     setShowUnitModal(true);
   };
-  const onUnitKejiraDeleteSubmit = (data) => {
+  const onUnitKejiraDeleteSubmit = (_data) => {
     const obj = {
       instansiId: id,
       unitId: currentUnitKejira,
     };
     dispatch(deleteUnitKerja(obj))
-      .then((res) => {
+      .then((_res) => {
         Notification.show({
           type: 'secondary',
           message: <div> Berhasil Update Status </div>,
           icon: 'check',
         });
       })
-      .catch((err) => {
+      .catch((_err) => {
         Notification.show({
           type: 'secondary',
           message: <div> Gagal Update Status </div>,
@@ -149,27 +147,14 @@ const InstansiDetail = () => {
     );
   };
 
-  const handleNewUnitKejira = (e) => {
+  const handleUnitKejira = (e, path) => {
     e.preventDefault();
-    history.push(`${id}/new-unit-kerja`);
-  };
-  const handleEditInstansi = (e) => {
-    e.preventDefault();
-    history.push(`edit/${id}`);
+    history.push(path);
   };
 
-  const handleAgreeModal = () => {
+  const handModalOpen = (status) => {
     setShowModal(true);
-    setInstansiStatus(INSTANSI_STATUS.accepted);
-  };
-
-  const handleRejectModal = () => {
-    setShowModal(true);
-    setInstansiStatus(INSTANSI_STATUS.rejected);
-  };
-  const handleDeleteModal = () => {
-    setShowModal(true);
-    setInstansiStatus(INSTANSI_STATUS.delete);
+    setInstansiStatus(status);
   };
 
   const ModalHeader = () => {
@@ -179,7 +164,7 @@ const InstansiDetail = () => {
           <div className="mt-20 mb-20">
             <p className="font-weight-bold mb-0">
               Anda yakin until
-              <span className="text-danger"> menyetujui</span>
+              <span className="text-info"> menyetujui</span>
               Instansi ini?
             </p>
           </div>
@@ -194,7 +179,7 @@ const InstansiDetail = () => {
             </p>
           </div>
         );
-      case INSTANSI_STATUS.delete:
+      case INSTANSI_STATUS.deleted:
         return (
           <div className="mt-20 mb-20">
             <p className="font-weight-bold mb-0">
@@ -221,19 +206,37 @@ const InstansiDetail = () => {
               <div className={bem.e('draft-active-action')}>
                 {status === 'Draft' ? (
                   <>
-                    <img className="mx-4 cursor-pointer" src={DeleteIcon} alt="delete" onClick={handleDeleteModal} />
-                    <img className="mx-4 cursor-pointer" src={EditIcon} alt="edit" onClick={handleEditInstansi} />
-                    <Button className="mx-4" variant="outline-secondary" onClick={handleRejectModal}>
+                    <img
+                      className="mx-4 cursor-pointer"
+                      src={DeleteIcon}
+                      alt="delete"
+                      onClick={(e) => handModalOpen(INSTANSI_STATUS.deleted)}
+                    />
+                    <img
+                      className="mx-4 cursor-pointer"
+                      src={EditIcon}
+                      alt="edit"
+                      onClick={(e) => handleUnitKejira(e, `edit/${id}`)}
+                    />
+                    <Button
+                      className="mx-4"
+                      variant="outline-secondary"
+                      onClick={(e) => handModalOpen(INSTANSI_STATUS.rejected)}>
                       Tolak
                     </Button>
-                    <Button className="mx-4" variant="info" onClick={handleAgreeModal}>
+                    <Button className="mx-4" variant="info" onClick={(e) => handModalOpen(INSTANSI_STATUS.accepted)}>
                       Setuju
                     </Button>
                   </>
                 ) : (
                   <>
-                    <img className="mx-4" src={DeleteIcon} alt="delete" onClick={handleDeleteModal} />
-                    <Button className="mx-4" variant="outline-secondary" onClick={handleEditInstansi}>
+                    <img
+                      className="mx-4"
+                      src={DeleteIcon}
+                      alt="delete"
+                      onClick={(e) => handModalOpen(INSTANSI_STATUS.deleted)}
+                    />
+                    <Button className="mx-4" variant="outline-secondary" onClick={(e) => handleUnitKejira(e, `edit/${id}`)}>
                       Edit
                     </Button>
                   </>
@@ -268,7 +271,7 @@ const InstansiDetail = () => {
           <div className="d-flex flex-col">
             <div className="d-flex justify-content-between mb-4">
               <div className={bem.e('subtitle')}>Daftar Unit Kerja</div>
-              <div className="d-flex cursor-pointer" onClick={handleNewUnitKejira}>
+              <div className="d-flex cursor-pointer" onClick={(e) => handleUnitKejira(e, `${id}/new-unit-kerja`)}>
                 <PlusIcon className={bem.e('plus-icon')} />
                 <span className="text-danger">Tambah Unit Kerja</span>
               </div>

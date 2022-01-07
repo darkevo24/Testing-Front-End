@@ -28,7 +28,6 @@ const CMSPermintaanDataView = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { result, dataLog } = useSelector(permintaanDataDetailSelector);
-  const [objRequired, setObjRequired] = useState({});
   const [showModal, setShowModal] = useState('');
 
   const history = useHistory();

@@ -26,11 +26,11 @@ export const getPenggunaStatusList = createAsyncThunk('penggunaManagement/penggu
 });
 
 export const getInstansiData = createAsyncThunk('penggunaManagement/instansiData', async (params) => {
-  const response = await get(apiUrls.penggunaInstansiList);
+  const response = await get(apiUrls.instansiData);
   return response?.data?.content;
 });
 export const getUnitKerjaData = createAsyncThunk('penggunaManagement/UnitKerjaData', async (params) => {
-  const response = await get(`${apiUrls.penggunaInstansiList}/${params}/unit-kerja`);
+  const response = await get(`${apiUrls.instansiData}/${params}/unit-kerja`);
   return response?.data?.content;
 });
 

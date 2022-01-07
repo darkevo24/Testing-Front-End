@@ -88,19 +88,22 @@ const InstansiDetail = () => {
         note: data.catatan,
       },
     };
-    dispatch(updateInstaStatus(obj)).then((res) => {
-      !res.status === 'FAILED'
-        ? Notification.show({
-            type: 'secondary',
-            message: <div> {res.message ? res.message : 'Permintaan Data Berhasil Diproses'} </div>,
-            icon: 'check',
-          })
-        : Notification.show({
-            type: 'secondary',
-            message: <div> {res.message ? res.message : 'Permintaan Data Gagal Diproses '}</div>,
-            icon: 'cross',
-          });
+    dispatch(updateInstaStatus(obj)).then((_res) => {
+      if (_res.payload) {
+        Notification.show({
+          type: 'secondary',
+          message: <div> Berhasil Update Status </div>,
+          icon: 'check',
+        });
+      } else {
+        Notification.show({
+          type: 'secondary',
+          message: <div> Gagal Update Status </div>,
+          icon: 'cross',
+        });
+      }
     });
+
     reset();
     setShowModal(false);
   };
@@ -116,21 +119,21 @@ const InstansiDetail = () => {
       instansiId: id,
       unitId: currentUnitKejira,
     };
-    dispatch(deleteUnitKerja(obj))
-      .then((_res) => {
+    dispatch(deleteUnitKerja(obj)).then((_res) => {
+      if (_res.payload) {
         Notification.show({
           type: 'secondary',
-          message: <div> Berhasil Update Status </div>,
+          message: <div> Berhasil Delete Unit Kerja </div>,
           icon: 'check',
         });
-      })
-      .catch((_err) => {
+      } else {
         Notification.show({
           type: 'secondary',
-          message: <div> Gagal Update Status </div>,
+          message: <div> Gagal Delete Unit Kerja </div>,
           icon: 'cross',
         });
-      });
+      }
+    });
 
     reset();
     setShowUnitModal(false);

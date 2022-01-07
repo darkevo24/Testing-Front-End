@@ -10,16 +10,18 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'components/Table';
 import bn from 'utils/bemNames';
-import { Loader } from 'components';
+import SingleDropDown from 'components/DropDown/SingleDropDown';
+import TableLoader from 'components/Loader/TableLoader';
 import { Search } from 'components/Icons';
 import { prefixID } from './constant';
+import { getStatusClass } from 'utils/helper';
 import { getInstansi, getUnitkerja, getPermintaanData, permintaanDataSelector } from './reducer';
 
 const bem = bn('content-table');
 
 const CMSPermintaanData = () => {
   const history = useHistory();
-  const [instansiId, setIntansiId] = useState('');
+  const [instansiId, setInstansiId] = useState('');
   const [query, setQuery] = useState('');
   const [unitKerjaId, setUnitKerja] = useState('');
   const [status, setStatus] = useState('');
@@ -28,11 +30,12 @@ const CMSPermintaanData = () => {
   const fetchDataset = (params) => {
     let obj = {
       page: params.page,
-      unitKerjaId,
-      instansiId,
-      status,
-      q: query,
+      sort_direction: 'DESC',
     };
+    if (instansiId) obj['instansiId'] = instansiId;
+    if (unitKerjaId) obj['unitKerjaId'] = unitKerjaId;
+    if (status) obj['status'] = status;
+    if (query) obj['q'] = query;
     return dispatch(getPermintaanData(obj));
   };
   const fetchInstansiData = () => {
@@ -96,7 +99,7 @@ const CMSPermintaanData = () => {
     {
       Header: 'Id',
       accessor: 'id',
-      Cell: ({ ...rest }) => <span>{prefixID(rest?.row?.original?.id || '')}</span>,
+      Cell: ({ row: { original } }) => <span>{prefixID(original?.id || '')}</span>,
     },
     {
       Header: 'Nama Peminta',
@@ -104,11 +107,23 @@ const CMSPermintaanData = () => {
     },
     {
       Header: 'Instansi',
-      accessor: 'instansi.nama',
+      Cell: ({
+        row: {
+          original: {
+            user: { instansi },
+          },
+        },
+      }) => <span>{instansi?.nama}</span>,
     },
     {
       Header: 'Unit Kerja',
-      accessor: 'instansi?.unitKerja[0]',
+      Cell: ({
+        row: {
+          original: {
+            user: { unitKerja },
+          },
+        },
+      }) => <span>{unitKerja?.nama}</span>,
     },
     {
       Header: 'Deskripsi Data',
@@ -116,29 +131,27 @@ const CMSPermintaanData = () => {
     },
     {
       Header: 'Target Waktu',
-      accessor: 'tanggalTarget?',
-      Cell: ({ ...rest }) => (
-        <span>
-          {rest.row.original?.tanggalTarget ? moment(rest.row.original?.tanggalTarget).format('DD MMMM YYYY') : '---'}
-        </span>
+      accessor: 'tanggalTarget',
+      Cell: ({ row: { original } }) => (
+        <span> {original?.tanggalTarget ? moment(original?.tanggalTarget).format('DD MMMM YYYY') : '---'} </span>
       ),
     },
     {
       Header: 'Jenis Data',
-      accessor: 'jenisData?',
+      accessor: 'jenisData',
     },
     {
       Header: 'Tanggal Permintaan',
       accessor: 'tanggalPermintaan?',
-      Cell: ({ ...rest }) => (
-        <span> {rest.row.original?.createdAt ? moment(rest.row.original?.createdAt).format('DD MMMM YYYY') : '---'} </span>
+      Cell: ({ row: { original } }) => (
+        <span> {original?.createdAt ? moment(original?.createdAt).format('DD MMMM YYYY') : '---'} </span>
       ),
     },
     {
       Header: 'Status',
       accessor: 'status',
-      Cell: ({ ...rest }) => (
-        <span className={`status ${rest?.row?.original?.status.toLowerCase()}`}> {rest?.row?.original?.status} </span>
+      Cell: ({ row: { original } }) => (
+        <span className={getStatusClass(original?.status.toLowerCase() || '').textColor}> {original?.status} </span>
       ),
     },
     {
@@ -168,7 +181,9 @@ const CMSPermintaanData = () => {
       }
     },
   };
-
+  const listInstansi = (instansi || [])?.map((data) => ({ value: data.id, label: data.nama }));
+  const listUnitKerja = (unitKerja || [])?.map((data) => ({ value: data.id, label: data.nama }));
+  const listStatus = (statusList || [])?.map((data) => ({ value: data.status, label: data.status }));
   return (
     <div className={bem.e('section cms-permintaan-data')}>
       <div className={bem.e('header')}>
@@ -177,45 +192,27 @@ const CMSPermintaanData = () => {
           <Col className="option" md={8}>
             <Form.Group className="d-flex align-items-center mr-10">
               <Form.Label className="mb-0 pr-10">Instansi</Form.Label>
-              <Form.Select aria-label="Default select example" onChange={(e) => setIntansiId(e.target.value)}>
-                <option value="">SEMUA</option>
-                {instansi &&
-                  instansi.map((data, index) => {
-                    return (
-                      <option key={index} value={data.id}>
-                        {data.nama}
-                      </option>
-                    );
-                  })}
-              </Form.Select>
+              <SingleDropDown
+                isLoading={loading}
+                data={[{ value: '', label: 'All' }, ...listInstansi]}
+                onChange={(selected) => setInstansiId(selected.value)}
+              />
             </Form.Group>
             <Form.Group className="d-flex align-items-center mr-10">
               <Form.Label className="unit-kerja">Unit Kerja</Form.Label>
-              <Form.Select aria-label="Default select example" onChange={(e) => setUnitKerja(e.target.value)}>
-                <option value="">SEMUA</option>
-                {unitKerja &&
-                  unitKerja.map((data, index) => {
-                    return (
-                      <option key={index} value={data?.id}>
-                        {data?.nama}
-                      </option>
-                    );
-                  })}
-              </Form.Select>
+              <SingleDropDown
+                isLoading={loading}
+                data={[{ value: '', label: 'All' }, ...listUnitKerja]}
+                onChange={(selected) => setUnitKerja(selected.value)}
+              />
             </Form.Group>
             <Form.Group className="d-flex align-items-center mr-10">
               <Form.Label className="mb-0 pr-10">Status</Form.Label>
-              <Form.Select aria-label="Default select example" onChange={(e) => setStatus(e.target.value)}>
-                <option value="">SEMUA</option>
-                {statusList &&
-                  statusList.map((data, index) => {
-                    return (
-                      <option key={index} value={data.status}>
-                        {data.status}
-                      </option>
-                    );
-                  })}
-              </Form.Select>
+              <SingleDropDown
+                isLoading={loading}
+                data={[{ value: '', label: 'All' }, ...listStatus]}
+                onChange={(selected) => setStatus(selected.value)}
+              />
             </Form.Group>
           </Col>
           <Col xs={4} className="d-flex align-items-center">
@@ -231,7 +228,7 @@ const CMSPermintaanData = () => {
           </Col>
         </Row>
       </div>
-      <div className="px-30 pt-0"> {!loading ? <Table {...tableConfig} /> : <Loader fullscreen={true} />} </div>
+      <div className="px-30 pt-0"> {!loading ? <Table {...tableConfig} /> : <TableLoader />} </div>
     </div>
   );
 };

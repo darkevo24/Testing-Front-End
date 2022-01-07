@@ -1,7 +1,7 @@
 import cx from 'classnames';
-import Button from 'react-bootstrap/Button';
 import RBModal from 'react-bootstrap/Modal';
 
+import { Button } from 'components';
 import { Close, icons } from 'components/Icons';
 import bn from 'utils/bemNames';
 

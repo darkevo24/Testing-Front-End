@@ -17,6 +17,28 @@ export const initialState = {
     error: null,
     record: {},
   },
+  /**
+   * get total news by month
+   */
+  monthlyNews: {
+    loading: false,
+    error: null,
+    status: 'idel',
+    records: [],
+  },
+  /**
+   * list if news by month
+   */
+  newsByMonth: {
+    loading: false,
+    error: null,
+    status: 'idel',
+    records: [],
+    page: 1,
+    totalRecords: null,
+    totalPages: null,
+    hasNext: false,
+  },
   latestNews: {
     loading: false,
     error: null,
@@ -41,6 +63,22 @@ export const initialState = {
     error: null,
     records: [],
   },
+  popularNews: {
+    status: 'idel',
+    loading: false,
+    error: null,
+    records: [],
+  },
+  newsByTopic: {
+    loading: false,
+    error: null,
+    status: 'idel',
+    records: [],
+    page: 1,
+    totalRecords: null,
+    totalPages: null,
+    hasNext: false,
+  },
 };
 
 export const USER_NEWS_PORTAL = 'USER_NEWS_PORTAL';
@@ -50,6 +88,16 @@ export const USER_NEWS_PORTAL = 'USER_NEWS_PORTAL';
  *
  */
 export const getNewsSearch = createAsyncThunk('userNewsPortal/getNewsSearch', async (param) => {
+  const response = await get(`${apiUrls.userBeritaPortal}/${param}`);
+  return response?.data?.content;
+});
+
+export const getNewsByMonth = createAsyncThunk('usernewsPortal/getNewsbyMonth', async (param) => {
+  const response = await get(`${apiUrls.userBeritaPortal}/${param}`);
+  return response?.data?.content;
+});
+
+export const getMonthlyNews = createAsyncThunk('usernewsPortal/getMonthlyNews', async (param) => {
   const response = await get(`${apiUrls.userBeritaPortal}/${param}`);
   return response?.data?.content;
 });
@@ -72,7 +120,16 @@ export const getPopularTopic = createAsyncThunk('userNewsPortal/getPopularTopic'
   return response?.data?.content;
 });
 
+export const getNewsByTopic = createAsyncThunk('userNewsPortal/getNewsByTopic', async (param) => {
+  const response = await get(`${apiUrls.userBeritaPortal}/${param}`);
+  return response?.data?.content;
+});
+
 export const getOtherNews = createAsyncThunk('userNewsPortal/getOtherNews', async (param) => {
+  const response = await get(`${apiUrls.userBeritaPopular}/${param}`);
+  return response?.data?.content;
+});
+export const getPopularNews = createAsyncThunk('userNewsPortal/getPopularNews', async (param) => {
   const response = await get(`${apiUrls.userBeritaPopular}/${param}`);
   return response?.data?.content;
 });
@@ -172,6 +229,24 @@ const userNewsPortal = createSlice({
       state.popularTopic.status = 'failed';
     });
 
+    /**
+     * GET News By Topic
+     */
+    builder.addCase(getNewsByTopic.pending, (state, action) => {
+      state.newsByTopic.loading = true;
+      state.newsByTopic.status = 'loading';
+    });
+    builder.addCase(getNewsByTopic.fulfilled, (state, action) => {
+      state.newsByTopic.loading = false;
+      state.newsByTopic.records = action.payload.records || [];
+      state.newsByTopic.status = 'success';
+      state.newsByTopic.totalRecords = action.meta?.totalRecords;
+      state.newsByTopic.totalPages = action.meta?.totalPages;
+    });
+    builder.addCase(getNewsByTopic.rejected, (state) => {
+      state.newsByTopic.loading = false;
+      state.newsByTopic.status = 'failed';
+    });
     /***
      * Get Other News
      *
@@ -188,6 +263,59 @@ const userNewsPortal = createSlice({
     builder.addCase(getOtherNews.rejected, (state) => {
       state.otherNews.loading = false;
       state.otherNews.status = 'failed';
+    });
+
+    /***
+     * Get Popular News
+     */
+    builder.addCase(getPopularNews.pending, (state, action) => {
+      state.popularNews.loading = true;
+      state.popularNews.status = 'loading';
+    });
+    builder.addCase(getPopularNews.fulfilled, (state, action) => {
+      state.popularNews.loading = false;
+      state.popularNews.records = action.payload || [];
+      state.popularNews.status = 'success';
+    });
+    builder.addCase(getPopularNews.rejected, (state) => {
+      state.popularNews.loading = false;
+      state.popularNews.status = 'failed';
+    });
+
+    /**
+     * get news via Month
+     */
+    builder.addCase(getMonthlyNews.pending, (state, action) => {
+      state.monthlyNews.loading = true;
+      state.monthlyNews.status = 'loading';
+    });
+    builder.addCase(getMonthlyNews.fulfilled, (state, action) => {
+      state.monthlyNews.loading = false;
+      state.monthlyNews.records = action.payload || [];
+      state.monthlyNews.status = 'success';
+    });
+    builder.addCase(getMonthlyNews.rejected, (state) => {
+      state.monthlyNews.loading = false;
+      state.monthlyNews.status = 'failed';
+    });
+
+    /**
+     * get monthly news
+     */
+    builder.addCase(getNewsByMonth.pending, (state, action) => {
+      state.newsByMonth.loading = true;
+      state.newsByMonth.status = 'loading';
+    });
+    builder.addCase(getNewsByMonth.fulfilled, (state, action) => {
+      state.newsByMonth.loading = false;
+      state.newsByMonth.records = action.payload.records || [];
+      state.newsByMonth.status = 'success';
+      state.newsByMonth.totalRecords = action.payload.totalRecords;
+      state.newsByMonth.totalPages = action.payload.totalPages;
+    });
+    builder.addCase(getNewsByMonth.rejected, (state) => {
+      state.newsByMonth.loading = false;
+      state.newsByMonth.status = 'failed';
     });
 
     /**
@@ -216,6 +344,9 @@ export const highlightedNewsSelector = (state) => state.userPortalBerita?.highli
 export const newsDetailSelector = (state) => state.userPortalBerita?.news;
 export const popularTopicSelector = (state) => state.userPortalBerita?.popularTopic;
 export const otherNewsSelector = (state) => state.userPortalBerita?.otherNews;
+export const newsByMonthSelector = (state) => state.userPortalBerita?.newsByMonth;
+export const monthlyNewsSelector = (state) => state.userPortalBerita?.monthlyNews;
 export const tweetSelector = (state) => state.userPortalBerita?.tweet;
-
+export const popularNewsSelector = (state) => state.userPortalBerita?.popularNews;
+export const newsByTopicSelector = (state) => state.userPortalBerita?.newsByTopic;
 export default userNewsPortal.reducer;

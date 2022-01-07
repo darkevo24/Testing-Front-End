@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import { ReactComponent as StarRed } from 'assets/star-red.svg';
 import { ReactComponent as ArrowRightRed } from 'assets/arrow-right-red.svg';
-import styled from 'styled-components';
 import { getPopularTopic, popularTopicSelector } from './reducer';
 
 const Wrapper = styled.div`
@@ -30,10 +31,17 @@ const Title = styled.span`
 
 const TopikPopuler = () => {
   const dispatch = useDispatch();
+  const hisotry = useHistory();
+
   useEffect(() => {
     dispatch(getPopularTopic('populer/tagline'));
   }, []);
   const { records: dataPopularTopic } = useSelector(popularTopicSelector);
+
+  const handleClick = (e, id) => {
+    e.preventDefault();
+    hisotry.push(`/berita-topik/${id}`);
+  };
 
   return (
     <Wrapper>
@@ -46,7 +54,9 @@ const TopikPopuler = () => {
           return (
             <TopikItem className="child" key={index}>
               <span>{value.keterangan}</span>
-              <ArrowRightRed />
+              <span className="cursor-pointer">
+                <ArrowRightRed onClick={(e) => handleClick(e, value.id)} />
+              </span>
             </TopikItem>
           );
         })}

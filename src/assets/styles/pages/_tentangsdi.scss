@@ -16,7 +16,7 @@
   }
 
   &__title {
-     
+
     font-size: 32px;
     font-style: normal;
     font-weight: 700;
@@ -32,7 +32,7 @@
   }
 
   &__description {
-     
+
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -93,12 +93,12 @@
   padding: 80px 0;
 
   .form-control {
-    margin-bottom: 24px;
+    margin-bottom: 8px;
   }
 }
 
 .contactus-title {
-   
+
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
@@ -106,4 +106,9 @@
   letter-spacing: 0px;
   text-align: left;
   color: $black-dark-10;
+}
+
+
+.error-message {
+  color: red;
 }

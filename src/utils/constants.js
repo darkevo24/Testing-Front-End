@@ -22,6 +22,7 @@ export const analyticsUrl = 'https://analitik.data.go.id';
 export const katalogUrl = 'https://katalog.satudata.go.id';
 export const apiUrl = '/api-be';
 export const dataUrl = `${katalogUrl}/api`;
+export const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
 
 export const getAnalyticsUrl = (path) => `${analyticsUrl}/${path}`;
 export const getApiEndpoint = (path) => `${apiUrl}/${path}`;
@@ -36,15 +37,18 @@ export const apiUrls = {
   dataset: getDataEndpoint('3/action/package_search'),
   perminataanData: getPortalEndpoint('permintaan-data'),
   instansiData: getV1Endpoint('instansi'),
+  cmsIntansiData: getCMSEndpoint('instansi'),
   cmsKomunitasAhliData: getCMSEndpoint('komunitas-ahli'),
   portalKomunitasAhliData: getPortalEndpoint('komunitas-ahli'),
-  cmsAuditTrialData: getCMSEndpoint('audit-trial'),
+  cmsAuditTrialData: getCMSEndpoint('audit-trail'),
   fileUpload: getApiEndpoint('file/upload'),
-  publiFileUpload: getApiEndpoint('file/public-upload'),
+  publicFileUpload: getApiEndpoint('file/public-upload'),
+  multipleFileUpload: getApiEndpoint('file/uploadMultiple'),
   uploadFoto: getApiEndpoint('file/public-image-upload'),
   bidangData: getCMSEndpoint('komunitas-ahli/bidang-keahlian'),
   daerahData: getV1Endpoint('kabupatenkota/search'),
   produenData: getV1Endpoint('katalog/produsendata'),
+  dataindukAllData: getV1Endpoint('katalog/all'),
   dataindukData: getV1Endpoint('katalog/datainduk'),
   katalogData: getV1Endpoint('katalog'),
   listPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
@@ -62,6 +66,7 @@ export const apiUrls = {
   sdgPillers: getV1Endpoint('settings/key/SDGS'),
   rkpPN: getV1Endpoint('settings/key/RKP'),
   strukturData: getCMSEndpoint('bidang'),
+  strukturDataPublic: getApiEndpoint('public/bidang'),
   cmsBeritaData: getCMSEndpoint('berita'),
   cmsBimtekJadwal: getCMSEndpoint('bimtek'),
   cmsBimtekPermintaanData: getCMSEndpoint('bimtek/permintaan'),
@@ -69,6 +74,7 @@ export const apiUrls = {
   cmsBimtekLogs: getCMSEndpoint('bimtek/logs'),
   cmsAboutUs: getCMSEndpoint('tentang'),
   aboutUs: getApiEndpoint('public/tentang'),
+  hubungiKami: getApiEndpoint('public/hubungi-kami'),
   userBeritaPortal: getPublicV1Endpoint('berita'),
   userBeritaLatest: getPublicV1Endpoint('berita/latest'),
   userBeritaPopular: getPublicV1Endpoint('berita/populer'),
@@ -88,10 +94,15 @@ export const apiUrls = {
   beritaLayout: getPublicV1Endpoint('layout'),
   updateKiriLayout: getPublicV1Endpoint('layout/code/kiri'),
   bimtekDokumentasi: getPortalEndpoint('v1/bimtek/dokumentasi'),
-  bimtekDokumentasiMingguIni: getPortalEndpoint('v1/bimtek/dokumentasi/minggu-ini'),
-  bimtekDokumentasiMingguLalu: getPortalEndpoint('v1/bimtek/dokumentasi/minggu-lalu'),
-  bimtekDokumentasiBulanIni: getPortalEndpoint('v1/bimtek/dokumentasi/bulan-ini'),
-  bimtekPermintaan: getCMSEndpoint('bimtek/permintaan'),
+  bimtekPermintaan: getPortalEndpoint('v1/bimtek/permintaan'),
+  sosialMedia: getCMSEndpoint('sosial-media'),
+  bimtekLogs: getPortalEndpoint('v1/bimtek/logs'),
+  cmsContactUs: getCMSEndpoint('hubungi-kami-setting'),
+  penggunaManagement: getApiEndpoint('sekretariat/user'),
+  detailPenggunaManagement: getApiEndpoint('sekretariat/user'),
+  penggunaRoleList: getApiEndpoint('sekretariat/user/role-list'),
+  penggunaStatusList: getApiEndpoint('sekretariat/user/status-list'),
+  penggunaLogs: getApiEndpoint('sekretariat/user'),
 };
 
 export const priorityOptions = [
@@ -125,6 +136,20 @@ export const formatOptions = FORMATS.map(arrayToOptionsMapper());
 
 export const pengaturanAksesOptions = ['Terbuka', 'Terbatas', 'Tertutup'].map(arrayToOptionsMapper());
 
+export const levelInstansi = [
+  {
+    label: 'NASIONAL',
+    value: 'NASIONAL',
+  },
+  {
+    label: 'PROVINSI',
+    value: 'PROVINSI',
+  },
+  {
+    label: 'KABUPATEN_KOTA',
+    value: 'KABUPATEN_KOTA',
+  },
+];
 export const TOPIC_LIST = [
   { title: 'Semua', items: [], icon: <SplitCircle /> },
   { title: 'Pertahanan dan Luar Negeri', items: ['Pertahanan', 'Luar Negeri'], icon: <EkonomiSvg /> },

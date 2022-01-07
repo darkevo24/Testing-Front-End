@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import cloneDeep from 'lodash/cloneDeep';
-import isEmpty from 'lodash/isEmpty';
 import { Dropdown, Input } from 'components';
 import { pengaturanAksesOptions } from 'utils/constants';
 import { submitForm, findOption } from 'utils/helper';
@@ -14,16 +13,13 @@ export const dataVariableFormId = 'daftar-form-id';
 export const submitDataVariableForm = submitForm(dataVariableFormId);
 const schema = yup
   .object({
-    nama: yup.string().required(),
-    idKonsep: yup.string().required(),
-    konsep: yup.string().required(),
-    definisi: yup.string().required(),
-    pengaturanAkses: yup.mixed().required(),
+    nama: yup.string().required('Nama is required'),
+    pengaturanAkses: yup.mixed().required('Pengaturan Akses is required'),
   })
   .required();
 
 const DataVariableForm = ({ data, onSubmit }) => {
-  const isEdit = !isEmpty(data?.id);
+  const isEdit = !!data?.id;
   const variable = cloneDeep(data || {});
   if (isEdit) {
     variable.pengaturanAkses = findOption(pengaturanAksesOptions, variable.pengaturanAkses);

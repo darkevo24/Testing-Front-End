@@ -1,0 +1,29 @@
+.sdp-bimtek-pagination {
+  &__bimtek-pagination-buttons {
+    background: $white;
+    border: 0px;
+    margin: 0px 7px;
+    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__bimtek-active-page {
+    background: $white;
+    border: 0px;
+    margin: 0px 7px;
+    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
+    color: $black-dark;
+  }
+  &__bimtek-inactive-page {
+    background: $white;
+    border: 0px;
+    margin: 0px 7px;
+    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
+    color: $gray-light;
+  }
+}

@@ -41,6 +41,10 @@
       border: none;
       display: flex;
       justify-content: space-between;
+      button.btn {
+        display: flex;
+        align-items: center;
+      }
     }
     &-content {
       border: none;

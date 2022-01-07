@@ -40,12 +40,30 @@ const LogActivity = lazy(() => import('containers/CMS/LogAktifitas'));
 const ForumSDIPage = lazy(() => import('containers/CMS/ForumSDI'));
 const ForumSDIFormPage = lazy(() => import('containers/CMS/ForumSDI/CMSForumSDIForm'));
 const CMSForumSDIDetailPage = lazy(() => import('containers/CMS/ForumSDI/CMSForumSDIDetail'));
+const MediaSosialPage = lazy(() => import('containers/CMS/MediaSosial'));
+const ContactUsPage = lazy(() => import('containers/CMS/ContactUs'));
+const ContactUsDetailPage = lazy(() => import('containers/CMS/ContactUs/detail'));
+const Instansi = lazy(() => import('containers/CMS/Instansi'));
+const InstansiDetail = lazy(() => import('containers/CMS/Instansi/Detail'));
+const NewInstansi = lazy(() => import('containers/CMS/Instansi/NewInstansi'));
+const NewUnitKerja = lazy(() => import('containers/CMS/Instansi/UnitKerja/NewUnitKerja'));
+const EditInstansi = lazy(() => import('containers/CMS/Instansi/EditInstansi'));
+const EditUnitKerja = lazy(() => import('containers/CMS/Instansi/UnitKerja/EditUnitKerja'));
+const PenggunaManagementPage = lazy(() => import('containers/CMS/PenggunaManagement'));
+const PenggunaManagementDetailPage = lazy(() => import('containers/CMS/PenggunaManagementDetails'));
+const PenggunaFormPage = lazy(() => import('containers/CMS/PenggunaManagement/tambahPengguna'));
 
 function CMSRoutes() {
   return (
     <CMSLayout>
       <Switch>
         <PrivateRoute exact path="/cms/log-activity" component={LogActivity} />
+        <PrivateRoute exact path="/cms/instansi" component={Instansi} />
+        <PrivateRoute exact path="/cms/instansi/form" component={NewInstansi} />
+        <PrivateRoute exact path="/cms/instansi/:id" component={InstansiDetail} />
+        <PrivateRoute exact path="/cms/instansi/:id/new-unit-kerja" component={NewUnitKerja} />
+        <PrivateRoute exact path="/cms/instansi/:id/edit-unit-kerja/:unitId" component={EditUnitKerja} />
+        <PrivateRoute exact path="/cms/instansi/edit/:id" component={EditInstansi} />
         <PrivateRoute exact path="/cms/manage-komunitas-ahli/:id" component={ManageKomunitasAhliPage} />
         <PrivateRoute exact path="/cms/manage-komunitas-ahli/" component={ManageKomunitasAhliPage} />
         <PrivateRoute exact path="/cms/api/edit/:id?" component={ManagementApiEdit} />
@@ -59,7 +77,7 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/dashboard" component={DashboardPage} />
         <PrivateRoute exact path="/cms/about-us" component={AboutUsPage} />
         <PrivateRoute exact path="/cms/struktur" component={StrukturOrganisasiPage} />
-        <PrivateRoute exact path="/cms/struktur-baru" component={StrukturBaruPage} />
+        <PrivateRoute exact path="/cms/struktur-form" component={StrukturBaruPage} />
         <PrivateRoute exact path="/cms/struktur-detail/:id" component={StrukturDetailPage} />
         <PrivateRoute exact path="/cms/about-us/edit/:id?" component={AboutUsEditPage} />
         <PrivateRoute exact path="/cms/berita-layout" component={BeritaLayout} />
@@ -87,6 +105,12 @@ function CMSRoutes() {
         <PrivateRoute exact path="/cms/forum-sdi/manage-forum-sdi" component={ForumSDIFormPage} />
         <PrivateRoute exact path="/cms/forum-sdi-detail/:id" component={CMSForumSDIDetailPage} />
         <PrivateRoute exact path="/cms/forum-sdi" component={ForumSDIPage} />
+        <PrivateRoute exact path="/cms/media-sosial" component={MediaSosialPage} />
+        <PrivateRoute exact path="/cms/contact-us" component={ContactUsPage} />
+        <PrivateRoute exact path="/cms/contact-us/:id" component={ContactUsDetailPage} />
+        <PrivateRoute exact path="/cms/pengguna-management" component={PenggunaManagementPage} />
+        <PrivateRoute exact path="/cms/pengguna-management/add" component={PenggunaFormPage} />
+        <PrivateRoute exact path="/cms/pengguna-management/:id" component={PenggunaManagementDetailPage} />
         <Route exact path="/cms" render={() => <Redirect to="/cms/dashboard" />} />
       </Switch>
     </CMSLayout>

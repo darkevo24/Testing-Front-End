@@ -1,32 +1,54 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import find from 'lodash/find';
+import cx from 'classnames';
 import isFunction from 'lodash/isFunction';
-
-import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
+import { useDispatch, useSelector } from 'react-redux';
+import { userSelector } from 'containers/Login/reducer';
+import { getKodeReferensi, kodeReferensiSelector } from 'containers/Daftar/reducer';
 import Popover from 'components/Popover';
 import Table from 'components/Table';
 import truncate from 'lodash/truncate';
+import { put } from 'utils/request';
+import { apiUrls } from 'utils/constants';
 
 const DataVariableTable = ({
   cms = false,
+  cmsDetail = false,
   search = true,
+  cmsCreateForm = false,
   data = [],
   result = {},
-  kodeReferensiOptions = [],
   showDataVariableFormModal,
   showDeleteModal,
-  handleKodeReferensiChange,
   daftar = {},
   params = {},
   pageSize = null,
-  manualPagination = false,
+  manualPagination = true,
   fetchKatalogVariableData,
+  handleTableReferensiChange,
 }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const user = useSelector(userSelector);
+  const kodeReferensi = useSelector(kodeReferensiSelector);
+  const hasAccess = daftar?.instansiId === user?.instansi;
 
-  const columns = useMemo(
-    () => [
+  const handleReferensiChange = async (item) => {
+    if (cmsCreateForm) {
+      handleTableReferensiChange(item);
+      return;
+    }
+    try {
+      await put(`${apiUrls.variable}/referensi`, { idVariable: item.id, idKatalog: daftar.id });
+      fetchKatalogVariableData();
+      dispatch(getKodeReferensi(daftar.id));
+    } catch (e) {
+      //
+    }
+  };
+
+  const columns = useMemo(() => {
+    let cols = [
       {
         Header: 'Nama Variabel',
         accessor: 'nama',
@@ -34,15 +56,17 @@ const DataVariableTable = ({
       {
         Header: 'ID Konsep',
         accessor: 'idKonsep',
+        Cell: ({ cell: { value = '-' } = {} }) => value,
       },
       {
         Header: 'Konsep',
         accessor: 'konsep',
+        Cell: ({ cell: { value = '-' } = {} }) => value,
       },
       {
         Header: 'Definisi',
         accessor: 'definisi',
-        Cell: ({ cell: { value } = {} }) => {
+        Cell: ({ cell: { value = '-' } = {} }) => {
           return cms ? (
             value
           ) : (
@@ -62,9 +86,16 @@ const DataVariableTable = ({
       {
         Header: 'Kode Referensi',
         accessor: 'kodeReferensi',
-        Cell: ({ cell: { value } }) => find(kodeReferensiOptions, { value })?.label || '-',
+        action: handleReferensiChange,
+        isChecked: (row) => row.kodeReferensi === 1,
+        isDisabled: !hasAccess,
+        label: '',
+        Cell: Table.CheckBox,
       },
-      {
+    ];
+
+    if (hasAccess && !cmsDetail) {
+      cols.push({
         id: 'actions',
         actions: [
           {
@@ -77,33 +108,20 @@ const DataVariableTable = ({
           },
         ],
         Cell: Table.Actions,
-      },
-    ],
-    [],
-  );
+      });
+    }
+    return cols;
+  }, [data, daftar, user]);
 
   const tableConfig = {
     variant: 'spaced',
     columns,
     data,
     totalCount: result?.totalRecords || null,
-    searchLeftComponent: cms ? null : (
-      <div className="w-100 d-flex align-items-center">
-        <span className="sdp-text-disable mr-16">{t('sandbox.variable.reference')}</span>
-        <SingleSelectDropdown
-          className="wpx-300"
-          data={kodeReferensiOptions}
-          onChange={handleKodeReferensiChange}
-          placeHolder="ID UMKM"
-          isLoading={false}
-          noValue={true}
-        />
-      </div>
-    ),
     title: (
       <>
-        <span className="sdp-text-disable">{t('sandbox.variable.title')}</span>
-        <span> {daftar?.nama || ''}</span>
+        <span className="sdp-text-disable mr-8">{cms ? t('sandbox.variable.cmsTitle') : t('sandbox.variable.title')}</span>
+        <span>{!cms ? daftar?.nama : ''}</span>
       </>
     ),
     showSearch: search,
@@ -111,6 +129,15 @@ const DataVariableTable = ({
     manualPagination: manualPagination,
     currentPage: params?.page || null,
     highlightOnHover: true,
+    searchLeftComponent: (
+      <span className="mr-auto">
+        Kode Referensi
+        <span className={cx('ml-16', { 'sdp-text-blue': !!kodeReferensi?.result?.nama })}>
+          {kodeReferensi?.result?.nama || '-'}
+        </span>
+      </span>
+    ),
+    searchRightComponent: !!cms || !hasAccess,
     searchPlaceholder: t('sandbox.variable.searchPlaceholder'),
     searchButtonText: t('sandbox.variable.addVariable'),
     onSearch: (filterText) => {
@@ -126,9 +153,9 @@ const DataVariableTable = ({
   };
 
   return (
-    <>
+    <div className="sdp-daftar-table">
       <Table {...tableConfig} />
-    </>
+    </div>
   );
 };
 

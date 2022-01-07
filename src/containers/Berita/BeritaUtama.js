@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import moment from 'moment';
+import { truncate } from 'lodash';
 import 'moment/locale/id';
 import parse from 'html-react-parser';
 import { useHistory } from 'react-router-dom';
@@ -30,13 +31,6 @@ const Judul = styled.div`
   margin-bottom: 16px;
   cursor: pointer;
 `;
-
-const Overview = styled.div`
-  font-size: 16px;
-  line-height: 24px;
-  color: #515154;
-`;
-
 const BeritaUtama = () => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -44,7 +38,7 @@ const BeritaUtama = () => {
   const { records, status } = useSelector(highlightedNewsSelector);
 
   useEffect(() => {
-    if (status === 'idel') dispatch(gethighlightedNews('latest/category'));
+    if (status === 'idel') dispatch(gethighlightedNews('latest'));
   }, [dispatch, status]);
 
   const handleDetail = (event, title) => {
@@ -56,12 +50,19 @@ const BeritaUtama = () => {
       {records.length > 0 &&
         records.map((value, index) => {
           const { image, judul, partContent, tanggalPublis, id } = value;
+          const truncatedParagrapData = truncate(partContent, {
+            length: 250,
+            separator: ' ',
+          });
           return (
             <div key={index}>
               <ImageBerita src={image} />
               <Tanggal>{moment(tanggalPublis).fromNow()}</Tanggal>
               <Judul onClick={(event) => handleDetail(event, id)}>{judul}</Judul>
-              <Overview>{parse(partContent)}</Overview>
+              <div className="overview">{parse(truncatedParagrapData)}</div>
+              <a className="read_more_link" onClick={(event) => handleDetail(event, id)}>
+                <h6>Read More</h6>
+              </a>
             </div>
           );
         })}

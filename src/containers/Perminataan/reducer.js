@@ -34,7 +34,9 @@ export const initialState = {
 export const PERMINATAAN_DATA_SLICE = 'PERMINATAAN_DATA_SLICE';
 
 export const getPerminataanData = createAsyncThunk('portal/getPerminataanData', async (params) => {
-  const response = await get(apiUrls.perminataanData, { query: { page: params.page + 1, size: 10, status: params.status } });
+  const response = await get(apiUrls.perminataanData, {
+    query: { page: params.page + 1, size: 10, status: params.status, sort: 'id', sort_direction: 'DESC' },
+  });
   return response?.data?.content;
 });
 

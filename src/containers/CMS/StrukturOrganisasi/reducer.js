@@ -1,15 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, get, put, post } from 'utils/request';
+import { apiUrls, get, put, post, deleteRequest } from 'utils/request';
 
 export const initialState = {
   loading: false,
   dataset: {
     loading: false,
     error: null,
-    page: 0,
+    page: 1,
     records: [],
     size: null,
-    totalRecords: null,
+    totalRecords: 0,
+    totalPages: 1,
   },
   detaildataSet: {
     loading: false,
@@ -20,6 +21,11 @@ export const initialState = {
     loading: false,
     error: '',
     record: [],
+  },
+  dataProfil: {
+    loading: false,
+    error: '',
+    record: {},
   },
 };
 
@@ -51,7 +57,26 @@ export const createStrukturOrganisasi = createAsyncThunk('cms/createStrukturOrga
 });
 
 export const updateStatus = createAsyncThunk('cms/updateStatusStruktur', async (params) => {
-  const response = await post(`${apiUrls.strukturData}/${params.id}/${params.action}`, {});
+  const response = await post(`${apiUrls.strukturData}/${params.id}/${params.action}?notes=${params.notes}`, {});
+  return response?.data;
+});
+
+export const setPreviewBidang = createAsyncThunk('cms/setPreviewBidang', async (params) => {
+  return params;
+});
+
+export const createProfile = createAsyncThunk('cms/createProfile', async (params) => {
+  const response = await post(`${apiUrls.strukturData}/${params.id}/profil`, params.payload);
+  return response?.data;
+});
+
+export const updateProfile = createAsyncThunk('cms/updateProfile', async (params) => {
+  const response = await put(`${apiUrls.strukturData}/${params.id}/profil/${params.payload.id}`, params.payload);
+  return response?.data;
+});
+
+export const deleteProfile = createAsyncThunk('cms/deleteProfile', async (params) => {
+  const response = await deleteRequest(`${apiUrls.strukturData}/${params.idBidang}/profil/${params.idProfil}`);
   return response?.data;
 });
 
@@ -71,6 +96,7 @@ const strukturOrganisasiSlice = createSlice({
       state.dataset.loading = false;
       state.dataset.records = action.payload.records;
       state.dataset.totalRecords = action.payload.totalRecords;
+      state.dataset.totalPages = action.payload.totalPages;
       state.dataset.page = action.payload.page;
     });
     builder.addCase(getStrukturOrganisasi.rejected, (state) => {
@@ -124,6 +150,45 @@ const strukturOrganisasiSlice = createSlice({
     builder.addCase(createStrukturOrganisasi.rejected, (state, action) => {
       state.detaildataSet.loading = false;
       state.detaildataSet.error = action.error.message;
+    });
+
+    builder.addCase(setPreviewBidang.fulfilled, (state, action) => {
+      state.detaildataSet.record = action.payload;
+    });
+
+    builder.addCase(createProfile.pending, (state, action) => {
+      state.dataProfil.loading = true;
+    });
+    builder.addCase(createProfile.fulfilled, (state, action) => {
+      state.dataProfil.loading = false;
+      state.dataProfil.record = action.payload;
+    });
+    builder.addCase(createProfile.rejected, (state, action) => {
+      state.dataProfil.loading = false;
+      state.dataProfil.error = action.error.message;
+    });
+
+    builder.addCase(updateProfile.pending, (state, action) => {
+      state.dataProfil.loading = true;
+    });
+    builder.addCase(updateProfile.fulfilled, (state, action) => {
+      state.dataProfil.loading = false;
+      state.dataProfil.record = action.payload;
+    });
+    builder.addCase(updateProfile.rejected, (state, action) => {
+      state.dataProfil.loading = false;
+      state.dataProfil.error = action.error.message;
+    });
+
+    builder.addCase(deleteProfile.pending, (state, action) => {
+      state.dataProfil.loading = true;
+    });
+    builder.addCase(deleteProfile.fulfilled, (state) => {
+      state.dataProfil.loading = false;
+    });
+    builder.addCase(deleteProfile.rejected, (state, action) => {
+      state.dataProfil.loading = false;
+      state.dataProfil.error = action.error.message;
     });
   },
 });

@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { useHistory } from 'react-router-dom';
+
+import { PencilSvg, Trash } from 'components/Icons';
+import { Loader, CMSTopDetail, CMSModal } from 'components';
+import { LogStatus } from 'components/Sidebars/LogStatus';
+import Notification from 'components/Notification';
+import Modal from 'components/Modal';
+import bn from 'utils/bemNames';
+import { STATUS_DATA } from 'utils/constants';
 import CMSStrukturForm, { submitStrukturForm } from './Form.js';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   getStrukturOrganisasiById,
   getStrukturOrganisasiLogs,
   detailDataSelector,
   logDatasetSelector,
-  setStrukturOrganisasi,
   updateStatus,
 } from './reducer';
-
-import { Loader, CMSTopDetail } from 'components';
-import { ReactComponent as DeleteIcon } from 'assets/trash-icon.svg';
-import { LogStatus } from 'components/Sidebars/LogStatus';
-import bn from 'utils/bemNames';
-import Notification from 'components/Notification';
-import { STATUS_DATA } from 'utils/constants';
 
 const bem = bn('content-detail');
 
@@ -29,7 +29,10 @@ const CMSStrukturDetail = (props) => {
   const dispatch = useDispatch();
   const { loading, record } = useSelector(detailDataSelector);
   const { loading: logLoading, record: logRecord } = useSelector(logDatasetSelector);
-  const [bidang, setBidang] = useState(null);
+  const [action, setAction] = useState('');
+  const [modalConfirm, setModalConfirm] = useState(false);
+  const [modalLabel, setModalLabel] = useState('');
+  const [notes, setNotes] = useState('');
 
   useEffect(() => {
     fetchData(id);
@@ -40,71 +43,90 @@ const CMSStrukturDetail = (props) => {
     dispatch(getStrukturOrganisasiLogs(id));
   };
 
-  const simpanData = () => {
-    submitStrukturForm();
+  const updateData = () => {
+    setModalConfirm(false);
+    dispatch(updateStatus({ id: id, action: action }))
+      .then((res) => notifyResponse(res))
+      .then(() => fetchData(id));
   };
 
-  const archiveData = () => {
-    updateData('arsipkan');
+  const onTolak = () => {
+    setModalConfirm(false);
+    dispatch(updateStatus({ id: id, action: action, notes: notes }))
+      .then((res) => notifyResponse(res))
+      .then(() => fetchData(id));
   };
 
-  const tolakData = () => {
-    updateData('tolak');
+  const actionClick = (status) => {
+    Promise.resolve()
+      .then(() => setAction(status))
+      .then(() => submitStrukturForm());
   };
 
-  const setujuiData = () => {
-    updateData('setujui');
-  };
-
-  const updateData = (action) => {
-    dispatch(updateStatus({ id: id, action: action })).then((res) => {
-      res?.payload
-        ? Notification.show({
-            type: 'secondary',
-            message: (
-              <div>
-                Berita <span className="fw-bold">{res.payload.content.judul}</span> Berhasil Ditambahkan
-              </div>
-            ),
-            icon: 'check',
-            onClose: history.goBack(),
-          })
-        : Notification.show({
-            message: (
-              <div>
-                Error <span className="fw-bold">{res.error.message}</span> Data Tidak Ditambahkan
-              </div>
-            ),
-            icon: 'cross',
-          });
-    });
-  };
-
-  useEffect(() => {
-    if (bidang !== null) {
-      dispatch(setStrukturOrganisasi({ id: id, payload: bidang })).then((res) => {
-        res?.payload
-          ? Notification.show({
-              type: 'secondary',
-              message: (
-                <div>
-                  Berita <span className="fw-bold">{res.payload.content.judul}</span> Berhasil Ditambahkan
-                </div>
-              ),
-              icon: 'check',
-              onClose: history.goBack(),
-            })
-          : Notification.show({
-              message: (
-                <div>
-                  Error <span className="fw-bold">{res.error.message}</span> Data Tidak Ditambahkan
-                </div>
-              ),
-              icon: 'cross',
-            });
-      });
+  const onSubmit = (data) => {
+    // open modal
+    let label = '';
+    switch (action) {
+      case 'kirim':
+        label = <span>Kirim Berita?</span>;
+        break;
+      case 'arsipkan':
+        label = (
+          <span>
+            Apakah anda yakin ingin <b className="sdp-text-blue">mengarsipkan</b> {record?.nama}?
+          </span>
+        );
+        break;
+      case 'tolak':
+        break;
+      case 'setujui':
+        label = (
+          <span>
+            Apakah anda yakin ingin <b className="sdp-text-blue">menyetujui</b> {record?.nama}?
+          </span>
+        );
+        break;
+      case 'publish':
+        label = (
+          <span>
+            Apakah anda yakin ingin <b className="sdp-text-blue">menayangkan</b> {record?.nama}?
+          </span>
+        );
+        break;
+      case 'unpublish':
+        label = (
+          <span>
+            Apakah anda yakin ingin <b className="sdp-text-blue">tidak menayangkan</b> {record?.nama}?
+          </span>
+        );
+        break;
+      default:
+        return;
     }
-  }, [bidang]);
+    setModalLabel(label);
+    setModalConfirm(true);
+  };
+
+  const notifyResponse = (res) => {
+    res?.payload
+      ? Notification.show({
+          type: 'secondary',
+          message: (
+            <div>
+              Bidang <span className="fw-bold">{res.payload.content.judul}</span> Berhasil Disimpan
+            </div>
+          ),
+          icon: 'check',
+        })
+      : Notification.show({
+          message: (
+            <div>
+              Error <span className="fw-bold">{res.error?.message}</span> Data Tidak Disimpan
+            </div>
+          ),
+          icon: 'cross',
+        });
+  };
 
   return (
     <div>
@@ -116,47 +138,97 @@ const CMSStrukturDetail = (props) => {
               <div className={bem.e('title')}>Bidang Detail</div>
               {record?.status === STATUS_DATA.draft || record?.status === STATUS_DATA.rejected ? (
                 <div>
-                  <Button onClick={archiveData} variant="secondary">
-                    <DeleteIcon />
+                  <Button onClick={() => actionClick('arsipkan')} variant="secondary" className="mr-16">
+                    <Trash />
                   </Button>
                   <Button
-                    onClick={() => history.goBack()}
-                    className="ml-10 bg-white sdp-text-grey-dark border-gray-stroke"
-                    variant="secondary"
-                    style={{ width: '112px' }}>
-                    Batal
+                    key="edit"
+                    variant="outline-light"
+                    className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
+                    onClick={() => history.push('/cms/struktur-form')}>
+                    <PencilSvg />
                   </Button>
-                  <Button onClick={simpanData} className="ml-10" variant="info" style={{ width: '112px' }}>
-                    Simpan
+                  <Button onClick={() => actionClick('kirim')} variant="info" style={{ width: '112px' }}>
+                    Kirim
                   </Button>
                 </div>
               ) : record?.status === STATUS_DATA.waitingApproval ? (
                 <div>
                   <Button
-                    onClick={tolakData}
-                    className="ml-10 bg-white sdp-text-grey-dark border-gray-stroke"
+                    key="edit"
+                    variant="outline-light"
+                    className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
+                    onClick={() => history.push('/cms/struktur-form')}>
+                    <PencilSvg />
+                  </Button>
+                  <Button
+                    onClick={() => actionClick('tolak')}
+                    className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke"
                     variant="secondary"
                     style={{ width: '112px' }}>
-                    Totak
+                    Tolak
                   </Button>
-                  <Button onClick={setujuiData} className="ml-10" variant="info" style={{ width: '112px' }}>
+                  <Button onClick={() => actionClick('setujui')} variant="info" style={{ width: '112px' }}>
                     Setujui
+                  </Button>
+                </div>
+              ) : record?.status === STATUS_DATA.approved || record?.status === STATUS_DATA.unpublished ? (
+                <div>
+                  <Button
+                    key="edit"
+                    variant="outline-light"
+                    className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
+                    onClick={() => history.push('/cms/struktur-form')}>
+                    <PencilSvg />
+                  </Button>
+                  <Button onClick={() => actionClick('publish')} variant="info" style={{ width: '112px' }}>
+                    Publish
+                  </Button>
+                </div>
+              ) : record?.status === STATUS_DATA.published ? (
+                <div>
+                  <Button onClick={() => actionClick('unpublish')} variant="info" style={{ width: '112px' }}>
+                    Unpublish
                   </Button>
                 </div>
               ) : null}
             </div>
-            {!loading ? (
-              <CMSStrukturForm
-                dataValue={record}
-                handleData={setBidang}
-                idBidang={id}
-                disabled={record?.status !== STATUS_DATA.draft && record?.status !== STATUS_DATA.rejected}
-              />
-            ) : null}
+            {!loading ? <CMSStrukturForm dataValue={record} handleData={onSubmit} idBidang={id} disabled={true} /> : null}
           </div>
         </Col>
         <Col sm={3}>{logLoading ? null : <LogStatus data={logRecord} />}</Col>
         {(loading || logLoading) && <Loader fullscreen={true} />}
+        {modalConfirm && action !== 'tolak' ? (
+          <CMSModal
+            loader={false}
+            onClose={() => setModalConfirm(false)}
+            confirmButtonAction={updateData}
+            label={modalLabel}
+          />
+        ) : modalConfirm && action === 'tolak' ? (
+          <Modal visible={true} onClose={() => setModalConfirm(false)} title="" showHeader={false} centered={true}>
+            Apakah anda yakin ingin <span className="sdp-text-red">menolak</span> Bidang?
+            <textarea
+              placeholder="Tulis Catatan"
+              name="catatan"
+              value={notes}
+              onChange={({ target: { value = '' } = {} }) => setNotes(value.trim())}
+              className="border-gray-stroke br-4 w-100 mt-24 mb-24 h-214"
+              required
+            />
+            <div className="d-flex justify-content-end">
+              <Button
+                className="br-4 mr-8 px-57 py-13 bg-transparent"
+                variant="light"
+                onClick={() => setModalConfirm(false)}>
+                Batal
+              </Button>
+              <Button className="br-4 px-39 py-13" variant="info" disabled={!notes.trim()} onClick={onTolak}>
+                Konfirmasi
+              </Button>
+            </div>
+          </Modal>
+        ) : null}
       </Row>
     </div>
   );

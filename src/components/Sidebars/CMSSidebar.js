@@ -82,9 +82,13 @@ export const CMSSidebar = () => {
               Bimbingan Teknis
             </Accordion.Header>
             <Accordion.Body>
-              <SidebarItem title="Permintaan Bimbingan Teknis" pathname="/cms/bimtek-permintaan" />
-              <SidebarItem title="Jadwal Bimbingan Teknis" pathname="/cms/bimtek-jadwal" />
-              <SidebarItem title="Dokumentasi Bimbingan Teknis" pathname="/cms/bimtek-dokumentasi" />
+              <ComponentAccessibility roles={[USER_ROLES.SEKRETARIAT]}>
+                <SidebarItem title="Permintaan Bimbingan Teknis" pathname="/cms/bimtek-permintaan" />
+              </ComponentAccessibility>
+              <ComponentAccessibility roles={[USER_ROLES.CONTENT_CREATOR, USER_ROLES.CONTENT_EDITOR]}>
+                <SidebarItem title="Jadwal Bimbingan Teknis" pathname="/cms/bimtek-jadwal" />
+                <SidebarItem title="Dokumentasi Bimbingan Teknis" pathname="/cms/bimtek-dokumentasi" />
+              </ComponentAccessibility>
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
@@ -127,8 +131,8 @@ export const CMSSidebar = () => {
         <div className={bem.e('title')}>
           <SidebarUserIcon className="mr-10" /> User Management
         </div>
-        <SidebarItem title="Pengguna" pathname="#" />
-        <SidebarItem title="Instansi" pathname="#" />
+        <SidebarItem title="Instansi" pathname="/cms/instansi" />
+        <SidebarItem title="Pengguna" pathname="/cms/pengguna-management" />
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>
@@ -138,7 +142,7 @@ export const CMSSidebar = () => {
         <SidebarItem title="Log Aktivitas" pathname="/cms/log-activity" />
         <SidebarItem title="Sekuriti" pathname="#" />
         <SidebarItem title="Aset" pathname="#" />
-        <SidebarItem title="Media Sosial" pathname="#" />
+        <SidebarItem title="Media Sosial" pathname="/cms/media-sosial" />
       </div>
     </div>
   );

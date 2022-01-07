@@ -1,7 +1,6 @@
 import { ReactComponent as TwitterIcon } from 'assets/twitter.svg';
-import twittermock from 'assets/twitter-mock.png';
 import styled from 'styled-components';
-
+import { Timeline } from 'react-twitter-widgets';
 const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -21,7 +20,15 @@ const Tweets = () => (
       <TwitterIcon />
       <Title>Tweets</Title>
     </TitleWrapper>
-    <img src={twittermock} alt="Tweets" style={{ width: '100%' }} />
+    <Timeline
+      dataSource={{
+        sourceType: 'profile',
+        screenName: 'datagoid',
+      }}
+      options={{
+        height: '400',
+      }}
+    />
   </div>
 );
 

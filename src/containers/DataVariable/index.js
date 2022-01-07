@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useParams } from 'react-router-dom';
 import cloneDeep from 'lodash/cloneDeep';
+import isEmpty from 'lodash/isEmpty';
 import Modal from 'components/Modal';
 import Notification from 'components/Notification';
 import { Breadcrumb } from 'components';
@@ -16,24 +17,23 @@ import {
   getDaftarDetail,
   getKatalogVariables,
   getKodeReferensi,
-  kodeReferensiOptionsSelector,
   katalogVariableDataSelector,
 } from 'containers/Daftar/reducer';
 import DataVariableForm, { submitDataVariableForm } from './DataVariableForm';
 import DataVariableTable from './DataVariableTable';
 
-const DataVariable = ({ cms }) => {
+const DataVariable = ({ cms = false, cmsDetail = false, id }) => {
   const { daftarId } = useParams();
+  const recordId = +daftarId || +id;
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const daftarDetails = useSelector(daftarDetailsDataSelector);
-  const daftar = daftarDetails?.result[daftarId];
+  const daftar = daftarDetails?.result[recordId];
   const { pageSize, params, bodyParams, result } = useSelector(katalogVariableDataSelector);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDataVariableFormVisible, setIsDataVariableFormVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [kodeReferensi, setKodeReferensi] = useState(null);
-  const kodeReferensiOptions = useSelector(kodeReferensiOptionsSelector);
 
   const data = useMemo(() => result?.records || [], [result]);
 
@@ -52,18 +52,18 @@ const DataVariable = ({ cms }) => {
       ...cloneDeep(bodyParamsOverride),
     };
     const filters = { params: filterParams, bodyParams: filterBodyParams };
-    dispatch(getKatalogVariables({ daftarId, filters }));
+    dispatch(getKatalogVariables({ daftarId: recordId, filters }));
   };
 
   useEffect(() => {
-    if (daftarId) {
+    if (recordId) {
       fetchKatalogVariableData();
-      dispatch(getKodeReferensi(daftarId));
-      if (!daftar) {
-        dispatch(getDaftarDetail(daftarId));
+      dispatch(getKodeReferensi(recordId));
+      if (isEmpty(daftar)) {
+        dispatch(getDaftarDetail(recordId));
       }
     }
-  }, [daftarId]);
+  }, [recordId]);
 
   const handleKodeReferensiChange = (kodeReferensiOption) => {
     const kodeReferensi = kodeReferensiOption?.value;
@@ -120,27 +120,18 @@ const DataVariable = ({ cms }) => {
   };
 
   const handleDataVariableFormSubmit = (data) => {
-    hideDataVariableFormModal();
-    Notification.show({
-      type: 'secondary',
-      message: (
-        <div>
-          Variabel <span className="fw-bold">{data.name}</span> Berhasil Ditambahkan
-        </div>
-      ),
-      icon: 'check',
-    });
     const payload = prepareFormPayload(data, {
       dropdowns: ['pengaturanAkses'],
     });
     if (kodeReferensi) {
       payload.kodeReferensi = kodeReferensi;
     }
-    payload.idKatalog = parseInt(daftarId);
+    payload.idKatalog = parseInt(recordId);
 
     dispatch(dataVariableSubmit(payload)).then((res) => {
       const hasError = res?.type?.includes('rejected');
       const isEdit = !!data.id;
+      hideDataVariableFormModal();
       if (hasError) {
         return Notification.show({
           message: (
@@ -190,10 +181,12 @@ const DataVariable = ({ cms }) => {
     <div className="daftar-page pb-100">
       {!cms ? <Breadcrumb breadcrumbsList={breadcrumbsList} /> : null}
       <Row>
-        <Col sm={!cms && { span: 10, offset: 1 }} md={!cms && { span: 8, offset: 2 }}>
+        <Col sm={{ span: 10, offset: 1 }} md={!cms && { span: 8, offset: 2 }}>
           <DataVariableTable
             manualPagination={true}
-            search={!cms}
+            cms={cms}
+            cmsDetail={cmsDetail}
+            search={!cms || cmsDetail}
             showDeleteModal={showDeleteModal}
             showDataVariableFormModal={showDataVariableFormModal}
             data={data}
@@ -201,7 +194,6 @@ const DataVariable = ({ cms }) => {
             daftar={daftar}
             fetchKatalogVariableData={fetchKatalogVariableData}
             handleKodeReferensiChange={handleKodeReferensiChange}
-            kodeReferensiOptions={kodeReferensiOptions}
             pageSize={pageSize}
             params={params}
           />
@@ -222,7 +214,7 @@ const DataVariable = ({ cms }) => {
         size="lg"
         visible={isDataVariableFormVisible}
         onClose={hideDataVariableFormModal}
-        icon="splitTriangle"
+        icon="splitCircle"
         title={selectedRecord ? 'Edit Variable' : 'Tambah Variable'}
         subtitle={selectedRecord ? 'Isi form dibawah untuk menambah Variabel' : 'ID UMKM'}
         actions={[

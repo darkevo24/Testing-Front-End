@@ -226,6 +226,12 @@ export const getStatusClass = (status) => {
         text: 'Diprosses',
         divText: 'Permintaan sedang Diproses',
       };
+    case 'rejected':
+      return {
+        ...redText,
+        text: 'Rejected',
+        divText: 'Rejected',
+      };
     case 'dibatalkan':
       return {
         ...redText,
@@ -238,6 +244,12 @@ export const getStatusClass = (status) => {
         ...redText,
         text: 'Ditolak',
         divText: 'Ditolak',
+      };
+    case 'deleted':
+      return {
+        ...redText,
+        text: 'Dihapus',
+        divText: 'Dihapus',
       };
     case 'terkirim':
       return {
@@ -418,4 +430,9 @@ export const convertTitleToSlug = (title) => {
     .replace(/ /g, '-')
     .replace(/[-]+/g, '-')
     .replace(/[^\w-]+/g, '');
+};
+
+export const splitByLastChar = (src, char) => {
+  const lastIndex = src.lastIndexOf(char);
+  return src.substr(0, lastIndex);
 };

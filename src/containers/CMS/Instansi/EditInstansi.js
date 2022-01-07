@@ -1,8 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import bn from 'utils/bemNames';
-import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -27,7 +25,6 @@ const schema = yup
   })
   .required();
 
-const bem = bn('instansi-data-new');
 const EditInstansi = () => {
   const { id } = useParams();
   const history = useHistory();

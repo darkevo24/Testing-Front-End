@@ -147,8 +147,7 @@ const InstansiDetail = () => {
     );
   };
 
-  const handleUnitKejira = (e, path) => {
-    e.preventDefault();
+  const handleUnitKejira = (path) => {
     history.push(path);
   };
 
@@ -216,7 +215,7 @@ const InstansiDetail = () => {
                       className="mx-4 cursor-pointer"
                       src={EditIcon}
                       alt="edit"
-                      onClick={(e) => handleUnitKejira(e, `edit/${id}`)}
+                      onClick={(e) => handleUnitKejira(`edit/${id}`)}
                     />
                     <Button
                       className="mx-4"
@@ -236,7 +235,7 @@ const InstansiDetail = () => {
                       alt="delete"
                       onClick={(e) => handModalOpen(INSTANSI_STATUS.deleted)}
                     />
-                    <Button className="mx-4" variant="outline-secondary" onClick={(e) => handleUnitKejira(e, `edit/${id}`)}>
+                    <Button className="mx-4" variant="outline-secondary" onClick={(e) => handleUnitKejira(`edit/${id}`)}>
                       Edit
                     </Button>
                   </>
@@ -271,7 +270,7 @@ const InstansiDetail = () => {
           <div className="d-flex flex-col">
             <div className="d-flex justify-content-between mb-4">
               <div className={bem.e('subtitle')}>Daftar Unit Kerja</div>
-              <div className="d-flex cursor-pointer" onClick={(e) => handleUnitKejira(e, `${id}/new-unit-kerja`)}>
+              <div className="d-flex cursor-pointer" onClick={(e) => handleUnitKejira(`${id}/new-unit-kerja`)}>
                 <PlusIcon className={bem.e('plus-icon')} />
                 <span className="text-danger">Tambah Unit Kerja</span>
               </div>

@@ -10,7 +10,6 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Input from 'components/Input';
 import { Loader } from 'components';
-import bn from 'utils/bemNames';
 import Notification from 'components/Notification';
 import { updateUnitKerja, instansiUnitKejiraDetailSelector, getUnitKerjaDetail } from '../reducer';
 import FormHeader from '../FormHeader';
@@ -22,7 +21,6 @@ const schema = yup
   })
   .required();
 
-const bem = bn('instansi-data-new');
 const EditUnitKerja = () => {
   const { id, unitId } = useParams();
   const dispatch = useDispatch();
@@ -57,7 +55,7 @@ const EditUnitKerja = () => {
       },
     };
     dispatch(updateUnitKerja(inputData))
-      .then((res) => {
+      .then((_res) => {
         setLoading(false);
         history.goBack();
       })
@@ -76,10 +74,10 @@ const EditUnitKerja = () => {
   };
   return (
     <div className="sdp-instansi">
-      {loading && <Loader />}
       <FormHeader onBatalClick={handleBatal} onHandleSubmitForm={handleSubmit(handleSubmitForm)} />
       <Row>
         <Col sm={8} className="my-5">
+          {loading && <Loader />}
           <Form className="sdp-form" noValidate>
             <Input group label="Kode Unit Kerja " name="kode" control={control} error={errors.kode?.message} />
             <Input group label="Nama Unit Kerja" name="nama" control={control} error={errors.nama?.message} />

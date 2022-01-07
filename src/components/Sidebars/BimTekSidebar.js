@@ -2,7 +2,7 @@ import React from 'react';
 
 const List = [
   {
-    title: 'Form Pendaftaran',
+    title: 'Form Permintaan',
     link: '/bimtek-form',
   },
   {

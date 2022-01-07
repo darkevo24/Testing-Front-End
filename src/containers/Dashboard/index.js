@@ -1,10 +1,8 @@
-import { Breadcrumbs } from 'components/Breadcrumb';
+import { useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { useEffect, useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
-
-import 'assets/styles/pages/_dashboard.scss';
+import { Breadcrumbs } from 'components/Breadcrumb';
 
 const Dashboard = (props) => {
   const [currentDashboard, setCurrentDashboard] = useState(props.options[0]);

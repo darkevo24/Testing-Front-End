@@ -13,7 +13,7 @@ import { apiUrls, post } from 'utils/request';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { levelInstansi } from 'utils/constants';
-import { Loader } from 'components';
+import { Loader, Notification } from 'components';
 import { updateInstansi, instansiDetailSelector, getInstansiDetail } from './reducer';
 import FormHeader from './FormHeader';
 const schema = yup
@@ -102,15 +102,20 @@ const EditInstansi = () => {
       },
     };
     setLoading(true);
-    dispatch(updateInstansi(obj))
-      .then(() => {
+    dispatch(updateInstansi(obj)).then((res) => {
+      if (res.payload) {
         setLoading(false);
-        history.push('/cms/instansi');
-      })
-      .catch(() => {
+        handleBack();
+        reset();
+      } else {
+        Notification.show({
+          type: 'secondary',
+          message: <div> Gagal Update Status </div>,
+          icon: 'cross',
+        });
         setLoading(false);
-      });
-    reset();
+      }
+    });
   };
   return (
     <div className="sdp-instansi">

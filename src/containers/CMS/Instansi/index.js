@@ -18,15 +18,18 @@ const Instansi = () => {
   const dispatch = useDispatch();
   const [query, setQuery] = useState('');
 
-  const { q, status, size, loading, page, records, totalRecords, totalPages } = useSelector(instansiDataSelector);
+  const { q, page, size, loading, records, totalRecords, totalPages } = useSelector(instansiDataSelector);
   const handleAPICall = (params) => {
-    dispatch(getInstansi(params));
+    return dispatch(getInstansi(params));
   };
 
   const handleSearch = () => {
-    handleAPICall({ page: 0, q: query });
+    handleAPICall({ page, q: query });
   };
 
+  useEffect(() => {
+    handleAPICall({ page, q: q });
+  }, [q]);
   const handleUserInputChange = (event) => {
     const { value } = event.target;
     setQuery(value);
@@ -37,10 +40,6 @@ const Instansi = () => {
     delayedQuery();
     return delayedQuery.cancel;
   }, [query, delayedQuery]);
-
-  useEffect(() => {
-    handleAPICall({ page: 0, q: '' });
-  }, []);
 
   const columns = [
     {
@@ -104,15 +103,15 @@ const Instansi = () => {
     title: '',
     showSearch: false,
     onSearch: () => {},
-    totalCount: totalRecords || null,
-    pageCount: totalPages || null,
+    totalCount: totalRecords,
+    pageCount: totalPages,
     pageSize: size,
     currentPage: page,
     manualPagination: true,
     onRowClick: rowClick,
-    onPageIndexChange: (currentPage) => {
-      if (currentPage !== page) {
-        handleAPICall({ page: currentPage, q, size });
+    onPageIndexChange: (nextPage) => {
+      if (nextPage !== page) {
+        handleAPICall({ page: nextPage, q: q });
       }
     },
   };

@@ -43,7 +43,6 @@ const InstansiDetail = () => {
   const { content } = useSelector(instansiDetailSelector);
   const { records } = useSelector(instansiLogsSelector);
   const unitKejira = useSelector(instansiUnitKejiraSelector);
-  const [objRequired] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [showUnitModal, setShowUnitModal] = useState(false);
   const [currentUnitKejira, setCurrentUnitKejira] = useState(null);
@@ -77,9 +76,7 @@ const InstansiDetail = () => {
   const backToTable = () => {
     history.push('/cms/instansi');
   };
-  const schema = yup.object(objRequired).required();
   const { control, reset, handleSubmit } = useForm({
-    resolver: yupResolver(schema),
     defaultValues: {
       ...data,
     },

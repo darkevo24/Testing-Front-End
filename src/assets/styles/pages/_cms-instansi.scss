@@ -110,23 +110,24 @@
         }
       }
     }
+    &.sdp-input-wrapper {
+      &.cms-log-activity {
+          .icon-box {
+              left: inherit;
+              right: 0;
+              padding-left: 0;
+              padding-right: 1rem;
+          }
+          input {
+              border: none;
+              background: $gray-bg;
+              padding-left: 1rem !important;
+          }
+      }  
+    } 
   }
   
-.sdp-input-wrapper {
-  &.cms-log-activity {
-      .icon-box {
-          left: inherit;
-          right: 0;
-          padding-left: 0;
-          padding-right: 1rem;
-      }
-      input {
-          border: none;
-          background: $gray-bg;
-          padding-left: 1rem !important;
-      }
-  }  
-} 
+
 .sdp-instansi-data{
   &.status-row {
     background: lightseagreen;

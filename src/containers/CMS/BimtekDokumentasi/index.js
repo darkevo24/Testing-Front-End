@@ -39,7 +39,7 @@ const CMSBimtekPermintaan = () => {
   useEffect(() => {
     fetchDokumentasi({ page: 0 });
   }, [query]);
-
+  console.log(records);
   const columns = [
     {
       Header: 'Nama Bimbingan Teknis',
@@ -61,11 +61,14 @@ const CMSBimtekPermintaan = () => {
     {
       Header: 'Pembicara',
       accessor: 'pembicara',
-      Cell: ({
-        row: {
-          original: { nama },
-        },
-      }) => <span> {nama} </span>,
+      Cell: ({ row: { original } }) => (
+        <span>
+          {original.pembicara &&
+            original.pembicara.map((data, index) => {
+              return <span key={index}>{data?.nama},</span>;
+            })}
+        </span>
+      ),
     },
     {
       Header: 'Materi',

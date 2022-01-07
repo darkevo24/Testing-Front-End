@@ -10,10 +10,10 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { DatePicker, Input, Modal, Table, Notification } from 'components';
+import { DatePicker, Input, Table, Notification } from 'components';
 import { apiUrls, post, put, deleteRequest } from 'utils/request';
 import { LogStatus } from 'components/Sidebars/LogStatus';
-import { LeftChevron, Galery, Close } from 'components/Icons';
+import { LeftChevron } from 'components/Icons';
 import { getStatusClass, prefixID } from 'utils/helper';
 import { CMSModal } from 'components/CMSStatusModals';
 import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
@@ -21,7 +21,7 @@ import { ReactComponent as Plus } from 'assets/plus.svg';
 import RowLoader from 'components/Loader/RowLoader';
 import TableLoader from 'components/Loader/TableLoader';
 import { DetailHeader } from './detailHeader';
-import { ModalsDetail } from './ModalsDetail';
+import { ModalDetailMateri, ModalDetailPembicara } from './Modals';
 import bn from 'utils/bemNames';
 import {
   bimtekJadwalDetailSelector,
@@ -46,8 +46,9 @@ const CMSJadwalDetail = (props) => {
   const { tagsResult, tagsLoading } = useSelector(bimtekJadwalTags);
   const { dataLog } = useSelector(bimtekLogAktifitas);
   const [idPembicara, setIdPembicara] = useState('');
-  const [defaultRequired, setDefaultRequired] = useState(false);
+  const [dataEditPembicara, setDataEditPembicara] = useState('');
   const [idMateri, setIdMateri] = useState(false);
+  const [namaMateri, setNamaMateri] = useState('');
   const [loader, setLoader] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
   const [buttonUpdate, setButtonUpdate] = useState(false);
@@ -77,38 +78,6 @@ const CMSJadwalDetail = (props) => {
     })
     .required();
 
-  const schemaPembicara = yup
-    .object({
-      tambahPembicara: yup.string().required(),
-      tambahPembicaraWaktuMulai: yup.string().required(),
-      tambahPembicaraJamMulai: yup.string().required(),
-      tambahPembicaraWaktuSelesai: yup.string().required(),
-      tambahPembicaraJamSelesai: yup.string().required(),
-    })
-    .required();
-
-  const schemaEditPembicara = yup
-    .object({
-      tambahPembicaraUpdate: yup.string().required(),
-      tambahPembicaraWaktuMulaiUpdate: yup.string().required(),
-      tambahPembicaraJamMulaiUpdate: yup.string().required(),
-      tambahPembicaraWaktuSelesaiUpdate: yup.string().required(),
-      tambahPembicaraJamSelesaiUpdate: yup.string().required(),
-    })
-    .required();
-
-  const schemaMateri = yup
-    .object({
-      materi: yup.string().required(),
-    })
-    .required();
-
-  const schemaEditMateri = yup
-    .object({
-      materiUpdate: yup.string().required(),
-    })
-    .required();
-
   const {
     control,
     formState: { errors },
@@ -118,62 +87,6 @@ const CMSJadwalDetail = (props) => {
     resolver: yupResolver(schemaEdit),
     defaultValues: {
       ...records,
-    },
-  });
-
-  const {
-    control: controlPembicara,
-    formState: { errors: errorsPembicara },
-    setValue: setValuePembicara,
-    handleSubmit: handleSubmitPembicara,
-  } = useForm({
-    resolver: yupResolver(schemaPembicara),
-    defaultValues: {
-      tambahPembicara: '',
-      tambahPembicaraWaktuMulai: '',
-      tambahPembicaraJamMulai: '',
-      tambahPembicaraWaktuSelesai: '',
-      tambahPembicaraJamSelesai: '',
-    },
-  });
-
-  const {
-    control: controlEditPembicara,
-    formState: { errors: errorsEditPembicara },
-    setValue: setValueEditPembicara,
-    handleSubmit: handleSubmitEditPembicara,
-  } = useForm({
-    resolver: yupResolver(schemaEditPembicara),
-    defaultValues: {
-      tambahPembicara: '',
-      tambahPembicaraWaktuMulai: '',
-      tambahPembicaraJamMulai: '',
-      tambahPembicaraWaktuSelesai: '',
-      tambahPembicaraJamSelesai: '',
-    },
-  });
-
-  const {
-    control: controlMateri,
-    formState: { errors: errorsMateri },
-    handleSubmit: handleSubmitMateri,
-  } = useForm({
-    resolver: yupResolver(schemaMateri),
-    defaultValues: {
-      materi: '',
-    },
-  });
-
-  const {
-    control: controlEditMateri,
-    formState: { errors: errorsEditMateri },
-    reset: resetEditMateri,
-    setValue: setValueEditMateri,
-    handleSubmit: handleSubmitEditMateri,
-  } = useForm({
-    resolver: yupResolver(schemaEditMateri),
-    defaultValues: {
-      materiUpdate: '',
     },
   });
 
@@ -319,130 +232,21 @@ const CMSJadwalDetail = (props) => {
     setShowModal('');
     setLoader(false);
     setListMateri([]);
-    setDefaultRequired(!defaultRequired);
-  };
-
-  const onAddMateri = (data) => {
-    let obj = listMateri.map((item) => ({
-      nama: data.materi,
-      fileName: item.fileName,
-      location: item.location,
-      fileType: item.fileType,
-      size: item.size,
-    }));
-    handleAPICall(post, `${apiUrls.cmsBimtekJadwal}/${id}/materi`, { data: { materi: obj } }, 'Berhasil Menambah Materi');
-    setListMateri([]);
   };
 
   const handleEditMateri = (data) => {
-    setValueEditMateri('materiUpdate', data.nama);
+    setNamaMateri(data.nama);
     setIdMateri(data.id);
     setListMateri([data]);
     setShowModal('editMateri');
   };
 
-  const onEditMateri = (data) => {
-    let obj = listMateri.map((item) => ({
-      nama: data.materiUpdate,
-      fileName: item.fileName,
-      location: item.location,
-      fileType: item.fileType,
-      size: item.size,
-    }));
-    handleCloseModal();
-    handleAPICall(put, `${apiUrls.cmsBimtekJadwal}/${id}/materi/${idMateri}`, { data: obj[0] }, 'Berhasil Merubah Materi');
-    setListMateri([]);
-  };
-
-  const onAddPembicara = (data) => {
-    const nama = data.tambahPembicara;
-    const tanggalMulai = `${moment(data.tambahPembicaraWaktuMulai).format('YYYY-MM-DD')} ${data.tambahPembicaraJamMulai}:00`;
-    const tanggalSelesai = `${moment(data.tambahPembicaraWaktuSelesai).format('YYYY-MM-DD')} ${
-      data.tambahPembicaraJamSelesai
-    }:00`;
-    if (!moment(tanggalSelesai).isAfter(tanggalMulai)) {
-      handleCloseModal();
-      return handleNotification('secondary', 'Gagal, Rentang Waktu Tidak Valid', 'cross');
-    }
-    let obj = [
-      {
-        nama,
-        tanggalMulai,
-        tanggalSelesai,
-      },
-    ];
-    handleAPICall(
-      post,
-      `${apiUrls.cmsBimtekJadwal}/${id}/pembicara`,
-      { data: { pembicara: obj } },
-      'Berhasil Menambah Pembicara',
-    );
-    if (!apiError) {
-      setValuePembicara('tambahPembicara', '');
-      setValuePembicara('tambahPembicaraWaktuMulai', '');
-      setValuePembicara('tambahPembicaraWaktuSelesai', '');
-      setValuePembicara('tambahPembicaraJamMulai', '');
-      setValuePembicara('tambahPembicaraJamSelesai', '');
-    }
-  };
-
   const onModalEditPembicara = (data) => {
     setIdPembicara(data.id);
-    setValueEditPembicara('tambahPembicaraUpdate', data.nama);
-    setValueEditPembicara('tambahPembicaraWaktuMulaiUpdate', moment(data.tanggalMulai).format('DD/MM/YYYY'));
-    setValueEditPembicara('tambahPembicaraWaktuSelesaiUpdate', moment(data.tanggalSelesai).format('DD/MM/YYYY'));
-    setValueEditPembicara('tambahPembicaraJamMulaiUpdate', moment(data.tanggalMulai).format('HH:mm'));
-    setValueEditPembicara('tambahPembicaraJamSelesaiUpdate', moment(data.tanggalSelesai).format('HH:mm'));
+    setDataEditPembicara(data);
     setShowModal('editPembicara');
   };
 
-  const onEditPembicara = (data) => {
-    let tanggalMulaiCheck = moment(data.tambahPembicaraWaktuMulaiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD');
-    let tanggalSelesaiCheck = moment(data.tambahPembicaraWaktuSelesaiUpdate, 'DD/MM/YYYY').format('YYYY-MM-DD');
-    if (tanggalMulaiCheck === 'Invalid date') {
-      tanggalMulaiCheck = moment(data.tambahPembicaraWaktuMulaiUpdate).format('YYYY-MM-DD');
-    }
-    if (tanggalSelesaiCheck === 'Invalid date') {
-      tanggalSelesaiCheck = moment(data.tambahPembicaraWaktuSelesaiUpdate).format('YYYY-MM-DD');
-    }
-
-    const nama = data.tambahPembicaraUpdate;
-    const tanggalMulai = `${tanggalMulaiCheck} ${data.tambahPembicaraJamMulaiUpdate}:00`;
-    const tanggalSelesai = `${tanggalSelesaiCheck} ${data.tambahPembicaraJamSelesaiUpdate}:00`;
-    if (!moment(tanggalSelesai).isAfter(tanggalMulai)) {
-      handleCloseModal();
-      return handleNotification('secondary', 'Gagal, Rentang Waktu Tidak Valid', 'cross');
-    }
-    let obj = {
-      nama,
-      tanggalMulai,
-      tanggalSelesai,
-    };
-    handleAPICall(
-      put,
-      `${apiUrls.cmsBimtekJadwal}/${id}/pembicara/${idPembicara}`,
-      { data: obj },
-      'Berhasil Merubah Pembicara',
-    );
-  };
-
-  const addFile = async (e) => {
-    let file = e.target.files[0];
-    try {
-      let materiFormData = new FormData();
-      materiFormData.append('file', file);
-      await post(apiUrls.publiFileUpload, materiFormData, { headers: { 'Content-Type': undefined } }).then((res) => {
-        setListMateri([...listMateri, res.data]);
-      });
-    } catch (e) {
-      return handleNotification(`secondary', 'Error, ${e.message}', 'cross`);
-    }
-  };
-
-  const removeFile = (index) => {
-    let selected = listMateri[index];
-    setListMateri(listMateri.filter((item) => item !== selected));
-  };
   let filterKota = tagsResultKabupaten.filter((item) => item.label === records.kota);
   useEffect(() => {
     setValue('namaBimtek', records.namaBimtek);
@@ -884,49 +688,32 @@ const CMSJadwalDetail = (props) => {
           confirmButtonAction={onTolak}
         />
       )}
-      {showModal === 'materi' && (
-        <ModalsDetail
+      {showModal === 'materi' || 'editMateri' ? (
+        <ModalDetailMateri
           statusModal={showModal}
-          visible={handleCloseModal}
-          onSubmit={handleSubmitMateri(onAddMateri)}
-          control={controlMateri}
-          errors={errorsMateri}
-          listMateri={listMateri}
-          removeFile={(index) => removeFile(index)}
-          addFile={addFile}
-        />
-      )}
-      {showModal === 'editMateri' && (
-        <ModalsDetail
-          statusModal={showModal}
-          visible={handleCloseModal}
-          onSubmit={handleSubmitEditMateri(onEditMateri)}
-          control={controlEditMateri}
-          errors={errorsEditMateri}
-          listMateri={listMateri}
+          idJadwal={id}
           idMateri={idMateri}
-          removeFile={(index) => removeFile(index)}
-          addFile={addFile}
+          initialCall={initialCall}
+          visible={handleCloseModal}
+          listMateri={listMateri}
+          setListMateri={(data) => setListMateri(data)}
+          namaMateriEdit={namaMateri ? namaMateri : null}
+          apiError={apiError}
+          setAPIError={(data) => setAPIError(data)}
         />
-      )}
-      {showModal === 'pembicara' && (
-        <ModalsDetail
+      ) : null}
+      {showModal === 'pembicara' || 'editPembicara' ? (
+        <ModalDetailPembicara
           statusModal={showModal}
           visible={handleCloseModal}
-          onSubmit={handleSubmitPembicara(onAddPembicara)}
-          control={controlPembicara}
-          errors={errorsPembicara}
+          idPembicara={idPembicara ? idPembicara : null}
+          initialCall={initialCall}
+          idJadwal={id}
+          apiError={apiError}
+          setAPIError={(data) => setAPIError(data)}
+          dataEditPembicara={dataEditPembicara ? dataEditPembicara : null}
         />
-      )}
-      {showModal === 'editPembicara' && (
-        <ModalsDetail
-          statusModal={showModal}
-          visible={handleCloseModal}
-          onSubmit={handleSubmitEditPembicara(onEditPembicara)}
-          control={controlEditPembicara}
-          errors={errorsEditPembicara}
-        />
-      )}
+      ) : null}
     </div>
   );
 };

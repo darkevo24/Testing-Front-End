@@ -29,26 +29,40 @@ export const initialState = {
 
 export const DATA_ANALYTIC_SLICE = 'DATA_ANALYTIC_SLICE';
 
-export const getListAnalitik = createAsyncThunk('cms/getListAnalitik', async (params) => {
-  const response = await post(`${apiUrls.cmsAnalitikData}/list?size=10&page=${params.page + 1}`, {
-    title: params.judul,
-  });
+export const getListAnalitik = createAsyncThunk('cmsDataAnalytic/getListAnalitik', async (params) => {
+  const response = await post(
+    `${apiUrls.cmsAnalitikData}/list`,
+    {
+      title: params.judul,
+    },
+    {
+      size: 10,
+      page: params.page + 1,
+    },
+  );
   return response?.data?.content;
 });
 
-export const getAllAnalitik = createAsyncThunk('cms/getAllAnalitik', async () => {
-  const response = await post(`${apiUrls.cmsAnalitikData}/list?size=1000&page=1`, {
-    title: '',
-  });
+export const getAllAnalitik = createAsyncThunk('cmsDataAnalytic/getAllAnalitik', async () => {
+  const response = await post(
+    `${apiUrls.cmsAnalitikData}/list`,
+    {
+      title: '',
+    },
+    {
+      size: 1000,
+      page: 1,
+    },
+  );
   return response?.data?.content;
 });
 
-export const setNewAnalitik = createAsyncThunk('cms/setNewAnalitik', async (params) => {
+export const setNewAnalitik = createAsyncThunk('cmsDataAnalytic/setNewAnalitik', async (params) => {
   const response = await post(`${apiUrls.cmsAnalitikData}/create`, params.payload);
   return response?.data?.content;
 });
 
-export const setEditAnalitik = createAsyncThunk('cms/setEditAnalitik', async (params) => {
+export const setEditAnalitik = createAsyncThunk('cmsDataAnalytic/setEditAnalitik', async (params) => {
   const response = await post(`${apiUrls.cmsAnalitikData}/update`, params.payload);
   return response?.data?.content;
 });

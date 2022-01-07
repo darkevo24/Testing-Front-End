@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+// dependency
+import cx from 'classnames';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 
+// local import
 import { Search } from 'components/Icons';
 import { Loader, Modal, Notification, Table } from 'components';
 import bn from 'utils/bemNames';
-import cx from 'classnames';
+import { getListAnalitik, analitikCmsListSelector, setNewAnalitik, setEditAnalitik } from './reducer';
 
+// assets
 import { ReactComponent as LogoIcon } from 'assets/logo-icon.svg';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 import { ReactComponent as Edit } from 'assets/edit.svg';
 import { ReactComponent as CrossRed } from 'assets/cross-red.svg';
-
-import { getListAnalitik, analitikCmsListSelector, setNewAnalitik, setEditAnalitik } from './reducer';
-
-import 'assets/styles/pages/_cmsManageDashboard.scss';
 
 const bem = bn('content-table');
 
@@ -83,30 +83,24 @@ const CMSDataAnalytic = () => {
     {
       Header: 'Status',
       accessor: 'status',
-      Cell: ({ ...rest }) => (
+      Cell: ({ cell: { row: { original: item } = {} } = {} }) => (
         <Row>
-          <Col xs={6}>{rest?.row?.original?.publish ? 'Published' : 'Unpublished'}</Col>
+          <Col xs={6}>{item.publish ? 'Published' : 'Unpublished'}</Col>
           <Col xs={6}>
-            <Form.Check
-              type="switch"
-              id={'publish' + rest?.row?.original?.id}
-              checked={rest?.row?.original?.publish}
-              onChange={() => publishAction(rest?.row?.original)}
-            />
+            <Form.Check type="switch" id={'publish' + item.id} checked={item.publish} onChange={() => publishAction(item)} />
           </Col>
         </Row>
       ),
     },
-    ,
     {
       Header: '',
       accessor: 'action',
-      Cell: ({ ...rest }) => (
+      Cell: ({ cell: { row: { original: item } = {} } = {} }) => (
         <>
-          <Button variant="secondary" className="mr-8" onClick={() => editAction(rest?.row?.original)}>
+          <Button variant="secondary" className="mr-8" onClick={() => editAction(item)}>
             <Edit />
           </Button>
-          <Button className="btn-delete" onClick={() => deleteAction(rest?.row?.original)}>
+          <Button className="btn-delete" onClick={() => deleteAction(item)}>
             <CrossRed />
           </Button>
         </>

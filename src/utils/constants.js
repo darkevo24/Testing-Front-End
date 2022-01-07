@@ -103,6 +103,7 @@ export const apiUrls = {
   penggunaRoleList: getApiEndpoint('sekretariat/user/role-list'),
   penggunaStatusList: getApiEndpoint('sekretariat/user/status-list'),
   penggunaLogs: getApiEndpoint('sekretariat/user'),
+  cmsAnalitikData: getCMSEndpoint('analitik'),
 };
 
 export const priorityOptions = [

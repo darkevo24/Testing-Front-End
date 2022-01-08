@@ -34,6 +34,7 @@ import bimtekDokumentasiReducer from 'containers/BimTekDokumentasi/reducer';
 import bimtekPermintaanReducer from 'containers/BimtekPermintaan/reducer';
 import sosialMediaReducer from 'containers/CMS/MediaSosial/reducer';
 import contactUsReducer from 'containers/CMS/ContactUs/reducer';
+import dataAnalyticReducer from 'containers/CMS/DashboardManage/reducer';
 import cmsInstansiReducer from 'containers/CMS/Instansi/reducer';
 import penggunaManagementReducer from 'containers/CMS/PenggunaManagement/reducer';
 import penggunaDataDetailReducer from 'containers/CMS/PenggunaManagementDetails/reducer';
@@ -75,6 +76,7 @@ export default function createReducer(injectedReducers) {
     penggunaManagement: penggunaManagementReducer,
     penggunaManagementDetails: penggunaDataDetailReducer,
     router: connectRouter(history),
+    cmsDataAnalytic: dataAnalyticReducer,
     ...injectedReducers,
   });
 }

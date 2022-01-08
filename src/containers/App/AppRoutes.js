@@ -69,14 +69,14 @@ function AppRoutes(props) {
         <Route exact path="/berita-topik/:id" component={BeritaByTopic} />
         <Route exact path="/berita/:id" component={BeritaDetailPage} />
         <Route exact path="/berita/perbulan/:date" component={BeritaPerBulan} />
-        <Route exact path="/bimtek-summary" component={BimTekSummaryPage} />
-        <Route exact path="/bimtek-form" component={BimTekFormPage} />
-        <Route exact path="/bimtek-jadwal" component={BimTekJadwalPage} />
-        <Route exact path="/bimtek-materi" component={BimTekMateriPage} />
-        <Route exact path="/bimtek-permintaan" component={BimTekPermintaanPage} />
-        <Route exact path="/bimtek-permintaan/:id" component={BimTekPermintaanDetailPage} />
-        <Route exact path="/bimtek-kota-pelaksanaan" component={BimTekKotaPage} />
-        <Route exact path="/bimtek-dokumentasi" component={BimTekDokumentasiPage} />
+        <PrivateRoute exact path="/bimtek-summary" component={BimTekSummaryPage} />
+        <PrivateRoute exact path="/bimtek-form" component={BimTekFormPage} />
+        <PrivateRoute exact path="/bimtek-jadwal" component={BimTekJadwalPage} />
+        <PrivateRoute exact path="/bimtek-materi" component={BimTekMateriPage} />
+        <PrivateRoute exact path="/bimtek-permintaan" component={BimTekPermintaanPage} />
+        <PrivateRoute exact path="/bimtek-permintaan/:id" component={BimTekPermintaanDetailPage} />
+        <PrivateRoute exact path="/bimtek-kota-pelaksanaan" component={BimTekKotaPage} />
+        <PrivateRoute exact path="/bimtek-dokumentasi" component={BimTekDokumentasiPage} />
         <Route exact path="/tentang" component={TentangPage} />
         <PrivateRoute exact path="/kesiapan-sdi" component={KesiapanSDI} />
         <PrivateRoute exact path="/dashboard-eksekutif" component={DashboardEksekutif} />

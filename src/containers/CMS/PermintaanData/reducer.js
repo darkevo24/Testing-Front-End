@@ -21,12 +21,8 @@ export const PERMINTAAN_DATA = 'PERMINTAAN_DATA';
 export const getPermintaanData = createAsyncThunk('permintaan-data/list', async (params) => {
   const response = await get(apiUrls.listPermintaanData, {
     query: {
+      ...params,
       page: params.page + 1,
-      size: 10,
-      instansiId: params.instansiId,
-      unitKerjaId: params.unitKerjaId,
-      status: params.status,
-      q: params.q,
     },
   });
   return response;

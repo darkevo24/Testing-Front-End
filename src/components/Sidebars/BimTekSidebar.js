@@ -1,38 +1,49 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { userSelector } from 'containers/Login/reducer';
 
-const List = [
-  {
-    title: 'Form Pendaftaran',
-    link: '/bimtek-form',
-  },
-  {
-    title: 'Jadwal',
-    link: '/bimtek-jadwal',
-  },
-  {
-    title: 'Dokumentasi',
-    link: '/bimtek-dokumentasi',
-  },
-  {
-    title: 'Kota Pelaksanaan',
-    link: '/bimtek-kota-pelaksanaan',
-  },
-  {
-    title: 'Materi',
-    link: '/bimtek-materi',
-  },
-  {
-    title: 'Permintaan Bimtek Saya',
-    link: '/bimtek-permintaan',
-  },
-];
+export const BimTekSidebar = () => {
+  const user = useSelector(userSelector);
+  const sideBarList = [
+    {
+      title: 'Jadwal',
+      link: '/bimtek-jadwal',
+    },
+    {
+      title: 'Dokumentasi',
+      link: '/bimtek-dokumentasi',
+    },
+    {
+      title: 'Kota Pelaksanaan',
+      link: '/bimtek-kota-pelaksanaan',
+    },
+    {
+      title: 'Materi',
+      link: '/bimtek-materi',
+    },
+    {
+      title: 'Permintaan Bimtek Saya',
+      link: '/bimtek-permintaan',
+    },
+  ];
 
-export const BimTekSidebar = () => (
-  <div>
-    {List.map((item, key) => (
-      <div key={key} className={'bimtek-sidebar ' + (window.location.pathname === item.link ? 'active' : '')}>
-        <a href={item.link}>{item.title}</a>
-      </div>
-    ))}
-  </div>
-);
+  const List =
+    user.roles === 'WALIDATA'
+      ? [
+          {
+            title: 'Form Permintaan',
+            link: '/bimtek-form',
+          },
+          ...sideBarList,
+        ]
+      : sideBarList;
+  return (
+    <div>
+      {List.map((item, key) => (
+        <div key={key} className={'bimtek-sidebar ' + (window.location.pathname === item.link ? 'active' : '')}>
+          <a href={item.link}>{item.title}</a>
+        </div>
+      ))}
+    </div>
+  );
+};

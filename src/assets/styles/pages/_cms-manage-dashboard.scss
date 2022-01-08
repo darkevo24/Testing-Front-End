@@ -1,0 +1,21 @@
+.cms-data-analytic {
+  .btn-delete {
+    background-color: $red-bg;
+    border-color: transparent;
+
+    & > svg {
+      width: 15px;
+    }
+  }
+
+  .form-check-input {
+    &:checked {
+      background-color: $green;
+      border-color: $green;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.25rem $green-bg;
+    }
+  }
+}

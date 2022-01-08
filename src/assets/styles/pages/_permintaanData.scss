@@ -49,6 +49,14 @@
 }
 
 .cms-permintaan-data {
+  .basic-single{
+    width: 100%;
+  }
+
+  .select__menu {
+    min-width: 310px;
+  }
+
   .sdp-table__table-wrapper {
     padding-top: 30px;
     th {
@@ -110,8 +118,8 @@
         display: grid;
         grid-template-columns: 33% 33% 33%;
         .unit-kerja {
-          width: 120px;
-          margin: 0px;
+          width:100px;
+          margin:0px;
         }
       }
       .form-select {

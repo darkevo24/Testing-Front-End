@@ -1,7 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import moment from 'moment';
 import cx from 'classnames';
-import debounce from 'lodash/debounce';
 import { useDispatch, useSelector } from 'react-redux';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
@@ -13,6 +12,7 @@ import { DatePicker } from 'components';
 import { Search, ModalAlertDanger } from 'components/Icons';
 import { Modal, Table } from 'components';
 import TableLoader from 'components/Loader/TableLoader';
+import { useDebounce } from 'utils/hooks';
 import bn from 'utils/bemNames';
 import { getCMSLogActifitasData, cmsLogAktifitasDataSelector } from './reducer';
 const DEBOUNCE_DELAY = 1500;
@@ -29,22 +29,20 @@ const schema = yup
 
 const LogActivity = () => {
   const dispatch = useDispatch();
-  const [currentPage, setCurrentPage] = useState(1);
   const [query, setQuery] = useState('');
 
-  const { q, startDate, endDate, size, loading, records, totalRecords, totalPages, status } =
+  const { page, startDate, endDate, size, loading, records, totalRecords, totalPages, status } =
     useSelector(cmsLogAktifitasDataSelector);
 
-  useEffect(() => {
-    dispatch(getCMSLogActifitasData({ page: currentPage, q, startDate, endDate }));
-  }, [dispatch, q, startDate, endDate, currentPage]);
+  const handleAPICall = (params) => {
+    return dispatch(getCMSLogActifitasData(params));
+  };
 
   const [modalProfile, setModalProfile] = useState(false);
   const {
     control,
     formState: { errors },
     watch,
-    // handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -52,39 +50,20 @@ const LogActivity = () => {
   const endDateValue = watch('endDate');
 
   useEffect(() => {
-    if (startDateValue && endDateValue) {
-      dispatch(
-        getCMSLogActifitasData({
-          page: 0,
-          q: query,
-          startDate: moment(startDateValue).format('YYYY-MM-DD'),
-          endDate: moment(endDateValue).format('YYYY-MM-DD'),
-        }),
-      );
-    }
-  }, [startDateValue, endDateValue]);
+    const params = { page: page };
+    if (query) params.q = query;
+    if (startDate) params.startDate = moment(startDateValue).format('YYYY-MM-DD');
+    if (endDate) params.endDate = moment(endDateValue).format('YYYY-MM-DD');
+    handleAPICall(params);
+  }, [startDateValue, endDateValue, query, page]);
 
-  const rowClick = (data) => {
-    // history.push(`/cms/permintaan-data/${data.id}`);
-  };
-
-  const getRowClass = (data) => {
-    // if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
-    // return 'bg-gray';
-  };
-
-  const handleSearch = () => {
-    dispatch(getCMSLogActifitasData({ page: 0, q: query, startDate, endDate }));
-  };
   const handleUserInputChange = (event) => {
     const { value } = event.target;
-    setQuery(value);
+    delayedQuery(value);
   };
-  const delayedQuery = useCallback(debounce(handleSearch, DEBOUNCE_DELAY), [query]);
+  const delayedQuery = useDebounce((query) => setQuery(query), DEBOUNCE_DELAY);
 
   useEffect(() => {
-    delayedQuery();
-
     return delayedQuery.cancel;
   }, [query, delayedQuery]);
 
@@ -152,65 +131,61 @@ const LogActivity = () => {
     totalCount: totalRecords || null,
     pageCount: totalPages || null,
     pageSize: size,
-    currentPage: currentPage,
+    currentPage: page,
     manualPagination: true,
-    onRowClick: rowClick,
-    rowClass: getRowClass,
     onPageIndexChange: (nextPage) => {
-      if (nextPage !== currentPage) {
-        setCurrentPage(nextPage);
+      if (nextPage !== page) {
+        handleAPICall({ page: nextPage, q: query, startDate, endDate });
       }
     },
   };
 
   return (
     <div className="sdp-log-activity">
-      <div className="container">
-        <div className={bem.e('header-log')}>
-          <div className="wrapper-left">
-            <h1> Log Aktivitas </h1>
-            <Button className="" variant="info" style={{ width: '112px' }} onClick={() => setModalProfile(true)}>
-              Download
-            </Button>
-            <Button
-              className="ml-10 bg-white sdp-text-grey-dark border-gray-stroke secondary"
-              variant="secondary"
-              style={{ width: '112px' }}
-              onClick={() => setModalProfile(true)}>
-              Backup
-            </Button>
-          </div>
-          <div className="wrapper-right">
-            <div className="date">
-              <p>Awal</p>
-              <DatePicker
-                className="cms-log-activity"
-                name="startDate"
-                control={control}
-                rules={{ required: false }}
-                error={errors.startDate?.message}
-                arrow={true}
-              />
-            </div>
-            <div className="date">
-              <p>Akhir</p>
-              <DatePicker
-                className="cms-log-activity"
-                name="endDate"
-                control={control}
-                rules={{ required: false }}
-                error={errors.endDate?.message}
-                arrow={true}
-              />
-            </div>
-            <InputGroup>
-              <Form.Control variant="normal" type="text" placeholder="Pencarian" onChange={handleUserInputChange} />
-              <Search />
-            </InputGroup>
-          </div>
+      <div className={bem.e('header-log')}>
+        <div className="wrapper-left">
+          <h1> Log Aktivitas </h1>
+          <Button className="" variant="info" style={{ width: '112px' }} onClick={() => setModalProfile(true)}>
+            Download
+          </Button>
+          <Button
+            className="ml-10 bg-white sdp-text-grey-dark border-gray-stroke secondary"
+            variant="secondary"
+            style={{ width: '112px' }}
+            onClick={() => setModalProfile(true)}>
+            Backup
+          </Button>
         </div>
-        {loading ? <TableLoader speed={2} width={'100%'} height={550} /> : <Table {...tableConfig} />}
+        <div className="wrapper-right">
+          <div className="date">
+            <p>Awal</p>
+            <DatePicker
+              className="cms-log-activity"
+              name="startDate"
+              control={control}
+              rules={{ required: false }}
+              error={errors.startDate?.message}
+              arrow={true}
+            />
+          </div>
+          <div className="date">
+            <p>Akhir</p>
+            <DatePicker
+              className="cms-log-activity"
+              name="endDate"
+              control={control}
+              rules={{ required: false }}
+              error={errors.endDate?.message}
+              arrow={true}
+            />
+          </div>
+          <InputGroup>
+            <Form.Control variant="normal" type="text" placeholder="Pencarian" onChange={handleUserInputChange} />
+            <Search />
+          </InputGroup>
+        </div>
       </div>
+      {loading ? <TableLoader speed={2} width={'100%'} height={550} /> : <Table {...tableConfig} />}
       <Modal className="cms-log-activity" showHeader={false} visible={modalProfile} onClose={() => setModalProfile(false)}>
         <div className="alert">
           <ModalAlertDanger />

@@ -77,7 +77,7 @@ const BeritaUtamaDetail = (props) => {
     <div className="row mt-24">
       {isLoading && <Loader fullscreen />}
       <div className="col-lg-2"></div>
-      <div className="col-lg-6 pr-5">
+      <div className="col-lg-6 mr-16">
         <div>
           <div className="fs-32 fw-600 mb-24">{record?.judul}</div>
           <div className="d-flex flex-row">

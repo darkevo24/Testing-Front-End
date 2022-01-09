@@ -3,13 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import cx from 'classnames';
 
-import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import InputGroup from 'react-bootstrap/InputGroup';
-import { Search } from 'components/Icons';
-import { CMSTable, CMSModal } from 'components';
+import { CMSModal } from 'components';
 import Table, { FilterSearchInput } from 'components/Table';
 import { ComponentAccessibility } from 'components/ComponentAccess';
 import TableLoader from 'components/Loader/TableLoader';

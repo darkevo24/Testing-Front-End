@@ -21,42 +21,9 @@ import { formatDate } from 'utils/helper';
 import { STATUS_DATA_BERITA } from 'utils/constants';
 import { USER_ROLES } from 'utils/constants';
 import { getListBerita, beritaCmsListSelector, setPreviewBerita, setStatusBerita } from '../BeritaBaru/reducer';
+import { FILTER_STATUS } from './constants';
 
 const bem = bn('content-table');
-const DROPDOWN_LIST = [
-  {
-    value: -1,
-    label: 'All',
-  },
-  {
-    value: 0,
-    label: 'Draft',
-  },
-  {
-    value: 2,
-    label: 'Menunggu Persetujuan',
-  },
-  {
-    value: 3,
-    label: 'Disetujui',
-  },
-  {
-    value: 5,
-    label: 'Ditayangkan',
-  },
-  {
-    value: 6,
-    label: 'Tidak Ditayangkan',
-  },
-  {
-    value: 4,
-    label: 'Ditolak',
-  },
-  {
-    value: 8,
-    label: 'Diarsipkan',
-  },
-];
 
 const CMSBerita = () => {
   const dispatch = useDispatch();
@@ -87,25 +54,25 @@ const CMSBerita = () => {
     fetchData({ page: 1, judul: value });
   };
 
-  const handleCheckboxChange = (item) => {
-    let array = [...selectApprove];
-    if (selectApprove.includes(item.id)) {
-      // remove
-      array = array.filter((x) => x !== item.id);
+  const handleCheckboxChange = (data) => {
+    let selected = [...selectApprove];
+    if (selectApprove.includes(data.id)) {
+      // remove selection
+      selected = selected.filter((item) => item !== data.id);
     } else {
-      // add
-      array.push(item.id);
+      // add into selection
+      selected.push(data.id);
     }
 
-    setSelectApprove(array);
+    setSelectApprove(selected);
   };
 
   const handleSelectAll = () => {
     let currentArr = [...selectApprove];
-    const newArr = records.filter((x) => x.status === 2).map((item) => item.id);
+    const newArr = records.filter((item) => item.status === 2).map((item) => item.id);
     if (currentArr.some((x) => newArr.includes(x))) {
       // remove
-      currentArr = currentArr.filter((x) => !newArr.includes(x));
+      currentArr = currentArr.filter((item) => !newArr.includes(item));
     } else {
       // add
       currentArr = currentArr.concat(newArr);
@@ -115,20 +82,18 @@ const CMSBerita = () => {
   };
 
   const handleApproveAll = () => {
-    if (selectApprove.length === 0) {
-      return;
+    if (!selectApprove.length) {
+      dispatch(
+        setStatusBerita({
+          payload: { id: selectApprove, status: 3, note: '' },
+        }),
+      ).then(() => fetchData({ page: 1, judul: searchQuery }));
     }
 
     setModalConfirm(false);
-    dispatch(
-      setStatusBerita({
-        payload: { id: selectApprove, status: 3, note: '' },
-      }),
-    ).then(() => fetchData({ page: 1, judul: searchQuery }));
   };
 
   const handleStatusChange = (status) => {
-    // console.log('masok', status.value);
     fetchData({ page: 1, judul: searchQuery });
   };
 
@@ -141,15 +106,15 @@ const CMSBerita = () => {
       {
         Header: 'Tanggal Publish',
         accessor: 'publishDate',
-        Cell: ({ ...rest }) => formatDate(rest.row.original.publishDate),
+        Cell: ({ cell }) => formatDate(cell.row.original.publishDate),
       },
       {
         Header: 'Status',
         accessor: 'status',
-        Cell: ({ ...rest }) => {
+        Cell: ({ cell }) => {
           return (
-            <span className={cx('sdp-log__status', STATUS_DATA_BERITA[rest.row.original.status].toLowerCase())}>
-              {STATUS_DATA_BERITA[rest.row.original.status]}
+            <span className={cx('sdp-log__status', STATUS_DATA_BERITA[cell.row.original.status].toLowerCase())}>
+              {STATUS_DATA_BERITA[cell.row.original.status]}
             </span>
           );
         },
@@ -219,7 +184,7 @@ const CMSBerita = () => {
           </Button>
           <div className="sdp-left-wrapper d-flex align-items-center justify-content-end">
             <label className="mr-12">Status</label>
-            <SingleDropDown className="wpx-200 mr-16" data={DROPDOWN_LIST} onChange={handleStatusChange} />
+            <SingleDropDown className="wpx-200 mr-16" data={FILTER_STATUS} onChange={handleStatusChange} />
             <ComponentAccessibility roles={[USER_ROLES.CONTENT_EDITOR]}>
               {multiApprove ? (
                 <>

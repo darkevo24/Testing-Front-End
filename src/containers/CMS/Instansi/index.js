@@ -9,7 +9,7 @@ import { Search } from 'components/Icons';
 import { Table } from 'components';
 import { useDebounce } from 'utils/hooks';
 import { getInstansi, instansiDataSelector } from './reducer';
-const DEBOUNCE_DELAY = 1500;
+const DEBOUNCE_DELAY = 500;
 const bem = bn('instansi');
 
 const Instansi = () => {

@@ -16,7 +16,7 @@
 }
 
 .read_more_link {
-  color: blueviolet;
+  color: $blue-link;
   text-decoration: underline;
   letter-spacing: 1px;
   cursor: pointer;
@@ -38,7 +38,7 @@
 
 // berita per bulan 
 .wrapper {
-  border-top: 4px solid red;
+  border-top: 4px solid $red;
   padding-top: 32px;
 }
 

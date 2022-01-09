@@ -15,7 +15,7 @@ import TableLoader from 'components/Loader/TableLoader';
 import { useDebounce } from 'utils/hooks';
 import bn from 'utils/bemNames';
 import { getCMSLogActifitasData, cmsLogAktifitasDataSelector } from './reducer';
-const DEBOUNCE_DELAY = 1500;
+const DEBOUNCE_DELAY = 500;
 
 const bem = bn('log-activity');
 
@@ -145,13 +145,12 @@ const LogActivity = () => {
       <div className={bem.e('header-log')}>
         <div className="wrapper-left">
           <h1> Log Aktivitas </h1>
-          <Button className="" variant="info" style={{ width: '112px' }} onClick={() => setModalProfile(true)}>
+          <Button className="" variant="info" onClick={() => setModalProfile(true)}>
             Download
           </Button>
           <Button
             className="ml-10 bg-white sdp-text-grey-dark border-gray-stroke secondary"
             variant="secondary"
-            style={{ width: '112px' }}
             onClick={() => setModalProfile(true)}>
             Backup
           </Button>

@@ -5,7 +5,7 @@ const initialState = {
   dataset: {
     loading: false,
     error: null,
-    page: 1,
+    page: 0,
     status: 'idel',
     records: [],
     totalPages: null,

@@ -52,8 +52,8 @@ const LogActivity = () => {
   useEffect(() => {
     const params = { page: page };
     if (query) params.q = query;
-    if (startDate) params.startDate = moment(startDateValue).format('YYYY-MM-DD');
-    if (endDate) params.endDate = moment(endDateValue).format('YYYY-MM-DD');
+    if (startDateValue) params.startDate = moment(startDateValue).format('YYYY-MM-DD');
+    if (endDateValue) params.endDate = moment(endDateValue).format('YYYY-MM-DD');
     handleAPICall(params);
   }, [startDateValue, endDateValue, query, page]);
 

@@ -15,10 +15,8 @@ import { ReactComponent as Plus } from 'assets/plus.svg';
 import { CMSModal } from 'components/CMSStatusModals';
 import { Galery, Close } from 'components/Icons';
 import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
-// import { apiUrls, post, put, deleteRequest } from 'utils/request';
 import { apiUrls, post } from 'utils/request';
 import SingleDropDown from 'components/DropDown/SingleDropDown';
-// import { DatePicker, Input, Modal, Table, TextEditor, Notification } from 'components';
 import { DatePicker, Input, Modal, Table, Notification } from 'components';
 import { bimtekJadwalTags, bimtekListKabupaten, getListBimtekTags, getListBimtekKabupaten } from './reducer';
 
@@ -83,7 +81,6 @@ const CMSJadwalBaru = () => {
       return x.id !== data;
     });
     setDataPembicara(newData);
-    // console.log(newData);
   };
 
   const onDeleteMateri = (data) => {
@@ -165,8 +162,6 @@ const CMSJadwalBaru = () => {
     }));
     setListMateri([]);
     setDataMateri([...dataMateri, newMateri[0]]);
-    // console.log(newMateri[0]);
-    // console.log(dataMateri);
     handleCloseModal();
   };
 

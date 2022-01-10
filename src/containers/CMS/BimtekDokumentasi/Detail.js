@@ -112,9 +112,9 @@ const CMSDokumentasiDetail = (props) => {
 
   const {
     control,
-    formState: { errors },
+    // formState: { errors },
     reset,
-    setValue,
+    // setValue,
     handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),

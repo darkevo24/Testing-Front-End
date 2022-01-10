@@ -544,7 +544,6 @@ const CMSJadwalDetail = (props) => {
                   labelClass="sdp-form-label fw-normal"
                   placeholder=""
                   name="tagsKota"
-                  control={control}
                   data={[{ value: '', label: 'All' }, ...tagsResultKabupaten]}
                   loading={tagsLoading}
                   isCreatable={true}

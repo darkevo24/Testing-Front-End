@@ -23,34 +23,11 @@ const FlexBoxContent = styled.div`
   align-items: center;
 `;
 
-const LeftBox = styled.div`
-  margin-right: auto;
-  h6 {
-    font-size: 13px;
-    line-height: 13px;
-    margin: 0;
-    color: #2d2627;
-  }
-`;
-
 const RightBox = styled.div`
   margin: 0 5px;
   font-size: 13px;
   line-height: 13px;
   color: #2d2627;
-`;
-
-const Button = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 13px;
-  color: #007aff;
-  height: 25px;
-  background: rgba(0, 122, 255, 0.12);
-  border-radius: 25px;
-  padding: 6px 12px;
-  margin-left: 10px;
 `;
 
 export const CardWithDetail = ({

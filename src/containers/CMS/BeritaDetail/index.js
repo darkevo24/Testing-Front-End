@@ -26,7 +26,7 @@ const CMSBeritaDetail = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { loading, record } = useSelector(detailDataSelector);
-  const { loading: loadingLog, records: logRecords } = useSelector(logBeritaSelector);
+  const { records: logRecords } = useSelector(logBeritaSelector);
   const fetchData = (params) => {
     dispatch(setDetailBerita(params));
     dispatch(getLogBerita(params));

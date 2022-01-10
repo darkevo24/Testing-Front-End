@@ -155,10 +155,12 @@ const CMSJadwalBaru = () => {
     let listPembicara = dataPembicara;
     listPembicara.forEach((x) => {
       delete x['id'];
+      return x;
     });
     let listMateri = dataMateri;
     listMateri.forEach((x) => {
       delete x['id'];
+      return x;
     });
     let tanggalMulaiDisetujui = `${moment(data.tanggalMulaiDisetujui).format('YYYY-MM-DD')} ${data.jamMulaiDisetujui}:00`,
       tanggalSelesaiDisetujui = `${moment(data.tanggalSelesaiDisetujui).format('YYYY-MM-DD')} ${

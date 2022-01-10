@@ -28,11 +28,10 @@
     font-size: 16px;
     line-height: 24px;
     color: $gray-dark;
-
-    img {
-      max-width: fit-content;
-      margin: 15px 0;
-    }
+  }
+  img {
+    width: -webkit-fill-available !important;
+    margin: 15px 0;
   }
 }
 

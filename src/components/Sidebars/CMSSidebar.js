@@ -98,12 +98,7 @@ export const CMSSidebar = () => {
           <SidebarDataIcon className="mr-10" />
           Dashboard Management
         </div>
-        {/* <SidebarItem title="Data Analytics" pathname="/cms/data-analytic" />
-        <SidebarItem title="Kesiapan SDI" pathname="/cms/kesiapan-sdi" />
-        <SidebarItem title="Dashboard Executive" pathname="/cms/dashboard-eksekutif" /> */}
-        <div className={cx(bem.e('item'))} onClick={openAnalyticsLogin}>
-          Data Analytics
-        </div>
+        <SidebarItem title="Data Analytics" pathname="/cms/data-analytic" />
         <div className={cx(bem.e('item'))} onClick={openAnalyticsLogin}>
           Kesiapan SDI
         </div>

@@ -25,6 +25,7 @@ export const Input = ({
   rightIcon,
   isLink,
   maxLength = '800',
+  prefixText = '',
   ...rest
 }) => {
   let { as: inputAs } = rest;
@@ -63,6 +64,7 @@ export const Input = ({
                 <LeftIconNode />
               </InputGroup.Text>
             )}
+            {prefixText && <InputGroup.Text className={cx('bg-white', leftIconClass)}>{prefixText}</InputGroup.Text>}
             <Form.Control maxLength={maxLengthNumber} {...rest} {...field} value={field.value || ''} className={className} />
             {RightIconNode && (
               <InputGroup.Text

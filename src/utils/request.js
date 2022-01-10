@@ -10,13 +10,6 @@ export const contentPlainHeader = {
   'Content-Type': typePlain,
 };
 
-export class ResponseError extends Error {
-  constructor(response) {
-    super(response.statusText);
-    this.response = response;
-  }
-}
-
 /**
  * Parses the response data returned by a network request
  *
@@ -26,10 +19,6 @@ export class ResponseError extends Error {
  * @return {object}          The parsed JSON from the request
  */
 async function parseResponse(response, download, fileName) {
-  if (response.status === 204 || response.status === 205) {
-    return null;
-  }
-
   try {
     const responseHeaders = {};
     response.headers.forEach(function (value, name) {
@@ -76,16 +65,11 @@ async function parseResponse(response, download, fileName) {
  * @return {object|undefined} Returns either the response, or throws an error
  */
 function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  }
   if ([401].includes(response.status)) {
     removeAllCookie();
     window.location.reload();
   }
-  const error = new ResponseError(response);
-  error.response = response;
-  throw error;
+  return response;
 }
 
 /**
@@ -135,7 +119,11 @@ export async function request(
     fetchResponse = error.response;
   }
   const response = checkStatus(fetchResponse);
-  return parseResponse(response, download, fileName);
+  const parsedResponse = await parseResponse(response, download, fileName);
+  if (response.ok) {
+    return parsedResponse;
+  }
+  throw parsedResponse;
 }
 
 /**

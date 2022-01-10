@@ -28,7 +28,6 @@ const CMSPermintaanDataView = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { result, dataLog } = useSelector(permintaanDataDetailSelector);
-  const [objRequired, setObjRequired] = useState({});
   const [showModal, setShowModal] = useState('');
 
   const history = useHistory();
@@ -47,19 +46,47 @@ const CMSPermintaanDataView = () => {
     initialCall();
   }, []);
 
-  const schema = yup.object(objRequired).required();
+  const schema = yup.object({}).required();
+  const schemaProsesTolak = yup
+    .object({
+      catatan: yup.string().required(),
+    })
+    .required();
+  const schemaSelesai = yup
+    .object({
+      catatan: yup.string().required(),
+      urlDatasetNew: yup.string().required(),
+    })
+    .required();
 
   const {
     control,
     formState: { errors },
     handleSubmit,
-    reset,
     setValue,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       ...data,
     },
+  });
+
+  const {
+    control: controlProsesTolak,
+    formState: { errors: errorsProsesTolak },
+    handleSubmit: handleSubmitProsesTolak,
+  } = useForm({
+    resolver: yupResolver(schemaProsesTolak),
+    defaultValues: {},
+  });
+
+  const {
+    control: controlSelesai,
+    formState: { errors: errorsSelesai },
+    handleSubmit: handleSubmitSelesai,
+  } = useForm({
+    resolver: yupResolver(schemaSelesai),
+    defaultValues: {},
   });
 
   useEffect(() => {
@@ -69,19 +96,6 @@ const CMSPermintaanDataView = () => {
     setValue('tanggalTarget', moment(data?.tanggalTarget).format('DD/MM/YYYY'));
     setValue('jenisData', data?.jenisData);
     setValue('urlDataset', data?.urlDataset);
-    switch (data.status) {
-      case 'TERKIRIM':
-        return setObjRequired({
-          catatan: yup.string().required(),
-        });
-      case 'DIPROSES':
-        return setObjRequired({
-          catatan: yup.string().required(),
-          urlDatasetNew: yup.string().required(),
-        });
-      default:
-        return null;
-    }
   }, [data]);
 
   const handleCloseModal = () => {
@@ -237,16 +251,16 @@ const CMSPermintaanDataView = () => {
               </p>
               {prefixID(id, 'PD')} ?
             </div>
-            <Form onSubmit={handleSubmit(onSubmitTolak)} noValidate>
+            <Form onSubmit={handleSubmitProsesTolak(onSubmitTolak)} noValidate>
               <Form.Group as={Col} md="12" className="mb-16">
                 <Input
                   name="catatan"
                   as="textarea"
-                  control={control}
+                  control={controlProsesTolak}
                   rules={{ required: true }}
                   placeholder="Tulis catatan"
                   type="text"
-                  error={errors.catatan?.message}
+                  error={errorsProsesTolak.catatan?.message}
                 />
                 <span className="length">0/140</span>
               </Form.Group>
@@ -276,16 +290,16 @@ const CMSPermintaanDataView = () => {
               </p>
               {prefixID(id, 'PD')} ?
             </div>
-            <Form onSubmit={handleSubmit(onSubmitProses)} noValidate>
+            <Form onSubmit={handleSubmitProsesTolak(onSubmitProses)} noValidate>
               <Form.Group as={Col} md="12" className="mb-16">
                 <Input
                   name="catatan"
                   as="textarea"
-                  control={control}
+                  control={controlProsesTolak}
                   rules={{ required: true }}
                   placeholder="Tulis catatan"
                   type="text"
-                  error={errors.catatan?.message}
+                  error={errorsProsesTolak.catatan?.message}
                 />
                 <span className="length">0/140</span>
               </Form.Group>
@@ -311,26 +325,26 @@ const CMSPermintaanDataView = () => {
               <span className="font-weight-bold"> {prefixID(id, 'PD')} </span>?
             </div>
             <div className="alert"> Masukan url dataset terkait pada kolom berikut </div>
-            <Form onSubmit={handleSubmit(onSubmitSelesai)} noValidate>
+            <Form onSubmit={handleSubmitSelesai(onSubmitSelesai)} noValidate>
               <InputGroup>
                 <div className="url">URL</div>
                 <Input
                   name="urlDatasetNew"
-                  control={control}
+                  control={controlSelesai}
                   type="text"
                   rules={{ required: true }}
-                  error={errors.urlDatasetNew?.message}
+                  error={errorsSelesai.urlDatasetNew?.message}
                 />
               </InputGroup>
               <Form.Group as={Col} md="12" className="mb-16 mt-15">
                 <Input
                   name="catatan"
                   as="textarea"
-                  control={control}
+                  control={controlSelesai}
                   rules={{ required: true }}
                   placeholder="Tulis catatan"
                   type="text"
-                  error={errors.catatan?.message}
+                  error={errorsSelesai.catatan?.message}
                 />
                 <span className="length">0/140</span>
               </Form.Group>

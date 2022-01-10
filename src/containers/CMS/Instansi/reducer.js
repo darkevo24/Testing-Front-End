@@ -5,7 +5,7 @@ const initialState = {
   dataset: {
     loading: false,
     error: null,
-    page: 1,
+    page: 0,
     status: 'idel',
     records: [],
     totalPages: null,
@@ -21,7 +21,7 @@ const initialState = {
   dataLogs: {
     status: 'idel',
     loading: false,
-    page: 1,
+    page: 0,
     size: defaultNumberOfRows,
     totalRecords: null,
     records: [],
@@ -47,7 +47,7 @@ const initialState = {
 export const INSTANSI_DATA = 'INSTANSI_DATA';
 
 export const getInstansi = createAsyncThunk('instansi-data/list', async ({ page, q }) => {
-  const params = { page };
+  const params = { page: page + 1 };
   if (q) params.q = q;
   const response = await get(`${apiUrls.cmsIntansiData}/`, {
     query: params,

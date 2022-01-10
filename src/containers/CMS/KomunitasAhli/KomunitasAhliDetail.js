@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { Kontak_list } from 'utils/constants';
+import { Kontak_list, Social_Media_Prefix_Links } from 'utils/constants';
 import { ReadOnlyInputs } from 'components';
 import { LeftChevron } from 'components/Icons';
 import { getStatusClass, prefixID } from 'utils/helper';
@@ -25,7 +25,7 @@ import { DetailHeader } from './detailHeader';
 
 export const getValue = (record, key) => {
   const rec = (record.kontak || []).find((item) => item.tipe === key);
-  return rec?.value || '';
+  return !rec?.value ? '' : `${Social_Media_Prefix_Links[key] + rec?.value || ''}`;
 };
 
 const KomunitasAhli = () => {

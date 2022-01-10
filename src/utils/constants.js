@@ -106,6 +106,7 @@ export const apiUrls = {
   penggunaRoleList: getApiEndpoint('sekretariat/user/role-list'),
   penggunaStatusList: getApiEndpoint('sekretariat/user/status-list'),
   penggunaLogs: getApiEndpoint('sekretariat/user'),
+  cmsAnalitikData: getCMSEndpoint('analitik'),
 };
 
 export const priorityOptions = [
@@ -257,22 +258,32 @@ export const CMS_DASHBOARD = [
   },
 ];
 
+export const Social_Media_Prefix_Links = {
+  facebook: 'https://www.facebook.com/',
+  twitter: 'https://www.twitter.com/',
+  instagram: 'https://www.instagram.com/',
+  youtube: 'https://www.youtube.com/',
+};
 export const Kontak_list = [
   {
     name: 'facebook',
     icon: 'facebookSvg',
+    prefixText: Social_Media_Prefix_Links['facebook'],
   },
   {
     name: 'twitter',
     icon: 'twitterSvg',
+    prefixText: Social_Media_Prefix_Links['twitter'],
   },
   {
     name: 'instagram',
     icon: 'instgramSvg',
+    prefixText: Social_Media_Prefix_Links['instagram'],
   },
   {
     name: 'youtube',
     icon: 'youtubeSvg',
+    prefixText: Social_Media_Prefix_Links['youtube'],
   },
 ];
 

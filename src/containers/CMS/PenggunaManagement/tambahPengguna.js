@@ -31,7 +31,7 @@ const TambahPengguna = () => {
     } catch (err) {
       Notification.show({
         type: 'warning',
-        message: 'Something went wrong',
+        message: err.data.message,
         icon: 'cross',
       });
     }

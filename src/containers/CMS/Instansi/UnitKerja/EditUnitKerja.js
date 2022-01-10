@@ -54,19 +54,19 @@ const EditUnitKerja = () => {
         ...data,
       },
     };
-    dispatch(updateUnitKerja(inputData))
-      .then((_res) => {
+    dispatch(updateUnitKerja(inputData)).then((_res) => {
+      if (_res.payload) {
         setLoading(false);
         history.goBack();
-      })
-      .catch((err) => {
-        setLoading(false);
+      } else {
         Notification.show({
           type: 'secondary',
-          message: <div> {err.message ? err.message : 'Permintaan Data Gagal Diproses '}</div>,
+          message: <div> {'Permintaan Data Gagal Diproses '}</div>,
           icon: 'cross',
         });
-      });
+        setLoading(false);
+      }
+    });
   };
   const handleBatal = (e) => {
     e.preventDefault();

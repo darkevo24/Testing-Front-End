@@ -1,16 +1,15 @@
 import cx from 'classnames';
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import debounce from 'lodash/debounce';
 import bn from 'utils/bemNames';
 import { Button, InputGroup, Form } from 'react-bootstrap';
 import TableLoader from 'components/Loader/TableLoader';
 import { Search } from 'components/Icons';
 import { Table } from 'components';
+import { useDebounce } from 'utils/hooks';
 import { getInstansi, instansiDataSelector } from './reducer';
-const DEBOUNCE_DELAY = 1500;
-
+const DEBOUNCE_DELAY = 500;
 const bem = bn('instansi');
 
 const Instansi = () => {
@@ -18,26 +17,21 @@ const Instansi = () => {
   const dispatch = useDispatch();
   const [query, setQuery] = useState('');
 
-  const { q, page, size, loading, records, totalRecords, totalPages } = useSelector(instansiDataSelector);
+  const { page, size, loading, records, totalRecords, totalPages } = useSelector(instansiDataSelector);
   const handleAPICall = (params) => {
     return dispatch(getInstansi(params));
   };
 
-  const handleSearch = () => {
-    handleAPICall({ page, q: query });
-  };
-
   useEffect(() => {
-    handleAPICall({ page, q: q });
-  }, [q]);
+    handleAPICall({ page, q: query });
+  }, [query]);
   const handleUserInputChange = (event) => {
     const { value } = event.target;
-    setQuery(value);
+    delayedQuery(value);
   };
-  const delayedQuery = useCallback(debounce(handleSearch, DEBOUNCE_DELAY), [query]);
+  const delayedQuery = useDebounce((query) => setQuery(query), DEBOUNCE_DELAY);
 
   useEffect(() => {
-    delayedQuery();
     return delayedQuery.cancel;
   }, [query, delayedQuery]);
 
@@ -111,7 +105,7 @@ const Instansi = () => {
     onRowClick: rowClick,
     onPageIndexChange: (nextPage) => {
       if (nextPage !== page) {
-        handleAPICall({ page: nextPage, q: q });
+        handleAPICall({ page: nextPage, q: query });
       }
     },
   };

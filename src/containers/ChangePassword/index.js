@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import isFunction from 'lodash/isFunction';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -32,7 +33,7 @@ const ChangePassword = () => {
   const history = useHistory();
 
   const goBack = () => {
-    history.push('/');
+    history.push('/login');
   };
 
   useEffect(() => {
@@ -51,8 +52,9 @@ const ChangePassword = () => {
     try {
       await method(url, {}, params);
       handleNotification('secondary', 'Berhasil Merubah Password', 'check');
+      isFunction(callBack) && callBack();
     } catch (e) {
-      handleNotification('secondary', `Error, ${e.message}`, 'cross');
+      handleNotification('secondary', `Error, ${e?.data?.message}`, 'cross');
     }
   };
 
@@ -70,7 +72,7 @@ const ChangePassword = () => {
       newPassword: data.passwordNew,
       confirmNewPassword: data.confirmPassword,
     };
-    handleAPICall(post, `${apiUrls.forgotPassword}`, { data: obj });
+    handleAPICall(post, `${apiUrls.forgotPassword}`, { data: obj }, goBack);
   };
 
   return (

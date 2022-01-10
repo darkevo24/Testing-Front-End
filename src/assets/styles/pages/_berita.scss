@@ -1,4 +1,4 @@
-.userProfile{
+.userProfile {
   font-family: Myriad Pro;
   font-style: normal;
   font-weight: 600;
@@ -12,63 +12,64 @@
   font-size: 16px;
   line-height: 24px;
   color: $gray-dark;
- 
+
 }
-.read_more_link{
-  color: blueviolet;
+
+.read_more_link {
+  color: $blue-link;
   text-decoration: underline;
   letter-spacing: 1px;
   cursor: pointer;
-  
+
 }
-.beritaDetailContent{
+
+.beritaDetailContent {
   p {
     font-size: 16px;
     line-height: 24px;
     color: $gray-dark;
-
-    img{
-       max-width: fit-content;
-       margin: 15px 0;
-    }
+  }
+  img {
+    width: -webkit-fill-available !important;
+    margin: 15px 0;
   }
 }
 
 // berita per bulan 
 .wrapper {
-   border-top: 4px solid red;
-   padding-top: 32px;
-   
-  .topik {
-    font-size: 14px;
-    color: blue;
-    background: rgba(0, 122, 255, 0.12);
-    border-radius: 4px;
-    padding: 8px 12px;
-    display: inline-block;
-  }
+  border-top: 4px solid $red;
+  padding-top: 32px;
+}
 
-  .judul {
-    font-weight: 600;
-    font-size: 16px;
-    color: $black-dark;
-    margin: 12px 0;
-    cursor: pointer;
-  }
+.topik {
+  font-size: 14px;
+  color: blue;
+  background: rgba(0, 122, 255, 0.12);
+  border-radius: 4px;
+  padding: 8px 12px;
+  display: inline-block;
+}
 
-  .kontent {
-    font-size: 14px;
-    line-height: 21px;
-    color: $gray-dark;
-  }
+.judul {
+  font-weight: 600;
+  font-size: 16px;
+  color: $black-dark;
+  margin: 12px 0;
+  cursor: pointer;
+}
 
-  .loadMoreBUtton {
-    background: $gray-bg;
-    border-radius: 4px;
-    font-size: 14px;
-    color: $black-dark;
-    padding: 16px 24px;
-    margin: 32px 0;
-    border: 0;
-  }
+.kontent {
+  font-size: 14px;
+  line-height: 21px;
+  color: $gray-dark;
+}
+
+.loadMoreBUtton {
+  background: $gray-bg;
+  border-radius: 4px;
+  font-size: 14px;
+  color: $black-dark;
+  padding: 16px 24px;
+  margin: 32px 0;
+  border: 0;
 }

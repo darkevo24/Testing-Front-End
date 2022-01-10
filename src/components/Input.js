@@ -37,12 +37,25 @@ export const Input = ({
 
   const handleIconClick = (field) => {
     if (rightIcon === 'copy') {
-      copyToClipboard(field.value);
-      Notification.show({
-        type: 'secondary',
-        message: <div> Link berhasil dicopy </div>,
-        icon: 'check',
-      });
+      const ta = document.createElement('textarea');
+      ta.innerText = field.value;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      if (field.value) {
+        Notification.show({
+          type: 'secondary',
+          message: <div> Link berhasil dicopy </div>,
+          icon: 'check',
+        });
+      } else {
+        Notification.show({
+          type: 'secondary',
+          message: <div> Link Tidak Boleh Kosong </div>,
+          icon: 'cross',
+        });
+      }
     }
   };
   const maxLengthNumber = inputAs === 'textarea' ? maxLength : 200;

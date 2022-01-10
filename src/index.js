@@ -10,6 +10,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { HelmetProvider } from 'react-helmet-async';
+import { ReactKeycloakProvider } from '@react-keycloak/web';
+import keycloak from 'Keycloak';
 
 import { configureAppStore } from 'store/configureStore';
 import history from 'store/history';
@@ -27,13 +29,15 @@ const MOUNT_NODE = document.getElementById('root');
 ReactDOM.render(
   <Provider store={store}>
     <Suspense fallback={<Loader />}>
-      <ConnectedRouter history={history}>
-        <HelmetProvider>
-          <React.StrictMode>
-            <App />
-          </React.StrictMode>
-        </HelmetProvider>
-      </ConnectedRouter>
+      <ReactKeycloakProvider authClient={keycloak}>
+        <ConnectedRouter history={history}>
+          <HelmetProvider>
+            <React.StrictMode>
+              <App />
+            </React.StrictMode>
+          </HelmetProvider>
+        </ConnectedRouter>
+      </ReactKeycloakProvider>
     </Suspense>
   </Provider>,
   MOUNT_NODE,

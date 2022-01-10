@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import cx from 'classnames';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
@@ -9,9 +9,10 @@ import map from 'lodash/map';
 import { useTranslation } from 'react-i18next';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { logout, tokenSelector, userSelector } from 'containers/Login/reducer';
+import { useKeycloak } from '@react-keycloak/web';
+import { userSelector } from 'containers/Login/reducer';
 import { getAnalyticsUrl } from 'utils/constants';
 
 import Logo from 'assets/logo-satu.jpg';
@@ -62,19 +63,13 @@ const getNavLinks = (list, pathname, goTo) => {
 export const Header = () => {
   const history = useHistory();
   const location = useLocation();
-  const token = useSelector(tokenSelector);
+  const { keycloak } = useKeycloak();
   const user = useSelector(userSelector);
   const { t } = useTranslation();
 
-  const isLoggedIn = !!token;
+  const isLoggedIn = !!keycloak.authenticated;
 
   const goTo = (params) => () => history.push(params);
-
-  const dispatch = useDispatch();
-  const handleLogout = useCallback(() => {
-    dispatch(logout());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const COMMON_ROUTES = useMemo(
     () => [
@@ -135,7 +130,7 @@ export const Header = () => {
     return (
       <Nav className="h-100 d-flex align-items-center">
         {getNavLinks(PUBLIC_ROUTES, location.pathname, goTo)}
-        <Button variant="info" className="btn-rounded ml-32" onClick={goTo('/login')}>
+        <Button variant="info" className="btn-rounded ml-32" onClick={keycloak.login}>
           Masuk
         </Button>
       </Nav>
@@ -150,7 +145,7 @@ export const Header = () => {
           <NavDropdown.Item>{t('header.userNav.changePassword')}</NavDropdown.Item>
           <NavDropdown.Item onClick={goTo('/cms')}>{t('header.userNav.cmsApplication')}</NavDropdown.Item>
           <NavDropdown.Item onClick={goTo('/policy')}>{t('header.userNav.privacyPolicy')}</NavDropdown.Item>
-          <NavDropdown.Item onClick={handleLogout}>{t('header.userNav.signOut')}</NavDropdown.Item>
+          <NavDropdown.Item onClick={keycloak.logout}>{t('header.userNav.signOut')}</NavDropdown.Item>
         </NavDropdown>
       </Nav>
     );

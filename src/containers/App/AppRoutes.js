@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import AppLayout, { PrivateRoute, PublicRoute } from 'layouts/AppLayout';
+import { AppLayout, PrivateRoute, PublicRoute } from 'layouts';
 import lazily from 'utils/lazily';
 
 const { Login } = lazily(() => import('containers/Login'));

@@ -1,5 +1,5 @@
-import { generateQueryString, safeParse } from '../../utils/helper';
-import { cookieKeys, getCookieByName } from '../../utils/cookie';
+import { generateQueryString, safeParse } from 'utils/helper';
+import { cookieKeys, getCookieByName } from 'utils/cookie';
 
 class SuccessResponse {
   status;

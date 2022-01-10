@@ -39,7 +39,6 @@ const loginSlice = createSlice({
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.loading = false;
-      state.token = action.payload?.token;
       state.user = action.payload?.user;
     });
     builder.addCase(loginUser.rejected, (state) => {
@@ -49,7 +48,6 @@ const loginSlice = createSlice({
   },
 });
 
-export const tokenSelector = (state) => state.auth?.token;
 export const userSelector = (state) => state.auth?.user;
 
 export const { logout } = loginSlice.actions;

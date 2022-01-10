@@ -127,7 +127,7 @@ export const Info = (props) => {
 };
 
 export const Check = (props) => {
-  const color = `var(--${getColor(props, types.danger)})`;
+  const color = `var(--${getColor(props, types.green)})`;
   return (
     <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="7.00016" cy="7.49992" r="6.66667" fill={color} />

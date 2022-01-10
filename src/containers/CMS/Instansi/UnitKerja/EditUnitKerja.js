@@ -38,12 +38,19 @@ const EditUnitKerja = () => {
     control,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      ...data,
-    },
   });
+
+  useEffect(() => {
+    const { kode, nama } = data;
+    reset({
+      kode: kode,
+      nama: nama,
+    });
+  }, [data, reset]);
+
   const [loading, setLoading] = useState(false);
   const handleSubmitForm = (data) => {
     setLoading(true);

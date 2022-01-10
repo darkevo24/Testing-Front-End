@@ -39,7 +39,6 @@ const CMSBimtekPermintaan = () => {
   useEffect(() => {
     fetchDokumentasi({ page: 0 });
   }, [query]);
-  console.log(records);
   const columns = [
     {
       Header: 'Nama Bimbingan Teknis',

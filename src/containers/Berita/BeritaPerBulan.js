@@ -102,7 +102,7 @@ const BeritaPerBulan = () => {
                 <div key={i}>
                   <div className="row my-20 border-bottom pb-10 ">
                     <div className="col-lg-4 pr-24">
-                      <img className="image w-100" src={record.image} />
+                      <img className="image w-100" src={record.image} alt="" />
                     </div>
                     <div className="col-lg-8">
                       <div className="topik">{record.kategori}</div>

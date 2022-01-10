@@ -61,8 +61,8 @@ const CMSPermintaanDataView = () => {
 
   const {
     control,
-    formState: { errors },
-    handleSubmit,
+    // formState: { errors },
+    // handleSubmit,
     setValue,
   } = useForm({
     resolver: yupResolver(schema),

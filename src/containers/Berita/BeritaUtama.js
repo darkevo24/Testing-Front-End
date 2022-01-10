@@ -60,9 +60,9 @@ const BeritaUtama = () => {
               <Tanggal>{moment(tanggalPublis).fromNow()}</Tanggal>
               <Judul onClick={(event) => handleDetail(event, id)}>{judul}</Judul>
               <div className="overview">{parse(truncatedParagrapData)}</div>
-              <a className="read_more_link" onClick={(event) => handleDetail(event, id)}>
+              <button className="read_more_link p-0 border-0 bg-white" onClick={(event) => handleDetail(event, id)}>
                 <h6>Read More</h6>
-              </a>
+              </button>
             </div>
           );
         })}

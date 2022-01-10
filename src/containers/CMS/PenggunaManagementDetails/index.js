@@ -5,7 +5,7 @@ import { Button, Row, Col } from 'react-bootstrap';
 import { LeftChevron, Trash } from 'components/Icons';
 import bn from 'utils/bemNames';
 import { LogStatus } from 'components/Sidebars/LogStatus';
-import { getPenggunaLogs, penggunanLogsSelector } from './reducer';
+import { getPenggunaLogs, penggunanDataDetailSelector, penggunanLogsSelector } from './reducer';
 import CMSpenggunaForm, { submitpenggunaForm } from '../PenggunaManagement/CMSPenggunaForm';
 import Notification from 'components/Notification';
 import { put } from 'utils/request';
@@ -23,6 +23,7 @@ const CMSPenggunaManagementView = () => {
   };
 
   useEffect(() => dispatch(getPenggunaLogs(id)), []);
+  const { records: _penggunaDetails } = useSelector(penggunanDataDetailSelector);
 
   const { records: logData } = useSelector(penggunanLogsSelector);
   const DraftText = () => {
@@ -36,8 +37,84 @@ const CMSPenggunaManagementView = () => {
     );
   };
 
+  const ActiveText = () => {
+    return (
+      <div className="d-flex">
+        <div className="icon-box" onClick={backToTable}>
+          <LeftChevron></LeftChevron>
+        </div>
+        <Row className="permintaan-data-form-success fw-bold justify-content-center align-items-center">Active</Row>
+      </div>
+    );
+  };
+
+  const WaitingApprovalText = () => {
+    return (
+      <div className="d-flex">
+        <div className="icon-box" onClick={backToTable}>
+          <LeftChevron></LeftChevron>
+        </div>
+        <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">
+          Waiting Approval
+        </Row>
+      </div>
+    );
+  };
+
+  const RejectedText = () => {
+    return (
+      <div className="d-flex">
+        <div className="icon-box" onClick={backToTable}>
+          <LeftChevron></LeftChevron>
+        </div>
+        <Row className="permintaan-data-form-ditolak fw-bold justify-content-center align-items-center">Rejected</Row>
+      </div>
+    );
+  };
+
+  const SuspendedText = () => {
+    return (
+      <div className="d-flex">
+        <div className="icon-box" onClick={backToTable}>
+          <LeftChevron></LeftChevron>
+        </div>
+        <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Suspended</Row>
+      </div>
+    );
+  };
+
+  const InactiveText = () => {
+    return (
+      <div className="d-flex">
+        <div className="icon-box" onClick={backToTable}>
+          <LeftChevron></LeftChevron>
+        </div>
+        <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">Inactive</Row>
+      </div>
+    );
+  };
   const StatusBar = () => {
-    return <DraftText />;
+    switch (_penggunaDetails?.status) {
+      case 'DRAFT':
+        return <DraftText />;
+
+      case 'ACTIVE':
+        return <ActiveText />;
+
+      case 'WAITING_APPROVAL':
+        return <WaitingApprovalText />;
+
+      case 'REJECTED':
+        return <RejectedText />;
+
+      case 'SUSPENDED':
+        return <SuspendedText />;
+
+      case 'INACTIVE':
+        return <InactiveText />;
+      default:
+        return null;
+    }
   };
 
   const editPengguna = (e) => {
@@ -63,7 +140,7 @@ const CMSPenggunaManagementView = () => {
       supervisorName: data.supervisorName,
       officialMemo: data.officialMemo,
       instansi: {
-        id: data.instansi.value,
+        id: data.instansi.id ? data.instansi.id : data.instansi.value,
       },
       unitKerja: {
         id: data.unitKerja.value,

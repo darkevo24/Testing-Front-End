@@ -15,7 +15,6 @@ import {
   getInstansiData,
   getUnitKerjaData,
   penggunaRoleDataSelector,
-  penggunaStatusDataSelector,
   instansiDataSelector,
   unitKerjaDataSelector,
 } from './reducer';
@@ -31,11 +30,10 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
   const dispatch = useDispatch();
 
   const { records: penggunaRoleData } = useSelector(penggunaRoleDataSelector);
-  const { records: penggunaStatusData } = useSelector(penggunaStatusDataSelector);
   const { records: penggunaInstansiData } = useSelector(instansiDataSelector);
   const { records: penggunaUnitKerjaData } = useSelector(unitKerjaDataSelector);
   const { records: _penggunaDetails } = useSelector(penggunanDataDetailSelector);
-
+  const penggunaStatusData = ['PNS', 'PPNPN'];
   useEffect(() => {
     setValue('roles', role);
   }, [role]);
@@ -78,7 +76,6 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
         roles: _penggunaDetails.roles,
       };
       setPenggunaDetails(updatedData);
-      setRole(_penggunaDetails.roles);
     }
   }, [_penggunaDetails]);
 
@@ -113,13 +110,14 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
     if (penggunaDetails) {
       reset(penggunaDetails);
     }
+    setRole(penggunaDetails.roles);
   }, [penggunaDetails]);
 
   const changeInstansi = (e) => {
     setValue('instansi', e);
     dispatch(getUnitKerjaData(e.value));
     setInstansiErr(true);
-    setValue('unitKerja', '');
+    setValue('unitKerja', null);
   };
 
   const uploadMemo = (e) => {

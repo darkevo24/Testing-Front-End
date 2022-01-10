@@ -7,9 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { apiUrls, post } from 'utils/request';
-import { DatePicker, Input, Modal, Table, Notification } from 'components';
-import { Galery, Close } from 'components/Icons';
+import { DatePicker, Input, Modal, Notification } from 'components';
 
 const schemaPembicara = yup
   .object({
@@ -150,160 +148,106 @@ export const ModalCreatePembicara = ({
     visible();
     return handleNotification('secondary', 'Berhasil Merubah Pembicara ', 'check');
   };
-
-  switch (statusModal) {
-    case 'pembicara':
-      return (
-        <Modal className="cms-bimtek-materi" title="Tambah Pembicara Baru" visible={visible} onClose={visible}>
-          <Form onSubmit={handleSubmitPembicara(onAddPembicara)}>
-            <div className="mb-10">
-              <Row>
-                <Input
-                  group
-                  label="Nama Pembicara"
-                  name="tambahPembicara"
-                  control={controlPembicara}
-                  error={errorsPembicara.tambahPembicara?.message}
-                  rules={{ required: true }}
-                />
-              </Row>
-              <Row className="align-items-end">
-                <Col>
-                  <DatePicker
-                    group
-                    label="Tanggal Mulai Sesi"
-                    name="tambahPembicaraWaktuMulai"
-                    control={controlPembicara}
-                    error={errorsPembicara.tambahPembicaraWaktuMulai?.message}
-                    rules={{ required: true }}
-                  />
-                </Col>
-                <Col>
-                  <Input
-                    group
-                    className="m-0"
-                    type="time"
-                    label=""
-                    name="tambahPembicaraJamMulai"
-                    control={controlPembicara}
-                    error={errorsPembicara.tambahPembicaraJamMulai?.message}
-                    rules={{ required: true }}
-                  />
-                </Col>
-              </Row>
-              <Row className="align-items-end">
-                <Col>
-                  <DatePicker
-                    group
-                    label="Tanggal Selesai Sesi"
-                    name="tambahPembicaraWaktuSelesai"
-                    control={controlPembicara}
-                    error={errorsPembicara.tambahPembicaraWaktuSelesai?.message}
-                    rules={{ required: true }}
-                  />
-                </Col>
-                <Col>
-                  <Input
-                    group
-                    className="m-0"
-                    type="time"
-                    label=""
-                    name="tambahPembicaraJamSelesai"
-                    control={controlPembicara}
-                    error={errorsPembicara.tambahPembicaraJamSelesai?.message}
-                    rules={{ required: true }}
-                  />
-                </Col>
-              </Row>
-            </div>
-            <div className="d-flex justify-content-end">
-              <Button className="br-4 mr-8 px-40 py-5 bg-transparent" variant="outline-none" onClick={visible}>
-                Batal
-              </Button>
-              <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
-                Simpan
-              </Button>
-            </div>
-          </Form>
-        </Modal>
-      );
-    case 'editPembicara':
-      return (
-        <Modal className="cms-bimtek-materi" title="Ubah Pembicara" visible={visible} onClose={visible}>
-          <Form onSubmit={handleSubmitEditPembicara(onEditPembicara)}>
-            <div className="mb-10">
-              <Row>
-                <Input
-                  group
-                  label="Nama Pembicara"
-                  name="tambahPembicaraUpdate"
-                  control={controlEditPembicara}
-                  error={errorsEditPembicara.tambahPembicaraUpdate?.message}
-                  rules={{ required: true }}
-                />
-              </Row>
-              <Row className="align-items-end">
-                <Col>
-                  <DatePicker
-                    group
-                    label="Tanggal Mulai Sesi"
-                    name="tambahPembicaraWaktuMulaiUpdate"
-                    control={controlEditPembicara}
-                    error={errorsEditPembicara.tambahPembicaraWaktuMulaiUpdate?.message}
-                    rules={{ required: true }}
-                  />
-                </Col>
-                <Col>
-                  <Input
-                    group
-                    className="m-0"
-                    type="time"
-                    label=""
-                    name="tambahPembicaraJamMulaiUpdate"
-                    control={controlEditPembicara}
-                    error={errorsEditPembicara.tambahPembicaraJamMulaiUpdate?.message}
-                    rules={{ required: true }}
-                  />
-                </Col>
-              </Row>
-              <Row className="align-items-end">
-                <Col>
-                  <DatePicker
-                    group
-                    label="Tanggal Selesai Sesi"
-                    name="tambahPembicaraWaktuSelesaiUpdate"
-                    error={errorsEditPembicara.tambahPembicaraWaktuSelesaiUpdate?.message}
-                    rules={{ required: true }}
-                    control={controlEditPembicara}
-                  />
-                </Col>
-                <Col>
-                  <Input
-                    group
-                    className="m-0"
-                    type="time"
-                    label=""
-                    name="tambahPembicaraJamSelesaiUpdate"
-                    error={errorsEditPembicara.tambahPembicaraJamSelesaiUpdate?.message}
-                    rules={{ required: true }}
-                    control={controlEditPembicara}
-                  />
-                </Col>
-              </Row>
-            </div>
-            <div className="d-flex justify-content-end">
-              <Button className="br-4 mr-8 px-40 py-5 bg-transparent" variant="outline-none" onClick={visible}>
-                Batal
-              </Button>
-              <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
-                Simpan
-              </Button>
-            </div>
-          </Form>
-        </Modal>
-      );
-    default:
-      return null;
-  }
+  return (
+    <Modal
+      className="cms-bimtek-materi"
+      title={statusModal === 'pembicara' ? 'Tambah Pembicara Baru' : 'Ubah Pembicara'}
+      visible={visible}
+      onClose={visible}>
+      <Form
+        onSubmit={
+          statusModal === 'pembicara' ? handleSubmitPembicara(onAddPembicara) : handleSubmitEditPembicara(onEditPembicara)
+        }>
+        <div className="mb-10">
+          <Row>
+            <Input
+              group
+              label="Nama Pembicara"
+              name={statusModal === 'pembicara' ? 'tambahPembicara' : 'tambahPembicaraUpdate'}
+              control={statusModal === 'pembicara' ? controlPembicara : controlEditPembicara}
+              error={
+                statusModal === 'pembicara'
+                  ? errorsPembicara.tambahPembicara?.message
+                  : errorsEditPembicara.tambahPembicaraUpdate?.message
+              }
+              rules={{ required: true }}
+            />
+          </Row>
+          <Row className="align-items-end">
+            <Col>
+              <DatePicker
+                group
+                label="Tanggal Mulai Sesi"
+                name={statusModal === 'pembicara' ? 'tambahPembicaraWaktuMulai' : 'tambahPembicaraWaktuMulaiUpdate'}
+                control={statusModal === 'pembicara' ? controlPembicara : controlEditPembicara}
+                error={
+                  statusModal === 'pembicara'
+                    ? errorsPembicara.tambahPembicaraWaktuMulai?.message
+                    : errorsEditPembicara.tambahPembicaraWaktuMulaiUpdate?.message
+                }
+                rules={{ required: true }}
+              />
+            </Col>
+            <Col>
+              <Input
+                group
+                className="m-0"
+                type="time"
+                label=""
+                name={statusModal === 'pembicara' ? 'tambahPembicaraJamMulai' : 'tambahPembicaraJamMulaiUpdate'}
+                control={statusModal === 'pembicara' ? controlPembicara : controlEditPembicara}
+                error={
+                  statusModal === 'pembicara'
+                    ? errorsPembicara.tambahPembicaraJamMulai?.message
+                    : errorsEditPembicara.tambahPembicaraJamMulaiUpdate?.message
+                }
+                rules={{ required: true }}
+              />
+            </Col>
+          </Row>
+          <Row className="align-items-end">
+            <Col>
+              <DatePicker
+                group
+                label="Tanggal Selesai Sesi"
+                name={statusModal === 'pembicara' ? 'tambahPembicaraWaktuSelesai' : 'tambahPembicaraWaktuSelesaiUpdate'}
+                control={statusModal === 'pembicara' ? controlPembicara : controlEditPembicara}
+                error={
+                  statusModal === 'pembicara'
+                    ? errorsPembicara.tambahPembicaraWaktuSelesai?.message
+                    : errorsEditPembicara.tambahPembicaraWaktuSelesaiUpdate?.message
+                }
+                rules={{ required: true }}
+              />
+            </Col>
+            <Col>
+              <Input
+                group
+                className="m-0"
+                type="time"
+                label=""
+                name={statusModal === 'pembicara' ? 'tambahPembicaraJamSelesai' : 'tambahPembicaraJamSelesaiUpdate'}
+                control={statusModal === 'pembicara' ? controlPembicara : controlEditPembicara}
+                error={
+                  statusModal === 'pembicara'
+                    ? errorsPembicara.tambahPembicaraJamSelesai?.message
+                    : errorsEditPembicara.tambahPembicaraJamSelesaiUpdate?.message
+                }
+                rules={{ required: true }}
+              />
+            </Col>
+          </Row>
+        </div>
+        <div className="d-flex justify-content-end">
+          <Button className="br-4 mr-8 px-40 py-5 bg-transparent" variant="outline-none" onClick={visible}>
+            Batal
+          </Button>
+          <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
+            Simpan
+          </Button>
+        </div>
+      </Form>
+    </Modal>
+  );
 };
 export default ModalCreatePembicara;

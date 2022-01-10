@@ -688,7 +688,7 @@ const CMSJadwalDetail = (props) => {
           confirmButtonAction={onTolak}
         />
       )}
-      {showModal === 'materi' || 'editMateri' ? (
+      {showModal === 'materi' || showModal === 'editMateri' ? (
         <ModalDetailMateri
           statusModal={showModal}
           idJadwal={id}
@@ -702,7 +702,7 @@ const CMSJadwalDetail = (props) => {
           setAPIError={(data) => setAPIError(data)}
         />
       ) : null}
-      {showModal === 'pembicara' || 'editPembicara' ? (
+      {showModal === 'pembicara' || showModal === 'editPembicara' ? (
         <ModalDetailPembicara
           statusModal={showModal}
           visible={handleCloseModal}

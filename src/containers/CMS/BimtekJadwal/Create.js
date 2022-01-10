@@ -299,7 +299,6 @@ const CMSJadwalBaru = () => {
     onSearch: () => {},
     variant: 'link',
   };
-
   return (
     <div className={bem.e('section cms-bimtek')}>
       <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
@@ -438,7 +437,7 @@ const CMSJadwalBaru = () => {
       {showModal === 'proses' && (
         <CMSModal onClose={showModal} label="Simpan Jadwal Bimtek?" confirmButtonAction={handleSubmitCreate(onProses)} />
       )}
-      {showModal === 'materi' || 'editMateri' ? (
+      {showModal === 'materi' || showModal === 'editMateri' ? (
         <ModalCreateMateri
           statusModal={showModal}
           idMateri={idMateri}
@@ -450,7 +449,7 @@ const CMSJadwalBaru = () => {
           namaMateriEdit={namaMateri ? namaMateri : null}
         />
       ) : null}
-      {showModal === 'pembicara' || 'editPembicara' ? (
+      {showModal === 'pembicara' || showModal === 'editPembicara' ? (
         <ModalCreatePembicara
           statusModal={showModal}
           visible={handleCloseModal}

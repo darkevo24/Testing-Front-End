@@ -173,16 +173,29 @@ export const ModalDetailPembicara = ({
   switch (statusModal) {
     case 'pembicara':
       return (
-        <Modal className="cms-bimtek-materi" title="Tambah Pembicara Baru" visible={visible} onClose={visible}>
-          <Form onSubmit={handleSubmitPembicara(onAddPembicara)}>
+        <Modal
+          className="cms-bimtek-materi"
+          title={statusModal === 'pembicara' ? 'Tambah Pembicara Baru' : 'Ubah Pembicara'}
+          visible={visible}
+          onClose={visible}>
+          <Form
+            onSubmit={
+              statusModal === 'pembicara'
+                ? handleSubmitPembicara(onAddPembicara)
+                : handleSubmitEditPembicara(onEditPembicara)
+            }>
             <div className="mb-10">
               <Row>
                 <Input
                   group
                   label="Nama Pembicara"
-                  name="tambahPembicara"
-                  control={controlPembicara}
-                  error={errorsPembicara.tambahPembicara?.message}
+                  name={statusModal === 'pembicara' ? 'tambahPembicara' : 'tambahPembicaraUpdate'}
+                  control={statusModal === 'pembicara' ? controlPembicara : controlEditPembicara}
+                  error={
+                    statusModal === 'pembicara'
+                      ? errorsPembicara.tambahPembicara?.message
+                      : errorsEditPembicara.tambahPembicaraUpdate?.message
+                  }
                   rules={{ required: true }}
                 />
               </Row>
@@ -191,9 +204,13 @@ export const ModalDetailPembicara = ({
                   <DatePicker
                     group
                     label="Tanggal Mulai Sesi"
-                    name="tambahPembicaraWaktuMulai"
-                    control={controlPembicara}
-                    error={errorsPembicara.tambahPembicaraWaktuMulai?.message}
+                    name={statusModal === 'pembicara' ? 'tambahPembicaraWaktuMulai' : 'tambahPembicaraWaktuMulaiUpdate'}
+                    control={statusModal === 'pembicara' ? controlPembicara : controlEditPembicara}
+                    error={
+                      statusModal === 'pembicara'
+                        ? errorsPembicara.tambahPembicaraWaktuMulai?.message
+                        : errorsEditPembicara.tambahPembicaraWaktuMulaiUpdate?.message
+                    }
                     rules={{ required: true }}
                   />
                 </Col>
@@ -203,9 +220,13 @@ export const ModalDetailPembicara = ({
                     className="m-0"
                     type="time"
                     label=""
-                    name="tambahPembicaraJamMulai"
-                    control={controlPembicara}
-                    error={errorsPembicara.tambahPembicaraJamMulai?.message}
+                    name={statusModal === 'pembicara' ? 'tambahPembicaraJamMulai' : 'tambahPembicaraJamMulaiUpdate'}
+                    control={statusModal === 'pembicara' ? controlPembicara : controlEditPembicara}
+                    error={
+                      statusModal === 'pembicara'
+                        ? errorsPembicara.tambahPembicaraJamMulai?.message
+                        : errorsEditPembicara.tambahPembicaraJamMulaiUpdate?.message
+                    }
                     rules={{ required: true }}
                   />
                 </Col>
@@ -215,9 +236,13 @@ export const ModalDetailPembicara = ({
                   <DatePicker
                     group
                     label="Tanggal Selesai Sesi"
-                    name="tambahPembicaraWaktuSelesai"
-                    control={controlPembicara}
-                    error={errorsPembicara.tambahPembicaraWaktuSelesai?.message}
+                    name={statusModal === 'pembicara' ? 'tambahPembicaraWaktuSelesai' : 'tambahPembicaraWaktuSelesaiUpdate'}
+                    control={statusModal === 'pembicara' ? controlPembicara : controlEditPembicara}
+                    error={
+                      statusModal === 'pembicara'
+                        ? errorsPembicara.tambahPembicaraWaktuSelesai?.message
+                        : errorsEditPembicara.tambahPembicaraWaktuSelesaiUpdate?.message
+                    }
                     rules={{ required: true }}
                   />
                 </Col>
@@ -227,9 +252,13 @@ export const ModalDetailPembicara = ({
                     className="m-0"
                     type="time"
                     label=""
-                    name="tambahPembicaraJamSelesai"
-                    control={controlPembicara}
-                    error={errorsPembicara.tambahPembicaraJamSelesai?.message}
+                    name={statusModal === 'pembicara' ? 'tambahPembicaraJamSelesai' : 'tambahPembicaraJamSelesaiUpdate'}
+                    control={statusModal === 'pembicara' ? controlPembicara : controlEditPembicara}
+                    error={
+                      statusModal === 'pembicara'
+                        ? errorsPembicara.tambahPembicaraJamSelesai?.message
+                        : errorsEditPembicara.tambahPembicaraJamSelesaiUpdate?.message
+                    }
                     rules={{ required: true }}
                   />
                 </Col>

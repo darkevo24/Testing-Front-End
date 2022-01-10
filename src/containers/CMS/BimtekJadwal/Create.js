@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
+import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import moment from 'moment';
 import { remove } from 'lodash';
 import * as yup from 'yup';
 import isFunction from 'lodash/isFunction';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Button from 'react-bootstrap/Button';
-import { useHistory } from 'react-router-dom';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Form from 'react-bootstrap/Form';
-import { ReactComponent as Plus } from 'assets/plus.svg';
-import { CMSModal } from 'components/CMSStatusModals';
-import { Galery, Close } from 'components/Icons';
+import { DatePicker, Input, Table, Notification } from 'components';
 import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
 import { apiUrls, post } from 'utils/request';
-import SingleDropDown from 'components/DropDown/SingleDropDown';
-import { DatePicker, Input, Modal, Table, Notification } from 'components';
+import { CMSModal } from 'components/CMSStatusModals';
+import { ModalCreateMateri, ModalCreatePembicara } from './Modals';
 import { bimtekJadwalTags, bimtekListKabupaten, getListBimtekTags, getListBimtekKabupaten } from './reducer';
+import { ReactComponent as Plus } from 'assets/plus.svg';
 
 import bn from 'utils/bemNames';
 import cx from 'classnames';
@@ -29,16 +27,21 @@ const CMSJadwalBaru = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState('');
-  const [kotaId, setKotaId] = useState('');
   const [idPembicara, setIdPembicara] = useState('');
+  const [idMateri, setIdMateri] = useState(false);
   const [listMateri, setListMateri] = useState([]);
+  const [namaMateri, setNamaMateri] = useState('');
   const [dataMateri, setDataMateri] = useState([]);
   const [dataPembicara, setDataPembicara] = useState([]);
+  const [dataEditPembicara, setDataEditPembicara] = useState('');
   const { tagsResult, tagsLoading } = useSelector(bimtekJadwalTags);
   const { listKabupaten } = useSelector(bimtekListKabupaten);
 
   const tagsResultList = (tagsResult || []).map((tag) => ({ value: tag, label: tag }));
   const tagsResultKabupaten = (listKabupaten || []).map((tag) => ({ value: tag.id, label: tag.nama }));
+  const goBack = () => {
+    history.push('/cms/bimtek-jadwal');
+  };
 
   useEffect(() => {
     initialCall();
@@ -49,38 +52,70 @@ const CMSJadwalBaru = () => {
     dispatch(getListBimtekKabupaten());
   };
 
-  const onModalEditPembicara = (data) => {
-    setIdPembicara(data.id);
-    setShowModal('editPembicara');
-  };
+  const schemaCreate = yup
+    .object({
+      namaBimtek: yup.string().required(),
+      tags: yup.array().required().min(1),
+      namaKota: yup.object().required(),
+      tanggalMulaiDisetujui: yup.string().required(),
+      jamMulaiDisetujui: yup.string().required(),
+      tanggalSelesaiDisetujui: yup.string().required(),
+      jamSelesaiDisetujui: yup.string().required(),
+      dataTempat: yup.string().required(),
+    })
+    .required();
 
-  const onEditPembicara = async (data) => {
-    // console.log(idPembicara);
-    const nama = data.tambahPembicara;
-    const tanggalMulai = `${moment(data.tambahPembicaraWaktuMulai, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
-      data.tambahPembicaraJamMulai
-    }:00`;
-    const tanggalSelesai = `${moment(data.tambahPembicaraWaktuSelesai, 'DD/MM/YYYY').format('YYYY-MM-DD')} ${
-      data.tambahPembicaraJamSelesai
-    }:00`;
-    let obj = [
-      {
-        id: (Math.random() + 1).toString(36).substring(7),
-        nama,
-        tanggalMulai,
-        tanggalSelesai,
-      },
-    ];
-    let newDataPembicara = dataPembicara.filter((x) => x.id !== idPembicara);
-    setDataPembicara([...newDataPembicara, obj[0]]);
-    handleCloseModal();
-  };
+  const {
+    control: controlCreate,
+    formState: { errors: errorsCreate },
+    handleSubmit: handleSubmitCreate,
+  } = useForm({
+    resolver: yupResolver(schemaCreate),
+    defaultValues: {
+      namaMateri: '',
+      tambahPembicara: '',
+      tambahPembicaraWaktuMulai: '',
+      tambahPembicaraJamMulai: '',
+      tambahPembicaraWaktuSelesai: '',
+      tambahPembicaraJamSelesai: '',
+      tambahPembicaraUpdate: '',
+      tambahPembicaraWaktuMulaiUpdate: '',
+      tambahPembicaraWaktuSelesaiUpdate: '',
+      tambahPembicaraJamMulaiUpdate: '',
+      tambahPembicaraJamSelesaiUpdate: '',
+    },
+  });
 
-  const onDeletePembicara = (data) => {
-    let newData = remove(dataPembicara, (x) => {
-      return x.id !== data;
+  const handleNotification = (type, message, icon) => {
+    Notification.show({
+      type,
+      message,
+      icon,
     });
-    setDataPembicara(newData);
+  };
+
+  const handleAPICall = async (method, url, params, callBack) => {
+    try {
+      await method(url, {}, params);
+      handleCloseModal();
+      handleNotification('secondary', 'Berhasil Menyimpan Jadwal', 'check');
+      isFunction(callBack) && callBack();
+    } catch (e) {
+      handleNotification('secondary', `Error, ${e.message}`, 'cross');
+      handleCloseModal();
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal('');
+    setListMateri([]);
+  };
+
+  const onModalEditMateri = (data) => {
+    setIdMateri(data.id);
+    setNamaMateri(data.nama);
+    setListMateri([data]);
+    setShowModal('editMateri');
   };
 
   const onDeleteMateri = (data) => {
@@ -90,44 +125,57 @@ const CMSJadwalBaru = () => {
     setDataMateri(newData);
   };
 
-  const handleAPICall = async (method, url, params, callBack) => {
-    try {
-      await method(url, {}, params);
-      handleCloseModal();
-      Notification.show({
-        type: 'secondary',
-        message: <div> Berhasil Menyimpan Jadwal </div>,
-        icon: 'check',
-      });
-      isFunction(callBack) && callBack();
-    } catch (e) {
-      // console.log(e);
-      Notification.show({
-        type: 'secondary',
-        message: <div> Error, {e.message} </div>,
-        icon: 'cross',
-      });
-      handleCloseModal();
-    }
+  const onModalEditPembicara = (data) => {
+    setIdPembicara(data.id);
+    setDataEditPembicara(data);
+    setShowModal('editPembicara');
+  };
+
+  const onDeletePembicara = (data) => {
+    let newData = remove(dataPembicara, (x) => {
+      return x.id !== data;
+    });
+    setDataPembicara(newData);
+    return handleNotification('secondary', 'Berhasil Menghapus Pembicara', 'check');
+  };
+
+  const handleProses = () => {
+    setShowModal('proses');
   };
 
   const onProses = (data) => {
+    if (dataPembicara.length < 1) {
+      handleCloseModal();
+      return handleNotification('secondary', 'Gagal, Pembicara Harus Diisi', 'cross');
+    }
+    if (!data.namaKota.value) {
+      handleCloseModal();
+      return handleNotification('secondary', 'Gagal, Kota Pelaksana Harus Diisi', 'cross');
+    }
     let listPembicara = dataPembicara;
-    listPembicara.map((x) => {
+    listPembicara.forEach((x) => {
       delete x['id'];
       return x;
     });
     let listMateri = dataMateri;
-    listMateri.map((x) => {
+    listMateri.forEach((x) => {
       delete x['id'];
       return x;
     });
+    let tanggalMulaiDisetujui = `${moment(data.tanggalMulaiDisetujui).format('YYYY-MM-DD')} ${data.jamMulaiDisetujui}:00`,
+      tanggalSelesaiDisetujui = `${moment(data.tanggalSelesaiDisetujui).format('YYYY-MM-DD')} ${
+        data.jamSelesaiDisetujui
+      }:00`;
+    if (!moment(tanggalSelesaiDisetujui).isAfter(tanggalMulaiDisetujui)) {
+      handleCloseModal();
+      return handleNotification('secondary', 'Gagal, Rentang Waktu Tidak Valid', 'cross');
+    }
     let obj = {
       namaBimtek: data.namaBimtek,
       tagMateri: data.tags.map((elem) => elem.label) || [],
-      tanggalMulaiDisetujui: `${moment(data.tanggalMulaiDisetujui).format('YYYY-MM-DD')} ${data.jamMulaiDisetujui}:00`,
-      tanggalSelesaiDisetujui: `${moment(data.tanggalSelesaiDisetujui).format('YYYY-MM-DD')} ${data.jamSelesaiDisetujui}:00`,
-      kota: kotaId,
+      tanggalMulaiDisetujui,
+      tanggalSelesaiDisetujui,
+      kota: data.namaKota.value,
       alamat: data.dataTempat,
       pembicara: listPembicara,
       materi: listMateri,
@@ -146,68 +194,7 @@ const CMSJadwalBaru = () => {
         },
       ],
     };
-    // console.log(data);
-    handleAPICall(post, `${apiUrls.cmsBimtekJadwal}`, { data: obj });
-  };
-
-  const handleTagChange = (data) => {
-    setKotaId(data.value);
-  };
-
-  const onAddMateri = (data) => {
-    let newMateri = listMateri.map((item) => ({
-      ...item,
-      nama: data.materi,
-      id: (Math.random() + 1).toString(36).substring(7),
-    }));
-    setListMateri([]);
-    setDataMateri([...dataMateri, newMateri[0]]);
-    handleCloseModal();
-  };
-
-  const onAddPembicara = (data) => {
-    const nama = data.tambahPembicara;
-    const tanggalMulai = `${moment(data.tambahPembicaraWaktuMulai).format('YYYY-MM-DD')} ${data.tambahPembicaraJamMulai}:00`;
-    const tanggalSelesai = `${moment(data.tambahPembicaraWaktuSelesai).format('YYYY-MM-DD')} ${
-      data.tambahPembicaraJamSelesai
-    }:00`;
-    let obj = [
-      {
-        id: (Math.random() + 1).toString(36).substring(7),
-        nama,
-        tanggalMulai,
-        tanggalSelesai,
-      },
-    ];
-    setDataPembicara([...dataPembicara, obj[0]]);
-    handleCloseModal();
-  };
-
-  const handleCloseModal = () => {
-    setShowModal('');
-  };
-
-  const openUploadForm = (id) => {
-    const elmButton = document.getElementById(id);
-    elmButton.click();
-  };
-
-  const addFile = async (e) => {
-    let file = e.target.files[0];
-    try {
-      let materiFormData = new FormData();
-      materiFormData.append('file', file);
-      await post(apiUrls.uploadFoto, materiFormData, { headers: { 'Content-Type': undefined } }).then((res) => {
-        setListMateri([...listMateri, res.data]);
-      });
-    } catch (e) {
-      // console.log(e);
-    }
-  };
-
-  const removeFile = (index) => {
-    let selected = listMateri[index];
-    setListMateri(listMateri.filter((item) => item !== selected));
+    handleAPICall(post, `${apiUrls.cmsBimtekJadwal}`, { data: obj }, goBack);
   };
 
   const columnsPembicara = [
@@ -218,34 +205,35 @@ const CMSJadwalBaru = () => {
     {
       Header: 'Tanggal',
       accessor: 'tanggalMulai',
-      Cell: ({ ...rest }) => (
-        <span>
-          {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('DD MMMM YYYY') : '---'}
-        </span>
-      ),
-    },
-    {
-      Header: 'Sesi',
-      accessor: 'sesi',
-      Cell: ({ ...rest }) => (
-        <span> {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('hh:mm') : '---'} </span>
+      Cell: ({ row: { original } }) => (
+        <div className="d-flex">
+          <span className="pr-5">
+            {original?.tanggalMulai ? moment(original?.tanggalMulai).format('DD MMMM YYYY') + ' ' : '---'}
+            {original?.tanggalMulai ? moment(original?.tanggalMulai).format('HH:mm') : '---'}
+          </span>
+          <span>-</span>
+          <span className="pl-5">
+            {original?.tanggalSelesai ? moment(original?.tanggalSelesai).format('DD MMMM YYYY') + ' ' : '---'}
+            {original?.tanggalSelesai ? moment(original?.tanggalSelesai).format('HH:mm') : '---'}
+          </span>
+        </div>
       ),
     },
     {
       Header: '',
       accessor: 'action',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <div>
           <Button
             variant="outline-none"
             className="bg-white sdp-text-blue p-0 mr-10"
-            onClick={() => onModalEditPembicara(rest.row.original)}>
+            onClick={() => onModalEditPembicara(original)}>
             Edit
           </Button>
           <Button
             variant="outline-none"
             className="bg-white sdp-text-grey-dark p-0"
-            onClick={() => onDeletePembicara(rest.row.original.id)}>
+            onClick={() => onDeletePembicara(original?.id)}>
             Delete
           </Button>
         </div>
@@ -257,25 +245,36 @@ const CMSJadwalBaru = () => {
     {
       Header: 'Materi',
       accessor: '',
-      Cell: ({ ...rest }) => <span>{rest?.row?.original?.nama}</span>,
+      Cell: ({
+        row: {
+          original: { nama },
+        },
+      }) => <span>{nama}</span>,
     },
     {
       Header: 'Lampiran',
       accessor: '',
-      Cell: ({ ...rest }) => <span>{rest?.row?.original?.fileType}</span>,
+      Cell: ({
+        row: {
+          original: { fileType },
+        },
+      }) => <span>{fileType}</span>,
     },
     {
       Header: '',
       accessor: 'action',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <div>
-          <Button variant="outline-none" className="bg-white sdp-text-blue p-0 mr-10">
+          <Button
+            variant="outline-none"
+            className="bg-white sdp-text-blue p-0 mr-10"
+            onClick={() => onModalEditMateri(original)}>
             Edit
           </Button>
           <Button
             variant="outline-none"
             className="bg-white sdp-text-grey-dark p-0"
-            onClick={() => onDeleteMateri(rest.row.original.id)}>
+            onClick={() => onDeleteMateri(original.id)}>
             Delete
           </Button>
         </div>
@@ -302,19 +301,6 @@ const CMSJadwalBaru = () => {
     onSearch: () => {},
     variant: 'link',
   };
-
-  const schema = yup.object({}).required();
-
-  const {
-    control,
-    // formState: { errors },
-    // reset,
-    handleSubmit,
-  } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: {},
-  });
-
   return (
     <div className={bem.e('section cms-bimtek')}>
       <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
@@ -323,7 +309,7 @@ const CMSJadwalBaru = () => {
           <Button onClick={() => history.goBack()} className="ml-24" variant="secondary" style={{ width: '112px' }}>
             Batal
           </Button>
-          <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={() => setShowModal('proses')}>
+          <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={handleSubmitCreate(handleProses)}>
             Simpan
           </Button>
         </div>
@@ -337,14 +323,15 @@ const CMSJadwalBaru = () => {
             type="text"
             label="Nama Bimtek"
             name="namaBimtek"
-            control={control}
-            rules={{ required: false }}
+            control={controlCreate}
+            error={errorsCreate.namaBimtek?.message}
+            rules={{ required: true }}
           />
           <SingleSelectDropDown
             group
             groupClass="mb-16"
             isMulti
-            control={control}
+            control={controlCreate}
             label="Kategori Bimtek"
             labelClass="sdp-form-label fw-normal"
             placeholder=""
@@ -352,6 +339,8 @@ const CMSJadwalBaru = () => {
             data={tagsResultList}
             loading={tagsLoading}
             isCreatable={true}
+            error={errorsCreate.tags?.message}
+            rules={{ required: true }}
           />
           <Row className="align-items-end mb-15">
             <Col>
@@ -359,8 +348,9 @@ const CMSJadwalBaru = () => {
                 group
                 label="Tanggal Mulai Pelaksanaan Disetujui"
                 name="tanggalMulaiDisetujui"
-                control={control}
-                rules={{ required: false }}
+                control={controlCreate}
+                error={errorsCreate.tanggalMulaiDisetujui?.message}
+                rules={{ required: true }}
               />
             </Col>
             <Col>
@@ -370,8 +360,9 @@ const CMSJadwalBaru = () => {
                 type="time"
                 label=""
                 name="jamMulaiDisetujui"
-                control={control}
-                rules={{ required: false }}
+                control={controlCreate}
+                error={errorsCreate.jamMulaiDisetujui?.message}
+                rules={{ required: true }}
               />
             </Col>
           </Row>
@@ -381,8 +372,9 @@ const CMSJadwalBaru = () => {
                 group
                 label="Tanggal Selesai Pelaksanaan Disetujui"
                 name="tanggalSelesaiDisetujui"
-                control={control}
-                rules={{ required: false }}
+                control={controlCreate}
+                error={errorsCreate.tanggalSelesaiDisetujui?.message}
+                rules={{ required: true }}
               />
             </Col>
             <Col>
@@ -392,29 +384,36 @@ const CMSJadwalBaru = () => {
                 type="time"
                 label=""
                 name="jamSelesaiDisetujui"
-                control={control}
-                rules={{ required: false }}
+                control={controlCreate}
+                error={errorsCreate.jamSelesaiDisetujui?.message}
+                rules={{ required: true }}
               />
             </Col>
           </Row>
-          <div className="mb-15">
-            <label className="mb-5">Kota Pelaksana</label>
-            <SingleDropDown
-              group
-              control={control}
-              name="namaKota"
-              data={[{ value: '', label: 'All' }, ...tagsResultKabupaten]}
-              onChange={handleTagChange}
-            />
-          </div>
+          <SingleSelectDropDown
+            group
+            groupClass="mb-16"
+            control={controlCreate}
+            label="Kota Pelaksana"
+            labelClass="sdp-form-label fw-normal"
+            placeholder=""
+            name="namaKota"
+            control={controlCreate}
+            data={[{ value: '', label: 'All' }, ...tagsResultKabupaten]}
+            loading={tagsLoading}
+            isCreatable={true}
+            error={errorsCreate.namaKota?.message}
+            rules={{ required: true }}
+          />
           <Input
             group
             className="mb-10"
             type="text"
             label="Tempat"
             name="dataTempat"
-            control={control}
-            rules={{ required: false }}
+            control={controlCreate}
+            error={errorsCreate.dataTempat?.message}
+            rules={{ required: true }}
           />
           <div className="pembicara">
             <div className="d-flex justify-content-between">
@@ -438,122 +437,30 @@ const CMSJadwalBaru = () => {
         </Col>
       </div>
       {showModal === 'proses' && (
-        <CMSModal onClose={handleCloseModal} label="Simpan Jadwal Bimtek?" confirmButtonAction={handleSubmit(onProses)} />
+        <CMSModal onClose={showModal} label="Simpan Jadwal Bimtek?" confirmButtonAction={handleSubmitCreate(onProses)} />
       )}
-      {showModal === 'materi' && (
-        <Modal
-          className="cms-bimtek-materi"
-          title="Tambah Materi Baru"
-          onClose={handleCloseModal}
-          visible={handleCloseModal}>
-          <Form onSubmit={handleSubmit(onAddMateri)}>
-            <div>
-              <Input group label="Materi" name="materi" control={control} />
-              <div>
-                <label>Lampiran</label>
-                <input id="sdp-upload-materi" multiple type="file" style={{ display: 'none' }} onChange={addFile} />
-              </div>
-              <div className="wrapper-lampiran">
-                <div className="wrapper-lampiran-header" onClick={() => openUploadForm('sdp-upload-materi')}>
-                  <span className="upload"> Upload </span>
-                  <span className="cta"> Upload Image (format .png, .jpeg, .jpg max. 512KB) </span>
-                </div>
-                <div className="wrapper-lampiran-file">
-                  {listMateri.map((data, index) => {
-                    return (
-                      <span className="file mr-10 mb-10" key={index} onClick={() => removeFile(index)}>
-                        <Galery /> <span> {data.fileName} </span> <Close />
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
-              <div className="d-flex justify-content-end">
-                <Button className="br-4 mr-8 px-57 py-13 bg-transparent" variant="light" onClick={handleCloseModal}>
-                  Batal
-                </Button>
-                <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
-                  Simpan
-                </Button>
-              </div>
-            </div>
-          </Form>
-        </Modal>
-      )}
-      {showModal === 'pembicara' && (
-        <Modal
-          className="cms-bimtek-materi"
-          title="Tambah Pembicari Baru"
+      {showModal === 'materi' || showModal === 'editMateri' ? (
+        <ModalCreateMateri
+          statusModal={showModal}
+          idMateri={idMateri}
           visible={handleCloseModal}
-          onClose={handleCloseModal}>
-          <Form onSubmit={handleSubmit(onAddPembicara)}>
-            <div className="mb-10">
-              <Row>
-                <Input group label="Nama Pembicara" name="tambahPembicara" control={control} />
-              </Row>
-              <Row className="align-items-end">
-                <Col>
-                  <DatePicker group label="Tanggal Mulai Sesi" name="tambahPembicaraWaktuMulai" control={control} />
-                </Col>
-                <Col>
-                  <Input group className="m-0" type="time" label="" name="tambahPembicaraJamMulai" control={control} />
-                </Col>
-              </Row>
-              <Row className="align-items-end">
-                <Col>
-                  <DatePicker group label="Tanggal Selesai Sesi" name="tambahPembicaraWaktuSelesai" control={control} />
-                </Col>
-                <Col>
-                  <Input group className="m-0" type="time" label="" name="tambahPembicaraJamSelesai" control={control} />
-                </Col>
-              </Row>
-            </div>
-            <div className="d-flex justify-content-end">
-              <Button className="br-4 mr-8 px-57 py-13 bg-transparent" variant="light" onClick={handleCloseModal}>
-                Batal
-              </Button>
-              <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
-                Simpan
-              </Button>
-            </div>
-          </Form>
-        </Modal>
-      )}
-      {showModal === 'editPembicara' && (
-        <Modal className="cms-bimtek-materi" title="Ubah Pembicara" visible={handleCloseModal} onClose={handleCloseModal}>
-          <Form onSubmit={handleSubmit(onEditPembicara)}>
-            <div className="mb-10">
-              <Row>
-                <Input group label="Nama Pembicara" name="tambahPembicara" control={control} />
-              </Row>
-              <Row className="align-items-end">
-                <Col>
-                  <DatePicker group label="Tanggal Mulai Sesi" name="tambahPembicaraWaktuMulai" control={control} />
-                </Col>
-                <Col>
-                  <Input group className="m-0" type="time" label="" name="tambahPembicaraJamMulai" control={control} />
-                </Col>
-              </Row>
-              <Row className="align-items-end">
-                <Col>
-                  <DatePicker group label="Tanggal Selesai Sesi" name="tambahPembicaraWaktuSelesai" control={control} />
-                </Col>
-                <Col>
-                  <Input group className="m-0" type="time" label="" name="tambahPembicaraJamSelesai" control={control} />
-                </Col>
-              </Row>
-            </div>
-            <div className="d-flex justify-content-end">
-              <Button className="br-4 mr-8 px-57 py-13 bg-transparent" variant="light" onClick={handleCloseModal}>
-                Batal
-              </Button>
-              <Button type="submit" className="mx-10" variant="info" style={{ width: '112px' }}>
-                Simpan
-              </Button>
-            </div>
-          </Form>
-        </Modal>
-      )}
+          listMateri={listMateri}
+          setListMateri={(data) => setListMateri(data)}
+          dataMateri={dataMateri}
+          setDataMateri={(data) => setDataMateri(data)}
+          namaMateriEdit={namaMateri ? namaMateri : null}
+        />
+      ) : null}
+      {showModal === 'pembicara' || showModal === 'editPembicara' ? (
+        <ModalCreatePembicara
+          statusModal={showModal}
+          visible={handleCloseModal}
+          dataPembicara={dataPembicara}
+          idPembicara={idPembicara ? idPembicara : null}
+          dataEditPembicara={dataEditPembicara ? dataEditPembicara : null}
+          setDataPembicara={(data) => setDataPembicara(data)}
+        />
+      ) : null}
     </div>
   );
 };

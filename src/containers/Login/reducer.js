@@ -42,7 +42,7 @@ const loginSlice = createSlice({
       state.token = action.payload?.token;
       state.user = action.payload?.user;
     });
-    builder.addCase(loginUser.rejected, (state) => {
+    builder.addCase(loginUser.rejected, (state, action) => {
       state.loading = false;
       state.error = 'Invalid user details!';
     });

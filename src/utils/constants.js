@@ -30,6 +30,7 @@ export const getDataEndpoint = (path) => `${dataUrl}/${path}`;
 export const getPortalEndpoint = (path) => `${apiUrl}/portal/${path}`;
 export const getV1Endpoint = (path) => `${apiUrl}/v1/${path}`;
 export const getCMSEndpoint = (path) => `${apiUrl}/cms/v1/${path}`;
+export const getPublicEndpoint = (path) => `${apiUrl}/public/${path}`;
 export const getPublicV1Endpoint = (path) => `${apiUrl}/public/v1/${path}`;
 
 export const apiUrls = {
@@ -98,11 +99,14 @@ export const apiUrls = {
   sosialMedia: getCMSEndpoint('sosial-media'),
   bimtekLogs: getPortalEndpoint('v1/bimtek/logs'),
   cmsContactUs: getCMSEndpoint('hubungi-kami-setting'),
+  requestForgotPassword: getPublicEndpoint('request-forgot-password'),
+  forgotPassword: getPublicEndpoint('forgot-password'),
   penggunaManagement: getApiEndpoint('sekretariat/user'),
   detailPenggunaManagement: getApiEndpoint('sekretariat/user'),
   penggunaRoleList: getApiEndpoint('sekretariat/user/role-list'),
   penggunaStatusList: getApiEndpoint('sekretariat/user/status-list'),
   penggunaLogs: getApiEndpoint('sekretariat/user'),
+  cmsAnalitikData: getCMSEndpoint('analitik'),
 };
 
 export const priorityOptions = [
@@ -254,22 +258,32 @@ export const CMS_DASHBOARD = [
   },
 ];
 
+export const Social_Media_Prefix_Links = {
+  facebook: 'https://www.facebook.com/',
+  twitter: 'https://www.twitter.com/',
+  instagram: 'https://www.instagram.com/',
+  youtube: 'https://www.youtube.com/',
+};
 export const Kontak_list = [
   {
     name: 'facebook',
     icon: 'facebookSvg',
+    prefixText: Social_Media_Prefix_Links['facebook'],
   },
   {
     name: 'twitter',
     icon: 'twitterSvg',
+    prefixText: Social_Media_Prefix_Links['twitter'],
   },
   {
     name: 'instagram',
     icon: 'instgramSvg',
+    prefixText: Social_Media_Prefix_Links['instagram'],
   },
   {
     name: 'youtube',
     icon: 'youtubeSvg',
+    prefixText: Social_Media_Prefix_Links['youtube'],
   },
 ];
 

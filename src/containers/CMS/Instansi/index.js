@@ -1,16 +1,15 @@
 import cx from 'classnames';
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import debounce from 'lodash/debounce';
 import bn from 'utils/bemNames';
 import { Button, InputGroup, Form } from 'react-bootstrap';
 import TableLoader from 'components/Loader/TableLoader';
 import { Search } from 'components/Icons';
 import { Table } from 'components';
+import { useDebounce } from 'utils/hooks';
 import { getInstansi, instansiDataSelector } from './reducer';
-const DEBOUNCE_DELAY = 1500;
-
+const DEBOUNCE_DELAY = 500;
 const bem = bn('instansi');
 
 const Instansi = () => {
@@ -18,29 +17,23 @@ const Instansi = () => {
   const dispatch = useDispatch();
   const [query, setQuery] = useState('');
 
-  const { q, status, size, loading, page, records, totalRecords, totalPages } = useSelector(instansiDataSelector);
+  const { page, size, loading, records, totalRecords, totalPages } = useSelector(instansiDataSelector);
   const handleAPICall = (params) => {
-    dispatch(getInstansi(params));
+    return dispatch(getInstansi(params));
   };
 
-  const handleSearch = () => {
-    handleAPICall({ page: 0, q: query });
-  };
-
+  useEffect(() => {
+    handleAPICall({ page, q: query });
+  }, [query]);
   const handleUserInputChange = (event) => {
     const { value } = event.target;
-    setQuery(value);
+    delayedQuery(value);
   };
-  const delayedQuery = useCallback(debounce(handleSearch, DEBOUNCE_DELAY), [query]);
+  const delayedQuery = useDebounce((query) => setQuery(query), DEBOUNCE_DELAY);
 
   useEffect(() => {
-    delayedQuery();
     return delayedQuery.cancel;
   }, [query, delayedQuery]);
-
-  useEffect(() => {
-    handleAPICall({ page: 0, q: '' });
-  }, []);
 
   const columns = [
     {
@@ -104,15 +97,15 @@ const Instansi = () => {
     title: '',
     showSearch: false,
     onSearch: () => {},
-    totalCount: totalRecords || null,
-    pageCount: totalPages || null,
+    totalCount: totalRecords,
+    pageCount: totalPages,
     pageSize: size,
     currentPage: page,
     manualPagination: true,
     onRowClick: rowClick,
-    onPageIndexChange: (currentPage) => {
-      if (currentPage !== page) {
-        handleAPICall({ page: currentPage, q, size });
+    onPageIndexChange: (nextPage) => {
+      if (nextPage !== page) {
+        handleAPICall({ page: nextPage, q: query });
       }
     },
   };

@@ -35,7 +35,7 @@ const CMSBimtekPermintaanEdit = (props) => {
   const dispatch = useDispatch();
   const { records } = useSelector(bimtekLogSelector);
   const detailPermintaan = useSelector(bimtekPermintaanDataDetail);
-  const [trigger, setTrigger] = useState(false);
+  // const [trigger, setTrigger] = useState(false);
   const [objRequired, setObjRequired] = useState({});
   const [showModalSetuju, setModalSetuju] = useState(false);
   const [showModalWaitingSetujui, setModalWaitingSetujui] = useState(false);
@@ -52,7 +52,7 @@ const CMSBimtekPermintaanEdit = (props) => {
   useEffect(() => {
     fetchBimtekLog({ id });
     fetchPermintaanDetail({ id });
-  }, [trigger]);
+  }, []);
 
   const data = useMemo(() => detailPermintaan || {}, [detailPermintaan]);
 

@@ -12,13 +12,14 @@ import { levelInstansi } from 'utils/constants';
 import Input from 'components/Input';
 import FileInput from 'components/FileInput';
 import Dropdown from 'components/Dropdown';
-import { Loader } from 'components';
+import Loader from 'components/Loader';
+import Notification from 'components/Notification';
 import { createNewInstansi } from './reducer';
 import FormHeader from './FormHeader';
 
 const schema = yup
   .object({
-    logo: yup.mixed().required(),
+    logo: yup.mixed().notRequired(),
     kode: yup.string().required(),
     nama: yup.string().required(),
     level: yup.mixed().required(),
@@ -82,15 +83,21 @@ const NewInstansi = () => {
       level: data.level.value,
     };
     setLoading(true);
-    dispatch(createNewInstansi({ payload: formInput }))
-      .then(() => {
+    dispatch(createNewInstansi({ payload: formInput })).then((res) => {
+      if (res.payload) {
         setLoading(false);
         history.push('/cms/instansi');
-      })
-      .catch(() => {
+        reset();
+      } else {
         setLoading(false);
-      });
-    reset();
+        Notification.show({
+          type: 'secondary',
+          message: <div> {'Permintaan Data Gagal Diproses '}</div>,
+          icon: 'cross',
+        });
+        setLoading(false);
+      }
+    });
   };
   return (
     <div className="sdp-instansi">

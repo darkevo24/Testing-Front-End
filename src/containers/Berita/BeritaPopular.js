@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Loader } from 'components';
 import Search from './Search';
 import BeritaUtama from './BeritaUtama';
@@ -77,7 +77,7 @@ const BeritaPopular = () => {
                 <div key={i}>
                   <div className="row my-20 border-bottom pb-10 ">
                     <div className="col-lg-4" style={{ paddingRight: '24px' }}>
-                      <img className="image" src={record.image} style={{ width: '100%' }} />
+                      <img className="image w-100" src={record.image} alt="" />
                     </div>
                     <div className="col-lg-8">
                       <div className="topik">{record.kategori}</div>

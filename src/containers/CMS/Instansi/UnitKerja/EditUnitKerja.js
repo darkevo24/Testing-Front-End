@@ -38,12 +38,19 @@ const EditUnitKerja = () => {
     control,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      ...data,
-    },
   });
+
+  useEffect(() => {
+    const { kode, nama } = data;
+    reset({
+      kode: kode,
+      nama: nama,
+    });
+  }, [data, reset]);
+
   const [loading, setLoading] = useState(false);
   const handleSubmitForm = (data) => {
     setLoading(true);
@@ -54,19 +61,19 @@ const EditUnitKerja = () => {
         ...data,
       },
     };
-    dispatch(updateUnitKerja(inputData))
-      .then((_res) => {
+    dispatch(updateUnitKerja(inputData)).then((_res) => {
+      if (_res.payload) {
         setLoading(false);
         history.goBack();
-      })
-      .catch((err) => {
-        setLoading(false);
+      } else {
         Notification.show({
           type: 'secondary',
-          message: <div> {err.message ? err.message : 'Permintaan Data Gagal Diproses '}</div>,
+          message: <div> {'Permintaan Data Gagal Diproses '}</div>,
           icon: 'cross',
         });
-      });
+        setLoading(false);
+      }
+    });
   };
   const handleBatal = (e) => {
     e.preventDefault();

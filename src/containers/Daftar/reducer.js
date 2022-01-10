@@ -4,7 +4,7 @@ import {
   dataToOptionsMapper,
   dataOptionsMapperCurry,
   idKeteranganOptionsMapper,
-  idNameOptionsMapper,
+  // idNameOptionsMapper,
   incrementPageParams,
 } from 'utils/helper';
 import { apiPaginationParams, apiUrls, defaultNumberOfRows, deleteRequest, get, post, put } from 'utils/request';

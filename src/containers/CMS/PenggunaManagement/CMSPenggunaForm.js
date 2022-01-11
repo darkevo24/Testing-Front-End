@@ -26,6 +26,7 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
   const [disableForm, setDisableForm] = useState(false);
   const [penggunaDetails, setPenggunaDetails] = useState({});
   const [instansiErr, setInstansiErr] = useState(false);
+  const [fileErr, setFileErr] = useState(false);
   const [role, setRole] = useState('');
   const dispatch = useDispatch();
 
@@ -41,10 +42,20 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
   const schema = yup
     .object({
       employeeIdNumber: yup.number().positive().required(),
-      employeeStatus: yup.mixed().required(),
+      employeeStatus: yup
+        .object({
+          label: yup.string().nullable().required(),
+          value: yup.string().nullable().required('Status is a required field'),
+        })
+        .required(),
       name: yup.string().required(),
       instansi: yup.mixed().required(),
-      unitKerja: yup.mixed().required(),
+      unitKerja: yup
+        .object({
+          label: yup.string().defined().required(),
+          value: yup.string().defined('unitKerja is a required field').required(),
+        })
+        .required(),
       email: yup.string().email().required(),
       phoneArea: yup.string().nullable().required(),
       phoneNumber: yup.string().length(10).nullable().required(),
@@ -128,6 +139,7 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
       fileType: fileData.type,
       size: fileData.size,
     });
+    setFileErr(true);
   };
 
   return (
@@ -150,7 +162,7 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
         isDisabled={disableForm}
         className="mb-3"
       />
-      <div className="sdp-error">{errors.employeeStatus?.message}</div>
+      <div className="sdp-error">{errors.employeeStatus?.value?.message}</div>
 
       <Input group disabled={disableForm} label="Nama" name="name" control={control} error={errors.name?.message} />
 
@@ -175,8 +187,7 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
         isDisabled={disableForm}
         className="mb-3"
       />
-      <div className="sdp-error">{errors.unitKerja?.message}</div>
-
+      <div className="sdp-error">{errors.unitKerja?.value?.message}</div>
       <Input
         group
         disabled={disableForm}
@@ -247,16 +258,20 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
       {disableForm ? (
         <div>{penggunaDetailsData?.officialMemo?.fileName} is Selected</div>
       ) : (
-        <FileInput
-          group
-          disabled={disableForm}
-          label="Nota Dinas"
-          name="officialMemo"
-          control={control}
-          uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
-          onChange={uploadMemo}
-          error={errors.officialMemo?.message}
-        />
+        <>
+          <FileInput
+            group
+            disabled={disableForm}
+            label="Nota Dinas"
+            name="officialMemo"
+            control={control}
+            uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
+            onChange={uploadMemo}
+          />
+          <div className="sdp-error" hidden={fileErr}>
+            {errors.officialMemo?.message}
+          </div>
+        </>
       )}
       <Button className="invisible" type="submit" />
     </Form>

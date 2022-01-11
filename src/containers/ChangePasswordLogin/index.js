@@ -1,16 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import isFunction from 'lodash/isFunction';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { apiUrls, post } from 'utils/request';
 import Input from 'components/Input';
-import { Notification } from 'components';
+import { Notification, Button } from 'components';
 import { LeftChevron } from 'components/Icons';
 
 import BackgroundCity from 'assets/background-citylogin.png';
@@ -19,15 +18,16 @@ import BackgroundBatik from 'assets/background-batiklogin.png';
 
 const schema = yup
   .object({
-    passwordNew: yup.string().required(),
-    confirmPassword: yup
+    newPassword: yup.string().required(),
+    confirmNewPassword: yup
       .string()
-      .oneOf([yup.ref('passwordNew'), null], 'Confirm password is not the same')
+      .oneOf([yup.ref('newPassword'), null], 'Confirm password is not the same')
       .required(),
   })
   .required();
 
 const ChangePassword = () => {
+  const [loading, setLoading] = useState(false);
   const search = useLocation().search;
   const key = new URLSearchParams(search).get('key');
   const history = useHistory();
@@ -53,8 +53,10 @@ const ChangePassword = () => {
       await method(url, {}, params);
       handleNotification('secondary', 'Berhasil Merubah Password', 'check');
       isFunction(callBack) && callBack();
+      setLoading(false);
     } catch (e) {
-      handleNotification('secondary', `Error, ${e?.data?.message}`, 'cross');
+      handleNotification('secondary', e?.data?.message, 'cross');
+      setLoading(false);
     }
   };
 
@@ -67,12 +69,8 @@ const ChangePassword = () => {
   });
 
   const onSubmit = (data) => {
-    let obj = {
-      key,
-      newPassword: data.passwordNew,
-      confirmNewPassword: data.confirmPassword,
-    };
-    handleAPICall(post, `${apiUrls.forgotPassword}`, { data: obj }, goBack);
+    setLoading(true);
+    handleAPICall(post, apiUrls.forgotPassword, { data: { key, ...data } }, goBack);
   };
 
   return (
@@ -83,29 +81,27 @@ const ChangePassword = () => {
       <Col md={4} className="form-change-password">
         <div className="sdp-heading pb-30">Ganti Password</div>
         <Form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <Form.Group className="mb-15">
-            <Form.Label>Password Baru</Form.Label>
-            <Input
-              name="passwordNew"
-              control={control}
-              rules={{ required: true }}
-              type="password"
-              error={errors.passwordNew?.message}
-              className="mt-0"
-            />
-          </Form.Group>
-          <Form.Group className="mb-15">
-            <Form.Label>Konfirmasi Password Baru</Form.Label>
-            <Input
-              name="confirmPassword"
-              control={control}
-              rules={{ required: true }}
-              type="password"
-              error={errors.confirmPassword?.message}
-              className="mt-0"
-            />
-          </Form.Group>
-          <Button type="submit" className="change-btn">
+          <Input
+            group
+            label="Password Baru"
+            name="newPassword"
+            control={control}
+            rules={{ required: true }}
+            type="password"
+            error={errors.newPassword?.message}
+            className="mt-0"
+          />
+          <Input
+            group
+            label="Konfirmasi Password Baru"
+            name="confirmNewPassword"
+            control={control}
+            rules={{ required: true }}
+            type="password"
+            error={errors.confirmNewPassword?.message}
+            className="mt-0"
+          />
+          <Button loading={loading} type="submit" className="change-btn">
             Ubah
           </Button>
         </Form>

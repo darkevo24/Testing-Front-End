@@ -2,28 +2,26 @@ import { useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { apiUrls, post } from 'utils/request';
 import Input from 'components/Input';
-import { Notification } from 'components';
-import Spinner from 'react-bootstrap/Spinner';
+import { Notification, Button } from 'components';
 
 const schema = yup
   .object({
     oldPassword: yup.string().required(),
-    passwordNew: yup.string().required(),
-    confirmPassword: yup
+    newPassword: yup.string().required(),
+    confirmNewPassword: yup
       .string()
-      .oneOf([yup.ref('passwordNew'), null], 'Confirm password is not the same')
+      .oneOf([yup.ref('newPassword'), null], 'Confirm password is not the same')
       .required(),
   })
   .required();
 
 const ChangePassword = () => {
-  const [loader, setLoader] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleNotification = (type, message, icon) => {
     Notification.show({
@@ -37,10 +35,10 @@ const ChangePassword = () => {
     try {
       await method(url, {}, params);
       handleNotification('secondary', 'Berhasil Merubah Password', 'check');
-      setLoader(false);
+      setLoading(false);
     } catch (e) {
-      handleNotification('secondary', `Error, ${e?.data?.message}`, 'cross');
-      setLoader(false);
+      handleNotification('secondary', e.data?.message, 'cross');
+      setLoading(false);
     }
   };
 
@@ -53,13 +51,8 @@ const ChangePassword = () => {
   });
 
   const onSubmit = (data) => {
-    setLoader(true);
-    let obj = {
-      oldPassword: data.oldPassword,
-      newPassword: data.passwordNew,
-      confirmNewPassword: data.confirmPassword,
-    };
-    handleAPICall(post, `${apiUrls.changeMyPassword}`, { data: obj });
+    setLoading(true);
+    handleAPICall(post, apiUrls.changeMyPassword, { data: { ...data } });
   };
 
   return (
@@ -67,41 +60,37 @@ const ChangePassword = () => {
       <Col md={12} className="form-change-password">
         <div className="sdp-heading pb-30">Ubah Password</div>
         <Form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <Form.Group className="mb-15">
-            <Form.Label>Password Lama</Form.Label>
-            <Input
-              name="oldPassword"
-              control={control}
-              rules={{ required: true }}
-              type="password"
-              error={errors.oldPassword?.message}
-              className="mt-0"
-            />
-          </Form.Group>
-          <Form.Group className="mb-15">
-            <Form.Label>Password Baru</Form.Label>
-            <Input
-              name="passwordNew"
-              control={control}
-              rules={{ required: true }}
-              type="password"
-              error={errors.passwordNew?.message}
-              className="mt-0"
-            />
-          </Form.Group>
-          <Form.Group className="mb-15">
-            <Form.Label>Konfirmasi Password Baru</Form.Label>
-            <Input
-              name="confirmPassword"
-              control={control}
-              rules={{ required: true }}
-              type="password"
-              error={errors.confirmPassword?.message}
-              className="mt-0"
-            />
-          </Form.Group>
-          <Button disabled={loader} type="submit" className="change-btn">
-            {loader && <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="mr-10" />}
+          <Input
+            group
+            label="Password Lama"
+            name="oldPassword"
+            control={control}
+            rules={{ required: true }}
+            type="password"
+            error={errors.oldPassword?.message}
+            className="mt-0"
+          />
+          <Input
+            group
+            label="Password Baru"
+            name="newPassword"
+            control={control}
+            rules={{ required: true }}
+            type="password"
+            error={errors.newPassword?.message}
+            className="mt-0"
+          />
+          <Input
+            group
+            label="Konfirmasi Password Baru"
+            name="confirmNewPassword"
+            control={control}
+            rules={{ required: true }}
+            type="password"
+            error={errors.confirmNewPassword?.message}
+            className="mt-0"
+          />
+          <Button loading={loading} type="submit" className="change-btn">
             Ubah
           </Button>
         </Form>

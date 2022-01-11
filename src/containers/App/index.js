@@ -9,10 +9,11 @@
 import React, { useEffect, lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Redirect, Route, Switch, useHistory, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import GlobalStyle from 'global-styles';
-
+import { request } from 'utils/request';
 import Notify, { Notification } from 'components/Notification';
+import { cookieKeys, getCookieByName } from '../../utils/cookie';
 
 const AdminRoutes = lazy(() => import('./AdminRoutes'));
 const AppRoutes = lazy(() => import('./AppRoutes'));
@@ -20,6 +21,7 @@ const CMSRoutes = lazy(() => import('./CMSRoutes'));
 
 function App(props) {
   const history = useHistory();
+  const token = getCookieByName(cookieKeys.token);
 
   function hashLinkScroll() {
     const { hash } = window.location;
@@ -38,6 +40,13 @@ function App(props) {
   useEffect(() => {
     history.listen(hashLinkScroll);
   }, []);
+
+  useEffect(() => {
+    if (!token) return;
+    request('https://sdmx.satudata.go.id/portal/v1/jwt-info', { method: 'GET' }).then((res) => {
+      debugger;
+    });
+  }, [token]);
 
   return (
     <div>

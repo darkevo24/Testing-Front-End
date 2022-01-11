@@ -21,6 +21,7 @@ import App from './containers/App';
 
 import './styles.scss';
 import './locales/i18n';
+import { cookieKeys, setCookie } from './utils/cookie';
 
 const initialState = {};
 const store = configureAppStore(initialState, history);
@@ -29,7 +30,13 @@ const MOUNT_NODE = document.getElementById('root');
 ReactDOM.render(
   <Provider store={store}>
     <Suspense fallback={<Loader />}>
-      <ReactKeycloakProvider authClient={keycloak}>
+      <ReactKeycloakProvider
+        authClient={keycloak}
+        initOptions={{ checkLoginIframe: false }}
+        onTokens={(tokenLogger) => {
+          if (!tokenLogger?.token) return;
+          setCookie(cookieKeys.token, tokenLogger.token);
+        }}>
         <ConnectedRouter history={history}>
           <HelmetProvider>
             <React.StrictMode>

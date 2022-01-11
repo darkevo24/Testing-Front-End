@@ -1,8 +1,8 @@
 import Keycloak from 'keycloak-js';
 const keycloak = new Keycloak({
-  url: 'https://sdmx.satudata.go.id/auth',
-  realm: 'sdi-be-realm',
-  clientId: 'sdi-be-client',
+  url: 'https://sso.deltadatamandiri.com/auth',
+  realm: 'satu-data-portal-test',
+  clientId: 'satu-data-portal-client',
 });
 
 export default keycloak;

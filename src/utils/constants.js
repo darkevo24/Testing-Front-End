@@ -34,6 +34,7 @@ export const getPublicV1Endpoint = (path) => `${apiUrl}/public/v1/${path}`;
 
 export const apiUrls = {
   login: getApiEndpoint('login'),
+  userInfo: getPortalEndpoint('v1/user-info'),
   dataset: getDataEndpoint('3/action/package_search'),
   perminataanData: getPortalEndpoint('permintaan-data'),
   instansiData: getV1Endpoint('instansi'),

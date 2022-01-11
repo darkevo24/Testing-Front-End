@@ -1,10 +1,10 @@
 import { Route, Redirect } from 'react-router-dom';
-import { useKeycloak } from '@react-keycloak/web';
 
 import { CMSSidebar } from 'components/Sidebars/CMSSidebar';
 import { AdminHeader, Header } from 'containers/Header';
 import { CMSHeader } from 'containers/Header/CMSHeader';
 import { Footer } from 'containers/Footer';
+import { cookieKeys, getCookieByName } from '../utils/cookie';
 
 export const AdminAuthLayout = ({ children }) => {
   return <div className="auth-container admin-auth-container">{children}</div>;
@@ -33,29 +33,28 @@ export const CMSAppLayout = ({ children }) => {
 };
 
 export const AdminLayout = ({ children }) => {
-  const { keycloak } = useKeycloak();
-  const isLoggedIn = !!keycloak.authenticated;
+  const token = getCookieByName(cookieKeys.token);
+  const isLoggedIn = !!token;
   const Layout = isLoggedIn ? AdminAppLayout : AdminAuthLayout;
   return <Layout>{children}</Layout>;
 };
 
 export const CMSLayout = ({ children }) => {
-  const { keycloak } = useKeycloak();
-  const isLoggedIn = !!keycloak.authenticated;
+  const token = getCookieByName(cookieKeys.token);
+  const isLoggedIn = !!token;
   const Layout = isLoggedIn ? CMSAppLayout : AdminAuthLayout;
   return <Layout>{children}</Layout>;
 };
 
 export const PrivateRoute = ({ component: Component, ...rest }) => {
-  const { keycloak } = useKeycloak();
-  const isLoggedIn = !!keycloak.authenticated;
+  const token = getCookieByName(cookieKeys.token);
+  const isLoggedIn = !!token;
+  if (!isLoggedIn) return null;
   return <Route {...rest} render={(props) => (isLoggedIn ? <Component {...props} /> : <Redirect to="/home" />)} />;
 };
 
 export const PublicRoute = ({ component: Component, ...rest }) => {
-  const { keycloak } = useKeycloak();
-  const isLoggedIn = !!keycloak.authenticated;
-  return <Route {...rest} render={(props) => (!isLoggedIn ? <Component {...props} /> : <Redirect to="/home" />)} />;
+  return <Route {...rest} render={(props) => <Component {...props} />} />;
 };
 
 export const MemberAppLayout = ({ children }) => {

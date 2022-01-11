@@ -16,6 +16,7 @@ import { userSelector } from 'containers/Login/reducer';
 import { getAnalyticsUrl } from 'utils/constants';
 
 import Logo from 'assets/logo-satu.jpg';
+import { removeAllCookie } from '../../utils/cookie';
 
 const getPathnameFromRoute = (route) => get(route, 'link.pathname', route.link);
 
@@ -145,7 +146,13 @@ export const Header = () => {
           <NavDropdown.Item>{t('header.userNav.changePassword')}</NavDropdown.Item>
           <NavDropdown.Item onClick={goTo('/cms')}>{t('header.userNav.cmsApplication')}</NavDropdown.Item>
           <NavDropdown.Item onClick={goTo('/policy')}>{t('header.userNav.privacyPolicy')}</NavDropdown.Item>
-          <NavDropdown.Item onClick={keycloak.logout}>{t('header.userNav.signOut')}</NavDropdown.Item>
+          <NavDropdown.Item
+            onClick={() => {
+              removeAllCookie();
+              keycloak.logout();
+            }}>
+            {t('header.userNav.signOut')}
+          </NavDropdown.Item>
         </NavDropdown>
       </Nav>
     );

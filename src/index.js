@@ -35,7 +35,7 @@ ReactDOM.render(
         initOptions={{ checkLoginIframe: false }}
         onTokens={(tokenLogger) => {
           if (!tokenLogger?.token) return;
-          setCookie(cookieKeys.token, tokenLogger.token);
+          setCookie(cookieKeys.token, tokenLogger.idToken);
         }}>
         <ConnectedRouter history={history}>
           <HelmetProvider>

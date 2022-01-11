@@ -1,15 +1,14 @@
-import { useCallback } from 'react';
 import Button from 'react-bootstrap/Button';
-import { useDispatch } from 'react-redux';
-import { logout } from 'containers/Login/reducer';
-import Logo from 'assets/logo-satu.jpg';
-import { Anchor } from 'components/Custom';
+import { useKeycloak } from '@react-keycloak/web';
 import { useHistory, useLocation } from 'react-router-dom';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import cx from 'classnames';
+import { removeAllCookie } from 'utils/cookie';
+import Logo from 'assets/logo-satu.jpg';
+import { Anchor } from 'components/Custom';
 
 const TAB_LIST_1 = [
   { title: 'Beranda', link: '/home' },
@@ -38,11 +37,7 @@ const getTabList = (list, pathname, history) => {
 export const AdminHeader = () => {
   const history = useHistory();
   const location = useLocation();
-  const dispatch = useDispatch();
-  const handleLogout = useCallback(() => {
-    dispatch(logout());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { keycloak } = useKeycloak();
   return (
     <Navbar bg="transparent" className="sdp-header">
       <Container className="mw-100">
@@ -81,7 +76,12 @@ export const AdminHeader = () => {
             <NavDropdown.Item onClick={() => history.push('/sdmx')}>Metadata Registry</NavDropdown.Item>
           </NavDropdown>
           {getTabList(TAB_LIST_2, location.pathname, history)}
-          <Button variant="secondary" onClick={handleLogout}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              removeAllCookie();
+              keycloak.logout();
+            }}>
             Logout
           </Button>
         </Nav>

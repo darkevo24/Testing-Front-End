@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, get } from 'utils/request';
+import { apiUrls, defaultNumberOfRows, get } from 'utils/request';
 
 export const getBimtekPermintaan = createAsyncThunk(
   'bimtekPermintaan/getBimtekPermintaan',
   async ({ id = '', ...params }) => {
     const url = `${apiUrls.bimtekPermintaan}${id ? `/${id}` : ''}`;
     const response = await get(url, {
-      query: params,
+      query: {
+        page: params.page + 1,
+      },
     });
     return response?.data?.content;
   },
@@ -24,8 +26,8 @@ const INITIAL_STATE = {
     status: 'idle',
     records: [],
     singleRecord: [],
-    page: 1,
-    size: 10,
+    page: 0,
+    size: defaultNumberOfRows,
     totalRecords: 0,
     totalPages: 1,
     message: null,
@@ -34,8 +36,8 @@ const INITIAL_STATE = {
     status: 'idle',
     records: [],
     singleRecord: [],
-    page: 1,
-    size: 10,
+    page: 0,
+    size: defaultNumberOfRows,
     totalRecords: 0,
     totalPages: 1,
     message: null,
@@ -57,8 +59,7 @@ const SLICE_OBJ = createSlice({
     builder.addCase(getBimtekPermintaan.fulfilled, (state, action) => {
       state.detailDataset.loading = false;
       state.permintaanDataset.records = action.payload.records;
-      state.permintaanDataset.page = action.payload.page;
-      state.permintaanDataset.size = action.payload.size;
+      state.permintaanDataset.page = action.payload.page - 1;
       state.permintaanDataset.totalPages = action.payload.totalPages;
       state.permintaanDataset.totalRecords = action.payload.totalRecords;
       if (!action.payload.records) {

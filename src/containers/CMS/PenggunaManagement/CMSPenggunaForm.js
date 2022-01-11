@@ -15,7 +15,6 @@ import {
   getInstansiData,
   getUnitKerjaData,
   penggunaRoleDataSelector,
-  penggunaStatusDataSelector,
   instansiDataSelector,
   unitKerjaDataSelector,
 } from './reducer';
@@ -31,11 +30,10 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
   const dispatch = useDispatch();
 
   const { records: penggunaRoleData } = useSelector(penggunaRoleDataSelector);
-  const { records: penggunaStatusData } = useSelector(penggunaStatusDataSelector);
   const { records: penggunaInstansiData } = useSelector(instansiDataSelector);
   const { records: penggunaUnitKerjaData } = useSelector(unitKerjaDataSelector);
-  const { records: _penggunaDetails } = useSelector(penggunanDataDetailSelector);
-
+  const { records: penggunaDetailsData } = useSelector(penggunanDataDetailSelector);
+  const penggunaStatusData = ['PNS', 'PPNPN'];
   useEffect(() => {
     setValue('roles', role);
   }, [role]);
@@ -57,30 +55,29 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
     .required();
 
   useEffect(() => {
-    if (_penggunaDetails && !isEmpty(_penggunaDetails)) {
+    if (penggunaDetailsData && !isEmpty(penggunaDetailsData)) {
       const updatedData = {
-        ..._penggunaDetails,
+        ...penggunaDetailsData,
         employeeStatus: {
-          ..._penggunaDetails.employeeStatus,
-          label: _penggunaDetails.employeeStatus,
-          value: _penggunaDetails.employeeStatus,
+          ...penggunaDetailsData.employeeStatus,
+          label: penggunaDetailsData.employeeStatus,
+          value: penggunaDetailsData.employeeStatus,
         },
         instansi: {
-          ..._penggunaDetails.instansi,
-          label: _penggunaDetails.instansi?.nama,
-          value: _penggunaDetails.instansi?.nama,
+          ...penggunaDetailsData.instansi,
+          label: penggunaDetailsData.instansi?.nama,
+          value: penggunaDetailsData.instansi?.nama,
         },
         unitKerja: {
-          ..._penggunaDetails.unitKerja,
-          label: _penggunaDetails.unitKerja?.nama,
-          value: _penggunaDetails.unitKerja?.id,
+          ...penggunaDetailsData.unitKerja,
+          label: penggunaDetailsData.unitKerja?.nama,
+          value: penggunaDetailsData.unitKerja?.id,
         },
-        roles: _penggunaDetails.roles,
+        roles: penggunaDetailsData.roles,
       };
       setPenggunaDetails(updatedData);
-      setRole(_penggunaDetails.roles);
     }
-  }, [_penggunaDetails]);
+  }, [penggunaDetailsData]);
 
   const {
     control,
@@ -113,13 +110,14 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
     if (penggunaDetails) {
       reset(penggunaDetails);
     }
+    setRole(penggunaDetails.roles);
   }, [penggunaDetails]);
 
   const changeInstansi = (e) => {
     setValue('instansi', e);
     dispatch(getUnitKerjaData(e.value));
     setInstansiErr(true);
-    setValue('unitKerja', '');
+    setValue('unitKerja', null);
   };
 
   const uploadMemo = (e) => {
@@ -247,7 +245,7 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
         <div className="sdp-error">{errors.roles?.message}</div>
       </Form.Group>
       {disableForm ? (
-        <div>{_penggunaDetails?.officialMemo?.fileName} is Selected</div>
+        <div>{penggunaDetailsData?.officialMemo?.fileName} is Selected</div>
       ) : (
         <FileInput
           group

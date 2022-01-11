@@ -5,7 +5,7 @@ import { Button, Row, Col } from 'react-bootstrap';
 import { LeftChevron, Trash } from 'components/Icons';
 import bn from 'utils/bemNames';
 import { LogStatus } from 'components/Sidebars/LogStatus';
-import { getPenggunaLogs, penggunanLogsSelector } from './reducer';
+import { getPenggunaLogs, penggunanDataDetailSelector, penggunanLogsSelector } from './reducer';
 import CMSpenggunaForm, { submitpenggunaForm } from '../PenggunaManagement/CMSPenggunaForm';
 import Notification from 'components/Notification';
 import { put } from 'utils/request';
@@ -23,21 +23,42 @@ const CMSPenggunaManagementView = () => {
   };
 
   useEffect(() => dispatch(getPenggunaLogs(id)), []);
+  const { records: penggunaDetailsData } = useSelector(penggunanDataDetailSelector);
 
   const { records: logData } = useSelector(penggunanLogsSelector);
-  const DraftText = () => {
+
+  const StatusText = ({ statusClass, statusLabel }) => {
     return (
       <div className="d-flex">
         <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+          <LeftChevron />
         </div>
-        <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">Draft</Row>
+        <Row className={`${statusClass} fw-bold justify-content-center align-items-center`}>{statusLabel}</Row>
       </div>
     );
   };
-
   const StatusBar = () => {
-    return <DraftText />;
+    switch (penggunaDetailsData?.status) {
+      case 'DRAFT':
+        return <StatusText statusClass={'permintaan-data-form-terproses'} statusLabel={'Draft'} />;
+
+      case 'ACTIVE':
+        return <StatusText statusClass={'permintaan-data-form-success'} statusLabel={'Active'} />;
+
+      case 'WAITING_APPROVAL':
+        return <StatusText statusClass={'permintaan-data-form-success'} statusLabel={'Waiting Approval'} />;
+
+      case 'REJECTED':
+        return <StatusText statusClass={'permintaan-data-form-ditolak'} statusLabel={'Rejected'} />;
+
+      case 'SUSPENDED':
+        return <StatusText statusClass={'permintaan-data-form-terkirim'} statusLabel={'Suspended'} />;
+
+      case 'INACTIVE':
+        return <StatusText statusClass={'permintaan-data-form-terproses'} statusLabel={'Inactive'} />;
+      default:
+        return null;
+    }
   };
 
   const editPengguna = (e) => {
@@ -63,7 +84,7 @@ const CMSPenggunaManagementView = () => {
       supervisorName: data.supervisorName,
       officialMemo: data.officialMemo,
       instansi: {
-        id: data.instansi.value,
+        id: data.instansi.id ? data.instansi.id : data.instansi.value,
       },
       unitKerja: {
         id: data.unitKerja.value,

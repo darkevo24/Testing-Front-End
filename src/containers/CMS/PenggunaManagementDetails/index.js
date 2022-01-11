@@ -23,95 +23,39 @@ const CMSPenggunaManagementView = () => {
   };
 
   useEffect(() => dispatch(getPenggunaLogs(id)), []);
-  const { records: _penggunaDetails } = useSelector(penggunanDataDetailSelector);
+  const { records: penggunaDetailsData } = useSelector(penggunanDataDetailSelector);
 
   const { records: logData } = useSelector(penggunanLogsSelector);
-  const DraftText = () => {
-    return (
-      <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
-        </div>
-        <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">Draft</Row>
-      </div>
-    );
-  };
 
-  const ActiveText = () => {
+  const StatusText = ({ statusClass, statusLabel }) => {
     return (
       <div className="d-flex">
         <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
+          <LeftChevron />
         </div>
-        <Row className="permintaan-data-form-success fw-bold justify-content-center align-items-center">Active</Row>
-      </div>
-    );
-  };
-
-  const WaitingApprovalText = () => {
-    return (
-      <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
-        </div>
-        <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">
-          Waiting Approval
-        </Row>
-      </div>
-    );
-  };
-
-  const RejectedText = () => {
-    return (
-      <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
-        </div>
-        <Row className="permintaan-data-form-ditolak fw-bold justify-content-center align-items-center">Rejected</Row>
-      </div>
-    );
-  };
-
-  const SuspendedText = () => {
-    return (
-      <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
-        </div>
-        <Row className="permintaan-data-form-terkirim fw-bold justify-content-center align-items-center">Suspended</Row>
-      </div>
-    );
-  };
-
-  const InactiveText = () => {
-    return (
-      <div className="d-flex">
-        <div className="icon-box" onClick={backToTable}>
-          <LeftChevron></LeftChevron>
-        </div>
-        <Row className="permintaan-data-form-terproses fw-bold justify-content-center align-items-center">Inactive</Row>
+        <Row className={`${statusClass} fw-bold justify-content-center align-items-center`}>{statusLabel}</Row>
       </div>
     );
   };
   const StatusBar = () => {
-    switch (_penggunaDetails?.status) {
+    switch (penggunaDetailsData?.status) {
       case 'DRAFT':
-        return <DraftText />;
+        return <StatusText statusClass={'permintaan-data-form-terproses'} statusLabel={'Draft'} />;
 
       case 'ACTIVE':
-        return <ActiveText />;
+        return <StatusText statusClass={'permintaan-data-form-success'} statusLabel={'Active'} />;
 
       case 'WAITING_APPROVAL':
-        return <WaitingApprovalText />;
+        return <StatusText statusClass={'permintaan-data-form-success'} statusLabel={'Waiting Approval'} />;
 
       case 'REJECTED':
-        return <RejectedText />;
+        return <StatusText statusClass={'permintaan-data-form-ditolak'} statusLabel={'Rejected'} />;
 
       case 'SUSPENDED':
-        return <SuspendedText />;
+        return <StatusText statusClass={'permintaan-data-form-terkirim'} statusLabel={'Suspended'} />;
 
       case 'INACTIVE':
-        return <InactiveText />;
+        return <StatusText statusClass={'permintaan-data-form-terproses'} statusLabel={'Inactive'} />;
       default:
         return null;
     }

@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import isFunction from 'lodash/isFunction';
+import { useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -11,14 +9,11 @@ import * as yup from 'yup';
 import { apiUrls, post } from 'utils/request';
 import Input from 'components/Input';
 import { Notification } from 'components';
-import { LeftChevron } from 'components/Icons';
-
-import BackgroundCity from 'assets/background-citylogin.png';
-import BackgroundData from 'assets/background-dataindonesia.png';
-import BackgroundBatik from 'assets/background-batiklogin.png';
+import Spinner from 'react-bootstrap/Spinner';
 
 const schema = yup
   .object({
+    oldPassword: yup.string().required(),
     passwordNew: yup.string().required(),
     confirmPassword: yup
       .string()
@@ -28,17 +23,7 @@ const schema = yup
   .required();
 
 const ChangePassword = () => {
-  const search = useLocation().search;
-  const key = new URLSearchParams(search).get('key');
-  const history = useHistory();
-
-  const goBack = () => {
-    history.push('/login');
-  };
-
-  useEffect(() => {
-    if (!key) goBack();
-  }, []);
+  const [loader, setLoader] = useState(false);
 
   const handleNotification = (type, message, icon) => {
     Notification.show({
@@ -48,13 +33,14 @@ const ChangePassword = () => {
     });
   };
 
-  const handleAPICall = async (method, url, params, callBack) => {
+  const handleAPICall = async (method, url, params) => {
     try {
       await method(url, {}, params);
       handleNotification('secondary', 'Berhasil Merubah Password', 'check');
-      isFunction(callBack) && callBack();
+      setLoader(false);
     } catch (e) {
       handleNotification('secondary', `Error, ${e?.data?.message}`, 'cross');
+      setLoader(false);
     }
   };
 
@@ -67,22 +53,31 @@ const ChangePassword = () => {
   });
 
   const onSubmit = (data) => {
+    setLoader(true);
     let obj = {
-      key,
+      oldPassword: data.oldPassword,
       newPassword: data.passwordNew,
       confirmNewPassword: data.confirmPassword,
     };
-    handleAPICall(post, `${apiUrls.forgotPassword}`, { data: obj }, goBack);
+    handleAPICall(post, `${apiUrls.changeMyPassword}`, { data: obj });
   };
 
   return (
-    <Row className="change-password relative">
-      <button className="back-chevron" onClick={goBack}>
-        <LeftChevron />
-      </button>
-      <Col md={4} className="form-change-password">
+    <Row className="change-password">
+      <Col md={12} className="form-change-password">
         <div className="sdp-heading pb-30">Ubah Password</div>
         <Form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <Form.Group className="mb-15">
+            <Form.Label>Password Lama</Form.Label>
+            <Input
+              name="oldPassword"
+              control={control}
+              rules={{ required: true }}
+              type="password"
+              error={errors.oldPassword?.message}
+              className="mt-0"
+            />
+          </Form.Group>
           <Form.Group className="mb-15">
             <Form.Label>Password Baru</Form.Label>
             <Input
@@ -105,15 +100,11 @@ const ChangePassword = () => {
               className="mt-0"
             />
           </Form.Group>
-          <Button type="submit" className="change-btn">
+          <Button disabled={loader} type="submit" className="change-btn">
+            {loader && <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="mr-10" />}
             Ubah
           </Button>
         </Form>
-      </Col>
-      <Col md={8} className="background-login">
-        <img src={BackgroundBatik} alt="background" />
-        <img src={BackgroundData} alt="background" className="logo-title" />
-        <img src={BackgroundCity} alt="background" />
       </Col>
     </Row>
   );

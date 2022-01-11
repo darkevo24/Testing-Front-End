@@ -29,7 +29,9 @@ export const CMSHeader = () => {
           </Button>
           <li className="d-flex justify-content-end flex-row align-items-center h-100">
             <NavDropdown title={user?.name || 'Achmad Adam'} id="user-nav-dropdown" className="user-nav h-100">
-              <NavDropdown.Item>{t('header.userNav.changePassword')}</NavDropdown.Item>
+              <NavDropdown.Item onClick={goTo('/change-user-password')}>
+                {t('header.userNav.changePassword')}
+              </NavDropdown.Item>
               <NavDropdown.Item>{t('header.userNav.privacyPolicy')}</NavDropdown.Item>
               <NavDropdown.Item onClick={handleLogout}>{t('header.userNav.signOut')}</NavDropdown.Item>
             </NavDropdown>

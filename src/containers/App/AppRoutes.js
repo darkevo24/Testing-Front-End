@@ -39,7 +39,8 @@ const ManagementApiPage = lazy(() => import('containers/ManagementApi'));
 const ManagementApiAddPage = lazy(() => import('containers/ManagementApi/Form'));
 const ManagementApiDetailPage = lazy(() => import('containers/ManagementApi/DetailApi'));
 const ManagementApiUpdatePage = lazy(() => import('containers/ManagementApi/UpdateApi'));
-const ChangePassword = lazy(() => import('containers/ChangePassword'));
+const ChangePasswordLogin = lazy(() => import('containers/ChangePasswordLogin'));
+const ChangePasswordUser = lazy(() => import('containers/ChangePasswordUser'));
 const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
 // const NotFoundPage = lazy(() => import('containers/NotFound'));
 const KebijakanPrivasiPage = lazy(() => import('containers/KebijakanPrivasi'));
@@ -49,7 +50,7 @@ function AppRoutes(props) {
     <Switch>
       <PublicRoute exact path="/login" component={Login} />
       <PublicRoute exact path="/forgot-password" component={ForgotPassword} />
-      <PublicRoute exact path="/change-password" component={ChangePassword} />
+      <PublicRoute exact path="/change-password" component={ChangePasswordLogin} />
       <AppLayout>
         <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
         <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
@@ -60,6 +61,7 @@ function AppRoutes(props) {
         <PrivateRoute exact path="/forum-sdi/:id" component={ForumSDIDetail} />
         <PrivateRoute exact path="/forum-sdi" component={ForumSDI} />
         <PrivateRoute exact path="/forum" component={PerminataanForumPage} />
+        <PrivateRoute exact path="/change-user-password" component={ChangePasswordUser} />
         <Route exact path="/policy" component={KebijakanPrivasiPage} />
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />

@@ -101,6 +101,7 @@ export const apiUrls = {
   cmsContactUs: getCMSEndpoint('hubungi-kami-setting'),
   requestForgotPassword: getPublicEndpoint('request-forgot-password'),
   forgotPassword: getPublicEndpoint('forgot-password'),
+  changeMyPassword: getPortalEndpoint('v1/change-my-password'),
   penggunaManagement: getApiEndpoint('sekretariat/user'),
   detailPenggunaManagement: getApiEndpoint('sekretariat/user'),
   penggunaRoleList: getApiEndpoint('sekretariat/user/role-list'),

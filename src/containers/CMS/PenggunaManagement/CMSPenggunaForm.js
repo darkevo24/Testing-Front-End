@@ -18,6 +18,8 @@ import {
   instansiDataSelector,
   unitKerjaDataSelector,
 } from './reducer';
+import { post } from 'utils/request';
+import { apiUrls } from 'utils/constants';
 
 export const penggunaFormId = 'pengguna-form-id';
 export const submitpenggunaForm = submitForm(penggunaFormId);
@@ -131,14 +133,13 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
     setValue('unitKerja', null);
   };
 
-  const uploadMemo = (e) => {
+  const uploadMemo = async (e) => {
     const fileData = e.target.files[0];
-    setValue('officialMemo', {
-      fileName: fileData.name,
-      location: `http://localhost:8080/file/download/${fileData.name}`,
-      fileType: fileData.type,
-      size: fileData.size,
-    });
+    const fileFormData = new FormData();
+    fileFormData.append('file', fileData);
+
+    const res = await post(apiUrls.publicFileUpload, fileFormData, { headers: { 'Content-Type': '' } });
+    setValue('officialMemo', res?.data);
     setFileErr(true);
   };
 

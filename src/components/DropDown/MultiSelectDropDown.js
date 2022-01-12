@@ -64,6 +64,7 @@ export default class MultiSelectDropdown extends React.Component {
       data,
       onInputChange,
       isCreatable = false,
+      onCreateOption = {},
       // ...rest
     } = this.props;
     // const { type = '', placeHolder, data, isMulti = true, disabled = false, isClearable = true, styles = {} } = this.props;
@@ -99,6 +100,7 @@ export default class MultiSelectDropdown extends React.Component {
                 isClearable={isClearable}
                 isDisabled={disabled}
                 menuPlacement="auto"
+                onCreateOption={onCreateOption}
               />
             );
           }}

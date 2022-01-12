@@ -71,36 +71,31 @@ const CMSBeritaBaru = () => {
     // create new kategori
     if (dataBerita.kategori?.id && dataBerita.kategori.id === 'new') {
       submitNewKategori(dataBerita.kategori.label).then((res) => {
-        Promise.resolve()
-          .then(() =>
-            setDataBerita({
-              ...dataBerita,
-              kategori: res.data.content.id,
-            }),
-          )
-          .then(() => sendData());
+        let newData = dataBerita;
+        newData.kategori = res.data.content.id;
+        sendData(newData);
       });
       return;
     }
-    sendData();
+    sendData(dataBerita);
   };
 
-  const sendData = () => {
-    if (dataBerita.id) {
+  const sendData = (data) => {
+    if (data.id) {
       // edit berita
-      if (dataBerita.status === 2) {
-        dataBerita.status = 0;
-        return dispatch(setEditBerita({ payload: dataBerita, id: dataBerita.id }))
+      if (data.status === 2) {
+        data.status = 0;
+        return dispatch(setEditBerita({ payload: data, id: data.id }))
           .then(() =>
             dispatch(
               setStatusBerita({
-                payload: { id: [dataBerita.id], status: 2, note: '' },
+                payload: { id: [data.id], status: 2, note: '' },
               }),
             ),
           )
           .then((res) => notifyResponse(res));
       }
-      return dispatch(setEditBerita({ payload: dataBerita, id: dataBerita.id })).then((res) => notifyResponse(res));
+      return dispatch(setEditBerita({ payload: data, id: data.id })).then((res) => notifyResponse(res));
     }
     // kirim
     if (dataBerita.status === 2) {

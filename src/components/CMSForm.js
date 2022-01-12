@@ -81,7 +81,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
   }, [kategoriRecords]);
 
   const createKategori = (data) => {
-    setValue('kategori', { id: 'new', value: data, label: data });
+    setValue('kategori', { id: 'new', value: 'new', label: data });
     setListKategori([
       ...listKategori,
       {
@@ -92,9 +92,13 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
   };
 
   const createTagline = (data) => {
-    // console.log(data);
-    setValue('taglineId', { id: 'new', value: data, label: data });
-    dispatch(setNewTagline({ keterangan: data })).then(() => dispatch(getListTagline()));
+    dispatch(setNewTagline({ keterangan: data }))
+      .then((res) => {
+        let currentTag = getValues('taglineId') || [];
+        currentTag.push({ value: res.payload.id, label: res.payload.keterangan });
+        setValue('taglineId', currentTag);
+      })
+      .then(() => dispatch(getListTagline()));
   };
 
   const {
@@ -102,6 +106,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
     formState: { errors },
     handleSubmit,
     setValue,
+    getValues,
     setError,
   } = useForm({
     resolver: yupResolver(schema),
@@ -185,13 +190,13 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
       <Form.Group className="mb-3">
         <Form.Label>Tagline</Form.Label>
         <MultiSelectDropDown
-          data={taglineRecords.map((tagline) => ({ label: tagline.keterangan, value: tagline.id }))}
+          data={taglineRecords?.map((tagline) => ({ label: tagline.keterangan, value: tagline.id }))}
           control={control}
           placeHolder="Pilih Tagline"
           isCreatable={true}
           onCreateOption={createTagline}
           name="taglineId"
-          isDisabled={disabled}
+          disabled={disabled}
           error={errors.taglineId?.message}
         />
       </Form.Group>

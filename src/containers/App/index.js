@@ -9,7 +9,7 @@
 import React, { useEffect, lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Redirect, Route, Switch, useHistory, withRouter } from 'react-router-dom';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import GlobalStyle from 'global-styles';
 import { request } from 'utils/request';
 import Notify, { Notification } from 'components/Notification';

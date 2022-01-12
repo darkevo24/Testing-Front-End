@@ -151,7 +151,7 @@ const CMSPenggunaManagementView = () => {
             <LogStatus
               data={logData?.map((log) => {
                 return {
-                  status: log.data.status,
+                  status: log.data?.status,
                   createdAt: log.createdAt,
                   displayMessage: log.remark,
                 };

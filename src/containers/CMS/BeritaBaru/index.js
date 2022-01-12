@@ -30,7 +30,11 @@ const CMSBeritaBaru = () => {
     data.mainImageTitle = '';
     const publishDate = getDate(data.publishDate);
     const publishTime = data.publishTime ? data.publishTime : '';
-    data.publishDate = !publishDate ? '' : !publishTime ? publishDate + ' 00:00:00' : publishDate + ' ' + publishTime;
+    data.publishDate = !publishDate
+      ? ''
+      : !publishTime
+      ? publishDate + ' 00:00:00'
+      : publishDate + ' ' + publishTime + ':00';
     data.taglineId = data.taglineId?.map((tag) => tag.value) || [];
     data.issn = data.issn ? data.issn : '';
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import { Controller } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 import isEqual from 'lodash/isEqual';
@@ -62,6 +63,7 @@ export default class MultiSelectDropdown extends React.Component {
       disabled = false,
       data,
       onInputChange,
+      isCreatable = false,
       // ...rest
     } = this.props;
     // const { type = '', placeHolder, data, isMulti = true, disabled = false, isClearable = true, styles = {} } = this.props;
@@ -80,8 +82,9 @@ export default class MultiSelectDropdown extends React.Component {
               }
               return inputValue;
             };
+            const Component = isCreatable ? CreatableSelect : Select;
             return (
-              <Select
+              <Component
                 id={type}
                 value={field.value}
                 styles={styles}

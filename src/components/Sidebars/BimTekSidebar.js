@@ -21,10 +21,6 @@ export const BimTekSidebar = () => {
       title: 'Materi',
       link: '/bimtek-materi',
     },
-    {
-      title: 'Permintaan Bimtek Saya',
-      link: '/bimtek-permintaan',
-    },
   ];
 
   const List =
@@ -33,6 +29,10 @@ export const BimTekSidebar = () => {
           {
             title: 'Form Permintaan',
             link: '/bimtek-form',
+          },
+          {
+            title: 'Permintaan Bimtek Saya',
+            link: '/bimtek-permintaan',
           },
           ...sideBarList,
         ]

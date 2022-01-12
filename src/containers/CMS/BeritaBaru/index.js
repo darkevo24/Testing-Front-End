@@ -30,7 +30,11 @@ const CMSBeritaBaru = () => {
     data.mainImageTitle = '';
     const publishDate = getDate(data.publishDate);
     const publishTime = data.publishTime ? data.publishTime : '';
-    data.publishDate = !publishDate ? '' : !publishTime ? publishDate + ' 00:00:00' : publishDate + ' ' + publishTime;
+    data.publishDate = !publishDate
+      ? ''
+      : !publishTime
+      ? publishDate + ' 00:00:00'
+      : publishDate + ' ' + publishTime + ':00';
     data.taglineId = data.taglineId?.map((tag) => tag.value) || [];
     data.issn = data.issn ? data.issn : '';
 
@@ -66,37 +70,28 @@ const CMSBeritaBaru = () => {
 
     // create new kategori
     if (dataBerita.kategori?.id && dataBerita.kategori.id === 'new') {
-      submitNewKategori(dataBerita.kategori.label).then((res) => {
-        Promise.resolve()
-          .then(() =>
-            setDataBerita({
-              ...dataBerita,
-              kategori: res.data.content.id,
-            }),
-          )
-          .then(() => sendData());
-      });
+      submitNewKategori(dataBerita.kategori.label).then((res) => sendData({ ...dataBerita, kategori: res.data.content.id }));
       return;
     }
-    sendData();
+    sendData(dataBerita);
   };
 
-  const sendData = () => {
-    if (dataBerita.id) {
+  const sendData = (data) => {
+    if (data.id) {
       // edit berita
-      if (dataBerita.status === 2) {
-        dataBerita.status = 0;
-        return dispatch(setEditBerita({ payload: dataBerita, id: dataBerita.id }))
+      if (data.status === 2) {
+        data.status = 0;
+        return dispatch(setEditBerita({ payload: data, id: data.id }))
           .then(() =>
             dispatch(
               setStatusBerita({
-                payload: { id: [dataBerita.id], status: 2, note: '' },
+                payload: { id: [data.id], status: 2, note: '' },
               }),
             ),
           )
           .then((res) => notifyResponse(res));
       }
-      return dispatch(setEditBerita({ payload: dataBerita, id: dataBerita.id })).then((res) => notifyResponse(res));
+      return dispatch(setEditBerita({ payload: data, id: data.id })).then((res) => notifyResponse(res));
     }
     // kirim
     if (dataBerita.status === 2) {

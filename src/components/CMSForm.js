@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Input, FileInput, TextEditor } from 'components';
-import MultiDropDown from 'components/DropDown/MultiDropDown';
+import MultiSelectDropDown from 'components/DropDown/MultiSelectDropDown';
 import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
 import { submitForm } from 'utils/helper';
 import { useDispatch, useSelector } from 'react-redux';
@@ -81,6 +81,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
   }, [kategoriRecords]);
 
   const createKategori = (data) => {
+    setValue('kategori', { id: 'new', value: 'new', label: data });
     setListKategori([
       ...listKategori,
       {
@@ -91,8 +92,13 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
   };
 
   const createTagline = (data) => {
-    // console.log(data);
-    dispatch(setNewTagline({ keterangan: data })).then(() => dispatch(getListTagline()));
+    dispatch(setNewTagline({ keterangan: data }))
+      .then((res) => {
+        let currentTag = getValues('taglineId') || [];
+        currentTag.push({ value: res.payload.id, label: res.payload.keterangan });
+        setValue('taglineId', currentTag);
+      })
+      .then(() => dispatch(getListTagline()));
   };
 
   const {
@@ -100,6 +106,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
     formState: { errors },
     handleSubmit,
     setValue,
+    getValues,
     setError,
   } = useForm({
     resolver: yupResolver(schema),
@@ -177,19 +184,20 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
           onCreateOption={createKategori}
           name="kategori"
           isDisabled={disabled}
+          error={errors.kategori?.message}
         />
-        <div className="sdp-error">{errors.kategori?.message}</div>
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Tagline</Form.Label>
-        <MultiDropDown
-          placeHolder="Pilih Tagline"
+        <MultiSelectDropDown
           data={taglineRecords?.map((tagline) => ({ label: tagline.keterangan, value: tagline.id }))}
-          onChange={(e) => setValue('taglineId', e)}
-          defaultValue={data.tagLineList?.map((tagline) => ({ label: tagline.keterangan, value: tagline.id }))}
+          control={control}
+          placeHolder="Pilih Tagline"
           isCreatable={true}
           onCreateOption={createTagline}
-          isDisabled={disabled}
+          name="taglineId"
+          disabled={disabled}
+          error={errors.taglineId?.message}
         />
       </Form.Group>
       <Form.Group className="mb-3">

@@ -64,11 +64,7 @@ const LogActivity = () => {
   }, [startDateValue, endDateValue, query, page]);
 
   useEffect(() => {
-    if (startDateValue && endDateValue) {
-      setDisable(false);
-    } else {
-      setDisable(true);
-    }
+    setDisable(!!(startDateValue && endDateValue));
   }, [startDateValue, endDateValue]);
 
   const handleModalOpen = (e, actionType) => {
@@ -252,11 +248,10 @@ const LogActivity = () => {
             <Button
               onClick={() => setModalProfile(false)}
               className="ml-24 bg-white sdp-text-grey-dark border-gray-stroke"
-              variant="secondary"
-              style={{ width: '112px' }}>
+              variant="secondary">
               Batal
             </Button>
-            <Button className="mx-10" variant="info" style={{ width: '112px' }} onClick={handleModalSubmit}>
+            <Button className="mx-10" variant="info" onClick={handleModalSubmit}>
               Konfirmasi
             </Button>
           </div>

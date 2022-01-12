@@ -245,7 +245,7 @@ const DaftarDataSayaTable = ({
           { variant: 'secondary', text: 'Batal', onClick: hideDeleteModal },
           { text: 'Hapus', onClick: handleDelete },
         ]}>
-        Apakah anda yakin untuk menghapus <span className="fw-bold">Data UMKM?</span>
+        Apakah anda yakin untuk menghapus <span className="fw-bold">{selectedRecord?.nama ?? 'Data UMKM?'}</span>
       </Modal>
     </>
   );

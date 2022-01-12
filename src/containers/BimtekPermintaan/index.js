@@ -26,7 +26,7 @@ const BimtekPermintaan = () => {
   };
   useEffect(() => {
     fetchDataset({ page: page || 0 });
-  }, [page]);
+  }, []);
 
   const handlePermintaan = (data) => {
     history.push(`/bimtek-permintaan/${data.id}`);
@@ -95,7 +95,7 @@ const BimtekPermintaan = () => {
   return (
     <BimtekLayout className="bimtek-permintaan">
       <Row className={bem.e('', 'mb-12 ml-0')}>
-        {!permintaanRecords.length ? (
+        {!permintaanRecords?.length ? (
           <div className={bem.e('', 'd-flex justify-content-center align-items-center flex-column')}>
             <NoPerminataanData />
             <div className="text-black-50">No Data</div>

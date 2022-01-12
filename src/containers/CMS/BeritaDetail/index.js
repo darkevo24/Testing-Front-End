@@ -26,7 +26,7 @@ const CMSBeritaDetail = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { loading, record } = useSelector(detailDataSelector);
-  const { loading: loadingLog, records: logRecords } = useSelector(logBeritaSelector);
+  const { records: logRecords } = useSelector(logBeritaSelector);
   const fetchData = (params) => {
     dispatch(setDetailBerita(params));
     dispatch(getLogBerita(params));
@@ -77,17 +77,23 @@ const CMSBeritaDetail = (props) => {
       case 3:
         label = (
           <span>
-            Apakah anda yakin ingin <b className="sdp-text-blue">menyetujui</b> Berita?
+            Apakah anda yakin ingin <b className="sdp-text-blue">menyetujui</b> Berita <b>{data.judul}</b>?
           </span>
         );
         setLabelNotif('Disetujui');
         break;
       case 4:
+        label = (
+          <span>
+            Apakah anda yakin ingin <b className="sdp-text-blue">menolak</b> Berita <b>{data.judul}</b>?
+          </span>
+        );
+        setLabelNotif('Ditolak');
         break;
       case 5:
         label = (
           <span>
-            Apakah anda yakin ingin <b className="sdp-text-blue">menayangkan</b> Berita?
+            Apakah anda yakin ingin <b className="sdp-text-blue">menayangkan</b> Berita <b>{data.judul}</b>?
           </span>
         );
         setLabelNotif('Ditayangkan');
@@ -95,7 +101,7 @@ const CMSBeritaDetail = (props) => {
       case 6:
         label = (
           <span>
-            Apakah anda yakin ingin <b className="sdp-text-blue">tidak menayangkan</b> Berita?
+            Apakah anda yakin ingin <b className="sdp-text-blue">tidak menayangkan</b> Berita <b>{data.judul}</b>?
           </span>
         );
         setLabelNotif('Tidak Ditayangkan');
@@ -103,7 +109,7 @@ const CMSBeritaDetail = (props) => {
       case 7:
         label = (
           <span>
-            Apakah anda yakin ingin <b className="sdp-text-blue">menghapus</b> Berita?
+            Apakah anda yakin ingin <b className="sdp-text-blue">menghapus</b> Berita <b>{data.judul}</b>?
           </span>
         );
         setLabelNotif('Dihapus');
@@ -182,16 +188,16 @@ const CMSBeritaDetail = (props) => {
         </Col>
         {loading && <Loader fullscreen={true} />}
       </Row>
-      {modalConfirm && beritaStatus !== 4 ? (
+      {modalConfirm && beritaStatus !== 4 && beritaStatus !== 7 ? (
         <CMSModal
           loader={false}
           onClose={() => setModalConfirm(false)}
           confirmButtonAction={submitEditBerita}
           label={modalLabel}
         />
-      ) : modalConfirm && beritaStatus === 4 ? (
+      ) : modalConfirm && (beritaStatus === 4 || beritaStatus === 7) ? (
         <Modal visible={true} onClose={() => setModalConfirm(false)} title="" showHeader={false} centered={true}>
-          Apakah anda yakin ingin <span className="sdp-text-red">menolak</span> Berita?
+          {modalLabel}
           <textarea
             placeholder="Tulis Catatan"
             name="catatan"

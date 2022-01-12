@@ -10,12 +10,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { DatePicker } from 'components';
 import { Search, ModalAlertDanger } from 'components/Icons';
-import { Modal, Table } from 'components';
+import { Modal, Table, Notification } from 'components';
 import TableLoader from 'components/Loader/TableLoader';
 import { useDebounce } from 'utils/hooks';
 import bn from 'utils/bemNames';
-import { getCMSLogActifitasData, cmsLogAktifitasDataSelector } from './reducer';
+import { getCMSLogActifitasData, cmsLogAktifitasDataSelector, bacUpLogActivity, downloadLogActivity } from './reducer';
 const DEBOUNCE_DELAY = 500;
+const ACTION_TYPE = {
+  DOWNLOAD: 'download',
+  BACKUP: 'backup',
+};
 
 const bem = bn('log-activity');
 
@@ -30,8 +34,10 @@ const schema = yup
 const LogActivity = () => {
   const dispatch = useDispatch();
   const [query, setQuery] = useState('');
+  const [disable, setDisable] = useState(true);
+  const [actionType, setActionType] = useState(ACTION_TYPE.DOWNLOAD);
 
-  const { page, startDate, endDate, size, loading, records, totalRecords, totalPages, status } =
+  const { page, startDate, endDate, size, loading, records, totalRecords, totalPages } =
     useSelector(cmsLogAktifitasDataSelector);
 
   const handleAPICall = (params) => {
@@ -57,6 +63,53 @@ const LogActivity = () => {
     handleAPICall(params);
   }, [startDateValue, endDateValue, query, page]);
 
+  useEffect(() => {
+    if (startDateValue && endDateValue) {
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+  }, [startDateValue, endDateValue]);
+
+  const handleModalOpen = (e, actionType) => {
+    e.preventDefault();
+    setActionType(actionType);
+    setModalProfile(true);
+  };
+
+  const handleNotification = (response) => {
+    if (response.payload) {
+      Notification.show({
+        type: 'secondary',
+        message: <div> Sukses </div>,
+        icon: 'check',
+      });
+    } else {
+      Notification.show({
+        type: 'secondary',
+        message: <div> Kesalahan Silakan coba lagi </div>,
+        icon: 'cross',
+      });
+    }
+  };
+  const handleModalSubmit = (e) => {
+    e.preventDefault();
+    const params = {
+      startDate: moment(startDateValue).format('YYYY-MM-DD'),
+      endDate: moment(endDateValue).format('YYYY-MM-DD'),
+    };
+    setModalProfile(false);
+    if (actionType === ACTION_TYPE.DOWNLOAD) {
+      dispatch(downloadLogActivity(params)).then((res) => {
+        handleNotification(res);
+      });
+    } else {
+      dispatch(bacUpLogActivity(params)).then((res) => {
+        handleNotification(res);
+      });
+    }
+  };
+
   const handleUserInputChange = (event) => {
     const { value } = event.target;
     delayedQuery(value);
@@ -70,15 +123,7 @@ const LogActivity = () => {
   const columns = [
     {
       Header: 'ID Pengguna',
-      accessor: 'email',
-      Cell: ({
-        row: {
-          original: { data },
-        },
-      }) => {
-        const { email = '' } = data?.user;
-        return <span>{email}</span>;
-      },
+      accessor: 'username',
     },
     {
       Header: 'Alamat IP',
@@ -87,11 +132,6 @@ const LogActivity = () => {
     {
       Header: 'Waktu',
       accessor: 'createdAt',
-      Cell: ({ ...rest }) => (
-        <span>
-          {rest.row.original?.createdAt ? moment(rest.row.original?.createdAt).format('DD/MM YYYY : HH:MM') : '---'}{' '}
-        </span>
-      ),
     },
     {
       Header: 'Activity',
@@ -100,13 +140,11 @@ const LogActivity = () => {
     {
       Header: 'Status',
       accessor: 'status',
-
       Cell: ({
         row: {
-          original: { data = {} },
+          original: { status = '' },
         },
       }) => {
-        const { status = '' } = data;
         return (
           <span
             className={cx({
@@ -145,13 +183,14 @@ const LogActivity = () => {
       <div className={bem.e('header-log')}>
         <div className="wrapper-left">
           <h1> Log Aktivitas </h1>
-          <Button className="" variant="info" onClick={() => setModalProfile(true)}>
+          <Button className="" variant="info" onClick={(e) => handleModalOpen(e, ACTION_TYPE.DOWNLOAD)} disabled={disable}>
             Download
           </Button>
           <Button
             className="ml-10 bg-white sdp-text-grey-dark border-gray-stroke secondary"
             variant="secondary"
-            onClick={() => setModalProfile(true)}>
+            onClick={(e) => handleModalOpen(e, ACTION_TYPE.BACKUP)}
+            disabled={disable}>
             Backup
           </Button>
         </div>
@@ -165,6 +204,7 @@ const LogActivity = () => {
               rules={{ required: false }}
               error={errors.startDate?.message}
               arrow={true}
+              max={moment().subtract(1, 'days').format('YYYY-MM-DD')}
             />
           </div>
           <div className="date">
@@ -176,6 +216,8 @@ const LogActivity = () => {
               rules={{ required: false }}
               error={errors.endDate?.message}
               arrow={true}
+              min={startDateValue}
+              max={moment().subtract(1, 'days').format('YYYY-MM-DD')}
             />
           </div>
           <InputGroup>
@@ -187,15 +229,23 @@ const LogActivity = () => {
       {loading ? <TableLoader speed={2} width={'100%'} height={550} /> : <Table {...tableConfig} />}
       <Modal className="cms-log-activity" showHeader={false} visible={modalProfile} onClose={() => setModalProfile(false)}>
         <div className="alert">
-          <ModalAlertDanger />
-          <p className="text-danger pt-15">
-            Data log yang di-backup akan didownload ke dalam bentuk csv dan
-            <span className="font-weight-bold"> akan dihapus dari sistem </span>
-          </p>
+          {actionType === ACTION_TYPE.BACKUP ? (
+            <>
+              <ModalAlertDanger />
+              <p className="text-danger pt-15">
+                Data log yang di-backup akan didownload ke dalam bentuk csv dan
+                <span className="font-weight-bold"> akan dihapus dari sistem </span>
+              </p>
+            </>
+          ) : null}
         </div>
         <p className="date-backup">
-          Backup Log Aktivitas
-          <span className="ml-10 mr-5 p-5"> 1 Jan 2021 - 1 Des 2021 </span>?
+          {actionType === ACTION_TYPE.DOWNLOAD ? 'Download' : 'Backup'} Log Aktivitas dari tanggal{' '}
+          <span className="ml-10 mr-5 p-5">
+            {' '}
+            {moment(startDateValue).format('DD-MMMM-YYYY')} - {moment(endDateValue).format('DD-MMMM-YYYY')}{' '}
+          </span>
+          ?
         </p>
         <div>
           <div className="d-flex justify-content-end pb-20 pr-10">
@@ -206,7 +256,7 @@ const LogActivity = () => {
               style={{ width: '112px' }}>
               Batal
             </Button>
-            <Button className="mx-10" variant="info" style={{ width: '112px' }}>
+            <Button className="mx-10" variant="info" style={{ width: '112px' }} onClick={handleModalSubmit}>
               Konfirmasi
             </Button>
           </div>

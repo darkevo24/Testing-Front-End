@@ -40,7 +40,6 @@ const CMSDokumentasiDetail = (props) => {
 
   const { records } = useSelector(bimtekDokumentasiDetailSelector);
   const { logAktifitas } = useSelector(bimtekLogAktifitas);
-
   const initialCall = () => {
     dispatch(getDokumentasiDetail(id));
     dispatch(getListLogAktifitas(id));
@@ -93,6 +92,7 @@ const CMSDokumentasiDetail = (props) => {
   const tanggalSelesaiDisetujui = moment(dataDetailDokumentasi?.tanggalSelesaiDisetujui).format('DD/MM/YYYY');
   const waktuSelesaiDisetujui = moment(dataDetailDokumentasi?.tanggalSelesaiDisetujui).format('hh:mm');
   const dataTempat = dataDetailDokumentasi?.kota;
+  const namaBimtek = dataDetailDokumentasi?.namaBimtek;
   useEffect(() => {
     reset({
       id: dataDetailDokumentasi.id,
@@ -102,6 +102,7 @@ const CMSDokumentasiDetail = (props) => {
       tanggalMulaiDisetujui,
       tanggalSelesaiDisetujui,
       dataTempat,
+      namaBimtek,
     });
   }, [dataDetailDokumentasi]);
   const schema = yup
@@ -162,6 +163,14 @@ const CMSDokumentasiDetail = (props) => {
 
   const deleteFotoDokumentasi = (e) => {
     const filter = fotoDokumentasi.filter((item, index) => index !== e);
+    const getFileId = fotoDokumentasi.filter((item, index) => index === e);
+    const fileId = getFileId[0].fileId;
+    handleAPICall(
+      deleteRequest,
+      `${apiUrls.cmsBimtekJadwal}/${dataDetailDokumentasi.id}/dokumentasi/${dataDetailDokumentasi.dokumentasiId}/images/${fileId}`,
+      {},
+      'Berhasil Menghapus Foto Dokumentasi',
+    );
     setFotoDokumentasi(filter);
   };
 
@@ -352,6 +361,16 @@ const CMSDokumentasiDetail = (props) => {
               </div>
             </div>
             <Form className="sdp-form" onSubmit={handleSubmit(onTest)}>
+              <Input
+                group
+                readOnly
+                className="mb-10"
+                type="text"
+                label="Nama Bimtek"
+                name="namaBimtek"
+                control={control}
+                rules={{ required: false }}
+              />
               <Row className="align-items-end mb-15">
                 <Col>
                   <DatePicker

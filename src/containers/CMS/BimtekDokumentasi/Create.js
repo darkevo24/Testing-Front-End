@@ -139,12 +139,12 @@ const CMSJadwalBaru = () => {
       Cell: ({ row: { original } }) => (
         <div className="d-flex">
           <span className="pr-5">
-            {original?.tanggalMulai ? moment(original?.tanggalMulai).format('DD MMMM YYYY') : '---'}
+            {original?.tanggalMulai ? moment(original?.tanggalMulai).format('DD MMMM YYYY') + ' ' : '---'}
             {original?.tanggalMulai ? moment(original?.tanggalMulai).format('HH:mm') : '---'}
           </span>
           <span>-</span>
           <span className="pl-5">
-            {original?.tanggalSelesai ? moment(original?.tanggalSelesai).format('DD MMMM YYYY') : '---'}
+            {original?.tanggalSelesai ? moment(original?.tanggalSelesai).format('DD MMMM YYYY') + ' ' : '---'}
             {original?.tanggalSelesai ? moment(original?.tanggalSelesai).format('HH:mm') : '---'}
           </span>
         </div>

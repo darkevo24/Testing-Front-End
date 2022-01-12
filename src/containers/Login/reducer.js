@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import forOwn from 'lodash/forOwn';
-import { apiUrls, post } from 'utils/request';
-import { cookieKeys, getCookieByName, setCookie, removeAllCookie } from 'utils/cookie';
+import { apiUrls, get } from 'utils/request';
+import { cookieKeys, getCookieByName, setCookie } from 'utils/cookie';
 
 export const initialState = {
   loading: false,
@@ -12,44 +11,34 @@ export const initialState = {
 
 export const LOGIN_REDUCER = 'LOGIN_REDUCER';
 
-export const loginUser = createAsyncThunk('login/login', async (credentials) => {
-  const response = await post(apiUrls.login, credentials);
-  const token = response.headers?.token;
-  const user = response.data;
+export const fetchLoggedInUserInfo = createAsyncThunk('login/fetchLoggedInUserInfo', async (token) => {
   setCookie(cookieKeys.token, token);
+  const response = await get(apiUrls.userInfo);
+  const user = response.data;
   setCookie(cookieKeys.user, user);
-  return { token, user };
+  return user;
 });
 
 const loginSlice = createSlice({
   name: LOGIN_REDUCER,
   initialState,
-  reducers: {
-    logout: (state) => {
-      removeAllCookie();
-      forOwn(initialState, (value, key) => {
-        state[key] = value;
-      });
-      state.token = '';
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(loginUser.pending, (state, action) => {
+    builder.addCase(fetchLoggedInUserInfo.pending, (state, action) => {
       state.loading = true;
     });
-    builder.addCase(loginUser.fulfilled, (state, action) => {
+    builder.addCase(fetchLoggedInUserInfo.fulfilled, (state, action) => {
       state.loading = false;
-      state.user = action.payload?.user;
+      state.user = action.payload;
     });
-    builder.addCase(loginUser.rejected, (state, action) => {
+    builder.addCase(fetchLoggedInUserInfo.rejected, (state, action) => {
       state.loading = false;
-      state.error = 'Invalid user details!';
+      state.error = 'No user found!';
     });
   },
 });
 
 export const userSelector = (state) => state.auth?.user;
-
-export const { logout } = loginSlice.actions;
+export const tokenSelector = (state) => state.auth?.token;
 
 export default loginSlice.reducer;

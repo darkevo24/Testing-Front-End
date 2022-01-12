@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Input from 'components/Input';
-import { loginUser } from './reducer';
+import { fetchLoggedInUserInfo } from './reducer';
 
 import Logo from 'assets/logo-large.png';
 
@@ -34,7 +34,7 @@ const AdminLogin = () => {
 
   const { error, loading } = useSelector((state) => state.auth);
 
-  const onSubmit = (data) => dispatch(loginUser(data));
+  const onSubmit = (data) => dispatch(fetchLoggedInUserInfo(data));
 
   return (
     <div className="login-container h-100">

@@ -20,7 +20,7 @@ import { SplitCircle } from 'components/Icons';
 
 export const analyticsUrl = 'https://analitik.data.go.id';
 export const katalogUrl = 'https://katalog.satudata.go.id';
-export const apiUrl = '/api-be';
+export const apiUrl = 'https://sdmx.satudata.go.id'; //api-be
 export const dataUrl = `${katalogUrl}/api`;
 export const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
 
@@ -35,7 +35,7 @@ export const getPublicV1Endpoint = (path) => `${apiUrl}/public/v1/${path}`;
 
 export const apiUrls = {
   login: getApiEndpoint('login'),
-  userInfo: getPortalEndpoint('v1/user-info'),
+  userInfo: getPortalEndpoint('v1/jwt-info'),
   dataset: getDataEndpoint('3/action/package_search'),
   perminataanData: getPortalEndpoint('permintaan-data'),
   instansiData: getV1Endpoint('instansi'),

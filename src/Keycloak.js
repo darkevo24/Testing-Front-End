@@ -11,4 +11,8 @@ const keycloak = new Keycloak({
   principalAttribute: 'preferred_username',
 });
 
+export const initOptions = {
+  checkLoginIframe: false,
+};
+
 export default keycloak;

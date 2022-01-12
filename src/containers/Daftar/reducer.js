@@ -4,7 +4,7 @@ import {
   dataToOptionsMapper,
   dataOptionsMapperCurry,
   idKeteranganOptionsMapper,
-  idNameOptionsMapper,
+  // idNameOptionsMapper,
   incrementPageParams,
 } from 'utils/helper';
 import { apiPaginationParams, apiUrls, defaultNumberOfRows, deleteRequest, get, post, put } from 'utils/request';
@@ -286,13 +286,21 @@ export const getRKPpp = createAsyncThunk('daftarData/getRKPpp', async (id) => {
 });
 
 export const getAddDaftarSDGTujuan = createAsyncThunk('daftarData/getAddDaftarSDGTujuan', async (id) => {
-  const response = await get(`${apiUrls.sdgPillers}/parent/${id}`);
-  return response?.data?.content;
+  let content = [];
+  if (id) {
+    const response = await get(`${apiUrls.sdgPillers}/parent/${id}`);
+    content = response?.data?.content;
+  }
+  return content;
 });
 
 export const getAddDaftarRKPpp = createAsyncThunk('daftarData/getAddDaftarRKPpp', async (id) => {
-  const response = await get(`${apiUrls.rkpPN}/parent/${id}`);
-  return response?.data?.content;
+  let content = [];
+  if (id) {
+    const response = await get(`${apiUrls.rkpPN}/parent/${id}`);
+    content = response?.data?.content;
+  }
+  return content;
 });
 
 export const downloadDaftarData = createAsyncThunk('daftarData/downloadDaftarData', async (params) => {

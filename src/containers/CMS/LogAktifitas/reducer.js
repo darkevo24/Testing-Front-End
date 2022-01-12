@@ -10,7 +10,7 @@ export const initialState = {
     endDate: '',
     loading: false,
     error: null,
-    page: 1,
+    page: 0,
     records: [],
     size: defaultNumberOfRows,
     totalRecords: null,
@@ -19,7 +19,7 @@ export const initialState = {
   error: null,
 };
 export const getCMSLogActifitasData = createAsyncThunk('cms/getAditTrial', async ({ page, q, startDate, endDate }) => {
-  const params = { page };
+  const params = { page: page + 1 };
   if (q) params.q = q;
   if (startDate) params.startDate = startDate;
   if (endDate) params.endDate = endDate;
@@ -27,6 +27,20 @@ export const getCMSLogActifitasData = createAsyncThunk('cms/getAditTrial', async
     query: params,
   });
   return response?.data?.content;
+});
+
+export const bacUpLogActivity = createAsyncThunk('cms/bacUpLogActivity', async (params) => {
+  const response = await get(`${apiUrls.cmsAuditTrialData}/backup-csv`, {
+    query: params,
+  });
+  return response?.data;
+});
+
+export const downloadLogActivity = createAsyncThunk('cms/downloadLogActivity', async (params) => {
+  const response = await get(`${apiUrls.cmsAuditTrialData}/download-csv`, {
+    query: params,
+  });
+  return response?.data;
 });
 
 export const CMS_LOG_AKTIFITAS_SLICE = 'CMS_LOG_AKTIFITAS_SLICE';
@@ -37,17 +51,13 @@ const cmsLogAktifitasSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getCMSLogActifitasData.pending, (state, action) => {
-      const { page = 1, q = '', startDate = '', endDate = '' } = action.meta.arg || {};
-      state.dataset.page = page || 1;
-      state.dataset.q = q || '';
-      state.dataset.startDate = startDate || '';
-      state.dataset.endDate = endDate || '';
       state.dataset.loading = true;
-      state.dataset.status = 'loading';
+      state.dataset.status = 'idel';
     });
     builder.addCase(getCMSLogActifitasData.fulfilled, (state, action) => {
       state.dataset.loading = false;
       state.dataset.records = action.payload.records;
+      state.dataset.page = action.payload.page - 1;
       state.dataset.totalRecords = action.payload.totalRecords;
       state.dataset.totalPages = action.payload.totalPages;
       state.dataset.status = 'success';

@@ -77,16 +77,16 @@ const BeritaUtamaDetail = (props) => {
     <div className="row mt-24">
       {isLoading && <Loader fullscreen />}
       <div className="col-lg-2"></div>
-      <div className="col-lg-6 pr-5">
+      <div className="col-lg-6 mr-16">
         <div>
           <div className="fs-32 fw-600 mb-24">{record?.judul}</div>
           <div className="d-flex flex-row">
-            <img src={userIcon} />
+            <img src={userIcon} alt="" />
             <span className="userProfile fs-16 mt-8">{record?.createBy}</span>
           </div>
           <div className="d-flex flex-row justify-content-between">
             <div className="d-flex pt-20" style={{ minWidth: '300px' }}>
-              <img src={clockIcon} className="mx-8 w-16 h-16" />
+              <img src={clockIcon} className="mx-8 w-16 h-16" alt="" />
               <div className="sdp-text-disable mb-24 fs-14">{formatDate(record?.tanggalPublis)}</div>
             </div>
             <div className="mr-8 my-12">
@@ -98,7 +98,7 @@ const BeritaUtamaDetail = (props) => {
               </FacebookShareButton>
             </div>
           </div>
-          <img className="w-100" src={record.mainImage} />
+          <img className="w-100" src={record.mainImage} alt="" />
           <div className="fs-18 mt-32 beritaDetailContent" dangerouslySetInnerHTML={{ __html: record?.content }}></div>
         </div>
       </div>

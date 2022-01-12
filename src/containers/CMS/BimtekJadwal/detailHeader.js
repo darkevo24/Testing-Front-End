@@ -4,7 +4,7 @@ import { PencilSvg, Trash } from 'components/Icons';
 import { ComponentAccessibility } from 'components/ComponentAccess';
 import { USER_ROLES } from 'utils/constants';
 
-export const DetailHeader = ({ record, status, history, handleModal, buttonUpdate }) => {
+export const DetailHeader = ({ record, status, history, handleModal, buttonUpdate, handleUpdate }) => {
   switch (status) {
     case 'draft':
       return (
@@ -21,7 +21,7 @@ export const DetailHeader = ({ record, status, history, handleModal, buttonUpdat
               <Button
                 key="edit"
                 variant="outline-light"
-                className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
+                className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke px-30 py-8 br-4"
                 onClick={() => handleModal('updateBimtek')}>
                 Perbarui
               </Button>
@@ -30,7 +30,7 @@ export const DetailHeader = ({ record, status, history, handleModal, buttonUpdat
                 key="edit"
                 variant="outline-light"
                 className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
-                onClick={() => handleModal('perbarui')}>
+                onClick={handleUpdate}>
                 <PencilSvg />
               </Button>
             )}
@@ -48,7 +48,7 @@ export const DetailHeader = ({ record, status, history, handleModal, buttonUpdat
               <Button
                 key="edit"
                 variant="outline-light"
-                className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
+                className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke px-30 py-8 br-4"
                 onClick={() => handleModal('updateBimtek')}>
                 Perbarui
               </Button>
@@ -57,7 +57,7 @@ export const DetailHeader = ({ record, status, history, handleModal, buttonUpdat
                 key="edit"
                 variant="outline-light"
                 className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
-                onClick={() => handleModal('perbarui')}>
+                onClick={handleUpdate}>
                 <PencilSvg />
               </Button>
             )}
@@ -114,7 +114,7 @@ export const DetailHeader = ({ record, status, history, handleModal, buttonUpdat
               <Button
                 key="edit"
                 variant="outline-light"
-                className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
+                className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke px-30 py-8 br-4"
                 onClick={() => handleModal('updateBimtek')}>
                 Perbarui
               </Button>
@@ -123,7 +123,7 @@ export const DetailHeader = ({ record, status, history, handleModal, buttonUpdat
                 key="edit"
                 variant="outline-light"
                 className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4"
-                onClick={() => handleModal('perbarui')}>
+                onClick={handleUpdate}>
                 <PencilSvg />
               </Button>
             )}

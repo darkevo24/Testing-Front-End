@@ -1,3 +1,4 @@
+import { useHistory } from 'react-router-dom';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
@@ -20,6 +21,7 @@ const schema = yup
   .required();
 
 const AdminLogin = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const {
@@ -60,6 +62,9 @@ const AdminLogin = () => {
               error={errors.password?.message}
               className="mt-4"
             />
+            <button className="forgot-password" onClick={() => history.push('/forgot-password')}>
+              Lupa Password?
+            </button>
             <div className="sdp-error">{error}</div>
             <Button disabled={loading} type="submit" className="mt-48 px-32 float-end fw-bold">
               Login

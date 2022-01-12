@@ -39,6 +39,9 @@ const ManagementApiPage = lazy(() => import('containers/ManagementApi'));
 const ManagementApiAddPage = lazy(() => import('containers/ManagementApi/Form'));
 const ManagementApiDetailPage = lazy(() => import('containers/ManagementApi/DetailApi'));
 const ManagementApiUpdatePage = lazy(() => import('containers/ManagementApi/UpdateApi'));
+const ChangePasswordLogin = lazy(() => import('containers/ChangePasswordLogin'));
+const ChangePasswordUser = lazy(() => import('containers/ChangePasswordUser'));
+const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
 // const NotFoundPage = lazy(() => import('containers/NotFound'));
 const KebijakanPrivasiPage = lazy(() => import('containers/KebijakanPrivasi'));
 
@@ -46,6 +49,8 @@ function AppRoutes(props) {
   return (
     <Switch>
       <PublicRoute exact path="/login" component={Login} />
+      <PublicRoute exact path="/forgot-password" component={ForgotPassword} />
+      <PublicRoute exact path="/change-password" component={ChangePasswordLogin} />
       <AppLayout>
         <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
         <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
@@ -56,6 +61,7 @@ function AppRoutes(props) {
         <PrivateRoute exact path="/forum-sdi/:id" component={ForumSDIDetail} />
         <PrivateRoute exact path="/forum-sdi" component={ForumSDI} />
         <PrivateRoute exact path="/forum" component={PerminataanForumPage} />
+        <PrivateRoute exact path="/change-user-password" component={ChangePasswordUser} />
         <Route exact path="/policy" component={KebijakanPrivasiPage} />
         <Route exact path="/home" component={BerandaPage} />
         <Route exact path="/topic-detail" component={TopicDetailPage} />
@@ -86,6 +92,8 @@ function AppRoutes(props) {
         <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
         <Route exact path="/api/form" component={ManagementApiAddPage} />
         <Route exact path="/api" component={ManagementApiPage} />
+        {/* <Route exact path="/change-password" component={ChangePassword} /> */}
+        {/* <Route exact path="/forgot-password" component={ForgotPassword} /> */}
         {/* <Route path="*" component={NotFoundPage} /> */}
       </AppLayout>
     </Switch>

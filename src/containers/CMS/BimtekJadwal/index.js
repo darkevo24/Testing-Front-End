@@ -11,8 +11,9 @@ import { Search } from 'components/Icons';
 import { Table } from 'components';
 import { useHistory } from 'react-router-dom';
 import { bimtekJadwalSelector, getJadwalBimtek } from './reducer';
-
+import { getStatusClass } from 'utils/helper';
 import { ReactComponent as Plus } from 'assets/plus.svg';
+import TableLoader from 'components/Loader/TableLoader';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 
@@ -22,8 +23,7 @@ const CMSBimtekPermintaan = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [query, setQuery] = useState('');
-
-  const { size, page, records, totalRecords } = useSelector(bimtekJadwalSelector);
+  const { loading, size, page, records, totalRecords } = useSelector(bimtekJadwalSelector);
   const fetchJadwalBimtek = (params) => {
     let obj = {
       page: params.page,
@@ -44,22 +44,18 @@ const CMSBimtekPermintaan = () => {
     {
       Header: 'Tanggal Mulai',
       accessor: 'tanggalMulaiDisetujui',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <span>
-          {rest.row.original?.tanggalMulaiDisetujui
-            ? moment(rest.row.original?.tanggalMulaiDisetujui).format('DD MMMM YYYY')
-            : '---'}
+          {original?.tanggalMulaiDisetujui ? moment(original?.tanggalMulaiDisetujui).format('DD MMMM YYYY') : '---'}
         </span>
       ),
     },
     {
       Header: 'Tanggal Berakhir',
       accessor: 'tanggalSelesaiDisetujui',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <span>
-          {rest.row.original?.tanggalSelesaiDisetujui
-            ? moment(rest.row.original?.tanggalSelesaiDisetujui).format('DD MMMM YYYY')
-            : '---'}
+          {original?.tanggalSelesaiDisetujui ? moment(original?.tanggalSelesaiDisetujui).format('DD MMMM YYYY') : '---'}
         </span>
       ),
     },
@@ -70,32 +66,35 @@ const CMSBimtekPermintaan = () => {
     {
       Header: 'Pembicara',
       accessor: 'pembicara',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <span>
-          {rest.row.original?.pembicara?.map((data, index) => {
-            return <span key={index}>{data.nama}</span>;
-          })}
+          {original.pembicara &&
+            original.pembicara.map((data, index) => {
+              return <span key={index}>{data?.nama},</span>;
+            })}
         </span>
       ),
     },
     {
       Header: 'Materi',
-      accessor: 'tagMateri',
-      Cell: ({ ...rest }) => (
-        <span>
-          {rest.row.original?.tagMateri?.map((data, index) => {
-            return (
-              <div key={index}>
-                <span>{data}</span>
-              </div>
-            );
-          })}
-        </span>
+      accessor: 'materi',
+      Cell: ({ row: { original } }) => (
+        <div>
+          {original.materi &&
+            original.materi
+              .filter((data) => data !== null)
+              .map((data, index) => {
+                return <span key={index}>{data?.nama},</span>;
+              })}
+        </div>
       ),
     },
     {
       Header: 'Status',
       accessor: 'status',
+      Cell: ({ row: { original } }) => (
+        <span className={getStatusClass(original?.status.toLowerCase() || '').textColor}> {original?.status} </span>
+      ),
     },
     {
       Header: '',
@@ -106,11 +105,6 @@ const CMSBimtekPermintaan = () => {
 
   const rowClick = (data) => {
     history.push(`/cms/bimtek-jadwal/${data.id}`);
-  };
-
-  const getRowClass = (data) => {
-    // if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
-    // return 'bg-gray';
   };
 
   const updateQuery = setSearch.debounce((val) => {
@@ -130,7 +124,6 @@ const CMSBimtekPermintaan = () => {
     currentPage: page,
     manualPagination: true,
     onRowClick: rowClick,
-    rowClass: getRowClass,
     onPageIndexChange: (currentPage) => {
       if (currentPage !== page) {
         fetchJadwalBimtek({ page: currentPage });
@@ -161,18 +154,7 @@ const CMSBimtekPermintaan = () => {
           </Col>
         </Row>
       </div>
-      {/* <CMSTable
-        customWidth={[13, 10, 12, 10, 10, 15, 8, 7]}
-        header={['Nama Bimbingan', 'Tanggal Mulai', 'Tanggal Berakhir', 'Tempat', 'Pembicara', 'Materi', 'Status']}
-        data={dataBimtek.map((item) => {
-          let value = {
-            data: [item.name, item.dateStart, item.dateEnd, item.place, item.speaker, item.subjects, item.status],
-            action: '/cms/bimtek-jadwal/' + item.id,
-          };
-          return value;
-        })}
-      /> */}
-      <div className="p-30"> {<Table {...tableConfig} />} </div>
+      <div className="px-30"> {!loading ? <Table {...tableConfig} /> : <TableLoader />} </div>
     </div>
   );
 };

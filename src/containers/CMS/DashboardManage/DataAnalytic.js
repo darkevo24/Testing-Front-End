@@ -135,6 +135,10 @@ const CMSDataAnalytic = () => {
     });
   };
 
+  const analyticAction = () => {
+    window.open('https://analitik.data.go.id/superset/welcome/');
+  };
+
   const findFormErrors = () => {
     const { title, url } = form;
     const newErrors = {};
@@ -238,7 +242,7 @@ const CMSDataAnalytic = () => {
             <Button variant="info" className="text-center mr-16 d-inline-flex align-items-center" onClick={createAction}>
               <Plus className="mr-4" /> Dashboard Baru
             </Button>
-            <Button variant="secondary" className="text-center d-inline-flex align-items-center">
+            <Button variant="secondary" className="text-center d-inline-flex align-items-center" onClick={analyticAction}>
               <LogoIcon className="mr-4" /> Analytics
             </Button>
           </Col>

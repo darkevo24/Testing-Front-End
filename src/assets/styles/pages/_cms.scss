@@ -9,7 +9,7 @@
       }
 
       .input-group {
-        position: relative;
+        min-width: 300px;
 
         svg {
           position: absolute;
@@ -50,25 +50,25 @@
         box-sizing: border-box;
         border-radius: 4px;
         margin-bottom: 8px;
+      }
 
-        .sdp-log {
-          &__status {
-            &.ditayangkan {
-              color: var(--green-light);
-            }
-            &.menunggu_persetujuan {
-              color: var(--orange-dark);
-            }
-            &.diarsipkan, &.draft, &.tidak_ditayangkan {
-              color: $gray;
-              background: none;
-            }
-            &.dibatalkan, &.ditolak, &.dihapus {
-              color: $red
-            }
-            &.disetujui {
-              color: $blue
-            }
+      .sdp-log {
+        &__status {
+          &.ditayangkan {
+            color: var(--green-light);
+          }
+          &.menunggu_persetujuan {
+            color: var(--orange-dark);
+          }
+          &.diarsipkan, &.draft, &.tidak_ditayangkan {
+            color: $gray;
+            background: none;
+          }
+          &.dibatalkan, &.ditolak, &.dihapus {
+            color: $red
+          }
+          &.disetujui {
+            color: $blue
           }
         }
       }

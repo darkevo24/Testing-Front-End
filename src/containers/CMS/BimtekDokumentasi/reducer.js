@@ -77,22 +77,6 @@ export const postImageDokumentasi = createAsyncThunk('bimtek-dokumentasi/posImag
   return response;
 });
 
-export const updateDokumentasiDetail = createAsyncThunk('bimtek-dokumentasi/postUpdateDokumentasiDetail', async (params) => {
-  const response = await put(`${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}`, {
-    isiDokumentasi: params.isiDokumentasi,
-    urlVidio: params.urlVidio,
-  });
-  return response;
-});
-
-export const deleteDokumentasiDetail = createAsyncThunk(
-  'bimtek-dokumentasi/deleteBimtekDokumentasiDetail',
-  async (params) => {
-    const response = await deleteRequest(`${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}`);
-    return response;
-  },
-);
-
 export const postImageDokumentasiDetail = createAsyncThunk(
   'bimtek-dokumentasi/postImageDokumentasiDetail',
   async (params) => {
@@ -102,49 +86,6 @@ export const postImageDokumentasiDetail = createAsyncThunk(
     return response;
   },
 );
-
-export const postStatusDraft = createAsyncThunk('/bimtek-dokumentasi/changeStatusDraft', async (params) => {
-  const response = await post(
-    `${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}/ubah-status/WAITING_APPROVAL`,
-    { catatan: 'Ubah ke waiting Approval' },
-  );
-  return response;
-});
-
-export const postStatusWaitingApproval = createAsyncThunk(
-  '/bimtek-dokumentasi/changeStatusWaitingApproval',
-  async (params) => {
-    const response = await post(
-      `${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}/ubah-status/APPROVED`,
-      { catatan: 'Ubah ke Approved' },
-    );
-    return response;
-  },
-);
-
-export const postStatusApproved = createAsyncThunk('/bimtek-dokumentasi/changeStatusApproved', async (params) => {
-  const response = await post(
-    `${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}/ubah-status/PUBLISHED`,
-    { catatan: 'Ubah ke Publish' },
-  );
-  return response;
-});
-
-export const postStatusPublish = createAsyncThunk('/bimtek-dokumentasi/changeStatusPublish', async (params) => {
-  const response = await post(
-    `${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}/ubah-status/UNPUBLISHED`,
-    { catatan: 'Ubah ke Unpublish' },
-  );
-  return response;
-});
-
-export const postStatusRejected = createAsyncThunk('/bimtek-dokumentasi/changeStatusPublish', async (params) => {
-  const response = await post(
-    `${apiUrls.cmsBimtekJadwal}/${params.id}/dokumentasi/${params.idDokumentasi}/ubah-status/REJECTED`,
-    { catatan: 'Ubah ke Rejected' },
-  );
-  return response;
-});
 
 const BimtekDokumentasiSlice = createSlice({
   name: BIMTEK_DOKUMENTASI,
@@ -219,28 +160,6 @@ const BimtekDokumentasiSlice = createSlice({
     builder.addCase(postImageDokumentasiDetail.rejected, (state, action) => {
       state.postDokumentasi.loading = false;
       state.postDokumentasi.error = 'Invalid data';
-    });
-    builder.addCase(updateDokumentasiDetail.pending, (state, action) => {
-      state.postDokumentasi.loading = true;
-    });
-    builder.addCase(updateDokumentasiDetail.fulfilled, (state, action) => {
-      state.postDokumentasi.loading = false;
-      state.postDokumentasi.records = action.payload;
-    });
-    builder.addCase(updateDokumentasiDetail.rejected, (state, action) => {
-      state.postDokumentasi.loading = false;
-      state.postDokumentasi.error = 'Invalid data';
-    });
-    builder.addCase(deleteDokumentasiDetail.pending, (state, action) => {
-      state.deleteDokumentasi.loading = true;
-    });
-    builder.addCase(deleteDokumentasiDetail.fulfilled, (state, action) => {
-      state.deleteDokumentasi.loading = false;
-      state.deleteDokumentasi.records = action.payload;
-    });
-    builder.addCase(deleteDokumentasiDetail.rejected, (state, action) => {
-      state.deleteDokumentasi.loading = false;
-      state.deleteDokumentasi.error = 'Invalid data';
     });
   },
 });

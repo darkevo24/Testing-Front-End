@@ -12,6 +12,8 @@ import { Table } from 'components';
 import { useHistory } from 'react-router-dom';
 import { bimtekDokumentasiSelector, getDokumentasi } from './reducer';
 import { ReactComponent as Plus } from 'assets/plus.svg';
+import TableLoader from 'components/Loader/TableLoader';
+import { getStatusClass } from 'utils/helper';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 
@@ -22,7 +24,7 @@ const CMSBimtekPermintaan = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { size, page, records, totalRecords } = useSelector(bimtekDokumentasiSelector);
+  const { loading, size, page, records, totalRecords } = useSelector(bimtekDokumentasiSelector);
   const updateQuery = setSearch.debounce((val) => {
     setQuery(val);
   }, 500);
@@ -37,7 +39,6 @@ const CMSBimtekPermintaan = () => {
   useEffect(() => {
     fetchDokumentasi({ page: 0 });
   }, [query]);
-
   const columns = [
     {
       Header: 'Nama Bimbingan Teknis',
@@ -46,11 +47,9 @@ const CMSBimtekPermintaan = () => {
     {
       Header: 'Tanggal Pelaksanaan',
       accessor: 'tanggalMulaiDisetujui',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <span>
-          {rest.row.original?.tanggalMulaiDisetujui
-            ? moment(rest.row.original.tanggalMulaiDisetujui).format('DD MMMM YYYY')
-            : '---'}
+          {original?.tanggalMulaiDisetujui ? moment(original.tanggalMulaiDisetujui).format('DD MMMM YYYY') : '---'}
         </span>
       ),
     },
@@ -61,28 +60,35 @@ const CMSBimtekPermintaan = () => {
     {
       Header: 'Pembicara',
       accessor: 'pembicara',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <span>
-          {rest.row.original?.pembicara?.map((data) => {
-            return data.nama;
-          })}
+          {original.pembicara &&
+            original.pembicara.map((data, index) => {
+              return <span key={index}>{data?.nama},</span>;
+            })}
         </span>
       ),
     },
     {
       Header: 'Materi',
       accessor: 'materi',
-      Cell: ({ ...rest }) => (
-        <span>
-          {rest.row.original?.materi?.map((data) => {
-            return data.nama;
-          })}
-        </span>
+      Cell: ({ row: { original } }) => (
+        <div>
+          {original.materi &&
+            original.materi
+              .filter((data) => data !== null)
+              .map((data, index) => {
+                return <span key={index}>{data?.nama},</span>;
+              })}
+        </div>
       ),
     },
     {
       Header: 'Status',
       accessor: 'status',
+      Cell: ({ row: { original } }) => (
+        <span className={getStatusClass(original?.status.toLowerCase() || '').textColor}> {original?.status} </span>
+      ),
     },
     {
       Header: '',
@@ -93,11 +99,6 @@ const CMSBimtekPermintaan = () => {
 
   const rowClick = (data) => {
     history.push(`/cms/bimtek-dokumentasi/${data?.dokumentasiId}`);
-  };
-
-  const getRowClass = (data) => {
-    // if ((data?.status || '').toLowerCase() !== 'ditolak') return '';
-    // return 'bg-gray';
   };
 
   const tableConfig = {
@@ -113,7 +114,6 @@ const CMSBimtekPermintaan = () => {
     currentPage: page,
     manualPagination: true,
     onRowClick: rowClick,
-    rowClass: getRowClass,
     onPageIndexChange: (currentPage) => {
       if (currentPage !== page) {
         fetchDokumentasi({ page: currentPage });
@@ -144,7 +144,7 @@ const CMSBimtekPermintaan = () => {
           </Col>
         </Row>
       </div>
-      <div className="p-30"> {<Table {...tableConfig} />} </div>
+      <div className="px-30"> {!loading ? <Table {...tableConfig} /> : <TableLoader />} </div>
     </div>
   );
 };

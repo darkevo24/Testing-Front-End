@@ -41,7 +41,7 @@ const loginSlice = createSlice({
       state.loading = false;
       state.user = action.payload?.user;
     });
-    builder.addCase(loginUser.rejected, (state) => {
+    builder.addCase(loginUser.rejected, (state, action) => {
       state.loading = false;
       state.error = 'Invalid user details!';
     });

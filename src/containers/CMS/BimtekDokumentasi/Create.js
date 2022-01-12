@@ -10,6 +10,7 @@ import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as Plus } from 'assets/plus.svg';
+import SingleDropDown from 'components/DropDown/SingleDropDown';
 import Notification from 'components/Notification';
 import { DatePicker, Input, Modal, Table, TextEditor } from 'components';
 import { bimtekListSelector, getJadwalBimtekList, postImageDokumentasi } from './reducer';
@@ -29,7 +30,7 @@ const CMSJadwalBaru = () => {
   const [urlVidio, setUrlVidio] = useState('');
   const [isiDokumentasi, setIsiDokumentasi] = useState('');
   const [BimtekId, setBimtekId] = useState(0);
-  const { records } = useSelector(bimtekListSelector);
+  const { records, loading } = useSelector(bimtekListSelector);
   const DetailBimtek = useSelector(bimtekJadwalDetailSelector);
 
   const fetchDokumentasiList = () => {
@@ -73,7 +74,7 @@ const CMSJadwalBaru = () => {
     control,
     formState: { errors },
     reset,
-    setValue,
+    // setValue,
     handleSubmit,
   } = useForm({
     resolver: yupResolver(schema),
@@ -150,10 +151,13 @@ const CMSJadwalBaru = () => {
     },
   ];
 
+  const filterMateriBimtek = materiBimtek.filter((data) => data !== null);
+  const filterPembicaraBimtek = pembicaraBimtek.filter((data) => data !== null);
+
   const tableConfigMateri = {
     className: 'cms-bimtek-table',
     columns: columnsMateri,
-    data: materiBimtek,
+    data: filterMateriBimtek,
     title: '',
     showSearch: false,
     onSearch: () => {},
@@ -163,7 +167,7 @@ const CMSJadwalBaru = () => {
   const tableConfigPembicara = {
     className: 'cms-bimtek-table',
     columns: columnsPembicara,
-    data: pembicaraBimtek,
+    data: filterPembicaraBimtek,
     title: '',
     showSearch: false,
     onSearch: () => {},
@@ -197,6 +201,8 @@ const CMSJadwalBaru = () => {
     });
     setCreateDokumentasi(false);
   };
+  const listBimtek = (dataListBimtek || [])?.map((data) => ({ value: data.id, label: data.namaBimtek }));
+
   return (
     <div className={bem.e('section cms-bimtek')}>
       <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
@@ -215,18 +221,11 @@ const CMSJadwalBaru = () => {
         <Form className="sdp-form" onSubmit={handleSubmit(onProses)}>
           <Form.Group className="mb-15">
             <Form.Label>Nama Bimtek</Form.Label>
-            {dataListBimtek && (
-              <Form.Select onChange={(e) => setBimtekId(e.target.value)}>
-                <option value="0"> PILIH BIMTEK </option>
-                {dataListBimtek.map((data, index) => {
-                  return (
-                    <option value={data.id} key={index}>
-                      {data.namaBimtek}
-                    </option>
-                  );
-                })}
-              </Form.Select>
-            )}
+            <SingleDropDown
+              isLoading={loading}
+              data={[{ value: '', label: 'All' }, ...listBimtek]}
+              onChange={(selected) => setBimtekId(selected.value)}
+            />
           </Form.Group>
           <Row className="align-items-end mb-15">
             <Col>

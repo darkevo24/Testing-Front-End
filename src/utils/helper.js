@@ -312,6 +312,15 @@ export const findOption = (options, value) => {
   return options.find((option) => option.value === value);
 };
 
+const emptyOption = { label: '-', value: '' };
+
+export const emptyOptionPad = (options) => {
+  if (isArray(options)) {
+    return [emptyOption, ...options];
+  }
+  return [emptyOption, { label: options, value: options }];
+};
+
 export const getDatasetUrl = (name) => `${katalogUrl}/dataset/${name}`;
 
 export const arrayToOptionsMapper = (array, mapper, indexValue) => {

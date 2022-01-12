@@ -70,11 +70,7 @@ const CMSBeritaBaru = () => {
 
     // create new kategori
     if (dataBerita.kategori?.id && dataBerita.kategori.id === 'new') {
-      submitNewKategori(dataBerita.kategori.label).then((res) => {
-        let newData = dataBerita;
-        newData.kategori = res.data.content.id;
-        sendData(newData);
-      });
+      submitNewKategori(dataBerita.kategori.label).then((res) => sendData({ ...dataBerita, kategori: res.data.content.id }));
       return;
     }
     sendData(dataBerita);

@@ -64,7 +64,7 @@ export default class MultiSelectDropdown extends React.Component {
       data,
       onInputChange,
       isCreatable = false,
-      onCreateOption = {},
+      onCreateOption = () => {},
       // ...rest
     } = this.props;
     // const { type = '', placeHolder, data, isMulti = true, disabled = false, isClearable = true, styles = {} } = this.props;

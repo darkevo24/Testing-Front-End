@@ -64,7 +64,7 @@ const LogActivity = () => {
   }, [startDateValue, endDateValue, query, page]);
 
   useEffect(() => {
-    setDisable(!!(startDateValue && endDateValue));
+    setDisable(!(startDateValue && endDateValue));
   }, [startDateValue, endDateValue]);
 
   const handleModalOpen = (e, actionType) => {

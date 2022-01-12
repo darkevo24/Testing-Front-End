@@ -1,14 +1,14 @@
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { apiUrls, post } from 'utils/request';
 import Input from 'components/Input';
-import { Notification } from 'components';
+import { Notification, Button } from 'components';
 import { LeftChevron } from 'components/Icons';
 
 import BackgroundCity from 'assets/background-citylogin.png';
@@ -22,6 +22,7 @@ const schema = yup
   .required();
 
 const ForgotPassword = () => {
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   const goBack = () => {
@@ -36,12 +37,14 @@ const ForgotPassword = () => {
     });
   };
 
-  const handleAPICall = async (method, url, params, callBack) => {
+  const handleAPICall = async (method, url, params) => {
     try {
       await method(url, {}, params);
       handleNotification('secondary', 'Berhasil, Silahkan Cek Email Anda Untuk Melanjutkan Perubahan Password', 'check');
+      setLoading(false);
     } catch (e) {
-      handleNotification('secondary', 'Gagal, Email/Akun Tidak Valid', 'cross');
+      handleNotification('secondary', e?.data?.message, 'cross');
+      setLoading(false);
     }
   };
 
@@ -54,10 +57,8 @@ const ForgotPassword = () => {
   });
 
   const onSubmit = (data) => {
-    let obj = {
-      email: data.email,
-    };
-    handleAPICall(post, `${apiUrls.requestForgotPassword}`, { data: obj });
+    setLoading(true);
+    handleAPICall(post, apiUrls.requestForgotPassword, { data: { data } });
   };
 
   return (
@@ -71,19 +72,18 @@ const ForgotPassword = () => {
           Masukan alamat email anda yang terdaftar, kami akan mengirimkan kode verifikasi untuk atur ulang password anda.
         </label>
         <Form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <Form.Group className="mb-15">
-            <Form.Label>Alamat Email</Form.Label>
-            <Input
-              name="email"
-              control={control}
-              rules={{ required: true }}
-              type="email"
-              error={errors.email?.message}
-              className="mt-0"
-            />
-          </Form.Group>
-          <Button type="submit" className="change-btn">
-            Konfirmasi
+          <Input
+            group
+            label="Alamat Email"
+            name="email"
+            control={control}
+            rules={{ required: true }}
+            type="email"
+            error={errors.email?.message}
+            className="mt-0"
+          />
+          <Button loading={loading} type="submit" className="change-btn">
+            Ubah
           </Button>
         </Form>
       </Col>

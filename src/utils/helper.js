@@ -62,7 +62,7 @@ export const copyToClipboard = (text) => {
   } else {
     // text area method
     const textArea = document.createElement('textarea');
-    textArea.value = convertToPlain;
+    textArea.value = convertToPlain(text);
     // make the textarea out of viewport
     textArea.style.position = 'fixed';
     textArea.style.left = '-999999px';

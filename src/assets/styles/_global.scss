@@ -3,6 +3,7 @@
 // All vendor styles goes here
 @import 'vendors/bootstrap';
 @import 'vendors/date-picker';
+@import 'vendors/leaflet';
 @import 'vendors/react-slick';
 
 // All utility styles goes here
@@ -31,6 +32,7 @@
 @import 'components/highlight-words';
 @import 'components/icon';
 @import 'components/input';
+@import 'components/leafletmap';
 @import 'components/loader';
 @import 'components/map-tile';
 @import 'components/modal';

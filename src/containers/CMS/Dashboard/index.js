@@ -18,7 +18,7 @@ const Dashboard = () => {
       {CMS_DASHBOARD.map((_, idx) => (
         <Col key={idx} className="sdp-csm-card m-10" onClick={() => redirectToPage(_)}>
           <Card className="box-shadow-none bg-transparent">
-            <div className={_.iconColor + ' brp-50 p-16 w-fit-content'}>
+            <div className={_.iconColor + ' div-icon-wrapper brp-50 p-16 w-fit-content'}>
               <div className="sdp-text-white">{_.icon}</div>
             </div>
             <Card.Body className="mt-16">

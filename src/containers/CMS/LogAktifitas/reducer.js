@@ -29,6 +29,20 @@ export const getCMSLogActifitasData = createAsyncThunk('cms/getAditTrial', async
   return response?.data?.content;
 });
 
+export const bacUpLogActivity = createAsyncThunk('cms/bacUpLogActivity', async (params) => {
+  const response = await get(`${apiUrls.cmsAuditTrialData}/backup-csv`, {
+    query: params,
+  });
+  return response?.data;
+});
+
+export const downloadLogActivity = createAsyncThunk('cms/downloadLogActivity', async (params) => {
+  const response = await get(`${apiUrls.cmsAuditTrialData}/download-csv`, {
+    query: params,
+  });
+  return response?.data;
+});
+
 export const CMS_LOG_AKTIFITAS_SLICE = 'CMS_LOG_AKTIFITAS_SLICE';
 
 const cmsLogAktifitasSlice = createSlice({

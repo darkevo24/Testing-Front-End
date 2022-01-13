@@ -232,30 +232,35 @@ export const CMS_DASHBOARD = [
     description: 'Manajemen Data',
     icon: <DataManagementIcon />,
     iconColor: 'bg-red',
+    link: '/cms/daftar',
   },
   {
     title: 'User Management',
     description: 'Manajemen Pengguna, Instansi, Unit Kerja, dan Hak Akses',
     icon: <UserManagementIcon />,
     iconColor: 'bg-teal',
+    link: '/cms/pengguna-management',
   },
   {
     title: 'API Management',
-    description: 'Manajmen API',
+    description: 'Manajemen API',
     icon: <APIManagementIcon />,
     iconColor: 'bg-orange',
+    link: '/cms/api',
   },
   {
     title: 'Konfigurasi',
     description: 'Konfigurasi Log Aktivitas, Sekuriti, Aset, Media Sosial',
     icon: <KonfigurasiIcon />,
     iconColor: 'bg-teal',
+    link: '/cms/log-activity',
   },
   {
     title: 'Dashboard Management',
     description: 'Manajemen Dashboard',
     icon: <DashboardManagementIcon />,
     iconColor: 'bg-blue',
+    link: '/cms/data-analytic',
   },
 ];
 

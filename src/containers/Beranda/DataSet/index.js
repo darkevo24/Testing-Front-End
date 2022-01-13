@@ -14,10 +14,11 @@ import remove from 'lodash/remove';
 import moment from 'moment';
 
 import { ReactComponent as SearchSvg } from 'assets/search.svg';
-import { Breadcrumb, Loader, MapTile, SectionList, Table, Tags } from 'components';
+import { Breadcrumb, Loader, SectionList, Table, Tags } from 'components';
 import { Circle, Close } from 'components/Icons';
 import bn from 'utils/bemNames';
 import { getDatasetUrl, parseQueryString } from 'utils/helper';
+import DataSetMap from './DataSetMap';
 import { datasetSelector, getDataSet, logHomeTrendingOrPopular } from '../reducer';
 
 const bem = bn('dataset');
@@ -134,6 +135,11 @@ const DataSet = () => {
     },
     [],
   );
+
+  const onUpdateRegion = (ext_bbox) => {
+    // TODO: check how to pass the reqion data to api
+    fetchDataset({ ext_bbox }, true);
+  };
 
   const tableConfig = {
     variant: 'card',
@@ -264,14 +270,7 @@ const DataSet = () => {
       <Row className="mx-200 mt-48 mb-16">
         <Col xs={3}>
           <div className="sdp-heading mb-24">{t('beranda.dataset.title')}</div>
-          <MapTile
-            title={t('beranda.dataset.filterLocal')}
-            description={
-              <>
-                Map tiles by <span className="text-hightlighted"> Badan Informasi Geospasial</span>
-              </>
-            }
-          />
+          <DataSetMap bem={bem} onUpdateRegion={onUpdateRegion} />
           {sectionsData.map((sectionItem) => {
             return (
               <SectionList

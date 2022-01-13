@@ -173,7 +173,9 @@ const CMSDokumentasiDetail = (props) => {
       {},
       'Berhasil Menghapus Foto Dokumentasi',
     );
-    if (!apiError) setFotoDokumentasi(filter);
+    if (!apiError) {
+      setFotoDokumentasi(filter);
+    }
   };
 
   const openUploadForm = (id) => {

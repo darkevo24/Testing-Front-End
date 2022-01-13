@@ -59,7 +59,7 @@ const EditInstansi = () => {
     try {
       let logoFormData = new FormData();
       logoFormData.append('file', logo);
-      await post(apiUrls.fileUpload, logoFormData, { headers: { 'Content-Type': undefined } }).then((res) => {
+      await post(apiUrls.uploadFoto, logoFormData, { headers: { 'Content-Type': undefined } }).then((res) => {
         setValue('logo', res.data);
       });
     } catch (e) {

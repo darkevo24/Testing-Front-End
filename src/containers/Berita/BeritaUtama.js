@@ -59,10 +59,16 @@ const BeritaUtama = () => {
               <ImageBerita src={image} />
               <Tanggal>{moment(tanggalPublis).fromNow()}</Tanggal>
               <Judul onClick={(event) => handleDetail(event, id)}>{judul}</Judul>
-              <div className="overview">{parse(truncatedParagrapData)}</div>
-              <button className="read_more_link p-0 border-0 bg-white" onClick={(event) => handleDetail(event, id)}>
-                <h6>Read More</h6>
-              </button>
+              {partContent.length > 250 ? (
+                <>
+                  <div className="overview">{parse(truncatedParagrapData)}</div>
+                  <button className="read_more_link p-0 border-0 bg-white" onClick={(event) => handleDetail(event, id)}>
+                    <h6>Read More</h6>
+                  </button>
+                </>
+              ) : (
+                <div className="overview">{parse(partContent)}</div>
+              )}
             </div>
           );
         })}

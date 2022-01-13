@@ -45,7 +45,6 @@ const CMSDokumentasiDetail = (props) => {
     dispatch(getDokumentasiDetail(id));
     dispatch(getListLogAktifitas(id));
   };
-
   useEffect(() => {
     if (!id) {
       history.goBack();

@@ -296,6 +296,12 @@ export const getStatusClass = (status) => {
         text: 'Dihapus',
         divText: 'Dihapus',
       };
+    case 'waiting_request_approval':
+      return {
+        ...grayText,
+        text: 'Waiting Request Approval',
+        divText: 'Waiting Request Approval',
+      };
     default:
       return {};
   }

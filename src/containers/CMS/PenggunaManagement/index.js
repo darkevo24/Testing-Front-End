@@ -158,11 +158,11 @@ const CMSPenggunaManagement = () => {
                 </Button>
               </InputGroup>
             </Col>
-            <Col className="option" md={5}>
+            <Col className="option position-relative" md={5}>
               <Form.Group className="d-flex align-items-center mr-10">
                 <Form.Label className="mb-0 pr-10">Role</Form.Label>
                 <Form.Select onChange={(e) => setRoles(e.target.value)}>
-                  <option value="">All</option>
+                  <option value="">SEMUA</option>
                   {penggunaRoleData.map((role, key) => (
                     <option key={key} value={role}>
                       {role}
@@ -173,7 +173,7 @@ const CMSPenggunaManagement = () => {
               <Form.Group className="d-flex align-items-center mr-10">
                 <Form.Label className="unit-kerja">Instansi</Form.Label>
                 <Form.Select onChange={(e) => setIntansiId(e.target.value)}>
-                  <option value="">Badan Pusat</option>
+                  <option value="">SEMUA</option>
                   {penggunaInstansiData &&
                     penggunaInstansiData.map((data, index) => (
                       <option key={index} value={data?.id}>

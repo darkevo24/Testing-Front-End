@@ -24,6 +24,20 @@ moment.locale('id');
 const BimTekJadwal = () => {
   let currentYear = new Date().getFullYear();
   let filterYear = [];
+  const filterMonth = [
+    'Januari',
+    'Februari',
+    'berbaris',
+    'April',
+    'Boleh',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember',
+  ];
   const [paramsData, setParamsData] = useState({});
   const [disableOption, setDisableOption] = useState(false);
 
@@ -77,8 +91,19 @@ const BimTekJadwal = () => {
           </Col>
           <Col xs={2}>
             <Form.Select name="tahun" onChange={handleFilterChange}>
+              <option disabled={disableOption}>Pilih Tahun</option>
               {filterYear.map((year, key) => (
                 <option key={key}>{year}</option>
+              ))}
+            </Form.Select>
+          </Col>
+          <Col xs={2}>
+            <Form.Select name="bulan" onChange={handleFilterChange}>
+              <option disabled={disableOption}>Pilih Bulan</option>
+              {filterMonth.map((month, key) => (
+                <option value={key + 1} key={key}>
+                  {month}
+                </option>
               ))}
             </Form.Select>
           </Col>

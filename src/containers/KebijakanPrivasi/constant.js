@@ -1,290 +1,238 @@
 export const Privasi = (
   <div className="fs-14 lh-22 sdp-text-black-dark mt-24">
-    Privacy Statement
+    Portal Satu Data Indonesia menyediakan layanan Open Data Public dan Open Data Forum. Open Data Public diperuntukan kepada
+    masyarakat sebagai akses keterbukaan Pemerintah terhadap Data terbuka yang dihasilkan oleh Instansi Pemerintah Pusat dan
+    Pemerintah Daerah. Open Data Forum diperuntukan untuk penyelenggara Satu Data Indonesia sebagai akses Data terbatas yang
+    dihasilkan oleh Instansi Pemerintah Pusat dan Pemerintah Daerah.
     <br />
-    This is a Government of Singapore website. Thank you for examining our privacy statement.
+    Halaman ini digunakan untuk menginformasikan pengguna mengenai kebijakan kami dengan pengumpulan, penggunaan, dan
+    pengungkapan Informasi Pribadi jika ada yang memutuskan untuk menggunakan Layanan kami.
     <br />
+    Jika Anda memilih untuk menggunakan Layanan kami, maka Anda menyetujui pengumpulan dan penggunaan informasi yang terkait
+    dengan kebijakan ini. Informasi Pribadi yang kami kumpulkan digunakan untuk menyediakan dan meningkatkan Layanan. Kami
+    tidak akan menggunakan atau membagikan informasi Anda dengan siapa pun kecuali seperti yang dijelaskan dalam Kebijakan
+    Privasi ini. Istilah-istilah yang digunakan dalam Kebijakan Privasi ini memiliki arti yang sama seperti dalam Syarat dan
+    Ketentuan kami, yang dapat diakses di data.go.id, kecuali ditentukan lain dalam Kebijakan Privasi ini.
     <br />
-    If you are only browsing this website, we do not capture data that allows us to identify you individually.
     <br />
+    <strong>Pengumpulan dan Penggunaan Informasi</strong>
     <br />
-    If you choose to make an application or send us an e-mail for which you provide us with personally identifiable data, we
-    may share necessary data with other Government agencies, so as to serve you in a most efficient and effective way, unless
-    such sharing is prohibited by legislation. We will not share your personal data with non-Government entities, except
-    where such entities have been authorised to carry out specific Government services.
+    Untuk pengalaman yang lebih baik, saat menggunakan Layanan kami, kami mungkin meminta Anda untuk memberikan kami
+    informasi identitas pribadi tertentu, termasuk tetapi tidak terbatas pada Kementerian Keuangan Republik Indonesia.
+    Informasi yang kami minta akan disimpan oleh kami dan digunakan seperti yang dijelaskan dalam kebijakan privasi ini.
     <br />
+    Portal Data ini menggunakan layanan pihak ketiga yang dapat mengumpulkan informasi yang digunakan untuk mengidentifikasi
+    Anda.
     <br />
-    For your convenience, we may also display to you data you had previously supplied us or other Government agencies. This
-    will speed up the transaction and save you the trouble of repeating previous submissions. Should the data be out-of-date,
-    please supply us the latest data. We will retain your personal data only as necessary for the effective delivery of
-    public services to you.
+    Tautan ke kebijakan privasi penyedia layanan pihak ketiga yang digunakan oleh ....
     <br />
     <br />
-    To safeguard your personal data, all electronic storage and transmission of personal data are secured with appropriate
-    security technologies.
+    <strong>Data Log</strong>
     <br />
+    Kami ingin menginformasikan kepada Anda bahwa setiap kali Anda menggunakan Layanan kami, dalam kasus kesalahan dalam
+    aplikasi kami mengumpulkan data dan informasi (melalui produk pihak ketiga) pada telepon Anda yang disebut Data Log. Data
+    Log ini dapat mencakup informasi seperti alamat Protokol Internet ("IP") perangkat Anda, nama perangkat, versi sistem
+    operasi, konfigurasi aplikasi saat menggunakan Layanan kami, waktu dan tanggal penggunaan Layanan, dan statistik lainnya.
     <br />
-    This site may contain links to non-Government sites whose data protection and privacy practices may differ from ours. We
-    are not responsible for the content and privacy practices of these other websites and encourage you to consult the
-    privacy notices of those sites.
     <br />
+    <strong>Cookies</strong>
     <br />
-    Terms of Use
+    Cookie adalah file dengan sejumlah kecil data yang umumnya digunakan sebagai pengidentifikasi unik anonim. Ini dikirim ke
+    browser Anda dari situs web yang Anda kunjungi dan disimpan di memori internal perangkat Anda.
     <br />
-    Thank you for using Data.gov.sg (“The Website”). By accessing and using any part of The Website, you agree to be legally
-    bound by all Terms Of Use, (“Terms”), which govern access of all areas of The Website. Other terms of use (which will be
-    indicated to you) may apply upon your download of datasets from The Website or if you are redirected to other websites.
-    If you do not accept any of these Terms, please do not use The Website.
+    Layanan ini tidak menggunakan "cookie" ini secara eksplisit. Namun, aplikasi dapat menggunakan kode dan pustaka pihak
+    ketiga yang menggunakan "cookies" untuk mengumpulkan informasi dan meningkatkan layanan mereka. Anda memiliki opsi untuk
+    menerima atau menolak cookie ini dan mengetahui kapan cookie dikirim ke perangkat Anda.
     <br />
+    Jika Anda memilih untuk menolak cookie kami, Anda mungkin tidak dapat menggunakan beberapa bagian dari Layanan ini.
     <br />
-    In these Terms, the words “we”, “our” and “us” refer to the Singapore Government (including its Ministries, departments,
-    and Organs of State).
     <br />
+    <strong>Penyedia jasa</strong>
     <br />
-    1. Revision of Terms
+    Kami dapat mempekerjakan perusahaan dan individu pihak ketiga karena alasan berikut:
     <br />
-    These Terms may be changed from time to time. All changes will be posted on this page and your use of The Website after
-    such changes have been posted will constitute your agreement to the changed Terms.
+    • Untuk memfasilitasi Layanan kami;
     <br />
+    • Untuk menyediakan Layanan atas nama kami;
     <br />
-    2. Use of Datasets and APIs
+    • Untuk melakukan layanan terkait Layanan; atau
     <br />
-    The use of Datasets on The Website is wholly governed by the Singapore Open Data Licence. Access to datasets via
-    application programming interfaces (APIs) is governed by the API Terms of Service. The terms below, including that on
-    intellectual property, do not cover Datasets and the use of Datasets on-seThe Website.
+    • Untuk membantu kami dalam menganalisis bagaimana Layanan kami digunakan.
     <br />
+    Kami ingin menginformasikan kepada pengguna Layanan ini bahwa pihak ketiga ini memiliki akses ke Informasi Pribadi Anda.
+    Alasannya adalah untuk melakukan tugas yang ditugaskan kepada mereka atas nama kami. Namun, mereka berkewajiban untuk
+    tidak mengungkapkan atau menggunakan informasi untuk tujuan lain apa pun.
     <br />
-    3. Privacy Policy
-    <br /> Click here to review The Website’s Privacy Policy.
     <br />
+    <strong>Keamanan</strong>
     <br />
-    4. Proprietary Rights
+    Kami menghargai kepercayaan Anda dalam memberikan kami Informasi Pribadi Anda, sehingga kami berusaha menggunakan sarana
+    yang dapat diterima secara komersial untuk melindunginya. Tetapi ingat bahwa tidak ada metode transmisi melalui internet,
+    atau metode penyimpanan elektronik 100% aman dan andal, dan kami tidak dapat menjamin keamanan mutlaknya.
     <br />
-    The contents of The Website, including source code, pages, documents and online graphics, audio and video, in The Website
-    are protected by copyright, trademark and other forms of proprietary rights. All rights, title and interest in the
-    materials are owned by, licensed to or controlled by us.
     <br />
+    <strong>Tautan ke Situs Lain</strong>
     <br />
-    Except as otherwise provided, the contents of The Website shall not be modified, reproduced, republished, uploaded,
-    posted, transmitted or otherwise distributed in any way, without prior written permission.
+    Layanan ini mungkin berisi tautan ke situs lain. Jika Anda mengklik tautan pihak ketiga, Anda akan diarahkan ke situs
+    itu. Perhatikan bahwa situs eksternal ini tidak dioperasikan oleh kami.
     <br />
+    Oleh karena itu, kami sangat menyarankan Anda untuk meninjau Kebijakan Privasi dari situs web ini. Kami tidak memiliki
+    kendali atas dan tidak bertanggung jawab atas konten, kebijakan privasi, atau praktik dari situs atau layanan pihak
+    ketiga.
     <br />
-    5. Access To The Website
     <br />
-    The accessibility and operation of The Website relies on technologies outside our control. We do not guarantee continuous
-    accessibility or uninterrupted operation of The Website.
+    <strong>Perubahan pada Kebijakan Privasi ini</strong>
     <br />
+    Kami dapat memperbarui Kebijakan Privasi kami dari waktu ke waktu. Dengan demikian, Anda disarankan untuk meninjau
+    halaman ini secara berkala untuk setiap perubahan. Kami akan memberitahu Anda tentang perubahan apapun dengan memposting
+    Kebijakan Privasi
     <br />
-    6. Relying On Information
+    baru di halaman ini. Perubahan ini efektif segera setelah diposkan di halaman ini.
     <br />
-    We provide The Website as a general information source only and we are not involved in giving professional advice here.
-    The Website may not cover all information available on a particular issue. Before relying on The Website, you should do
-    your own checks or obtain professional advice relevant to your particular circumstances.
     <br />
+    <strong>Hubungi kami</strong>
     <br />
-    7. Security
+    Jika Anda memiliki pertanyaan atau saran tentang Kebijakan Privasi kami, jangan ragu untuk menghubungi kami.
     <br />
-    Where appropriate, we use available technology to protect the security of communications made through The Website.
-    However, we do not accept liability for the security, authenticity, integrity or confidentiality of any transactions and
-    other communications made through The Website. Internet communications may be susceptible to interference or interception
-    by third parties. Despite our best efforts, we make no warranties that The Website is free of infection by computer
-    viruses or other unauthorised software. You should take appropriate steps to keep your information, software and
-    equipment secure. This includes clearing your Internet browser cookies and cache before and after using any services on
-    The Website. You should keep your passwords confidential. Please note that we will never ask you for your SingPass
-    password.
+  </div>
+);
+
+export const Syarat_Ketentuan = (
+  <div className="fs-14 lh-22 sdp-text-black-dark mt-24">
+    <strong>1. PENDAHULUAN</strong>
     <br />
+    Selamat datang di Portal Satu Data Indonesia. Portal ini dikelola oleh Sekretariat Satu Data Indonesia tingkat Pusat.
     <br />
-    8. Hyperlinks
+    Syarat penggunaan ini akan mengatur ketentuan yang memuat prosedur dan mekanisme penggunaan Portal, termasuk semua
+    halaman dalam Portal ini. Portal Satu Data Indonesia menyediakan layanan Open Data Public dan Open Data Forum. Open Data
+    Public diperuntukan kepada masyarakat sebagai akses keterbukaan Pemerintah terhadap Data terbuka yang dihasilkan oleh
+    Instansi Pemerintah Pusat dan Pemerintah Daerah. Open Data Forum diperuntukan untuk penyelenggara Satu Data Indonesia
+    sebagai akses Data terbatas yang dihasilkan oleh Instansi Pemerintah Pusat dan Pemerintah Daerah.
     <br />
-    We are not responsible or liable for the availability or content of any other Internet site (not provided by us) linked
-    to or from The Website. Access to any other Internet site is at your own risk. If you create a link or frame to The
-    Website, you do so at your own risk. We reserve the right to object or disable any link or frame to or from The Website.
-    We reserve the right to change the URL of The Website.
+    Dengan mengakses dan menggunakan Portal Satu Data Indonesia, Anda menyatakan telah membaca, memahami, menyetujui dan
+    menyatakan tunduk pada Ketentuan ini. Jika anda tidak dapat menyetujui Ketentuan ini, baik secara keseluruhan maupun
+    sebagian, maka anda tidak diperbolehkan untuk mengakses Portal ini ataupun menggunakan layanan yang kami sediakan.
     <br />
     <br />
-    9. Intellectual Property
+    <strong>2. HAK KEKAYAAN INTELEKTUAL</strong>
     <br />
-    Apart from any fair dealings for the purposes of private study, research, criticism or review, as permitted in law, no
-    part of The Website may be reproduced or reused for any commercial purposes whatsoever without our prior written
-    permission.
+    Semua teks, grafik, foto, gambar, logo, data, dan kode komputer (secara kolektif, "Konten"), termasuk namun tidak
+    terbatas pada desain, struktur, dan pengaturan Konten tersebut, yang terdapat di Portal Satu Data Indonesia dimiliki,
+    dikendalikan, atau dilisensikan, oleh atau kepada Sekretariat Satu Data Indonesia tingkat Pusat dan semua hak tersebut
+    dilindungi Undang-Undang. Anda diberikan akses dan lisensi terbatas, tunduk pada batasan yang diberikan dalam Ketentuan
+    ini, untuk tujuan melihat materi yang terdapat di Portal ini. Anda tidak diperkenankan untuk memproduksi ulang, mencetak,
+    menyalin, menyimpan, mempublikasikan, menayangkan, menyebarkan, memodifikasi, menerbitkan, mentransfer, menjual, atau
+    mendistribusikan Konten tanpa persetujuan dari Sekretariat Satu Data Indonesia tingkat Pusat.
     <br />
     <br />
-    10. General Disclaimer And Limitation Of Liability
+    <strong>3. BATASAN DAN RUANG LINGKUP</strong>
     <br />
-    The contents of The Website are provided on an “as-is” basis without warranties of any kind. We will not be liable for
-    any loss or damage (i) that you may incur on account of using, visiting or relying on any statements, opinion,
-    representation or information in The Website, (ii) resulting from any delay in operation or transmission, communications
-    failure, Internet access difficulties or malfunctions in equipment or software, or (iii) the conduct or the views of any
-    person who accesses or uses The Website.
+    Portal Satu Data Indonesia serta layanan yang tersedia di dalamnya hanya dapat digunakan untuk penggunaan pengguna
+    Pemerintah, antar Pemerintah, non Pemerintah, dan secara non-komersial, serta setiap saat tunduk pada syarat dan
+    ketentuan yang berlaku dalam Ketentuan ini.
     <br />
+    Tanpa persetujuan tertulis sebelumnya dari Sekretariat Satu Data Indonesia tingkat Pusat, Anda secara tegas dan pasti
+    dibatasi dari hal-hal sebagai berikut:
     <br />
-    11. Applicable Laws
+    1) Mensublisensikan dan/atau mengkomersilkan materi yang menjadi Hak Kekayaan Intelektual Portal Satu Data Indonesia,
+    baik keseluruhan maupun sebagian di media apapun;
     <br />
-    Use of The Website and these Terms are governed by the laws of Singapore. Any claim relating to use of The Website shall
-    be heard by Singapore Courts.
+    2) Menggunakan Portal Satu Data Indonesia ini dalam kondisi atau cara apapun yang dapat merusak, melumpuhkan, membebani
+    atau mengganggu server atau jaringan;
     <br />
+    3) Menggunakan Portal Satu Data Indonesia ini secara tidak sah, termasuk namun tidak terbatas dengan cara hacking atau
+    cara lainnya seperti menggunakan kode komputer otomatis, proses, program, robot, net crawler, spider, pemrosesan data,
+    trawling atau kode komputer, proses, program atau sistem screen scraping alternatif;
     <br />
-    12. Copyright notices
+    4) Terlibat dalam penggalian data, pengumpulan data, atau aktivitas serupa lainnya dalam kaitannya dengan Portal Satu
+    Data Indonesia ini, atau saat menggunakan Portal Satu Data Indonesia ini;
     <br />
-    In accordance with Regulation 5 of the Copyright (Network Service Provider) Regulations (Cap. 63, Rg. 7), the designated
-    representative is:
+    5) Menggunakan Portal Satu Data Indonesia ini untuk terlibat dalam periklanan atau pemasaran apa pun; dan/atau
     <br />
+    6) Menggunakan Portal Satu Data Indonesia ini secara bertentangan dengan hukum dan peraturan yang berlaku, atau dengan
+    cara yang menyebabkan, atau dapat menyebabkan, merugikan Portal Satu Data Indonesia, atau pihak-pihak terkait dalam Satu
+    Data Indonesia.
     <br />
-    Data Science Division
-    <br />1 Fusionopolis View, Sandcrawler, #09-01, Singapore 138577
+    Fitur tertentu dari Portal Satu Data Indonesia ini dibatasi aksesnya oleh Sekretariat Satu Data Indonesia tingkat Pusat.
+    Selanjutnya Anda dapat menghubungi Sekretariat Satu Data Indonesia tingkat Pusat untuk permohonan akses tertentu dari
+    Portal Satu Data Indonesia, sesuai dengan ketentuan yang berlaku.
     <br />
-    Main line: 6211-0888
     <br />
-    Email: feedback@data.gov.sg
+    <strong>4. KEBIJAKAN PENGGUNAAN DATA</strong>
     <br />
-    API Terms of Service
+    Sekretariat Satu Data Indonesia tingkat Pusat akan mencatat dan menyimpan informasi dan data pribadi yang Anda berikan
+    melalui Portal Satu Data Indonesia dari waktu ke waktu. Pada prinsipnya, data Anda akan kami gunakan untuk menyediakan
+    layanan kepada Anda. Data pribadi Anda yang ada pada Sekretariat Satu Data Indonesia tingkat Pusat dapat digunakan
+    termasuk namun tidak terbatas untuk keperluan administrasi dan legal, serta hubungan pengguna. Sehubungan dengan itu,
+    Sekretariat Satu Data Indonesia tingkat Pusat dapat menggunakan data Anda untuk penggunaan tertentu diantaranya kepada
+    Pihak Pemerintah yang mempunyai tugas menyelenggarakan urusan pemerintahan di bidang komunikasi dan informatika
+    sebagaimana diatur dalam peraturan perundang-undangan sebagai Pihak penyedia layanan sistem informasi Pemerintah Pusat
+    dan Pemerintah Daerah, Instansi yang bekerja sama dengan Sekretariat Satu Data Indonesia tingkat Pusat, Pihak Ketiga yang
+    mempunyai tugas menyelenggarakan urusan pemrosesan data sebagai Pihak penyedia Pengolah data yang terikat dalam kontrak
+    Non Disclosure Agreement (NDA) perjanjian kerahasiaan dengan Sekretariat Satu Data Indonesia tingkat Pusat, badan
+    pemerintah dan/atau badan peradilan yang berwenang, di yurisdiksi manapun.
     <br />
-    The Agency may offer datasets through an API. Use of the datasets is governed by the Singapore Open Data Licence. The
-    service through which you may access datasets via APIs is subject to these API terms of service (“Terms of Service”).
     <br />
+    <strong>5. JAMINAN</strong>
     <br />
-    By Using an API on the Relevant Websites, you agree to the Terms of Service.
+    Portal Satu Data Indonesia ini dan Konten yang terkandung disediakan "sebagaimana adanya,". Sekretariat Satu Data
+    Indonesia tingkat Pusat tidak memberikan pernyataan atau jaminan, baik tersurat maupun tersirat, dalam bentuk apa pun
+    yang terkait dengan Portal Satu Data Indonesia ini, Konten, atau materi yang terkandung di Portal Satu Data Indonesia
+    ini. Tidak ada satupun Konten yang terkandung di Portal Satu Data Indonesia ini yang dapat ditafsirkan sebagai memberikan
+    konsultasi atau saran kepada Anda.
     <br />
     <br />
-    What You Can Do:
+    <strong>6. TANGGUNG JAWAB</strong>
     <br />
-    You can use, access, call, command, query or request the API, whether commercially or non-commercially (“Use”).
+    Dalam kondisi tertentu, Sekretariat Satu Data Indonesia tingkat Pusat, tidak akan bertanggung jawab kepada Anda atas
+    apapun yang timbul dari atau dengan cara apapun terkait dengan penggunaan Anda atas Portal Satu Data Indonesia ini.
+    Sekretariat Satu Data Indonesia tingkat Pusat tidak akan bertanggung jawab atas tanggung jawab tidak langsung,
+    konsekuensial, atau akibat khusus yang timbul dari atau dengan cara apa pun terkait dengan penggunaan Anda atas Portal
+    Satu Data Indonesia ini. Segala bentuk tindakan yang menimbulkan kerugian akan dipertanggungjawabkan oleh pengguna data
+    dan diproses sesuai dengan ketentuan Peraturan Perundang-Undangan yang berlaku.
     <br />
     <br />
-    If your API Client(s) are intended to be distributed as or as part of a software library, you may grant a sub-licence of
-    the APIs if this is necessary to enable other persons (“your Sub-Licensees”) to incorporate and/or distribute your API
-    Client(s) in their software programs.
+    <strong>7. GANTI RUGI</strong>
     <br />
+    Anda dengan ini setuju untuk mengganti kerugian sepenuhnya kepada Sekretariat Satu Data Indonesia tingkat Pusat dari dan
+    terhadap setiap dan semua kewajiban, biaya, tuntutan, penyebab tindakan, kerusakan dan pengeluaran (termasuk biaya
+    pengacara yang wajar) yang timbul dari atau dengan cara apapun terkait dengan pelanggaran Anda terhadap salah satu
+    ketentuan dari Ketentuan ini.
     <br />
-    If your Sub-Licensees require additional rights, your application and/or website should direct your Sub-Licensees to
-    obtain the appropriate licence at data.gov.sg. Limitations
     <br />
-    These Terms of Service do not grant you any rights over:
+    <strong>8. PERALIHAN</strong>
     <br />
+    Jika ada ketentuan dari Ketentuan ini yang ditemukan tidak dapat dilaksanakan atau tidak valid berdasarkan hukum yang
+    berlaku, ketidakberlakuan atau ketidakabsahan tersebut tidak akan membuat Ketentuan ini tidak dapat dilaksanakan atau
+    tidak valid secara keseluruhan, dan ketentuan tersebut akan dihapus tanpa mempengaruhi ketentuan lainnya di sini.
     <br />
-    any personal data should any personal data be included or exposed through the APIs, inadvertently or otherwise;
     <br />
+    <strong>9. PERUBAHAN</strong>
     <br />
-    and any intellectual property found in content accessible through the APIs.
+    Ketentuan ini dapat diubah, dimodifikasi, ditambah, dihapus atau dikoreksi (“perubahan”) setiap saat oleh Sekretariat
+    Satu Data Indonesia tingkat Pusat dan setiap perubahan berlaku sejak saat dinyatakan berlaku atau pada waktu lain yang
+    ditetapkan oleh Sekretariat Satu Data Indonesia tingkat Pusat. Anda diharapkan untuk mengunjungi Portal Satu Data
+    Indonesia secara berkala untuk dapat mengetahui dan memahami adanya perubahan tersebut.
     <br />
     <br />
-    These Terms of Service do not grant any rights to Downstream Sub-Licensees.
+    <strong>10. PENYEBARLUASAN</strong>
     <br />
+    Sekretariat Satu Data Indonesia tingkat Pusat diizinkan untuk mengalihkan, mentransfer, dan mensubkontrakkan hak dan/atau
+    kewajibannya berdasarkan Ketentuan ini tanpa pemberitahuan atau persetujuan apa pun yang diperlukan. Meskipun demikian,
+    Anda tidak akan diizinkan untuk mengalihkan, mentransfer, atau mensubkontrakkan hak dan/atau kewajiban Anda berdasarkan
+    Ketentuan ini.
     <br />
-    Additional Conditions
     <br />
-    Access to datasets through APIs is subject to the following:
+    <strong>11. PENGGUNAAN</strong>
     <br />
+    Ketentuan ini, termasuk pemberitahuan hukum dan penyangkalan yang terkandung di Portal Satu Data Indonesia ini, merupakan
+    keseluruhan perjanjian antara Portal Satu Data Indonesia dan Anda sehubungan dengan penggunaan Anda atas Portal Satu Data
+    Indonesia ini.
     <br />
-    Your right to Use APIs may be subject to additional terms, including limitations on Use, found on the individual pages of
-    each API. You agree that an Agency may monitor your Use of the API to improve the service, track usage, to ensure
-    compliance with these Terms of Service, or for security purposes.
     <br />
+    <strong>12.HUKUM YANG BERLAKU DAN PENYELESAIAN SENGKETA</strong>
     <br />
-    When you Use the API, you must utilise the access control credentials issued to you if applicable. You agree to keep such
-    credentials secure and confidential. You shall not mis-present or mask your API Client’s identity when Using the API.
-    <br />
-    <br />
-    You warrant that your API Client(s) are free of any Unauthorised Code. You agree to Use the API in accordance to the
-    Agency’s published technical and other specifications, including all security requirements and procedures. You shall not
-    interfere with or disrupt the API or the servers or networks providing the API. You shall not exploit any vulnerability
-    of the API or servers, inject any unauthorised or malicious scripts, codes, commands, queries or requests, or introduce
-    any Unauthorised Code through the API.
-    <br />
-    <br />
-    Disclaimers: The APIs are provided on an “as is” and “as available” basis. The Agency makes no representations or
-    warranties in relation to the APIs, including but not limited to any representation or warranty as to the accuracy,
-    completeness, reliability, service levels, continued availability, timeliness, non-infringement, title, quality or
-    fitness for any particular purpose of the APIs to the fullest extent permitted by the law.
-    <br />
-    <br />
-    To the extent permitted by law, the Agency shall not be liable to you or any third party und whether in contract, tort
-    (including negligence), restitution, breach of statutory duty or otherwise, for damage or loss of any kind arising
-    directly or indirectly from your or any third party’s Use of, or inability to Use, the APIs or the Relevant Websites.
-    <br />
-    <br />
-    The Agency’s provision of APIs does not prevent the Agency from:
-    <br />
-    <br />
-    developing its own products or services, some of which may offer the same or similar functionalities as your API
-    Client(s) and/or any of your products or services; or
-    <br />
-    <br />
-    modifying any APIs or methods of accessing the APIs at any time.
-    <br />
-    <br />
-    Indemnity: You shall indemnify the Agency against all liabilities, damages, costs (including legal costs) and expenses
-    arising directly or indirectly from:
-    <br />
-    <br />
-    any claim made by a third party in connection with your Use of the APIs;
-    <br />
-    any system failure or downtime, and/or any lost or damaged data or software, arising from or in connection with your Use
-    of the APIs;
-    <br />
-    your violation of any rights of another person; or
-    <br />
-    any claim made by a third party in connection with the third party’s Use of your API Client(s) developed using the APIs,
-    or any derived analyses or applications which you have provided.
-    <br />
-    Intellectual Property: All intellectual property rights subsisting in or used in connection with the APIs are the
-    property of the Agency.
-    <br />
-    <br />
-    You cannot enforce any intellectual property rights belonging to the Agency in respect of the APIs except with the prior
-    written approval of such Agency.
-    <br />
-    <br />
-    Rights of Third Parties: No one other than a party to these Terms of Service shall have any right to enforce any of its
-    terms.
-    <br />
-    <br />
-    Suspension or termination of API access: The Agency may terminate these Terms of Service or suspend your access to the
-    API for any reason whatsoever. Upon such termination or suspension, you shall immediately stop Using the API. The
-    Disclaimers and Indemnities sections, and any other provision of these Terms of Service which is required to give effect
-    to termination or the consequences of such termination, shall survive the termination of these Terms of Service.
-    <br />
-    <br />
-    Governing Law and Jurisdiction: These Terms of Service shall be governed by and construed in accordance with the laws of
-    the Republic of Singapore. The parties to these Terms of Service submit to the exclusive jurisdiction of the Singapore
-    courts.
-    <br />
-    <br />
-    Definitions and Interpretation
-    <br />
-    In these Terms of Service:
-    <br />
-    <br />
-    “Agency” means the Singapore Government (including its Ministries, departments, and Organs of State) or the Statutory
-    Board providing the API.
-    <br />
-    <br />
-    “API” means an application programming interface that is provided by an Agency.
-    <br />
-    <br />
-    “API Client” means any of your software, applications, websites or systems that Use the APIs, and includes any part
-    thereof.
-    <br />
-    <br />
-    “dataset” has the same meaning given to it under the Singapore Open Data Licence.
-    <br />
-    <br />
-    “Downstream Sub-Licensee” means any person who may require a licence in order to access the website or use the
-    application or API Client(s) of a Sub-Licensee.
-    <br />
-    <br />
-    “Statutory Board” means a body incorporated by or under written law from time to time to perform or discharge any public
-    function.
-    <br />
-    <br />
-    “Sub-Licensee” means a person that is granted a sub-licence by you, where allowed under these Terms of Service.
-    <br />
-    <br />
-    “Relevant Websites” means this Website or other Websites owned by an Agency that are linked from this Website.
-    <br />
-    <br />
-    “Unauthorised Code” means any malicious or invalid code, virus, Trojan horse, worm, logic bomb, software routine or
-    hardware components designed to permit unauthorised access, to disable, erase, or otherwise harm software, hardware or
-    data, or to perform any such actions.
+    Ketentuan ini akan diatur oleh dan ditafsirkan sesuai dengan Peraturan Perundang-Undangan dan Ketentuan Hukum yang
+    berlaku di Republik Indonesia.
   </div>
 );

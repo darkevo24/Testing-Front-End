@@ -597,7 +597,6 @@ const CMSJadwalDetail = (props) => {
                     </Button>
                   ) : null}
                 </div>
-                <span className="fw-bold mb-10 d-block"> Materi </span>
                 <Table {...tableConfigMateri} />
               </div>
             )}

@@ -11,7 +11,7 @@ import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import { DatePicker, Dropdown, Input } from 'components';
 import { jadwalPermutakhiranOptions, formatOptions } from 'utils/constants';
-import { /*dateTransform,*/ submitForm, findOption } from 'utils/helper';
+import { /*dateTransform,*/ emptyOptionPad, submitForm, findOption } from 'utils/helper';
 import {
   daftarDetailsDataSelector,
   getDaftarDetail,
@@ -84,15 +84,11 @@ const DaftarForm = ({
   const watchKodePNRKP = watch('kodePNRKP', false);
 
   useEffect(() => {
-    if (watchKodePilar?.value) {
-      dispatch(getAddDaftarSDGTujuan(watchKodePilar.value));
-    }
+    dispatch(getAddDaftarSDGTujuan(watchKodePilar?.value));
   }, [watchKodePilar]);
 
   useEffect(() => {
-    if (watchKodePNRKP?.value) {
-      dispatch(getAddDaftarRKPpp(watchKodePNRKP.value));
-    }
+    dispatch(getAddDaftarRKPpp(watchKodePNRKP?.value));
   }, [watchKodePNRKP]);
 
   useEffect(() => {
@@ -243,7 +239,7 @@ const DaftarForm = ({
             control={control}
             rules={{ required: true }}
             placeholder="Select"
-            options={sdgPillerOptions}
+            options={emptyOptionPad(sdgPillerOptions)}
             error={errors.kodePilar?.message}
           />
           <Dropdown
@@ -253,7 +249,7 @@ const DaftarForm = ({
             control={control}
             rules={{ required: true }}
             placeholder="Select"
-            options={tujuanSDGPillerOptions}
+            options={emptyOptionPad(tujuanSDGPillerOptions)}
             error={errors.kodeTujuan?.message}
           />
           <Dropdown
@@ -263,7 +259,7 @@ const DaftarForm = ({
             control={control}
             rules={{ required: true }}
             placeholder="Select"
-            options={rkpPNOptions}
+            options={emptyOptionPad(rkpPNOptions)}
             error={errors.kodePNRKP?.message}
           />
           <Dropdown
@@ -273,7 +269,7 @@ const DaftarForm = ({
             control={control}
             rules={{ required: true }}
             placeholder="Select"
-            options={rkpPPOptions}
+            options={emptyOptionPad(rkpPPOptions)}
             error={errors.kodePPRKP?.message}
           />
           <Button className="invisible" type="submit" />

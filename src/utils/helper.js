@@ -62,7 +62,7 @@ export const copyToClipboard = (text) => {
   } else {
     // text area method
     const textArea = document.createElement('textarea');
-    textArea.value = convertToPlain;
+    textArea.value = convertToPlain(text);
     // make the textarea out of viewport
     textArea.style.position = 'fixed';
     textArea.style.left = '-999999px';
@@ -296,6 +296,12 @@ export const getStatusClass = (status) => {
         text: 'Dihapus',
         divText: 'Dihapus',
       };
+    case 'waiting_request_approval':
+      return {
+        ...grayText,
+        text: 'Waiting Request Approval',
+        divText: 'Waiting Request Approval',
+      };
     default:
       return {};
   }
@@ -310,6 +316,15 @@ export const findOption = (options, value) => {
     return value.map((nestedItem) => findOption(options, nestedItem));
   }
   return options.find((option) => option.value === value);
+};
+
+const emptyOption = { label: '-', value: '' };
+
+export const emptyOptionPad = (options) => {
+  if (isArray(options)) {
+    return [emptyOption, ...options];
+  }
+  return [emptyOption, { label: options, value: options }];
 };
 
 export const getDatasetUrl = (name) => `${katalogUrl}/dataset/${name}`;

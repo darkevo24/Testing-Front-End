@@ -37,6 +37,7 @@ const CMSDokumentasiDetail = (props) => {
   const [urlVidio, setUrlVidio] = useState('');
   const [isiDokumentasi, setIsiDokumentasi] = useState('');
   const [showModal, setShowModal] = useState('');
+  const [apiError, setAPIError] = useState(false);
 
   const { records } = useSelector(bimtekDokumentasiDetailSelector);
   const { logAktifitas } = useSelector(bimtekLogAktifitas);
@@ -74,12 +75,14 @@ const CMSDokumentasiDetail = (props) => {
     try {
       await method(url, {}, params);
       handleCloseModal();
-      handleNotification('secondary', `${message}`, 'check');
+      handleNotification('secondary', message, 'check');
       initialCall();
       isFunction(callBack) && callBack();
+      setAPIError(false);
     } catch (e) {
-      handleNotification('secondary', `Error, ${e.message}`, 'cross');
+      handleNotification('secondary', e?.data?.message, 'cross');
       handleCloseModal();
+      setAPIError(true);
     }
   };
 
@@ -171,7 +174,7 @@ const CMSDokumentasiDetail = (props) => {
       {},
       'Berhasil Menghapus Foto Dokumentasi',
     );
-    setFotoDokumentasi(filter);
+    if (!apiError) setFotoDokumentasi(filter);
   };
 
   const openUploadForm = (id) => {

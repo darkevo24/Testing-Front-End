@@ -66,6 +66,10 @@ export const getDataSet = createAsyncThunk('beranda/getDataset', async (params, 
   data = mapParamsToJsonString(data, ['facet.field']);
   data = mapParamsToOrString(data, facetFields);
   data = mapOrStringsToFq(data, facetFields);
+
+  // Note: adding this until katalog backedn team provides more details
+  // data.ext_bbox = '99.00878906249999%2C-6.315298538330033%2C120.80566406250001%2C2.8113711933311403';
+  // data.ext_prev_extent = '97.119140625%2C-10.487811882056683%2C122.6953125%2C7.013667927566642';
   const response = await get(apiUrls.dataset, { query: pickValidDatasetPaginationParams(data) });
   return response?.data?.result;
 });

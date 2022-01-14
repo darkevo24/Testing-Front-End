@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import moment from 'moment';
-import { truncate } from 'lodash';
+import truncate from 'lodash/truncate';
 import 'moment/locale/id';
 import parse from 'html-react-parser';
 import { useHistory } from 'react-router-dom';

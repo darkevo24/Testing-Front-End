@@ -63,7 +63,7 @@ const BeritaUtama = () => {
                 <>
                   <div className="overview">{parse(truncatedParagrapData)}</div>
                   <button className="read_more_link p-0 border-0 bg-white" onClick={(event) => handleDetail(event, id)}>
-                    <h6>Read More</h6>
+                    <h6>Baca Selengkapnya</h6>
                   </button>
                 </>
               ) : (

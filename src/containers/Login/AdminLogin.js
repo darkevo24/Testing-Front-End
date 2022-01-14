@@ -62,7 +62,7 @@ const AdminLogin = () => {
               error={errors.password?.message}
               className="mt-4"
             />
-            <button className="forgot-password" onClick={() => history.push('/forgot-password')}>
+            <button className="forgot-password" type="button" onClick={() => history.push('/forgot-password')}>
               Lupa Password?
             </button>
             <div className="sdp-error">{error}</div>

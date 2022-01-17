@@ -21,7 +21,7 @@ deploy:
     - frontend
 
 deployment:
-  stage: deployment
+  stage: deploy
   script:
     - yarn install
     - yarn build

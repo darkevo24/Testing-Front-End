@@ -431,7 +431,6 @@ const CMSJadwalBaru = () => {
                 <Plus /> <span className="fw-bold text-danger"> Tambah Materi </span>
               </Button>
             </div>
-            <span className="fw-bold mb-10 d-block"> Materi </span>
             <Table {...tableConfigMateri} />
           </div>
         </Col>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import { Loader } from 'components';
+import truncate from 'lodash/truncate';
 import moment from 'moment';
 import { ReactComponent as ArrowLeft } from 'assets/arrow-left.svg';
 import Search from './Search';
@@ -98,18 +99,34 @@ const BeritaPerBulan = () => {
         </div>
         {records.length
           ? records.map((record, i) => {
+              const { slug, kategori, image, judul, id } = record;
+              const truncatedParagrapData = truncate(slug, {
+                length: 250,
+                separator: ' ',
+              });
               return (
                 <div key={i}>
                   <div className="row my-20 border-bottom pb-10 ">
                     <div className="col-lg-4 pr-24">
-                      <img className="image w-100" src={record.image} alt="" />
+                      <img className="image w-100" src={image} alt="" />
                     </div>
                     <div className="col-lg-8">
-                      <strong className="topik">{record.kategori}</strong>
-                      <div className="judul" onClick={(e) => handleDetail(e, record.id)}>
-                        {record.judul}
+                      <strong className="topik">{kategori}</strong>
+                      <div className="judul" onClick={(e) => handleDetail(e, id)}>
+                        {judul}
                       </div>
-                      <div className="konten">{record.slug}</div>
+                      {slug.length > 250 ? (
+                        <>
+                          <div className="konten">{truncatedParagrapData}</div>
+                          <button
+                            className="read_more_link p-0 border-0 bg-white"
+                            onClick={(event) => handleDetail(event, id)}>
+                            <h6>Baca Selengkapnya</h6>
+                          </button>
+                        </>
+                      ) : (
+                        <div className="konten">{slug}</div>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -20,7 +20,7 @@ deploy:
     - deployment
     - frontend
 
-deployment:
+prod-webserver-one:
   stage: deploy
   script:
     - yarn install
@@ -32,3 +32,18 @@ deployment:
   tags:
     - client
     - production
+    - webserver01
+
+prod-webserver-two:
+  stage: deploy
+  script:
+    - yarn install
+    - yarn build
+    - mkdir -p /var/www/html/sdi
+    - cp -R ./build/. /var/www/html/sdi
+  only:
+    - production
+  tags:
+    - client
+    - production
+    - webserver02

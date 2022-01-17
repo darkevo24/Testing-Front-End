@@ -34,7 +34,7 @@ const BimTekDokumentasi = () => {
   const settings = {
     className: 'slider variable-width',
     infinite: false,
-    centerMode: true,
+    centerMode: false,
     slidesToShow: 2,
     slidesToScroll: 1,
     variableWidth: true,

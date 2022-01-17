@@ -139,7 +139,7 @@ const BimtekSummary = () => {
 
 const DokumentasiItem = ({ urlPhoto, title, date, kota, desc }) => {
   return (
-    <div className={cx(bem.e('list-item', ''), 'mr-16')}>
+    <div className={cx(bem.e('list-item'), 'mr-16')}>
       <div>
         <img className={cx(bem.e('content-image', 'd-block'))} src={urlPhoto} alt="Not Load here" />
       </div>

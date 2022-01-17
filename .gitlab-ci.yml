@@ -20,3 +20,15 @@ deploy:
     - deployment
     - frontend
 
+deployment:
+  stage: deployment
+  script:
+    - yarn install
+    - yarn build
+    - mkdir -p /var/www/html/sdi
+    - cp -R ./build/. /var/www/html/sdi
+  only:
+    - production
+  tags:
+    - client
+    - production

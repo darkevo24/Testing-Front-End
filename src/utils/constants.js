@@ -95,6 +95,7 @@ export const apiUrls = {
   beritaLayout: getPublicV1Endpoint('layout'),
   updateKiriLayout: getPublicV1Endpoint('layout/code/kiri'),
   bimtekDokumentasi: getPortalEndpoint('v1/bimtek/dokumentasi'),
+  bimteklatestDokumentasi: getPortalEndpoint('v1/bimtek/dokumentasi-latest'),
   bimtekPermintaan: getPortalEndpoint('v1/bimtek/permintaan'),
   sosialMedia: getCMSEndpoint('sosial-media'),
   bimtekLogs: getPortalEndpoint('v1/bimtek/logs'),

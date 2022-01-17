@@ -2,27 +2,37 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import Slider from 'react-slick';
 
 import { BimtekLayout } from 'layouts/BimtekLayout';
+import { formatDate } from 'utils/helper';
+import { apiUrls, get } from 'utils/request';
 import BimTekSumJadwal from './jadwal.js';
-import BimTekSumCarousel from './carousel.js';
 import { ReactComponent as Download } from 'assets/download.svg';
-import { ReactComponent as ArrowRIght } from 'assets/arrow-right-white.svg';
 import './bimteksummary.scss';
+import bn from 'utils/bemNames';
+import cx from 'classnames';
 import {
   getBimtekSummaryMateriTerdekat,
   getBimtekSummaryJadwalTerdekat,
+  getBimtekLatestDokumentasi,
   bimtekSummaryMateriTerdekatDatasetSelector,
   bimtekSummaryJadwalTerdekatDatasetSelector,
+  bimtekLatestDokumentasiSelector,
 } from './reducer';
-import moment from 'moment';
-import 'moment/locale/id';
-import { apiUrls, get } from 'utils/request';
 
-moment.locale('id');
+const bem = bn('bimtek-summary');
 
 const BimtekSummary = () => {
   const dispatch = useDispatch();
+  const settings = {
+    className: 'slider variable-width',
+    infinite: false,
+    centerMode: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    variableWidth: true,
+  };
 
   const MateriItem = styled.div`
     border-top: 1px solid #e1e2ea;
@@ -47,45 +57,19 @@ const BimtekSummary = () => {
     cursor: pointer;
   `;
 
-  const ButtonNext = styled.div`
-    background: #ff0000;
-    border-radius: 4px;
-    padding: 8px 10px;
-    cursor: pointer;
-    position: absolute;
-    right: 18px;
-    bottom: 28px;
-    z-index: 2;
-  `;
-
-  let responseThumbnail = [
-    {
-      title: 'Kemenhub Berbagi Pengalaman Penanganan Covid-19 Sektor Transportasi Di Forum ASEAN-Republik Korea ke-11',
-      url: 'https://source.unsplash.com/user/c_v_r',
-      location: 'Jakarta',
-      date: '25 Agustus 2021',
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    },
-    {
-      title: 'Content Test',
-      url: 'https://source.unsplash.com/user/c_v_r',
-      location: 'Bandung',
-      date: '26 Agustus 2021',
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    },
-  ];
-  let dataThumbnail = responseThumbnail.slice(0, 5);
-
   const history = useHistory();
   const gotoJadwal = () => history.push('/bimtek-jadwal');
 
   useEffect(() => {
     dispatch(getBimtekSummaryMateriTerdekat());
     dispatch(getBimtekSummaryJadwalTerdekat());
+    dispatch(getBimtekLatestDokumentasi());
   }, []);
 
   const { records: materiRecords } = useSelector(bimtekSummaryMateriTerdekatDatasetSelector);
   const { records: jadwalRecords } = useSelector(bimtekSummaryJadwalTerdekatDatasetSelector);
+  const { records: dokumentasiRecords } = useSelector(bimtekLatestDokumentasiSelector);
+
   const dataJadwal = jadwalRecords.slice(0, 3);
 
   const downloadMateri = async (file) => {
@@ -96,23 +80,20 @@ const BimtekSummary = () => {
 
   return (
     <BimtekLayout>
-      <div>
-        <div style={{ position: 'relative' }}>
-          <ButtonNext>
-            <ArrowRIght />
-          </ButtonNext>
-          <div className="bimteksum-carousel">
-            {dataThumbnail.map((item, key) => (
-              <BimTekSumCarousel
-                key={key}
-                url={item.url}
-                title={item.title}
-                desc={item.desc}
-                location={item.location}
-                date={item.date}
+      <div className={bem.b()}>
+        <div className={bem.e('list')}>
+          <Slider {...settings}>
+            {dokumentasiRecords.map((dokumentasi, index) => (
+              <DokumentasiItem
+                key={index}
+                title={dokumentasi.namaBimtek}
+                kota={dokumentasi.kota}
+                date={formatDate(dokumentasi.tanggalMulaiDisetujui)}
+                urlPhoto={dokumentasi?.images[0]?.location ?? null}
+                desc={dokumentasi.isiDokumentasi}
               />
             ))}
-          </div>
+          </Slider>
         </div>
         <div className="mt-5">
           <div className="d-flex justify-content-between align-items-end mb-3">
@@ -128,8 +109,8 @@ const BimtekSummary = () => {
             <BimTekSumJadwal
               key={key}
               title={item.namaBimtek}
-              startDate={moment(item.tanggalMulaiDisetujui).format('D MMMM YYYY')}
-              endDate={moment(item.tanggalSelesaiDisetujui).format('D MMMM YYYY')}
+              startDate={formatDate(item.tanggalMulaiDisetujui)}
+              endDate={formatDate(item.tanggalSelesaiDisetujui)}
               city={item.kota}
             />
           ))}
@@ -153,6 +134,25 @@ const BimtekSummary = () => {
         </div>
       </div>
     </BimtekLayout>
+  );
+};
+
+const DokumentasiItem = ({ urlPhoto, title, date, kota, desc }) => {
+  return (
+    <div className={cx(bem.e('list-item'), 'mr-16')}>
+      <div>
+        <img className={cx(bem.e('content-image', 'd-block'))} src={urlPhoto} alt="Not Load here" />
+      </div>
+      <div className={cx(bem.e('content-section'), 'm-16')}>
+        <div className={cx(bem.e('content-date'), 'fs-14 mt-15')}>
+          {kota}, {date}
+        </div>
+        <div className={cx(bem.e('content-title'), 'fw-600 fs-14 mt-8')}>{title}</div>
+        <div
+          className={cx(bem.e('content-description'), 'fw-400 fs-13 mt-8')}
+          dangerouslySetInnerHTML={{ __html: desc }}></div>
+      </div>
+    </div>
   );
 };
 

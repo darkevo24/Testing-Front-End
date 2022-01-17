@@ -9,12 +9,10 @@ import NumberFormat from 'react-number-format';
 import cloneDeep from 'lodash/cloneDeep';
 import find from 'lodash/find';
 import first from 'lodash/first';
-import flatten from 'lodash/flatten';
 import map from 'lodash/map';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 import remove from 'lodash/remove';
-import values from 'lodash/values';
 import moment from 'moment';
 
 import { ReactComponent as SearchSvg } from 'assets/search.svg';
@@ -141,8 +139,14 @@ const DataSet = () => {
   );
 
   const onUpdateRegion = (rectangleCoordinates) => {
-    const mapped = map(first(rectangleCoordinates), (latLong) => values(latLong));
-    const ext_bbox = uniq(flatten(mapped));
+    const coordinates = first(rectangleCoordinates);
+    const longs = uniq(map(coordinates, 'lng'));
+    const lats = uniq(map(coordinates, 'lat'));
+    const ext_bbox = [];
+    longs.forEach((_, index) => {
+      ext_bbox.push(longs[index]);
+      ext_bbox.push(lats[index]);
+    });
     fetchDataset({ ext_bbox }, true);
   };
 

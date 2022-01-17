@@ -20,7 +20,6 @@
     }
 
     &__title {
-
       font-size: 32px;
       font-style: normal;
       font-weight: 700;
@@ -33,7 +32,6 @@
       padding: 32px;
 
       .table-header {
-
         font-size: 14px;
         font-style: normal;
         font-weight: 600;
@@ -60,15 +58,19 @@
           &.menunggu_persetujuan {
             color: var(--orange-dark);
           }
-          &.diarsipkan, &.draft, &.tidak_ditayangkan {
+          &.diarsipkan,
+          &.draft,
+          &.tidak_ditayangkan {
             color: $gray;
             background: none;
           }
-          &.dibatalkan, &.ditolak, &.dihapus {
-            color: $red
+          &.dibatalkan,
+          &.ditolak,
+          &.dihapus {
+            color: $red;
           }
           &.disetujui {
-            color: $blue
+            color: $blue;
           }
         }
       }
@@ -81,7 +83,6 @@
 
   .sdp-log {
     &__title {
-
       font-size: 20px;
       font-style: normal;
       font-weight: 700;
@@ -90,7 +91,6 @@
     }
 
     &__date {
-
       font-size: 14px;
       font-style: normal;
       font-weight: 600;
@@ -111,31 +111,34 @@
       margin-right: 8px;
       height: 28px;
 
-      &.selesai, &.published {
+      &.selesai,
+      &.published {
         background: rgba(21, 165, 95, 0.12);
-        color: #15A55F;
+        color: $green-light;
       }
-      &.diproses, &.waiting_request_approval, &.waiting_approval, &.draft {
+      &.diproses,
+      &.waiting_request_approval,
+      &.waiting_approval,
+      &.draft {
         background: rgba(222, 136, 19, 0.12);
-        color: #DE8813;
+        color: $orange-dark;
       }
       &.terkirim {
         background: rgba(104, 72, 195, 0.12);
-        color: #6848C4;
+        color: $purple;
       }
       &.dibuat {
-        background: #F5F6FA;
-        color: #858A8F;
+        background: $gray-bg;
+        color: $gray;
       }
     }
 
     &__content {
-
       font-size: 14px;
       font-style: normal;
       font-weight: 400;
       line-height: 21px;
-      color: #858A8F;
+      color: $gray;
     }
   }
 
@@ -145,7 +148,6 @@
 
       .sdp-log {
         &__title {
-
           font-size: 20px;
           font-style: normal;
           font-weight: 700;
@@ -154,7 +156,6 @@
         }
 
         &__date {
-
           font-size: 14px;
           font-style: normal;
           font-weight: 600;
@@ -182,50 +183,53 @@
             background: rgba(222, 136, 19, 0.12);
             color: var(--orange-dark);
           }
-          &.diarsipkan, &.draft, &.tidak_ditayangkan {
+          &.diarsipkan,
+          &.draft,
+          &.tidak_ditayangkan {
             background: $gray-bg;
             color: $gray;
           }
-          &.dibatalkan, &.ditolak, &.unpublish {
+          &.dibatalkan,
+          &.ditolak,
+          &.unpublish {
             background: rgba(255, 0, 0, 0.12);
-            color: $red
+            color: $red;
           }
           &.disetujui {
             background: $blue-bg-light;
-            color: $blue
+            color: $blue;
           }
         }
 
         &__content {
-
           font-size: 14px;
           font-style: normal;
           font-weight: 400;
           line-height: 21px;
-          color: #858A8F;
+          color: $gray;
         }
       }
 
       .form-switch {
         .form-check-input {
-          &:checked, &:checked:focus {
-              background-color: $blue;
-              border-color: $blue-bg-light;
-              background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e");
+          &:checked,
+          &:checked:focus {
+            background-color: $blue;
+            border-color: $blue-bg-light;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e");
           }
 
           &:focus {
-              border-color: $blue;
-              outline: 0;
-              box-shadow: 0 0 0 0.25rem $blue-bg-light;
-              background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e");
+            border-color: $blue;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem $blue-bg-light;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e");
           }
         }
       }
     }
 
     &__title {
-
       font-size: 32px;
       font-style: normal;
       font-weight: 700;
@@ -242,7 +246,6 @@
     }
 
     &__title {
-
       font-size: 24px;
       font-style: normal;
       font-weight: 700;
@@ -251,9 +254,13 @@
       text-align: left;
     }
 
+    &__button {
+      width: 112px;
+    }
+
     &__body {
       padding: 32px;
-      background: #FAFAFA;
+      background: $gray-lighter;
       height: 100%;
       padding-bottom: 72px;
 

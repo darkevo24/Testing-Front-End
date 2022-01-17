@@ -150,7 +150,7 @@ const CMSDokumentasiDetail = (props) => {
         let obj = {
           idDokumentasi: dataDetailDokumentasi.dokumentasiId,
           id: dataDetailDokumentasi.id,
-          images: fotoDokumentasi,
+          images: [res.data],
         };
         return dispatch(postImageDokumentasiDetail(obj));
       });

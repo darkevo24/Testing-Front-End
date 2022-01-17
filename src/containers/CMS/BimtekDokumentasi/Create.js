@@ -29,7 +29,7 @@ const CMSJadwalBaru = () => {
   const [fotoDokumentasi, setFotoDokumentasi] = useState([]);
   const [urlVidio, setUrlVidio] = useState('');
   const [isiDokumentasi, setIsiDokumentasi] = useState('');
-  const [BimtekId, setBimtekId] = useState(0);
+  const [BimtekId, setBimtekId] = useState('');
   const { records, loading } = useSelector(bimtekListSelector);
   const DetailBimtek = useSelector(bimtekJadwalDetailSelector);
 

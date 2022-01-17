@@ -48,11 +48,7 @@ const TambahPengguna = () => {
           <Button className={cx(bem.e('button'), 'ml-24')} variant="secondary" onClick={backToTable}>
             Batal
           </Button>
-          <Button
-            className={cx(bem.e('button'), 'ml-10')}
-            variant="info"
-            style={{ width: '112px' }}
-            onClick={submitpenggunaForm}>
+          <Button className={cx(bem.e('button'), 'ml-10')} variant="info" onClick={submitpenggunaForm}>
             Kirim
           </Button>
         </div>

@@ -8,9 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import NumberFormat from 'react-number-format';
 import cloneDeep from 'lodash/cloneDeep';
 import find from 'lodash/find';
+import first from 'lodash/first';
+import flatten from 'lodash/flatten';
 import map from 'lodash/map';
+import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 import remove from 'lodash/remove';
+import values from 'lodash/values';
 import moment from 'moment';
 
 import { ReactComponent as SearchSvg } from 'assets/search.svg';
@@ -136,8 +140,9 @@ const DataSet = () => {
     [],
   );
 
-  const onUpdateRegion = (ext_bbox) => {
-    // TODO: check how to pass the reqion data to api
+  const onUpdateRegion = (rectangleCoordinates) => {
+    const mapped = map(first(rectangleCoordinates), (latLong) => values(latLong));
+    const ext_bbox = uniq(flatten(mapped));
     fetchDataset({ ext_bbox }, true);
   };
 

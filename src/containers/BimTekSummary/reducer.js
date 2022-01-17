@@ -9,6 +9,10 @@ export const getBimtekSummaryJadwalTerdekat = createAsyncThunk('getBimtekSummary
   const response = await get(apiUrls.bimtekSummaryJadwalTerdekat);
   return response?.data?.content;
 });
+export const getBimtekLatestDokumentasi = createAsyncThunk('getBimtekLatestDokumentasi', async (params) => {
+  const response = await get(apiUrls.bimteklatestDokumentasi);
+  return response?.data?.content;
+});
 
 const REDUCER_NAME = 'BIMTEK_SUMMARY_REDUCER';
 
@@ -25,6 +29,12 @@ const INITIAL_STATE = {
     records: [],
     page: 1,
     size: 10,
+    message: null,
+  },
+  dokumentasiDataset: {
+    loading: false,
+    status: 'idle',
+    records: [],
     message: null,
   },
   detailDataset: {
@@ -70,12 +80,24 @@ const SLICE_OBJ = createSlice({
       state.detailDataset.loading = false;
       state.jadwalTerdekatDataset.message = action.error.message;
     });
+    builder.addCase(getBimtekLatestDokumentasi.pending, (state, action) => {
+      state.dokumentasiDataset.loading = true;
+    });
+    builder.addCase(getBimtekLatestDokumentasi.fulfilled, (state, action) => {
+      state.dokumentasiDataset.loading = false;
+      state.dokumentasiDataset.records = action.payload;
+    });
+    builder.addCase(getBimtekLatestDokumentasi.rejected, (state, action) => {
+      state.dokumentasiDataset.loading = false;
+      state.dokumentasiDataset.message = action.error.message;
+    });
   },
 });
 
 export const bimtekSummaryMateriTerdekatDatasetSelector = (state) => state.bimtekSummary?.materiTerdekatDataset;
 export const bimtekSummaryJadwalTerdekatDatasetSelector = (state) => state.bimtekSummary?.jadwalTerdekatDataset;
 export const bimtekSummaryDetailSelector = (state) => state.bimtekSummary?.detailDataset;
+export const bimtekLatestDokumentasiSelector = (state) => state.bimtekSummary?.dokumentasiDataset;
 export const logDatasetSelector = (state) => state.bimtekSummary?.logdataset;
 export const { updateResult } = SLICE_OBJ.actions;
 export default SLICE_OBJ.reducer;

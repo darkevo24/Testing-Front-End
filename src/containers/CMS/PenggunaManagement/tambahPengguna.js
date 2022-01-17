@@ -45,10 +45,14 @@ const TambahPengguna = () => {
       <div className={cx(bem.e('header'), 'd-flex justify-content-between')}>
         <div className={bem.e('title')}>
           Tambah Pengguna Baru
-          <Button className="ml-24" variant="secondary" style={{ width: '112px' }} onClick={backToTable}>
+          <Button className={cx(bem.e('button'), 'ml-24')} variant="secondary" onClick={backToTable}>
             Batal
           </Button>
-          <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={submitpenggunaForm}>
+          <Button
+            className={cx(bem.e('button'), 'ml-10')}
+            variant="info"
+            style={{ width: '112px' }}
+            onClick={submitpenggunaForm}>
             Kirim
           </Button>
         </div>

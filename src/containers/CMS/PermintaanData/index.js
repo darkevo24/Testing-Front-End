@@ -103,7 +103,7 @@ const CMSPermintaanData = () => {
     },
     {
       Header: 'Nama Peminta',
-      accessor: 'user.name',
+      accessor: 'user.nama',
     },
     {
       Header: 'Instansi',

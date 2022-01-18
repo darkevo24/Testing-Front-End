@@ -26,7 +26,7 @@ export const CMSHeader = () => {
             {t('header.userNav.sdiPortal')}
           </Button>
           <li className="d-flex justify-content-end flex-row align-items-center h-100">
-            <NavDropdown title={user?.name || 'Achmad Adam'} id="user-nav-dropdown" className="user-nav h-100">
+            <NavDropdown title={user?.nama || 'Achmad Adam'} id="user-nav-dropdown" className="user-nav h-100">
               <NavDropdown.Item onClick={goTo('/change-user-password')}>
                 {t('header.userNav.changePassword')}
               </NavDropdown.Item>

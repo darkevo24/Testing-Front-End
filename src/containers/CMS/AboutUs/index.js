@@ -40,7 +40,7 @@ const CMSAboutUs = () => {
           let value = {
             data: [
               item.judul,
-              item.user.name,
+              item.user.nama,
               item.createdAt.split('T')[0].split('-').reverse().join('-'),
               item.updatedAt.split('T')[0].split('-').reverse().join('-'),
               item.status,

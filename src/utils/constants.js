@@ -20,7 +20,7 @@ import { SplitCircle } from 'components/Icons';
 
 export const analyticsUrl = 'https://analitik.data.go.id';
 export const katalogUrl = 'https://katalog.satudata.go.id';
-export const apiUrl = 'https://sdmx.satudata.go.id'; //api-be
+export const apiUrl = 'https://satudata.go.id/api-be-sso'; //api-be
 export const dataUrl = `${katalogUrl}/api`;
 export const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
 

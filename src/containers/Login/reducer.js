@@ -14,7 +14,7 @@ export const LOGIN_REDUCER = 'LOGIN_REDUCER';
 export const fetchLoggedInUserInfo = createAsyncThunk('login/fetchLoggedInUserInfo', async (token) => {
   setCookie(cookieKeys.token, token);
   const response = await get(apiUrls.userInfo);
-  const user = response.data;
+  const user = response.data.content;
   setCookie(cookieKeys.user, user);
   return user;
 });

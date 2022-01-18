@@ -87,7 +87,7 @@ const Forum = () => {
     },
     {
       label: 'Nama Lengkap',
-      value: user?.name || '',
+      value: user?.nama || '',
     },
     {
       label: 'E-mail',
@@ -95,11 +95,11 @@ const Forum = () => {
     },
     {
       label: 'Nomor Handphone',
-      value: user?.nomorHandphone || '',
+      value: user?.noHp || '',
     },
     {
       label: 'Instansi Peminta',
-      value: user?.instansiPeminta || '',
+      value: user?.instansiName || '',
     },
   ];
 

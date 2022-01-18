@@ -142,7 +142,7 @@ export const Header = () => {
     return (
       <Nav className="h-100 d-flex align-items-center">
         {getNavLinks(MEMBER_ROUTES, location.pathname, goTo)}
-        <NavDropdown title={user?.name || 'Achmad Adam'} id="user-nav-dropdown" className="user-nav h-100">
+        <NavDropdown title={user?.nama || 'Achmad Adam'} id="user-nav-dropdown" className="user-nav h-100">
           <NavDropdown.Item onClick={goTo('/change-user-password')}>{t('header.userNav.changePassword')}</NavDropdown.Item>
           <NavDropdown.Item onClick={goTo('/cms')}>{t('header.userNav.cmsApplication')}</NavDropdown.Item>
           <NavDropdown.Item onClick={goTo('/policy')}>{t('header.userNav.privacyPolicy')}</NavDropdown.Item>

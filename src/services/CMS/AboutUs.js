@@ -98,7 +98,7 @@ export const filterTentang = (page = 1, size = 10, sort = 'id') => {
             status: item.status,
             created_at: new Date(item.createdAt),
             updated_at: new Date(item.updatedAt),
-            creator: item.user.name,
+            creator: item.user.nama,
           };
         }),
       };

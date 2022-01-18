@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Form from 'react-bootstrap/Form';
+import { useDispatch, useSelector } from 'react-redux';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
+import SingleSelectDropdown from 'components/DropDown/SingleDropDown';
+import { NoPerminataanData } from 'components/Icons.js';
 import { BimtekLayout } from 'layouts/BimtekLayout';
+import { formatDate, monthList } from 'utils/helper';
 import BimTekJadwalItem from './item.js';
 import './bimtekjadwal.scss';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   bimtekJadwalDatasetSelector,
   bimtekJadwalLocationsDatasetSelector,
@@ -15,17 +16,12 @@ import {
   getBimtekJadwalLocationsData,
   getBimtekJadwalTagsData,
 } from './reducer.js';
-import moment from 'moment';
-import 'moment/locale/id';
-import { NoPerminataanData } from 'components/Icons.js';
-
-moment.locale('id');
 
 const BimTekJadwal = () => {
   let currentYear = new Date().getFullYear();
   let filterYear = [];
+
   const [paramsData, setParamsData] = useState({});
-  const [disableOption, setDisableOption] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -44,8 +40,7 @@ const BimTekJadwal = () => {
   const filterCategory = useSelector(bimtekJadwalTagsDatasetSelector);
 
   const handleFilterChange = (e) => {
-    setParamsData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    setDisableOption(true);
+    setParamsData((prev) => ({ ...prev, [e.key]: e.value }));
   };
   for (var i = 0; i < 10; i++) {
     filterYear.push(currentYear - i);
@@ -55,32 +50,41 @@ const BimTekJadwal = () => {
     <BimtekLayout>
       <div className="h-100">
         <Row className="bimtek-filter mb-3">
-          <Col xs={4}>
-            <Form.Select name="tag" onChange={handleFilterChange}>
-              <option disabled={disableOption}>Kategori Bimtek</option>
-              {filterCategory.map((category, key) => (
-                <option key={key} value={category}>
-                  {category}
-                </option>
-              ))}
-            </Form.Select>
+          <Col xs={3}>
+            <SingleSelectDropdown
+              data={filterCategory.map((category) => ({ key: 'tag', value: category, label: category }))}
+              placeHolder="Kategori Bimtek"
+              isLoading={false}
+              noValue={true}
+              onChange={handleFilterChange}
+            />
           </Col>
           <Col xs={4}>
-            <Form.Select name="kota" onChange={handleFilterChange}>
-              <option disabled={disableOption}>Pilih Kota Pelaksanaan</option>
-              {filterLocations?.map((city, key) => (
-                <option key={key} value={city.provinsi}>
-                  {city.nama}
-                </option>
-              ))}
-            </Form.Select>
+            <SingleSelectDropdown
+              data={filterLocations.map((city) => ({ key: 'kota', value: city.id, label: city.nama }))}
+              placeHolder="Pilih Kota Pelaksanaan"
+              isLoading={false}
+              noValue={true}
+              onChange={handleFilterChange}
+            />
+          </Col>
+          <Col xs={3}>
+            <SingleSelectDropdown
+              data={filterYear.map((year) => ({ key: 'tahun', value: year, label: year }))}
+              placeHolder="Pilih Tahun"
+              isLoading={false}
+              noValue={true}
+              onChange={handleFilterChange}
+            />
           </Col>
           <Col xs={2}>
-            <Form.Select name="tahun" onChange={handleFilterChange}>
-              {filterYear.map((year, key) => (
-                <option key={key}>{year}</option>
-              ))}
-            </Form.Select>
+            <SingleSelectDropdown
+              data={monthList.map((month, key) => ({ key: 'bulan', value: key + 1, label: month }))}
+              placeHolder="Pilih Bulan"
+              isLoading={false}
+              noValue={true}
+              onChange={handleFilterChange}
+            />
           </Col>
         </Row>
         {!jadwalData.length ? (
@@ -93,8 +97,8 @@ const BimTekJadwal = () => {
             <BimTekJadwalItem
               key={key}
               title={item.namaBimtek}
-              startDate={moment(item.tanggalMulaiDisetujui).format('D MMMM YYYY')}
-              endDate={moment(item.tanggalSelesaiDisetujui).format('D MMMM YYYY')}
+              startDate={formatDate(item.tanggalMulaiDisetujui)}
+              endDate={formatDate(item.tanggalSelesaiDisetujui)}
               city={item.kota}
               location={item.tempat}
               speaker={item.pembicara}

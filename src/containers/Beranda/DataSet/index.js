@@ -8,7 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import NumberFormat from 'react-number-format';
 import cloneDeep from 'lodash/cloneDeep';
 import find from 'lodash/find';
+import first from 'lodash/first';
 import map from 'lodash/map';
+import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 import remove from 'lodash/remove';
 import moment from 'moment';
@@ -136,8 +138,15 @@ const DataSet = () => {
     [],
   );
 
-  const onUpdateRegion = (ext_bbox) => {
-    // TODO: check how to pass the reqion data to api
+  const onUpdateRegion = (rectangleCoordinates) => {
+    const coordinates = first(rectangleCoordinates);
+    const longs = uniq(map(coordinates, 'lng'));
+    const lats = uniq(map(coordinates, 'lat'));
+    const ext_bbox = [];
+    longs.forEach((_, index) => {
+      ext_bbox.push(longs[index]);
+      ext_bbox.push(lats[index]);
+    });
     fetchDataset({ ext_bbox }, true);
   };
 

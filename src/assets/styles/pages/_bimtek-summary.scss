@@ -1,0 +1,47 @@
+.sdp-bimtek-summary {
+  &__content-image {
+    height: 308px;
+    width: 100%;
+  }
+
+  &__content-date {
+    color: $gray-dark;
+  }
+
+  &__list {
+    width: 844px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    &-item {
+      display: inline-block;
+      width: 550px;
+      cursor: pointer;
+      border: 1px solid $stroke;
+    }
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__summary-slider {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .slick-prev {
+    left: 3% !important;
+    z-index: 1;
+    top: 20%;
+  }
+
+  .slick-arrow::before {
+    color: black !important;
+  }
+
+  .slick-next {
+    top: 20%;
+    right: 3% !important;
+    z-index: 1;
+    color: black;
+  }
+}

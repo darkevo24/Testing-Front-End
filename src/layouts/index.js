@@ -6,6 +6,7 @@ import { AdminHeader, Header } from 'containers/Header';
 import { CMSHeader } from 'containers/Header/CMSHeader';
 import { Footer } from 'containers/Footer';
 import { tokenSelector } from 'containers/Login/reducer';
+import { cookieKeys, getCookieByName } from '../utils/cookie';
 
 export const AdminAuthLayout = ({ children }) => {
   return <div className="auth-container admin-auth-container">{children}</div>;
@@ -46,7 +47,7 @@ export const CMSLayout = ({ children }) => {
 };
 
 export const PrivateRoute = ({ component: Component, ...rest }) => {
-  const token = useSelector(tokenSelector);
+  const token = useSelector(tokenSelector) || getCookieByName(cookieKeys.token);
   return <Route {...rest} render={(props) => (!!token ? <Component {...props} /> : <Redirect to="/home" />)} />;
 };
 

@@ -88,7 +88,7 @@ function AppRoutes(props) {
         <PrivateRoute exact path="/kesiapan-sdi" component={KesiapanSDI} />
         <PrivateRoute exact path="/dashboard-eksekutif" component={DashboardEksekutif} />
         <PrivateRoute exact path="/dashboard-saya" component={DashboardSaya} />
-        <PrivateRoute exact path="/data-analytic" component={DataAnalytic} />
+        <PrivateRoute exact path="/dataanalytic" component={DataAnalytic} />
         <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
         <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
         <Route exact path="/api/form" component={ManagementApiAddPage} />

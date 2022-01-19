@@ -44,6 +44,7 @@ const ChangePasswordUser = lazy(() => import('containers/ChangePasswordUser'));
 const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
 // const NotFoundPage = lazy(() => import('containers/NotFound'));
 const KebijakanPrivasiPage = lazy(() => import('containers/KebijakanPrivasi'));
+const MetadataRegistryPage = lazy(() => import('containers/MetadataRegistry'));
 
 function AppRoutes(props) {
   return (
@@ -92,6 +93,7 @@ function AppRoutes(props) {
         <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
         <Route exact path="/api/form" component={ManagementApiAddPage} />
         <Route exact path="/api" component={ManagementApiPage} />
+        <PrivateRoute exact path="/sdmx" component={MetadataRegistryPage} />
         {/* <Route exact path="/change-password" component={ChangePassword} /> */}
         {/* <Route exact path="/forgot-password" component={ForgotPassword} /> */}
         {/* <Route path="*" component={NotFoundPage} /> */}

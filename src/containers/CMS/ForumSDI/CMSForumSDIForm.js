@@ -174,13 +174,19 @@ const CMSForumSDIForm = () => {
       try {
         const method = id ? put : post;
         const url = id ? `${apiUrls.cmsForumSDI}/${id}` : apiUrls.cmsForumSDI;
-        await method(url, {
+        const topikResID = topikResult.find((elem) => formData?.topik?.value === elem?.id);
+        debugger;
+        let params = {
           judul: formData?.judul || '',
-          topik: formData?.topik?.value || null,
+          topik: !topikResID ? 0 : formData?.topik?.value || null,
           tags: formData.tags.map((elem) => elem.label) || [],
           isi: formData?.isi || '',
           lampiran: fileLink || [{}],
-        });
+        };
+        if (topikResID === -1) {
+          params['topikName'] = formData?.topik?.value;
+        }
+        await method(url, params);
         goBack();
       } catch (e) {
         setLoader(false);

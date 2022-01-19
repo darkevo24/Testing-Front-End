@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, defaultNumberOfRows, get, post, put, deleteRequest } from 'utils/request';
+import { apiUrls, defaultNumberOfRows, get, post } from 'utils/request';
 
 export const initialState = {
   dataset: {

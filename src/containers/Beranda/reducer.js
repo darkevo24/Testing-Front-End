@@ -66,6 +66,7 @@ export const getDataSet = createAsyncThunk('beranda/getDataset', async (params, 
   data = mapParamsToJsonString(data, ['facet.field']);
   data = mapParamsToOrString(data, facetFields);
   data = mapOrStringsToFq(data, facetFields);
+
   const response = await get(apiUrls.dataset, { query: pickValidDatasetPaginationParams(data) });
   return response?.data?.result;
 });

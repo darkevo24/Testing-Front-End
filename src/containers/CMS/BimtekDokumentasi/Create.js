@@ -29,7 +29,7 @@ const CMSJadwalBaru = () => {
   const [fotoDokumentasi, setFotoDokumentasi] = useState([]);
   const [urlVidio, setUrlVidio] = useState('');
   const [isiDokumentasi, setIsiDokumentasi] = useState('');
-  const [BimtekId, setBimtekId] = useState(0);
+  const [BimtekId, setBimtekId] = useState('');
   const { records, loading } = useSelector(bimtekListSelector);
   const DetailBimtek = useSelector(bimtekJadwalDetailSelector);
 
@@ -136,17 +136,18 @@ const CMSJadwalBaru = () => {
     {
       Header: 'Tanggal',
       accessor: 'tanggalMulai',
-      Cell: ({ ...rest }) => (
-        <span>
-          {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('DD MMMM YYYY') : '---'}
-        </span>
-      ),
-    },
-    {
-      Header: 'Sesi',
-      accessor: 'sesi',
-      Cell: ({ ...rest }) => (
-        <span> {rest.row.original?.tanggalMulai ? moment(rest.row.original?.tanggalMulai).format('hh:mm:ss') : '---'} </span>
+      Cell: ({ row: { original } }) => (
+        <div className="d-flex">
+          <span className="pr-5">
+            {original?.tanggalMulai ? moment(original?.tanggalMulai).format('DD MMMM YYYY') + ' ' : '---'}
+            {original?.tanggalMulai ? moment(original?.tanggalMulai).format('HH:mm') : '---'}
+          </span>
+          <span>-</span>
+          <span className="pl-5">
+            {original?.tanggalSelesai ? moment(original?.tanggalSelesai).format('DD MMMM YYYY') + ' ' : '---'}
+            {original?.tanggalSelesai ? moment(original?.tanggalSelesai).format('HH:mm') : '---'}
+          </span>
+        </div>
       ),
     },
   ];

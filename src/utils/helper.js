@@ -115,7 +115,7 @@ export const mapOrStringsToFq = (data, keys = []) => {
 };
 
 export const pickValidDatasetPaginationParams = (data) => {
-  return pick(data, ['q', 'fq', 'facet.field', 'facet.limit', 'start', 'rows', 'sort']);
+  return pick(data, ['q', 'fq', 'facet.field', 'facet.limit', 'start', 'rows', 'sort', 'ext_bbox', 'ext_prev_extent']);
 };
 
 /**
@@ -129,25 +129,26 @@ export const parseQueryString = () => {
   return JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
 };
 
+export const monthList = [
+  'Januari',
+  'Februari',
+  'Maret',
+  'April',
+  'Mei',
+  'Juni',
+  'Juli',
+  'Agustus',
+  'September',
+  'Oktober',
+  'November',
+  'Desember',
+];
+
 export const formatDate = (date) => {
   if (!date) {
     return '';
   }
   const currDate = new Date(date);
-  let monthList = [
-    'Januari',
-    'Februari',
-    'Maret',
-    'April',
-    'Mei',
-    'Juni',
-    'Juli',
-    'Agustus',
-    'September',
-    'Oktober',
-    'November',
-    'Desember',
-  ];
 
   // format: dd Mon yyyy
   return [currDate.getDate(), monthList[currDate.getMonth()], currDate.getFullYear()].join(' ');
@@ -295,6 +296,12 @@ export const getStatusClass = (status) => {
         ...redText,
         text: 'Dihapus',
         divText: 'Dihapus',
+      };
+    case 'waiting_request_approval':
+      return {
+        ...grayText,
+        text: 'Waiting Request Approval',
+        divText: 'Waiting Request Approval',
       };
     default:
       return {};
@@ -444,4 +451,22 @@ export const convertTitleToSlug = (title) => {
 export const splitByLastChar = (src, char) => {
   const lastIndex = src.lastIndexOf(char);
   return src.substr(0, lastIndex);
+};
+
+export const getMapFillColor = (d) => {
+  return d > 1000
+    ? '#800026'
+    : d > 500
+    ? '#BD0026'
+    : d > 200
+    ? '#E31A1C'
+    : d > 100
+    ? '#FC4E2A'
+    : d > 50
+    ? '#FD8D3C'
+    : d > 20
+    ? '#FEB24C'
+    : d > 10
+    ? '#FED976'
+    : '#E31A1C';
 };

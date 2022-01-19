@@ -37,15 +37,14 @@ const CMSDokumentasiDetail = (props) => {
   const [urlVidio, setUrlVidio] = useState('');
   const [isiDokumentasi, setIsiDokumentasi] = useState('');
   const [showModal, setShowModal] = useState('');
+  const [apiError, setAPIError] = useState(false);
 
   const { records } = useSelector(bimtekDokumentasiDetailSelector);
   const { logAktifitas } = useSelector(bimtekLogAktifitas);
-
   const initialCall = () => {
     dispatch(getDokumentasiDetail(id));
     dispatch(getListLogAktifitas(id));
   };
-
   useEffect(() => {
     if (!id) {
       history.goBack();
@@ -75,12 +74,14 @@ const CMSDokumentasiDetail = (props) => {
     try {
       await method(url, {}, params);
       handleCloseModal();
-      handleNotification('secondary', `${message}`, 'check');
+      handleNotification('secondary', message, 'check');
       initialCall();
       isFunction(callBack) && callBack();
+      setAPIError(false);
     } catch (e) {
-      handleNotification('secondary', `Error, ${e.message}`, 'cross');
+      handleNotification('secondary', e?.data?.message, 'cross');
       handleCloseModal();
+      setAPIError(true);
     }
   };
 
@@ -93,6 +94,7 @@ const CMSDokumentasiDetail = (props) => {
   const tanggalSelesaiDisetujui = moment(dataDetailDokumentasi?.tanggalSelesaiDisetujui).format('DD/MM/YYYY');
   const waktuSelesaiDisetujui = moment(dataDetailDokumentasi?.tanggalSelesaiDisetujui).format('hh:mm');
   const dataTempat = dataDetailDokumentasi?.kota;
+  const namaBimtek = dataDetailDokumentasi?.namaBimtek;
   useEffect(() => {
     reset({
       id: dataDetailDokumentasi.id,
@@ -102,6 +104,7 @@ const CMSDokumentasiDetail = (props) => {
       tanggalMulaiDisetujui,
       tanggalSelesaiDisetujui,
       dataTempat,
+      namaBimtek,
     });
   }, [dataDetailDokumentasi]);
   const schema = yup
@@ -147,7 +150,7 @@ const CMSDokumentasiDetail = (props) => {
         let obj = {
           idDokumentasi: dataDetailDokumentasi.dokumentasiId,
           id: dataDetailDokumentasi.id,
-          images: fotoDokumentasi,
+          images: [res.data],
         };
         return dispatch(postImageDokumentasiDetail(obj));
       });
@@ -162,7 +165,17 @@ const CMSDokumentasiDetail = (props) => {
 
   const deleteFotoDokumentasi = (e) => {
     const filter = fotoDokumentasi.filter((item, index) => index !== e);
-    setFotoDokumentasi(filter);
+    const getFileId = fotoDokumentasi.filter((item, index) => index === e);
+    const fileId = getFileId[0].fileId;
+    handleAPICall(
+      deleteRequest,
+      `${apiUrls.cmsBimtekJadwal}/${dataDetailDokumentasi.id}/dokumentasi/${dataDetailDokumentasi.dokumentasiId}/images/${fileId}`,
+      {},
+      'Berhasil Menghapus Foto Dokumentasi',
+    );
+    if (!apiError) {
+      setFotoDokumentasi(filter);
+    }
   };
 
   const openUploadForm = (id) => {
@@ -207,12 +220,12 @@ const CMSDokumentasiDetail = (props) => {
       Cell: ({ row: { original } }) => (
         <div className="d-flex">
           <span className="pr-5">
-            {original?.tanggalMulai ? moment(original?.tanggalMulai).format('DD MMMM YYYY') : '---'}
+            {original?.tanggalMulai ? moment(original?.tanggalMulai).format('DD MMMM YYYY') + ' ' : '---'}
             {original?.tanggalMulai ? moment(original?.tanggalMulai).format('HH:mm') : '---'}
           </span>
           <span>-</span>
           <span className="pl-5">
-            {original?.tanggalSelesai ? moment(original?.tanggalSelesai).format('DD MMMM YYYY') : '---'}
+            {original?.tanggalSelesai ? moment(original?.tanggalSelesai).format('DD MMMM YYYY') + ' ' : '---'}
             {original?.tanggalSelesai ? moment(original?.tanggalSelesai).format('HH:mm') : '---'}
           </span>
         </div>
@@ -352,6 +365,16 @@ const CMSDokumentasiDetail = (props) => {
               </div>
             </div>
             <Form className="sdp-form" onSubmit={handleSubmit(onTest)}>
+              <Input
+                group
+                readOnly
+                className="mb-10"
+                type="text"
+                label="Nama Bimtek"
+                name="namaBimtek"
+                control={control}
+                rules={{ required: false }}
+              />
               <Row className="align-items-end mb-15">
                 <Col>
                   <DatePicker

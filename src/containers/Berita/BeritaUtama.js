@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import moment from 'moment';
-import { truncate } from 'lodash';
+import truncate from 'lodash/truncate';
 import 'moment/locale/id';
 import parse from 'html-react-parser';
 import { useHistory } from 'react-router-dom';
@@ -59,10 +59,16 @@ const BeritaUtama = () => {
               <ImageBerita src={image} />
               <Tanggal>{moment(tanggalPublis).fromNow()}</Tanggal>
               <Judul onClick={(event) => handleDetail(event, id)}>{judul}</Judul>
-              <div className="overview">{parse(truncatedParagrapData)}</div>
-              <button className="read_more_link p-0 border-0 bg-white" onClick={(event) => handleDetail(event, id)}>
-                <h6>Read More</h6>
-              </button>
+              {partContent.length > 250 ? (
+                <>
+                  <div className="overview">{parse(truncatedParagrapData)}</div>
+                  <button className="read_more_link p-0 border-0 bg-white" onClick={(event) => handleDetail(event, id)}>
+                    <h6>Baca Selengkapnya</h6>
+                  </button>
+                </>
+              ) : (
+                <div className="overview">{parse(partContent)}</div>
+              )}
             </div>
           );
         })}

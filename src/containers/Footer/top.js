@@ -5,6 +5,8 @@ import { ReactComponent as PrinterIcon } from 'assets/printer.svg';
 import LogoBappenas from 'assets/Logo_Bappenas_Indonesia.png';
 
 import styled from 'styled-components';
+import { useKeycloak } from '@react-keycloak/web';
+import { useHistory } from 'react-router-dom';
 
 export const Box = styled.div`
   width: 100%;
@@ -51,7 +53,10 @@ const FooterLink = styled.a`
   font-weight: normal;
 `;
 
-export const Top = ({ history, token }) => {
+export const Top = () => {
+  const history = useHistory();
+  const { keycloak } = useKeycloak();
+  const isLoggedIn = !!keycloak.authenticated;
   const indexes = [
     {
       title: 'Beranda',
@@ -59,10 +64,10 @@ export const Top = ({ history, token }) => {
     },
     {
       title: 'Dataset',
-      link: !!token ? '/dataset' : '/topic-detail',
+      link: isLoggedIn ? '/dataset' : '/topic-detail',
     },
   ];
-  if (token) {
+  if (isLoggedIn) {
     indexes.push({
       title: 'Dashboard',
       link: '/kesiapan-sdi',

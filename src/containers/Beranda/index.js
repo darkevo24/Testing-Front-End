@@ -2,8 +2,8 @@ import { useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import take from 'lodash/take';
+import { useKeycloak } from '@react-keycloak/web';
 import { Loader } from 'components';
-import { tokenSelector } from 'containers/Login/reducer';
 import { datasetSelector, getDataSet, getInitialParams } from './reducer';
 import { BerandaTop } from './BerandaTop';
 import { SearchBeranda } from './SearchBeranda';
@@ -20,8 +20,8 @@ const Container = styled.div`
 const BerandaPage = () => {
   const dispatch = useDispatch();
   const { /* error, */ loading, result } = useSelector(datasetSelector);
-  const token = useSelector(tokenSelector);
-  const isLoggedIn = !!token;
+  const { keycloak } = useKeycloak();
+  const isLoggedIn = !!keycloak.authenticated;
 
   useEffect(() => {
     dispatch(getDataSet(getInitialParams()));

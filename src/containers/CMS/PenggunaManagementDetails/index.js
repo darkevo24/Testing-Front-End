@@ -8,7 +8,7 @@ import { LogStatus } from 'components/Sidebars/LogStatus';
 import { getPenggunaLogs, penggunanDataDetailSelector, penggunanLogsSelector } from './reducer';
 import CMSpenggunaForm, { submitpenggunaForm } from '../PenggunaManagement/CMSPenggunaForm';
 import Notification from 'components/Notification';
-import { put } from 'utils/request';
+import { put, deleteRequest } from 'utils/request';
 import { apiUrls } from 'utils/constants';
 
 const bem = bn('content-detail');
@@ -109,6 +109,24 @@ const CMSPenggunaManagementView = () => {
     }
   };
 
+  const deletePengguna = async () => {
+    try {
+      await deleteRequest(`${apiUrls.penggunaManagement}/${id}`);
+      Notification.show({
+        type: 'secondary',
+        message: 'User Deleted Successfully',
+        icon: 'check',
+      });
+      history.push('/cms/pengguna-management');
+    } catch (e) {
+      Notification.show({
+        type: 'warning',
+        message: e.data.message,
+        icon: 'cross',
+      });
+    }
+  };
+
   return (
     <div className={bem.b()}>
       <StatusBar />
@@ -119,7 +137,7 @@ const CMSPenggunaManagementView = () => {
               <div className={bem.e('title')}>Detail</div>
               <div>
                 {editable ? (
-                  <Button key="delete" variant="light" className="mr-16 br-4 bg-gray border-0 p-13">
+                  <Button key="delete" variant="light" className="mr-16 br-4 bg-gray border-0 p-13" onClick={deletePengguna}>
                     <Trash />
                   </Button>
                 ) : (

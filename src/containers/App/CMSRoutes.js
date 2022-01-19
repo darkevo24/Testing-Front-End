@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { CMSLayout, PrivateRoute } from 'layouts/AdminLayout';
+import { CMSLayout, PrivateRoute } from 'layouts';
 
 const DashboardPage = lazy(() => import('containers/CMS/Dashboard'));
 const KomunitasAhliPage = lazy(() => import('containers/CMS/KomunitasAhli'));

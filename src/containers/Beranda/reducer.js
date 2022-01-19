@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import cloneDeep from 'lodash/cloneDeep';
-import { tokenSelector } from 'containers/Login/reducer';
 import { apiUrls, defaultNumberOfRows, get, paginationParams, post } from 'utils/request';
 import {
   mapOrStringsToFq,
@@ -8,6 +7,7 @@ import {
   mapParamsToOrString,
   pickValidDatasetPaginationParams,
 } from 'utils/helper';
+import { useKeycloak } from '@react-keycloak/web';
 
 const facetFields = ['organization', 'kategori', 'tags', 'res_format'];
 
@@ -49,11 +49,11 @@ export const initialState = {
 
 export const BERANDA_REDUCER = 'BERANDA_REDUCER';
 
-export const getDataSet = createAsyncThunk('beranda/getDataset', async (params, { getState }) => {
-  const state = getState();
-  const token = tokenSelector(state);
+export const getDataSet = createAsyncThunk('beranda/getDataset', async (params) => {
+  const { keycloak } = useKeycloak();
+  const isLoggedIn = !!keycloak.authenticated;
   let data = cloneDeep(params);
-  if (!token) {
+  if (!isLoggedIn) {
     data.q = [data.q];
     if (data.kategori?.length) {
       data.kategori.forEach(({ id }) => data.q.push(`kategori=${id}`));

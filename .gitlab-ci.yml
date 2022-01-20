@@ -9,6 +9,8 @@ cache:
 
 deploy:
   stage: deploy
+  variables:
+    REACT_APP_SDI_ENV: "dev"
   script:
     - yarn install
     - yarn build
@@ -22,6 +24,8 @@ deploy:
 
 prod-webserver-one:
   stage: deploy
+  variables:
+    REACT_APP_SDI_ENV: "production"
   script:
     - yarn install
     - yarn build

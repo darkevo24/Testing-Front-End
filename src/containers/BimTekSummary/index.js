@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -20,6 +20,8 @@ import {
   bimtekSummaryJadwalTerdekatDatasetSelector,
   bimtekLatestDokumentasiSelector,
 } from './reducer';
+import { ReactComponent as ChevronUp } from 'assets/chevron-up.svg';
+import { ReactComponent as ChevronDown } from 'assets/chevron-down.svg';
 
 const bem = bn('bimtek-summary');
 
@@ -138,6 +140,29 @@ const BimtekSummary = () => {
 };
 
 const DokumentasiItem = ({ urlPhoto, title, date, kota, desc }) => {
+  const [showAll, setShowAll] = useState(false);
+
+  const toggleShow = () => setShowAll((prev) => !prev);
+
+  const description = desc.replace(/<[^>]+>/g, '');
+
+  const getDescription = () => {
+    if (description.length <= 250) {
+      return description;
+    } else {
+      return (
+        <>
+          {showAll ? description : `${description.substring(0, 250)} Read more...`}
+          {showAll ? (
+            <ChevronUp className="chevron-up ml-10" onClick={toggleShow} />
+          ) : (
+            <ChevronDown className="chevron-up ml-10" onClick={toggleShow} />
+          )}
+        </>
+      );
+    }
+  };
+
   return (
     <div className={cx(bem.e('list-item'), 'mr-16')}>
       <div>
@@ -147,10 +172,10 @@ const DokumentasiItem = ({ urlPhoto, title, date, kota, desc }) => {
         <div className={cx(bem.e('content-date'), 'fs-14 mt-15')}>
           {kota}, {date}
         </div>
-        <div className={cx(bem.e('content-title'), 'fw-600 fs-14 mt-8')}>{title}</div>
-        <div
-          className={cx(bem.e('content-description'), 'fw-400 fs-13 mt-8')}
-          dangerouslySetInnerHTML={{ __html: desc }}></div>
+        <div className={cx(bem.e('content-title'), 'fw-600 fs-14 mt-8')}>
+          {title}
+          <div className={cx(bem.e('content-description'), 'fw-400 fs-13 mt-8')}>{getDescription()}</div>
+        </div>
       </div>
     </div>
   );

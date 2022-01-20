@@ -83,12 +83,12 @@ const CMSBimtekPermintaanEdit = (props) => {
 
   const schema = yup
     .object({
-      namaBimbinganTeknis: yup.string().required(),
-      tempatBimbinganTeknis: yup.string().required(),
-      tanggalMulaiDisetujuiUpdate: yup.string().required(),
-      tanggalSelesaiDisetujuiUpdate: yup.string().required(),
-      jamMulaiDisetujuiUpdate: yup.string().required(),
-      jamSelesaiDisetujuiUpdate: yup.string().required(),
+      namaBimbinganTeknis: yup.mixed().required('nama bimtek is required'),
+      tempatBimbinganTeknis: yup.mixed().required('tempat bimtek is required'),
+      tanggalMulaiDisetujuiUpdate: yup.string().required('tanggal mulai is required'),
+      tanggalSelesaiDisetujuiUpdate: yup.string().required('tanggal selesai is required'),
+      jamMulaiDisetujuiUpdate: yup.string().required('jam mulai is required'),
+      jamSelesaiDisetujuiUpdate: yup.string().required('jam selesai is required'),
     })
     .required();
 
@@ -166,6 +166,10 @@ const CMSBimtekPermintaanEdit = (props) => {
     const tanggalSelesaiDisetujui = `${moment(data.tanggalSelesaiDisetujuiUpdate).format('YYYY-MM-DD')} ${
       data.jamSelesaiDisetujuiUpdate
     }:00`;
+    if (!moment(tanggalSelesaiDisetujui).isAfter(tanggalMulaiDisetujui)) {
+      handleCloseModal();
+      return handleNotification('secondary', 'Gagal, Rentang Waktu Tidak Valid', 'cross');
+    }
     const obj = {
       id: data.default.id,
       namaBimtek: data.namaBimbinganTeknis,

@@ -7,9 +7,10 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { Search } from 'components/Icons';
 import { Table } from 'components';
+import { Search } from 'components/Icons';
 import { useHistory } from 'react-router-dom';
+import SingleDropDown from 'components/DropDown/SingleDropDown';
 import { bimtekJadwalSelector, getJadwalBimtek } from './reducer';
 import { getStatusClass } from 'utils/helper';
 import { ReactComponent as Plus } from 'assets/plus.svg';
@@ -23,18 +24,48 @@ const CMSBimtekPermintaan = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [query, setQuery] = useState('');
+  const [status, setStatus] = useState('');
   const { loading, size, page, records, totalRecords } = useSelector(bimtekJadwalSelector);
+
   const fetchJadwalBimtek = (params) => {
     let obj = {
       page: params.page,
-      namaBimtek: query,
     };
+    if (query) obj['namaBimtek'] = query;
+    if (status) obj['status'] = status;
     return dispatch(getJadwalBimtek(obj));
   };
 
   useEffect(() => {
     fetchJadwalBimtek({ page: 0 });
-  }, [query]);
+  }, [query, status]);
+
+  const statusList = [
+    {
+      id: 1,
+      status: 'DRAFT',
+    },
+    {
+      id: 2,
+      status: 'PUBLISHED',
+    },
+    {
+      id: 3,
+      status: 'UNPUBLISHED',
+    },
+    {
+      id: 4,
+      status: 'REJECTED',
+    },
+    {
+      id: 5,
+      status: 'DELETED',
+    },
+    {
+      id: 6,
+      status: 'WAITING_APPROVAL',
+    },
+  ];
 
   const columns = [
     {
@@ -131,6 +162,7 @@ const CMSBimtekPermintaan = () => {
     },
   };
 
+  const listStatus = statusList.map((data) => ({ value: data.status, label: data.status }));
   return (
     <div className={bem.e('section')}>
       <div className={bem.e('header')}>
@@ -141,16 +173,24 @@ const CMSBimtekPermintaan = () => {
               <Plus /> Buat Jadwal
             </Button>
           </Col>
-          <Col xs={4}>
-            <InputGroup>
-              <Form.Control
-                onChange={(e) => updateQuery(e.target.value)}
-                variant="normal"
-                type="text"
-                placeholder="Cari Bimbingan Teknis"
+          <Col xs={5}>
+            <div className="d-flex">
+              <SingleDropDown
+                className="mr-10 w-100"
+                isLoading={loading}
+                data={[{ value: '', label: 'All' }, ...listStatus]}
+                onChange={(selected) => setStatus(selected.value)}
               />
-              <Search />
-            </InputGroup>
+              <InputGroup>
+                <Form.Control
+                  onChange={(e) => updateQuery(e.target.value)}
+                  variant="normal"
+                  type="text"
+                  placeholder="Cari Bimbingan Teknis"
+                />
+                <Search />
+              </InputGroup>
+            </div>
           </Col>
         </Row>
       </div>

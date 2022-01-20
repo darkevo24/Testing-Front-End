@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import AdminLayout, { PublicRoute, PrivateRoute } from 'layouts/AdminLayout';
+import { AdminLayout, PublicRoute, PrivateRoute } from 'layouts';
 import lazily from 'utils/lazily';
 
 const { AdminLogin } = lazily(() => import('containers/Login'));

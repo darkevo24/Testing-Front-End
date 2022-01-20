@@ -199,7 +199,7 @@ const CMSPermintaanDataView = () => {
                     <p className="fw-bold">Nama Lengkap</p>
                   </div>
                   <div className="col-2">
-                    <p className="fw-light">{data.user?.name}</p>
+                    <p className="fw-light">{data.user?.nama}</p>
                   </div>
                 </div>
                 <div className="d-flex flex-row">

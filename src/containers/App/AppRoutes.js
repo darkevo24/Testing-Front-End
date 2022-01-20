@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import AppLayout, { PrivateRoute, PublicRoute } from 'layouts/AppLayout';
+import { AppLayout, PrivateRoute, PublicRoute } from 'layouts';
 import lazily from 'utils/lazily';
 
 const { Login } = lazily(() => import('containers/Login'));
@@ -44,6 +44,7 @@ const ChangePasswordUser = lazy(() => import('containers/ChangePasswordUser'));
 const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
 // const NotFoundPage = lazy(() => import('containers/NotFound'));
 const KebijakanPrivasiPage = lazy(() => import('containers/KebijakanPrivasi'));
+const MetadataRegistryPage = lazy(() => import('containers/MetadataRegistry'));
 
 function AppRoutes(props) {
   return (
@@ -87,11 +88,12 @@ function AppRoutes(props) {
         <PrivateRoute exact path="/kesiapan-sdi" component={KesiapanSDI} />
         <PrivateRoute exact path="/dashboard-eksekutif" component={DashboardEksekutif} />
         <PrivateRoute exact path="/dashboard-saya" component={DashboardSaya} />
-        <PrivateRoute exact path="/data-analytic" component={DataAnalytic} />
+        <PrivateRoute exact path="/dataanalytic" component={DataAnalytic} />
         <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
         <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
         <Route exact path="/api/form" component={ManagementApiAddPage} />
         <Route exact path="/api" component={ManagementApiPage} />
+        <PrivateRoute exact path="/sdmx" component={MetadataRegistryPage} />
         {/* <Route exact path="/change-password" component={ChangePassword} /> */}
         {/* <Route exact path="/forgot-password" component={ForgotPassword} /> */}
         {/* <Route path="*" component={NotFoundPage} /> */}

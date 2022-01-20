@@ -1,9 +1,12 @@
-import { useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
-import { AdminHeader } from 'containers/Header';
-import { CMSHeader } from 'containers/Header/CMSHeader';
-import { tokenSelector } from 'containers/Login/reducer';
+import { useSelector } from 'react-redux';
+
 import { CMSSidebar } from 'components/Sidebars/CMSSidebar';
+import { AdminHeader, Header } from 'containers/Header';
+import { CMSHeader } from 'containers/Header/CMSHeader';
+import { Footer } from 'containers/Footer';
+import { tokenSelector } from 'containers/Login/reducer';
+import { cookieKeys, getCookieByName } from '../utils/cookie';
 
 export const AdminAuthLayout = ({ children }) => {
   return <div className="auth-container admin-auth-container">{children}</div>;
@@ -44,13 +47,26 @@ export const CMSLayout = ({ children }) => {
 };
 
 export const PrivateRoute = ({ component: Component, ...rest }) => {
-  const token = useSelector(tokenSelector);
-  return <Route {...rest} render={(props) => (token ? <Component {...props} /> : <Redirect to="/home" />)} />;
+  const token = useSelector(tokenSelector) || getCookieByName(cookieKeys.token);
+  return <Route {...rest} render={(props) => (!!token ? <Component {...props} /> : <Redirect to="/home" />)} />;
 };
 
 export const PublicRoute = ({ component: Component, ...rest }) => {
-  const token = useSelector(tokenSelector);
-  return <Route {...rest} render={(props) => (!token ? <Component {...props} /> : <Redirect to="/home" />)} />;
+  return <Route {...rest} render={(props) => <Component {...props} />} />;
+};
+
+export const MemberAppLayout = ({ children }) => {
+  return (
+    <div className="app-container">
+      <Header />
+      <div className="sdp-container">{children}</div>
+      <Footer />
+    </div>
+  );
+};
+
+export const AppLayout = ({ children }) => {
+  return <MemberAppLayout>{children}</MemberAppLayout>;
 };
 
 AdminLayout.PrivateRoute = PrivateRoute;
@@ -59,4 +75,5 @@ AdminLayout.PublicRoute = PublicRoute;
 CMSLayout.PrivateRoute = PrivateRoute;
 CMSLayout.PublicRoute = PublicRoute;
 
-export default AdminLayout;
+AppLayout.PrivateRoute = PrivateRoute;
+AppLayout.PublicRoute = PublicRoute;

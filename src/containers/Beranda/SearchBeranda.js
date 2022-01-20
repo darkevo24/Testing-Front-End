@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 import { ReactComponent as CircleSplitSvg } from 'assets/circle-split.svg';
 import GroupedDropdown from 'components/DropDown/GroupedDropDown';
-import { tokenSelector } from 'containers/Login/reducer';
 import { TOPIC_LIST } from 'utils/constants';
 import { Search } from 'components/Icons';
+import { useKeycloak } from '@react-keycloak/web';
 
 const Box = styled.div`
   background: #f2f2f2;
@@ -57,9 +56,8 @@ export const SearchBeranda = () => {
   const [searchText, setSearchText] = useState('');
   const [selectedItem, setSelectedItem] = useState({ value: '', label: '' });
   const history = useHistory();
-  const token = useSelector(tokenSelector);
-
-  const isLoggedIn = !!token;
+  const { keycloak } = useKeycloak();
+  const isLoggedIn = !!keycloak.authenticated;
 
   const onChange = (data) => {
     setSelectedItem(data);

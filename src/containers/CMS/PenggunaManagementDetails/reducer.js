@@ -4,12 +4,12 @@ import { apiUrls, get } from 'utils/request';
 export const PENGGUNA_DATA_DETAIL = 'PENGGUNA_DATA_DETAIL';
 
 export const getPenggunaDetails = createAsyncThunk('penggunaManagement/penggunaDetails', async (params) => {
-  const response = await get(`${apiUrls.detailPenggunaManagement}/${params}`);
+  const response = await get(`${apiUrls.penggunaManagement}/${params}`);
   return response?.data.content;
 });
 
 export const getPenggunaLogs = createAsyncThunk('penggunaManagement/penggunaLogs', async (params) => {
-  const response = await get(`${apiUrls.penggunaLogs}/${params}/logs`);
+  const response = await get(`${apiUrls.penggunaManagement}/${params}/logs`);
   return response?.data.content;
 });
 

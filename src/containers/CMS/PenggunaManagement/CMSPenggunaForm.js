@@ -63,7 +63,7 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
       phoneNumber: yup.string().length(10).nullable().required(),
       supervisorName: yup.mixed().required(),
       roles: yup.string().required(),
-      officialMemo: yup.mixed().required(),
+      officialMemo: yup.mixed().nullable().required(),
     })
     .required();
 
@@ -87,6 +87,7 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
           value: penggunaDetailsData.unitKerja?.id,
         },
         roles: penggunaDetailsData.roles,
+        officialMemo: penggunaDetailsData.officialMemo,
       };
       setPenggunaDetails(updatedData);
     }
@@ -133,14 +134,15 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
     setValue('unitKerja', null);
   };
 
-  const uploadMemo = async (e) => {
-    const fileData = e.target.files[0];
+  const uploadMemo = async (fileData) => {
     const fileFormData = new FormData();
     fileFormData.append('file', fileData);
 
-    const res = await post(apiUrls.publicFileUpload, fileFormData, { headers: { 'Content-Type': '' } });
-    setValue('officialMemo', res?.data);
-    setFileErr(true);
+    try {
+      const res = await post(apiUrls.publicFileUpload, fileFormData, { headers: { 'Content-Type': '' } });
+      setValue('officialMemo', res.data, { shouldValidate: true });
+      setFileErr(true);
+    } catch (error) {}
   };
 
   return (
@@ -257,7 +259,9 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
         <div className="sdp-error">{errors.roles?.message}</div>
       </Form.Group>
       {disableForm ? (
-        <div>{penggunaDetailsData?.officialMemo?.fileName} is Selected</div>
+        <div>
+          {penggunaDetailsData?.officialMemo?.fileName ? penggunaDetailsData?.officialMemo?.fileName : 'No File'} is Selected
+        </div>
       ) : (
         <>
           <FileInput
@@ -267,7 +271,7 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
             name="officialMemo"
             control={control}
             uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
-            onChange={uploadMemo}
+            handleOnChange={uploadMemo}
           />
           <div className="sdp-error" hidden={fileErr}>
             {errors.officialMemo?.message}

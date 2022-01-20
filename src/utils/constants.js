@@ -18,11 +18,17 @@ import {
 } from 'assets/icons';
 import { SplitCircle } from 'components/Icons';
 
-export const analyticsUrl = 'https://analitik.data.go.id';
-export const katalogUrl = 'https://katalog.satudata.go.id';
-export const apiUrl = '/api-be';
-export const dataUrl = `${katalogUrl}/api`;
 export const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
+
+export const sdiEnv = process.env.REACT_APP_SDI_ENV || 'dev';
+export const isSdiProduction = sdiEnv.toLowerCase() === 'production';
+
+export const analyticsUrl = 'https://analitik.data.go.id';
+export const backendUrl = isSdiProduction ? 'https://data.go.id' : 'https://satudata.go.id';
+export const katalogUrl = isSdiProduction ? 'https://katalog.data.go.id' : 'https://katalog.satudata.go.id';
+
+export const apiUrl = `${backendUrl}/api-be`;
+export const dataUrl = `${katalogUrl}/api`;
 
 export const getAnalyticsUrl = (path) => `${analyticsUrl}/${path}`;
 export const getApiEndpoint = (path) => `${apiUrl}/${path}`;
@@ -35,6 +41,7 @@ export const getPublicV1Endpoint = (path) => `${apiUrl}/public/v1/${path}`;
 
 export const apiUrls = {
   login: getApiEndpoint('login'),
+  userInfo: getPortalEndpoint('v1/jwt-info'),
   dataset: getDataEndpoint('3/action/package_search'),
   perminataanData: getPortalEndpoint('permintaan-data'),
   instansiData: getV1Endpoint('instansi'),
@@ -104,10 +111,9 @@ export const apiUrls = {
   forgotPassword: getPublicEndpoint('forgot-password'),
   changeMyPassword: getPortalEndpoint('v1/change-my-password'),
   penggunaManagement: getApiEndpoint('sekretariat/user'),
-  detailPenggunaManagement: getApiEndpoint('sekretariat/user'),
   penggunaRoleList: getApiEndpoint('sekretariat/user/role-list'),
   penggunaStatusList: getApiEndpoint('sekretariat/user/status-list'),
-  penggunaLogs: getApiEndpoint('sekretariat/user'),
+  penggunaUpload: getApiEndpoint('sekretariat/user/bulk'),
   cmsAnalitikData: getCMSEndpoint('analitik'),
 };
 

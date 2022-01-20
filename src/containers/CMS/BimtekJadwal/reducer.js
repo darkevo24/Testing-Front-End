@@ -37,7 +37,10 @@ export const BIMTEK_JADWAL = 'BIMTEK_JADWAL';
 
 export const getJadwalBimtek = createAsyncThunk('bimtek-jadwal/getListJadwalBimtek', async (params) => {
   const response = await get(apiUrls.cmsBimtekJadwal, {
-    query: { page: params.page + 1, size: 10, namaBimtek: params.namaBimtek },
+    query: {
+      ...params,
+      page: params.page + 1,
+    },
   });
   return response;
 });

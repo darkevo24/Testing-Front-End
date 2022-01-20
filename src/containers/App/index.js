@@ -9,16 +9,20 @@
 import React, { useEffect, lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Redirect, Route, Switch, useHistory, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import GlobalStyle from 'global-styles';
+import { ReactKeycloakProvider } from '@react-keycloak/web';
 
+import { fetchLoggedInUserInfo } from 'containers/Login/reducer';
 import Notify, { Notification } from 'components/Notification';
+import keycloak, { initOptions } from 'Keycloak';
 
 const AdminRoutes = lazy(() => import('./AdminRoutes'));
 const AppRoutes = lazy(() => import('./AppRoutes'));
 const CMSRoutes = lazy(() => import('./CMSRoutes'));
 
 function App(props) {
+  const dispatch = useDispatch();
   const history = useHistory();
 
   function hashLinkScroll() {
@@ -39,28 +43,35 @@ function App(props) {
     history.listen(hashLinkScroll);
   }, []);
 
+  const onTokens = (tokens) => {
+    if (!tokens?.token) return false;
+    dispatch(fetchLoggedInUserInfo(tokens.token));
+  };
+
   return (
-    <div>
-      <Helmet titleTemplate="%s - Satu Data Portal" defaultTitle="Satu Data Portal">
-        <meta name="description" content="Satu Data Portal" />
-      </Helmet>
-      <Switch>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-        <Route path="/cms" component={CMSRoutes} />
-        <Route path="/admin" component={AdminRoutes} />
-        <Route path="/" component={AppRoutes} />
-      </Switch>
-      <GlobalStyle />
-      <Notification
-        ref={(ref) => {
-          if (ref && !Notify.notificationRef) {
-            Notify.setRef(ref);
-          }
-        }}
-      />
-    </div>
+    <ReactKeycloakProvider authClient={keycloak} initOptions={initOptions} onTokens={onTokens}>
+      <div>
+        <Helmet titleTemplate="%s - Satu Data Portal" defaultTitle="Satu Data Portal">
+          <meta name="description" content="Satu Data Portal" />
+        </Helmet>
+        <Switch>
+          <Route exact path="/">
+            <Redirect to="/home" />
+          </Route>
+          <Route path="/cms" component={CMSRoutes} />
+          <Route path="/admin" component={AdminRoutes} />
+          <Route path="/" component={AppRoutes} />
+        </Switch>
+        <GlobalStyle />
+        <Notification
+          ref={(ref) => {
+            if (ref && !Notify.notificationRef) {
+              Notify.setRef(ref);
+            }
+          }}
+        />
+      </div>
+    </ReactKeycloakProvider>
   );
 }
 

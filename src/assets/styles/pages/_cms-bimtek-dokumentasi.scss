@@ -28,9 +28,10 @@
         }
         .doc-foto {
             position: relative;
+            background: rgba(133, 138, 143, 0.7);
             overflow: hidden;
+            height: 200px;
             img {
-                max-height: 200px;
                 width: 100%;
             }
 

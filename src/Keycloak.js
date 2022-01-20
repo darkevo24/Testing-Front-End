@@ -1,6 +1,11 @@
 import Keycloak from 'keycloak-js';
+import { sdiEnv } from 'utils/constants';
 
-const stageConfig = new Keycloak({
+export const initOptions = {
+  checkLoginIframe: false,
+};
+
+const stageConfig = {
   url: 'https://sso.deltadatamandiri.com/auth',
   realm: 'satu-data-portal-test',
   clientId: 'satu-data-portal-client',
@@ -10,18 +15,14 @@ const stageConfig = new Keycloak({
   publicClient: true,
   sslRequired: 'external',
   principalAttribute: 'preferred_username',
-});
+};
 
-const prodConfig = new Keycloak({
+const prodConfig = {
   url: 'https://cas.data.go.id/auth/',
   realm: 'ckan-sdi',
   authServerUrl: 'https://cas.data.go.id/auth/',
-  sslRequired: 'external',
   resource: 'portal-satu-data-client',
-});
-
-export const initOptions = {
-  checkLoginIframe: false,
+  sslRequired: 'external',
 };
 
 const configs = {
@@ -29,6 +30,8 @@ const configs = {
   production: prodConfig,
 };
 
-const keycloakConfig = configs[process.env.REACT_APP_SSO_CONFIG] || configs['staging'];
+const keycloakConfig = configs[sdiEnv] || configs['staging'];
 
-export default keycloakConfig;
+const keyclock = new Keycloak(keycloakConfig);
+
+export default keyclock;

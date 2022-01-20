@@ -18,11 +18,17 @@ import {
 } from 'assets/icons';
 import { SplitCircle } from 'components/Icons';
 
-export const analyticsUrl = 'https://analitik.data.go.id';
-export const katalogUrl = 'https://katalog.satudata.go.id';
-export const apiUrl = 'https://satudata.go.id/api-be'; //api-be
-export const dataUrl = `${katalogUrl}/api`;
 export const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
+
+export const sdiEnv = process.env.REACT_APP_SDI_ENV || 'dev';
+export const isSdiProduction = sdiEnv.toLowerCase() === 'production';
+
+export const analyticsUrl = 'https://analitik.data.go.id';
+export const backendUrl = isSdiProduction ? 'https://data.go.id' : 'https://satudata.go.id';
+export const katalogUrl = isSdiProduction ? 'https://katalog.data.go.id' : 'https://katalog.satudata.go.id';
+
+export const apiUrl = `${backendUrl}/api-be`;
+export const dataUrl = `${katalogUrl}/api`;
 
 export const getAnalyticsUrl = (path) => `${analyticsUrl}/${path}`;
 export const getApiEndpoint = (path) => `${apiUrl}/${path}`;

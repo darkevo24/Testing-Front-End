@@ -31,7 +31,7 @@ const DataVariableTable = ({
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
   const kodeReferensi = useSelector(kodeReferensiSelector);
-  const hasAccess = daftar?.instansiId === user?.instansi;
+  const hasAccess = daftar?.instansiId === user?.instansi || daftar?.instansiId === 2;
 
   const handleReferensiChange = async (item) => {
     if (cmsCreateForm) {

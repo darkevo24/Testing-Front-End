@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as setSearch from 'lodash';
@@ -8,10 +8,12 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { Search } from 'components/Icons';
 import { Table } from 'components';
-import { bimtekPermintaanDataSelector, bimtekInstansi, getPermintaanData, getInstansi } from './reducer';
+import { Search } from 'components/Icons';
+import { getStatusClass } from 'utils/helper';
 import bn from 'utils/bemNames';
+import SingleDropDown from 'components/DropDown/SingleDropDown';
+import { bimtekPermintaanDataSelector, bimtekInstansi, getPermintaanData, getInstansi } from './reducer';
 
 const bem = bn('content-table');
 
@@ -22,20 +24,22 @@ const CMSBimtekPermintaan = () => {
   const [instansiId, setInstansiId] = useState('');
 
   const { size, page, records, totalRecords } = useSelector(bimtekPermintaanDataSelector);
-  const instansiData = useSelector(bimtekInstansi);
+  const { loading, recordsInstansi } = useSelector(bimtekInstansi);
 
   const fetchCmsPerminataanDataset = (params) => {
     let obj = {
       page: params.page,
-      q: query,
-      instansiId,
     };
+    if (query) obj['namaBimtek'] = query;
+    if (instansiId) obj['instansi'] = instansiId;
     return dispatch(getPermintaanData(obj));
   };
+
   const fetchInstansi = () => {
     return dispatch(getInstansi());
   };
-  const instansi = useMemo(() => instansiData || [], [instansiData]);
+
+  const listInstansi = (recordsInstansi || [])?.map((data) => ({ value: data.id, label: data.nama }));
 
   useEffect(() => {
     fetchCmsPerminataanDataset({ page: 0 });
@@ -65,28 +69,24 @@ const CMSBimtekPermintaan = () => {
     {
       Header: 'Tanggal Permintaan',
       accessor: 'tanggalRequest',
-      Cell: ({ ...rest }) => (
-        <span>
-          {rest.row.original?.tanggalRequest ? moment(rest.row.original?.tanggalRequest).format('DD MMMM YYYY') : '---'}
-        </span>
+      Cell: ({ row: { original } }) => (
+        <span> {original?.tanggalRequest ? moment(original?.tanggalRequest).format('DD MMMM YYYY') : '---'} </span>
       ),
     },
     {
       Header: 'Tanggal Permintaan Disetujui',
       accessor: 'tanggalSelesaiDisetujui',
-      Cell: ({ ...rest }) => (
+      Cell: ({ row: { original } }) => (
         <span>
-          {rest.row.original?.tanggalSelesaiDisetujui
-            ? moment(rest.row.original?.tanggalSelesaiDisetujui).format('DD MMMM YYYY')
-            : '---'}
+          {original?.tanggalSelesaiDisetujui ? moment(original?.tanggalSelesaiDisetujui).format('DD MMMM YYYY') : '---'}
         </span>
       ),
     },
     {
       Header: 'Status',
       accessor: 'status',
-      Cell: ({ ...rest }) => (
-        <span className={`status ${rest?.row?.original?.status?.toLowerCase()}`}> {rest?.row?.original?.status} </span>
+      Cell: ({ row: { original } }) => (
+        <span className={getStatusClass(original?.status.toLowerCase() || '').textColor}> {original?.status} </span>
       ),
     },
     {
@@ -101,7 +101,6 @@ const CMSBimtekPermintaan = () => {
     data: records || [],
     title: '',
     totalCount: totalRecords || null,
-    // pageCount: totalPages || null,
     pageSize: size,
     currentPage: page,
     manualPagination: true,
@@ -119,22 +118,16 @@ const CMSBimtekPermintaan = () => {
     <div className={bem.e('section')}>
       <div className={bem.e('header')}>
         <div className={bem.e('title')}>Permintaan Bimbingan Teknis</div>
-        <Row className="justify-content-between">
-          <Col xs={2}></Col>
-          <Col xs={5} className="d-flex align-items-center">
+        <Row className="justify-content-end">
+          <Col xs={6} className="d-flex align-items-center">
             <div className="mr-10">Instansi</div>
-            <div className="mr-10">
-              <Form.Select aria-label="Default select example" onChange={(e) => setInstansiId(e.target.value)}>
-                <option value=""> SEMUA </option>
-                {instansi &&
-                  instansi.map((data, index) => {
-                    return (
-                      <option key={index} value={data.id}>
-                        {data.nama}
-                      </option>
-                    );
-                  })}
-              </Form.Select>
+            <div className="mr-10 w-100">
+              <SingleDropDown
+                className="mr-10 w-100"
+                isLoading={loading}
+                data={[{ value: '', label: 'All' }, ...listInstansi]}
+                onChange={(selected) => setInstansiId(selected.value)}
+              />
             </div>
             <InputGroup>
               <Form.Control

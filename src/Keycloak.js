@@ -20,6 +20,7 @@ const stageConfig = {
 const prodConfig = {
   url: 'https://cas.data.go.id/auth/',
   realm: 'ckan-sdi',
+  clientId: 'portal-satu-data-client',
   authServerUrl: 'https://cas.data.go.id/auth/',
   resource: 'portal-satu-data-client',
   sslRequired: 'external',

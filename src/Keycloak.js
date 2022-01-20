@@ -1,5 +1,6 @@
 import Keycloak from 'keycloak-js';
-const keycloak = new Keycloak({
+
+const stageConfig = new Keycloak({
   url: 'https://sso.deltadatamandiri.com/auth',
   realm: 'satu-data-portal-test',
   clientId: 'satu-data-portal-client',
@@ -11,8 +12,23 @@ const keycloak = new Keycloak({
   principalAttribute: 'preferred_username',
 });
 
+const prodConfig = new Keycloak({
+  url: 'https://cas.data.go.id/auth/',
+  realm: 'ckan-sdi',
+  authServerUrl: 'https://cas.data.go.id/auth/',
+  sslRequired: 'external',
+  resource: 'portal-satu-data-client',
+});
+
 export const initOptions = {
   checkLoginIframe: false,
 };
 
-export default keycloak;
+const configs = {
+  staging: stageConfig,
+  production: prodConfig,
+};
+
+const keycloakConfig = configs[process.env.REACT_APP_SSO_CONFIG || 'staging'];
+
+export default keycloakConfig;

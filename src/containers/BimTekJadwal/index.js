@@ -16,6 +16,8 @@ import {
   getBimtekJadwalLocationsData,
   getBimtekJadwalTagsData,
 } from './reducer.js';
+import Table from 'components/Table.js';
+import Loader from 'components/Loader.js';
 
 const BimTekJadwal = () => {
   let currentYear = new Date().getFullYear();
@@ -26,7 +28,6 @@ const BimTekJadwal = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getBimtekJadwalData());
     dispatch(getBimtekJadwalTagsData());
     dispatch(getBimtekJadwalLocationsData());
   }, []);
@@ -35,17 +36,57 @@ const BimTekJadwal = () => {
     dispatch(getBimtekJadwalData(paramsData));
   }, [paramsData]);
 
-  const { records: jadwalData } = useSelector(bimtekJadwalDatasetSelector);
+  const { records: jadwalData, totalRecords, page, size, loading } = useSelector(bimtekJadwalDatasetSelector);
   const filterLocations = useSelector(bimtekJadwalLocationsDatasetSelector);
   const filterCategory = useSelector(bimtekJadwalTagsDatasetSelector);
 
   const handleFilterChange = (e) => {
     setParamsData((prev) => ({ ...prev, [e.key]: e.value }));
   };
+
+  const fetchDataset = (params) => {
+    setParamsData({ ...paramsData, page: params.page + 1 });
+  };
+
   for (var i = 0; i < 10; i++) {
     filterYear.push(currentYear - i);
   }
 
+  const tableConfig = {
+    variant: 'card',
+    columns: [
+      {
+        accessor: 'card',
+        Header: 'Jadwal Record',
+        Cell: ({ cell: { row: { original: item } = {} } = {} }) => {
+          return (
+            <BimTekJadwalItem
+              key={item.id}
+              title={item.namaBimtek}
+              startDate={formatDate(item.tanggalMulaiDisetujui)}
+              endDate={formatDate(item.tanggalSelesaiDisetujui)}
+              city={item.kota}
+              location={item.tempat}
+              speaker={item.pembicara}
+              materi={item.materi}
+              id={item.id}
+            />
+          );
+        },
+      },
+    ],
+    data: jadwalData,
+    totalCount: totalRecords,
+    pageSize: size,
+    currentPage: page,
+    manualPagination: true,
+    onPageIndexChange: (currentPage) => {
+      if (currentPage !== page) {
+        fetchDataset({ page: currentPage });
+      }
+    },
+    showSearch: false,
+  };
   return (
     <BimtekLayout>
       <div className="h-100">
@@ -93,19 +134,7 @@ const BimTekJadwal = () => {
             <div className="text-black-50 mb-2 mt-2">No Data</div>
           </div>
         ) : (
-          jadwalData.map((item, key) => (
-            <BimTekJadwalItem
-              key={key}
-              title={item.namaBimtek}
-              startDate={formatDate(item.tanggalMulaiDisetujui)}
-              endDate={formatDate(item.tanggalSelesaiDisetujui)}
-              city={item.kota}
-              location={item.tempat}
-              speaker={item.pembicara}
-              materi={item.materi}
-              id={item.id}
-            />
-          ))
+          <div className="px-30 pt-0">{!loading ? <Table {...tableConfig} /> : <Loader fullscreen={true} />} </div>
         )}
       </div>
     </BimtekLayout>

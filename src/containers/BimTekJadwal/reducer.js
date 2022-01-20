@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, get } from 'utils/request';
+import { apiUrls, defaultNumberOfRows, get } from 'utils/request';
 
 export const getBimtekJadwalData = createAsyncThunk('bimtekJadwal/getBimtekJadwalData', async (params) => {
-  const response = await get(`${apiUrls.bimtekJadwal}`, {
+  const response = await get(apiUrls.bimtekJadwal, {
     query: params,
   });
   return response?.data?.content;
@@ -22,12 +22,13 @@ const REDUCER_NAME = 'BIMTEK_JADWAL_REDUCER';
 
 const INITIAL_STATE = {
   jadwalDataset: {
-    status: 'idle',
+    loading: false,
+    status: '',
     records: [],
-    page: 1,
-    size: 10,
-    totalPages: 1,
-    totalRecords: 0,
+    page: 0,
+    size: defaultNumberOfRows,
+    totalPages: null,
+    totalRecords: null,
     message: null,
   },
   jadwalTagsDataset: {
@@ -61,18 +62,17 @@ const SLICE_OBJ = createSlice({
   initialState: INITIAL_STATE,
   extraReducers: (builder) => {
     builder.addCase(getBimtekJadwalData.pending, (state, action) => {
-      state.detailDataset.loading = true;
+      state.jadwalDataset.loading = true;
     });
     builder.addCase(getBimtekJadwalData.fulfilled, (state, action) => {
-      state.detailDataset.loading = false;
+      state.jadwalDataset.loading = false;
       state.jadwalDataset.records = action.payload.records;
-      state.jadwalDataset.page = action.payload.page;
-      state.jadwalDataset.page = action.payload.page;
+      state.jadwalDataset.page = action.payload.page - 1;
       state.jadwalDataset.totalPages = action.payload.totalPages;
       state.jadwalDataset.totalRecords = action.payload.totalRecords;
     });
     builder.addCase(getBimtekJadwalData.rejected, (state, action) => {
-      state.detailDataset.loading = false;
+      state.jadwalDataset.loading = false;
       state.jadwalDataset.message = action.error.message;
     });
 

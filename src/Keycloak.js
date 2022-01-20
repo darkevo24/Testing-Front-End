@@ -29,6 +29,6 @@ const configs = {
   production: prodConfig,
 };
 
-const keycloakConfig = configs[process.env.REACT_APP_SSO_CONFIG || 'staging'];
+const keycloakConfig = configs[process.env.REACT_APP_SSO_CONFIG] || configs['staging'];
 
 export default keycloakConfig;

@@ -194,6 +194,12 @@
         font-weight: 400;
         color: $black;
         vertical-align: middle;
+
+        .sdp-table-checkbox {
+          input {
+            cursor: pointer;
+          }
+        }
       }
     }
   }

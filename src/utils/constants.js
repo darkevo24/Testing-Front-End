@@ -111,10 +111,9 @@ export const apiUrls = {
   forgotPassword: getPublicEndpoint('forgot-password'),
   changeMyPassword: getPortalEndpoint('v1/change-my-password'),
   penggunaManagement: getApiEndpoint('sekretariat/user'),
-  detailPenggunaManagement: getApiEndpoint('sekretariat/user'),
   penggunaRoleList: getApiEndpoint('sekretariat/user/role-list'),
   penggunaStatusList: getApiEndpoint('sekretariat/user/status-list'),
-  penggunaLogs: getApiEndpoint('sekretariat/user'),
+  penggunaUpload: getApiEndpoint('sekretariat/user/bulk'),
   cmsAnalitikData: getCMSEndpoint('analitik'),
 };
 

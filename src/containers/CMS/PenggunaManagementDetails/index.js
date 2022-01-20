@@ -16,16 +16,22 @@ const bem = bn('content-detail');
 const CMSPenggunaManagementView = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const [editable, setEditable] = useState(true);
   const history = useHistory();
+
+  const [editable, setEditable] = useState(true);
+  const { records: penggunaDetailsData } = useSelector(penggunanDataDetailSelector);
+  const [changeStatus, setChangeStatus] = useState('');
+  const { records: logData } = useSelector(penggunanLogsSelector);
+
+  useEffect(() => dispatch(getPenggunaLogs(id)), []);
+
+  useEffect(() => {
+    setChangeStatus(penggunaDetailsData?.status);
+  }, [penggunaDetailsData]);
+
   const backToTable = () => {
     history.push('/cms/pengguna-management');
   };
-
-  useEffect(() => dispatch(getPenggunaLogs(id)), []);
-  const { records: penggunaDetailsData } = useSelector(penggunanDataDetailSelector);
-
-  const { records: logData } = useSelector(penggunanLogsSelector);
 
   const StatusText = ({ statusClass, statusLabel }) => {
     return (
@@ -38,7 +44,7 @@ const CMSPenggunaManagementView = () => {
     );
   };
   const StatusBar = () => {
-    switch (penggunaDetailsData?.status) {
+    switch (changeStatus) {
       case 'DRAFT':
         return <StatusText statusClass={'permintaan-data-form-terproses'} statusLabel={'Draft'} />;
 
@@ -93,13 +99,14 @@ const CMSPenggunaManagementView = () => {
     };
 
     try {
-      await put(`${apiUrls.penggunaManagement}/${data.id}`, editData);
+      const response = await put(`${apiUrls.penggunaManagement}/${data.id}`, editData);
       Notification.show({
         type: 'secondary',
         message: 'User Updated Successfully',
         icon: 'check',
       });
       setEditable(true);
+      setChangeStatus(response.data.content.status);
     } catch (e) {
       Notification.show({
         type: 'warning',
@@ -129,7 +136,7 @@ const CMSPenggunaManagementView = () => {
 
   return (
     <div className={bem.b()}>
-      <StatusBar />
+      {changeStatus && <StatusBar />}
       <Row className={bem.e('section')}>
         <Col sm={9} className="my-5">
           <div>

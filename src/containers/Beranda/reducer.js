@@ -7,7 +7,7 @@ import {
   mapParamsToOrString,
   pickValidDatasetPaginationParams,
 } from 'utils/helper';
-import { useKeycloak } from '@react-keycloak/web';
+import { cookieKeys, getCookieByName } from '../../utils/cookie';
 
 const facetFields = ['organization', 'kategori', 'tags', 'res_format'];
 
@@ -50,8 +50,8 @@ export const initialState = {
 export const BERANDA_REDUCER = 'BERANDA_REDUCER';
 
 export const getDataSet = createAsyncThunk('beranda/getDataset', async (params) => {
-  const { keycloak } = useKeycloak();
-  const isLoggedIn = !!keycloak.authenticated;
+  const token = getCookieByName(cookieKeys.token);
+  const isLoggedIn = !!token;
   let data = cloneDeep(params);
   if (!isLoggedIn) {
     data.q = [data.q];

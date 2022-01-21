@@ -8,6 +8,10 @@
     color: $gray-dark;
   }
 
+  &__content-description {
+    min-height: 56px;
+  }
+
   &__list {
     width: 844px;
     -ms-overflow-style: none; /* IE and Edge */

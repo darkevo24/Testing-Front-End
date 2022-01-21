@@ -36,8 +36,10 @@ export const getListAnalitik = createAsyncThunk('cmsDataAnalytic/getListAnalitik
       title: params.judul,
     },
     {
-      size: 10,
-      page: params.page + 1,
+      query: {
+        size: 10,
+        page: params.page + 1,
+      },
     },
   );
   return response?.data?.content;
@@ -45,13 +47,15 @@ export const getListAnalitik = createAsyncThunk('cmsDataAnalytic/getListAnalitik
 
 export const getAllAnalitik = createAsyncThunk('cmsDataAnalytic/getAllAnalitik', async () => {
   const response = await post(
-    `${apiUrls.cmsAnalitikData}/list`,
+    `${apiUrls.cmsAnalitikData}/public/list`,
     {
       title: '',
     },
     {
-      size: 1000,
-      page: 1,
+      query: {
+        size: 1000,
+        page: 1,
+      },
     },
   );
   return response?.data?.content;

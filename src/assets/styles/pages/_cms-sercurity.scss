@@ -1,0 +1,12 @@
+.sdp-content-create {
+  &__list-blokir {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    padding-left: 17px;
+    padding-right: 5px;
+    align-items: center;
+    border: 1px solid $stroke;
+    margin-bottom: 15px;
+  }
+}

@@ -38,6 +38,7 @@ import dataAnalyticReducer from 'containers/CMS/DashboardManage/reducer';
 import cmsInstansiReducer from 'containers/CMS/Instansi/reducer';
 import penggunaManagementReducer from 'containers/CMS/PenggunaManagement/reducer';
 import penggunaDataDetailReducer from 'containers/CMS/PenggunaManagementDetails/reducer';
+import cmsSecurity from 'containers/CMS/Security/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -49,6 +50,7 @@ export default function createReducer(injectedReducers) {
     beranda: berandaReducer,
     daftar: daftarReducer,
     cms: cmsReducer,
+    cmsSecurity: cmsSecurity,
     tentang: tentangReducer,
     cmsTentang: cmsAboutUsReducer,
     perminataan: perminataanReducer,

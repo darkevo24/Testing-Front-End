@@ -52,11 +52,15 @@ const EditUnitKerja = lazy(() => import('containers/CMS/Instansi/UnitKerja/EditU
 const PenggunaManagementPage = lazy(() => import('containers/CMS/PenggunaManagement'));
 const PenggunaManagementDetailPage = lazy(() => import('containers/CMS/PenggunaManagementDetails'));
 const PenggunaFormPage = lazy(() => import('containers/CMS/PenggunaManagement/tambahPengguna'));
+const CMSSecurity = lazy(() => import('containers/CMS/Security'));
+const CMSSecurityEdit = lazy(() => import('containers/CMS/Security/CMSSecurityEdit'));
 
 function CMSRoutes() {
   return (
     <CMSLayout>
       <Switch>
+        <PrivateRoute exact path="/cms/security/edit" component={CMSSecurityEdit} />
+        <PrivateRoute exact path="/cms/security" component={CMSSecurity} />
         <PrivateRoute exact path="/cms/log-activity" component={LogActivity} />
         <PrivateRoute exact path="/cms/instansi" component={Instansi} />
         <PrivateRoute exact path="/cms/instansi/form" component={NewInstansi} />

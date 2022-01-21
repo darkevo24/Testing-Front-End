@@ -16,7 +16,7 @@ export const fetchLoggedInUserInfo = createAsyncThunk('login/fetchLoggedInUserIn
   const response = await get(apiUrls.userInfo);
   const user = response.data.content;
   setCookie(cookieKeys.user, user);
-  return user;
+  return { token, user };
 });
 
 const loginSlice = createSlice({
@@ -24,14 +24,17 @@ const loginSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchLoggedInUserInfo.pending, (state, action) => {
+    builder.addCase(fetchLoggedInUserInfo.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(fetchLoggedInUserInfo.fulfilled, (state, action) => {
       state.loading = false;
-      state.user = action.payload;
+      state.error = '';
+      const { token, user } = action.payload;
+      state.user = user;
+      state.token = token;
     });
-    builder.addCase(fetchLoggedInUserInfo.rejected, (state, action) => {
+    builder.addCase(fetchLoggedInUserInfo.rejected, (state) => {
       state.loading = false;
       state.error = 'No user found!';
     });

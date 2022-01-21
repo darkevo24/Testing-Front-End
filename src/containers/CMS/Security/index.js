@@ -1,14 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
+import { getListConfigSecurity, configSecurityListSelector } from './reducer';
 
 const bem = bn('content-create');
 
 const CMSSecurity = () => {
+  const dispatch = useDispatch();
+  const { configResult, configLoading } = useSelector(configSecurityListSelector);
+
+  const initialCall = () => {
+    dispatch(getListConfigSecurity());
+  };
+
+  useEffect(() => {
+    initialCall();
+  }, []);
+
   const history = useHistory();
   return (
     <div className={bem.e('section')}>
@@ -25,18 +38,14 @@ const CMSSecurity = () => {
         <Row className="justify-content-between">
           <Col xs={4}>
             <div className="mb-15">Pemblokiran akun</div>
-            <div className={cx(bem.e('list-blokir'))}>
-              <span>Lama Waktu Pemblokiran Sementara</span>
-              <span className="fw-bold bg-gray p-10">30 Menit</span>
-            </div>
-            <div className={cx(bem.e('list-blokir'))}>
-              <span>Batas Blokir Sementara Untuk Blokir Permanen</span>
-              <span className="fw-bold bg-gray p-10">2 Kali</span>
-            </div>
-            <div className={cx(bem.e('list-blokir'))}>
-              <span>Batas waktu sejak login terakhir</span>
-              <span className="fw-bold bg-gray p-10">1 Bulan</span>
-            </div>
+            {configResult
+              ? configResult.map((data, index) => (
+                  <div className={cx(bem.e('list-blokir'))} key={index}>
+                    <span>{data.label}</span>
+                    <span className="fw-bold bg-gray p-10">{data.value + ' ' + data.unit}</span>
+                  </div>
+                ))
+              : 'Gagal Menampilkan Data'}
           </Col>
         </Row>
       </div>

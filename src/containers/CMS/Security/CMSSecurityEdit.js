@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import isFunction from 'lodash/isFunction';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 import bn from 'utils/bemNames';
 import { apiUrls, put } from 'utils/request';
 import { getListConfigSecurity, getListValues, configSecurityListSelector, configListValueSelector } from './reducer';
-import { Modal, Notification } from 'components';
+import { Modal, Notification, Button } from 'components';
 import SingleDropDown from 'components/DropDown/SingleDropDown';
 import cx from 'classnames';
 
@@ -108,6 +106,7 @@ const CMSSecurityEdit = () => {
   };
 
   const onSubmit = () => {
+    setLoading(true);
     handleAPICall(
       put,
       apiUrls.cmsConfigSecurity,
@@ -205,7 +204,12 @@ const CMSSecurityEdit = () => {
             <Button className="mr-10 px-35" variant="secondary" onClick={handleCloseModal}>
               Batal
             </Button>
-            <Button type="submit" className="ml-10 px-35" variant="info" onClick={onSubmit}>
+            <Button
+              loading={loading}
+              type="submit"
+              className="ml-10 px-35 d-flex align-items-center"
+              variant="info"
+              onClick={onSubmit}>
               Konfirmasi
             </Button>
           </div>

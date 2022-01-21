@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import isFunction from 'lodash/isFunction';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import bn from 'utils/bemNames';
-import { getListConfigSecurity, configSecurityListSelector } from './reducer';
-import { Modal } from 'components';
+import { apiUrls, put } from 'utils/request';
+import { getListConfigSecurity, getListValues, configSecurityListSelector, configListValueSelector } from './reducer';
+import { Modal, Notification } from 'components';
 import SingleDropDown from 'components/DropDown/SingleDropDown';
 import cx from 'classnames';
 
@@ -16,10 +19,15 @@ const CMSSecurityEdit = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const configResult = useSelector(configSecurityListSelector);
+  const { configResult, configLoading } = useSelector(configSecurityListSelector);
+  const { valueResult, valueLoading } = useSelector(configListValueSelector);
 
+  const [paramsValue, setParamsValue] = useState('');
   const [showModal, setShowModal] = useState('');
-  const [duration, setDuration] = useState([]);
+  const [valueBlokir, setValueBlokir] = useState('');
+  const [valueBatasBlokir, setValueBatasBlokir] = useState('');
+  const [typeBlokir, setTypeBlokir] = useState('');
+  const [typeBatasBlokir, setTypeBatasBlokir] = useState('');
 
   const initialCall = () => {
     dispatch(getListConfigSecurity());
@@ -29,52 +37,105 @@ const CMSSecurityEdit = () => {
     initialCall();
   }, []);
 
-  console.log(configResult);
+  useEffect(() => {
+    if (paramsValue) return dispatch(getListValues(paramsValue));
+  }, [paramsValue]);
 
-  const typeValue = [
-    {
-      status: 'Menit',
-    },
-    {
-      status: 'Jam',
-    },
-    {
-      status: 'Hari',
-    },
-  ];
+  const handleNotification = (type, message, icon) => {
+    Notification.show({
+      type,
+      message,
+      icon,
+    });
+  };
 
-  const valueBlockPermanen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-  const handleBlokirSementara = (params) => {
-    if (!params) {
-      setDuration([]);
-    }
-
-    if (params === 'Menit') {
-      const array = Array.from({ length: 59 }, (_, index) => index + 1);
-      setDuration(array);
-    }
-
-    if (params === 'Jam') {
-      const array = Array.from({ length: 23 }, (_, index) => index + 1);
-      setDuration(array);
-    }
-
-    if (params === 'Hari') {
-      const array = Array.from({ length: 30 }, (_, index) => index + 1);
-      setDuration(array);
+  const handleAPICall = async (method, url, params, message, callBack) => {
+    try {
+      await method(url, {}, params);
+      handleCloseModal();
+      handleNotification('secondary', message, 'check');
+      initialCall();
+      isFunction(callBack) && callBack();
+      // setAPIError(false);
+    } catch (e) {
+      handleNotification('secondary', e?.data?.message, 'cross');
+      handleCloseModal();
+      // setAPIError(true);
     }
   };
 
-  const listStatus = typeValue.map((data) => ({ value: data.status, label: data.status }));
-  const listDuration = duration.map((data) => ({ value: data, label: data }));
-  const listBlockPermanent = valueBlockPermanen.map((data) => ({ value: data, label: data }));
+  const handleConfigValue = (params, index) => {
+    switch (index) {
+      case 0:
+        setValueBlokir(params);
+        break;
+      case 1:
+        setValueBatasBlokir(params);
+        break;
+      default:
+        return null;
+    }
+  };
+
+  const handleConfigType = (params) => {
+    switch (params) {
+      case 'Menit':
+        setTypeBlokir(params);
+        setParamsValue('menit');
+        break;
+      case 'Jam':
+        setTypeBlokir(params);
+        setParamsValue('jam');
+        break;
+      case 'Hari':
+        setTypeBlokir(params);
+        setParamsValue('hari');
+        break;
+      case 'Kali':
+        setTypeBatasBlokir(params);
+        setParamsValue('kali');
+        break;
+      default:
+        return null;
+    }
+  };
+
+  const listDurationValue = valueResult.map((data) => ({ value: data, label: data }));
 
   const handleCloseModal = () => {
     setShowModal('');
   };
 
-  const onSubmitSecurity = () => {};
+  const onSubmit = () => {
+    handleAPICall(
+      put,
+      apiUrls.cmsConfigSecurity,
+      {
+        data: {
+          data: [
+            {
+              title: 'Pemblokiran Akun',
+              content: configResult.map((data, index) => {
+                if (index === 0) {
+                  return {
+                    ...data,
+                    value: valueBlokir ? valueBlokir : data.value,
+                    unit: typeBlokir ? typeBlokir : data.unit,
+                  };
+                }
+                return {
+                  ...data,
+                  value: valueBatasBlokir ? valueBatasBlokir : data.value,
+                  unit: typeBatasBlokir ? typeBatasBlokir : data.unit,
+                };
+              }),
+            },
+          ],
+        },
+      },
+      'Perubahan sekuriti telah berhasil disimpan',
+    );
+  };
 
   return (
     <div className={bem.e('section')}>
@@ -92,28 +153,42 @@ const CMSSecurityEdit = () => {
       <div className={bem.e('body')}>
         <Row className="justify-content-between">
           <Col xs={8}>
-            <Row className="align-items-center mb-20">
-              <Col md={6}>
-                <span>Lama Waktu Pemblokiran Sementara</span>
-              </Col>
-              <Col md={3}>
-                <SingleDropDown
-                  className="mr-10 w-100"
-                  placeHolder="Pilih Durasi"
-                  data={[{ value: '', label: 'Pilih Durasi' }, ...listDuration]}
-                  // onChange={(selected) => setStatus(selected.value)}
-                />
-              </Col>
-              <Col md={3}>
-                <SingleDropDown
-                  className="mr-10 w-100"
-                  placeHolder="Pilih Tipe"
-                  data={[{ value: '', label: 'Pilih Tipe' }, ...listStatus]}
-                  onChange={(selected) => handleBlokirSementara(selected.value)}
-                />
-              </Col>
-            </Row>
-            <Row className="align-items-center mb-20">
+            {configResult
+              ? configResult.map((data, index) => (
+                  <Row className="align-items-center mb-20" key={index}>
+                    <Col md={6}>
+                      <span>{data.label}</span>
+                    </Col>
+                    <Col md={3}>
+                      <SingleDropDown
+                        className="mr-10 w-100"
+                        placeHolder={data.value}
+                        data={
+                          paramsValue
+                            ? [...listDurationValue]
+                            : data.listOfValue.map((data) => ({
+                                value: data,
+                                label: data,
+                              }))
+                        }
+                        onChange={(selected) => handleConfigValue(selected.value, index)}
+                      />
+                    </Col>
+                    <Col md={3}>
+                      <SingleDropDown
+                        className="mr-10 w-100"
+                        placeHolder={data.unit}
+                        data={data.listOfType.map((data) => ({
+                          value: data,
+                          label: data,
+                        }))}
+                        onChange={(selected) => handleConfigType(selected.value)}
+                      />
+                    </Col>
+                  </Row>
+                ))
+              : 'Tidak Ada Data'}
+            {/* <Row className="align-items-center mb-20">
               <Col md={6}>
                 <span>Batas Blokir Sementara Untuk Blokir Permanen</span>
               </Col>
@@ -121,14 +196,14 @@ const CMSSecurityEdit = () => {
                 <SingleDropDown
                   className="mr-10 w-100"
                   placeHolder="Pilih Durasi"
-                  data={[{ value: '', label: 'Pilih Durasi' }, ...listBlockPermanent]}
+                  data={[{ value: '', label: 'Pilih Durasi' }, ...listBatasBlockSementara]}
                   // onChange={(selected) => setStatus(selected.value)}
                 />
               </Col>
               <Col md={3}>
-                <span>Kali</span>
+                <span>{typeBatasBlockSementara}</span>
               </Col>
-            </Row>
+            </Row> */}
           </Col>
         </Row>
       </div>
@@ -137,15 +212,15 @@ const CMSSecurityEdit = () => {
           <div className="mt-20 mb-20">
             <p className="mb-0">
               Apakah anda yakin ingin
-              <span className="sdp-text-blue"> Menyimpan </span>
-              Perubahan sekuriti ?
+              <span className="sdp-text-blue"> menyimpan </span>
+              perubahan sekuriti ?
             </p>
           </div>
           <div className="d-flex justify-content-end mt-20">
             <Button className="mr-10 px-35" variant="secondary" onClick={handleCloseModal}>
               Batal
             </Button>
-            <Button type="submit" className="ml-10 px-35" variant="info">
+            <Button type="submit" className="ml-10 px-35" variant="info" onClick={onSubmit}>
               Konfirmasi
             </Button>
           </div>

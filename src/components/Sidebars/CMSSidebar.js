@@ -135,7 +135,7 @@ export const CMSSidebar = () => {
           Konfigurasi
         </div>
         <SidebarItem title="Log Aktivitas" pathname="/cms/log-activity" />
-        <SidebarItem title="Sekuriti" pathname="#" />
+        <SidebarItem title="Sekuriti" pathname="/cms/security" />
         <SidebarItem title="Aset" pathname="#" />
         <SidebarItem title="Media Sosial" pathname="/cms/media-sosial" />
       </div>

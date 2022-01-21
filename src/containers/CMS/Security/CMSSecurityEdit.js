@@ -22,6 +22,7 @@ const CMSSecurityEdit = () => {
   const { configResult, configLoading } = useSelector(configSecurityListSelector);
   const { valueResult, valueLoading } = useSelector(configListValueSelector);
 
+  const [loading, setLoading] = useState(false);
   const [paramsValue, setParamsValue] = useState('');
   const [showModal, setShowModal] = useState('');
   const [valueBlokir, setValueBlokir] = useState('');
@@ -56,11 +57,11 @@ const CMSSecurityEdit = () => {
       handleNotification('secondary', message, 'check');
       initialCall();
       isFunction(callBack) && callBack();
-      // setAPIError(false);
+      setLoading(false);
     } catch (e) {
       handleNotification('secondary', e?.data?.message, 'cross');
       handleCloseModal();
-      // setAPIError(true);
+      setLoading(false);
     }
   };
 
@@ -188,22 +189,6 @@ const CMSSecurityEdit = () => {
                   </Row>
                 ))
               : 'Tidak Ada Data'}
-            {/* <Row className="align-items-center mb-20">
-              <Col md={6}>
-                <span>Batas Blokir Sementara Untuk Blokir Permanen</span>
-              </Col>
-              <Col md={3}>
-                <SingleDropDown
-                  className="mr-10 w-100"
-                  placeHolder="Pilih Durasi"
-                  data={[{ value: '', label: 'Pilih Durasi' }, ...listBatasBlockSementara]}
-                  // onChange={(selected) => setStatus(selected.value)}
-                />
-              </Col>
-              <Col md={3}>
-                <span>{typeBatasBlockSementara}</span>
-              </Col>
-            </Row> */}
           </Col>
         </Row>
       </div>

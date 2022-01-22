@@ -46,6 +46,7 @@ export const apiUrls = {
   perminataanData: getPortalEndpoint('permintaan-data'),
   instansiData: getV1Endpoint('instansi'),
   cmsIntansiData: getCMSEndpoint('instansi'),
+  cmsConfigSecurity: getCMSEndpoint('configuration/security'),
   cmsKomunitasAhliData: getCMSEndpoint('komunitas-ahli'),
   portalKomunitasAhliData: getPortalEndpoint('komunitas-ahli'),
   cmsAuditTrialData: getCMSEndpoint('audit-trail'),

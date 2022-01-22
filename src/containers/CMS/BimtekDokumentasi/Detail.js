@@ -141,25 +141,16 @@ const CMSDokumentasiDetail = (props) => {
       let fotoFormData = new FormData();
       fotoFormData.append('file', file);
       await post(apiUrls.uploadFoto, fotoFormData, { headers: { 'Content-Type': undefined } }).then((res) => {
-        Notification.show({
-          type: 'secondary',
-          message: <div> Berhasil Upload Gambar Dokumentasi </div>,
-          icon: 'check',
-        });
-        setFotoDokumentasi([...fotoDokumentasi, res.data]);
-        let obj = {
-          idDokumentasi: dataDetailDokumentasi.dokumentasiId,
-          id: dataDetailDokumentasi.id,
-          images: [res.data],
-        };
-        return dispatch(postImageDokumentasiDetail(obj));
+        handleAPICall(
+          post,
+          `${apiUrls.cmsBimtekJadwal}/${dataDetailDokumentasi.id}/dokumentasi/${dataDetailDokumentasi.dokumentasiId}/images`,
+          { data: { images: [res.data] } },
+          'Berhasil menambah gambar dokumentasi',
+        );
+        if (!apiError) return setFotoDokumentasi([...fotoDokumentasi, res.data]);
       });
     } catch (e) {
-      Notification.show({
-        type: 'secondary',
-        message: <div> Gagal Upload Gambar Dokumentasi </div>,
-        icon: 'cross',
-      });
+      handleNotification('secondary', 'Gagal menambah foto dokumentasi', 'check');
     }
   };
 

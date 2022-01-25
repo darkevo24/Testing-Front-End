@@ -115,7 +115,18 @@ export const mapOrStringsToFq = (data, keys = []) => {
 };
 
 export const pickValidDatasetPaginationParams = (data) => {
-  return pick(data, ['q', 'fq', 'facet.field', 'facet.limit', 'start', 'rows', 'sort', 'ext_bbox', 'ext_prev_extent']);
+  return pick(data, [
+    'q',
+    'fq',
+    'facet.field',
+    'facet.limit',
+    'start',
+    'rows',
+    'sort',
+    'ext_bbox',
+    'ext_prev_extent',
+    'include_private',
+  ]);
 };
 
 /**

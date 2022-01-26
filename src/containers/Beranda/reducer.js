@@ -15,6 +15,7 @@ export const getInitialParams = () => ({
   currentPage: 0,
   'facet.field': facetFields,
   'facet.limit': 500,
+  include_private: true,
   ...paginationParams,
 });
 

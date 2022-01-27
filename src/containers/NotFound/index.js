@@ -12,8 +12,8 @@ export const NotFound = () => {
   return (
     <div className={bem.b()}>
       <img src={image404} className={bem.e('img-not-found')} alt="not-found" />
-      <div className="sdp-heading my-24">Page Not Found</div>
-      <Button onClick={goTo('/home')}>Go to Home</Button>
+      <div className="sdp-heading my-24">Telah terjadi kesalahan, halaman yang anda tuju tidak tersedia untuk saat ini</div>
+      <Button onClick={goTo('/home')}>Kembali ke Home</Button>
     </div>
   );
 };

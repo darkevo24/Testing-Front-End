@@ -7,6 +7,9 @@ import get from 'lodash/get';
 import map from 'lodash/map';
 import set from 'lodash/set';
 import pick from 'lodash/pick';
+import intersection from 'lodash/intersection';
+import { getCookieByName, cookieKeys } from './cookie';
+
 import moment from 'moment';
 import { katalogUrl } from './constants';
 
@@ -490,4 +493,13 @@ export const getMapFillColor = (d) => {
     : d > 10
     ? '#FED976'
     : '#E31A1C';
+};
+
+export const isArrayWithLength = (arr) => {
+  return Array.isArray(arr) && arr.length;
+};
+export const getAllowedRoutes = (permissions) => {
+  const currentUser = getCookieByName(cookieKeys.user);
+  const userRoles = [currentUser.roles];
+  return intersection(permissions, userRoles);
 };

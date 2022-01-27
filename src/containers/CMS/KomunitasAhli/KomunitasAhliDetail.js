@@ -299,7 +299,7 @@ const KomunitasAhli = () => {
               <RowLoader />
             ) : (
               (logRecord || []).map((item, index) => {
-                const status = (item?.data?.status || '').toLowerCase();
+                const status = (item?.status || '').toLowerCase();
                 const classDetail = getStatusClass(status);
                 return (
                   <div className="mb-24" key={`log-record-${index}`}>

@@ -1,12 +1,14 @@
+import React, { lazy } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
 import { CMSSidebar } from 'components/Sidebars/CMSSidebar';
 import { AdminHeader, Header } from 'containers/Header';
 import { CMSHeader } from 'containers/Header/CMSHeader';
 import { Footer } from 'containers/Footer';
 import { tokenSelector } from 'containers/Login/reducer';
 import { cookieKeys, getCookieByName } from '../utils/cookie';
+import { getAllowedRoutes, isArrayWithLength } from 'utils/helper';
+const NotFoundPage = lazy(() => import('containers/NotFound'));
 
 export const AdminAuthLayout = ({ children }) => {
   return <div className="auth-container admin-auth-container">{children}</div>;
@@ -46,9 +48,33 @@ export const CMSLayout = ({ children }) => {
   return <Layout>{children}</Layout>;
 };
 
-export const PrivateRoute = ({ component: Component, ...rest }) => {
+export const PrivateRoute = ({ component: Component, path, permissions, ...rest }) => {
   const token = useSelector(tokenSelector) || getCookieByName(cookieKeys.token);
-  return <Route {...rest} render={(props) => (!!token ? <Component {...props} /> : <Redirect to="/home" />)} />;
+  if (isArrayWithLength(permissions)) {
+    let allowedRoutes = [];
+    if (token) allowedRoutes = getAllowedRoutes(permissions);
+    else return <Redirect to="/home" />;
+    return (
+      <Route
+        {...rest}
+        render={(props) =>
+          !!token && isArrayWithLength(allowedRoutes) ? (
+            <Component {...props} />
+          ) : (
+            <Route>
+              <NotFoundPage />
+            </Route>
+          )
+        }
+      />
+    );
+  } else {
+    return (
+      <Route>
+        <NotFoundPage />
+      </Route>
+    );
+  }
 };
 
 export const PublicRoute = ({ component: Component, ...rest }) => {

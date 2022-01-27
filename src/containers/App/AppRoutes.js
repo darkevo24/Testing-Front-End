@@ -3,6 +3,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { AppLayout, PrivateRoute, PublicRoute } from 'layouts';
 import lazily from 'utils/lazily';
+import { Roles } from 'containers/App/config';
 
 const { Login } = lazily(() => import('containers/Login'));
 const BerandaPage = lazy(() => import('containers/Beranda'));
@@ -42,7 +43,6 @@ const ManagementApiUpdatePage = lazy(() => import('containers/ManagementApi/Upda
 const ChangePasswordLogin = lazy(() => import('containers/ChangePasswordLogin'));
 const ChangePasswordUser = lazy(() => import('containers/ChangePasswordUser'));
 const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
-// const NotFoundPage = lazy(() => import('containers/NotFound'));
 const KebijakanPrivasiPage = lazy(() => import('containers/KebijakanPrivasi'));
 const MetadataRegistryPage = lazy(() => import('containers/MetadataRegistry'));
 
@@ -53,50 +53,268 @@ function AppRoutes(props) {
       <PublicRoute exact path="/forgot-password" component={ForgotPassword} />
       <PublicRoute exact path="/change-password" component={ChangePasswordLogin} />
       <AppLayout>
-        <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
-        <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
-        <Route exact path="/api/form" component={ManagementApiAddPage} />
-        <Route exact path="/api" component={ManagementApiPage} />
-        <PrivateRoute exact path="/permintaan-data-detail/:id" component={PerminataanDetail} />
-        <PrivateRoute exact path="/permintaan-data" component={Perminataan} />
-        <PrivateRoute exact path="/forum-sdi/:id" component={ForumSDIDetail} />
-        <PrivateRoute exact path="/forum-sdi" component={ForumSDI} />
-        <PrivateRoute exact path="/forum" component={PerminataanForumPage} />
-        <PrivateRoute exact path="/change-user-password" component={ChangePasswordUser} />
-        <Route exact path="/policy" component={KebijakanPrivasiPage} />
-        <Route exact path="/home" component={BerandaPage} />
-        <Route exact path="/topic-detail" component={TopicDetailPage} />
-        <PrivateRoute exact path="/dataset" component={DataSetPage} />
-        <PrivateRoute exact path="/daftar" component={DaftarPage} />
-        <PrivateRoute exact path="/daftar/:daftarId/variable" component={DataVariablePage} />
-        <PrivateRoute exact path="/komunitas-ahli" component={KomunitasPage} />
-        <Route exact path="/berita" component={BeritaPage} />
-        <Route exact path="/berita/preview" component={BeritaPreviewPage} />
-        <Route exact path="/berita-populer" component={BeritaPopular} />
-        <Route exact path="/berita-topik/:id" component={BeritaByTopic} />
-        <Route exact path="/berita/:id" component={BeritaDetailPage} />
-        <Route exact path="/berita/perbulan/:date" component={BeritaPerBulan} />
-        <PrivateRoute exact path="/bimtek-summary" component={BimTekSummaryPage} />
-        <PrivateRoute exact path="/bimtek-form" component={BimTekFormPage} />
-        <PrivateRoute exact path="/bimtek-jadwal" component={BimTekJadwalPage} />
-        <PrivateRoute exact path="/bimtek-materi" component={BimTekMateriPage} />
-        <PrivateRoute exact path="/bimtek-permintaan" component={BimTekPermintaanPage} />
-        <PrivateRoute exact path="/bimtek-permintaan/:id" component={BimTekPermintaanDetailPage} />
-        <PrivateRoute exact path="/bimtek-kota-pelaksanaan" component={BimTekKotaPage} />
-        <PrivateRoute exact path="/bimtek-dokumentasi" component={BimTekDokumentasiPage} />
-        <Route exact path="/tentang" component={TentangPage} />
-        <PrivateRoute exact path="/kesiapan-sdi" component={KesiapanSDI} />
-        <PrivateRoute exact path="/dashboard-eksekutif" component={DashboardEksekutif} />
-        <PrivateRoute exact path="/dashboard-saya" component={DashboardSaya} />
-        <PrivateRoute exact path="/dataanalytic" component={DataAnalytic} />
-        <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
-        <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
-        <Route exact path="/api/form" component={ManagementApiAddPage} />
-        <Route exact path="/api" component={ManagementApiPage} />
-        <PrivateRoute exact path="/sdmx" component={MetadataRegistryPage} />
+        <Switch>
+          <Route exact path="/policy" component={KebijakanPrivasiPage} />
+          <Route exact path="/home" component={BerandaPage} />
+          <Route exact path="/topic-detail" component={TopicDetailPage} />
+          <Route exact path="/berita" component={BeritaPage} />
+          <Route exact path="/berita/preview" component={BeritaPreviewPage} />
+          <Route exact path="/berita-populer" component={BeritaPopular} />
+          <Route exact path="/berita-topik/:id" component={BeritaByTopic} />
+          <Route exact path="/berita/:id" component={BeritaDetailPage} />
+          <Route exact path="/berita/perbulan/:date" component={BeritaPerBulan} />
+          <Route exact path="/tentang" component={TentangPage} />
+          <Route exact path="/api" component={ManagementApiPage} />
+          <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
+          <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
+          <Route exact path="/api/form" component={ManagementApiAddPage} />
+
+          <PrivateRoute
+            exact
+            path="/permintaan-data-detail/:id"
+            component={PerminataanDetail}
+            permissions={[Roles.MEMBER]}
+          />
+          <PrivateRoute exact path="/permintaan-data" component={Perminataan} permissions={[Roles.MEMBER]} />
+          <PrivateRoute
+            exact
+            path="/forum-sdi/:id"
+            component={ForumSDIDetail}
+            permissions={[
+              Roles.REGISTERED_USER,
+              Roles.MEMBER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute exact path="/forum-sdi" component={ForumSDI} />
+          <PrivateRoute
+            exact
+            path="/forum"
+            component={PerminataanForumPage}
+            permissions={[
+              Roles.REGISTERED_USER,
+              Roles.MEMBER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute
+            exact
+            path="/change-user-password"
+            component={ChangePasswordUser}
+            permissions={[
+              Roles.MEMBER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute
+            exact
+            path="/dataset"
+            component={DataSetPage}
+            permissions={[Roles.ADMIN, Roles.REGISTERED_USER, Roles.MEMBER, Roles.SEKRETARIANT]}
+          />
+          <PrivateRoute
+            exact
+            path="/daftar"
+            component={DaftarPage}
+            permissions={[
+              Roles.MEMBER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute
+            exact
+            path="/daftar/:daftarId/variable"
+            component={DataVariablePage}
+            permissions={[
+              Roles.MEMBER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute
+            exact
+            path="/komunitas-ahli"
+            component={KomunitasPage}
+            permissions={[
+              Roles.MEMBER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute
+            exact
+            path="/bimtek-summary"
+            component={BimTekSummaryPage}
+            permissions={[
+              Roles.MEMBER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute
+            exact
+            path="/bimtek-form"
+            component={BimTekFormPage}
+            permissions={[
+              Roles.MEMBER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute
+            exact
+            path="/bimtek-jadwal"
+            component={BimTekJadwalPage}
+            permissions={[
+              Roles.MEMBER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute
+            exact
+            path="/bimtek-materi"
+            component={BimTekMateriPage}
+            permissions={[
+              Roles.MEMBER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute
+            exact
+            path="/bimtek-permintaan"
+            component={BimTekPermintaanPage}
+            permissions={[
+              Roles.MEMBER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute
+            exact
+            path="/bimtek-permintaan/:id"
+            component={BimTekPermintaanDetailPage}
+            permissions={[
+              Roles.MEMBER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute
+            exact
+            path="/bimtek-kota-pelaksanaan"
+            component={BimTekKotaPage}
+            permissions={[
+              Roles.MEMBER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute
+            exact
+            path="/bimtek-dokumentasi"
+            component={BimTekDokumentasiPage}
+            permissions={[
+              Roles.MEMBER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute
+            exact
+            path="/kesiapan-sdi"
+            component={KesiapanSDI}
+            permissions={[
+              Roles.REGISTERED_USER,
+              Roles.MEMBER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute
+            exact
+            path="/dashboard-eksekutif"
+            component={DashboardEksekutif}
+            permissions={[
+              Roles.REGISTERED_USER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute
+            exact
+            path="/dashboard-saya"
+            component={DashboardSaya}
+            permissions={[
+              Roles.REGISTERED_USER,
+              Roles.CONTENT_CREATOR,
+              Roles.CONTENT_EDITOR,
+              Roles.SEKRETARIANT,
+              Roles.SEKRETARIANT_CREATOR,
+              Roles.SEKRETARIANT_EDITOR,
+            ]}
+          />
+          <PrivateRoute
+            exact
+            path="/dataanalytic"
+            component={DataAnalytic}
+            permissions={[Roles.ADMIN, Roles.REGISTERED_USER, Roles.MEMBER, Roles.SEKRETARIANT]}
+          />
+          <PrivateRoute
+            exact
+            path="/sdmx"
+            component={MetadataRegistryPage}
+            permissions={[Roles.MEMBER, Roles.SEKRETARIANT, Roles.SEKRETARIANT_CREATOR, Roles.SEKRETARIANT_EDITOR]}
+          />
+        </Switch>
         {/* <Route exact path="/change-password" component={ChangePassword} /> */}
         {/* <Route exact path="/forgot-password" component={ForgotPassword} /> */}
-        {/* <Route path="*" component={NotFoundPage} /> */}
+        {/* <Route path="/not-found" component={NotFoundPage} /> */}
       </AppLayout>
     </Switch>
   );

@@ -118,7 +118,18 @@ export const mapOrStringsToFq = (data, keys = []) => {
 };
 
 export const pickValidDatasetPaginationParams = (data) => {
-  return pick(data, ['q', 'fq', 'facet.field', 'facet.limit', 'start', 'rows', 'sort', 'ext_bbox', 'ext_prev_extent']);
+  return pick(data, [
+    'q',
+    'fq',
+    'facet.field',
+    'facet.limit',
+    'start',
+    'rows',
+    'sort',
+    'ext_bbox',
+    'ext_prev_extent',
+    'include_private',
+  ]);
 };
 
 /**
@@ -306,8 +317,18 @@ export const getStatusClass = (status) => {
         text: 'Waiting Request Approval',
         divText: 'Waiting Request Approval',
       };
+    case 'success':
+      return {
+        ...greenText,
+        text: 'Kesuksesan',
+        divText: 'Kesuksesan',
+      };
     default:
-      return {};
+      return {
+        ...grayText,
+        text: status,
+        divText: status,
+      };
   }
 };
 

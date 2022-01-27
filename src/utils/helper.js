@@ -317,8 +317,18 @@ export const getStatusClass = (status) => {
         text: 'Waiting Request Approval',
         divText: 'Waiting Request Approval',
       };
+    case 'success':
+      return {
+        ...greenText,
+        text: 'Kesuksesan',
+        divText: 'Kesuksesan',
+      };
     default:
-      return {};
+      return {
+        ...grayText,
+        text: status,
+        divText: status,
+      };
   }
 };
 

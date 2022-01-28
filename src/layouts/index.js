@@ -54,7 +54,7 @@ export const PrivateRoute = ({ component: Component, path, permissions, ...rest 
   const token = useSelector(tokenSelector) || getCookieByName(cookieKeys.token);
   const { keycloak } = useKeycloak();
   const isTermAndConditionAccepted = useSelector(termAndConditionSelector);
-  if (!isTermAndConditionAccepted) {
+  if (!isTermAndConditionAccepted && keycloak.authenticated) {
     keycloak.logout();
     return <Redirect to="/home" />;
   }

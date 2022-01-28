@@ -155,7 +155,7 @@ export const PerminataanDetail = () => {
           <span className="fs-20 lh-25">Log Status</span>
           <div className="d-flex flex-column mt-24">
             {logRecord.map((item, index) => {
-              const status = (item?.data?.status || '').toLowerCase();
+              const status = (item?.status || '').toLowerCase();
               const classDetail = getStatusClass(status);
               return (
                 <div className="mb-24" key={`log-record-${index}`}>

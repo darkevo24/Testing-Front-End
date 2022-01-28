@@ -46,6 +46,7 @@ function App(props) {
   const onTokens = (tokens) => {
     if (!tokens?.token) return false;
     dispatch(fetchLoggedInUserInfo(tokens.token));
+    history.push('/term-and-condition');
   };
 
   return (

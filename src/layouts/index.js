@@ -6,6 +6,8 @@ import { AdminHeader, Header } from 'containers/Header';
 import { CMSHeader } from 'containers/Header/CMSHeader';
 import { Footer } from 'containers/Footer';
 import { tokenSelector } from 'containers/Login/reducer';
+import { termAndConditionSelector } from 'containers/App/reducer';
+import { useKeycloak } from '@react-keycloak/web';
 import { cookieKeys, getCookieByName } from '../utils/cookie';
 import { getAllowedRoutes, isArrayWithLength } from 'utils/helper';
 const NotFoundPage = lazy(() => import('containers/NotFound'));
@@ -50,6 +52,9 @@ export const CMSLayout = ({ children }) => {
 
 export const PrivateRoute = ({ component: Component, path, permissions, ...rest }) => {
   const token = useSelector(tokenSelector) || getCookieByName(cookieKeys.token);
+  const { keycloak } = useKeycloak();
+  const isTermAndConditionAccepted = useSelector(termAndConditionSelector);
+  if (!isTermAndConditionAccepted) keycloak.logout();
   if (isArrayWithLength(permissions)) {
     let allowedRoutes = [];
     if (token) allowedRoutes = getAllowedRoutes(permissions);

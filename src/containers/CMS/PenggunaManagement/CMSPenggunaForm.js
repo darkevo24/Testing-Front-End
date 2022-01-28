@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form } from 'react-bootstrap';
-import { FileInput, Input } from 'components';
-import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { Button, Form } from 'react-bootstrap';
+import { Controller, useForm } from 'react-hook-form';
+import { FileInput, Input } from 'components';
 import { isEmpty } from 'lodash';
 import { submitForm } from 'utils/helper';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
+import { userSelector } from 'containers/Login/reducer';
 import { getPenggunaDetails, penggunanDataDetailSelector } from '../PenggunaManagementDetails/reducer';
 import {
   getPenggunaRoleList,
@@ -20,6 +22,7 @@ import {
 } from './reducer';
 import { post } from 'utils/request';
 import { apiUrls } from 'utils/constants';
+import Switch from 'components/Switch';
 
 export const penggunaFormId = 'pengguna-form-id';
 export const submitpenggunaForm = submitForm(penggunaFormId);
@@ -30,16 +33,31 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
   const [instansiErr, setInstansiErr] = useState(false);
   const [fileErr, setFileErr] = useState(false);
   const [role, setRole] = useState('');
+  const [status, setStatus] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
 
+  const { roles } = useSelector(userSelector);
   const { records: penggunaRoleData } = useSelector(penggunaRoleDataSelector);
   const { records: penggunaInstansiData } = useSelector(instansiDataSelector);
   const { records: penggunaUnitKerjaData } = useSelector(unitKerjaDataSelector);
   const { records: penggunaDetailsData } = useSelector(penggunanDataDetailSelector);
   const penggunaStatusData = ['PNS', 'PPNPN'];
+
   useEffect(() => {
     setValue('roles', role);
   }, [role]);
+
+  useEffect(async () => {
+    const newStatus = status ? 'active' : 'inactive';
+    if (penggunaDetailsData) {
+      try {
+        await post(`${apiUrls.penggunaManagement}/${penggunaDetailsData.id}/set-status/${newStatus}`);
+      } catch (error) {
+        console.log('ERR', error);
+      }
+    }
+  }, [status]);
 
   const schema = yup
     .object({
@@ -113,6 +131,7 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
     dispatch(getPenggunaStatusList());
     dispatch(getInstansiData());
   }, []);
+
   useEffect(() => {
     if (data) {
       dispatch(getPenggunaDetails(data));
@@ -120,11 +139,13 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
       setPenggunaDetails({});
     }
   }, [data]);
+
   useEffect(() => {
     if (penggunaDetails) {
       reset(penggunaDetails);
     }
     setRole(penggunaDetails.roles);
+    setStatus(penggunaDetails.status === 'ACTIVE');
   }, [penggunaDetails]);
 
   const changeInstansi = (e) => {
@@ -258,26 +279,45 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
         </div>
         <div className="sdp-error">{errors.roles?.message}</div>
       </Form.Group>
-      {disableForm ? (
-        <div>
-          {penggunaDetailsData?.officialMemo?.fileName ? penggunaDetailsData?.officialMemo?.fileName : 'No File'} is Selected
-        </div>
-      ) : (
-        <>
-          <FileInput
-            group
-            disabled={disableForm}
-            label="Nota Dinas"
-            name="officialMemo"
-            control={control}
-            uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
-            handleOnChange={uploadMemo}
-          />
-          <div className="sdp-error" hidden={fileErr}>
-            {errors.officialMemo?.message}
+
+      <Form.Label>Nota Dinas</Form.Label>
+      <Form.Group>
+        {disableForm ? (
+          <div>
+            {penggunaDetailsData?.officialMemo?.fileName ? penggunaDetailsData?.officialMemo?.fileName : 'No File'} is
+            Selected
           </div>
+        ) : (
+          <>
+            <FileInput
+              group
+              disabled={disableForm}
+              label="Nota Dinas"
+              name="officialMemo"
+              control={control}
+              uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
+              handleOnChange={uploadMemo}
+            />
+            <div className="sdp-error" hidden={fileErr}>
+              {errors.officialMemo?.message}
+            </div>
+          </>
+        )}
+      </Form.Group>
+      {roles.toLowerCase() === 'admin' ? (
+        <>
+          {' '}
+          <Form.Label>Status</Form.Label>
+          <Switch isOn={status} handleToggle={() => setStatus(!status)} type={penggunaDetailsData.status} />
         </>
+      ) : (
+        ''
       )}
+
+      <Button variant="outline-danger" className="mt-15 fw-200" onClick={() => history.push('/change-user-password')}>
+        Reset Password Pengguna
+      </Button>
+
       <Button className="invisible" type="submit" />
     </Form>
   );

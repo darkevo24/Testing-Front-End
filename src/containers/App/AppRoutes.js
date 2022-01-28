@@ -5,7 +5,7 @@ import { AppLayout, PrivateRoute, PublicRoute } from 'layouts';
 import lazily from 'utils/lazily';
 import { Roles } from 'containers/App/config';
 
-const { Login } = lazily(() => import('containers/Login'));
+const { Login, TermAndCondition } = lazily(() => import('containers/Login'));
 const BerandaPage = lazy(() => import('containers/Beranda'));
 const TopicDetailPage = lazy(() => import('containers/Beranda/TopicDetails'));
 const DataSetPage = lazy(() => import('containers/Beranda/DataSet'));
@@ -52,6 +52,7 @@ function AppRoutes(props) {
       <PublicRoute exact path="/login" component={Login} />
       <PublicRoute exact path="/forgot-password" component={ForgotPassword} />
       <PublicRoute exact path="/change-password" component={ChangePasswordLogin} />
+      <PublicRoute exact path="/term-and-condition" component={TermAndCondition} />
       <AppLayout>
         <Switch>
           <Route exact path="/policy" component={KebijakanPrivasiPage} />

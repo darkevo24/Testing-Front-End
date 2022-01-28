@@ -68,7 +68,7 @@ export const PerminataanDetail = () => {
   };
 
   const divClass = getStatusClass(status);
-  const logSelesai = logRecord.find((item) => item.data.status === 'SELESAI');
+  const logSelesai = logRecord.find((item) => item.status === 'SELESAI');
   return (
     <div className="sdp-perminataan-detail-container my-40 mx-400">
       <Row className="mt-40">

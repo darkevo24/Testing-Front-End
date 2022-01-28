@@ -233,7 +233,7 @@ export const rkpPNSelector = (state) => state.global.rkpPN;
 export const kategoriSelector = (state) => state.global?.kategori;
 export const taglineSelector = (state) => state.global?.tagline;
 export const fotoSelector = (state) => state.global?.file;
-export const termAndConditionSelector = (state) => state.isTermAndConditionAccepted;
+export const termAndConditionSelector = (state) => state.global?.isTermAndConditionAccepted;
 
 export const instansiOptionsSelector = createSelector(instansiDataSelector, dataOptionsMapperCurry(idNameOptionsMapper));
 export const dataindukAllOptionsSelector = createSelector(dataindukAllSelector, dataOptionsMapperCurry(idNameOptionsMapper));

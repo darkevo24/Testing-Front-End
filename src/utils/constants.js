@@ -42,6 +42,7 @@ export const getPublicV1Endpoint = (path) => `${apiUrl}/public/v1/${path}`;
 
 export const apiUrls = {
   login: getApiEndpoint('login'),
+  verifyRecaptcha: getApiEndpoint('portal/v1/recaptcha/verify'),
   userInfo: getPortalEndpoint('v1/jwt-info'),
   dataset: getDataEndpoint('3/action/package_search'),
   perminataanData: getPortalEndpoint('permintaan-data'),

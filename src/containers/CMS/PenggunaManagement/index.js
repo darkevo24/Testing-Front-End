@@ -98,7 +98,7 @@ const CMSPenggunaManagement = () => {
     },
     {
       Header: 'Approver',
-      accessor: 'approvedBy',
+      accessor: 'approvedBy.name',
     },
     {
       Header: 'Status',

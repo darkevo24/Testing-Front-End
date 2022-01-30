@@ -3,13 +3,14 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import FormCheck from 'react-bootstrap/FormCheck';
 import Button from 'react-bootstrap/Button';
-import React, { useRef } from 'react';
-import Logo from 'assets/logo-large.png';
+import React, { useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { useState } from 'react';
-import { acceptTermAndCondition } from 'containers/App/reducer';
+import Notification from 'components/Notification';
 import { useDispatch } from 'react-redux';
+import { acceptTermAndCondition } from 'containers/App/reducer';
+import { validateReCaptcha } from './reducer';
 import { recaptchaSiteKey } from 'utils/constants';
+import Logo from 'assets/logo-large.png';
 
 const TermAndCondition = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,9 @@ const TermAndCondition = () => {
   const reCaptchaRef = useRef();
   const [agree, setAgree] = useState(false);
   const [validated, setValidated] = useState(false);
+  const [captchaValue, setRecaptchaValue] = useState(null);
   const handleChange = (value) => {
+    setRecaptchaValue(value);
     setValidated(!!value);
   };
 
@@ -28,8 +31,23 @@ const TermAndCondition = () => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    dispatch(acceptTermAndCondition());
-    history.push('/');
+    if (captchaValue) {
+      const data = {
+        response: captchaValue,
+      };
+      dispatch(acceptTermAndCondition());
+      dispatch(validateReCaptcha({ payload: data })).then((res) => {
+        if (res.payload) {
+          history.push('/');
+        } else {
+          Notification.show({
+            type: 'secondary',
+            message: <div> {'Permintaan Data Gagal Diproses '}</div>,
+            icon: 'cross',
+          });
+        }
+      });
+    }
   };
 
   return (

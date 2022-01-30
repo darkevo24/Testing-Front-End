@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, get } from 'utils/request';
+import { apiUrls, get, post } from 'utils/request';
 import { cookieKeys, getCookieByName, setCookie } from 'utils/cookie';
 
 export const initialState = {
@@ -17,6 +17,11 @@ export const fetchLoggedInUserInfo = createAsyncThunk('login/fetchLoggedInUserIn
   const user = response.data.content;
   setCookie(cookieKeys.user, user);
   return { token, user };
+});
+
+export const validateReCaptcha = createAsyncThunk('portal/recaptcha/verify', async (params) => {
+  const response = await post(apiUrls.verifyRecaptcha, params.payload);
+  return response?.data.content;
 });
 
 const loginSlice = createSlice({

@@ -2,15 +2,15 @@ import { useHistory } from 'react-router-dom';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import FormCheck from 'react-bootstrap/FormCheck';
+import { useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import React, { useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import Notification from 'components/Notification';
-import { useDispatch } from 'react-redux';
 import { acceptTermAndCondition } from 'containers/App/reducer';
-import { validateReCaptcha } from './reducer';
 import { recaptchaSiteKey } from 'utils/constants';
 import Logo from 'assets/logo-large.png';
+import { validateReCaptcha } from './reducer';
 
 const TermAndCondition = () => {
   const dispatch = useDispatch();
@@ -35,9 +35,9 @@ const TermAndCondition = () => {
       const data = {
         response: captchaValue,
       };
-      dispatch(acceptTermAndCondition());
       dispatch(validateReCaptcha({ payload: data })).then((res) => {
-        if (res.payload) {
+        if (res.status === 'SUCESS') {
+          dispatch(acceptTermAndCondition());
           history.push('/');
         } else {
           Notification.show({

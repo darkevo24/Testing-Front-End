@@ -36,7 +36,7 @@ const TermAndCondition = () => {
         response: captchaValue,
       };
       dispatch(validateReCaptcha({ payload: data })).then((res) => {
-        if (res.status === 'SUCESS') {
+        if (res.data.status === 'SUCCESS') {
           dispatch(acceptTermAndCondition());
           history.push('/');
         } else {

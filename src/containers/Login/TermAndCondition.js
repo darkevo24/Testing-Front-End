@@ -37,7 +37,7 @@ const TermAndCondition = () => {
       };
       dispatch(acceptTermAndCondition());
       dispatch(validateReCaptcha({ payload: data })).then((res) => {
-        if (res.payload) {
+        if (res.data.status === 'SUCCESS') {
           history.push('/');
         } else {
           Notification.show({

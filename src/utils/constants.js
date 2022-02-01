@@ -49,6 +49,7 @@ export const apiUrls = {
   userInfo: getPortalEndpoint('v1/jwt-info'),
   dataset: getDataEndpoint('3/action/package_search'),
   perminataanData: getPortalEndpoint('permintaan-data'),
+  getPortalApiManagmentList: getPortalEndpoint('management-api'),
   instansiData: getV1Endpoint('instansi'),
   cmsIntansiData: getCMSEndpoint('instansi'),
   cmsConfigSecurity: getCMSEndpoint('configuration/security'),

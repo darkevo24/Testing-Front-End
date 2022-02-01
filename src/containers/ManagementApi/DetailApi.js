@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -13,10 +13,23 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import bn from 'utils/bemNames';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMangementApiDetial, portalApiDetailSelector } from './reducer';
 
 const bem = bn('management-api');
 
 const ApiDetail = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { content } = useSelector(portalApiDetailSelector);
+  const data = useMemo(() => content || {}, [content]);
+
+  const fetchDetail = () => {
+    dispatch(getMangementApiDetial(id));
+  };
+  useEffect(() => {
+    fetchDetail();
+  }, []);
   const schema = yup
     .object({
       nama: yup.string().required(),
@@ -30,6 +43,9 @@ const ApiDetail = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      ...data,
+    },
   });
 
   const level = [1, 2, 3, 4, 5];

@@ -1,54 +1,83 @@
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Form from 'react-bootstrap/Form';
+import Table from 'components/Table';
+import TableLoader from 'components/Loader/TableLoader';
 import LogoBappenas from 'assets/Logo_Bappenas_Indonesia.png';
 import { ReactComponent as Edit } from 'assets/edit.svg';
 import { ReactComponent as Search } from 'assets/search-api.svg';
-import { ReactComponent as Prev } from 'assets/prev.svg';
-import { ReactComponent as Next } from 'assets/next.svg';
 import bn from 'utils/bemNames';
-
+import { useDebounce } from 'utils/hooks';
+import { getMangementApiList, portalManagmentApiListSelector } from './reducer';
+const DEBOUNCE_DELAY = 500;
 const bem = bn('management-api');
 
 const ManagementApi = () => {
   const history = useHistory();
-  const LIST_TABLE = [
+  const dispatch = useDispatch();
+  const [query, setQuery] = useState('');
+  const { page, size, loading, records, totalRecords, totalPages } = useSelector(portalManagmentApiListSelector);
+  const handleAPICall = (params) => {
+    return dispatch(getMangementApiList(params));
+  };
+
+  useEffect(() => {
+    handleAPICall({ page, q: query });
+  }, [query]);
+
+  const handleUserInputChange = (event) => {
+    const { value } = event.target;
+    delayedQuery(value);
+  };
+  const delayedQuery = useDebounce((query) => setQuery(query), DEBOUNCE_DELAY);
+
+  useEffect(() => {
+    return delayedQuery.cancel;
+  }, [query, delayedQuery]);
+
+  const columns = [
     {
-      title: 'Judul 1',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
-      json: 'data.go.id/api/(instansi)/(judul).json',
+      Header: 'Judul API',
+      accessor: 'title',
     },
     {
-      title: 'Judul 2',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
-      json: 'data.go.id/api/(instansi)/(judul).json',
+      Header: 'Deskripsi',
+      accessor: 'description',
     },
     {
-      title: 'Judul 3',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
-      json: 'data.go.id/api/(instansi)/(judul).json',
-    },
-    {
-      title: 'Judul 4',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
-      json: 'data.go.id/api/(instansi)/(judul).json',
-    },
-    {
-      title: 'Judul 5',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
-      json: 'data.go.id/api/(instansi)/(judul).json',
-    },
-    {
-      title: 'Judul 6',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
-      json: 'data.go.id/api/(instansi)/(judul).json',
-    },
-    {
-      title: 'Judul 7',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore et',
-      json: 'data.go.id/api/(instansi)/(judul).json',
+      Header: 'Output JSON',
+      accessor: 'outputUrl',
     },
   ];
+
+  const rowClick = (data) => {
+    history.push(`api-detail/${data.id}`);
+  };
+
+  const tableConfig = {
+    className: 'cms-table-log',
+    columns,
+    data: records,
+    variant: 'link',
+    title: '',
+    showSearch: false,
+    onSearch: () => {},
+    totalCount: totalRecords,
+    pageCount: totalPages,
+    pageSize: size,
+    currentPage: page,
+    manualPagination: true,
+    onRowClick: rowClick,
+    onPageIndexChange: (nextPage) => {
+      if (nextPage !== page) {
+        handleAPICall({ page: nextPage, q: query });
+      }
+    },
+  };
   return (
     <div className="sdp-management-api">
       <div className="container">
@@ -79,62 +108,24 @@ const ManagementApi = () => {
                   Tambah API
                 </Button>
                 <div className="input-group">
-                  <input type="text" placeholder="Cari..." />
-                  <div className="input-group-append">
+                  <InputGroup>
+                    <Form.Control
+                      variant="normal"
+                      type="text"
+                      placeholder="Cari Pencarian"
+                      onChange={handleUserInputChange}
+                    />
                     <span className="input-group-text">
                       <Search />
                     </span>
-                  </div>
+                  </InputGroup>
                 </div>
               </div>
             </Col>
           </Row>
         </div>
         <div className={bem.e('management-table bappenas')}>
-          <table>
-            <thead>
-              <th width="25%">Judul API</th>
-              <th width="50%">Deskripsi</th>
-              <th width="25%">Output JSON</th>
-            </thead>
-            <tbody>
-              {LIST_TABLE.map((data) => {
-                return (
-                  <tr onClick={() => history.push('api-detail/api-1')}>
-                    <td className="data-title">{data.title}</td>
-                    <td className="data-description">{data.description}</td>
-                    <td className="data-json">{data.json}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          <div className="wrapper-pagination">
-            <ul className="pagination">
-              <li className="page-item">
-                <button className="page-link prev">
-                  <Prev />
-                </button>
-              </li>
-              <li className="page-item">
-                <button className="page-link active">1</button>
-              </li>
-              <li className="page-item">
-                <button className="page-link">2</button>
-              </li>
-              <li className="page-item">
-                <button className="page-link">3</button>
-              </li>
-              <li className="page-item">
-                <button className="page-link">4</button>
-              </li>
-              <li className="page-item">
-                <button className="page-link next">
-                  <Next />
-                </button>
-              </li>
-            </ul>
-          </div>
+          {loading ? <TableLoader speed={2} width={'100%'} height={550} /> : <Table {...tableConfig} />}
         </div>
       </div>
     </div>

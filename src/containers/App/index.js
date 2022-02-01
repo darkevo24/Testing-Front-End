@@ -9,13 +9,14 @@
 import React, { useEffect, lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Redirect, Route, Switch, useHistory, withRouter } from 'react-router-dom';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import GlobalStyle from 'global-styles';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
+import keycloak, { initOptions } from 'Keycloak';
 
 import { fetchLoggedInUserInfo } from 'containers/Login/reducer';
 import Notify, { Notification } from 'components/Notification';
-import keycloak, { initOptions } from 'Keycloak';
+import { termAndConditionSelector } from 'containers/App/reducer';
 
 const AdminRoutes = lazy(() => import('./AdminRoutes'));
 const AppRoutes = lazy(() => import('./AppRoutes'));
@@ -23,6 +24,8 @@ const CMSRoutes = lazy(() => import('./CMSRoutes'));
 
 function App(props) {
   const dispatch = useDispatch();
+  const isTermAndConditionAccepted = useSelector(termAndConditionSelector);
+
   const history = useHistory();
 
   function hashLinkScroll() {
@@ -46,7 +49,9 @@ function App(props) {
   const onTokens = (tokens) => {
     if (!tokens?.token) return false;
     dispatch(fetchLoggedInUserInfo(tokens.token));
-    history.push('/term-and-condition');
+    if (!isTermAndConditionAccepted) {
+      history.push('/term-and-condition');
+    }
   };
 
   return (

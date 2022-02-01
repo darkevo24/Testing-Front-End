@@ -3,9 +3,10 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import FormCheck from 'react-bootstrap/FormCheck';
 import { useDispatch } from 'react-redux';
-import Button from 'react-bootstrap/Button';
 import React, { useRef, useState } from 'react';
+import Button from 'react-bootstrap/Button';
 import ReCAPTCHA from 'react-google-recaptcha';
+import Notification from 'components/Notification';
 import bn from 'utils/bemNames';
 import Modal from 'react-bootstrap/Modal';
 import { recaptchaSiteKey } from 'utils/constants';
@@ -113,10 +114,10 @@ const TermAndCondition = () => {
           ))}
         </Modal.Body>
         <Modal.Footer>
-          <Button className="mr-10" variant="secondary" style={{ width: '112px' }} onClick={onCancel}>
+          <Button className="mr-10 w-112" variant="secondary" onClick={onCancel}>
             Tidak Setuju
           </Button>
-          <Button className="ml-10" variant="info" style={{ width: '112px' }} onClick={onAgree}>
+          <Button className="ml-10 w-112" variant="info" onClick={onAgree}>
             Setuju
           </Button>
         </Modal.Footer>

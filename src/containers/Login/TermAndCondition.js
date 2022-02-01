@@ -6,13 +6,11 @@ import { useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import React, { useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
-import Notification from 'components/Notification';
-import { acceptTermAndCondition } from 'containers/App/reducer';
 import bn from 'utils/bemNames';
 import Modal from 'react-bootstrap/Modal';
 import { recaptchaSiteKey } from 'utils/constants';
 import Logo from 'assets/logo-large.png';
-import { validateReCaptcha } from './reducer';
+import { validateReCaptcha, acceptTermAndCondition } from './reducer';
 import TermAndConditionData from './termAndConditionData';
 
 const bem = bn('bimtek-dokumentasi');

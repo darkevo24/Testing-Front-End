@@ -7,7 +7,6 @@ import { AdminHeader, Header } from 'containers/Header';
 import { CMSHeader } from 'containers/Header/CMSHeader';
 import { Footer } from 'containers/Footer';
 import { tokenSelector } from 'containers/Login/reducer';
-import { termAndConditionSelector } from 'containers/App/reducer';
 import { hasPermission, isArrayWithLength } from 'utils/helper';
 import { cookieKeys, getCookieByName } from '../utils/cookie';
 
@@ -54,7 +53,7 @@ export const CMSLayout = ({ children }) => {
 export const PrivateRoute = ({ component: Component, path, permissions, ...rest }) => {
   const token = useSelector(tokenSelector) || getCookieByName(cookieKeys.token);
   const { keycloak } = useKeycloak();
-  const isTermAndConditionAccepted = useSelector(termAndConditionSelector);
+  const isTermAndConditionAccepted = getCookieByName(cookieKeys.isTermAndConditionAccepted);
   if (!isTermAndConditionAccepted && keycloak.authenticated) {
     keycloak.logout();
     return <Redirect to="/home" />;

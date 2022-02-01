@@ -7,6 +7,7 @@ const bem = bn('cookie');
 export const cookieKeys = {
   token: bem.e('token'),
   user: bem.e('user'),
+  isTermAndConditionAccepted: bem.e('isTermAndConditionAccepted'),
 };
 
 export const getCookieByName = (name) => {

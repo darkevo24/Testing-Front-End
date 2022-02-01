@@ -18,6 +18,9 @@ export const fetchLoggedInUserInfo = createAsyncThunk('login/fetchLoggedInUserIn
   setCookie(cookieKeys.user, user);
   return { token, user };
 });
+export const acceptTermAndCondition = createAsyncThunk('/acceptTermAndCondition', () => {
+  setCookie(cookieKeys.isTermAndConditionAccepted, true);
+});
 
 export const validateReCaptcha = createAsyncThunk('portal/recaptcha/verify', async (params) => {
   const response = await post(apiUrls.verifyRecaptcha, params.payload);

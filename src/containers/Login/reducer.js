@@ -18,7 +18,7 @@ export const fetchLoggedInUserInfo = createAsyncThunk('login/fetchLoggedInUserIn
   setCookie(cookieKeys.user, user);
   return { token, user };
 });
-export const acceptTermAndCondition = createAsyncThunk('/acceptTermAndCondition', () => {
+export const acceptTermAndCondition = createAsyncThunk('login/acceptTermAndCondition', () => {
   setCookie(cookieKeys.isTermAndConditionAccepted, true);
 });
 

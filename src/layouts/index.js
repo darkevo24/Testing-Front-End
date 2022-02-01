@@ -1,15 +1,16 @@
 import React, { lazy } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useKeycloak } from '@react-keycloak/web';
 import { CMSSidebar } from 'components/Sidebars/CMSSidebar';
 import { AdminHeader, Header } from 'containers/Header';
 import { CMSHeader } from 'containers/Header/CMSHeader';
 import { Footer } from 'containers/Footer';
 import { tokenSelector } from 'containers/Login/reducer';
 import { termAndConditionSelector } from 'containers/App/reducer';
-import { useKeycloak } from '@react-keycloak/web';
+import { hasPermission, isArrayWithLength } from 'utils/helper';
 import { cookieKeys, getCookieByName } from '../utils/cookie';
-import { getAllowedRoutes, isArrayWithLength } from 'utils/helper';
+
 const NotFoundPage = lazy(() => import('containers/NotFound'));
 
 export const AdminAuthLayout = ({ children }) => {
@@ -58,31 +59,25 @@ export const PrivateRoute = ({ component: Component, path, permissions, ...rest 
     keycloak.logout();
     return <Redirect to="/home" />;
   }
-  if (isArrayWithLength(permissions)) {
-    let allowedRoutes = [];
-    if (token) allowedRoutes = getAllowedRoutes(permissions);
-    else return <Redirect to="/home" />;
-    return (
-      <Route
-        {...rest}
-        render={(props) =>
-          !!token && isArrayWithLength(allowedRoutes) ? (
-            <Component {...props} />
-          ) : (
-            <Route>
-              <NotFoundPage />
-            </Route>
-          )
-        }
-      />
-    );
-  } else {
-    return (
-      <Route>
-        <NotFoundPage />
-      </Route>
-    );
-  }
+  let allowedRoutes = [];
+  if (token) allowedRoutes = hasPermission(permissions);
+  else return <Redirect to="/home" />;
+  const isAllowed = token && isArrayWithLength(allowedRoutes);
+  return (
+    <Route
+      {...rest}
+      path
+      render={(props) =>
+        isAllowed ? (
+          <Component {...props} />
+        ) : (
+          <Route>
+            <NotFoundPage />
+          </Route>
+        )
+      }
+    />
+  );
 };
 
 export const PublicRoute = ({ component: Component, ...rest }) => {

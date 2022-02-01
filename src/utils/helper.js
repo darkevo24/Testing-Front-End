@@ -498,7 +498,7 @@ export const getMapFillColor = (d) => {
 export const isArrayWithLength = (arr) => {
   return Array.isArray(arr) && arr.length;
 };
-export const getAllowedRoutes = (permissions) => {
+export const hasPermission = (permissions) => {
   const currentUser = getCookieByName(cookieKeys.user);
   const userRoles = [currentUser.roles];
   return intersection(permissions, userRoles);

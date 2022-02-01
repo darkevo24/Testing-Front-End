@@ -2,15 +2,20 @@ import { useHistory } from 'react-router-dom';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import FormCheck from 'react-bootstrap/FormCheck';
-import Button from 'react-bootstrap/Button';
+import { useDispatch } from 'react-redux';
 import React, { useRef, useState } from 'react';
+import Button from 'react-bootstrap/Button';
 import ReCAPTCHA from 'react-google-recaptcha';
 import Notification from 'components/Notification';
-import { useDispatch } from 'react-redux';
 import { acceptTermAndCondition } from 'containers/App/reducer';
-import { validateReCaptcha } from './reducer';
+import Modal from 'react-bootstrap/Modal';
+import bn from 'utils/bemNames';
 import { recaptchaSiteKey } from 'utils/constants';
 import Logo from 'assets/logo-large.png';
+import { validateReCaptcha } from './reducer';
+import TermAndConditionData from './termAndConditionData';
+
+const bem = bn('bimtek-dokumentasi');
 
 const TermAndCondition = () => {
   const dispatch = useDispatch();
@@ -19,6 +24,8 @@ const TermAndCondition = () => {
   const [agree, setAgree] = useState(false);
   const [validated, setValidated] = useState(false);
   const [captchaValue, setRecaptchaValue] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
   const handleChange = (value) => {
     setRecaptchaValue(value);
     setValidated(!!value);
@@ -26,18 +33,20 @@ const TermAndCondition = () => {
 
   const handleCheckBox = (evt) => {
     const { checked } = evt.target;
+    handleModalOpen();
     setAgree(checked);
   };
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    if (captchaValue) {
+    if (captchaValue && agree) {
       const data = {
         response: captchaValue,
       };
-      dispatch(acceptTermAndCondition());
+
       dispatch(validateReCaptcha({ payload: data })).then((res) => {
-        if (res.data.status === 'SUCCESS') {
+        if (res?.data?.status === 'SUCCESS') {
+          dispatch(acceptTermAndCondition());
           history.push('/');
         } else {
           Notification.show({
@@ -48,6 +57,31 @@ const TermAndCondition = () => {
         }
       });
     }
+  };
+
+  const handleModalOpen = () => {
+    setShowModal(true);
+  };
+  const haldeModalClose = () => {
+    setShowModal(false);
+  };
+  const onCancel = () => {
+    setAgree(false);
+    setRecaptchaValue(false);
+    haldeModalClose();
+  };
+
+  const onAgree = () => {
+    setAgree(true);
+    haldeModalClose();
+  };
+
+  const displayListItem = (listItem) => {
+    return listItem.map((item, index) => (
+      <div key={index}>
+        <span>{`${index + 1}) ${item}`}</span>
+      </div>
+    ));
   };
 
   return (
@@ -64,6 +98,31 @@ const TermAndCondition = () => {
           </div>
         </Col>
       </Row>
+      <Modal show={showModal} dialogClassName={bem.e('modal')}>
+        <Modal.Header className="p-0 position-relative mw-100 w-100 justify-content-center mt-20">
+          <h3>Syarat & Ketentuan</h3>
+        </Modal.Header>
+
+        <Modal.Body>
+          {TermAndConditionData.map((termAndContion, index) => (
+            <secion key={index}>
+              <div>
+                <strong>{`${index + 1}. ${termAndContion.title}`}</strong>
+                <p>{termAndContion.description}</p>
+                {termAndContion.list && displayListItem(termAndContion.list)}
+              </div>
+            </secion>
+          ))}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button className="mr-10 w-112" variant="secondary" onClick={onCancel}>
+            Tidak Setuju
+          </Button>
+          <Button className="ml-10 w-112" variant="info" onClick={onAgree}>
+            Setuju
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

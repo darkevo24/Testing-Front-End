@@ -20,12 +20,12 @@ const bem = bn('bimtek-dokumentasi');
 const TermAndCondition = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const reCaptchaRef = useRef();
   const [agree, setAgree] = useState(false);
   const [validated, setValidated] = useState(false);
   const [captchaValue, setRecaptchaValue] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const isRecaptchaEnabled = getCookieByName(cookieKeys.isRecaptchaEnabled);
+  const reCaptchaRef = useRef();
 
   const handleChange = (value) => {
     setRecaptchaValue(value);

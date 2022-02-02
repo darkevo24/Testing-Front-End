@@ -19,16 +19,10 @@ const bem = bn('bimtek-dokumentasi');
 const TermAndCondition = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const reCaptchaRef = useRef();
   const [agree, setAgree] = useState(false);
   const [validated, setValidated] = useState(false);
   const [captchaValue, setRecaptchaValue] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
-  const handleChange = (value) => {
-    setRecaptchaValue(value);
-    setValidated(!!value);
-  };
 
   const handleCheckBox = (evt) => {
     const { checked } = evt.target;
@@ -38,12 +32,14 @@ const TermAndCondition = () => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    if (captchaValue && agree) {
-      const data = {
+    if (agree) {
+      /*  const data = {
         response: captchaValue,
-      };
+      }; */
+      dispatch(acceptTermAndCondition());
+      history.push('/');
 
-      dispatch(validateReCaptcha({ payload: data })).then((res) => {
+      /* dispatch(validateReCaptcha({ payload: data })).then((res) => {
         if (res?.status === 'SUCCESS') {
           dispatch(acceptTermAndCondition());
           history.push('/');
@@ -54,7 +50,7 @@ const TermAndCondition = () => {
             icon: 'cross',
           });
         }
-      });
+      }); */
     }
   };
 
@@ -90,8 +86,8 @@ const TermAndCondition = () => {
           <img className="logo align-self-center" src={Logo} alt="logo" />
           <div className="mt-20">
             <FormCheck type="checkbox" label="Accept Terms & Conditions" onChange={handleCheckBox} />
-            <ReCAPTCHA theme="dark" ref={reCaptchaRef} sitekey={recaptchaSiteKey} onChange={handleChange} />
-            <Button disabled={!(agree && validated)} className="mt-48 px-32 float-end fw-bold" onClick={handleSubmit}>
+            {/* <ReCAPTCHA theme="dark" ref={reCaptchaRef} sitekey={recaptchaSiteKey} onChange={handleChange} /> */}
+            <Button disabled={!agree} className="mt-48 px-32 float-end fw-bold" onClick={handleSubmit}>
               Finish
             </Button>
           </div>

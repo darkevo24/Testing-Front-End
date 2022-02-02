@@ -13,17 +13,19 @@ import { recaptchaSiteKey } from 'utils/constants';
 import Logo from 'assets/logo-large.png';
 import { validateReCaptcha, acceptTermAndCondition } from './reducer';
 import TermAndConditionData from './termAndConditionData';
+import { cookieKeys, getCookieByName } from 'utils/cookie';
 
 const bem = bn('bimtek-dokumentasi');
 
 const TermAndCondition = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const reCaptchaRef = useRef();
   const [agree, setAgree] = useState(false);
   const [validated, setValidated] = useState(false);
   const [captchaValue, setRecaptchaValue] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const isRecaptchaEnabled = getCookieByName(cookieKeys.isRecaptchaEnabled);
+  const reCaptchaRef = useRef();
 
   const handleChange = (value) => {
     setRecaptchaValue(value);
@@ -38,23 +40,30 @@ const TermAndCondition = () => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    if (captchaValue && agree) {
-      const data = {
-        response: captchaValue,
-      };
+    if (isRecaptchaEnabled) {
+      if (captchaValue && agree) {
+        const data = {
+          response: captchaValue,
+        };
 
-      dispatch(validateReCaptcha({ payload: data })).then((res) => {
-        if (res?.status === 'SUCCESS') {
-          dispatch(acceptTermAndCondition());
-          history.push('/');
-        } else {
-          Notification.show({
-            type: 'secondary',
-            message: <div> {'Permintaan Data Gagal Diproses '}</div>,
-            icon: 'cross',
-          });
-        }
-      });
+        dispatch(validateReCaptcha({ payload: data })).then((res) => {
+          if (res?.status === 'SUCCESS') {
+            dispatch(acceptTermAndCondition());
+            history.push('/');
+          } else {
+            Notification.show({
+              type: 'secondary',
+              message: <div> {'Permintaan Data Gagal Diproses '}</div>,
+              icon: 'cross',
+            });
+          }
+        });
+      }
+    } else {
+      if (agree) {
+        dispatch(acceptTermAndCondition());
+        history.push('/');
+      }
     }
   };
 
@@ -90,8 +99,13 @@ const TermAndCondition = () => {
           <img className="logo align-self-center" src={Logo} alt="logo" />
           <div className="mt-20">
             <FormCheck type="checkbox" label="Accept Terms & Conditions" onChange={handleCheckBox} />
-            <ReCAPTCHA theme="dark" ref={reCaptchaRef} sitekey={recaptchaSiteKey} onChange={handleChange} />
-            <Button disabled={!(agree && validated)} className="mt-48 px-32 float-end fw-bold" onClick={handleSubmit}>
+            {isRecaptchaEnabled && (
+              <ReCAPTCHA theme="dark" ref={reCaptchaRef} sitekey={recaptchaSiteKey} onChange={handleChange} />
+            )}
+            <Button
+              disabled={isRecaptchaEnabled ? !(agree && validated) : !agree}
+              className="mt-48 px-32 float-end fw-bold"
+              onClick={handleSubmit}>
               Finish
             </Button>
           </div>

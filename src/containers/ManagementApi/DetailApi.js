@@ -8,7 +8,7 @@ import { ReactComponent as Arrow } from 'assets/arrow-left-add.svg';
 import { ReactComponent as Union } from 'assets/union.svg';
 import { ReactComponent as Prev } from 'assets/prev.svg';
 import { ReactComponent as Next } from 'assets/next.svg';
-import { Modal, Dropdown } from 'components';
+import { Modal, Dropdown, Input } from 'components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -32,9 +32,10 @@ const ApiDetail = () => {
   }, []);
   const schema = yup
     .object({
-      nama: yup.string().required(),
-      kode: yup.string().required(),
-      level: yup.mixed().required(),
+      judul: yup.string(),
+      deskripsi: yup.string(),
+      sourceApi: yup.string(),
+      maxData: yup.string(),
     })
     .required();
 
@@ -161,7 +162,7 @@ const ApiDetail = () => {
           </div>
         </div>
         <div className={bem.e('wrapper-input')}>
-          <div className="form-group">
+          {/*    <div className="form-group">
             <label htmlFor="Judul">
               <div className="wrapper-union">
                 <p> Judul </p> <Union />
@@ -215,7 +216,14 @@ const ApiDetail = () => {
               </div>
             </label>
             <input type="text" value="10000" disabled />
-          </div>
+          </div> */}
+
+          <Form className="sdp-form" noValidate>
+            <Input disabled group label="Judul" name="judul" control={control} />
+            <Input disabled group label="Deskripsi" name="deskripsi" control={control} />
+            <Input disabled group label="Source API" name="sourceApi" control={control} />
+            <Input disabled group label="Max Data Parameter" name="maxData" control={control} />
+          </Form>
         </div>
         <div className={bem.e('wrapper-result')}>
           <div className="wrapper-data">

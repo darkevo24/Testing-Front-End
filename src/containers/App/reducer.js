@@ -53,7 +53,6 @@ export const initialState = {
   notificationOptions: {
     ...defaultNotification,
   },
-  isTermAndConditionAccepted: false,
 };
 
 export const GLOBAL_REDUCER = 'GLOBAL_REDUCER';
@@ -112,9 +111,6 @@ const AppSlice = createSlice({
     },
     setNotificationOptions: (state, action) => {
       state.notificationOptions = { ...defaultNotification, ...(action.payload || defaultNotification) };
-    },
-    acceptTermAndCondition: (state) => {
-      state.isTermAndConditionAccepted = true;
     },
   },
   extraReducers: (builder) => {
@@ -233,7 +229,6 @@ export const rkpPNSelector = (state) => state.global.rkpPN;
 export const kategoriSelector = (state) => state.global?.kategori;
 export const taglineSelector = (state) => state.global?.tagline;
 export const fotoSelector = (state) => state.global?.file;
-export const termAndConditionSelector = (state) => state.global?.isTermAndConditionAccepted;
 
 export const instansiOptionsSelector = createSelector(instansiDataSelector, dataOptionsMapperCurry(idNameOptionsMapper));
 export const dataindukAllOptionsSelector = createSelector(dataindukAllSelector, dataOptionsMapperCurry(idNameOptionsMapper));

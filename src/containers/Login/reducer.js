@@ -24,7 +24,7 @@ export const acceptTermAndCondition = createAsyncThunk('login/acceptTermAndCondi
 
 export const validateReCaptcha = createAsyncThunk('portal/recaptcha/verify', async (params) => {
   const response = await post(apiUrls.verifyRecaptcha, params.payload);
-  return response?.data.content;
+  return response?.data;
 });
 
 const loginSlice = createSlice({

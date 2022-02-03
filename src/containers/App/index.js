@@ -6,7 +6,7 @@
  * contain code that should be seen on all pages. (e.g. navigation bar)
  */
 
-import React, { useEffect, lazy, useState } from 'react';
+import React, { useEffect, lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Redirect, Route, Switch, useHistory, withRouter } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
@@ -16,7 +16,7 @@ import keycloak, { initOptions } from 'Keycloak';
 
 import { fetchLoggedInUserInfo } from 'containers/Login/reducer';
 import Notify, { Notification } from 'components/Notification';
-import { getCookieByName, cookieKeys } from 'utils/cookie';
+import { getCookieByName, cookieKeys, setCookie } from 'utils/cookie';
 
 const AdminRoutes = lazy(() => import('./AdminRoutes'));
 const AppRoutes = lazy(() => import('./AppRoutes'));
@@ -49,6 +49,7 @@ function App(props) {
   const onTokens = (tokens) => {
     if (!tokens?.token) return false;
     dispatch(fetchLoggedInUserInfo(tokens.token));
+    setCookie(cookieKeys.isRecaptchaEnabled, false);
     if (!isTermAndConditionAccepted) {
       history.push('/term-and-condition');
     }

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiUrls, defaultNumberOfRows, get } from 'utils/request';
+import { apiUrls, defaultNumberOfRows, get, post } from 'utils/request';
 
 export const initialState = {
   dataset: {
@@ -32,6 +32,11 @@ export const getMangementApiDetial = createAsyncThunk('ManagementApi/portal/getM
   return response?.data.content;
 });
 
+export const createMagmentApi = createAsyncThunk('MangmentAPi/Portal/create', async ({ payload }) => {
+  const response = await post(apiUrls.getPortalApiManagmentList, payload);
+  return response?.data.content;
+});
+
 const portalManagmentApiSlice = createSlice({
   name: MANAGEMENT_API_REDUCER,
   initialState,
@@ -57,7 +62,7 @@ const portalManagmentApiSlice = createSlice({
 
     builder.addCase(getMangementApiDetial.pending, (state, action) => {
       state.portalApiDetail.loading = true;
-      state.inportalApiDetailstansi.status = 'idel';
+      state.portalApiDetail.status = 'idel';
     });
     builder.addCase(getMangementApiDetial.fulfilled, (state, action) => {
       state.portalApiDetail.loading = false;

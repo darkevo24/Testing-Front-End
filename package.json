@@ -103,6 +103,7 @@
     "react-helmet-async": "1.0.9",
     "react-hook-form": "7.17.5",
     "react-i18next": "11.13.0",
+    "react-json-view": "1.21.3",
     "react-leaflet": "3.2.2",
     "react-number-format": "4.8.0",
     "react-paginate": "8.0.2",

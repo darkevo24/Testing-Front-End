@@ -10,8 +10,6 @@ import { ReactComponent as Prev } from 'assets/prev.svg';
 import { ReactComponent as Next } from 'assets/next.svg';
 import { Modal, Dropdown, Input } from 'components';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import bn from 'utils/bemNames';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMangementApiDetial, portalApiDetailSelector } from './reducer';
@@ -24,26 +22,24 @@ const ApiDetail = () => {
   const { content } = useSelector(portalApiDetailSelector);
   const data = useMemo(() => content || {}, [content]);
 
-  const fetchDetail = () => {
-    dispatch(getMangementApiDetial(id));
+  const fetchApiDetail = () => {
+    return dispatch(getMangementApiDetial(id));
   };
+
   useEffect(() => {
-    fetchDetail();
+    reset(data);
+  }, [data]);
+
+  useEffect(() => {
+    fetchApiDetail();
   }, []);
-  const schema = yup
-    .object({
-      judul: yup.string(),
-      deskripsi: yup.string(),
-      sourceApi: yup.string(),
-      maxData: yup.string(),
-    })
-    .required();
 
   const {
     control,
+    reset,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    // resolver: yupResolver(schema),
     defaultValues: {
       ...data,
     },
@@ -162,75 +158,48 @@ const ApiDetail = () => {
           </div>
         </div>
         <div className={bem.e('wrapper-input')}>
-          {/*    <div className="form-group">
-            <label htmlFor="Judul">
-              <div className="wrapper-union">
-                <p> Judul </p> <Union />
-                <div className="wrapper-desc">
-                  Keputusan Direktur Jenderal Tanaman Pangan Nomor 218/HK/310/12/2029 tentang Petunjuk Teknis Bantuan
-                  Pemerintah Program Peningkatan Produksi, Produktivitas dan Mutu Tanaman Pangan Tahun Anggaran 2020
-                </div>
-              </div>
-            </label>
-            <input type="text" value="Gilghashi Dullahaim" disabled />
-          </div>
-          <div className="form-group">
-            <label htmlFor="Judul">
-              <div className="wrapper-union">
-                <p> Deskripsi </p> <Union />
-                <div className="wrapper-desc">
-                  Keputusan Direktur Jenderal Tanaman Pangan Nomor 218/HK/310/12/2029 tentang Petunjuk Teknis Bantuan
-                  Pemerintah Program Peningkatan Produksi, Produktivitas dan Mutu Tanaman Pangan Tahun Anggaran 2020
-                </div>
-              </div>
-            </label>
-            <input
-              type="text"
-              value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu morbi mi eget nullam. Ante etiam pharetra, quis viverra."
-              disabled
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="Judul">
-              <div className="wrapper-union">
-                <p> Source API </p> <Union />
-                <div className="wrapper-desc">
-                  Keputusan Direktur Jenderal Tanaman Pangan Nomor 218/HK/310/12/2029 tentang Petunjuk Teknis Bantuan
-                  Pemerintah Program Peningkatan Produksi, Produktivitas dan Mutu Tanaman Pangan Tahun Anggaran 2020
-                </div>
-              </div>
-            </label>
-            <div className="input-group">
-              <input className="custom-file-input detail" type="file" disabled />
-              <span className="source-api">Source Api</span>
-            </div>
-          </div>
-          <div className="form-group">
-            <label htmlFor="Judul">
-              <div className="wrapper-union">
-                <p> Max Data Parameter </p> <Union />
-                <div className="wrapper-desc">
-                  Keputusan Direktur Jenderal Tanaman Pangan Nomor 218/HK/310/12/2029 tentang Petunjuk Teknis Bantuan
-                  Pemerintah Program Peningkatan Produksi, Produktivitas dan Mutu Tanaman Pangan Tahun Anggaran 2020
-                </div>
-              </div>
-            </label>
-            <input type="text" value="10000" disabled />
-          </div> */}
-
           <Form className="sdp-form" noValidate>
-            <Input disabled group label="Judul" name="judul" control={control} />
-            <Input disabled group label="Deskripsi" name="deskripsi" control={control} />
-            <Input disabled group label="Source API" name="sourceApi" control={control} />
-            <Input disabled group label="Max Data Parameter" name="maxData" control={control} />
+            <div className="form-group">
+              <label htmlFor="title">
+                <div className="wrapper-union">
+                  <p> Judul </p> <Union />
+                  <div className="wrapper-desc">
+                    Keputusan Direktur Jenderal Tanaman Pangan Nomor 218/HK/310/12/2029 tentang Petunjuk Teknis Bantuan
+                    Pemerintah Program Peningkatan Produksi, Produktivitas dan Mutu Tanaman Pangan Tahun Anggaran 2020
+                  </div>
+                </div>
+              </label>
+              <Input disabled group name="title" control={control} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="deskripsi">
+                <div className="wrapper-union">
+                  <p> Deskripsi </p> <Union />
+                  <div className="wrapper-desc">
+                    Keputusan Direktur Jenderal Tanaman Pangan Nomor 218/HK/310/12/2029 tentang Petunjuk Teknis Bantuan
+                    Pemerintah Program Peningkatan Produksi, Produktivitas dan Mutu Tanaman Pangan Tahun Anggaran 2020
+                  </div>
+                </div>
+              </label>
+              <Input disabled group name="description" control={control} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="sourceApi">
+                <div className="wrapper-union">
+                  <p> Source API </p> <Union />
+                  <div className="wrapper-desc">
+                    Keputusan Direktur Jenderal Tanaman Pangan Nomor 218/HK/310/12/2029 tentang Petunjuk Teknis Bantuan
+                    Pemerintah Program Peningkatan Produksi, Produktivitas dan Mutu Tanaman Pangan Tahun Anggaran 2020
+                  </div>
+                </div>
+              </label>
+              <Input disabled group name="sourceApi" control={control} />
+              <div className="input-group">{/* <span className="source-api">Source Api</span> */}</div>
+            </div>
           </Form>
         </div>
         <div className={bem.e('wrapper-result')}>
           <div className="wrapper-data">
-            <div className="wrapper-title">
-              <h1>Data</h1>
-              <button>(data-ckan-api.json)</button>
-            </div>
             <div className={bem.e('management-table')}>
               <table>
                 <thead className="head-table-border">
@@ -238,9 +207,9 @@ const ApiDetail = () => {
                   <th width="75%">Value</th>
                 </thead>
                 <tbody>
-                  {LIST_TABLE.map((data) => {
+                  {LIST_TABLE.map((data, index) => {
                     return (
-                      <tr>
+                      <tr key={index}>
                         <td className="data-title">{data.field}</td>
                         <td className="data-description">{data.value}</td>
                       </tr>
@@ -349,7 +318,7 @@ const ApiDetail = () => {
                   </span>
                 </div>
               </div>
-              <Button variant="json" style={{ width: '180px;' }}>
+              <Button variant="json" style={{ width: '180px' }}>
                 Download JSON
               </Button>
             </div>

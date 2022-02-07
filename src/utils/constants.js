@@ -170,7 +170,7 @@ export const levelInstansi = [
 ];
 export const TOPIC_LIST = [
   { title: 'Semua', items: [], icon: <SplitCircle /> },
-  { title: 'Pertahanan dan Luar Negeri', items: ['Pertahanan', 'Luar Negeri'], icon: <EkonomiSvg /> },
+  { title: 'Pertahanan dan Luar Negeri', items: ['Pertahanan', 'Luar Negeri'], icon: <EkonomiSvg />, disabled: true },
   {
     title: 'Ekonomi dan Industri',
     items: [

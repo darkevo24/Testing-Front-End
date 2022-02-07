@@ -93,7 +93,10 @@ const TopicDetail = () => {
     return dispatch(getDataSet(filterParams, true));
   };
 
-  const changeTopic = (title) => {
+  const changeTopic = (title, disabled) => {
+    if (disabled) {
+      return false;
+    }
     const newTopicCards = TOPIC_LIST.find((item) => item.title === title)?.items || [];
     setSelectedGroup(newTopicCards[0]);
     setTopic(title);
@@ -424,7 +427,10 @@ const TopicDetail = () => {
           {isExpanded ? (
             <div className="sdp-topic-title-list border-gray-stroke br-4 py-8 mt-10">
               {TOPIC_LIST.map((topic) => (
-                <div key={`hover-${topic.title}`} className="sdp-topic-wrapper" onClick={() => changeTopic(topic.title)}>
+                <div
+                  key={`hover-${topic.title}`}
+                  className={cx('sdp-topic-wrapper', { disabled: topic.disabled })}
+                  onClick={() => changeTopic(topic.title, topic.disabled)}>
                   {topic.icon}
                   <span>{topic.title}</span>
                 </div>

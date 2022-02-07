@@ -19,6 +19,8 @@ export const CardWithIconAndText = ({ item, onClick, id }) => (
       borderRadius: '4px',
       width: '237px',
       height: '61px',
+      opacity: item.disabled ? 0.5 : 1,
+      cursor: 'pointer',
     }}>
     <Box style={{ height: '16px', width: '16px', marginBottom: '5px' }}>{item.icon}</Box>
     <Box

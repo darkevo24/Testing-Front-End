@@ -27,11 +27,6 @@ const TermAndCondition = () => {
   const isRecaptchaEnabled = getCookieByName(cookieKeys.isRecaptchaEnabled);
   const reCaptchaRef = useRef();
 
-  const handleChange = (value) => {
-    setRecaptchaValue(value);
-    setValidated(!!value);
-  };
-
   const handleCheckBox = (evt) => {
     const { checked } = evt.target;
     handleModalOpen();
@@ -67,6 +62,10 @@ const TermAndCondition = () => {
     }
   };
 
+  const handleChange = (value) => {
+    setRecaptchaValue(value);
+    setValidated(!!value);
+  };
   const handleModalOpen = () => {
     setShowModal(true);
   };

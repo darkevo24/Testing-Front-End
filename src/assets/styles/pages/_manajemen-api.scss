@@ -389,7 +389,21 @@
                     }
                 }
             }
+            .wrapper-data {
+                margin-bottom: 30px;
+                .scroll-view {
+                    max-height: 500px;
+                    overflow: scroll;
+                    margin-bottom: 10px;
+                    padding: 20px;
+                }
+                .bimtek-pagination{
+                    margin-top: 10px;
+                    display: contents;
+                }
+            }
             .wrapper-dcat {
+                margin-top: 20px;
                 .wrapper-title {
                     padding: 0;
                 }

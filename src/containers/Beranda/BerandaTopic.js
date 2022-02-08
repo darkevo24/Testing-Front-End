@@ -34,11 +34,14 @@ const BoxFlex = styled.div`
 
 export const BerandaTopic = () => {
   const topicList = [...TOPIC_LIST];
-  topicList.shift();
+  topicList.shift(); // Removing the first element (Semua Entry)
   const list = chunk(topicList, 5);
   const history = useHistory();
 
   const handleGoNext = (item) => {
+    if (item.disabled) {
+      return false;
+    }
     history.push({
       pathname: '/topic-detail',
       state: item.title,

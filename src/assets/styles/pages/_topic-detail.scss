@@ -35,6 +35,9 @@
 
     .sdp-topic-wrapper {
       padding-right: 20px;
+      &.disabled {
+        opacity: 0.5;
+      }
       svg {
         color: var(--red);
         height: 20px;

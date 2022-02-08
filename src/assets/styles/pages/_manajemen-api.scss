@@ -389,7 +389,20 @@
                     }
                 }
             }
+            .wrapper-data {
+                margin-bottom: 30px;
+                .infinite-scroll-component {
+                    margin-bottom: 10px;
+                    display: 'flex';
+                    flex-direction: 'column-reverse';
+                }
+                .bimtek-pagination{
+                    margin-top: 10px;
+                    display: contents;
+                }
+            }
             .wrapper-dcat {
+                margin-top: 20px;
                 .wrapper-title {
                     padding: 0;
                 }

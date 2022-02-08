@@ -102,6 +102,7 @@
     "react-helmet-async": "1.0.9",
     "react-hook-form": "7.17.5",
     "react-i18next": "11.13.0",
+    "react-infinite-scroll-component": "6.1.0",
     "react-json-view": "1.21.3",
     "react-leaflet": "3.2.2",
     "react-number-format": "4.8.0",
@@ -129,6 +130,7 @@
     "yup": "0.32.11"
   },
   "devDependencies": {
+    "@babel/helper-environment-visitor": "7.16.7",
     "@commitlint/cli": "14.1.0",
     "@commitlint/config-conventional": "14.1.0",
     "devmoji": "2.3.0",

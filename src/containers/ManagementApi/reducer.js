@@ -37,6 +37,11 @@ export const createMagmentApi = createAsyncThunk('MangmentAPi/Portal/create', as
   return response?.data.content;
 });
 
+export const generatePortalApi = createAsyncThunk('MangmentAPi/Portal/generate', async ({ payload }) => {
+  const response = await post(`${apiUrls.getPortalApiManagmentList}/generate-output`, payload);
+  return response?.data.content;
+});
+
 const portalManagmentApiSlice = createSlice({
   name: MANAGEMENT_API_REDUCER,
   initialState,

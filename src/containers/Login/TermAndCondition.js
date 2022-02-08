@@ -47,7 +47,7 @@ const TermAndCondition = () => {
         };
 
         dispatch(validateReCaptcha({ payload: data })).then((res) => {
-          if (res?.status === 'SUCCESS') {
+          if (res?.payload?.status === 'SUCCESS') {
             dispatch(acceptTermAndCondition());
             history.push('/');
           } else {

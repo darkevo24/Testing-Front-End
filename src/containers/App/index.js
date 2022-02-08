@@ -49,7 +49,7 @@ function App(props) {
   const onTokens = (tokens) => {
     if (!tokens?.token) return false;
     dispatch(fetchLoggedInUserInfo(tokens.token));
-    setCookie(cookieKeys.isRecaptchaEnabled, false);
+    setCookie(cookieKeys.isRecaptchaEnabled, true);
     if (!isTermAndConditionAccepted) {
       history.push('/term-and-condition');
     }

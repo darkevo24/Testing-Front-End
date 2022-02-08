@@ -78,7 +78,9 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
         .required(),
       email: yup.string().email().required(),
       phoneArea: yup.string().nullable().required(),
-      phoneNumber: yup.string().length(10).nullable().required(),
+      // Note: removed the validation for phone number length as required.
+      // phoneNumber: yup.string().length(10).nullable().required(),
+      phoneNumber: yup.string().required(),
       supervisorName: yup.mixed().required(),
       roles: yup.string().required(),
       officialMemo: yup.mixed().nullable().required(),

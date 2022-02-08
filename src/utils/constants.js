@@ -21,9 +21,6 @@ import { SplitCircle } from 'components/Icons';
 export const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
 export const recaptchaSiteKey = process.env.REACT_APP_GOOGLE_RECAPTCHA_SITE_KEY;
 
-//TODO remove after test
-console.log('recaptchaSiteKey', recaptchaSiteKey);
-
 export const sdiEnv = process.env.REACT_APP_SDI_ENV || 'dev';
 export const isSdiProduction = sdiEnv.toLowerCase() === 'production';
 

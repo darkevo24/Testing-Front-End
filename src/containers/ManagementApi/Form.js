@@ -5,14 +5,14 @@ import Form from 'react-bootstrap/Form';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import Input from 'components/Input';
 import Notification from 'components/Notification';
 import Loader from 'components/Loader';
 import { ReactComponent as Arrow } from 'assets/arrow-left-add.svg';
 import { ReactComponent as Union } from 'assets/union.svg';
-import { createMagmentApi } from './reducer';
-import * as yup from 'yup';
 import bn from 'utils/bemNames';
+import { createMagmentApi } from './reducer';
 
 const bem = bn('management-api');
 

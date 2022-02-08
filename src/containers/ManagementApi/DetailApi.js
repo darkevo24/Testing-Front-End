@@ -14,14 +14,13 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useForm } from 'react-hook-form';
 import bn from 'utils/bemNames';
 import { useDispatch, useSelector } from 'react-redux';
-import { isArrayWithLength } from 'utils/helper';
+import { isArrayWithLength, copyToClipboard } from 'utils/helper';
 import { ReactComponent as CopyJson } from 'assets/copy-json.svg';
 import { ReactComponent as Arrow } from 'assets/arrow-left-add.svg';
 import { ReactComponent as Union } from 'assets/union.svg';
 import { Modal, Dropdown, Input, Loader, Notification } from 'components';
 import Pagination from 'components/Pagination';
 import { getMangementApiDetial, portalApiDetailSelector, generatePortalApi } from './reducer';
-
 const bem = bn('management-api');
 
 const ApiDetail = () => {
@@ -116,9 +115,7 @@ const ApiDetail = () => {
     });
   };
   const handleCopy = () => {
-    const copyText = document.getElementById('outputUrl');
-    copyText.select();
-    navigator.clipboard.writeText(copyText.value);
+    copyToClipboard(outputUrl);
     Notification.show({
       type: 'success',
       message: <div>Disalin ke papan klip</div>,

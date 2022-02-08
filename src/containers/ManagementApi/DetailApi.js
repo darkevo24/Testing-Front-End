@@ -193,15 +193,9 @@ const ApiDetail = () => {
           <div className="wrapper-data">
             {/*Put the scroll bar always on the bottom*/}
             {isObject(currentPageContent) && (
-              <InfiniteScroll
-                dataLength={Object.keys(currentPageContent || {}).length}
-                height={600}
-                inverse={true}
-                hasMore={false}
-                loader={<Loader />}
-                scrollableTarget="scrollableDiv">
+              <div className="scroll-view">
                 <ReactJson className="json-viwer" src={currentPageContent} theme="monokai" />
-              </InfiniteScroll>
+              </div>
             )}
             {data?.dataSource?.length > 0 && <Pagination totalPages={totalPages} onChangePage={changePage} />}
           </div>

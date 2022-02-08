@@ -391,10 +391,11 @@
             }
             .wrapper-data {
                 margin-bottom: 30px;
-                .infinite-scroll-component {
+                .scroll-view {
+                    max-height: 500px;
+                    overflow: scroll;
                     margin-bottom: 10px;
-                    display: 'flex';
-                    flex-direction: 'column-reverse';
+                    padding: 20px;
                 }
                 .bimtek-pagination{
                     margin-top: 10px;

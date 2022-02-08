@@ -10,7 +10,6 @@ import keys from 'lodash/keys';
 import size from 'lodash/size';
 import has from 'lodash/has';
 import ReactJson from 'react-json-view';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { useForm } from 'react-hook-form';
 import bn from 'utils/bemNames';
 import { useDispatch, useSelector } from 'react-redux';

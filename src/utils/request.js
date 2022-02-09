@@ -1,7 +1,7 @@
 import isEmpty from 'lodash/isEmpty';
 import { apiUrls as appApiUrls } from './constants';
 import { generateQueryString, safeParse } from './helper';
-import { cookieKeys, getCookieByName } from './cookie';
+import { cookieKeys, getCookieByName, removeAllCookie } from './cookie';
 
 export const typeJSON = 'application/json';
 export const typePlain = 'text/plain';
@@ -64,6 +64,13 @@ async function parseResponse(response, download, fileName) {
  *
  * @return {object|undefined} Returns either the response, or throws an error
  */
+function checkStatus(response) {
+  if ([401].includes(response.status)) {
+    removeAllCookie();
+    window.location.reload();
+  }
+  return response;
+}
 
 /**
  * Requests a URL, returning a promise
@@ -111,9 +118,9 @@ export async function request(
   } catch (error) {
     fetchResponse = error.response;
   }
-
-  const parsedResponse = await parseResponse(fetchResponse, download, fileName);
-  if (fetchResponse.ok) {
+  const response = checkStatus(fetchResponse);
+  const parsedResponse = await parseResponse(response, download, fileName);
+  if (response.ok) {
     return parsedResponse;
   }
   throw parsedResponse;

@@ -16,7 +16,7 @@ import keycloak, { initOptions } from 'Keycloak';
 
 import { fetchLoggedInUserInfo } from 'containers/Login/reducer';
 import Notify, { Notification } from 'components/Notification';
-import { getCookieByName, cookieKeys, setCookie } from 'utils/cookie';
+import { getCookieByName, cookieKeys, removeAllCookie, setCookie } from 'utils/cookie';
 
 const AdminRoutes = lazy(() => import('./AdminRoutes'));
 const AppRoutes = lazy(() => import('./AppRoutes'));
@@ -46,17 +46,27 @@ function App(props) {
     history.listen(hashLinkScroll);
   }, []);
 
-  const onTokens = (tokens) => {
+  const handleOnTokens = (tokens) => {
     if (!tokens?.token) return false;
     dispatch(fetchLoggedInUserInfo(tokens.token));
-    setCookie(cookieKeys.isRecaptchaEnabled, true);
-    if (!isTermAndConditionAccepted) {
-      history.push('/term-and-condition');
+    setCookie(cookieKeys.isRecaptchaEnabled, false);
+    const currentPath = history.location.pathname;
+    const termsAndConditionsPath = '/term-and-condition';
+    if (!isTermAndConditionAccepted && currentPath !== termsAndConditionsPath) {
+      history.push(termsAndConditionsPath);
+    }
+  };
+
+  const handleOnEvent = (event) => {
+    if (event === 'onTokenExpired') {
+      keycloak.logout();
+      removeAllCookie();
+      history.push('/home');
     }
   };
 
   return (
-    <ReactKeycloakProvider authClient={keycloak} initOptions={initOptions} onTokens={onTokens}>
+    <ReactKeycloakProvider authClient={keycloak} initOptions={initOptions} onTokens={handleOnTokens} onEvent={handleOnEvent}>
       <div>
         <Helmet titleTemplate="%s - Satu Data Portal" defaultTitle="Satu Data Portal">
           <meta name="description" content="Satu Data Portal" />

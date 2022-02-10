@@ -106,8 +106,8 @@ function CMSRoutes() {
         />
         <PrivateRoute
           exact
-          path="/cms/instansi/:id"
-          component={InstansiDetail}
+          path="/cms/instansi/form"
+          component={NewInstansi}
           permissions={[
             Roles.ADMIN,
             Roles.SEKRETARIANT,
@@ -120,8 +120,8 @@ function CMSRoutes() {
         />
         <PrivateRoute
           exact
-          path="/cms/instansi/form"
-          component={NewInstansi}
+          path="/cms/instansi/:id"
+          component={InstansiDetail}
           permissions={[
             Roles.ADMIN,
             Roles.SEKRETARIANT,

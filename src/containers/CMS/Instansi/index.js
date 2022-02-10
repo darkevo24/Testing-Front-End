@@ -72,7 +72,7 @@ const Instansi = () => {
       Cell: ({ original: data }) => {
         return (
           <div className={bem.e('action')}>
-            <Button variant="info" onClick={() => history.push(`/cms/instansi-detail/${data.id}`)}>
+            <Button variant="info" onClick={() => history.push(`/cms/instansi-detail/${data?.id}`)}>
               Detail
             </Button>
           </div>

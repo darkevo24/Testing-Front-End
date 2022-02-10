@@ -139,13 +139,21 @@
     font-size: 14px;
     line-height: 17px;
     width: 100%;
-    &.active{
+    &.approved {
       color: $green;
       background: $bright-gray;
     }
-    &.draft{
-      color: $orange;
+    &.rejected {
+      color: $red;
+      background: $bright-gray;
+    }
+    &.draft {
+      color: $gray;
       background: $mari-gold;
+    }
+    &.waiting-approval {
+      color: $orange;
+      background: $bright-gray;
     }
   
   }

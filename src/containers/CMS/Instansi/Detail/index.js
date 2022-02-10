@@ -45,12 +45,13 @@ const InstansiDetail = () => {
   const [showUnitModal, setShowUnitModal] = useState(false);
   const [currentUnitKejira, setCurrentUnitKejira] = useState(null);
   const [instansiStatus, setInstansiStatus] = useState(null);
+  const [isOwner, setIsOwner] = useState(false);
   const user = getCookieByName(cookieKeys.user);
 
   const data = useMemo(() => content || {}, [content]);
   const dataLogsData = useMemo(() => records || [], [records]);
   const dataUnitKejira = useMemo(() => unitKejira || [], [unitKejira]);
-  const status = user?.id === data?.createdBy?.id ? 'Active' : 'Draft';
+  const status = useMemo(() => data.status || '', [data]);
 
   const fetchDetail = () => {
     dispatch(getInstansiDetail(id));
@@ -69,6 +70,7 @@ const InstansiDetail = () => {
   }, []);
   useEffect(() => {
     reset(data);
+    setIsOwner(user?.id === data?.createdBy?.id);
   }, [data]);
 
   const backToTable = () => {
@@ -226,7 +228,11 @@ const InstansiDetail = () => {
                       onClick={(e) => handModalOpen(INSTANSI_STATUS.rejected)}>
                       Tolak
                     </Button>
-                    <Button className="mx-4" variant="info" onClick={(e) => handModalOpen(INSTANSI_STATUS.accepted)}>
+                    <Button
+                      className="mx-4"
+                      variant="info"
+                      disabled={isOwner}
+                      onClick={(e) => handModalOpen(INSTANSI_STATUS.accepted)}>
                       Setuju
                     </Button>
                   </>

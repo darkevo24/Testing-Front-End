@@ -208,7 +208,7 @@ const InstansiDetail = () => {
             <div className="d-flex justify-content-between mb-4">
               <div className={bem.e('title')}>Detail</div>
               <div className={bem.e('draft-active-action')}>
-                {status === 'Draft' ? (
+                {!isOwner ? (
                   <>
                     <img
                       className="mx-4 cursor-pointer"

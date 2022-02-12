@@ -123,3 +123,11 @@ textarea.form-control {
   resize: none;
   height: 160px;
 }
+
+.ta-length-counter {
+  position: absolute;
+  color: $gray;
+  font-size: 14px;
+  bottom: 0;
+  right: 8px;
+}

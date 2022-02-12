@@ -49,7 +49,7 @@ const TambahPengguna = () => {
             Batal
           </Button>
           <Button className={cx(bem.e('button'), 'ml-10')} variant="info" onClick={submitpenggunaForm}>
-            Kirim
+            Simpan
           </Button>
         </div>
       </div>

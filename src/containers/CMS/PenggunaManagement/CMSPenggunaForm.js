@@ -27,7 +27,7 @@ import Switch from 'components/Switch';
 export const penggunaFormId = 'pengguna-form-id';
 export const submitpenggunaForm = submitForm(penggunaFormId);
 
-const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
+const CMSpenggunaForm = ({ disabled, onSubmit, data, onStatusChange = () => {} }) => {
   const [disableForm, setDisableForm] = useState(false);
   const [penggunaDetails, setPenggunaDetails] = useState({});
   const [instansiErr, setInstansiErr] = useState(false);
@@ -50,9 +50,11 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
 
   useEffect(async () => {
     const newStatus = status ? 'active' : 'inactive';
-    if (penggunaDetailsData) {
+    const currentStatus = penggunaDetailsData?.status?.toLowerCase();
+    if (currentStatus !== newStatus) {
       try {
         await post(`${apiUrls.penggunaManagement}/${penggunaDetailsData.id}/set-status/${newStatus}`);
+        onStatusChange();
       } catch (error) {
         console.log('ERR', error);
       }
@@ -75,7 +77,7 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data }) => {
           label: yup.string().defined().required(),
           value: yup.string().defined('unitKerja is a required field').required(),
         })
-        .required(),
+        .required('Unit Kerja is a required field'),
       email: yup.string().email().required(),
       phoneArea: yup.string().nullable().required(),
       // Note: removed the validation for phone number length as required.

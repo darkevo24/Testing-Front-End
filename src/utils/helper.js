@@ -503,3 +503,12 @@ export const hasPermission = (permissions) => {
   const userRoles = [currentUser.roles];
   return intersection(permissions, userRoles);
 };
+
+export const penggunaStatuses = {
+  draft: 'DRAFT',
+  active: 'ACTIVE',
+  waitingApproval: 'WAITING_APPROVAL',
+  rejected: 'REJECTED',
+  suspended: 'SUSPENDED',
+  inactive: 'INACTIVE',
+};

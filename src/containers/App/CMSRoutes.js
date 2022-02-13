@@ -363,7 +363,6 @@ function CMSRoutes() {
             Roles.ADMIN,
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
-            Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
           ]}
@@ -402,7 +401,6 @@ function CMSRoutes() {
             Roles.ADMIN,
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
-            Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
           ]}
@@ -465,14 +463,7 @@ function CMSRoutes() {
           exact
           path="/cms/data-analytic"
           component={DataAnalyticPage}
-          permissions={[
-            Roles.ADMIN,
-            Roles.EKSEKUTIF,
-            Roles.MEMBER,
-            Roles.CONTENT_CREATOR,
-            Roles.CONTENT_EDITOR,
-            Roles.SEKRETARIANT,
-          ]}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT, Roles.SEKRETARIANT_CREATOR, Roles.SEKRETARIANT_EDITOR]}
         />
         <PrivateRoute
           exact

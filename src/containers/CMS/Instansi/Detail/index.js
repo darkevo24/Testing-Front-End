@@ -28,6 +28,7 @@ import { getCookieByName, cookieKeys } from 'utils/cookie';
 
 const INSTANSI_STATUS = {
   accepted: 'APPROVED',
+  waiting_approval: 'WAITING_APPROVAL',
   rejected: 'REJECTED',
   deleted: 'DELETED',
 };
@@ -97,6 +98,7 @@ const InstansiDetail = () => {
           message: <div> Berhasil Update Status </div>,
           icon: 'check',
         });
+        fetchDetail();
       } else {
         Notification.show({
           type: 'secondary',
@@ -156,9 +158,9 @@ const InstansiDetail = () => {
     history.push(path);
   };
 
-  const handModalOpen = (status) => {
+  const handModalOpen = (statusValue) => {
     setShowModal(true);
-    setInstansiStatus(status);
+    setInstansiStatus(statusValue);
   };
 
   const ModalHeader = () => {
@@ -232,7 +234,9 @@ const InstansiDetail = () => {
                       className="mx-4"
                       variant="info"
                       disabled={isOwner}
-                      onClick={(e) => handModalOpen(INSTANSI_STATUS.accepted)}>
+                      onClick={(e) =>
+                        handModalOpen(status === 'DRAFT' ? INSTANSI_STATUS.waiting_approval : INSTANSI_STATUS.accepted)
+                      }>
                       Setuju
                     </Button>
                   </>

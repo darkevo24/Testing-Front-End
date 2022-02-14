@@ -101,7 +101,7 @@
               &__draft {
                 color: $gray;
               }
-              &__waiting-approval {
+              &__waiting_approval {
                 color: $orange;
               }
               
@@ -151,7 +151,7 @@
       color: $gray;
       background: $mari-gold;
     }
-    &.waiting-approval {
+    &.waiting_approval {
       color: $orange;
       background: $bright-gray;
     }

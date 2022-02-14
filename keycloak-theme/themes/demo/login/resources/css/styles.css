@@ -8,7 +8,7 @@
   --secColor: #FF0000;
 }
 
-body { 
+body {
   background: var(--baseColor) !important;
   height: 100%;
   color: var(--textColor);
@@ -80,8 +80,24 @@ body {
   background-color: #FF0000;
 }
 
-.login-pf-page{
+.login-pf-page {
   padding-top: 0 !important;
+}
+
+.login-pf-page .password-wrapper {
+  position: relative;
+}
+
+.login-pf-page .password-wrapper #password {
+  padding-right: 40px;
+}
+
+.login-pf-page .password-wrapper img {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
 }
 
 .login-pf-page .card-pf {

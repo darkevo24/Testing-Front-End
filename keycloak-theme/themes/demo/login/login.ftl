@@ -17,9 +17,24 @@
                     </#if>
                 </div>
 
-                <div class="${properties.kcFormGroupClass!}">
+                <div class="${properties.kcFormGroupClass!} password-aaa">
                     <label for="password" class="${properties.kcLabelClass!}">${msg("password")}</label>
-                    <input tabindex="2" id="password" class="${properties.kcInputClass!}" name="password" type="password" autocomplete="off" />
+                    <div class="password-wrapper">
+                      <input tabindex="2" id="password" class="${properties.kcInputClass!}" name="password" type="password" autocomplete="off" />
+                      <img id="togglePassword" data-path="${url.resourcesPath}/img" src="${url.resourcesPath}/img/view.png" alt="eye" />
+                    </div>
+                    <script>
+                      var togglePassword = document.querySelector('#togglePassword');
+                      var password = document.querySelector('#password');
+                      togglePassword.addEventListener('click', function (e) {
+                        // toggle the type attribute
+                        var type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                        password.setAttribute('type', type);
+                        var basepath = this.dataset.path;
+                        // toggle the eye slash icon
+                        this.src = basepath + '/' + (type === 'password' ? 'view' : 'hide') + '.png';
+                      });
+                    </script>
                 </div>
 
                 <div class="${properties.kcFormGroupClass!} ${properties.kcFormSettingClass!}">

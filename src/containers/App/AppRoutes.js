@@ -84,25 +84,38 @@ function AppRoutes(props) {
               path="/forum-sdi/:id"
               component={ForumSDIDetail}
               permissions={[
-                Roles.REGISTERED_USER,
                 Roles.MEMBER,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
+                Roles.EKSEKUTIF,
                 Roles.SEKRETARIANT,
                 Roles.SEKRETARIANT_CREATOR,
                 Roles.SEKRETARIANT_EDITOR,
               ]}
             />
-            <PrivateRoute exact path="/forum-sdi" component={ForumSDI} />
+            <PrivateRoute
+              exact
+              path="/forum-sdi"
+              component={ForumSDI}
+              permissions={[
+                Roles.MEMBER,
+                Roles.CONTENT_CREATOR,
+                Roles.CONTENT_EDITOR,
+                Roles.EKSEKUTIF,
+                Roles.SEKRETARIANT,
+                Roles.SEKRETARIANT_CREATOR,
+                Roles.SEKRETARIANT_EDITOR,
+              ]}
+            />
             <PrivateRoute
               exact
               path="/forum"
               component={PerminataanForumPage}
               permissions={[
-                Roles.REGISTERED_USER,
                 Roles.MEMBER,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
+                Roles.EKSEKUTIF,
                 Roles.SEKRETARIANT,
                 Roles.SEKRETARIANT_CREATOR,
                 Roles.SEKRETARIANT_EDITOR,

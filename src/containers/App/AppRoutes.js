@@ -126,33 +126,19 @@ function AppRoutes(props) {
               exact
               path="/dataset"
               component={DataSetPage}
-              permissions={[Roles.ADMIN, Roles.REGISTERED_USER, Roles.MEMBER, Roles.SEKRETARIANT]}
+              permissions={[Roles.ADMIN, Roles.EKSEKUTIF, Roles.REGISTERED_USER, Roles.MEMBER, Roles.SEKRETARIANT]}
             />
             <PrivateRoute
               exact
               path="/daftar"
               component={DaftarPage}
-              permissions={[
-                Roles.MEMBER,
-                Roles.CONTENT_CREATOR,
-                Roles.CONTENT_EDITOR,
-                Roles.SEKRETARIANT,
-                Roles.SEKRETARIANT_CREATOR,
-                Roles.SEKRETARIANT_EDITOR,
-              ]}
+              permissions={[Roles.MEMBER, Roles.SEKRETARIANT, Roles.SEKRETARIANT_CREATOR, Roles.SEKRETARIANT_EDITOR]}
             />
             <PrivateRoute
               exact
               path="/daftar/:daftarId/variable"
               component={DataVariablePage}
-              permissions={[
-                Roles.MEMBER,
-                Roles.CONTENT_CREATOR,
-                Roles.CONTENT_EDITOR,
-                Roles.SEKRETARIANT,
-                Roles.SEKRETARIANT_CREATOR,
-                Roles.SEKRETARIANT_EDITOR,
-              ]}
+              permissions={[Roles.MEMBER, Roles.SEKRETARIANT, Roles.SEKRETARIANT_CREATOR, Roles.SEKRETARIANT_EDITOR]}
             />
             <PrivateRoute
               exact
@@ -282,7 +268,7 @@ function AppRoutes(props) {
               path="/dashboard-eksekutif"
               component={DashboardEksekutif}
               permissions={[
-                Roles.REGISTERED_USER,
+                Roles.EKSEKUTIF,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
                 Roles.SEKRETARIANT,

@@ -16,7 +16,7 @@ import keycloak, { initOptions } from 'Keycloak';
 
 import { fetchLoggedInUserInfo } from 'containers/Login/reducer';
 import Notify, { Notification } from 'components/Notification';
-import { getCookieByName, cookieKeys, removeAllCookie, setCookie } from 'utils/cookie';
+import { getCookieByName, cookieKeys, removeAllCookie } from 'utils/cookie';
 
 const AdminRoutes = lazy(() => import('./AdminRoutes'));
 const AppRoutes = lazy(() => import('./AppRoutes'));
@@ -49,7 +49,6 @@ function App(props) {
   const handleOnTokens = (tokens) => {
     if (!tokens?.token) return false;
     dispatch(fetchLoggedInUserInfo(tokens.token));
-    setCookie(cookieKeys.isRecaptchaEnabled, false);
     const currentPath = history.location.pathname;
     const termsAndConditionsPath = '/term-and-condition';
     if (!isTermAndConditionAccepted && currentPath !== termsAndConditionsPath) {

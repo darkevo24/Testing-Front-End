@@ -8,7 +8,6 @@ export const cookieKeys = {
   token: bem.e('token'),
   user: bem.e('user'),
   isTermAndConditionAccepted: bem.e('isTermAndConditionAccepted'),
-  isRecaptchaEnabled: bem.e('recaptchaEnabled'),
 };
 
 export const getCookieByName = (name) => {

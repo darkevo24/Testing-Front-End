@@ -1,19 +1,20 @@
+import React, { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import FormCheck from 'react-bootstrap/FormCheck';
-import { useDispatch } from 'react-redux';
-import React, { useRef, useState } from 'react';
 import Button from 'react-bootstrap/Button';
+import FormCheck from 'react-bootstrap/FormCheck';
 import ReCAPTCHA from 'react-google-recaptcha';
+import Modal from 'react-bootstrap/Modal';
 import Notification from 'components/Notification';
 import bn from 'utils/bemNames';
-import Modal from 'react-bootstrap/Modal';
 import { recaptchaSiteKey } from 'utils/constants';
-import Logo from 'assets/logo-large.png';
+import { isRecaptchaEnabled } from 'utils/constants';
 import { validateReCaptcha, acceptTermAndCondition } from './reducer';
 import TermAndConditionData from './termAndConditionData';
-import { cookieKeys, getCookieByName } from 'utils/cookie';
+
+import Logo from 'assets/logo-large.png';
 
 const bem = bn('bimtek-dokumentasi');
 
@@ -24,7 +25,6 @@ const TermAndCondition = () => {
   const [validated, setValidated] = useState(false);
   const [captchaValue, setRecaptchaValue] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const isRecaptchaEnabled = getCookieByName(cookieKeys.isRecaptchaEnabled);
   const reCaptchaRef = useRef();
 
   const handleCheckBox = (evt) => {

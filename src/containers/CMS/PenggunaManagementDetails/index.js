@@ -244,7 +244,7 @@ const CMSPenggunaManagementView = () => {
                     Kirim
                   </Button>
                 )}
-                {isRecordCreator && changeStatus === penggunaStatuses.waitingApproval && (
+                {!isRecordCreator && changeStatus === penggunaStatuses.waitingApproval && (
                   <>
                     {/* Approve */}
                     <Button key="Setujui" variant="info" className="mr-16 br-4 px-40 py-13" onClick={sendSetujuiRequest}>

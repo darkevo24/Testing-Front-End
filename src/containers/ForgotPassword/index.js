@@ -58,7 +58,7 @@ const ForgotPassword = () => {
 
   const onSubmit = (data) => {
     setLoading(true);
-    handleAPICall(post, apiUrls.requestForgotPassword, { data: { data } });
+    handleAPICall(post, apiUrls.requestForgotPassword, { data });
   };
 
   return (

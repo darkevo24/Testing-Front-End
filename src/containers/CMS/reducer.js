@@ -5,6 +5,7 @@ import aboutUsDetailReducer from './AboutUsEdit/reducer';
 import beritaReducer from './Berita/reducer';
 import forumSdiReducer from './ForumSDI/reducer';
 import bertaLayoutReducer from './BeritaLayout/reducer';
+import apiManagementReducer from './ManagementApi/reducer';
 
 export default combineReducers({
   aboutUs: aboutUsReducer,
@@ -12,4 +13,5 @@ export default combineReducers({
   berita: beritaReducer,
   cmsForumSdi: forumSdiReducer,
   bertaLayout: bertaLayoutReducer,
+  apiManagement: apiManagementReducer,
 });

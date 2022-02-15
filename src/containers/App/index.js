@@ -13,6 +13,7 @@ import { connect, useDispatch } from 'react-redux';
 import GlobalStyle from 'global-styles';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
 import keycloak, { initOptions } from 'Keycloak';
+import 'react-tippy/dist/tippy.css';
 
 import { fetchLoggedInUserInfo } from 'containers/Login/reducer';
 import Notify, { Notification } from 'components/Notification';

@@ -121,6 +121,7 @@ export const apiUrls = {
   penggunaStatusList: getApiEndpoint('sekretariat/user/status-list'),
   penggunaUpload: getApiEndpoint('sekretariat/user/bulk'),
   cmsAnalitikData: getCMSEndpoint('analitik'),
+  cmsManagementApi: getApiEndpoint('management-api'),
 };
 
 export const priorityOptions = [

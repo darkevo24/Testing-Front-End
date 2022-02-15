@@ -32,10 +32,9 @@ const DaftarFormPage = lazy(() => import('containers/CMS/Daftar/CMSDaftarForm'))
 const PermintaanData = lazy(() => import('containers/CMS/PermintaanData/index'));
 const PermintaanDataDetail = lazy(() => import('containers/CMS/PermintaanDataForm/index'));
 const ManagementApi = lazy(() => import('containers/CMS/ManagementApi'));
-const ManagementApiBaru = lazy(() => import('containers/CMS/ManagementApi/CreateApi'));
-const ManagementApiForm = lazy(() => import('containers/CMS/ManagementApi/Form'));
+const ManagementApiBaru = lazy(() => import('containers/CMS/ManagementApi/DetailInstansi'));
 const ManagementApiDetail = lazy(() => import('containers/CMS/ManagementApi/DetailApi'));
-const ManagementApiEdit = lazy(() => import('containers/CMS/ManagementApi/EditApi'));
+const ManagementApiCreateEdit = lazy(() => import('containers/CMS/ManagementApi/CreateManagementAPI'));
 const LogActivity = lazy(() => import('containers/CMS/LogAktifitas'));
 const ForumSDIPage = lazy(() => import('containers/CMS/ForumSDI'));
 const ForumSDIFormPage = lazy(() => import('containers/CMS/ForumSDI/CMSForumSDIForm'));
@@ -172,12 +171,11 @@ function CMSRoutes() {
             Roles.SEKRETARIANT_EDITOR,
           ]}
         />
-        {/*  <PrivateRoute exact path="/cms/api/edit/:id?" component={ManagementApiEdit} />
+        <PrivateRoute exact path="/cms/api-edit/:instansiId/:id?" component={ManagementApiCreateEdit} />
+        <PrivateRoute exact path="/cms/api-create/:instansiId/" component={ManagementApiCreateEdit} />
         <PrivateRoute exact path="/cms/api-detail/:id" component={ManagementApiDetail} />
-        <PrivateRoute exact path="/cms/api/form" component={ManagementApiForm} />
-        <PrivateRoute exact path="/cms/api-baru" component={ManagementApiBaru} />
+        <PrivateRoute exact path="/cms/api-baru/:id" component={ManagementApiBaru} />
         <PrivateRoute exact path="/cms/api" component={ManagementApi} />
- */}
         <PrivateRoute
           exact
           path="/cms/manage-komunitas-ahli"

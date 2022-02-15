@@ -175,7 +175,6 @@ const CMSForumSDIForm = () => {
         const method = id ? put : post;
         const url = id ? `${apiUrls.cmsForumSDI}/${id}` : apiUrls.cmsForumSDI;
         const topikResID = topikResult.find((elem) => formData?.topik?.value === elem?.id);
-        debugger;
         let params = {
           judul: formData?.judul || '',
           topik: !topikResID ? 0 : formData?.topik?.value || null,

@@ -6,6 +6,8 @@ import Notification from 'components/Notification';
 import { Controller } from 'react-hook-form';
 import { copyToClipboard } from 'utils/helper';
 import { icons } from './Icons';
+import { ReactComponent as Union } from '../assets/union.svg';
+import { Tooltip } from 'react-tippy';
 
 export const Input = ({
   name,
@@ -26,6 +28,7 @@ export const Input = ({
   isLink,
   maxLength = '800',
   prefixText = '',
+  infoIcon = '',
   ...rest
 }) => {
   let { as: inputAs } = rest;
@@ -53,29 +56,42 @@ export const Input = ({
   const inputNode = (
     <>
       {label && <Form.Label className={labelClass}>{label}</Form.Label>}
-      <Controller
-        name={name}
-        control={control}
-        rules={rules}
-        render={({ field }) => (
-          <InputGroup className={cx('sdp-input-wrapper', wrapperClass)}>
-            {LeftIconNode && (
-              <InputGroup.Text className={cx('input-icon bg-white', leftIconClass)}>
-                <LeftIconNode />
-              </InputGroup.Text>
-            )}
-            {prefixText && <InputGroup.Text className={cx('bg-white', leftIconClass)}>{prefixText}</InputGroup.Text>}
-            <Form.Control maxLength={maxLengthNumber} {...rest} {...field} value={field.value || ''} className={className} />
-            {RightIconNode && (
-              <InputGroup.Text
-                className={cx('input-icon bg-white copy-link', rightIconClass)}
-                onClick={() => handleIconClick(field)}>
-                <RightIconNode />
-              </InputGroup.Text>
-            )}
-          </InputGroup>
+      <div className="sdp-input-main-container">
+        <Controller
+          name={name}
+          control={control}
+          rules={rules}
+          render={({ field }) => (
+            <InputGroup className={cx('sdp-input-wrapper', wrapperClass)}>
+              {LeftIconNode && (
+                <InputGroup.Text className={cx('input-icon bg-white', leftIconClass)}>
+                  <LeftIconNode />
+                </InputGroup.Text>
+              )}
+              {prefixText && <InputGroup.Text className={cx('bg-white', leftIconClass)}>{prefixText}</InputGroup.Text>}
+              <Form.Control
+                maxLength={maxLengthNumber}
+                {...rest}
+                {...field}
+                value={field.value || ''}
+                className={className}
+              />
+              {RightIconNode && (
+                <InputGroup.Text
+                  className={cx('input-icon bg-white copy-link', rightIconClass)}
+                  onClick={() => handleIconClick(field)}>
+                  <RightIconNode />
+                </InputGroup.Text>
+              )}
+            </InputGroup>
+          )}
+        />
+        {infoIcon && (
+          <Tooltip className="input-info" title={infoIcon} position="right">
+            <Union />
+          </Tooltip>
         )}
-      />
+      </div>
       <div className="sdp-error">{error}</div>
     </>
   );

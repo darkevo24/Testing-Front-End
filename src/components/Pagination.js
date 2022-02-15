@@ -3,11 +3,11 @@ import { LeftChevron, RightChevron } from 'components/Icons';
 import bn from 'utils/bemNames';
 
 const bem = bn('bimtek-pagination');
-const Pagination = ({ totalPages = 10, onChangePage }) => {
+const Pagination = ({ totalPages = 10, onChangePage, currentPage = 1 }) => {
   const [pager, setPager] = useState(null);
 
   useEffect(() => {
-    setPager(getPager(totalPages));
+    setPager(getPager(totalPages, currentPage));
   }, [totalPages]);
 
   const setPage = (page) => {

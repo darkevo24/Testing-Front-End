@@ -63,7 +63,6 @@
                               }, 1000);
                               forgotPassword.addEventListener('click', function (e) {
                                 if (this.href !== url) {
-                                  debugger;
                                   e.preventDefault();
                                   e.stopPropagation();
                                   window.open(url);

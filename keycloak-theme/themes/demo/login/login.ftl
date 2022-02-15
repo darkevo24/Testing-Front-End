@@ -52,9 +52,24 @@
                         </#if>
                         </div>
                         <div class="${properties.kcFormOptionsWrapperClass!}">
-                            <#if realm.resetPasswordAllowed>
-                                <span><a tabindex="5" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
-                            </#if>
+                            <span><a tabindex="5" id="forgotPassword" href="https://data.go.id/forgot-password">${msg("doForgotPassword")}</a></span>
+                            <script>
+                              var isProd = window.location.host === 'cas.data.go.id';
+                              var url = 'https://' + (isProd ? 'data.go.id' : 'satudata.go.id') + '/forgot-password';
+                              var forgotPassword = document.querySelector('#forgotPassword');
+                              forgotPassword.href = url;
+                              setInterval(function() {
+                                forgotPassword.href = url;
+                              }, 1000);
+                              forgotPassword.addEventListener('click', function (e) {
+                                if (this.href !== url) {
+                                  debugger;
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  window.open(url);
+                                }
+                              });
+                            </script>
                         </div>
 
                   </div>

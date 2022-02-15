@@ -64,12 +64,14 @@ const CreateManagementAPI = () => {
   }, [id]);
 
   useEffect(() => {
+    if (!id) return;
     setDefaultData();
   }, [records]);
 
   useEffect(() => {
     if (isEmpty(responseData)) return;
     const currentRecord = get(responseData, `dataSource.${currentPage}`, {});
+    if (isEmpty(currentRecord)) return;
     const mappedRecords_clone = Object.keys(currentRecord).map((key) => ({
       field: key,
       value: !currentRecord[key] ? (
@@ -80,18 +82,26 @@ const CreateManagementAPI = () => {
         currentRecord[key]
       ),
     }));
-    const dropDownValues_clone = mappedRecords.map((elem, index) => ({
-      label: elem.field,
+    setMappedRecords(mappedRecords_clone);
+    const drData = responseData?.dcatproperties?.map((elem, index) => ({
+      label: elem?.sourceApiKey ? elem?.sourceApiKey : '-',
       value: index,
     }));
+    setDropDownSelectedValue(drData);
     const dcatTableData_clone = responseData?.dcatproperties?.map((elem, index) => ({
       ...elem,
       index: index + 1,
     }));
-    setDropDownValues(dropDownValues_clone);
-    setMappedRecords(mappedRecords_clone);
     setDcatTableData(dcatTableData_clone);
   }, [responseData, currentPage]);
+
+  useEffect(() => {
+    const dropDownValues_clone = mappedRecords?.map((elem, index) => ({
+      label: elem.field,
+      value: index,
+    }));
+    setDropDownValues(dropDownValues_clone);
+  }, [mappedRecords]);
 
   const setDefaultData = () => {
     setResponseData(records);
@@ -235,12 +245,10 @@ const CreateManagementAPI = () => {
       generate: true,
     });
     const configData = [...dcatTableConfig.data];
-    if (!id) {
-      dropDownSelectedValue.forEach((elem, index) => {
-        configData[index].sourceApiKey = elem.label;
-        delete configData[index].index;
-      });
-    }
+    dropDownSelectedValue.forEach((elem, index) => {
+      configData[index].sourceApiKey = elem.label;
+      delete configData[index].index;
+    });
     try {
       const response = await post(
         `${apiUrls.cmsManagementApi}/generate-output`,

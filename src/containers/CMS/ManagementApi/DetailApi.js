@@ -79,6 +79,7 @@ const DetailApi = () => {
     ...elem,
     index: index + 1,
   }));
+
   const dcatColumns = [
     {
       Header: 'No',

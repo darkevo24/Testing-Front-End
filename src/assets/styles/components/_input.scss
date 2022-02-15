@@ -131,3 +131,17 @@ textarea.form-control {
   bottom: 0;
   right: 8px;
 }
+
+.sdp-input-main-container {
+  display: flex;
+  align-items: center;
+
+  .input-info {
+    margin-left: 10px !important;
+
+    svg {
+      height: 24px !important;
+      width: 24px !important;
+    }
+  }
+}

@@ -61,7 +61,7 @@ export const PrivateRoute = ({ component: Component, path, permissions, ...rest 
   let allowedRoutes = [];
   if (token) allowedRoutes = hasPermission(permissions);
   else return <Redirect to="/home" />;
-  const isAllowed = token || isArrayWithLength(allowedRoutes);
+  const isAllowed = token && isArrayWithLength(allowedRoutes);
   return (
     <Route
       {...rest}

@@ -36,7 +36,7 @@ const CMSDaftarPage = (props) => {
               className={bem.e('cms-search')}
               searchPlaceholder="Cari Data"
               setGlobalFilter={(value) => setSearch(value)}
-              searchThreshold={600}
+              searchThreshold={300}
             />
           </div>
         </div>

@@ -81,7 +81,7 @@ const KomunitasAhliPage = () => {
       page: 0,
       payload: {
         ...payload,
-        q: value.trim(),
+        q: value,
       },
     });
   };
@@ -208,7 +208,7 @@ const KomunitasAhliPage = () => {
     subTitle: 'Komunitas Ahli',
     search: true,
     searchValue: payload.q,
-    searchThreshold: 600,
+    searchThreshold: 300,
     searchPlaceholder: 'Cari Ahli Berdasarkan Nama',
     searchRightComponent: (
       <>

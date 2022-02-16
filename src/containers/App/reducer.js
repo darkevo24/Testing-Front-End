@@ -243,7 +243,7 @@ export const userInstansiSelector = (state) => {
   const instansiData = instansiDataSelector(state);
   if (instansiData?.result?.length) {
     const user = state?.auth?.user || {};
-    const userInstansi = user?.instansi;
+    const userInstansi = user?.instansi || user?.instansiId;
     if (userInstansi) {
       return find(instansiData.result, { id: userInstansi });
     }

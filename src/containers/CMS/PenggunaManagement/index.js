@@ -145,21 +145,21 @@ const CMSPenggunaManagement = () => {
       <div className={bem.e('section cms-permintaan-data')}>
         <div className={bem.e('header')}>
           <div className={bem.e('title pb-20')}>Pengguna</div>
-          <Row className="justify-content-between">
-            <Col xs={3} className="d-flex align-items-center">
+          <Row className="">
+            <Col xs={2} md={2} className="d-flex align-items-center">
               <InputGroup>
                 <Button className="br-4" variant="info" onClick={() => history.push('/cms/pengguna-management/add')}>
                   Tambah Pengguna
                 </Button>
               </InputGroup>
-              <InputGroup>
-                <Button variant="outline-secondary" className="br-6 hpx-35">
-                  Upload
-                </Button>
-              </InputGroup>
             </Col>
-            <Col className="option position-relative" md={5}>
+            <Col className="option position-relative" xs={12} md={12} xl={7} lg={12}>
               <Form.Group className="d-flex align-items-center mr-10">
+                <InputGroup>
+                  <Button variant="outline-secondary" className="br-6 hpx-35">
+                    Upload
+                  </Button>
+                </InputGroup>
                 <Form.Label className="mb-0 pr-10">Role</Form.Label>
                 <Form.Select onChange={(e) => setRoles(e.target.value)}>
                   <option value="">SEMUA</option>
@@ -197,7 +197,7 @@ const CMSPenggunaManagement = () => {
                 </Form.Select>
               </Form.Group>
             </Col>
-            <Col xs={4} className="d-flex align-items-center">
+            <Col xs={2} lg={3} className="d-flex align-items-center">
               <InputGroup>
                 <Form.Control
                   variant="normal"

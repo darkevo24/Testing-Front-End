@@ -171,11 +171,31 @@ function CMSRoutes() {
             Roles.SEKRETARIANT_EDITOR,
           ]}
         />
-        <PrivateRoute exact path="/cms/api-edit/:instansiId/:id?" component={ManagementApiCreateEdit} />
-        <PrivateRoute exact path="/cms/api-create/:instansiId/" component={ManagementApiCreateEdit} />
-        <PrivateRoute exact path="/cms/api-detail/:id" component={ManagementApiDetail} />
-        <PrivateRoute exact path="/cms/api-baru/:id" component={ManagementApiBaru} />
-        <PrivateRoute exact path="/cms/api" component={ManagementApi} />
+        <PrivateRoute
+          exact
+          path="/cms/api-edit/:instansiId/:id?"
+          component={ManagementApiCreateEdit}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT]}
+        />
+        <PrivateRoute
+          exact
+          path="/cms/api-create/:instansiId/"
+          component={ManagementApiCreateEdit}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT]}
+        />
+        <PrivateRoute
+          exact
+          path="/cms/api-detail/:id"
+          component={ManagementApiDetail}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT]}
+        />
+        <PrivateRoute
+          exact
+          path="/cms/api-baru/:id"
+          component={ManagementApiBaru}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT]}
+        />
+        <PrivateRoute exact path="/cms/api" component={ManagementApi} permissions={[Roles.ADMIN, Roles.SEKRETARIANT]} />
         <PrivateRoute
           exact
           path="/cms/manage-komunitas-ahli"
@@ -519,8 +539,18 @@ function CMSRoutes() {
             Roles.PIC_BAPPENAS,
           ]}
         />
-        <PrivateRoute exact path="/cms/permintaan-data" component={PermintaanData} permissions={[Roles.ADMIN]} />
-        <PrivateRoute exact path="/cms/permintaan-data/:id" component={PermintaanDataDetail} permissions={[Roles.ADMIN]} />
+        <PrivateRoute
+          exact
+          path="/cms/permintaan-data"
+          component={PermintaanData}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT]}
+        />
+        <PrivateRoute
+          exact
+          path="/cms/permintaan-data/:id"
+          component={PermintaanDataDetail}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT]}
+        />
         <PrivateRoute
           exact
           path="/cms/forum-sdi/manage-forum-sdi/:id"

@@ -177,7 +177,7 @@ const DetailApi = () => {
             <label className="fs-20 fw-bold">Log Status</label>
             <div className="mt-50">
               {logRecords.map((elem, index) => {
-                const status = (elem?.status || '').toLowerCase();
+                const status = (elem?.data?.status || '').toLowerCase();
                 const classDetail = getStatusClass(status);
                 return (
                   <div key={index} className="mb-15">

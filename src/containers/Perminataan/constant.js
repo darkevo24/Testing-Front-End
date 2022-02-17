@@ -1,11 +1,11 @@
 import moment from 'moment';
 
 export const getUserInfo = (data) => [
-  { data: data?.['name'] || '', title: 'Nama Lengkap' },
+  { data: data?.['nama'] || '', title: 'Nama Lengkap' },
   { data: data?.['nip'] || '', title: 'NIP/NIK' },
   { data: data?.['status'] || '', title: 'Status Kepegawaian' },
-  { data: data?.['instansi'] || '', title: 'Instansi' },
-  { data: data?.['unit'] || '', title: 'Unit Kerja' },
+  { data: data?.['instansiName'] || '', title: 'Instansi' },
+  { data: data?.['unitKerjaName'] || '', title: 'Unit Kerja' },
 ];
 
 export const getPerminataanInfo = (data) => [

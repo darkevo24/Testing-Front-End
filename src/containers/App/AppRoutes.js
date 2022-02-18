@@ -174,6 +174,7 @@ function AppRoutes(props) {
                 Roles.MEMBER,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
+                Roles.SEKRETARIANT,
                 Roles.SEKRETARIANT_CREATOR,
                 Roles.SEKRETARIANT_EDITOR,
               ]}

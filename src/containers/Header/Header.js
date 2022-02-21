@@ -17,6 +17,7 @@ import { getAnalyticsUrl } from 'utils/constants';
 
 import Logo from 'assets/logo-satu.jpg';
 import { removeAllCookie } from '../../utils/cookie';
+import { Roles } from 'containers/App/config';
 
 const getPathnameFromRoute = (route) => get(route, 'link.pathname', route.link);
 
@@ -67,6 +68,11 @@ export const Header = () => {
   const { keycloak } = useKeycloak();
   const user = useSelector(userSelector);
   const { t } = useTranslation();
+  const showAppSec = useMemo(() => {
+    if (!user) return false;
+    const { roles = null } = user;
+    return ![Roles.MEMBER, Roles.REGISTERED_USER, Roles.EKSEKUTIF].includes(roles);
+  }, [user]);
 
   const isLoggedIn = !!keycloak.authenticated;
 
@@ -144,7 +150,7 @@ export const Header = () => {
         {getNavLinks(MEMBER_ROUTES, location.pathname, goTo)}
         <NavDropdown title={user?.nama || 'Achmad Adam'} id="user-nav-dropdown" className="user-nav h-100">
           <NavDropdown.Item onClick={goTo('/change-user-password')}>{t('header.userNav.changePassword')}</NavDropdown.Item>
-          <NavDropdown.Item onClick={goTo('/cms')}>{t('header.userNav.cmsApplication')}</NavDropdown.Item>
+          {showAppSec && <NavDropdown.Item onClick={goTo('/cms')}>{t('header.userNav.cmsApplication')}</NavDropdown.Item>}
           <NavDropdown.Item onClick={goTo('/policy')}>{t('header.userNav.privacyPolicy')}</NavDropdown.Item>
           <NavDropdown.Item
             onClick={() => {

@@ -51,9 +51,9 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data, onStatusChange = () => {} }
   useEffect(async () => {
     const newStatus = status ? 'active' : 'inactive';
     const currentStatus = penggunaDetailsData?.status?.toLowerCase();
-    if (currentStatus !== newStatus) {
+    if (typeof currentStatus !== 'undefined' && currentStatus !== newStatus) {
       try {
-        await post(`${apiUrls.penggunaManagement}/${penggunaDetailsData.id}/set-status/${newStatus}`);
+        await post(`${apiUrls.penggunaManagement}/${data}/set-status/${newStatus}`);
         onStatusChange();
       } catch (error) {
         console.log('ERR', error);
@@ -169,7 +169,6 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data, onStatusChange = () => {} }
       setFileErr(true);
     } catch (error) {}
   };
-
   return (
     <Form id={penggunaFormId} className="sdp-form" noValidate onSubmit={handleSubmit(onSubmit)}>
       <Input

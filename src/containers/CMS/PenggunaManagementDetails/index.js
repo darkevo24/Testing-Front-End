@@ -169,7 +169,7 @@ const CMSPenggunaManagementView = () => {
     } catch (e) {
       Notification.show({
         type: 'warning',
-        message: errorMessage || e.data.message,
+        message: errorMessage || e.data.message || 'Permintaan Bimbingan Teknis berhasil terkirim',
         icon: 'cross',
       });
     }

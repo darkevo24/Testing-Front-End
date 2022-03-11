@@ -158,6 +158,10 @@ const InstansiDetail = () => {
     history.push(path);
   };
 
+  const handleInstansiKirim = () => {
+    setInstansiStatus(INSTANSI_STATUS.waiting_approval);
+    setShowModal(true);
+  };
   const handModalOpen = (statusValue) => {
     setShowModal(true);
     setInstansiStatus(statusValue);
@@ -251,6 +255,11 @@ const InstansiDetail = () => {
                     <Button className="mx-4" variant="outline-secondary" onClick={(e) => handleUnitKejira(`edit/${id}`)}>
                       Edit
                     </Button>
+                    {status === 'DRAFT' && (
+                      <Button key="Kirim" variant="info" className="mr-16 br-4 px-40 py-13" onClick={handleInstansiKirim}>
+                        Kirim
+                      </Button>
+                    )}
                   </>
                 )}
               </div>

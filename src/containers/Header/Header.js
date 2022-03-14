@@ -128,7 +128,7 @@ export const Header = () => {
       },
       { title: 'Berita', link: '/berita' },
       { title: 'Tentang', link: '/tentang' },
-      { title: 'API', link: '/api' },
+      // { title: 'API', link: '/api' },
     ],
     [isLoggedIn],
   );

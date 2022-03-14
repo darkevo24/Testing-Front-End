@@ -67,11 +67,11 @@ function AppRoutes(props) {
             <Route exact path="/berita/:id" component={BeritaDetailPage} />
             <Route exact path="/berita/perbulan/:date" component={BeritaPerBulan} />
             <Route exact path="/tentang" component={TentangPage} />
-            <Route exact path="/api" component={ManagementApiPage} />
+            {/*  <Route exact path="/api" component={ManagementApiPage} />
             <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
             <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
             <Route exact path="/api/form" component={ManagementApiAddPage} />
-
+ */}
             <PrivateRoute
               exact
               path="/permintaan-data-detail/:id"
@@ -307,7 +307,7 @@ function AppRoutes(props) {
               exact
               path="/dataanalytic"
               component={DataAnalytic}
-              permissions={[Roles.ADMIN, Roles.REGISTERED_USER, Roles.MEMBER, Roles.SEKRETARIANT]}
+              permissions={[Roles.ADMIN, Roles.REGISTERED_USER, Roles.MEMBER, Roles.SEKRETARIANT, Roles.EKSEKUTIF]}
             />
             <PrivateRoute
               exact

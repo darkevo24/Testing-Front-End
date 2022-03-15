@@ -270,6 +270,7 @@ function AppRoutes(props) {
               permissions={[
                 Roles.REGISTERED_USER,
                 Roles.MEMBER,
+                Roles.EKSEKUTIF,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
                 Roles.SEKRETARIANT,

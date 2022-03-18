@@ -12,6 +12,7 @@ import { Tooltip } from 'react-tippy';
 export const Input = ({
   name,
   control,
+  type,
   rules,
   error,
   label,
@@ -38,20 +39,32 @@ export const Input = ({
   if (isLink && !rightIcon) {
     rightIcon = 'copy';
   }
-
+  const [inputType, setInputType] = React.useState(type);
+  const [rightIconName, setRightIconName] = React.useState(() => {
+    if ((rightIcon === 'eye' || rightIcon === 'eyeOff') && type === 'password') {
+      return 'eyeOff';
+    }
+    return rightIcon;
+  });
   const handleIconClick = (field) => {
-    if (rightIcon === 'copy') {
+    if (rightIconName === 'copy') {
       copyToClipboard(field.value);
       Notification.show({
         type: 'secondary',
         message: <div> Link berhasil dicopy </div>,
         icon: 'check',
       });
+    } else if (rightIconName === 'eye') {
+      setInputType(inputType === 'text' ? 'password' : 'text');
+      setRightIconName('eyeOff');
+    } else if (rightIconName === 'eyeOff') {
+      setInputType(inputType === 'password' ? 'text' : 'password');
+      setRightIconName('eye');
     }
   };
   const maxLengthNumber = inputAs === 'textarea' ? maxLength : 200;
   const LeftIconNode = leftIcon && icons[leftIcon];
-  const RightIconNode = rightIcon && icons[rightIcon];
+  const RightIconNode = rightIconName && icons[rightIconName];
 
   const inputNode = (
     <>
@@ -73,6 +86,7 @@ export const Input = ({
                 maxLength={maxLengthNumber}
                 {...rest}
                 {...field}
+                type={inputType}
                 value={field.value || ''}
                 className={className}
               />

@@ -69,6 +69,7 @@ const ChangePassword = () => {
             type="password"
             error={errors.oldPassword?.message}
             className="mt-0"
+            rightIcon={'eye'}
           />
           <Input
             group
@@ -79,6 +80,7 @@ const ChangePassword = () => {
             type="password"
             error={errors.newPassword?.message}
             className="mt-0"
+            rightIcon={'eye'}
           />
           <Input
             group
@@ -89,6 +91,7 @@ const ChangePassword = () => {
             type="password"
             error={errors.confirmNewPassword?.message}
             className="mt-0"
+            rightIcon={'eye'}
           />
           <Button loading={loading} type="submit" className="change-btn">
             Ubah

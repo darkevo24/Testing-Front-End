@@ -6,9 +6,9 @@ import facebook from 'assets/facebook.png';
 import './footer.scss';
 
 const socialLinks = [
-  { key: 'fb', link: 'https://www.facebook.com/datagoid', icon: facebook },
+  { key: 'fb', link: 'https://www.facebook.com/datagoidofficial', icon: facebook },
   { key: 'ig', link: 'https://www.instagram.com/data.go.id', icon: instagram },
-  { key: 'yt', link: 'https://www.youtube.com/channel/UCTeFgXSoFZH3AkjK2b22X_w', icon: youtube },
+  { key: 'yt', link: 'https://www.youtube.com/channel/UChxW2SR1NrmF2QU-k0pUP_A', icon: youtube },
 ];
 
 export const Bottom = () => (

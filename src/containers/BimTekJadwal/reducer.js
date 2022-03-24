@@ -39,10 +39,6 @@ const INITIAL_STATE = {
   jadwalLocationsDataset: {
     status: 'idle',
     records: [],
-    page: 1,
-    size: 10,
-    totalPages: 1,
-    totalRecords: 0,
     message: null,
   },
   detailDataset: {
@@ -97,10 +93,6 @@ const SLICE_OBJ = createSlice({
       state.jadwalLocationsDataset.records = action.payload.content.records;
       state.jadwalLocationsDataset.status = action.payload.status;
       state.jadwalLocationsDataset.message = action.payload.message;
-      state.jadwalLocationsDataset.totalPages = action.payload.content.totalPages;
-      state.jadwalLocationsDataset.totalRecords = action.payload.content.totalRecords;
-      state.jadwalLocationsDataset.pages = action.payload.content.pages;
-      state.jadwalLocationsDataset.size = action.payload.content.size;
     });
     builder.addCase(getBimtekJadwalLocationsData.rejected, (state, action) => {
       state.detailDataset.loading = false;

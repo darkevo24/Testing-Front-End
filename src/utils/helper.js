@@ -500,7 +500,7 @@ export const isArrayWithLength = (arr) => {
 };
 export const hasPermission = (permissions) => {
   const currentUser = getCookieByName(cookieKeys.user);
-  const userRoles = [currentUser.roles];
+  const userRoles = [currentUser?.roles] ?? [];
   return intersection(permissions, userRoles);
 };
 

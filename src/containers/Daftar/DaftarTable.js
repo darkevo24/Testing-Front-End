@@ -95,7 +95,7 @@ const DaftarTable = ({
               className={bem.e('popover')}
               triggerOn="hover"
               trigger={<div className="cursor-pointer h-100 d-flex align-items-center">{item.instansi}</div>}
-              header="Detail Data Cakupan Wilayah Internet">
+              header={item.instansi}>
               <DaftarPopoverContent daftarId={item.id} />
             </Popover>
           );

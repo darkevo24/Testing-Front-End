@@ -44,6 +44,7 @@ const Forum = () => {
   const { loading } = useSelector(perminataanDatasetSelector);
   const instansiDetail = useSelector(instansiDataSelector);
   const apiError = useSelector(perminataanForumErrorSelector);
+  const startDate = moment(new Date(), 'YYYY-MM-DD').add(5, 'days').format('YYYY-MM-DD');
 
   const handleBackButton = () => {
     history.push('/permintaan-data');
@@ -185,6 +186,7 @@ const Forum = () => {
                 labelClass="sdp-form-label mb-0 fw-normal"
                 name="tanggalTarget"
                 control={control}
+                min={startDate}
                 error={errors?.tanggalTarget?.message ? 'Target Waktu is required' : ''}
                 rules={{ required: true }}
               />

@@ -217,7 +217,7 @@ const DaftarForm = ({
             control={control}
             rules={{ required: true }}
             placeholder="Select"
-            options={emptyOptionPad(formatOptions)}
+            options={formatOptions}
             error={errors.format?.message}
           />
           <Input

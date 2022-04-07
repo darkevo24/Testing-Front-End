@@ -206,7 +206,7 @@ const DaftarForm = ({
             control={control}
             rules={{ required: true }}
             placeholder="Select"
-            options={dataindukAllOptions}
+            options={emptyOptionPad(dataindukAllOptions)}
             error={errors.indukData?.message}
           />
           <Dropdown
@@ -217,7 +217,7 @@ const DaftarForm = ({
             control={control}
             rules={{ required: true }}
             placeholder="Select"
-            options={formatOptions}
+            options={emptyOptionPad(formatOptions)}
             error={errors.format?.message}
           />
           <Input

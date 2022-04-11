@@ -46,7 +46,7 @@ const Modal = ({
               )}
               {displayRequiredField && (
                 <div className="mt-10 ml-20">
-                  <span style={{ color: 'red' }}>*&nbsp; Wajib Diisi </span>
+                  <span className="sdp-text-red pl-2">* Wajib Diisi </span>
                 </div>
               )}
             </div>

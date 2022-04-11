@@ -110,7 +110,7 @@ const DaftarForm = ({
   }, [tujuanSDGPillerOptions]);
   const requiredFiledLabel = (label) => (
     <p>
-      <span style={{ color: 'red' }}>*&nbsp; </span>
+      <span className="sdp-text-red pl-2">*</span>
       {label}
     </p>
   );

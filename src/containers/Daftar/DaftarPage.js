@@ -120,7 +120,7 @@ const Daftar = (props) => {
       },
       {
         key: t('sandbox.daftar.tabs.daftarSafa.key'),
-        title: t('sandbox.daftar.tabs.daftarSafa.title'),
+        title: activeTitle,
         component: (
           <DaftarDataSayaTable
             {...tableProps}

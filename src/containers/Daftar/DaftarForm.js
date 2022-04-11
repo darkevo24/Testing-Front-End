@@ -126,7 +126,7 @@ const DaftarForm = ({
           />
           <Input
             group
-            label="Name Data"
+            label="Nama Data"
             name="nama"
             control={control}
             rules={{ required: true }}

@@ -108,14 +108,19 @@ const DaftarForm = ({
       setValue('kodeTujuan', tujuanOption);
     }
   }, [tujuanSDGPillerOptions]);
-
+  const requiredFiledLabel = (label) => (
+    <p>
+      <span style={{ color: 'red' }}>*&nbsp; </span>
+      {label}
+    </p>
+  );
   return (
     <div className="daftar-form">
       <Row>
         <Form id={daftarFormId} onSubmit={handleSubmit(onSubmit)} noValidate>
           <Dropdown
             group
-            label="Instansi"
+            label={requiredFiledLabel('Instansi')}
             name="instansi"
             control={control}
             disabled
@@ -126,7 +131,7 @@ const DaftarForm = ({
           />
           <Input
             group
-            label="Nama Data"
+            label={requiredFiledLabel('Nama Data')}
             name="nama"
             control={control}
             rules={{ required: true }}
@@ -134,7 +139,7 @@ const DaftarForm = ({
           />
           <Input
             group
-            label="ID Konsep"
+            label={requiredFiledLabel('ID Konsep')}
             name="idKonsep"
             control={control}
             rules={{ required: true }}
@@ -142,7 +147,7 @@ const DaftarForm = ({
           />
           <Input
             group
-            label="Konsep"
+            label={requiredFiledLabel('Konsep')}
             name="konsep"
             control={control}
             rules={{ required: true }}
@@ -150,7 +155,7 @@ const DaftarForm = ({
           />
           <Input
             group
-            label="Definisi"
+            label={requiredFiledLabel('Definisi')}
             name="definisi"
             control={control}
             as="textarea"
@@ -159,7 +164,7 @@ const DaftarForm = ({
           />
           <Input
             group
-            label="Sumber Definisi"
+            label={requiredFiledLabel('Sumber Definisi')}
             name="sumberDefinisi"
             control={control}
             rules={{ required: true }}
@@ -167,7 +172,7 @@ const DaftarForm = ({
           />
           <Dropdown
             group
-            label="Jadwal Pemutakhiran"
+            label={requiredFiledLabel('Jadwal Pemutakhiran')}
             name="jadwalPemutakhiran"
             control={control}
             rules={{ required: true }}
@@ -177,7 +182,7 @@ const DaftarForm = ({
           />
           <DatePicker
             group
-            label="Dibuat"
+            label={requiredFiledLabel('Dibuat')}
             name="tanggalDibuat"
             control={control}
             rules={{ required: true }}
@@ -185,7 +190,7 @@ const DaftarForm = ({
           />
           <DatePicker
             group
-            label="Diperbarui"
+            label={requiredFiledLabel('Diperbarui')}
             name="tanggalDiperbaharui"
             control={control}
             rules={{ required: true }}
@@ -193,7 +198,7 @@ const DaftarForm = ({
           />
           <Input
             group
-            label="Produsen Data"
+            label={requiredFiledLabel('Produsen Data')}
             name="produsenData"
             control={control}
             rules={{ required: true }}
@@ -201,7 +206,7 @@ const DaftarForm = ({
           />
           <Dropdown
             group
-            label="Data Induk"
+            label={requiredFiledLabel('Data Induk')}
             name="indukData"
             control={control}
             rules={{ required: true }}
@@ -211,7 +216,7 @@ const DaftarForm = ({
           />
           <Dropdown
             group
-            label="Format"
+            label={requiredFiledLabel('Format')}
             name="format"
             multi
             control={control}
@@ -222,7 +227,7 @@ const DaftarForm = ({
           />
           <Input
             group
-            label="Link Akses"
+            label={requiredFiledLabel('Link Akses')}
             name="linkAkses"
             isLink
             control={control}

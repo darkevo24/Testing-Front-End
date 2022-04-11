@@ -232,6 +232,7 @@ const Daftar = (props) => {
         onClose={hideDaftarFormModal}
         icon="splitCircle"
         title={selectedRecord ? 'Edit Data' : 'Tambah Data'}
+        displayRequiredField={true}
         subtitle="Isi form dibawah untuk menambah data"
         actions={[
           { variant: 'secondary', text: 'Batal', onClick: hideDaftarFormModal },

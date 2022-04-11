@@ -41,7 +41,7 @@ const DataVariableForm = ({ data, onSubmit }) => {
         <Form id={dataVariableFormId} onSubmit={handleSubmit(onSubmit)} noValidate>
           <Input
             group
-            label="Name Data"
+            label="Nama Data"
             name="nama"
             placeholder="Add an email or name"
             control={control}

@@ -126,7 +126,7 @@ const DaftarForm = ({
           />
           <Input
             group
-            label="Name Data"
+            label="Nama Data"
             name="nama"
             control={control}
             rules={{ required: true }}
@@ -217,7 +217,7 @@ const DaftarForm = ({
             control={control}
             rules={{ required: true }}
             placeholder="Select"
-            options={emptyOptionPad(formatOptions)}
+            options={formatOptions}
             error={errors.format?.message}
           />
           <Input

@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
-import { DatePicker, Dropdown, Input } from 'components';
+import { DatePicker, Dropdown, Input, RequiredFilledLabel } from 'components';
 import { jadwalPermutakhiranOptions, formatOptions } from 'utils/constants';
 import { /*dateTransform,*/ emptyOptionPad, submitForm, findOption } from 'utils/helper';
 import {
@@ -108,19 +108,14 @@ const DaftarForm = ({
       setValue('kodeTujuan', tujuanOption);
     }
   }, [tujuanSDGPillerOptions]);
-  const requiredFiledLabel = (label) => (
-    <p>
-      <span className="sdp-text-red pl-2">*</span>
-      {label}
-    </p>
-  );
+
   return (
     <div className="daftar-form">
       <Row>
         <Form id={daftarFormId} onSubmit={handleSubmit(onSubmit)} noValidate>
           <Dropdown
             group
-            label={requiredFiledLabel('Instansi')}
+            label={<RequiredFilledLabel label={'Instansi'} />}
             name="instansi"
             control={control}
             disabled
@@ -131,7 +126,7 @@ const DaftarForm = ({
           />
           <Input
             group
-            label={requiredFiledLabel('Nama Data')}
+            label={<RequiredFilledLabel label={'Nama Data'} />}
             name="nama"
             control={control}
             rules={{ required: true }}
@@ -139,7 +134,7 @@ const DaftarForm = ({
           />
           <Input
             group
-            label={requiredFiledLabel('ID Konsep')}
+            label={<RequiredFilledLabel label={'ID Konsep'} />}
             name="idKonsep"
             control={control}
             rules={{ required: true }}
@@ -147,15 +142,15 @@ const DaftarForm = ({
           />
           <Input
             group
-            label={requiredFiledLabel('Konsep')}
+            label="Konsep"
             name="konsep"
             control={control}
-            rules={{ required: true }}
+            rules={{ required: false }}
             error={errors.konsep?.message}
           />
           <Input
             group
-            label={requiredFiledLabel('Definisi')}
+            label={<RequiredFilledLabel label={'Definisi'} />}
             name="definisi"
             control={control}
             as="textarea"
@@ -164,7 +159,7 @@ const DaftarForm = ({
           />
           <Input
             group
-            label={requiredFiledLabel('Sumber Definisi')}
+            label="Sumber Definisi"
             name="sumberDefinisi"
             control={control}
             rules={{ required: true }}
@@ -172,7 +167,7 @@ const DaftarForm = ({
           />
           <Dropdown
             group
-            label={requiredFiledLabel('Jadwal Pemutakhiran')}
+            label={<RequiredFilledLabel label={'Jadwal Pemutakhiran'} />}
             name="jadwalPemutakhiran"
             control={control}
             rules={{ required: true }}
@@ -182,7 +177,7 @@ const DaftarForm = ({
           />
           <DatePicker
             group
-            label={requiredFiledLabel('Dibuat')}
+            label={<RequiredFilledLabel label={'Dibuat'} />}
             name="tanggalDibuat"
             control={control}
             rules={{ required: true }}
@@ -190,7 +185,7 @@ const DaftarForm = ({
           />
           <DatePicker
             group
-            label={requiredFiledLabel('Diperbarui')}
+            label="Diperbarui"
             name="tanggalDiperbaharui"
             control={control}
             rules={{ required: true }}
@@ -198,7 +193,7 @@ const DaftarForm = ({
           />
           <Input
             group
-            label={requiredFiledLabel('Produsen Data')}
+            label={<RequiredFilledLabel label={'Produsen Data'} />}
             name="produsenData"
             control={control}
             rules={{ required: true }}
@@ -206,7 +201,7 @@ const DaftarForm = ({
           />
           <Dropdown
             group
-            label={requiredFiledLabel('Data Induk')}
+            label="Data Induk"
             name="indukData"
             control={control}
             rules={{ required: true }}
@@ -216,7 +211,7 @@ const DaftarForm = ({
           />
           <Dropdown
             group
-            label={requiredFiledLabel('Format')}
+            label={<RequiredFilledLabel label={'Format'} />}
             name="format"
             multi
             control={control}
@@ -227,7 +222,7 @@ const DaftarForm = ({
           />
           <Input
             group
-            label={requiredFiledLabel('Link Akses')}
+            label={<RequiredFilledLabel label={'Link Akses'} />}
             name="linkAkses"
             isLink
             control={control}

@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import isEmpty from 'lodash/isEmpty';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Input, Modal } from 'components';
+import { Input, Modal, RequiredFilledLabel } from 'components';
 import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
 import { pengaturanAksesOptions } from 'utils/constants';
 import { findOption } from 'utils/helper';
@@ -45,6 +45,7 @@ const TambahForm = ({ visible, handleCloseModal, data, handleDataSubmit }) => {
     <Modal
       visible={visible}
       title={`${isEdit ? 'Ubah' : 'Tambah'} Variabel`}
+      subtitle={<RequiredFilledLabel label="Wajib Diisi" />}
       size="lg"
       onClose={handleCloseModal}
       centered={true}>
@@ -52,7 +53,7 @@ const TambahForm = ({ visible, handleCloseModal, data, handleDataSubmit }) => {
         <Row>
           <Input
             group
-            label="Nama Variabel"
+            label={<RequiredFilledLabel label={'Nama Variabel'} />}
             labelClass="sdp-form-label  fw-normal"
             name="nama"
             error={errors?.nama?.message}
@@ -90,7 +91,9 @@ const TambahForm = ({ visible, handleCloseModal, data, handleDataSubmit }) => {
           />
         </Row>
         <Row>
-          <label className="sdp-form-label py-8">Pengaturan Akses</label>
+          <label className="sdp-form-label py-8">
+            <RequiredFilledLabel label={'Pengaturan Akses'} />
+          </label>
           <SingleSelectDropdown
             data={pengaturanAksesOptions}
             placeHolder=""

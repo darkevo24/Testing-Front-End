@@ -8,6 +8,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import isEmpty from 'lodash/isEmpty';
 import Modal from 'components/Modal';
 import Notification from 'components/Notification';
+import RequiredFilledLabel from 'components/RequiredFilledLabel';
 import { Breadcrumb } from 'components';
 import { prepareFormPayload } from 'utils/helper';
 import {
@@ -177,6 +178,13 @@ const DataVariable = ({ cms = false, cmsDetail = false, id }) => {
     [t, daftar],
   );
 
+  const dataVarialeFormSubtilte = () => (
+    <>
+      <span>{selectedRecord ? 'Isi form dibawah untuk menambah Variabel' : 'ID UMKM'}</span> <br />
+      <RequiredFilledLabel label="Wajib Diisi" />
+    </>
+  );
+
   return (
     <div className="daftar-page pb-100">
       {!cms ? <Breadcrumb breadcrumbsList={breadcrumbsList} /> : null}
@@ -216,7 +224,7 @@ const DataVariable = ({ cms = false, cmsDetail = false, id }) => {
         onClose={hideDataVariableFormModal}
         icon="splitCircle"
         title={selectedRecord ? 'Edit Variable' : 'Tambah Variable'}
-        subtitle={selectedRecord ? 'Isi form dibawah untuk menambah Variabel' : 'ID UMKM'}
+        subtitle={dataVarialeFormSubtilte()}
         actions={[
           { variant: 'secondary', text: 'Batal', onClick: hideDataVariableFormModal },
           { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDataVariableForm },

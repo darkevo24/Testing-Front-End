@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { DatePicker, Input } from 'components';
+import { DatePicker, Input, RequiredFilledLabel } from 'components';
 import TambahFormModal from './CMSDaftarTambahForm';
 import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
 import DaftarDataProvider from 'containers/Daftar/DaftarDataProvider';
@@ -252,19 +252,25 @@ const CMSDaftarPage = ({ ...props }) => {
       <Form noValidate onSubmit={handleSubmit(handleDaftarFormSubmit)}>
         <Row className="bg-gray-lighter ml-0">
           <Col className="pl-0">
-            <div className="d-flex px-32 py-24 align-items-center border-bottom">
-              <div className="sdp-heading mb-4">Data Baru</div>
-              <div className="ml-24">
-                <Button
-                  variant="outline-secondary"
-                  className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4 py-13 px-40"
-                  onClick={goBack}>
-                  Batal
-                </Button>
-                <Button variant="light" type="submit" className="mr-16 bg-gray sdp-text-grey-dark br-4 py-13 px-32 border-0">
-                  Simpan
-                </Button>
+            <div className="px-32 py-24 border-bottom">
+              <div className="d-flex align-items-center ">
+                <div className="sdp-heading mb-4">Data Baru</div>
+                <div className="ml-24">
+                  <Button
+                    variant="outline-secondary"
+                    className="mr-16 bg-white sdp-text-grey-dark border-gray-stroke br-4 py-13 px-40"
+                    onClick={goBack}>
+                    Batal
+                  </Button>
+                  <Button
+                    variant="light"
+                    type="submit"
+                    className="mr-16 bg-gray sdp-text-grey-dark br-4 py-13 px-32 border-0">
+                    Simpan
+                  </Button>
+                </div>
               </div>
+              <RequiredFilledLabel label="Wajib Diisi" />
             </div>
           </Col>
           <Col lg="11" className="pl-32">
@@ -279,7 +285,7 @@ const CMSDaftarPage = ({ ...props }) => {
                       md: 12,
                       as: Col,
                     }}
-                    label="Instansi"
+                    label={<RequiredFilledLabel label={'Instansi'} />}
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
                     error={errors?.instansi?.message}
@@ -299,7 +305,7 @@ const CMSDaftarPage = ({ ...props }) => {
                       as: Col,
                     }}
                     labelClass="sdp-form-label fw-normal"
-                    label="Nama Data"
+                    label={<RequiredFilledLabel label={'Nama Data'} />}
                     error={errors?.nama?.message}
                     name="nama"
                     control={control}
@@ -345,7 +351,7 @@ const CMSDaftarPage = ({ ...props }) => {
                       md: 12,
                       as: Col,
                     }}
-                    label="Jadwal Pemutakhiran"
+                    label={<RequiredFilledLabel label={'Jadwal Pemutakhiran'} />}
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
                     error={errors?.jadwalPemutakhiran?.message}
@@ -420,7 +426,7 @@ const CMSDaftarPage = ({ ...props }) => {
                     }}
                     error={errors?.produsenData?.message}
                     labelClass="sdp-form-label fw-normal"
-                    label="Produsen Data"
+                    label={<RequiredFilledLabel label={'Produsen Data'} />}
                     name="produsenData"
                     control={control}
                   />
@@ -453,7 +459,7 @@ const CMSDaftarPage = ({ ...props }) => {
                       md: 12,
                       as: Col,
                     }}
-                    label="Format"
+                    label={<RequiredFilledLabel label={'Format'} />}
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
                     error={errors?.format?.message}
@@ -473,7 +479,7 @@ const CMSDaftarPage = ({ ...props }) => {
                     }}
                     labelClass="sdp-form-label fw-normal"
                     group
-                    label="Link Akses"
+                    label={<RequiredFilledLabel label={'Link Akses'} />}
                     error={errors?.linkAkses?.message}
                     name="linkAkses"
                     rightIcon="copy"

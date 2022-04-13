@@ -19,7 +19,6 @@ const Modal = ({
   subtitle,
   showHeader = true,
   centered = false,
-  displayRequiredField = false,
 }) => {
   const Icon = icons[icon];
   return (
@@ -34,22 +33,15 @@ const Modal = ({
       <div className={bem.e('section')}>
         {showHeader && (
           <RBModal.Header>
-            <div>
-              {!Icon && !title && !subtitle ? null : (
-                <div className={bem.e('header-wrapper')}>
-                  {Icon && <Icon />}
-                  <div className={bem.e('title-wrapper')}>
-                    <div className={bem.e('title')}>{title}</div>
-                    {subtitle && <div className={bem.e('subtitle')}>{subtitle}</div>}
-                  </div>
+            {!Icon && !title && !subtitle ? null : (
+              <div className={bem.e('header-wrapper')}>
+                {Icon && <Icon />}
+                <div className={bem.e('title-wrapper')}>
+                  <div className={bem.e('title')}>{title}</div>
+                  {subtitle && <div className={bem.e('subtitle')}>{subtitle}</div>}
                 </div>
-              )}
-              {displayRequiredField && (
-                <div className="mt-10 ml-20">
-                  <span className="sdp-text-red pl-2">* Wajib Diisi </span>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
             <div className="cursor-pointer p-1" onClick={onClose}>
               <Close />
             </div>

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import cloneDeep from 'lodash/cloneDeep';
-import { Dropdown, Input } from 'components';
+import { Dropdown, Input, RequiredFilledLabel } from 'components';
 import { pengaturanAksesOptions } from 'utils/constants';
 import { submitForm, findOption } from 'utils/helper';
 
@@ -34,14 +34,13 @@ const DataVariableForm = ({ data, onSubmit }) => {
       ...variable,
     },
   });
-
   return (
     <div className="daftar-form">
       <Row>
         <Form id={dataVariableFormId} onSubmit={handleSubmit(onSubmit)} noValidate>
           <Input
             group
-            label="Nama Data"
+            label={<RequiredFilledLabel label={'Nama Data'} />}
             name="nama"
             placeholder="Add an email or name"
             control={control}
@@ -78,7 +77,7 @@ const DataVariableForm = ({ data, onSubmit }) => {
           />
           <Dropdown
             group
-            label="Pengaturan Akses"
+            label={<RequiredFilledLabel label={'Pengaturan Akses'} />}
             name="pengaturanAkses"
             control={control}
             rules={{ required: true }}

@@ -21,3 +21,4 @@ export { default as Tags } from './Tags';
 export { default as TextEditor } from './TextEditor';
 export { default as CMSTopDetail } from './CMSTopDetail';
 export { CMSModal } from './CMSStatusModals';
+export { default as RequiredFilledLabel } from './RequiredFilledLabel';

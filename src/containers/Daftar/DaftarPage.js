@@ -9,6 +9,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import get from 'lodash/get';
 import Breadcrumb from 'components/Breadcrumb';
+import RequiredFilledLabel from 'components/RequiredFilledLabel';
 import HighlightWords from 'components/HighlightWords';
 import { Search } from 'components/Icons';
 import Modal from 'components/Modal';
@@ -181,6 +182,12 @@ const Daftar = (props) => {
     onDownloadData(params);
   };
 
+  const daftarFormSubtilte = () => (
+    <>
+      <span>Isi form dibawah untuk menambah data</span> <br />
+      <RequiredFilledLabel label="Wajib Diisi" />
+    </>
+  );
   return (
     <div className={cx('daftar-page pb-100', bem.b())}>
       <Breadcrumb breadcrumbsList={breadcrumbsList} />
@@ -232,8 +239,7 @@ const Daftar = (props) => {
         onClose={hideDaftarFormModal}
         icon="splitCircle"
         title={selectedRecord ? 'Edit Data' : 'Tambah Data'}
-        displayRequiredField={true}
-        subtitle="Isi form dibawah untuk menambah data"
+        subtitle={daftarFormSubtilte()}
         actions={[
           { variant: 'secondary', text: 'Batal', onClick: hideDaftarFormModal },
           { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDaftarForm, loading: daftarDataSubmit.loading },

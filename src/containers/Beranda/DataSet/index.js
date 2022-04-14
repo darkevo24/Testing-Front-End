@@ -83,6 +83,10 @@ const DataSet = () => {
     }));
   }, [searchFacets, params]);
 
+  const isSectionDisabled = (key) => {
+    return false;
+  };
+
   const handleOptionSelect = (filter) => (option) => {
     const newFilterParams = cloneDeep(params);
     let currentFilter = newFilterParams[filter];
@@ -288,6 +292,7 @@ const DataSet = () => {
                 className="mt-8"
                 search
                 onSelectOption={handleOptionSelect(sectionItem.filter)}
+                isDisabled={isSectionDisabled(sectionItem.filter)}
               />
             );
           })}

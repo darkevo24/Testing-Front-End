@@ -83,8 +83,22 @@ const DataSet = () => {
     }));
   }, [searchFacets, params]);
 
+  const filterCount = useMemo(() => {
+    return params['facet.field']
+      .map((field) => {
+        if (params[field]) return params[field].length;
+        else return 0;
+      })
+      .reduce((a, b) => a + b, 0);
+  }, [params]);
+
   const isSectionDisabled = (key) => {
-    return false;
+    if (filterCount === 0) return false;
+
+    if (params[key]) {
+      if (params[key].length > 0) return false;
+    }
+    return true;
   };
 
   const handleOptionSelect = (filter) => (option) => {

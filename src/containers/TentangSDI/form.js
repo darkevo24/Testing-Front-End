@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { postTentang } from './reducer';
@@ -12,16 +12,17 @@ const ContactUs = () => {
 
   const schema = yup
     .object({
-      full_name: yup.string().required('Nama lengkap di butuhkan').min(5, 'Nama lengkap minimal 5 karakter'),
-      email: yup.string().required('Email di butuhkan').email('Format email tidak valid'),
+      full_name: yup.string().required('Nama Lengkap Wajib Diisi').min(5, 'Nama lengkap minimal 5 karakter'),
+      email: yup.string().required('Email Wajib Diisi').email('Format email tidak valid'),
       telephone: yup
         .string()
-        .required('Telephone di butuhkan')
+        .required('Nomor Telefon Wajib Diisi')
+        .matches(/^[0-9]*$/, 'Nomor Telefon hanya boleh angka')
         .min(8, 'Telepon minimal 8 karakter')
         .max(20, 'Telepon maksimal 20 karakter'),
       message: yup
         .string()
-        .required('Pesan di butuhkan')
+        .required('Pesan Wajib Diisi')
         .min(10, 'Pesan minimal 10 karakter')
         .max(300, 'Pesan maksimal 300 karakter'),
     })
@@ -36,6 +37,12 @@ const ContactUs = () => {
     resolver: yupResolver(schema),
   });
 
+  const formRef = useRef(null);
+
+  const handleReset = () => {
+    formRef.current.reset();
+  };
+
   const onSubmitProses = (data) => {
     dispatch(
       postTentang({
@@ -46,10 +53,7 @@ const ContactUs = () => {
       }),
     ).then((result) => {
       if (!result.error) {
-        setValue('full_name', '');
-        setValue('email', '');
-        setValue('telephone', '');
-        setValue('message', '');
+        handleReset();
         Notification.show({
           type: 'secondary',
           message: <div> Pesan Berhasil Terkirim </div>,
@@ -76,7 +80,7 @@ const ContactUs = () => {
     <div id="tentang-form" className="contactus-container">
       <div className="contactus-wrapper">
         <div className="contactus-title mb-4">Hubungi Kami</div>
-        <Form>
+        <Form ref={formRef} onSubmit={handleSubmit(onSubmitProses)}>
           <Form.Group controlId="fullName" className="mb-3">
             <Form.Label>Nama Lengkap</Form.Label>
             <Form.Control
@@ -101,7 +105,7 @@ const ContactUs = () => {
           <Form.Group controlId="phoneNumber" className="mb-3">
             <Form.Label>Nomor Telefon</Form.Label>
             <Form.Control
-              type="number"
+              type="phone"
               onChange={(e) => {
                 setValue('telephone', e.target.value);
               }}
@@ -120,7 +124,7 @@ const ContactUs = () => {
             />
             {errors?.message?.message && <div className={'error-message'}>{errors?.message?.message}</div>}
           </Form.Group>
-          <Button className="w-100" onClick={handleSubmit(onSubmitProses)}>
+          <Button className="w-100" type="submit">
             Kirim Pesan
           </Button>
         </Form>

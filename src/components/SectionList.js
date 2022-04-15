@@ -75,7 +75,7 @@ const SectionList = ({
   const truncatedOptions = take(filterdOptions, itemsToShow);
 
   return (
-    <div className={cx(bem.b(), className, isDisabled && 'sdp-section-list__disabled')}>
+    <div className={cx(bem.b(), className, isDisabled && bem.e('disabled'))}>
       <div className={cx(bem.e('header'), 'flex-row-between bg-secondary')}>
         <div className={cx(bem.e('title'), 'fw-bold lh-18')}>{title}</div>
         <div className="icon-box right" onClick={toggleExpanded}>

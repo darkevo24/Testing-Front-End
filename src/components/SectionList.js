@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import cx from 'classnames';
 import take from 'lodash/take';
 import Form from 'react-bootstrap/Form';
@@ -20,12 +20,17 @@ const SectionList = ({
   onSelectOption,
   numberOfOptionsToShow = 10,
   selectedOptions = [],
+  isDisabled,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [searchText, setSearchText] = useState('');
   const [itemsToShow, setItemsToShow] = useState(numberOfOptionsToShow);
   const selectedIds = selectedOptions.map((option) => option.id);
   const controls = useAnimation();
+
+  useEffect(() => {
+    setIsExpanded(!isDisabled);
+  }, [isDisabled]);
 
   const handleSearchChange = ({ target: { value = '' } = {} }) => {
     setSearchText(value);
@@ -42,6 +47,8 @@ const SectionList = ({
   };
 
   const toggleExpanded = () => {
+    if (isDisabled) return;
+
     const newIsExpanded = !isExpanded;
     if (newIsExpanded) {
       controls.start({
@@ -68,7 +75,7 @@ const SectionList = ({
   const truncatedOptions = take(filterdOptions, itemsToShow);
 
   return (
-    <div className={cx(bem.b(), className)}>
+    <div className={cx(bem.b(), className, isDisabled && bem.e('disabled'))}>
       <div className={cx(bem.e('header'), 'flex-row-between bg-secondary')}>
         <div className={cx(bem.e('title'), 'fw-bold lh-18')}>{title}</div>
         <div className="icon-box right" onClick={toggleExpanded}>

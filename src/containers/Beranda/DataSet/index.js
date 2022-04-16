@@ -83,6 +83,24 @@ const DataSet = () => {
     }));
   }, [searchFacets, params]);
 
+  const filterCount = useMemo(() => {
+    return params['facet.field']
+      .map((field) => {
+        if (params[field]) return params[field].length;
+        else return 0;
+      })
+      .reduce((a, b) => a + b, 0);
+  }, [params]);
+
+  const isSectionDisabled = (key) => {
+    if (filterCount === 0) return false;
+
+    if (params[key]) {
+      if (params[key].length > 0) return false;
+    }
+    return true;
+  };
+
   const handleOptionSelect = (filter) => (option) => {
     const newFilterParams = cloneDeep(params);
     let currentFilter = newFilterParams[filter];
@@ -288,6 +306,7 @@ const DataSet = () => {
                 className="mt-8"
                 search
                 onSelectOption={handleOptionSelect(sectionItem.filter)}
+                isDisabled={isSectionDisabled(sectionItem.filter)}
               />
             );
           })}

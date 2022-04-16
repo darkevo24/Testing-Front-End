@@ -56,4 +56,11 @@
     justify-content: flex-end;
     margin-right: 1rem;
   }
+  &__disabled {
+    opacity: 0.5;
+    .icon-box {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
 }

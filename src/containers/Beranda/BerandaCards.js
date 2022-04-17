@@ -8,6 +8,9 @@ import moment from 'moment';
 import truncate from 'lodash/truncate';
 import { ReactComponent as TrendingSvg } from 'assets/trending.svg';
 import { ReactComponent as PopulerSvg } from 'assets/populer.svg';
+import { ReactComponent as CovidSvg } from 'assets/covid.svg';
+import { ReactComponent as KomoditasSvg } from 'assets/komoditas.svg';
+import { ReactComponent as BmkgSvg } from 'assets/bmkg.svg';
 import { CardWithDetail } from 'components/Cards/CardWithDetail';
 import { safeParse } from 'utils/helper';
 import {
@@ -123,6 +126,57 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
         </a>
       </FlexBox>
       <Row>{dataPopular.length > 0 && dataPopular.map(renderDataSet('popular'))}</Row>
+      <FlexBox className="px-16 mt-40">
+        <LeftBox>
+          <CovidSvg style={{ marginRight: '10px' }} />
+          <TitleBox>Kasus COVID-19</TitleBox>
+        </LeftBox>
+      </FlexBox>
+      <Row className="mb-12">
+        <Col>
+          <iframe
+            width="100%"
+            height="300px"
+            frameBorder="0"
+            seamless
+            title="Dashboard Covid"
+            src="https://analitik.data.go.id/superset/dashboard/104/"></iframe>
+        </Col>
+      </Row>
+      <FlexBox className="px-16 mt-40">
+        <LeftBox>
+          <KomoditasSvg style={{ marginRight: '10px' }} />
+          <TitleBox>Sebaran Harga Komoditas Pangan</TitleBox>
+        </LeftBox>
+      </FlexBox>
+      <Row className="mb-12">
+        <Col>
+          <iframe
+            width="100%"
+            height="700px"
+            frameBorder="0"
+            seamless
+            title="Harga Komoditas Pangan"
+            src="https://analitik.data.go.id/superset/dashboard/105/?native_filters=%28%29"></iframe>
+        </Col>
+      </Row>
+      <FlexBox className="px-16 mt-40">
+        <LeftBox>
+          <BmkgSvg style={{ marginRight: '10px' }} />
+          <TitleBox>BMKG</TitleBox>
+        </LeftBox>
+      </FlexBox>
+      <Row className="mb-12">
+        <Col>
+          <iframe
+            width="100%"
+            height="500px"
+            frameBorder="0"
+            seamless
+            title="Perkiraan Cuaca"
+            src="https://analitik.data.go.id/superset/dashboard/106/?native_filters=%28%29"></iframe>
+        </Col>
+      </Row>
     </Box>
   );
 };

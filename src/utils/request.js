@@ -95,7 +95,7 @@ export async function request(
   const headers = Object.assign({}, defaultHeaders, optionHeaders);
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 10 * 1000); // Timeout in 10 seconds
+  const timeout = setTimeout(() => controller.abort(), 20 * 1000); // Timeout in 20 seconds
   const options = { method, headers, credentials: 'include', signal: controller.signal };
 
   // Checking if body has data.

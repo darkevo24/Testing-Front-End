@@ -102,6 +102,16 @@ export const initialState = {
     error: null,
     result: null,
   },
+  dataHarvestSummary: {
+    loading: false,
+    error: null,
+    result: null,
+  },
+  dataInstansiHarvestSummary: {
+    loading: false,
+    error: null,
+    result: null,
+  },
   sdgs: {
     loading: false,
     error: null,
@@ -192,6 +202,16 @@ export const getProduen = createAsyncThunk('daftar/getProduen', async () => {
 export const getDaftarDataSummary = createAsyncThunk('daftar/getDaftarDataSummary', async (filters = {}) => {
   const response = await get(apiUrls.daftarDataSummary);
   return response?.data?.content;
+});
+
+export const getDataHarvestSummary = createAsyncThunk('daftar/getDataHarvestSummary', async (filters = {}) => {
+  const response = await get(apiUrls.dataHarvestSummary);
+  return response?.data?.result?.length;
+});
+
+export const getInstansiHarvestSummary = createAsyncThunk('daftar/getInstansiHarvestSummary', async (filters = {}) => {
+  const response = await get(apiUrls.dataInstansiHarvestSummary);
+  return response?.data?.result?.length;
 });
 
 export const getDaftarDetail = createAsyncThunk('daftar/getDaftarDetail', async (id) => {
@@ -358,6 +378,28 @@ const daftarSlice = createSlice({
     builder.addCase(getDaftarDataSummary.rejected, (state) => {
       state.daftarDataSummary.loading = false;
       state.daftarDataSummary.error = 'Error in fetching daftar data summary details!';
+    });
+    builder.addCase(getDataHarvestSummary.pending, (state) => {
+      state.dataHarvestSummary.loading = true;
+    });
+    builder.addCase(getDataHarvestSummary.fulfilled, (state, action) => {
+      state.dataHarvestSummary.loading = false;
+      state.dataHarvestSummary.result = action.payload;
+    });
+    builder.addCase(getDataHarvestSummary.rejected, (state) => {
+      state.dataHarvestSummary.loading = false;
+      state.dataHarvestSummary.error = 'Error in fetching daftar data summary harvest details!';
+    });
+    builder.addCase(getInstansiHarvestSummary.pending, (state) => {
+      state.dataInstansiHarvestSummary.loading = true;
+    });
+    builder.addCase(getInstansiHarvestSummary.fulfilled, (state, action) => {
+      state.dataInstansiHarvestSummary.loading = false;
+      state.dataInstansiHarvestSummary.result = action.payload;
+    });
+    builder.addCase(getInstansiHarvestSummary.rejected, (state) => {
+      state.dataInstansiHarvestSummary.loading = false;
+      state.dataInstansiHarvestSummary.error = 'Error in fetching daftar data summary instansi harvest details!';
     });
     builder.addCase(getDaftarDetail.pending, (state, action) => {
       state.daftarDetails.loading = true;
@@ -622,6 +664,8 @@ export const daftarDetailsDataSelector = (state) => state.daftar.daftarDetails;
 export const daftarDataSelector = (state) => state.daftar.daftarData;
 export const sekreteriatDaftarDataSelector = (state) => state.daftar.sekreteriatDaftarData;
 export const daftarDataSummarySelector = (state) => state.daftar.daftarDataSummary;
+export const dataHarvestSummarySelector = (state) => state.daftar.dataHarvestSummary;
+export const dataInstansiHarvestSummarySelector = (state) => state.daftar.dataInstansiHarvestSummary;
 export const sdgsDataSelector = (state) => state.daftar.sdgs;
 export const rkpDataSelector = (state) => state.daftar.rkp;
 export const sayaDataSelector = (state) => state.daftar.sayaDaftarData;

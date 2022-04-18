@@ -73,6 +73,8 @@ export const apiUrls = {
   daftarData: getV1Endpoint('katalog'),
   daftarDataList: getV1Endpoint('katalog/list'),
   daftarDataSummary: getV1Endpoint('katalog/summary'),
+  dataHarvestSummary: getDataEndpoint('3/action/package_list'),
+  dataInstansiHarvestSummary: getDataEndpoint('3/action/organization_list'),
   daftarDataDownload: getV1Endpoint('katalog/file/download'),
   taglineData: getV1Endpoint('tagline'),
   setting: getV1Endpoint('settings'),

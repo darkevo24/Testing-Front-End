@@ -146,7 +146,7 @@ export const Perminataan = () => {
 
   return (
     <div className="sdp-perminataan-data-container my-40 mx-320">
-      <span className="fs-24 lh-30 fw-bold sdp-text-black-dark">Permintaan Data</span>
+      <span className="fs-24 lh-30 fw-bold sdp-text-black-dark">Permintaan Data Forum SDI</span>
       <Row className="mt-40">
         <Col xs={6} md={3}>
           {loading ? (

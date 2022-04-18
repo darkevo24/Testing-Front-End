@@ -119,7 +119,7 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
       <FlexBox className="px-16 mt-40">
         <LeftBox>
           <PopulerSvg style={{ marginRight: '10px' }} />
-          <TitleBox>Dataset populer</TitleBox>
+          <TitleBox>Dataset populer (6 bulan terakhir)</TitleBox>
         </LeftBox>
         <a title="Lihat Semua" href={linkToRedirect} className="sdp-link-blue">
           <RightBox>Lihat Semua</RightBox>
@@ -136,7 +136,7 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
         <Col>
           <iframe
             width="100%"
-            height="300px"
+            height="600px"
             frameBorder="0"
             seamless
             title="Dashboard Covid"
@@ -153,7 +153,7 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
         <Col>
           <iframe
             width="100%"
-            height="700px"
+            height="1300px"
             frameBorder="0"
             seamless
             title="Harga Komoditas Pangan"
@@ -170,7 +170,7 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
         <Col>
           <iframe
             width="100%"
-            height="500px"
+            height="650px"
             frameBorder="0"
             seamless
             title="Perkiraan Cuaca"

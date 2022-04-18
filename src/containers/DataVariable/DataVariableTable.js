@@ -5,6 +5,7 @@ import isFunction from 'lodash/isFunction';
 import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
 import { getKodeReferensi, kodeReferensiSelector } from 'containers/Daftar/reducer';
+import { Roles } from 'containers/App/config';
 import Popover from 'components/Popover';
 import Table from 'components/Table';
 import truncate from 'lodash/truncate';
@@ -32,7 +33,9 @@ const DataVariableTable = ({
   const user = useSelector(userSelector);
   const kodeReferensi = useSelector(kodeReferensiSelector);
   const userInstansiId = user?.instansi || user?.instansiId;
-  const hasAccess = daftar?.instansiId === userInstansiId;
+  const hasAccess =
+    daftar?.instansiId === userInstansiId ||
+    [Roles.SEKRETARIANT, Roles.SEKRETARIANT_CREATOR, Roles.SEKRETARIANT_EDITOR].includes(user?.roles);
 
   const handleReferensiChange = async (item) => {
     if (cmsCreateForm) {
@@ -95,7 +98,7 @@ const DataVariableTable = ({
       },
     ];
 
-    if (hasAccess && !cmsDetail) {
+    if (hasAccess) {
       cols.push({
         id: 'actions',
         actions: [

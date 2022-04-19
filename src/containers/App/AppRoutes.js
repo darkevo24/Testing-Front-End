@@ -134,6 +134,11 @@ function AppRoutes(props) {
                 Roles.SEKRETARIANT_CREATOR,
                 Roles.SEKRETARIANT_EDITOR,
                 Roles.ADMIN,
+                Roles.REGISTERED_USER,
+                Roles.PEMBINA_DATA,
+                Roles.PIC_SDGS,
+                Roles.PIC_SDGS,
+                Roles.SUPERADMIN,
               ]}
             />
             <PrivateRoute

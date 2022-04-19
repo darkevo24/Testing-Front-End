@@ -21,7 +21,16 @@ import SdgTable from './SdgTable';
 import RkpTable from './RkpTable';
 import DaftarDataSayaTable from './DaftarDataSayaTable';
 import { useThrottle } from 'utils/hooks';
-import { daftarDataSubmitSelector, daftarDataSummarySelector, getDaftarDataSummary, refetchDaftarData } from './reducer';
+import {
+  daftarDataSubmitSelector,
+  daftarDataSummarySelector,
+  getDaftarDataSummary,
+  refetchDaftarData,
+  dataHarvestSummarySelector,
+  getDataHarvestSummary,
+  dataInstansiHarvestSummarySelector,
+  getInstansiHarvestSummary,
+} from './reducer';
 
 const Daftar = (props) => {
   const {
@@ -49,6 +58,8 @@ const Daftar = (props) => {
   const [activeTab, setActiveTab] = useState(t('sandbox.daftar.tabs.daftar.key'));
   const fullDaftarData = useSelector((state) => state.daftar);
   const daftarSummaryData = useSelector(daftarDataSummarySelector);
+  const summaryDataHarvest = useSelector(dataHarvestSummarySelector);
+  const summaryInstansiHarvest = useSelector(dataInstansiHarvestSummarySelector);
   const userInstansi = useSelector(userInstansiSelector);
   const daftarDataSubmit = useSelector(daftarDataSubmitSelector);
 
@@ -61,6 +72,14 @@ const Daftar = (props) => {
 
   useEffect(() => {
     dispatch(getDaftarDataSummary());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getDataHarvestSummary());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getInstansiHarvestSummary());
   }, []);
 
   const handleSearchTextChange = (e) => {
@@ -81,8 +100,8 @@ const Daftar = (props) => {
     () => [
       { title: 'Jumlah Data pada Daftar Data', value: get(daftarSummaryData, 'result.data', '-') },
       { title: 'Jumlah Instansi pada Daftar Data', value: get(daftarSummaryData, 'result.instansi', '-') },
-      { title: 'Jumlah Dataset Terharvest', value: get(daftarSummaryData, 'result.dataset_harverts', '-') },
-      { title: 'Jumlah Instansi Terharvest', value: get(daftarSummaryData, 'result.instansi_harverts', '-') },
+      { title: 'Jumlah Dataset Terharvest', value: get(summaryDataHarvest, 'result', '-') },
+      { title: 'Jumlah Instansi Terharvest', value: get(summaryInstansiHarvest, 'result', '-') },
     ],
     [daftarSummaryData],
   );

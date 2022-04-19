@@ -127,12 +127,18 @@ function AppRoutes(props) {
               component={ChangePasswordUser}
               permissions={[
                 Roles.MEMBER,
+                Roles.EKSEKUTIF,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
                 Roles.SEKRETARIANT,
                 Roles.SEKRETARIANT_CREATOR,
                 Roles.SEKRETARIANT_EDITOR,
                 Roles.ADMIN,
+                Roles.REGISTERED_USER,
+                Roles.PEMBINA_DATA,
+                Roles.PIC_SDGS,
+                Roles.PIC_SDGS,
+                Roles.SUPERADMIN,
               ]}
             />
             <PrivateRoute

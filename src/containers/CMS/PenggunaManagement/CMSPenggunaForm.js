@@ -48,17 +48,21 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data, onStatusChange = () => {} }
     setValue('roles', role);
   }, [role]);
 
-  useEffect(async () => {
-    const newStatus = status ? 'active' : 'inactive';
-    const currentStatus = penggunaDetailsData?.status?.toLowerCase();
-    if (typeof currentStatus !== 'undefined' && currentStatus !== newStatus) {
-      try {
-        await post(`${apiUrls.penggunaManagement}/${data}/set-status/${newStatus}`);
-        onStatusChange();
-      } catch (error) {
-        console.log('ERR', error);
+  useEffect(() => {
+    async function onStatusUpdate() {
+      const newStatus = status ? 'active' : 'inactive';
+      const currentStatus = penggunaDetailsData?.status?.toLowerCase();
+      if (typeof currentStatus !== 'undefined' && currentStatus !== newStatus) {
+        try {
+          await post(`${apiUrls.penggunaManagement}/${data}/set-status/${newStatus}`);
+          onStatusChange();
+        } catch (error) {
+          console.log('ERR', error);
+        }
       }
     }
+
+    onStatusUpdate();
   }, [status]);
 
   const schema = yup

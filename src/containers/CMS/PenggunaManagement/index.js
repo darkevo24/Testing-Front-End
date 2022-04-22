@@ -203,7 +203,7 @@ const CMSPenggunaManagement = () => {
                   variant="normal"
                   type="text"
                   onChange={(e) => updateQuery(e.target.value)}
-                  placeholder="Cari Permintaan Data"
+                  placeholder="Cari Pengguna"
                 />
                 <Search />
               </InputGroup>

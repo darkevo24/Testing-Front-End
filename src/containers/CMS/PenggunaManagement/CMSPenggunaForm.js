@@ -34,6 +34,7 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data, onStatusChange = () => {} }
   const [fileErr, setFileErr] = useState(false);
   const [role, setRole] = useState('');
   const [status, setStatus] = useState(false);
+  const [isFirstRender, setIsFirstRender] = useState(true);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -48,16 +49,22 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data, onStatusChange = () => {} }
     setValue('roles', role);
   }, [role]);
 
-  useEffect(async () => {
-    const newStatus = status ? 'active' : 'inactive';
-    const currentStatus = penggunaDetailsData?.status?.toLowerCase();
-    if (typeof currentStatus !== 'undefined' && currentStatus !== newStatus) {
-      try {
-        await post(`${apiUrls.penggunaManagement}/${data}/set-status/${newStatus}`);
-        onStatusChange();
-      } catch (error) {
-        console.log('ERR', error);
+  useEffect(() => {
+    async function onStatusUpdate() {
+      const newStatus = status ? 'active' : 'inactive';
+      const currentStatus = penggunaDetailsData?.status?.toLowerCase();
+      if (typeof currentStatus !== 'undefined' && currentStatus !== newStatus) {
+        try {
+          await post(`${apiUrls.penggunaManagement}/${data}/set-status/${newStatus}`);
+          onStatusChange();
+        } catch (error) {
+          console.log('ERR', error);
+        }
       }
+    }
+
+    if (!isFirstRender) {
+      onStatusUpdate();
     }
   }, [status]);
 
@@ -134,6 +141,7 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data, onStatusChange = () => {} }
     dispatch(getPenggunaRoleList());
     dispatch(getPenggunaStatusList());
     dispatch(getInstansiData());
+    setIsFirstRender(false);
   }, []);
 
   useEffect(() => {
@@ -148,8 +156,11 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data, onStatusChange = () => {} }
     if (penggunaDetails) {
       reset(penggunaDetails);
     }
-    setRole(penggunaDetails.roles);
-    setStatus(penggunaDetails.status === 'ACTIVE');
+
+    if (data === penggunaDetails?.id?.toString()) {
+      setRole(penggunaDetails.roles);
+      setStatus(penggunaDetails.status === 'ACTIVE');
+    }
   }, [penggunaDetails]);
 
   const changeInstansi = (e) => {
@@ -311,7 +322,15 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data, onStatusChange = () => {} }
         <>
           {' '}
           <Form.Label>Status</Form.Label>
-          <Switch isOn={status} handleToggle={() => setStatus(!status)} type={penggunaDetailsData.status} />
+          <Switch
+            isOn={status}
+            handleToggle={() => setStatus(!status)}
+            type={
+              penggunaDetailsData.status === 'ACTIVE' || penggunaDetailsData.status === 'INACTIVE'
+                ? penggunaDetailsData.status
+                : undefined
+            }
+          />
         </>
       ) : (
         ''

@@ -169,7 +169,7 @@ const CMSPenggunaManagementView = () => {
     } catch (e) {
       Notification.show({
         type: 'warning',
-        message: errorMessage || e.data.message || 'Permintaan Bimbingan Teknis berhasil terkirim',
+        message: errorMessage || e.data.message || 'Update pengguna gagal',
         icon: 'cross',
       });
     }
@@ -282,7 +282,7 @@ const CMSPenggunaManagementView = () => {
       </Row>
       <Modal centered showHeader={false} visible={isNotesModalVisible}>
         <div className="fs-16 mt-16">
-          <span className="fw-bold sdp-text-blue">Tokal</span> data Pengguna?
+          <span className="fw-bold sdp-text-blue">Tolak</span> data Pengguna?
         </div>
         <div className="position-relative">
           <FormControl

@@ -16,6 +16,7 @@ import { ComponentAccessibility } from 'components/ComponentAccess';
 import { USER_ROLES } from 'utils/constants';
 import { getListKategori, getListTagline, setNewTagline, kategoriSelector, taglineSelector } from 'containers/App/reducer';
 import defaultIMageThumbnail from '../assets/default-thumbnail.png';
+import defaultBanner from '../assets/defaultBannerLarge.jpg';
 
 export const beritaFormId = 'berita-form-id';
 export const submitBeritaForm = submitForm(beritaFormId);
@@ -160,129 +161,158 @@ const CMSKonfigurasiPortalForm = ({ data, style, onSubmit, disabled = false }) =
   }, [foto]);
 
   return (
-    <Form id={beritaFormId} className="sdp-form" onSubmit={handleSubmit(onSubmit)} style={style}>
-      <Col>
+    <Form id={beritaFormId} onSubmit={handleSubmit(onSubmit)} style={style}>
+      <Row className="sdp-form mb-20">
         <Col>
-          <img src={defaultIMageThumbnail} />
+          <h5>Logo Header</h5>
+          <div className="groupInputImage">
+            <div className="previewImage">
+              <img src={defaultIMageThumbnail} />
+              <p className="fileName">Logo1.png</p>
+            </div>
+            <Button variant="outline-info">Ubah Gambar</Button>
+          </div>
         </Col>
+        <Col className="mb-20">
+          <h5>Logo Footer</h5>
+          <div className="groupInputImage">
+            <div className="previewImage">
+              <img src={defaultIMageThumbnail} />
+              <p className="fileName">Logo1.png</p>
+            </div>
+            <Button variant="outline-info">Ubah Gambar</Button>
+          </div>
+        </Col>
+      </Row>
+
+      <Row className="fullWidthForm">
         <Col>
-          <img src={defaultIMageThumbnail} />
+          <h5>Logo Banner</h5>
+          <div className="groupInputImage flex-columm">
+            <div className="previewImage fullWidth">
+              <img src={defaultBanner} />
+            </div>
+            <Button variant="outline-info">Ubah Gambar</Button>
+          </div>
         </Col>
-      </Col>
-      <h5>Informasi</h5>
-      <Input group label="Judul" name="judul" control={control} disabled={disabled} error={errors.judul?.message} />
-      <Input
-        groupClass="mb-16"
-        groupProps={{
-          md: 12,
-          as: Col,
-        }}
-        labelClass="sdp-form-label fw-normal"
-        group
-        label="Nama Organisasi"
-        error={errors?.linkAkses?.message}
-        name="linkAkses"
-        rightIcon="edit"
-        control={control}
-      />
-      <Input
-        groupClass="mb-16"
-        groupProps={{
-          md: 12,
-          as: Col,
-        }}
-        labelClass="sdp-form-label fw-normal"
-        group
-        label="Alamat Organisasi"
-        error={errors?.linkAkses?.message}
-        name="linkAkses"
-        rightIcon="edit"
-        control={control}
-      />
-      <Input
-        groupClass="mb-16"
-        groupProps={{
-          md: 12,
-          as: Col,
-        }}
-        labelClass="sdp-form-label fw-normal"
-        group
-        label="No Telpepon"
-        error={errors?.linkAkses?.message}
-        name="linkAkses"
-        rightIcon="edit"
-        control={control}
-      />
-      <Input
-        groupClass="mb-16"
-        groupProps={{
-          md: 12,
-          as: Col,
-        }}
-        labelClass="sdp-form-label fw-normal"
-        group
-        label="No Fax"
-        error={errors?.linkAkses?.message}
-        name="linkAkses"
-        rightIcon="edit"
-        control={control}
-      />
-      <Input
-        groupClass="mb-16"
-        groupProps={{
-          md: 12,
-          as: Col,
-        }}
-        labelClass="sdp-form-label fw-normal"
-        group
-        error={errors?.linkAkses?.message}
-        name="linkAkses"
-        leftIcon="facebookSvg"
-        rightIcon="edit"
-        control={control}
-      />
-      <Input
-        groupClass="mb-16"
-        groupProps={{
-          md: 12,
-          as: Col,
-        }}
-        labelClass="sdp-form-label fw-normal"
-        group
-        error={errors?.linkAkses?.message}
-        name="linkAkses"
-        leftIcon="twitterSvg"
-        rightIcon="edit"
-        control={control}
-      />
-      <Input
-        groupClass="mb-16"
-        groupProps={{
-          md: 12,
-          as: Col,
-        }}
-        labelClass="sdp-form-label fw-normal"
-        group
-        error={errors?.linkAkses?.message}
-        name="linkAkses"
-        leftIcon="instgramSvg"
-        rightIcon="edit"
-        control={control}
-      />
-      <Input
-        groupClass="mb-16"
-        groupProps={{
-          md: 12,
-          as: Col,
-        }}
-        labelClass="sdp-form-label fw-normal"
-        group
-        error={errors?.linkAkses?.message}
-        name="linkAkses"
-        leftIcon="youtubeSvg"
-        rightIcon="edit"
-        control={control}
-      />
+      </Row>
+
+      <div className="sdp-form">
+        <h5>Informasi</h5>
+        <Input group label="Judul" name="judul" control={control} disabled={disabled} error={errors.judul?.message} />
+        <Input
+          groupClass="mb-16"
+          groupProps={{
+            md: 12,
+            as: Col,
+          }}
+          labelClass="sdp-form-label fw-normal"
+          group
+          label="Nama Organisasi"
+          error={errors?.linkAkses?.message}
+          name="linkAkses"
+          rightIcon="edit"
+          control={control}
+        />
+        <Input
+          groupClass="mb-16"
+          groupProps={{
+            md: 12,
+            as: Col,
+          }}
+          labelClass="sdp-form-label fw-normal"
+          group
+          label="Alamat Organisasi"
+          error={errors?.linkAkses?.message}
+          name="linkAkses"
+          rightIcon="edit"
+          control={control}
+        />
+        <Input
+          groupClass="mb-16"
+          groupProps={{
+            md: 12,
+            as: Col,
+          }}
+          labelClass="sdp-form-label fw-normal"
+          group
+          label="No Telpepon"
+          error={errors?.linkAkses?.message}
+          name="linkAkses"
+          rightIcon="edit"
+          control={control}
+        />
+        <Input
+          groupClass="mb-16"
+          groupProps={{
+            md: 12,
+            as: Col,
+          }}
+          labelClass="sdp-form-label fw-normal"
+          group
+          label="No Fax"
+          error={errors?.linkAkses?.message}
+          name="linkAkses"
+          rightIcon="edit"
+          control={control}
+        />
+        <Input
+          groupClass="mb-16"
+          groupProps={{
+            md: 12,
+            as: Col,
+          }}
+          labelClass="sdp-form-label fw-normal"
+          group
+          error={errors?.linkAkses?.message}
+          name="linkAkses"
+          leftIcon="facebookSvg"
+          rightIcon="edit"
+          control={control}
+        />
+        <Input
+          groupClass="mb-16"
+          groupProps={{
+            md: 12,
+            as: Col,
+          }}
+          labelClass="sdp-form-label fw-normal"
+          group
+          error={errors?.linkAkses?.message}
+          name="linkAkses"
+          leftIcon="twitterSvg"
+          rightIcon="edit"
+          control={control}
+        />
+        <Input
+          groupClass="mb-16"
+          groupProps={{
+            md: 12,
+            as: Col,
+          }}
+          labelClass="sdp-form-label fw-normal"
+          group
+          error={errors?.linkAkses?.message}
+          name="linkAkses"
+          leftIcon="instgramSvg"
+          rightIcon="edit"
+          control={control}
+        />
+        <Input
+          groupClass="mb-16"
+          groupProps={{
+            md: 12,
+            as: Col,
+          }}
+          labelClass="sdp-form-label fw-normal"
+          group
+          error={errors?.linkAkses?.message}
+          name="linkAkses"
+          leftIcon="youtubeSvg"
+          rightIcon="edit"
+          control={control}
+        />
+      </div>
     </Form>
   );
 };

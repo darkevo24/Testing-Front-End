@@ -90,6 +90,7 @@
     "lodash": "4.17.21",
     "moment": "2.29.1",
     "node-sass": "6.0.1",
+    "nvm": "0.0.4",
     "prettier": "2.3.2",
     "react": "17.0.2",
     "react-bootstrap": "2.0.0-rc.1",

@@ -145,3 +145,42 @@ textarea.form-control {
     }
   }
 }
+
+
+//updateKonfigurasiPorral
+
+.groupInputImage {
+  display: flex;
+  align-items: flex-start;
+  align-items: center;
+  .previewImage {
+    position: relative;
+    justify-content: center;
+    text-align: center;
+    margin-right: 20px;
+    border: solid 1px #dfdfdf;
+    border-radius: 5px;
+    &.fullWidth {
+      img {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+    img {
+      width: 100%;
+      max-width: 180px;
+    }
+    p.fileName {
+        margin-top: 10px;
+    }
+  }
+}
+
+
+
+.groupInputImage.flex-columm {
+  flex-direction: column;
+    .previewImage {
+      margin-bottom: 20px;
+    }  
+}

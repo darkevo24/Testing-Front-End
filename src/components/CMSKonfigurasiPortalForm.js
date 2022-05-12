@@ -15,6 +15,7 @@ import { apiUrls, post } from 'utils/request';
 import { ComponentAccessibility } from 'components/ComponentAccess';
 import { USER_ROLES } from 'utils/constants';
 import { getListKategori, getListTagline, setNewTagline, kategoriSelector, taglineSelector } from 'containers/App/reducer';
+import defaultIMageThumbnail from '../assets/default-thumbnail.png';
 
 export const beritaFormId = 'berita-form-id';
 export const submitBeritaForm = submitForm(beritaFormId);
@@ -160,20 +161,15 @@ const CMSKonfigurasiPortalForm = ({ data, style, onSubmit, disabled = false }) =
 
   return (
     <Form id={beritaFormId} className="sdp-form" onSubmit={handleSubmit(onSubmit)} style={style}>
+      <Col>
+        <Col>
+          <img src={defaultIMageThumbnail} />
+        </Col>
+        <Col>
+          <img src={defaultIMageThumbnail} />
+        </Col>
+      </Col>
       <h5>Informasi</h5>
-      {disabled ? (
-        <img className="wpx-200 mb-3" src={data?.mainImage} alt="thumbnail" />
-      ) : (
-        <FileInput
-          group
-          label="Thumbnail"
-          name="mainImage"
-          control={control}
-          error={errors.mainImage?.message}
-          uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
-          handleOnChange={handleFoto}
-        />
-      )}
       <Input group label="Judul" name="judul" control={control} disabled={disabled} error={errors.judul?.message} />
       <Input
         groupClass="mb-16"

@@ -631,7 +631,7 @@ function CMSRoutes() {
         />
         <PrivateRoute
           exact
-          path="/cms/konfigurasi-fortal"
+          path="/cms/konfigurasi-portal"
           component={CMSKonfigurasiPortal}
           permissions={[
             Roles.ADMIN,

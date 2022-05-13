@@ -113,6 +113,7 @@ export const apiUrls = {
   bimteklatestDokumentasi: getPortalEndpoint('v1/bimtek/dokumentasi-latest'),
   bimtekPermintaan: getPortalEndpoint('v1/bimtek/permintaan'),
   sosialMedia: getCMSEndpoint('sosial-media'),
+  konfigurasiPortal: getCMSEndpoint('site-setting'),
   bimtekLogs: getPortalEndpoint('v1/bimtek/logs'),
   cmsContactUs: getCMSEndpoint('hubungi-kami-setting'),
   requestForgotPassword: getPublicEndpoint('request-forgot-password'),

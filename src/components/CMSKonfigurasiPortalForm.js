@@ -10,6 +10,8 @@ import { Input } from 'components';
 import { useDispatch } from 'react-redux';
 import defaultIMageThumbnail from '../assets/default-thumbnail.png';
 import defaultBanner from '../assets/defaultBannerLarge.jpg';
+import editIcon from '../components/Icons';
+import { apiUrls, post } from 'utils/request';
 
 const schema = yup
   .object({
@@ -28,10 +30,26 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const [logoFooter, setLogoFooter] = useState(null);
   const [logoFooterName, setLogoFooterName] = useState(null);
   const [imageBanner, setImageBanner] = useState(null);
+  const [phoneNumber, setPhoneNumber] = useState(null);
+  const [noFax, setNoFax] = useState(null);
+  const [namaOrganisasi, setNamaOrganisasi] = useState(null);
+  const [alamatOrganisasi, setAlamatOrganisasi] = useState(null);
+  const [facebookUrl, setFacebookUrl] = useState(null);
+  const [instagramUrl, setInstagramUrl] = useState(null);
+  const [twitterUrl, setTwitterUrl] = useState(null);
+  const [youtubeUrl, setYoutubeUrl] = useState(null);
 
   const inputLogoHeader = useRef(null);
   const inputLogoFooter = useRef(null);
   const inputBanner = useRef(null);
+  const inputPhone = useRef(null);
+  const inputNamaOrganisasi = useRef(null);
+  const inputAlamatOrganisasi = useRef(null);
+  const inputNoFax = useRef(null);
+  const inputFacebookUrl = useRef(null);
+  const inputInstagramUrl = useRef(null);
+  const inputTwitterUrl = useRef(null);
+  const inputYoutubeUrl = useRef(null);
 
   const {
     control,
@@ -90,13 +108,132 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
     inputBanner.current.click();
   };
 
-  const savePhone = (phone) => {
-    const phoneParam = {
+  const savePhone = async () => {
+    const params = {
       code: 'PHONE1',
       contentType: 'PHONE',
-      content: phone,
+      content: inputPhone.current.value,
     };
-    console.log(phoneParam);
+
+    try {
+      await post(apiUrls.konfigurasiPortal, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+        setPhoneNumber(params.content);
+      });
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+
+  const saveNamaOrganisasi = async () => {
+    const params = {
+      code: 'NAMA-ORGANISASI',
+      contentType: 'TEXT',
+      content: inputNamaOrganisasi.current.value,
+    };
+
+    try {
+      await post(apiUrls.konfigurasiPortal, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+        setNamaOrganisasi(params.content);
+      });
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+
+  const saveAlamatOrganisasi = async () => {
+    const params = {
+      code: 'ALAMAT-ORGANISASI',
+      contentType: 'TEXT',
+      content: inputNamaOrganisasi.current.value,
+    };
+
+    try {
+      await post(apiUrls.konfigurasiPortal, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+        setAlamatOrganisasi(inputAlamatOrganisasi.content);
+      });
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+
+  const saveNoFax = async () => {
+    const params = {
+      code: 'NO-FAX',
+      contentType: 'TEXT',
+      content: inputNoFax.current.value,
+    };
+
+    try {
+      await post(apiUrls.konfigurasiPortal, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+        setNoFax(params.content);
+      });
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+
+  const saveFaceBookUrl = async () => {
+    const params = {
+      code: 'FACEBOOK-URL',
+      contentType: 'TEXT',
+      content: inputFacebookUrl.current.value,
+    };
+
+    try {
+      await post(apiUrls.konfigurasiPortal, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+        setFacebookUrl(params.content);
+      });
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+
+  const saveTwitterUrl = async () => {
+    const params = {
+      code: 'TWITTER-URL',
+      contentType: 'TEXT',
+      content: inputTwitterUrl.current.value,
+    };
+
+    try {
+      await post(apiUrls.konfigurasiPortal, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+        setTwitterUrl(params.content);
+      });
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+
+  const saveInstagramUrl = async () => {
+    const params = {
+      code: 'INSTAGRAM-URL',
+      contentType: 'TEXT',
+      content: inputInstagramUrl.current.value,
+    };
+
+    try {
+      await post(apiUrls.konfigurasiPortal, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+        setInstagramUrl(params.content);
+      });
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+
+  const saveYoutubeUrl = async () => {
+    const params = {
+      code: 'YOUTUBE-URL',
+      contentType: 'TEXT',
+      content: inputYoutubeUrl.current.value,
+    };
+
+    try {
+      await post(apiUrls.konfigurasiPortal, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+        setYoutubeUrl(params.content);
+      });
+    } catch (e) {
+      // console.log(e);
+    }
   };
 
   return (
@@ -153,7 +290,56 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
       <div className="sdp-form">
         <h5>Informasi</h5>
-        <Input
+        <Col>
+          <input type="text" ref={inputNamaOrganisasi} placeholder="Nama organisasi" />
+          <Button variant="outline-info" onClick={saveNamaOrganisasi}>
+            save
+          </Button>
+        </Col>
+        <Col>
+          <input type="text" ref={inputAlamatOrganisasi} placeholder="alamat organisasi" />
+          <Button variant="outline-info" onClick={saveAlamatOrganisasi}>
+            save
+          </Button>
+        </Col>
+        <Col>
+          <input type="text" ref={inputPhone} placeholder="No Telepon" />
+          <Button variant="outline-info" onClick={savePhone}>
+            save
+          </Button>
+        </Col>
+        <Col>
+          <input type="text" ref={inputPhone} placeholder="no. Fax" />
+          <Button variant="outline-info" onClick={saveNoFax}>
+            save
+          </Button>
+        </Col>
+        <Col>
+          <input type="text" ref={inputFacebookUrl} placeholder="facebook" />
+          <Button variant="outline-info" onClick={saveFaceBookUrl}>
+            save
+          </Button>
+        </Col>
+        <Col>
+          <input type="text" ref={inputTwitterUrl} placeholder="twitter" />
+          <Button variant="outline-info" onClick={saveTwitterUrl}>
+            save
+          </Button>
+        </Col>
+        <Col>
+          <input type="text" ref={inputInstagramUrl} placeholder="instagram" />
+          <Button variant="outline-info" onClick={saveInstagramUrl}>
+            save
+          </Button>
+        </Col>
+        <Col>
+          <input type="text" ref={inputYoutubeUrl} placeholder="youtube" />
+          <Button variant="outline-info" onClick={saveYoutubeUrl}>
+            save
+          </Button>
+        </Col>
+
+        {/* <Input
           groupClass="mb-16"
           groupProps={{
             md: 12,
@@ -249,7 +435,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
           leftIcon="youtubeSvg"
           rightIcon="edit"
           control={control}
-        />
+        /> */}
       </div>
     </Form>
   );

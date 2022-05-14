@@ -10,7 +10,7 @@ import { Input } from 'components';
 import { useDispatch } from 'react-redux';
 import defaultIMageThumbnail from '../assets/default-thumbnail.png';
 import defaultBanner from '../assets/defaultBannerLarge.jpg';
-import editIcon from '../components/Icons';
+import { FacebookSvg, Edit, InstagramSvg, YoutubeSvg, TwitterSvg } from 'components/Icons';
 import { apiUrls, post } from 'utils/request';
 
 const schema = yup
@@ -241,13 +241,13 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
       <Row className="sdp-form mb-20">
         <Col>
           <h5>Logo Header</h5>
-          <div className="groupInputImage">
-            <div className="previewImage">
+          <div className="group-input-image">
+            <div className="preview-image">
               <div style={{ display: 'none' }}>
                 <input type="file" ref={inputLogoHeader} onChange={handleLogoHeaderFiles} />
               </div>
               <img src={logoHeader ? logoHeader : defaultIMageThumbnail} />
-              <p className="fileName">{logoHeaderName}</p>
+              <p className="file-name">{logoHeaderName}</p>
             </div>
             <Button variant="outline-info" onClick={triggerLogoHeaderClick}>
               Ubah Gambar
@@ -256,13 +256,13 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
         </Col>
         <Col className="mb-20">
           <h5>Logo Footer</h5>
-          <div className="groupInputImage">
-            <div className="previewImage">
+          <div className="group-input-image">
+            <div className="preview-image">
               <div style={{ display: 'none' }}>
                 <input type="file" ref={inputLogoFooter} onChange={handleLogoFooterFiles} />
               </div>
               <img src={logoFooter ? logoFooter : defaultIMageThumbnail} />
-              <p className="fileName">{logoFooterName}</p>
+              <p className="file-name">{logoFooterName}</p>
             </div>
             <Button variant="outline-info" onClick={triggerLogoFooterClick}>
               Ubah Gambar
@@ -271,11 +271,11 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
         </Col>
       </Row>
 
-      <Row className="fullWidthForm">
+      <Row className="full-width-form">
         <Col>
           <h5>Logo Banner</h5>
-          <div className="groupInputImage flex-columm">
-            <div className="previewImage fullWidth">
+          <div className="group-input-image flex-columm">
+            <div className="preview-image full-width">
               <div style={{ display: 'none' }}>
                 <input type="file" ref={inputBanner} onChange={handleBannerFiles} />
               </div>
@@ -291,52 +291,84 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
       <div className="sdp-form">
         <h5>Informasi</h5>
         <Col>
-          <input type="text" ref={inputNamaOrganisasi} placeholder="Nama organisasi" />
-          <Button variant="outline-info" onClick={saveNamaOrganisasi}>
-            save
-          </Button>
+          <label>Nama Organisasi</label>
+          <div className="input-group-inline">
+            <input type="text" ref={inputNamaOrganisasi} placeholder="Nama organisasi" />
+            <Button variant="outline-dark" onClick={saveNamaOrganisasi}>
+              <Edit></Edit>
+            </Button>
+          </div>
         </Col>
         <Col>
-          <input type="text" ref={inputAlamatOrganisasi} placeholder="alamat organisasi" />
-          <Button variant="outline-info" onClick={saveAlamatOrganisasi}>
-            save
-          </Button>
+          <label>Alamat Organisasi</label>
+          <div className="input-group-inline">
+            <input type="text" ref={inputAlamatOrganisasi} placeholder="alamat organisasi" />
+            <Button variant="outline-dark" onClick={saveAlamatOrganisasi}>
+              <Edit></Edit>
+            </Button>
+          </div>
         </Col>
         <Col>
-          <input type="text" ref={inputPhone} placeholder="No Telepon" />
-          <Button variant="outline-info" onClick={savePhone}>
-            save
-          </Button>
+          <label>No. Telepon</label>
+          <div className="input-group-inline">
+            <input type="text" ref={inputPhone} placeholder="No Telepon" />
+            <Button variant="outline-dark" onClick={savePhone}>
+              <Edit></Edit>
+            </Button>
+          </div>
         </Col>
         <Col>
-          <input type="text" ref={inputPhone} placeholder="no. Fax" />
-          <Button variant="outline-info" onClick={saveNoFax}>
-            save
-          </Button>
+          <label>No. Fax</label>
+          <div className="input-group-inline">
+            <input type="text" ref={inputPhone} placeholder="no. Fax" />
+            <Button variant="outline-dark" onClick={saveNoFax}>
+              <Edit></Edit>
+            </Button>
+          </div>
         </Col>
         <Col>
-          <input type="text" ref={inputFacebookUrl} placeholder="facebook" />
-          <Button variant="outline-info" onClick={saveFaceBookUrl}>
-            save
-          </Button>
+          <div className="input-group-inline">
+            <div className="sicoal-media-icon">
+              <FacebookSvg></FacebookSvg>
+            </div>
+            <input type="text" ref={inputFacebookUrl} placeholder="facebook" />
+            <Button variant="outline-dark" onClick={saveFaceBookUrl}>
+              <Edit></Edit>
+            </Button>
+          </div>
         </Col>
         <Col>
-          <input type="text" ref={inputTwitterUrl} placeholder="twitter" />
-          <Button variant="outline-info" onClick={saveTwitterUrl}>
-            save
-          </Button>
+          <div className="input-group-inline">
+            <div className="sicoal-media-icon">
+              <TwitterSvg></TwitterSvg>
+            </div>
+            <input type="text" ref={inputTwitterUrl} placeholder="twitter" />
+            <Button variant="outline-dark" onClick={saveTwitterUrl}>
+              <Edit></Edit>
+            </Button>
+          </div>
         </Col>
         <Col>
-          <input type="text" ref={inputInstagramUrl} placeholder="instagram" />
-          <Button variant="outline-info" onClick={saveInstagramUrl}>
-            save
-          </Button>
+          <div className="input-group-inline">
+            <div className="sicoal-media-icon">
+              <InstagramSvg></InstagramSvg>
+            </div>
+            <input type="text" ref={inputInstagramUrl} placeholder="instagram" />
+            <Button variant="outline-dark" onClick={saveInstagramUrl}>
+              <Edit></Edit>
+            </Button>
+          </div>
         </Col>
         <Col>
-          <input type="text" ref={inputYoutubeUrl} placeholder="youtube" />
-          <Button variant="outline-info" onClick={saveYoutubeUrl}>
-            save
-          </Button>
+          <div className="input-group-inline">
+            <div className="sicoal-media-icon">
+              <YoutubeSvg></YoutubeSvg>
+            </div>
+            <input type="text" ref={inputYoutubeUrl} placeholder="youtube" />
+            <Button variant="outline-dark" onClick={saveYoutubeUrl}>
+              <Edit></Edit>
+            </Button>
+          </div>
         </Col>
 
         {/* <Input

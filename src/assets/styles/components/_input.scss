@@ -144,23 +144,24 @@ textarea.form-control {
       width: 24px !important;
     }
   }
+  
 }
 
 
 //updateKonfigurasiPorral
 
-.groupInputImage {
+.group-input-image {
   display: flex;
   align-items: flex-start;
   align-items: center;
-  .previewImage {
+  .preview-image {
     position: relative;
     justify-content: center;
     text-align: center;
     margin-right: 20px;
     border: solid 1px #dfdfdf;
     border-radius: 5px;
-    &.fullWidth {
+    &.full-width {
       img {
         width: 100%;
         max-width: 100%;
@@ -170,7 +171,7 @@ textarea.form-control {
       width: 100%;
       max-width: 180px;
     }
-    p.fileName {
+    p.file-name {
         margin-top: 10px;
     }
   }
@@ -178,9 +179,40 @@ textarea.form-control {
 
 
 
-.groupInputImage.flex-columm {
+.group-input-image.flex-columm {
   flex-direction: column;
-    .previewImage {
+    .preview-image {
       margin-bottom: 20px;
     }  
+}
+
+
+.input-group-inline {
+  display: flex;
+  margin-bottom: 15px;
+  input {
+    width: 100%;
+    max-width: 960px;
+    border: solid 1px #E1E2EA;
+    border-radius: 5px;
+    padding: 10px 15px;
+    box-shadow: 0px 1px 2px #00000017;
+  }
+  button {
+    border-color: #00000017 !important;
+    margin-left: 10px;
+    height: 44px;
+  }
+  .sicoal-media-icon {
+    width: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: solid 1px #00000017;
+    border-radius: 5px 0px 0px 5px;
+    margin-right: -5px;
+    z-index: 2;
+    box-shadow: 0px 1px 2px #00000017;
+  }
 }

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useAsync } from 'react';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -67,7 +67,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   useEffect(() => {
     return dispatch(getListKonfigurasiPortal);
-  }, [getListKonfigurasiPortal]);
+  }, []);
 
   const handleLogoHeaderFiles = (file) => {
     let reader = new FileReader();

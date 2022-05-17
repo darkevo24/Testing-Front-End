@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { apiUrls, defaultNumberOfRows, post, put, get, deleteRequest } from 'utils/request';
 
-export const KONFIGURASI_PORTAL = 'KONFIGURASI_PORTAL';
-export const initialState = {
+const INITIAL_STATE = {
   dataset: {
     loading: false,
     error: null,
@@ -17,14 +16,17 @@ export const initialState = {
 
 export const getListKonfigurasiPortal = createAsyncThunk('cms/getKonfigurasiPortal', async (params) => {
   const response = await get(`${apiUrls.konfigurasiPortal}`, {});
+  console.log('get response');
+  console.log(response);
   return response?.data?.content;
 });
-
-const KonfigurasiPortalSlice = createSlice({
-  name: KONFIGURASI_PORTAL,
-  initialState,
+const REDUCER_NAME = 'KONFIGURASI_PORTAL';
+const SLICE_OBJ = createSlice({
+  name: REDUCER_NAME,
+  initialState: INITIAL_STATE,
   reducers: {
     updateResult: (state, action) => {
+      console.log('masuk keupdateresult');
       state.dataset.records = action.payload;
     },
   },
@@ -33,6 +35,8 @@ const KonfigurasiPortalSlice = createSlice({
       state.dataset.loading = true;
     });
     builder.addCase(getListKonfigurasiPortal.fulfilled, (state, action) => {
+      console.log('list');
+      console.log(action.payload);
       state.dataset.loading = false;
       state.dataset.page = action.payload.page;
       state.dataset.records = action.payload.records;
@@ -41,12 +45,12 @@ const KonfigurasiPortalSlice = createSlice({
     });
     builder.addCase(getListKonfigurasiPortal.rejected, (state) => {
       state.dataset.loading = false;
-      state.dataset.error = 'Error in fetching berita cms!';
+      state.dataset.error = 'Error in fetching konfigurasi portal!';
     });
   },
 });
 
 export const konfiguasiPortalCmsListSelector = (state) => state.konfigurasiPortal?.dataset;
 export const detailDataSelector = (state) => state.konfigurasiPortal?.detaildataSet;
-
-export default KonfigurasiPortalSlice.reducer;
+export const { updateResult } = SLICE_OBJ.actions;
+export default SLICE_OBJ.reducer;

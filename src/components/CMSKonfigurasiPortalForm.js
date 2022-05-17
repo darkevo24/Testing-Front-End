@@ -12,15 +12,6 @@ import { apiUrls, post, put } from 'utils/request';
 
 import { getListKonfigurasiPortal, konfiguasiPortalCmsListSelector } from 'containers/CMS/KonfigurasiPortal/reducer';
 
-const schema = yup
-  .object({
-    judul: yup.string().required(),
-    kategori: yup.mixed().required(),
-    mainImage: yup.mixed().required(),
-    content: yup.mixed().required(),
-  })
-  .required();
-
 const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const dispatch = useDispatch();
   const { loading, records } = useSelector(konfiguasiPortalCmsListSelector);
@@ -60,6 +51,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const INSTAGRAN_URL = 'INSTAGRAN-URL';
   const TWITTER_URL = 'TWITTER-URL';
   const YOUTUBE_URL = 'YOUTUBE-URL';
+  const LOGO_HEADER = 'LOGO-HEADER';
 
   useEffect(() => {
     return dispatch(getListKonfigurasiPortal());
@@ -129,6 +121,30 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
     reader.onload = function () {
       setLogoHeader(reader.result);
       setLogoHeaderName(file.target.files[0].name);
+
+      const params = {
+        code: LOGO_HEADER,
+        contentType: 'IMAGE',
+        content: file.target.files[0],
+      };
+
+      console.log(params);
+
+      try {
+        const apiUrl = apiUrls.konfigurasiPortal;
+        const url = logoHeader ? apiUrl.concat('/' + logoHeader?.id) : apiUrls.konfigurasiPortal;
+        if (logoHeader?.id) {
+          put(url, params, { headers: { 'Content-Type': 'multipart/form-data' } }).then((res) => {
+            setLogoHeader(res?.content);
+          });
+        } else {
+          post(apiUrls.publicFileUpload, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+            setLogoHeader(res?.content);
+          });
+        }
+      } catch (e) {
+        // console.log(e);
+      }
     };
     reader.onerror = function (error) {
       console.log('Error: ', error);
@@ -147,11 +163,33 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
     };
   };
 
-  const handleBannerFiles = (file) => {
+  const handleBannerFiles = async (file) => {
     let reader = new FileReader();
     reader.readAsDataURL(file.target.files[0]);
     reader.onload = function () {
       setImageBanner(reader.result);
+
+      const params = {
+        code: LOGO_HEADER,
+        contentType: 'IMAGE',
+        content: file,
+      };
+
+      try {
+        const apiUrl = apiUrls.konfigurasiPortal;
+        const url = imageBanner ? apiUrl.concat('/' + imageBanner?.id) : apiUrls.konfigurasiPortal;
+        if (imageBanner?.id) {
+          put(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+            setImageBanner(res?.content);
+          });
+        } else {
+          post(apiUrls.publicFileUpload, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+            setImageBanner(res?.content);
+          });
+        }
+      } catch (e) {
+        // console.log(e);
+      }
     };
     reader.onerror = function (error) {
       console.log('Error: ', error);

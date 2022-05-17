@@ -33,6 +33,8 @@ export const getListBerita = createAsyncThunk('cms/getListBerita', async (params
   const response = await post(`${apiUrls.cmsBeritaData}/list?size=10&page=${params.page}&sortDirection=DESC`, {
     judul: params.judul,
   });
+  console.log('ini berita');
+  console.log(response.data);
   return response?.data?.content;
 });
 

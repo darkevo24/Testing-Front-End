@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useAsync } from 'react';
+import React, { useState, useRef, useEffect, useAsync, useMemo } from 'react';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -66,8 +66,28 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   });
 
   useEffect(() => {
-    return dispatch(getListKonfigurasiPortal);
+    return dispatch(getListKonfigurasiPortal());
   }, []);
+
+  useEffect(() => {
+    contentMap();
+  }, [records]);
+
+  const getContent = (code) => {
+    return records.filter((dataContent) => dataContent?.code === code);
+  };
+
+  const contentMap = () => {
+    const noTelpon = getContent('NO-TELEPON');
+    if (noTelpon.length > 0) {
+      setPhoneNumber(noTelpon[0]?.content);
+    }
+
+    const noFax = getContent('NO-FAX');
+    if (noFax.length > 0) {
+      setNoFax(noFax[0]?.content);
+    }
+  };
 
   const handleLogoHeaderFiles = (file) => {
     let reader = new FileReader();
@@ -118,7 +138,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   const savePhone = async () => {
     const params = {
-      code: 'PHONE1',
+      code: 'NO-TELEPON',
       contentType: 'PHONE',
       content: inputPhone.current.value,
     };
@@ -246,6 +266,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   return (
     <Form style={style}>
+      {console.log(records, 'records')}
       <Row className="sdp-form mb-20">
         <Col>
           <h5>Logo Header</h5>
@@ -328,7 +349,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
         <Col>
           <label>No. Fax</label>
           <div className="input-group-inline">
-            <input type="text" ref={inputPhone} placeholder="no. Fax" />
+            <input type="text" ref={inputNoFax} value={noFax || ''} placeholder="No. Fax" />
             <Button variant="outline-dark" onClick={saveNoFax}>
               <Edit></Edit>
             </Button>

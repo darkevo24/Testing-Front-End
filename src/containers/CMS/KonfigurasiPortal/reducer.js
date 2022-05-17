@@ -16,8 +16,6 @@ const INITIAL_STATE = {
 
 export const getListKonfigurasiPortal = createAsyncThunk('cms/getKonfigurasiPortal', async (params) => {
   const response = await get(`${apiUrls.konfigurasiPortal}`, {});
-  console.log('get response');
-  console.log(response);
   return response?.data?.content;
 });
 const REDUCER_NAME = 'KONFIGURASI_PORTAL';
@@ -25,23 +23,18 @@ const SLICE_OBJ = createSlice({
   name: REDUCER_NAME,
   initialState: INITIAL_STATE,
   reducers: {
-    updateResult: (state, action) => {
-      console.log('masuk keupdateresult');
-      state.dataset.records = action.payload;
-    },
+    // updateResult: (state, action) => {
+    //   console.log('masuk keupdateresult');
+    //   state.dataset.records = action.payload;
+    // },
   },
   extraReducers: (builder) => {
     builder.addCase(getListKonfigurasiPortal.pending, (state, action) => {
       state.dataset.loading = true;
     });
     builder.addCase(getListKonfigurasiPortal.fulfilled, (state, action) => {
-      console.log('list');
-      console.log(action.payload);
       state.dataset.loading = false;
-      state.dataset.page = action.payload.page;
-      state.dataset.records = action.payload.records;
-      state.dataset.totalRecords = action.payload.totalRecords;
-      state.dataset.totalPages = action.payload.totalPages;
+      state.dataset.records = action.payload;
     });
     builder.addCase(getListKonfigurasiPortal.rejected, (state) => {
       state.dataset.loading = false;
@@ -51,6 +44,6 @@ const SLICE_OBJ = createSlice({
 });
 
 export const konfiguasiPortalCmsListSelector = (state) => state.konfigurasiPortal?.dataset;
-export const detailDataSelector = (state) => state.konfigurasiPortal?.detaildataSet;
+// export const detailDataSelector = (state) => state.konfigurasiPortal?.detaildataSet;
 export const { updateResult } = SLICE_OBJ.actions;
 export default SLICE_OBJ.reducer;

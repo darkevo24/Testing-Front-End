@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -6,12 +6,13 @@ import Button from 'react-bootstrap/Button';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Input } from 'components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import defaultIMageThumbnail from '../assets/default-thumbnail.png';
 import defaultBanner from '../assets/defaultBannerLarge.jpg';
 import { FacebookSvg, Edit, InstagramSvg, YoutubeSvg, TwitterSvg } from 'components/Icons';
 import { apiUrls, post } from 'utils/request';
+
+import { getListKonfigurasiPortal, konfiguasiPortalCmsListSelector } from 'containers/CMS/KonfigurasiPortal/reducer';
 
 const schema = yup
   .object({
@@ -24,6 +25,8 @@ const schema = yup
 
 const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const dispatch = useDispatch();
+  const { loading, records } = useSelector(konfiguasiPortalCmsListSelector);
+
   const [errorInfo, setErrorInfo] = useState({});
   const [logoHeader, setLogoHeader] = useState(null);
   const [logoHeaderName, setLogoHeaderName] = useState(null);
@@ -38,6 +41,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const [instagramUrl, setInstagramUrl] = useState(null);
   const [twitterUrl, setTwitterUrl] = useState(null);
   const [youtubeUrl, setYoutubeUrl] = useState(null);
+  const [konfigurasiList, setKonfigurasiList] = useState(null);
 
   const inputLogoHeader = useRef(null);
   const inputLogoFooter = useRef(null);
@@ -60,6 +64,10 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
       ...data,
     },
   });
+
+  useEffect(() => {
+    return dispatch(getListKonfigurasiPortal);
+  }, [getListKonfigurasiPortal]);
 
   const handleLogoHeaderFiles = (file) => {
     let reader = new FileReader();
@@ -370,104 +378,6 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
             </Button>
           </div>
         </Col>
-
-        {/* <Input
-          groupClass="mb-16"
-          groupProps={{
-            md: 12,
-            as: Col,
-          }}
-          labelClass="sdp-form-label fw-normal"
-          group
-          label="Nama Organisasi"
-          rightIcon="edit"
-          control={control}
-        />
-        <Input
-          groupClass="mb-16"
-          groupProps={{
-            md: 12,
-            as: Col,
-          }}
-          labelClass="sdp-form-label fw-normal"
-          group
-          label="Alamat Organisasi"
-          rightIcon="edit"
-          control={control}
-        />
-        <Input
-          groupClass="mb-16"
-          groupProps={{
-            md: 12,
-            as: Col,
-          }}
-          labelClass="sdp-form-label fw-normal"
-          group
-          label="No Telpepon"
-          rightIcon="edit"
-          onChange={savePhone}
-          control={control}
-        />
-        <Input
-          groupClass="mb-16"
-          groupProps={{
-            md: 12,
-            as: Col,
-          }}
-          labelClass="sdp-form-label fw-normal"
-          group
-          label="No Fax"
-          rightIcon="edit"
-          control={control}
-        />
-        <Input
-          groupClass="mb-16"
-          groupProps={{
-            md: 12,
-            as: Col,
-          }}
-          labelClass="sdp-form-label fw-normal"
-          group
-          leftIcon="facebookSvg"
-          rightIcon="edit"
-          control={control}
-        />
-        <Input
-          groupClass="mb-16"
-          groupProps={{
-            md: 12,
-            as: Col,
-          }}
-          labelClass="sdp-form-label fw-normal"
-          group
-          leftIcon="twitterSvg"
-          rightIcon="edit"
-          control={control}
-        />
-        <Input
-          groupClass="mb-16"
-          groupProps={{
-            md: 12,
-            as: Col,
-          }}
-          labelClass="sdp-form-label fw-normal"
-          group
-          leftIcon="instgramSvg"
-          rightIcon="edit"
-          control={control}
-        />
-        <Input
-          groupClass="mb-16"
-          groupProps={{
-            md: 12,
-            as: Col,
-          }}
-          labelClass="sdp-form-label fw-normal"
-          group
-          leftIcon="youtubeSvg"
-          rightIcon="edit"
-          control={control}
-        /> */}
       </div>
     </Form>
   );

@@ -52,6 +52,8 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const TWITTER_URL = 'TWITTER-URL';
   const YOUTUBE_URL = 'YOUTUBE-URL';
   const LOGO_HEADER = 'LOGO-HEADER';
+  const LOGO_FOOTER = 'LOGO-FOOTER';
+  const BANNER = 'BANNER';
 
   const CONTENT_TYPE = {
     TEXT: 'TEXT',
@@ -74,6 +76,21 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   };
 
   const contentMap = () => {
+    const getLogoHeader = getContent(LOGO_HEADER);
+    if (getLogoHeader.length > 0) {
+      setLogoHeader(getLogoHeader[0]);
+    }
+
+    const getLogoFooter = getContent(LOGO_FOOTER);
+    if (getLogoFooter.length > 0) {
+      setLogoFooter(getLogoFooter[0]);
+    }
+
+    const getBanner = getContent(BANNER);
+    if (getBanner.length > 0) {
+      setImageBanner(getBanner[0]);
+    }
+
     const getNoTelpon = getContent(NO_TELEPON);
     if (getNoTelpon.length > 0) {
       inputPhone.current.value = getNoTelpon[0]?.content?.value;
@@ -124,82 +141,51 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   };
 
   const handleLogoHeaderFiles = (file) => {
-    let reader = new FileReader();
-    reader.readAsDataURL(file.target.files[0]);
-    reader.onload = function () {
-      setLogoHeader(reader.result);
-      setLogoHeaderName(file.target.files[0].name);
-
-      const params = {
-        code: LOGO_HEADER,
-        contentType: 'IMAGE',
-        content: file.target.files[0],
-      };
-
-      try {
-        const apiUrl = apiUrls.konfigurasiPortal;
-        const url = logoHeader ? apiUrl.concat('/' + logoHeader?.id) : apiUrls.konfigurasiPortal;
-        if (logoHeader?.id) {
-          put(url, params, { headers: { 'Content-Type': 'multipart/form-data' } }).then((res) => {
-            setLogoHeader(res?.content);
-          });
-        } else {
-          post(apiUrls.publicFileUpload, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-            setLogoHeader(res?.content);
-          });
-        }
-      } catch (e) {
-        // console.log(e);
-      }
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
+    file = file.target.files[0];
+    const size = 512000;
+    const type = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (file?.size > size && type.includes(file?.type)) {
+      return setErrorInfo('image', {
+        type: 'manual',
+        message: 'Only PNG, JPEG e JPG with Max 512Kb',
+      });
+    }
+    // eslint-disable-next-line
+    let fileName = file.name.replace(/[&/\\#, +()$~%'":*?<>{}]/g, '');
+    let newFile = new File([file], fileName, { type: 'image/png' });
+    saveImage(LOGO_HEADER, newFile);
   };
 
   const handleLogoFooterFiles = (file) => {
-    let reader = new FileReader();
-    reader.readAsDataURL(file.target.files[0]);
-    reader.onload = function () {
-      setLogoFooter(reader.result);
-      setLogoFooterName(file.target.files[0].name);
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
+    file = file.target.files[0];
+    const size = 512000;
+    const type = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (file?.size > size && type.includes(file?.type)) {
+      return setErrorInfo('image', {
+        type: 'manual',
+        message: 'Only PNG, JPEG e JPG with Max 512Kb',
+      });
+    }
+    // eslint-disable-next-line
+    let fileName = file.name.replace(/[&/\\#, +()$~%'":*?<>{}]/g, '');
+    let newFile = new File([file], fileName, { type: 'image/png' });
+    saveImage(LOGO_FOOTER, newFile);
   };
 
   const handleBannerFiles = async (file) => {
-    let reader = new FileReader();
-    reader.readAsDataURL(file.target.files[0]);
-    reader.onload = function () {
-      setImageBanner(reader.result);
-
-      const params = {
-        code: LOGO_HEADER,
-        contentType: 'IMAGE',
-        content: file,
-      };
-
-      try {
-        const apiUrl = apiUrls.konfigurasiPortal;
-        const url = imageBanner ? apiUrl.concat('/' + imageBanner?.id) : apiUrls.konfigurasiPortal;
-        if (imageBanner?.id) {
-          put(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-            setImageBanner(res?.content);
-          });
-        } else {
-          post(apiUrls.publicFileUpload, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-            setImageBanner(res?.content);
-          });
-        }
-      } catch (e) {
-        // console.log(e);
-      }
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
+    file = file.target.files[0];
+    const size = 512000;
+    const type = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (file?.size > size && type.includes(file?.type)) {
+      return setErrorInfo('image', {
+        type: 'manual',
+        message: 'Only PNG, JPEG e JPG with Max 512Kb',
+      });
+    }
+    // eslint-disable-next-line
+    let fileName = file.name.replace(/[&/\\#, +()$~%'":*?<>{}]/g, '');
+    let newFile = new File([file], fileName, { type: 'image/png' });
+    saveImage(BANNER, newFile);
   };
 
   const triggerLogoHeaderClick = () => {
@@ -212,6 +198,110 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   const triggerBannerFileClick = () => {
     inputBanner.current.click();
+  };
+
+  const saveImage = async (imageCode, fileUpload) => {
+    var data = new FormData();
+    data.append('file', fileUpload);
+
+    try {
+      const apiUrl = apiUrls.uploadFoto;
+      await post(apiUrl, data, { headers: { 'Content-Type': undefined } }).then((res) => {
+        switch (imageCode) {
+          case LOGO_HEADER:
+            saveLogoHeader(res?.data?.location);
+            break;
+          case LOGO_FOOTER:
+            saveLogoFooter(res?.data?.location);
+            break;
+          case BANNER:
+            saveBanner(res?.data?.location);
+            break;
+          default:
+            break;
+        }
+      });
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+
+  const saveLogoHeader = async (imageUrl) => {
+    const params = {
+      code: LOGO_HEADER,
+      contentType: CONTENT_TYPE.IMAGE,
+      content: {
+        url: imageUrl,
+      },
+    };
+
+    try {
+      const apiUrl = apiUrls.konfigurasiPortal;
+      const url = logoHeader ? apiUrl.concat('/' + logoHeader?.id) : apiUrls.konfigurasiPortal;
+      if (logoHeader?.id) {
+        await put(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+          setLogoHeader(res?.data?.content);
+        });
+      } else {
+        await post(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+          setLogoHeader(res?.data?.content);
+        });
+      }
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+
+  const saveLogoFooter = async (imageUrl) => {
+    const params = {
+      code: LOGO_FOOTER,
+      contentType: CONTENT_TYPE.IMAGE,
+      content: {
+        url: imageUrl,
+      },
+    };
+
+    try {
+      const apiUrl = apiUrls.konfigurasiPortal;
+      const url = logoFooter ? apiUrl.concat('/' + logoFooter?.id) : apiUrls.konfigurasiPortal;
+      if (logoFooter?.id) {
+        await put(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+          setLogoFooter(res?.data?.content);
+        });
+      } else {
+        await post(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+          setLogoFooter(res?.data?.content);
+        });
+      }
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+
+  const saveBanner = async (imageUrl) => {
+    const params = {
+      code: BANNER,
+      contentType: CONTENT_TYPE.IMAGE,
+      content: {
+        url: imageUrl,
+      },
+    };
+
+    try {
+      const apiUrl = apiUrls.konfigurasiPortal;
+      const url = imageBanner ? apiUrl.concat('/' + imageBanner?.id) : apiUrls.konfigurasiPortal;
+      if (imageBanner?.id) {
+        await put(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+          setImageBanner(res?.data?.content);
+        });
+      } else {
+        await post(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+          setImageBanner(res?.data?.content);
+        });
+      }
+    } catch (e) {
+      // console.log(e);
+    }
   };
 
   const savePhone = async () => {
@@ -431,8 +521,8 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
               <div style={{ display: 'none' }}>
                 <input type="file" ref={inputLogoHeader} onChange={handleLogoHeaderFiles} />
               </div>
-              <img src={logoHeader ? logoHeader : defaultIMageThumbnail} />
-              <p className="file-name">{logoHeaderName}</p>
+              <img src={logoHeader ? logoHeader?.content?.url : defaultIMageThumbnail} />
+              {/* <p className="file-name">{logoHeaderName}</p> */}
             </div>
             <Button variant="outline-info" onClick={triggerLogoHeaderClick}>
               Ubah Gambar
@@ -446,8 +536,8 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
               <div style={{ display: 'none' }}>
                 <input type="file" ref={inputLogoFooter} onChange={handleLogoFooterFiles} />
               </div>
-              <img src={logoFooter ? logoFooter : defaultIMageThumbnail} />
-              <p className="file-name">{logoFooterName}</p>
+              <img src={logoFooter ? logoFooter?.content?.url : defaultIMageThumbnail} />
+              {/* <p className="file-name">{logoFooterName}</p> */}
             </div>
             <Button variant="outline-info" onClick={triggerLogoFooterClick}>
               Ubah Gambar
@@ -464,7 +554,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
               <div style={{ display: 'none' }}>
                 <input type="file" ref={inputBanner} onChange={handleBannerFiles} />
               </div>
-              <img src={imageBanner ? imageBanner : defaultBanner} />
+              <img src={imageBanner ? imageBanner?.content?.url : defaultBanner} />
             </div>
             <Button variant="outline-info" onClick={triggerBannerFileClick}>
               Ubah Gambar

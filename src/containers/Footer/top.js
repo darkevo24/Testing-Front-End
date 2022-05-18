@@ -104,6 +104,10 @@ export const Top = () => {
           link: '',
           disabled: true,
         },
+        {
+          title: 'Permintaan Akses',
+          link: 'http://link.bappenas.go.id/aksesportalsdi',
+        },
       ],
     },
   ];
@@ -155,7 +159,7 @@ export const Top = () => {
                           className={linkItem.disabled && 'disabled pe-none'}
                           href={linkItem.link}
                           data-href={linkItem.link}
-                          onClick={handleClick}
+                          // onClick={handleClick}
                           key={linkItem.title}>
                           {linkItem.title}
                         </FooterLink>

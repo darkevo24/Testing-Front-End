@@ -53,6 +53,14 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const YOUTUBE_URL = 'YOUTUBE-URL';
   const LOGO_HEADER = 'LOGO-HEADER';
 
+  const CONTENT_TYPE = {
+    TEXT: 'TEXT',
+    IMAGE: 'IMAGE',
+    SOCIALMEDIA: 'SOCIALMEDIA',
+    PHONE: 'PHONE',
+    FAX: 'FAX',
+  };
+
   useEffect(() => {
     return dispatch(getListKonfigurasiPortal());
   }, []);
@@ -68,49 +76,49 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const contentMap = () => {
     const getNoTelpon = getContent(NO_TELEPON);
     if (getNoTelpon.length > 0) {
-      inputPhone.current.value = getNoTelpon[0].content;
+      inputPhone.current.value = getNoTelpon[0]?.content?.value;
       setPhoneNumber(getNoTelpon[0]);
     }
 
     const getNoFax = getContent(NO_FAX);
     if (getNoFax.length > 0) {
-      inputNoFax.current.value = getNoFax[0].content;
+      inputNoFax.current.value = getNoFax[0]?.content?.value;
       setNoFax(getNoFax[0]);
     }
 
     const getNamaOrganisasi = getContent(NAMA_ORAGNISASI);
     if (getNamaOrganisasi.length > 0) {
-      inputNamaOrganisasi.current.value = getNamaOrganisasi[0].content;
+      inputNamaOrganisasi.current.value = getNamaOrganisasi[0]?.content?.value;
       setNamaOrganisasi(getNamaOrganisasi[0]);
     }
 
     const getAlamatOrganisasi = getContent(ALAMAT_ORAGNISASI);
     if (getAlamatOrganisasi.length > 0) {
-      inputAlamatOrganisasi.current.value = getAlamatOrganisasi[0].content;
+      inputAlamatOrganisasi.current.value = getAlamatOrganisasi[0]?.content?.value;
       setAlamatOrganisasi(getAlamatOrganisasi[0]);
     }
 
-    const getFacebookUrl = getContent(YOUTUBE_URL);
+    const getFacebookUrl = getContent(FACEBOOK_URL);
     if (getFacebookUrl.length > 0) {
-      inputFacebookUrl.current.value = getFacebookUrl[0].content;
+      inputFacebookUrl.current.value = getFacebookUrl[0]?.content?.url;
       setFacebookUrl(getFacebookUrl[0]);
     }
 
     const getTwitterUrl = getContent(TWITTER_URL);
     if (getTwitterUrl.length > 0) {
-      inputTwitterUrl.current.value = getTwitterUrl[0].content;
+      inputTwitterUrl.current.value = getTwitterUrl[0]?.content?.url;
       setFacebookUrl(getTwitterUrl[0]);
     }
 
     const getInstagramUrl = getContent(INSTAGRAN_URL);
     if (getInstagramUrl.length > 0) {
-      inputInstagramUrl.current.value = getInstagramUrl[0].content;
+      inputInstagramUrl.current.value = getInstagramUrl[0]?.content?.url;
       setFacebookUrl(getInstagramUrl[0]);
     }
 
     const getYoutubeUrl = getContent(YOUTUBE_URL);
     if (getYoutubeUrl.length > 0) {
-      inputYoutubeUrl.current.value = getYoutubeUrl[0].content;
+      inputYoutubeUrl.current.value = getYoutubeUrl[0]?.content?.url;
       setYoutubeUrl(getYoutubeUrl[0]);
     }
   };
@@ -127,8 +135,6 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
         contentType: 'IMAGE',
         content: file.target.files[0],
       };
-
-      console.log(params);
 
       try {
         const apiUrl = apiUrls.konfigurasiPortal;
@@ -211,8 +217,10 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const savePhone = async () => {
     const params = {
       code: NO_TELEPON,
-      contentType: 'PHONE',
-      content: inputPhone.current.value,
+      contentType: CONTENT_TYPE.PHONE,
+      content: {
+        value: inputPhone.current.value,
+      },
     };
 
     try {
@@ -235,8 +243,10 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const saveNamaOrganisasi = async () => {
     const params = {
       code: NAMA_ORAGNISASI,
-      contentType: 'TEXT',
-      content: inputNamaOrganisasi.current.value,
+      contentType: CONTENT_TYPE.TEXT,
+      content: {
+        value: inputNamaOrganisasi.current.value,
+      },
     };
 
     try {
@@ -259,8 +269,10 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const saveAlamatOrganisasi = async () => {
     const params = {
       code: ALAMAT_ORAGNISASI,
-      contentType: 'TEXT',
-      content: inputAlamatOrganisasi.current.value,
+      contentType: CONTENT_TYPE.TEXT,
+      content: {
+        value: inputAlamatOrganisasi.current.value,
+      },
     };
 
     try {
@@ -282,8 +294,10 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const saveNoFax = async () => {
     const params = {
       code: NO_FAX,
-      contentType: 'TEXT',
-      content: inputNoFax.current.value,
+      contentType: CONTENT_TYPE.FAX,
+      content: {
+        value: inputNoFax.current.value,
+      },
     };
 
     try {
@@ -305,8 +319,10 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const saveFaceBookUrl = async () => {
     const params = {
       code: FACEBOOK_URL,
-      contentType: 'TEXT',
-      content: inputFacebookUrl.current.value,
+      contentType: CONTENT_TYPE.SOCIALMEDIA,
+      content: {
+        url: inputFacebookUrl.current.value,
+      },
     };
 
     try {
@@ -329,8 +345,10 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const saveTwitterUrl = async () => {
     const params = {
       code: TWITTER_URL,
-      contentType: 'TEXT',
-      content: inputTwitterUrl.current.value,
+      contentType: CONTENT_TYPE.SOCIALMEDIA,
+      content: {
+        url: inputTwitterUrl.current.value,
+      },
     };
 
     try {
@@ -353,8 +371,10 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const saveInstagramUrl = async () => {
     const params = {
       code: INSTAGRAN_URL,
-      contentType: 'TEXT',
-      content: inputInstagramUrl.current.value,
+      contentType: CONTENT_TYPE.SOCIALMEDIA,
+      content: {
+        url: inputInstagramUrl.current.value,
+      },
     };
 
     try {
@@ -377,8 +397,10 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const saveYoutubeUrl = async () => {
     const params = {
       code: YOUTUBE_URL,
-      contentType: 'TEXT',
-      content: inputYoutubeUrl.current.value,
+      contentType: CONTENT_TYPE.SOCIALMEDIA,
+      content: {
+        url: inputYoutubeUrl.current.value,
+      },
     };
 
     try {

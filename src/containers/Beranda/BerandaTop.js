@@ -1,6 +1,10 @@
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as BerandaImage } from './BerandaImage.svg';
+
+import { useSelector } from 'react-redux';
+import { globalData } from '../App/reducer';
+import _ from 'lodash';
 
 const BoxImage = styled.div`
   display: flex;
@@ -23,10 +27,25 @@ const MediumTitle = styled.p`
   line-height: 17px;
 `;
 
-export const BerandaTop = () => (
-  <BoxImage>
-    <LargeTitle>Data Indonesia, Dalam Satu Portal</LargeTitle>
-    <MediumTitle>Temukan data-data Pemerintah dengan mudah!</MediumTitle>
-    <BerandaImage />
-  </BoxImage>
-);
+export const BerandaTop = () => {
+  const { records } = useSelector(globalData);
+  const [banner, setBanner] = useState(null);
+
+  useEffect(() => {
+    if (!_.isEmpty(records)) {
+      let data = _.groupBy(records, 'code');
+      if (!_.isEmpty(data.BANNER[0])) {
+        setBanner(data.BANNER[0]?.content?.url);
+      }
+    }
+  }, [records]);
+
+  return (
+    <BoxImage>
+      <LargeTitle>Data Indonesia, Dalam Satu Portal</LargeTitle>
+      <MediumTitle>Temukan data-data Pemerintah dengan mudah!</MediumTitle>
+      {/* <BerandaImage /> */}
+      <img src={banner} width="80%" />
+    </BoxImage>
+  );
+};

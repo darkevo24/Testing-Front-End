@@ -26,6 +26,11 @@ const CMSRoutes = lazy(() => import('./CMSRoutes'));
 
 function App(props) {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    return dispatch(getGlobalData());
+  }, []);
+
   const isTermAndConditionAccepted = getCookieByName(cookieKeys.isTermAndConditionAccepted);
 
   const history = useHistory();
@@ -65,10 +70,6 @@ function App(props) {
       history.push('/home');
     }
   };
-
-  useEffect(() => {
-    return dispatch(getGlobalData());
-  }, []);
 
   return (
     <ReactKeycloakProvider authClient={keycloak} initOptions={initOptions} onTokens={handleOnTokens} onEvent={handleOnEvent}>

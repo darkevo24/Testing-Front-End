@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import isArray from 'lodash/isArray';
+import _ from 'lodash';
 import get from 'lodash/get';
 import map from 'lodash/map';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +16,6 @@ import { useKeycloak } from '@react-keycloak/web';
 import { userSelector } from 'containers/Login/reducer';
 import { getAnalyticsUrl } from 'utils/constants';
 
-import Logo from 'assets/logo-satu.jpg';
 import { removeAllCookie } from '../../utils/cookie';
 import { globalData } from '../App/reducer';
 import { Roles } from 'containers/App/config';
@@ -68,7 +68,7 @@ export const Header = () => {
   const location = useLocation();
   const { keycloak } = useKeycloak();
   const user = useSelector(userSelector);
-  const { loading, records } = useSelector(globalData);
+  const { records } = useSelector(globalData);
   const [logoHeader, setLogoHeader] = useState(null);
   const { t } = useTranslation();
   const showAppSec = useMemo(() => {
@@ -76,6 +76,15 @@ export const Header = () => {
     const { roles = null } = user;
     return ![Roles.MEMBER, Roles.REGISTERED_USER, Roles.EKSEKUTIF].includes(roles);
   }, [user]);
+
+  useEffect(() => {
+    if (!_.isEmpty(records)) {
+      let data = _.groupBy(records, 'code');
+      if (!_.isEmpty(data.LOGO_HEADER[0])) {
+        setLogoHeader(data.LOGO_HEADER[0].content.url);
+      }
+    }
+  }, [records]);
 
   const isLoggedIn = !!keycloak.authenticated;
 
@@ -135,27 +144,11 @@ export const Header = () => {
     ],
     [isLoggedIn],
   );
-  const LOGO_HEADER = 'LOGO-HEADER';
 
-  const getContent = (code) => {
-    return records.filter((dataContent) => dataContent?.code === code);
-  };
-
-  useEffect(() => {
-    contentMap();
-  }, [records]);
-
-  const contentMap = () => {
-    const getLogoHeader = getContent(LOGO_HEADER);
-    if (getLogoHeader.length > 0) {
-      setLogoHeader(getLogoHeader[0]);
-    }
-  };
   const renderPublicNav = () => {
     return (
       <Nav className="h-100 d-flex align-items-center">
         {getNavLinks(PUBLIC_ROUTES, location.pathname, goTo)}
-        {console.log(logoHeader, '-----')}
         <Button variant="info" className="btn-rounded ml-32" onClick={keycloak.login}>
           Masuk
         </Button>
@@ -186,7 +179,7 @@ export const Header = () => {
   return (
     <Navbar bg="transparent" className="sdp-header">
       <Container className={cx('mw-100 h-100', { 'pr-24': !isLoggedIn })}>
-        <img src={Logo} alt="brand-logo" className="cursor-pointer" onClick={goTo('/home')} />
+        <img src={logoHeader} alt="brand-logo" className="cursor-pointer" onClick={goTo('/home')} />
         {isLoggedIn ? renderMemberNav() : renderPublicNav()}
       </Container>
     </Navbar>

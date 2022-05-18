@@ -11,6 +11,7 @@ import { FacebookSvg, Edit, InstagramSvg, YoutubeSvg, TwitterSvg } from 'compone
 import { apiUrls, post, put } from 'utils/request';
 
 import { getListKonfigurasiPortal, konfiguasiPortalCmsListSelector } from 'containers/CMS/KonfigurasiPortal/reducer';
+import { CONTENT_TYPE, PORTAL_KONFIGURASI_CODE } from 'utils/constants';
 
 const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const dispatch = useDispatch();
@@ -18,13 +19,14 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   const [errorInfo, setErrorInfo] = useState({});
   const [logoHeader, setLogoHeader] = useState(null);
-  const [logoHeaderName, setLogoHeaderName] = useState(null);
+  // const [logoHeaderName, setLogoHeaderName] = useState(null);
   const [logoFooter, setLogoFooter] = useState(null);
-  const [logoFooterName, setLogoFooterName] = useState(null);
+  // const [logoFooterName, setLogoFooterName] = useState(null);
   const [imageBanner, setImageBanner] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [noFax, setNoFax] = useState(null);
   const [namaOrganisasi, setNamaOrganisasi] = useState(null);
+  const [footerLink, setFooterLink] = useState(null);
   const [alamatOrganisasi, setAlamatOrganisasi] = useState(null);
   const [facebookUrl, setFacebookUrl] = useState(null);
   const [instagramUrl, setInstagramUrl] = useState(null);
@@ -38,30 +40,11 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const inputNamaOrganisasi = useRef(null);
   const inputAlamatOrganisasi = useRef(null);
   const inputNoFax = useRef(null);
+  const inputFooterLink = useRef(null);
   const inputFacebookUrl = useRef(null);
   const inputInstagramUrl = useRef(null);
   const inputTwitterUrl = useRef(null);
   const inputYoutubeUrl = useRef(null);
-
-  const NAMA_ORAGNISASI = 'NAMA-ORGANISASI';
-  const ALAMAT_ORAGNISASI = 'ALAMAT-ORGANISASI';
-  const NO_TELEPON = 'NO-TELEPON';
-  const NO_FAX = 'NO-FAX';
-  const FACEBOOK_URL = 'FACEBOOK-URL';
-  const INSTAGRAN_URL = 'INSTAGRAN-URL';
-  const TWITTER_URL = 'TWITTER-URL';
-  const YOUTUBE_URL = 'YOUTUBE-URL';
-  const LOGO_HEADER = 'LOGO-HEADER';
-  const LOGO_FOOTER = 'LOGO-FOOTER';
-  const BANNER = 'BANNER';
-
-  const CONTENT_TYPE = {
-    TEXT: 'TEXT',
-    IMAGE: 'IMAGE',
-    SOCIALMEDIA: 'SOCIALMEDIA',
-    PHONE: 'PHONE',
-    FAX: 'FAX',
-  };
 
   useEffect(() => {
     return dispatch(getListKonfigurasiPortal());
@@ -76,64 +59,70 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   };
 
   const contentMap = () => {
-    const getLogoHeader = getContent(LOGO_HEADER);
+    const getLogoHeader = getContent(PORTAL_KONFIGURASI_CODE.LOGO_HEADER);
     if (getLogoHeader.length > 0) {
       setLogoHeader(getLogoHeader[0]);
     }
 
-    const getLogoFooter = getContent(LOGO_FOOTER);
+    const getLogoFooter = getContent(PORTAL_KONFIGURASI_CODE.LOGO_FOOTER);
     if (getLogoFooter.length > 0) {
       setLogoFooter(getLogoFooter[0]);
     }
 
-    const getBanner = getContent(BANNER);
+    const getBanner = getContent(PORTAL_KONFIGURASI_CODE.BANNER);
     if (getBanner.length > 0) {
       setImageBanner(getBanner[0]);
     }
 
-    const getNoTelpon = getContent(NO_TELEPON);
+    const getNoTelpon = getContent(PORTAL_KONFIGURASI_CODE.NO_TELEPON);
     if (getNoTelpon.length > 0) {
       inputPhone.current.value = getNoTelpon[0]?.content?.value;
       setPhoneNumber(getNoTelpon[0]);
     }
 
-    const getNoFax = getContent(NO_FAX);
+    const getNoFax = getContent(PORTAL_KONFIGURASI_CODE.NO_FAX);
     if (getNoFax.length > 0) {
       inputNoFax.current.value = getNoFax[0]?.content?.value;
       setNoFax(getNoFax[0]);
     }
 
-    const getNamaOrganisasi = getContent(NAMA_ORAGNISASI);
+    const getFooterLink = getContent(PORTAL_KONFIGURASI_CODE.FOOTERLINK);
+    if (getFooterLink.length > 0) {
+      inputFooterLink.current.value = getFooterLink[0]?.content?.value;
+      setFooterLink(getFooterLink[0]);
+    }
+
+    const getNamaOrganisasi = getContent(PORTAL_KONFIGURASI_CODE.NAMA_ORAGNISASI);
     if (getNamaOrganisasi.length > 0) {
       inputNamaOrganisasi.current.value = getNamaOrganisasi[0]?.content?.value;
       setNamaOrganisasi(getNamaOrganisasi[0]);
     }
 
-    const getAlamatOrganisasi = getContent(ALAMAT_ORAGNISASI);
+    const getAlamatOrganisasi = getContent(PORTAL_KONFIGURASI_CODE.ALAMAT_ORAGNISASI);
     if (getAlamatOrganisasi.length > 0) {
       inputAlamatOrganisasi.current.value = getAlamatOrganisasi[0]?.content?.value;
       setAlamatOrganisasi(getAlamatOrganisasi[0]);
     }
 
-    const getFacebookUrl = getContent(FACEBOOK_URL);
+    const getFacebookUrl = getContent(PORTAL_KONFIGURASI_CODE.FACEBOOK_URL);
     if (getFacebookUrl.length > 0) {
       inputFacebookUrl.current.value = getFacebookUrl[0]?.content?.url;
       setFacebookUrl(getFacebookUrl[0]);
     }
 
-    const getTwitterUrl = getContent(TWITTER_URL);
+    const getTwitterUrl = getContent(PORTAL_KONFIGURASI_CODE.TWITTER_URL);
     if (getTwitterUrl.length > 0) {
       inputTwitterUrl.current.value = getTwitterUrl[0]?.content?.url;
-      setFacebookUrl(getTwitterUrl[0]);
+      setTwitterUrl(getTwitterUrl[0]);
     }
 
-    const getInstagramUrl = getContent(INSTAGRAN_URL);
+    const getInstagramUrl = getContent(PORTAL_KONFIGURASI_CODE.INSTAGRAM_URL);
     if (getInstagramUrl.length > 0) {
       inputInstagramUrl.current.value = getInstagramUrl[0]?.content?.url;
-      setFacebookUrl(getInstagramUrl[0]);
+      setInstagramUrl(getInstagramUrl[0]);
     }
 
-    const getYoutubeUrl = getContent(YOUTUBE_URL);
+    const getYoutubeUrl = getContent(PORTAL_KONFIGURASI_CODE.YOUTUBE_URL);
     if (getYoutubeUrl.length > 0) {
       inputYoutubeUrl.current.value = getYoutubeUrl[0]?.content?.url;
       setYoutubeUrl(getYoutubeUrl[0]);
@@ -153,7 +142,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
     // eslint-disable-next-line
     let fileName = file.name.replace(/[&/\\#, +()$~%'":*?<>{}]/g, '');
     let newFile = new File([file], fileName, { type: 'image/png' });
-    saveImage(LOGO_HEADER, newFile);
+    saveImage(PORTAL_KONFIGURASI_CODE.LOGO_HEADER, newFile);
   };
 
   const handleLogoFooterFiles = (file) => {
@@ -169,7 +158,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
     // eslint-disable-next-line
     let fileName = file.name.replace(/[&/\\#, +()$~%'":*?<>{}]/g, '');
     let newFile = new File([file], fileName, { type: 'image/png' });
-    saveImage(LOGO_FOOTER, newFile);
+    saveImage(PORTAL_KONFIGURASI_CODE.LOGO_FOOTER, newFile);
   };
 
   const handleBannerFiles = async (file) => {
@@ -185,7 +174,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
     // eslint-disable-next-line
     let fileName = file.name.replace(/[&/\\#, +()$~%'":*?<>{}]/g, '');
     let newFile = new File([file], fileName, { type: 'image/png' });
-    saveImage(BANNER, newFile);
+    saveImage(PORTAL_KONFIGURASI_CODE.BANNER, newFile);
   };
 
   const triggerLogoHeaderClick = () => {
@@ -208,13 +197,13 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
       const apiUrl = apiUrls.uploadFoto;
       await post(apiUrl, data, { headers: { 'Content-Type': undefined } }).then((res) => {
         switch (imageCode) {
-          case LOGO_HEADER:
+          case PORTAL_KONFIGURASI_CODE.LOGO_HEADER:
             saveLogoHeader(res?.data?.location);
             break;
-          case LOGO_FOOTER:
+          case PORTAL_KONFIGURASI_CODE.LOGO_FOOTER:
             saveLogoFooter(res?.data?.location);
             break;
-          case BANNER:
+          case PORTAL_KONFIGURASI_CODE.BANNER:
             saveBanner(res?.data?.location);
             break;
           default:
@@ -228,7 +217,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   const saveLogoHeader = async (imageUrl) => {
     const params = {
-      code: LOGO_HEADER,
+      code: PORTAL_KONFIGURASI_CODE.LOGO_HEADER,
       contentType: CONTENT_TYPE.IMAGE,
       content: {
         url: imageUrl,
@@ -254,7 +243,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   const saveLogoFooter = async (imageUrl) => {
     const params = {
-      code: LOGO_FOOTER,
+      code: PORTAL_KONFIGURASI_CODE.LOGO_FOOTER,
       contentType: CONTENT_TYPE.IMAGE,
       content: {
         url: imageUrl,
@@ -280,7 +269,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   const saveBanner = async (imageUrl) => {
     const params = {
-      code: BANNER,
+      code: PORTAL_KONFIGURASI_CODE.BANNER,
       contentType: CONTENT_TYPE.IMAGE,
       content: {
         url: imageUrl,
@@ -306,7 +295,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   const savePhone = async () => {
     const params = {
-      code: NO_TELEPON,
+      code: PORTAL_KONFIGURASI_CODE.NO_TELEPON,
       contentType: CONTENT_TYPE.PHONE,
       content: {
         value: inputPhone.current.value,
@@ -318,11 +307,11 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
       const url = phoneNumber ? apiUrl.concat('/' + phoneNumber?.id) : apiUrls.konfigurasiPortal;
       if (phoneNumber?.id) {
         await put(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-          setPhoneNumber(res?.content);
+          setPhoneNumber(res?.data?.content);
         });
       } else {
         await post(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-          setPhoneNumber(res?.content);
+          setPhoneNumber(res?.data?.content);
         });
       }
     } catch (e) {
@@ -332,7 +321,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   const saveNamaOrganisasi = async () => {
     const params = {
-      code: NAMA_ORAGNISASI,
+      code: PORTAL_KONFIGURASI_CODE.NAMA_ORAGNISASI,
       contentType: CONTENT_TYPE.TEXT,
       content: {
         value: inputNamaOrganisasi.current.value,
@@ -341,14 +330,14 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
     try {
       const apiUrl = apiUrls.konfigurasiPortal;
-      const url = alamatOrganisasi ? apiUrl.concat('/' + alamatOrganisasi?.id) : apiUrls.konfigurasiPortal;
+      const url = namaOrganisasi ? apiUrl.concat('/' + namaOrganisasi?.id) : apiUrls.konfigurasiPortal;
       if (namaOrganisasi?.id) {
         await put(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-          setAlamatOrganisasi(res?.content);
+          setNamaOrganisasi(res?.data?.content);
         });
       } else {
         await post(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-          setAlamatOrganisasi(res?.content);
+          setNamaOrganisasi(res?.data?.content);
         });
       }
     } catch (e) {
@@ -358,7 +347,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   const saveAlamatOrganisasi = async () => {
     const params = {
-      code: ALAMAT_ORAGNISASI,
+      code: PORTAL_KONFIGURASI_CODE.ALAMAT_ORAGNISASI,
       contentType: CONTENT_TYPE.TEXT,
       content: {
         value: inputAlamatOrganisasi.current.value,
@@ -366,14 +355,40 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
     };
 
     try {
-      const url = alamatOrganisasi ? apiUrls.konfigurasiPortal + '/' + alamatOrganisasi?.id : apiUrls.konfigurasiPortal;
+      const apiUrl = apiUrls.konfigurasiPortal;
+      const url = alamatOrganisasi ? apiUrl.concat('/' + alamatOrganisasi?.id) : apiUrls.konfigurasiPortal;
       if (alamatOrganisasi?.id) {
         await put(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-          setAlamatOrganisasi(res?.content);
+          setAlamatOrganisasi(res?.data?.content);
         });
       } else {
         await post(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-          setAlamatOrganisasi(res?.content);
+          setAlamatOrganisasi(res?.data?.content);
+        });
+      }
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+
+  const saveFooterLink = async () => {
+    const params = {
+      code: PORTAL_KONFIGURASI_CODE.FOOTERLINK,
+      contentType: CONTENT_TYPE.TEXT,
+      content: {
+        value: inputFooterLink.current.value,
+      },
+    };
+
+    try {
+      const url = footerLink ? apiUrls.konfigurasiPortal + '/' + footerLink?.id : apiUrls.konfigurasiPortal;
+      if (footerLink?.id) {
+        await put(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+          setFooterLink(res?.data?.content);
+        });
+      } else {
+        await post(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
+          setFooterLink(res?.data?.content);
         });
       }
     } catch (e) {
@@ -383,7 +398,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   const saveNoFax = async () => {
     const params = {
-      code: NO_FAX,
+      code: PORTAL_KONFIGURASI_CODE.NO_FAX,
       contentType: CONTENT_TYPE.FAX,
       content: {
         value: inputNoFax.current.value,
@@ -394,11 +409,11 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
       const url = noFax ? apiUrls.konfigurasiPortal.concat('/' + noFax?.id) : apiUrls.konfigurasiPortal;
       if (noFax?.id) {
         await put(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-          setNoFax(res?.content);
+          setNoFax(res?.data?.content);
         });
       } else {
         await post(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-          setNoFax(res?.content);
+          setNoFax(res?.data?.content);
         });
       }
     } catch (e) {
@@ -408,7 +423,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   const saveFaceBookUrl = async () => {
     const params = {
-      code: FACEBOOK_URL,
+      code: PORTAL_KONFIGURASI_CODE.FACEBOOK_URL,
       contentType: CONTENT_TYPE.SOCIALMEDIA,
       content: {
         url: inputFacebookUrl.current.value,
@@ -420,11 +435,11 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
       const url = facebookUrl ? apiUrl.concat('/' + facebookUrl?.id) : apiUrls.konfigurasiPortal;
       if (facebookUrl?.id) {
         await put(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-          setFacebookUrl(res?.content);
+          setFacebookUrl(res?.data?.content);
         });
       } else {
         await post(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-          setFacebookUrl(res?.content);
+          setFacebookUrl(res?.data?.content);
         });
       }
     } catch (e) {
@@ -434,7 +449,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   const saveTwitterUrl = async () => {
     const params = {
-      code: TWITTER_URL,
+      code: PORTAL_KONFIGURASI_CODE.TWITTER_URL,
       contentType: CONTENT_TYPE.SOCIALMEDIA,
       content: {
         url: inputTwitterUrl.current.value,
@@ -446,11 +461,11 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
       const url = twitterUrl ? apiUrl.concat('/' + twitterUrl?.id) : apiUrls.konfigurasiPortal;
       if (twitterUrl?.id) {
         await put(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-          setTwitterUrl(res?.content);
+          setTwitterUrl(res?.data?.content);
         });
       } else {
         await post(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-          setTwitterUrl(res?.content);
+          setTwitterUrl(res?.data?.content);
         });
       }
     } catch (e) {
@@ -460,7 +475,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   const saveInstagramUrl = async () => {
     const params = {
-      code: INSTAGRAN_URL,
+      code: PORTAL_KONFIGURASI_CODE.INSTAGRAM_URL,
       contentType: CONTENT_TYPE.SOCIALMEDIA,
       content: {
         url: inputInstagramUrl.current.value,
@@ -472,11 +487,11 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
       const url = instagramUrl ? apiUrl.concat('/' + instagramUrl?.id) : apiUrls.konfigurasiPortal;
       if (instagramUrl?.id) {
         await put(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-          setInstagramUrl(res?.content);
+          setInstagramUrl(res?.data?.content);
         });
       } else {
         await post(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-          setInstagramUrl(res?.content);
+          setInstagramUrl(res?.data?.content);
         });
       }
     } catch (e) {
@@ -486,7 +501,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   const saveYoutubeUrl = async () => {
     const params = {
-      code: YOUTUBE_URL,
+      code: PORTAL_KONFIGURASI_CODE.YOUTUBE_URL,
       contentType: CONTENT_TYPE.SOCIALMEDIA,
       content: {
         url: inputYoutubeUrl.current.value,
@@ -498,11 +513,11 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
       const url = youtubeUrl ? apiUrl.concat('/' + youtubeUrl?.id) : apiUrls.konfigurasiPortal;
       if (youtubeUrl?.id) {
         await put(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-          setYoutubeUrl(res?.content);
+          setYoutubeUrl(res?.data?.content);
         });
       } else {
         await post(url, params, { headers: { 'Content-Type': 'application/json' } }).then((res) => {
-          setYoutubeUrl(res?.content);
+          setYoutubeUrl(res?.data?.content);
         });
       }
     } catch (e) {
@@ -512,7 +527,6 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
 
   return (
     <Form style={style}>
-      {console.log(records, 'records')}
       <Row className="sdp-form mb-20">
         <Col>
           <h5>Logo Header</h5>
@@ -597,6 +611,15 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
           <div className="input-group-inline">
             <input type="text" ref={inputNoFax} placeholder="No. Fax" />
             <Button variant="outline-dark" onClick={saveNoFax}>
+              <Edit></Edit>
+            </Button>
+          </div>
+        </Col>
+        <Col>
+          <label>Footer Link</label>
+          <div className="input-group-inline">
+            <input type="text" ref={inputFooterLink} placeholder="Footer Link" />
+            <Button variant="outline-dark" onClick={saveFooterLink}>
               <Edit></Edit>
             </Button>
           </div>

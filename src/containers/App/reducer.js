@@ -50,6 +50,11 @@ export const initialState = {
     error: '',
     record: {},
   },
+  globalData: {
+    loading: false,
+    error: '',
+    records: {},
+  },
   notificationOptions: {
     ...defaultNotification,
   },
@@ -100,6 +105,11 @@ export const setNewTagline = createAsyncThunk('cms/setNewTagline', async (params
 export const uploadFoto = createAsyncThunk('cms/uploadFoto', async (formData) => {
   const response = await post(apiUrls.uploadFoto, formData);
   return response?.data;
+});
+
+export const getGlobalData = createAsyncThunk('cms/beranda', async (formData) => {
+  const response = await get(apiUrls.publicGlobalData, formData);
+  return response?.data?.content;
 });
 
 const AppSlice = createSlice({
@@ -216,6 +226,17 @@ const AppSlice = createSlice({
       state.file.loading = false;
       state.file.error = 'Error in upload file!';
     });
+    builder.addCase(getGlobalData.pending, (state) => {
+      state.globalData.loading = true;
+    });
+    builder.addCase(getGlobalData.fulfilled, (state, action) => {
+      state.globalData.loading = false;
+      state.globalData.records = action.payload;
+    });
+    builder.addCase(getGlobalData.rejected, (state) => {
+      state.globalData.loading = false;
+      state.globalData.error = 'Error in upload file!';
+    });
   },
 });
 
@@ -229,6 +250,7 @@ export const rkpPNSelector = (state) => state.global.rkpPN;
 export const kategoriSelector = (state) => state.global?.kategori;
 export const taglineSelector = (state) => state.global?.tagline;
 export const fotoSelector = (state) => state.global?.file;
+export const globalData = (state) => state.global?.globalData;
 
 export const instansiOptionsSelector = createSelector(instansiDataSelector, dataOptionsMapperCurry(idNameOptionsMapper));
 export const dataindukAllOptionsSelector = createSelector(dataindukAllSelector, dataOptionsMapperCurry(idNameOptionsMapper));

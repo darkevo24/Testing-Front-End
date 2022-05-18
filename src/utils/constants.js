@@ -125,6 +125,7 @@ export const apiUrls = {
   penggunaUpload: getApiEndpoint('sekretariat/user/bulk'),
   cmsAnalitikData: getCMSEndpoint('analitik'),
   cmsManagementApi: getApiEndpoint('management-api'),
+  publicGlobalData: getPublicEndpoint('site-setting'),
 };
 
 export const priorityOptions = [

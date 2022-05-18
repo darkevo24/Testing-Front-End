@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import cx from 'classnames';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
@@ -17,6 +17,7 @@ import { getAnalyticsUrl } from 'utils/constants';
 
 import Logo from 'assets/logo-satu.jpg';
 import { removeAllCookie } from '../../utils/cookie';
+import { globalData } from '../App/reducer';
 import { Roles } from 'containers/App/config';
 
 const getPathnameFromRoute = (route) => get(route, 'link.pathname', route.link);
@@ -67,6 +68,8 @@ export const Header = () => {
   const location = useLocation();
   const { keycloak } = useKeycloak();
   const user = useSelector(userSelector);
+  const { loading, records } = useSelector(globalData);
+  const [logoHeader, setLogoHeader] = useState(null);
   const { t } = useTranslation();
   const showAppSec = useMemo(() => {
     if (!user) return false;
@@ -132,11 +135,27 @@ export const Header = () => {
     ],
     [isLoggedIn],
   );
+  const LOGO_HEADER = 'LOGO-HEADER';
 
+  const getContent = (code) => {
+    return records.filter((dataContent) => dataContent?.code === code);
+  };
+
+  useEffect(() => {
+    contentMap();
+  }, [records]);
+
+  const contentMap = () => {
+    const getLogoHeader = getContent(LOGO_HEADER);
+    if (getLogoHeader.length > 0) {
+      setLogoHeader(getLogoHeader[0]);
+    }
+  };
   const renderPublicNav = () => {
     return (
       <Nav className="h-100 d-flex align-items-center">
         {getNavLinks(PUBLIC_ROUTES, location.pathname, goTo)}
+        {console.log(logoHeader, '-----')}
         <Button variant="info" className="btn-rounded ml-32" onClick={keycloak.login}>
           Masuk
         </Button>

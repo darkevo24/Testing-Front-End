@@ -18,6 +18,7 @@ import 'react-tippy/dist/tippy.css';
 import { fetchLoggedInUserInfo } from 'containers/Login/reducer';
 import Notify, { Notification } from 'components/Notification';
 import { getCookieByName, cookieKeys, removeAllCookie } from 'utils/cookie';
+import { getGlobalData } from './reducer';
 
 const AdminRoutes = lazy(() => import('./AdminRoutes'));
 const AppRoutes = lazy(() => import('./AppRoutes'));
@@ -64,6 +65,10 @@ function App(props) {
       history.push('/home');
     }
   };
+
+  useEffect(() => {
+    return dispatch(getGlobalData());
+  }, []);
 
   return (
     <ReactKeycloakProvider authClient={keycloak} initOptions={initOptions} onTokens={handleOnTokens} onEvent={handleOnEvent}>

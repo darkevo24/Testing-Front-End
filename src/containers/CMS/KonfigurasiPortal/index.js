@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-
 import { Loader } from 'components';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
 import { konfiguasiPortalCmsListSelector } from './reducer';
-import { useDispatch, useSelector } from 'react-redux';
 import CMSKonfigurasiPortalForm from 'components/CMSKonfigurasiPortalForm';
 
 const bem = bn('content-create');

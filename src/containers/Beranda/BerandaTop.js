@@ -1,10 +1,11 @@
 import { React, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as BerandaImage } from './BerandaImage.svg';
 
 import { useSelector } from 'react-redux';
 import { globalData } from '../App/reducer';
 import _ from 'lodash';
+
+import { ReactComponent as BerandaImage } from './BerandaImage.svg';
 
 const BoxImage = styled.div`
   display: flex;

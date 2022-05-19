@@ -3,15 +3,13 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import defaultIMageThumbnail from '../assets/default-thumbnail.png';
 import defaultBanner from '../assets/defaultBannerLarge.jpg';
-import { FacebookSvg, Edit, InstagramSvg, YoutubeSvg, TwitterSvg } from 'components/Icons';
 import { apiUrls, post, put } from 'utils/request';
-
 import { getListKonfigurasiPortal, konfiguasiPortalCmsListSelector } from 'containers/CMS/KonfigurasiPortal/reducer';
 import { CONTENT_TYPE, PORTAL_KONFIGURASI_CODE } from 'utils/constants';
+import { FacebookSvg, Edit, InstagramSvg, YoutubeSvg, TwitterSvg } from 'components/Icons';
 
 const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const dispatch = useDispatch();

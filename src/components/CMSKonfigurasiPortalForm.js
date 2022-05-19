@@ -241,7 +241,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
       <Row className="sdp-form mb-20">
         <Col>
           <h5>Logo Header</h5>
-          <div className="group-input-image">
+          <div className="group-input-image flex-row-between">
             <div className="preview-image">
               <div style={{ display: 'none' }}>
                 <input type="file" ref={inputLogoHeader} onChange={handleLogoHeaderFiles} />
@@ -256,7 +256,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
         </Col>
         <Col className="mb-20">
           <h5>Logo Footer</h5>
-          <div className="group-input-image">
+          <div className="group-input-image flex-row-between">
             <div className="preview-image">
               <div style={{ display: 'none' }}>
                 <input type="file" ref={inputLogoFooter} onChange={handleLogoFooterFiles} />
@@ -271,11 +271,11 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
         </Col>
       </Row>
 
-      <Row className="full-width-form">
+      <Row className="full-width-form mb-30">
         <Col>
           <h5>Logo Banner</h5>
-          <div className="group-input-image flex-columm">
-            <div className="preview-image full-width">
+          <div className="group-input-image flex-columm flex-center">
+            <div className="preview-image full-width ">
               <div style={{ display: 'none' }}>
                 <input type="file" ref={inputBanner} onChange={handleBannerFiles} />
               </div>
@@ -292,7 +292,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
         <h5>Informasi</h5>
         <Col>
           <label>Nama Organisasi</label>
-          <div className="input-group-inline">
+          <div className="input-group-inline flex-row-between">
             <input type="text" ref={inputNamaOrganisasi} placeholder="Nama organisasi" />
             <Button variant="outline-dark" onClick={saveNamaOrganisasi}>
               <Edit></Edit>
@@ -301,7 +301,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
         </Col>
         <Col>
           <label>Alamat Organisasi</label>
-          <div className="input-group-inline">
+          <div className="input-group-inline flex-row-between">
             <input type="text" ref={inputAlamatOrganisasi} placeholder="alamat organisasi" />
             <Button variant="outline-dark" onClick={saveAlamatOrganisasi}>
               <Edit></Edit>
@@ -310,7 +310,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
         </Col>
         <Col>
           <label>No. Telepon</label>
-          <div className="input-group-inline">
+          <div className="input-group-inline flex-row-between">
             <input type="text" ref={inputPhone} placeholder="No Telepon" />
             <Button variant="outline-dark" onClick={savePhone}>
               <Edit></Edit>
@@ -319,7 +319,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
         </Col>
         <Col>
           <label>No. Fax</label>
-          <div className="input-group-inline">
+          <div className="input-group-inline flex-row-between">
             <input type="text" ref={inputPhone} placeholder="no. Fax" />
             <Button variant="outline-dark" onClick={saveNoFax}>
               <Edit></Edit>
@@ -327,8 +327,8 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
           </div>
         </Col>
         <Col>
-          <div className="input-group-inline">
-            <div className="sicoal-media-icon">
+          <div className="input-group-inline flex-row-between">
+            <div className="social-media-icon flex-center">
               <FacebookSvg></FacebookSvg>
             </div>
             <input type="text" ref={inputFacebookUrl} placeholder="facebook" />
@@ -338,8 +338,8 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
           </div>
         </Col>
         <Col>
-          <div className="input-group-inline">
-            <div className="sicoal-media-icon">
+          <div className="input-group-inline flex-row-between">
+            <div className="social-media-icon flex-center">
               <TwitterSvg></TwitterSvg>
             </div>
             <input type="text" ref={inputTwitterUrl} placeholder="twitter" />
@@ -349,8 +349,8 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
           </div>
         </Col>
         <Col>
-          <div className="input-group-inline">
-            <div className="sicoal-media-icon">
+          <div className="input-group-inline flex-row-between">
+            <div className="social-media-icon flex-center">
               <InstagramSvg></InstagramSvg>
             </div>
             <input type="text" ref={inputInstagramUrl} placeholder="instagram" />
@@ -360,8 +360,8 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
           </div>
         </Col>
         <Col>
-          <div className="input-group-inline">
-            <div className="sicoal-media-icon">
+          <div className="input-group-inline flex-row-between">
+            <div className="social-media-icon flex-center">
               <YoutubeSvg></YoutubeSvg>
             </div>
             <input type="text" ref={inputYoutubeUrl} placeholder="youtube" />

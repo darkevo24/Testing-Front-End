@@ -138,7 +138,7 @@ export const CMSSidebar = () => {
         <SidebarItem title="Sekuriti" pathname="/cms/security" />
         <SidebarItem title="Aset" pathname="#" />
         <SidebarItem title="Media Sosial" pathname="/cms/media-sosial" />
-        <SidebarItem title="Konfigurasi Portal" pathname="/cms/konfigurasi-portal" />
+        <SidebarItem title="Portal" pathname="/cms/konfigurasi-portal" />
       </div>
     </div>
   );

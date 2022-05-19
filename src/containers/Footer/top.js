@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import RBRow from 'react-bootstrap/Row';
 import RBCol from 'react-bootstrap/Col';
 import { ReactComponent as CallIcon } from 'assets/call.svg';
@@ -7,6 +8,10 @@ import LogoBappenas from 'assets/Logo_Bappenas_Indonesia.png';
 import styled from 'styled-components';
 import { useKeycloak } from '@react-keycloak/web';
 import { useHistory } from 'react-router-dom';
+
+import { useSelector } from 'react-redux';
+import { globalData } from '../App/reducer';
+import _ from 'lodash';
 
 export const Box = styled.div`
   width: 100%;
@@ -54,6 +59,14 @@ const FooterLink = styled.a`
 `;
 
 export const Top = () => {
+  const { records } = useSelector(globalData);
+  const [logoFooter, setLogoFooter] = useState(null);
+  const [noTelepon, setNoTelepon] = useState(null);
+  const [noFax, setNoFax] = useState(null);
+  const [namaOrganisasi, setNamaOrganisasi] = useState(null);
+  const [footerLink, setFooterLink] = useState(null);
+  const [alamatOrganisasi, setAlamatOrganisasi] = useState(null);
+
   const history = useHistory();
   const { keycloak } = useKeycloak();
   const isLoggedIn = !!keycloak.authenticated;
@@ -104,9 +117,47 @@ export const Top = () => {
           link: '',
           disabled: true,
         },
+        {
+          title: 'Permintaan Akses',
+          link: 'http://link.bappenas.go.id/aksesportalsdi',
+        },
       ],
     },
   ];
+
+  useEffect(() => {
+    if (!_.isEmpty(records)) {
+      let data = _.groupBy(records, 'code');
+      if (!_.isEmpty(data.LOGO_FOOTER[0])) {
+        setLogoFooter(data.LOGO_FOOTER[0]?.content?.url);
+      }
+
+      if (!_.isEmpty(data.NAMA_ORGANISASI[0])) {
+        setNamaOrganisasi(data.NAMA_ORGANISASI[0].content.value);
+      }
+
+      if (!_.isEmpty(data.ALAMAT_ORGANISASI[0])) {
+        setAlamatOrganisasi(data.ALAMAT_ORGANISASI[0].content.value);
+      }
+
+      if (!_.isEmpty(data.NO_FAX[0])) {
+        setNoFax(data.NO_FAX[0].content.value);
+      }
+
+      if (!_.isEmpty(data.NO_TELEPON[0])) {
+        setNoTelepon(data.NO_TELEPON[0].content.value);
+      }
+
+      if (!_.isEmpty(data.FOOTER_LINK[0])) {
+        const footerLink = data.FOOTER_LINK[0].content.value;
+        const dataLink = footerLink.split('-');
+        List[1].linkList.push({
+          title: dataLink[0],
+          link: dataLink[1],
+        });
+      }
+    }
+  }, [records]);
 
   const handleClick = (e) => {
     const href = e.target.dataset?.href;
@@ -127,20 +178,18 @@ export const Top = () => {
             <div className="d-flex justify-content-between flex-wrap px-16">
               <Row>
                 <Column>
-                  <img src={LogoBappenas} alt="logo" height="96px" width="96px" />
+                  <img src={logoFooter} alt="logo" height="96px" width="96px" />
                 </Column>
                 <Column>
-                  <Titles>Kementerian PPN/Bappenas</Titles>
+                  <Titles>{namaOrganisasi}</Titles>
                   <FooterLink>
-                    Sekretariat Satu Data Indonesia
-                    <br />
-                    Jalan Taman Suropati No.2 Jakarta 10310
+                    <div dangerouslySetInnerHTML={{ __html: alamatOrganisasi }} />
                   </FooterLink>
                   <FooterLink>
-                    <CallIcon /> 021-31936207
+                    <CallIcon /> {noTelepon}
                   </FooterLink>
                   <FooterLink>
-                    <PrinterIcon /> 021-3145374
+                    <PrinterIcon /> {noFax}
                   </FooterLink>
                 </Column>
               </Row>
@@ -155,7 +204,7 @@ export const Top = () => {
                           className={linkItem.disabled && 'disabled pe-none'}
                           href={linkItem.link}
                           data-href={linkItem.link}
-                          onClick={handleClick}
+                          // onClick={handleClick}
                           key={linkItem.title}>
                           {linkItem.title}
                         </FooterLink>

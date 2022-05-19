@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-
 import { Loader } from 'components';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
-import { detailDataSelector } from './reducer';
-import { useDispatch, useSelector } from 'react-redux';
+import { konfiguasiPortalCmsListSelector } from './reducer';
 import CMSKonfigurasiPortalForm from 'components/CMSKonfigurasiPortalForm';
 
 const bem = bn('content-create');
 
 const CMSKonfigurasiPortal = () => {
-  const { loading, record } = useSelector(detailDataSelector);
+  const { loading, record } = useSelector(konfiguasiPortalCmsListSelector);
 
   const onSubmit = () => {
     // save konfigurasi portal
@@ -23,7 +22,7 @@ const CMSKonfigurasiPortal = () => {
         <div className={bem.e('title')}>Aset</div>
       </div>
       <div className={bem.e('body')}>
-        <CMSKonfigurasiPortalForm data={record} onSubmit={onSubmit} />
+        <CMSKonfigurasiPortalForm />
       </div>
       {loading && <Loader fullscreen={true} />}
     </div>

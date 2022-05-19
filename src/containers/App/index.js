@@ -18,6 +18,7 @@ import 'react-tippy/dist/tippy.css';
 import { fetchLoggedInUserInfo } from 'containers/Login/reducer';
 import Notify, { Notification } from 'components/Notification';
 import { getCookieByName, cookieKeys, removeAllCookie } from 'utils/cookie';
+import { getGlobalData } from './reducer';
 
 const AdminRoutes = lazy(() => import('./AdminRoutes'));
 const AppRoutes = lazy(() => import('./AppRoutes'));
@@ -25,6 +26,11 @@ const CMSRoutes = lazy(() => import('./CMSRoutes'));
 
 function App(props) {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    return dispatch(getGlobalData());
+  }, []);
+
   const isTermAndConditionAccepted = getCookieByName(cookieKeys.isTermAndConditionAccepted);
 
   const history = useHistory();

@@ -1,9 +1,10 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import cx from 'classnames';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import isArray from 'lodash/isArray';
+import _ from 'lodash';
 import get from 'lodash/get';
 import map from 'lodash/map';
 import { useTranslation } from 'react-i18next';
@@ -15,8 +16,8 @@ import { useKeycloak } from '@react-keycloak/web';
 import { userSelector } from 'containers/Login/reducer';
 import { getAnalyticsUrl } from 'utils/constants';
 
-import Logo from 'assets/logo-satu.jpg';
 import { removeAllCookie } from '../../utils/cookie';
+import { globalData } from '../App/reducer';
 import { Roles } from 'containers/App/config';
 
 const getPathnameFromRoute = (route) => get(route, 'link.pathname', route.link);
@@ -67,12 +68,23 @@ export const Header = () => {
   const location = useLocation();
   const { keycloak } = useKeycloak();
   const user = useSelector(userSelector);
+  const { records } = useSelector(globalData);
+  const [logoHeader, setLogoHeader] = useState(null);
   const { t } = useTranslation();
   const showAppSec = useMemo(() => {
     if (!user) return false;
     const { roles = null } = user;
     return ![Roles.MEMBER, Roles.REGISTERED_USER, Roles.EKSEKUTIF].includes(roles);
   }, [user]);
+
+  useEffect(() => {
+    if (!_.isEmpty(records)) {
+      let data = _.groupBy(records, 'code');
+      if (!_.isEmpty(data.LOGO_HEADER[0])) {
+        setLogoHeader(data.LOGO_HEADER[0].content.url);
+      }
+    }
+  }, [records]);
 
   const isLoggedIn = !!keycloak.authenticated;
 
@@ -167,7 +179,7 @@ export const Header = () => {
   return (
     <Navbar bg="transparent" className="sdp-header">
       <Container className={cx('mw-100 h-100', { 'pr-24': !isLoggedIn })}>
-        <img src={Logo} alt="brand-logo" className="cursor-pointer" onClick={goTo('/home')} />
+        <img src={logoHeader} alt="brand-logo" className="cursor-pointer" onClick={goTo('/home')} />
         {isLoggedIn ? renderMemberNav() : renderPublicNav()}
       </Container>
     </Navbar>

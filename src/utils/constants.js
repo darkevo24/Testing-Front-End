@@ -125,6 +125,7 @@ export const apiUrls = {
   penggunaUpload: getApiEndpoint('sekretariat/user/bulk'),
   cmsAnalitikData: getCMSEndpoint('analitik'),
   cmsManagementApi: getApiEndpoint('management-api'),
+  publicGlobalData: getPublicEndpoint('site-setting'),
 };
 
 export const priorityOptions = [
@@ -347,4 +348,27 @@ export const USER_ROLES = {
   USER: 'USER',
   PIC_SDGS: 'PIC_SDGS',
   PIC_BAPPENAS: 'PIC_BAPPENAS',
+};
+
+export const CONTENT_TYPE = {
+  TEXT: 'TEXT',
+  IMAGE: 'IMAGE',
+  SOCIALMEDIA: 'SOCIALMEDIA',
+  PHONE: 'PHONE',
+  FAX: 'FAX',
+};
+
+export const PORTAL_KONFIGURASI_CODE = {
+  NAMA_ORAGNISASI: 'NAMA_ORGANISASI',
+  ALAMAT_ORAGNISASI: 'ALAMAT_ORGANISASI',
+  NO_TELEPON: 'NO_TELEPON',
+  NO_FAX: 'NO_FAX',
+  FACEBOOK_URL: 'FACEBOOK_URL',
+  INSTAGRAM_URL: 'INSTAGRAM_URL',
+  TWITTER_URL: 'TWITTER_URL',
+  YOUTUBE_URL: 'YOUTUBE_URL',
+  LOGO_HEADER: 'LOGO_HEADER',
+  LOGO_FOOTER: 'LOGO_FOOTER',
+  BANNER: 'BANNER',
+  FOOTERLINK: 'FOOTER_LINK',
 };

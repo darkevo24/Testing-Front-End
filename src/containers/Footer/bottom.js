@@ -26,6 +26,7 @@ export const Bottom = () => {
       setFacebookUrl(data2.FACEBOOK_URL[0].content.url);
       setInstagramUrl(data2.INSTAGRAM_URL[0].content.url);
       setYoutubeUrl(data2.YOUTUBE_URL[0].content.url);
+      console.log(data2, '---');
     }
   }, [records]);
 

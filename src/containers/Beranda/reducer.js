@@ -86,6 +86,11 @@ export const getDatasetPopular = createAsyncThunk('beranda/datasetPopular', asyn
   return response?.data?.content;
 });
 
+export const Header = createAsyncThunk('beranda/datasetPopular', async (param) => {
+  const response = await get(`${apiUrls.homeDataSetEndPoint}/${param}`);
+  return response?.data?.content;
+});
+
 export const logHomeTrendingOrPopular = createAsyncThunk(
   'beranda/logHomeTrendingOrPopular',
   async (param, { rejectWithValue }) => {

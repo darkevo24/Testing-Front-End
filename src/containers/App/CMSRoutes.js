@@ -53,6 +53,7 @@ const PenggunaManagementDetailPage = lazy(() => import('containers/CMS/PenggunaM
 const PenggunaFormPage = lazy(() => import('containers/CMS/PenggunaManagement/tambahPengguna'));
 const CMSSecurity = lazy(() => import('containers/CMS/Security'));
 const CMSSecurityEdit = lazy(() => import('containers/CMS/Security/CMSSecurityEdit'));
+const CMSKonfigurasiPortal = lazy(() => import('containers/CMS/KonfigurasiPortal'));
 
 function CMSRoutes() {
   return (
@@ -621,6 +622,19 @@ function CMSRoutes() {
           path="/cms/contact-us/:id"
           component={ContactUsDetailPage}
           permissions={[
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+          ]}
+        />
+        <PrivateRoute
+          exact
+          path="/cms/konfigurasi-portal"
+          component={CMSKonfigurasiPortal}
+          permissions={[
+            Roles.ADMIN,
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,

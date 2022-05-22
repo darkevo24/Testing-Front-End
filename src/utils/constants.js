@@ -15,6 +15,7 @@ import {
   DataManagementIcon,
   KonfigurasiIcon,
   UserManagementIcon,
+  ApplicationMonitoring,
 } from 'assets/icons';
 import { SplitCircle } from 'components/Icons';
 
@@ -279,6 +280,14 @@ export const CMS_DASHBOARD = [
     icon: <DashboardManagementIcon />,
     iconColor: 'bg-blue',
     link: '/cms/data-analytic',
+  },
+  {
+    title: 'Application Monitoring',
+    description: 'Application Monitoring',
+    icon: <ApplicationMonitoring />,
+    iconColor: 'bg-purple',
+    link: '',
+    outLink: 'google.co.id',
   },
 ];
 

@@ -287,7 +287,7 @@ export const CMS_DASHBOARD = [
     icon: <ApplicationMonitoring />,
     iconColor: 'bg-purple',
     link: '',
-    outLink: 'google.co.id',
+    ExternalLink: 'https://apm.satudata.go.id/',
   },
 ];
 

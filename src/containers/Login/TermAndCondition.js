@@ -35,31 +35,33 @@ const TermAndCondition = () => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    if (isRecaptchaEnabled) {
-      if (captchaValue && agree) {
-        const data = {
-          response: captchaValue,
-        };
+    dispatch(acceptTermAndCondition());
+    history.push('/');
+    // if (isRecaptchaEnabled) {
+    //   if (captchaValue && agree) {
+    //     const data = {
+    //       response: captchaValue,
+    //     };
 
-        dispatch(validateReCaptcha({ payload: data })).then((res) => {
-          if (res?.payload?.status === 'SUCCESS') {
-            dispatch(acceptTermAndCondition());
-            history.push('/');
-          } else {
-            Notification.show({
-              type: 'secondary',
-              message: <div> {'Permintaan Data Gagal Diproses '}</div>,
-              icon: 'cross',
-            });
-          }
-        });
-      }
-    } else {
-      if (agree) {
-        dispatch(acceptTermAndCondition());
-        history.push('/');
-      }
-    }
+    //     dispatch(validateReCaptcha({ payload: data })).then((res) => {
+    //       if (res?.payload?.status === 'SUCCESS') {
+    //         dispatch(acceptTermAndCondition());
+    //         history.push('/');
+    //       } else {
+    //         Notification.show({
+    //           type: 'secondary',
+    //           message: <div> {'Permintaan Data Gagal Diproses '}</div>,
+    //           icon: 'cross',
+    //         });
+    //       }
+    //     });
+    //   }
+    // } else {
+    //   if (agree) {
+    //     dispatch(acceptTermAndCondition());
+    //     history.push('/');
+    //   }
+    // }
   };
 
   const handleChange = (value) => {
@@ -98,11 +100,11 @@ const TermAndCondition = () => {
           <img className="logo align-self-center" src={Logo} alt="logo" />
           <div className="mt-20">
             <FormCheck type="checkbox" label="Accept Terms & Conditions" onChange={handleCheckBox} />
-            {isRecaptchaEnabled && (
+            {/* {isRecaptchaEnabled && (
               <ReCAPTCHA theme="dark" ref={reCaptchaRef} sitekey={recaptchaSiteKey} onChange={handleChange} />
-            )}
+            )} */}
             <Button
-              disabled={isRecaptchaEnabled ? !(agree && validated) : !agree}
+              // disabled={isRecaptchaEnabled ? !(agree && validated) : !agree}
               className="mt-48 px-32 float-end fw-bold"
               onClick={handleSubmit}>
               Finish

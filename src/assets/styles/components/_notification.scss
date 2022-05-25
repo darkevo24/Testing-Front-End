@@ -34,3 +34,11 @@
     align-items: center;
   }
 }
+
+
+.error-box {
+  background: $red-light;
+  border-radius: $border-radius;
+  p {
+  }
+}

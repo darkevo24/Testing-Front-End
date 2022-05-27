@@ -220,7 +220,12 @@ const CMSPenggunaManagementView = () => {
               <div className={bem.e('title')}>Detail</div>
               <div>
                 {editable ? (
-                  <Button key="delete" variant="light" className="mr-16 br-4 bg-gray border-0 p-13" onClick={deletePengguna}>
+                  <Button
+                    key="delete"
+                    variant="light"
+                    className="mr-16 br-4 bg-gray border-0 p-13"
+                    onClick={deletePengguna}
+                    style={{ display: 'none' }}>
                     <Trash />
                   </Button>
                 ) : (

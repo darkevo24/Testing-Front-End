@@ -71,6 +71,8 @@ export const Header = () => {
   const { records } = useSelector(globalData);
   const [logoHeader, setLogoHeader] = useState(null);
   const { t } = useTranslation();
+  const fromLogin = _.get(history, 'location.params.login', false);
+
   const showAppSec = useMemo(() => {
     if (!user) return false;
     const { roles = null } = user;
@@ -144,6 +146,14 @@ export const Header = () => {
     ],
     [isLoggedIn],
   );
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (fromLogin && !isLoggedIn) {
+        keycloak.login();
+      }
+    }, 300);
+  }, [fromLogin]);
 
   const renderPublicNav = () => {
     return (

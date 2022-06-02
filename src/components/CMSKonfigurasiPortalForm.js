@@ -555,7 +555,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
               Ubah Gambar
             </Button>
           </div>
-          {errorInfoLogo ? <p className="error-box px-10 py-5 bg-red-light"> {t('portal.imageTypeAndSizeValidationError')} </p>:''}
+          {errorInfoLogo ? <p className="rounded px-10 py-5 bg-red-light"> {t('portal.imageTypeAndSizeValidationError')} </p>:''}
         </Col>
         <Col className="mb-20">
           <h5>Logo Footer</h5>
@@ -571,7 +571,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
               Ubah Gambar
             </Button>
           </div>
-          {errorInfoLogoFooter ?<p className="error-box px-10 py-5 bg-red-light">{t('portal.imageTypeAndSizeValidationError')}</p> : ''}
+          {errorInfoLogoFooter ?<p className="rounded px-10 py-5 bg-red-light">{t('portal.imageTypeAndSizeValidationError')}</p> : ''}
         </Col>
       </Row>
 
@@ -585,7 +585,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
               </div>
               <img src={imageBanner ? imageBanner?.content?.url : defaultBanner} />
             </div>
-            {errorInfoBanner ? <p className="error-box px-10 py-5 bg-red-light">{t('portal.imageTypeAndSizeValidationError')}</p> : ''}
+            {errorInfoBanner ? <p className="rounded px-10 py-5 bg-red-light">{t('portal.imageTypeAndSizeValidationError')}</p> : ''}
             <Button variant="outline-info" onClick={triggerBannerFileClick}>
               Ubah Gambar
             </Button>

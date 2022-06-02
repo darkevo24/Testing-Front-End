@@ -10,12 +10,12 @@ import {
   PendukungSvg,
   PerlindungamSvg,
   APIManagementIcon,
+  ApplicationMonitoring,
   ContentManagementIcon,
   DashboardManagementIcon,
   DataManagementIcon,
   KonfigurasiIcon,
   UserManagementIcon,
-  ApplicationMonitoring,
 } from 'assets/icons';
 import { SplitCircle } from 'components/Icons';
 
@@ -287,7 +287,7 @@ export const CMS_DASHBOARD = [
     icon: <ApplicationMonitoring />,
     iconColor: 'bg-purple',
     link: '',
-    ExternalLink: 'https://apm.satudata.go.id/',
+    externalLink: 'https://apm.satudata.go.id/',
   },
 ];
 

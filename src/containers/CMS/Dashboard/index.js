@@ -10,7 +10,7 @@ const Dashboard = () => {
 
   const redirectToPage = (page) => {
     if (!page?.link) {
-      window.location.replace(page.ExternalLink);
+      window.location.replace(page.externalLink);
     }
     history.push(page.link);
   };

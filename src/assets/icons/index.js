@@ -12,6 +12,7 @@ export { ReactComponent as PertahananSvg } from 'assets/icons/Topics/pertahanan.
 
 //CMS
 export { ReactComponent as APIManagementIcon } from 'assets/icons/CMS/APIManagement.svg';
+export { ReactComponent as ApplicationMonitoring } from 'assets/icons/CMS/ApplicationMonitoring.svg';
 export { ReactComponent as ContentManagementIcon } from 'assets/icons/CMS/ContentManagement.svg';
 export { ReactComponent as DashboardManagementIcon } from 'assets/icons/CMS/DashboardManagement.svg';
 export { ReactComponent as DataManagementIcon } from 'assets/icons/CMS/DataManagement.svg';
@@ -23,4 +24,3 @@ export { ReactComponent as SidebarConfigIcon } from 'assets/icons/Sidebars/sideb
 export { ReactComponent as SidebarContentIcon } from 'assets/icons/Sidebars/sidebar-content-management.svg';
 export { ReactComponent as SidebarDataIcon } from 'assets/icons/Sidebars/sidebar-data-management.svg';
 export { ReactComponent as SidebarUserIcon } from 'assets/icons/Sidebars/sidebar-user-management.svg';
-export { ReactComponent as ApplicationMonitoring } from 'assets/icons/CMS/ApplicationMonitoring.svg';

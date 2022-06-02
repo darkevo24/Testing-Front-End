@@ -147,10 +147,8 @@ const DataSet = () => {
         totalFile: num_resources,
         url: dataSetUrl,
       };
-      dispatch(logHomeTrendingOrPopular(payload)).then((result) => {
-        if (!result.error) {
-          window.open(dataSetUrl, '_self');
-        }
+      dispatch(logHomeTrendingOrPopular(payload)).finally(() => {
+        window.open(dataSetUrl, '_self');
       });
     },
     [],

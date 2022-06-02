@@ -1,9 +1,12 @@
+/* eslint-disable prettier/prettier */
 import React, { useState, useRef, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+
 import defaultIMageThumbnail from '../assets/default-thumbnail.png';
 import defaultBanner from '../assets/defaultBannerLarge.jpg';
 import { apiUrls, post, put } from 'utils/request';
@@ -47,6 +50,8 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const [errorInfoBanner, setErrorInfoBanner] = useState(false);
   const [errorInfoLogo, setErrorInfoLogo] = useState(false);
   const [errorInfoLogoFooter, setErrorInfoLogoFooter] = useState(false);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     return dispatch(getListKonfigurasiPortal());
@@ -550,7 +555,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
               Ubah Gambar
             </Button>
           </div>
-          {errorInfoLogo ? <p className="error-box px-10 py-5">Hanya PNG, JPEG dan JPG dengan maksimal 512Kb</p> : ''}
+          {errorInfoLogo ? <p className="error-box px-10 py-5 bg-red-light"> {t('portal.imageTypeAndSizeValidationError')} </p>:''}
         </Col>
         <Col className="mb-20">
           <h5>Logo Footer</h5>
@@ -566,7 +571,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
               Ubah Gambar
             </Button>
           </div>
-          {errorInfoLogoFooter ? <p className="error-box px-10 py-5">Hanya PNG, JPEG dan JPG dengan maksimal 512Kb</p> : ''}
+          {errorInfoLogoFooter ?<p className="error-box px-10 py-5 bg-red-light">{t('portal.imageTypeAndSizeValidationError')}</p> : ''}
         </Col>
       </Row>
 
@@ -580,7 +585,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
               </div>
               <img src={imageBanner ? imageBanner?.content?.url : defaultBanner} />
             </div>
-            {errorInfoBanner ? <p className="error-box px-10 py-5">Hanya PNG, JPEG dan JPG dengan maksimal 512Kb</p> : ''}
+            {errorInfoBanner ? <p className="error-box px-10 py-5 bg-red-light">{t('portal.imageTypeAndSizeValidationError')}</p> : ''}
             <Button variant="outline-info" onClick={triggerBannerFileClick}>
               Ubah Gambar
             </Button>

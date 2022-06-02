@@ -12,6 +12,7 @@ export { ReactComponent as PertahananSvg } from 'assets/icons/Topics/pertahanan.
 
 //CMS
 export { ReactComponent as APIManagementIcon } from 'assets/icons/CMS/APIManagement.svg';
+export { ReactComponent as ApplicationMonitoring } from 'assets/icons/CMS/ApplicationMonitoring.svg';
 export { ReactComponent as ContentManagementIcon } from 'assets/icons/CMS/ContentManagement.svg';
 export { ReactComponent as DashboardManagementIcon } from 'assets/icons/CMS/DashboardManagement.svg';
 export { ReactComponent as DataManagementIcon } from 'assets/icons/CMS/DataManagement.svg';

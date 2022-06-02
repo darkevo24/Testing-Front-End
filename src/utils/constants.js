@@ -10,6 +10,7 @@ import {
   PendukungSvg,
   PerlindungamSvg,
   APIManagementIcon,
+  ApplicationMonitoring,
   ContentManagementIcon,
   DashboardManagementIcon,
   DataManagementIcon,
@@ -279,6 +280,14 @@ export const CMS_DASHBOARD = [
     icon: <DashboardManagementIcon />,
     iconColor: 'bg-blue',
     link: '/cms/data-analytic',
+  },
+  {
+    title: 'Application Monitoring',
+    description: 'Application Monitoring',
+    icon: <ApplicationMonitoring />,
+    iconColor: 'bg-purple',
+    link: '',
+    externalLink: 'https://apm.satudata.go.id/',
   },
 ];
 

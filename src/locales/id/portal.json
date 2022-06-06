@@ -1,0 +1,5 @@
+{
+  "portal": {
+    "imageTypeAndSizeValidationError": "Hanya PNG, JPEG dan JPG dengan maksimal 512Kb"
+  }
+}

@@ -1,9 +1,12 @@
+/* eslint-disable prettier/prettier */
 import React, { useState, useRef, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+
 import defaultIMageThumbnail from '../assets/default-thumbnail.png';
 import defaultBanner from '../assets/defaultBannerLarge.jpg';
 import { apiUrls, post, put } from 'utils/request';
@@ -15,7 +18,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const dispatch = useDispatch();
   const { loading, records } = useSelector(konfiguasiPortalCmsListSelector);
 
-  const [errorInfo, setErrorInfo] = useState({});
+  const [errorInfo, setErrorInfo] = useState();
   const [logoHeader, setLogoHeader] = useState(null);
   // const [logoHeaderName, setLogoHeaderName] = useState(null);
   const [logoFooter, setLogoFooter] = useState(null);
@@ -43,6 +46,12 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
   const inputInstagramUrl = useRef(null);
   const inputTwitterUrl = useRef(null);
   const inputYoutubeUrl = useRef(null);
+
+  const [errorInfoBanner, setErrorInfoBanner] = useState(false);
+  const [errorInfoLogo, setErrorInfoLogo] = useState(false);
+  const [errorInfoLogoFooter, setErrorInfoLogoFooter] = useState(false);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     return dispatch(getListKonfigurasiPortal());
@@ -132,15 +141,17 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
     const size = 512000;
     const type = ['image/jpeg', 'image/png', 'image/jpg'];
     if (file?.size > size && type.includes(file?.type)) {
-      return setErrorInfo('image', {
-        type: 'manual',
-        message: 'Only PNG, JPEG e JPG with Max 512Kb',
-      });
+      // return setErrorInfo('image', {
+      //   type: 'manual',
+      //   message: 'Only PNG, JPEG e JPG with Max 512Kb',
+      // });
+      return setErrorInfoLogo(true);
     }
     // eslint-disable-next-line
     let fileName = file.name.replace(/[&/\\#, +()$~%'":*?<>{}]/g, '');
     let newFile = new File([file], fileName, { type: 'image/png' });
     saveImage(PORTAL_KONFIGURASI_CODE.LOGO_HEADER, newFile);
+    setErrorInfoLogo(false);
   };
 
   const handleLogoFooterFiles = (file) => {
@@ -148,15 +159,17 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
     const size = 512000;
     const type = ['image/jpeg', 'image/png', 'image/jpg'];
     if (file?.size > size && type.includes(file?.type)) {
-      return setErrorInfo('image', {
-        type: 'manual',
-        message: 'Only PNG, JPEG e JPG with Max 512Kb',
-      });
+      // return setErrorInfo('image', {
+      //   type: 'manual',
+      //   message: 'Only PNG, JPEG e JPG with Max 512Kb',
+      // });
+      return setErrorInfoLogoFooter(true);
     }
     // eslint-disable-next-line
     let fileName = file.name.replace(/[&/\\#, +()$~%'":*?<>{}]/g, '');
     let newFile = new File([file], fileName, { type: 'image/png' });
     saveImage(PORTAL_KONFIGURASI_CODE.LOGO_FOOTER, newFile);
+    setErrorInfoLogoFooter(false);
   };
 
   const handleBannerFiles = async (file) => {
@@ -164,15 +177,17 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
     const size = 512000;
     const type = ['image/jpeg', 'image/png', 'image/jpg'];
     if (file?.size > size && type.includes(file?.type)) {
-      return setErrorInfo('image', {
-        type: 'manual',
-        message: 'Only PNG, JPEG e JPG with Max 512Kb',
-      });
+      // return setErrorInfo('image', {
+      //   type: 'manual',
+      //   message: 'Only PNG, JPEG e JPG with Max 512Kb',
+      // });
+      return setErrorInfoBanner(true);
     }
     // eslint-disable-next-line
     let fileName = file.name.replace(/[&/\\#, +()$~%'":*?<>{}]/g, '');
     let newFile = new File([file], fileName, { type: 'image/png' });
     saveImage(PORTAL_KONFIGURASI_CODE.BANNER, newFile);
+    setErrorInfoBanner(false);
   };
 
   const triggerLogoHeaderClick = () => {
@@ -540,6 +555,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
               Ubah Gambar
             </Button>
           </div>
+          {errorInfoLogo ? <p className="rounded px-10 py-5 bg-red-light"> {t('portal.imageTypeAndSizeValidationError')} </p>:''}
         </Col>
         <Col className="mb-20">
           <h5>Logo Footer</h5>
@@ -555,6 +571,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
               Ubah Gambar
             </Button>
           </div>
+          {errorInfoLogoFooter ?<p className="rounded px-10 py-5 bg-red-light">{t('portal.imageTypeAndSizeValidationError')}</p> : ''}
         </Col>
       </Row>
 
@@ -568,6 +585,7 @@ const CMSKonfigurasiPortalForm = ({ data, style }) => {
               </div>
               <img src={imageBanner ? imageBanner?.content?.url : defaultBanner} />
             </div>
+            {errorInfoBanner ? <p className="rounded px-10 py-5 bg-red-light">{t('portal.imageTypeAndSizeValidationError')}</p> : ''}
             <Button variant="outline-info" onClick={triggerBannerFileClick}>
               Ubah Gambar
             </Button>

@@ -228,10 +228,10 @@ const DaftarTable = ({
             <SingleSelectDropdown
               onChange={handleDropdownFilter('instansi')}
               data={instansiOptions}
-              isClearable
+              isClearable={true}
               placeHolder="Semua"
               isLoading={false}
-              noValue={true}
+              // noValue={true}
             />
           </div>
           <div className="col">
@@ -240,9 +240,9 @@ const DaftarTable = ({
               onChange={handleDropdownFilter('produsenData')}
               data={produenOptions}
               placeHolder="Semua"
-              isClearable
+              isClearable={true}
               isLoading={false}
-              noValue={true}
+              // noValue={true}
             />
           </div>
           <div className="col">
@@ -250,10 +250,10 @@ const DaftarTable = ({
             <SingleSelectDropdown
               onChange={handleDropdownFilter('dataInduk')}
               data={dataIndukOptions}
-              isClearable
+              isClearable={true}
               placeHolder="Semua"
               isLoading={false}
-              noValue={true}
+              // noValue={true}
             />
           </div>
           {cms ? (
@@ -263,10 +263,10 @@ const DaftarTable = ({
                 <SingleSelectDropdown
                   onChange={handleDropdownFilter('pilarSDGS')}
                   data={sdgPillerOptions}
-                  isClearable
+                  isClearable={true}
                   placeHolder="-"
                   isLoading={false}
-                  noValue={true}
+                  // noValue={true}
                 />
               </div>
               <div className="col">
@@ -274,10 +274,10 @@ const DaftarTable = ({
                 <SingleSelectDropdown
                   onChange={handleDropdownFilter('tujuanSDGS')}
                   data={tujuanSDGPillerOptions}
-                  isClearable
+                  isClearable={true}
                   placeHolder="-"
                   isLoading={false}
-                  noValue={true}
+                  // noValue={true}
                 />
               </div>
               <div className="col">
@@ -286,9 +286,9 @@ const DaftarTable = ({
                   onChange={handleDropdownFilter('pnRKP')}
                   data={rkpPNOptions}
                   placeHolder="-"
-                  isClearable
+                  isClearable={true}
                   isLoading={false}
-                  noValue={true}
+                  // noValue={true}
                 />
               </div>
               <div className="col">
@@ -296,10 +296,10 @@ const DaftarTable = ({
                 <SingleSelectDropdown
                   onChange={handleDropdownFilter('ppRKP')}
                   data={rkpPPOptions}
-                  isClearable
+                  isClearable={true}
                   placeHolder="-"
                   isLoading={false}
-                  noValue={true}
+                  // noValue={true}
                 />
               </div>
             </>

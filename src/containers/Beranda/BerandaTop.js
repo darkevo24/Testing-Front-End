@@ -10,22 +10,31 @@ import { ReactComponent as BerandaImage } from './BerandaImage.svg';
 const BoxImage = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 43px;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   background: #f5f6fa;
+  position: relative;
+  height: 310px;
 `;
 
 const LargeTitle = styled.p`
   font-weight: bold;
   font-size: 24px;
   line-height: 30px;
+  z-index: 1;
 `;
 
 const MediumTitle = styled.p`
   font-weight: normal;
   font-size: 14px;
   line-height: 17px;
+  z-index: 1;
+`;
+
+const ImageBanner = styled.img`
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
 `;
 
 export const BerandaTop = () => {
@@ -46,7 +55,7 @@ export const BerandaTop = () => {
       <LargeTitle>Data Indonesia, Dalam Satu Portal</LargeTitle>
       <MediumTitle>Temukan data-data Pemerintah dengan mudah!</MediumTitle>
       {/* <BerandaImage /> */}
-      <img src={banner} width="80%" />
+      <ImageBanner src={banner} width="100%" />
     </BoxImage>
   );
 };

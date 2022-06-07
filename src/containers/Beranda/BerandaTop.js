@@ -35,6 +35,7 @@ const ImageBanner = styled.img`
   position: absolute;
   z-index: 0;
   bottom: 0;
+  width: 100%;
 `;
 
 export const BerandaTop = () => {
@@ -55,7 +56,7 @@ export const BerandaTop = () => {
       <LargeTitle>Data Indonesia, Dalam Satu Portal</LargeTitle>
       <MediumTitle>Temukan data-data Pemerintah dengan mudah!</MediumTitle>
       {/* <BerandaImage /> */}
-      <ImageBanner src={banner} width="100%" />
+      <ImageBanner src={banner} />
     </BoxImage>
   );
 };

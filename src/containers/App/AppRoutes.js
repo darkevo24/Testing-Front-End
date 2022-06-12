@@ -37,6 +37,7 @@ const DashboardSaya = lazy(() => import('containers/Dashboard/DashboardSaya'));
 const DataAnalytic = lazy(() => import('containers/Dashboard/DataAnalytic'));
 const DaftarPage = lazy(() => import('containers/Daftar'));
 const DataVariablePage = lazy(() => import('containers/DataVariable'));
+const DaftarMenjadiAhli = lazy(() => import('containers/DaftarMenjadiAhli'));
 const ManagementApiPage = lazy(() => import('containers/ManagementApi'));
 const ManagementApiAddPage = lazy(() => import('containers/ManagementApi/Form'));
 const ManagementApiDetailPage = lazy(() => import('containers/ManagementApi/DetailApi'));
@@ -314,6 +315,12 @@ function AppRoutes(props) {
               exact
               path="/dataanalytic"
               component={DataAnalytic}
+              permissions={[Roles.ADMIN, Roles.REGISTERED_USER, Roles.MEMBER, Roles.SEKRETARIANT, Roles.EKSEKUTIF]}
+            />
+            <PrivateRoute
+              exact
+              path="/daftar-menjadi-ahli"
+              component={DaftarMenjadiAhli}
               permissions={[Roles.ADMIN, Roles.REGISTERED_USER, Roles.MEMBER, Roles.SEKRETARIANT, Roles.EKSEKUTIF]}
             />
             <PrivateRoute

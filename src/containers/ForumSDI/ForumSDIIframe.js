@@ -11,7 +11,7 @@ export const ForumSDIIframe = (props) => {
       <div className="p-0">
         <Row>
           <Col>
-            <iframe frameBorder="0" seamless title="google" src={src}></iframe>
+            <iframe frameBorder="0" seamless title="Forum sdi" src={src}></iframe>
           </Col>
         </Row>
       </div>

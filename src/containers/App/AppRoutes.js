@@ -15,6 +15,7 @@ const { PerminataanDetail } = lazily(() => import('containers/Perminataan/detail
 const PerminataanForumPage = lazy(() => import('containers/Perminataan/Forum'));
 const { ForumSDI } = lazily(() => import('containers/ForumSDI'));
 const { ForumSDIDetail } = lazily(() => import('containers/ForumSDI/ForumSDIDetail'));
+const { ForumSDIIframe } = lazily(() => import('containers/ForumSDI/ForumSDIIframe'));
 const BimTekSummaryPage = lazy(() => import('containers/BimTekSummary'));
 const BimTekFormPage = lazy(() => import('containers/BimTekForm'));
 const BimTekJadwalPage = lazy(() => import('containers/BimTekJadwal'));
@@ -97,6 +98,20 @@ function AppRoutes(props) {
               exact
               path="/forum-sdi"
               component={ForumSDI}
+              permissions={[
+                Roles.MEMBER,
+                Roles.CONTENT_CREATOR,
+                Roles.CONTENT_EDITOR,
+                Roles.EKSEKUTIF,
+                Roles.SEKRETARIANT,
+                Roles.SEKRETARIANT_CREATOR,
+                Roles.SEKRETARIANT_EDITOR,
+              ]}
+            />
+            <PrivateRoute
+              exact
+              path="/forum-sdi-iframe"
+              component={ForumSDIIframe}
               permissions={[
                 Roles.MEMBER,
                 Roles.CONTENT_CREATOR,

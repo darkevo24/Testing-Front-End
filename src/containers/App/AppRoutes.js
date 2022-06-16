@@ -37,6 +37,7 @@ const DashboardSaya = lazy(() => import('containers/Dashboard/DashboardSaya'));
 const DataAnalytic = lazy(() => import('containers/Dashboard/DataAnalytic'));
 const DaftarPage = lazy(() => import('containers/Daftar'));
 const DataVariablePage = lazy(() => import('containers/DataVariable'));
+const DaftarMenjadiAhli = lazy(() => import('containers/DaftarMenjadiAhli'));
 const ManagementApiPage = lazy(() => import('containers/ManagementApi'));
 const ManagementApiAddPage = lazy(() => import('containers/ManagementApi/Form'));
 const ManagementApiDetailPage = lazy(() => import('containers/ManagementApi/DetailApi'));
@@ -67,6 +68,7 @@ function AppRoutes(props) {
             <Route exact path="/berita/:id" component={BeritaDetailPage} />
             <Route exact path="/berita/perbulan/:date" component={BeritaPerBulan} />
             <Route exact path="/tentang" component={TentangPage} />
+            <Route exact path="/daftar-menjadi-ahli" component={DaftarMenjadiAhli} />
             {/*  <Route exact path="/api" component={ManagementApiPage} />
             <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
             <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />

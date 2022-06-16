@@ -121,6 +121,10 @@ export const Top = () => {
           title: 'Permintaan Akses',
           link: 'http://link.bappenas.go.id/aksesportalsdi',
         },
+        {
+          title: 'Daftar Menjadi Ahli',
+          link: '/daftar-menjadi-ahli',
+        },
       ],
     },
   ];

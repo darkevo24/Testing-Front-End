@@ -480,7 +480,7 @@ function CMSRoutes() {
         />
         <PrivateRoute
           exact
-          path="/cms/data-analytic"
+          path="/cms/data-prioritas"
           component={DataAnalyticPage}
           permissions={[Roles.ADMIN, Roles.SEKRETARIANT, Roles.SEKRETARIANT_CREATOR, Roles.SEKRETARIANT_EDITOR]}
         />

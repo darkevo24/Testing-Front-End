@@ -129,7 +129,7 @@ export const Header = () => {
         links: [
           { title: 'Kesiapan SDI', link: '/kesiapan-sdi' },
           { title: 'Eksekutif', link: '/dashboard-eksekutif' },
-          { title: 'Data Analytic', link: '/dataanalytic' },
+          { title: 'Data Prioritas', link: '/dataprioritas' },
           { title: 'Dashboard Saya', link: '/dashboard-saya' },
         ],
       },

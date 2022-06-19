@@ -279,7 +279,7 @@ export const CMS_DASHBOARD = [
     description: 'Manajemen Dashboard',
     icon: <DashboardManagementIcon />,
     iconColor: 'bg-blue',
-    link: '/cms/data-analytic',
+    link: '/cms/data-prioritas',
   },
   {
     title: 'Application Monitoring',

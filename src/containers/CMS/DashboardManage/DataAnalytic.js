@@ -236,7 +236,7 @@ const CMSDataAnalytic = () => {
   return (
     <div className={bem.e('section')}>
       <div className={bem.e('header')}>
-        <div className={cx(bem.e('title'), 'mb-3')}>Data Analytic</div>
+        <div className={cx(bem.e('title'), 'mb-3')}>Data Prioritas</div>
         <Row className="justify-content-between">
           <Col xs={4}>
             <Button variant="info" className="text-center mr-16 d-inline-flex align-items-center" onClick={createAction}>

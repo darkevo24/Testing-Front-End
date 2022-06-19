@@ -5,7 +5,7 @@ import Dashboard from 'containers/Dashboard';
 
 const DataAnalytic = () => {
   const dispatch = useDispatch();
-  const [options, setOptions] = useState({ options: [], title: 'Data Analytic' });
+  const [options, setOptions] = useState({ options: [], title: 'Data Prioritas' });
 
   const fetchData = () => {
     dispatch(getAllAnalitik()).then((res) => {

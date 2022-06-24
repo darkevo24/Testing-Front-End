@@ -126,13 +126,13 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
         </a>
       </FlexBox>
       <Row>{dataPopular.length > 0 && dataPopular.map(renderDataSet('popular'))}</Row>
-      <FlexBox className="px-16 mt-40">
+      <FlexBox className="px-16 mt-40 d-none">
         <LeftBox>
           <CovidSvg style={{ marginRight: '10px' }} />
           <TitleBox>Kasus COVID-19</TitleBox>
         </LeftBox>
       </FlexBox>
-      <Row className="mb-12">
+      <Row className="mb-12 d-none">
         <Col>
           <iframe
             width="100%"

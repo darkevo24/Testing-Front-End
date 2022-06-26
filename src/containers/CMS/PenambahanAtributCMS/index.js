@@ -1,5 +1,7 @@
 import { useHistory } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { userSelector } from 'containers/Login/reducer';
 
 const PenambahanAtributCMS = () => {
   const history = useHistory();
@@ -7,23 +9,12 @@ const PenambahanAtributCMS = () => {
     e.preventDefault();
     history.push('/cms/penambahan-atribut-cms/new-atribut-cms');
   };
+  const user = useSelector(userSelector);
+  const src = 'https://bpm.satudata.go.id/#/PenambahanAtributCMS?userEmail=' + user?.email;
   return (
     <div className="py-40">
-      <div className="px-30 pb-20 border-bottom">
-        <h1>Penambahan Atribut CMS</h1>
-        <Button className="" variant="info" style={{ width: '152px' }} onClick={handleCreate}>
-          Tambah Atribut
-        </Button>
-      </div>
       <div className="pt-0">
-        <iframe
-          frameBorder="0"
-          width="100%"
-          height="700px"
-          frameBorder="0"
-          seamless
-          title="Penambahan Atribut CMS"
-          src="https://bpm.satudata.go.id/#/PenambahanAtributCMS"></iframe>
+        <iframe frameBorder="0" width="100%" height="700px" seamless title="Penambahan Atribut CMS" src={src}></iframe>
       </div>
     </div>
   );

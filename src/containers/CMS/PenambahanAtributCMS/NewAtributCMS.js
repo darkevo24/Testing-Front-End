@@ -22,7 +22,6 @@ const NewPenambahanAtributCMS = () => {
           frameBorder="0"
           width="100%"
           height="700px"
-          frameBorder="0"
           seamless
           title="Penambahan Atribut CMS"
           src="https://bpm.satudata.go.id/#/PenambahanAtributForm"></iframe>

@@ -8,8 +8,8 @@ const PenambahanAtributCMS = () => {
     history.push('/cms/penambahan-atribut-cms/new-atribut-cms');
   };
   return (
-    <div className="py-40 px-10">
-      <div className="px-30">
+    <div className="py-40">
+      <div className="px-30 pb-20 border-bottom">
         <h1>Penambahan Atribut CMS</h1>
         <Button className="" variant="info" style={{ width: '152px' }} onClick={handleCreate}>
           Tambah Atribut

@@ -96,7 +96,7 @@ function AppRoutes(props) {
                 Roles.SEKRETARIANT_EDITOR,
               ]}
             />
-            <PrivateRoute
+            {/* <PrivateRoute
               exact
               path="/forum-sdi"
               component={ForumSDI}
@@ -109,10 +109,10 @@ function AppRoutes(props) {
                 Roles.SEKRETARIANT_CREATOR,
                 Roles.SEKRETARIANT_EDITOR,
               ]}
-            />
+            /> */}
             <PrivateRoute
               exact
-              path="/forum-sdi-iframe"
+              path="/forum-sdi"
               component={ForumSDIIframe}
               permissions={[
                 Roles.MEMBER,

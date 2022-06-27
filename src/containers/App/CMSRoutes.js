@@ -48,6 +48,8 @@ const NewInstansi = lazy(() => import('containers/CMS/Instansi/NewInstansi'));
 const NewUnitKerja = lazy(() => import('containers/CMS/Instansi/UnitKerja/NewUnitKerja'));
 const EditInstansi = lazy(() => import('containers/CMS/Instansi/EditInstansi'));
 const EditUnitKerja = lazy(() => import('containers/CMS/Instansi/UnitKerja/EditUnitKerja'));
+const PenambahanAtributCMS = lazy(() => import('containers/CMS/PenambahanAtributCMS'));
+const NewAtributCMS = lazy(() => import('containers/CMS/PenambahanAtributCMS/NewAtributCMS'));
 const PendaftarAhli = lazy(() => import('containers/CMS/PendaftarAhli'));
 const PenggunaManagementPage = lazy(() => import('containers/CMS/PenggunaManagement'));
 const PenggunaManagementDetailPage = lazy(() => import('containers/CMS/PenggunaManagementDetails'));
@@ -645,6 +647,33 @@ function CMSRoutes() {
         />
         <PrivateRoute
           exact
+          path="/cms/penambahan-atribut-cms"
+          component={PenambahanAtributCMS}
+          permissions={[
+            Roles.ADMIN,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
+          ]}
+        />
+        <PrivateRoute
+          exact
+          path="/cms/penambahan-atribut-cms/new-atribut-cms"
+          component={NewAtributCMS}
+          permissions={[
+            Roles.ADMIN,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
+          ]}
+        />
+        <PrivateRoute
           path="/cms/pendaftar-ahli"
           component={PendaftarAhli}
           permissions={[
@@ -654,6 +683,9 @@ function CMSRoutes() {
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
           ]}
         />
         <PrivateRoute exact path="/cms/pengguna-management" component={PenggunaManagementPage} permissions={[Roles.ADMIN]} />

@@ -124,7 +124,20 @@ export const CMSSidebar = () => {
           <SidebarDataIcon className="mr-10" />
           Data Management
         </div>
-        <SidebarItem title="Daftar Data" pathname="/cms/daftar" />
+        <Accordion defaultActiveKey="0">
+          <Accordion.Item>
+            <Accordion.Header
+              className={cx('', {
+                selected: window.location.pathname.includes('/cms/daftar'),
+              })}>
+              Daftar Data
+            </Accordion.Header>
+            <Accordion.Body>
+              <SidebarItem title="Daftar Data" pathname="/cms/daftar" />
+              <SidebarItem title="Penambahan Atribut" pathname="/cms/penambahan-atribut-cms" />
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
         <SidebarItem title="Permintaan Data" pathname="/cms/permintaan-data" />
         <SidebarItem title="Sandbox" pathname="#" />
       </div>

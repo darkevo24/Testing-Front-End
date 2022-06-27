@@ -106,7 +106,7 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
   const { records: dataPopular } = useSelector(datasetPopularSelector);
   return (
     <Box className={bem.e('cards-wrapper')}>
-      <FlexBox className="px-16">
+      <FlexBox className="px-16 d-none">
         <LeftBox>
           <TrendingSvg style={{ marginRight: '10px' }} />
           <TitleBox>Dataset Trending</TitleBox>
@@ -115,8 +115,8 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
           <RightBox>Lihat Semua</RightBox>
         </a>
       </FlexBox>
-      <Row>{dataTrending.length > 0 && dataTrending.map(renderDataSet('trending'))}</Row>
-      <FlexBox className="px-16 mt-40">
+      <Row className="d-none">{dataTrending.length > 0 && dataTrending.map(renderDataSet('trending'))}</Row>
+      <FlexBox className="px-16 mt-40 d-none">
         <LeftBox>
           <PopulerSvg style={{ marginRight: '10px' }} />
           <TitleBox>Dataset populer (6 bulan terakhir)</TitleBox>
@@ -125,7 +125,7 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
           <RightBox>Lihat Semua</RightBox>
         </a>
       </FlexBox>
-      <Row>{dataPopular.length > 0 && dataPopular.map(renderDataSet('popular'))}</Row>
+      <Row className="d-none">{dataPopular.length > 0 && dataPopular.map(renderDataSet('popular'))}</Row>
       <FlexBox className="px-16 mt-40 d-none">
         <LeftBox>
           <CovidSvg style={{ marginRight: '10px' }} />
@@ -141,6 +141,17 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
             seamless
             title="Dashboard Covid"
             src="https://analitik.data.go.id/superset/dashboard/104/"></iframe>
+        </Col>
+      </Row>
+      <Row className="mb-12">
+        <Col>
+          <iframe
+            width="100%"
+            height="1100px"
+            frameBorder="0"
+            seamless
+            title="Dashboard Beranda - Dataset Terpopuler"
+            src="https://analitik.data.go.id/superset/dashboard/111/?native_filters=%28%29"></iframe>
         </Col>
       </Row>
       <FlexBox className="px-16 mt-40">

@@ -4,16 +4,31 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import { CMS_DASHBOARD } from 'utils/constants';
+import { useSelector } from 'react-redux';
+import { userSelector } from 'containers/Login/reducer';
+import { Roles } from 'containers/App/config';
+import { useEffect } from 'react';
 
 const Dashboard = () => {
   const history = useHistory();
-
+  const user = useSelector(userSelector);
+  const apmAllowedRole = [Roles.ADMIN, Roles.SUPERADMIN, Roles.SUPERVISOR];
   const redirectToPage = (page) => {
     if (!page?.link) {
       window.location.replace(page.externalLink);
     }
     history.push(page.link);
   };
+
+  useEffect(() => {
+    const isRoleAllowedToOPenApm = apmAllowedRole.some((allowedRole) => allowedRole === user.roles);
+    if (!isRoleAllowedToOPenApm) {
+      const apmDashboardIndex = CMS_DASHBOARD.findIndex((cms) => cms.title === 'Application Monitoring');
+      if (apmDashboardIndex > -1) {
+        CMS_DASHBOARD.splice(apmDashboardIndex, 1);
+      }
+    }
+  }, []);
 
   return (
     <Row md={4} className="m-50 d-flex align-items-center justify-content-center">

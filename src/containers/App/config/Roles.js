@@ -12,6 +12,7 @@ const roles = {
   PIC_SDGS: 'PIC_SDGS',
   PIC_BAPPENAS: 'PIC_BAPPENAS',
   SUPERADMIN: 'SUPERADMIN',
+  SUPERVISOR: 'SUPERVISOR',
 };
 
 export default roles;

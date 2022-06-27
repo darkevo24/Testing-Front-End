@@ -13,17 +13,14 @@ const DaftarMenjadiAhli = (props) => {
       label: 'Daftar Menjadi Ahli',
     },
   ];
-
+  const src = 'https://bpm.satudata.go.id/#/FormRequest';
   return (
     <div className="dashboard">
       <Breadcrumbs breadcrumbsList={breadcrumbsList} />
-      <div className="p-32">
-        <div className="bimtek-header">Daftar Menjadi Ahli</div>
+      <div className="p-0">
         <Row>
           <Col>
-            <Row className="mb-3">
-              <Col className="justify-content-center align-items-center"></Col>
-            </Row>
+            <iframe frameBorder="0" seamless title="Daftar menjadi ahli" src={src}></iframe>
           </Col>
         </Row>
       </div>

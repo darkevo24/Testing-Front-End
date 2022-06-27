@@ -69,10 +69,23 @@ export const CMSSidebar = () => {
           </Accordion.Item>
         </Accordion>
         <SidebarItem title="Forum SDI" pathname="/cms/forum-sdi" />
-        <ComponentAccessibility
-          roles={[USER_ROLES.CONTENT_EDITOR, USER_ROLES.CONTENT_CREATOR, USER_ROLES.ADMIN, USER_ROLES.SEKRETARIAT]}>
-          <SidebarItem title="Komunitas Ahli" pathname="/cms/komunitas-ahli" />
-        </ComponentAccessibility>
+        <Accordion defaultActiveKey="0">
+          <Accordion.Item>
+            <Accordion.Header
+              className={cx('', {
+                selected: window.location.pathname.includes('/cms/bimtek'),
+              })}>
+              Komunitas Ahli
+            </Accordion.Header>
+            <Accordion.Body>
+              <ComponentAccessibility
+                roles={[USER_ROLES.CONTENT_EDITOR, USER_ROLES.CONTENT_CREATOR, USER_ROLES.ADMIN, USER_ROLES.SEKRETARIAT]}>
+                <SidebarItem title="Komunitas Ahli" pathname="/cms/komunitas-ahli" />
+              </ComponentAccessibility>
+              <SidebarItem title="Pendaftar Ahli" pathname="/cms/pendaftar-ahli" />
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
         <Accordion defaultActiveKey="0">
           <Accordion.Item>
             <Accordion.Header

@@ -50,6 +50,7 @@ const EditInstansi = lazy(() => import('containers/CMS/Instansi/EditInstansi'));
 const EditUnitKerja = lazy(() => import('containers/CMS/Instansi/UnitKerja/EditUnitKerja'));
 const PenambahanAtributCMS = lazy(() => import('containers/CMS/PenambahanAtributCMS'));
 const NewAtributCMS = lazy(() => import('containers/CMS/PenambahanAtributCMS/NewAtributCMS'));
+const PendaftarAhli = lazy(() => import('containers/CMS/PendaftarAhli'));
 const PenggunaManagementPage = lazy(() => import('containers/CMS/PenggunaManagement'));
 const PenggunaManagementDetailPage = lazy(() => import('containers/CMS/PenggunaManagementDetails'));
 const PenggunaFormPage = lazy(() => import('containers/CMS/PenggunaManagement/tambahPengguna'));
@@ -664,6 +665,21 @@ function CMSRoutes() {
           component={NewAtributCMS}
           permissions={[
             Roles.ADMIN,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
+          ]}
+        />
+        <PrivateRoute
+          path="/cms/pendaftar-ahli"
+          component={PendaftarAhli}
+          permissions={[
+            Roles.ADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,

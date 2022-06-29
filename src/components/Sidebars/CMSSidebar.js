@@ -166,6 +166,20 @@ export const CMSSidebar = () => {
         <SidebarItem title="Media Sosial" pathname="/cms/media-sosial" />
         <SidebarItem title="Portal" pathname="/cms/konfigurasi-portal" />
       </div>
+
+      <Accordion defaultActiveKey="0">
+        <Accordion.Item>
+          <Accordion.Header
+            className={cx('', {
+              selected: window.location.pathname.includes('/cms/daftar'),
+            })}>
+            Knowledge
+          </Accordion.Header>
+          <Accordion.Body>
+            <SidebarItem title="Glosarium" pathname="/cms/Glosarium" />
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
     </div>
   );
 };

@@ -125,6 +125,10 @@ export const Top = () => {
           title: 'Daftar Menjadi Ahli',
           link: '/daftar-menjadi-ahli',
         },
+        {
+          title: 'Registrasi Hak Akses',
+          link: '/registrasi-hak-akses',
+        },
       ],
     },
   ];

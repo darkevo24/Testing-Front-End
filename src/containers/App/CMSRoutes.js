@@ -251,6 +251,7 @@ function CMSRoutes() {
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
+            Roles.SUPERVISOR,
           ]}
         />
         <PrivateRoute

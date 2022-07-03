@@ -96,24 +96,11 @@ function AppRoutes(props) {
                 Roles.SEKRETARIANT_EDITOR,
               ]}
             />
-            {/* <PrivateRoute
-              exact
-              path="/forum-sdi"
-              component={ForumSDI}
-              permissions={[
-                Roles.MEMBER,
-                Roles.CONTENT_CREATOR,
-                Roles.CONTENT_EDITOR,
-                Roles.EKSEKUTIF,
-                Roles.SEKRETARIANT,
-                Roles.SEKRETARIANT_CREATOR,
-                Roles.SEKRETARIANT_EDITOR,
-              ]}
-            /> */}
             <PrivateRoute
               exact
               path="/forum-sdi"
-              component={ForumSDIIframe}
+              // component={ForumSDIIframe}
+              component={ForumSDI}
               permissions={[
                 Roles.MEMBER,
                 Roles.CONTENT_CREATOR,

@@ -1,20 +1,21 @@
-import { useHistory } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
+import { bpmUrl } from 'utils/constants';
 
 const RegistrasiMenuPengguna = () => {
-  const history = useHistory();
-  const handleCreate = (e) => {
-    e.preventDefault();
-    history.push('/cms/penambahan-atribut-cms/new-atribut-cms');
-  };
   const user = useSelector(userSelector);
-  const src = 'https://bpm.satudata.go.id/#/PenambahanAtributCMS?userEmail=' + user?.email;
+  const src = bpmUrl.concat('PenambahanAtributCMS?userEmail=' + user?.email);
   return (
-    <div className="py-40">
+    <div className="">
       <div className="pt-0">
-        <iframe frameBorder="0" width="100%" height="700px" seamless title="Penambahan Atribut CMS" src={src}></iframe>
+        <iframe
+          rameBorder="0"
+          width="100%"
+          height="1200px"
+          seamless
+          title="Registrasi Pengguna"
+          scrolling="no"
+          src={src}></iframe>
       </div>
     </div>
   );

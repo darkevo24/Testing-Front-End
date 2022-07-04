@@ -690,7 +690,7 @@ function CMSRoutes() {
           ]}
         />
         <PrivateRoute
-          path="/cms/registrasi-menu-pengguna"
+          path="/cms/registrasi-pengguna"
           component={RegistrasiMenuPengguna}
           permissions={[
             Roles.ADMIN,

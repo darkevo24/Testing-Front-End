@@ -154,7 +154,7 @@ export const CMSSidebar = () => {
         </div>
         <SidebarItem title="Instansi" pathname="/cms/instansi" />
         <SidebarItem title="Pengguna" pathname="/cms/pengguna-management" />
-        <SidebarItem title="Registrasi Menu Pengguna" pathname="/cms/registrasi-menu-pengguna" />
+        <SidebarItem title="Registrasi Pengguna" pathname="/cms/registrasi-pengguna" />
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>

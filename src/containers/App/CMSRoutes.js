@@ -54,6 +54,7 @@ const PendaftarAhli = lazy(() => import('containers/CMS/PendaftarAhli'));
 const PenggunaManagementPage = lazy(() => import('containers/CMS/PenggunaManagement'));
 const PenggunaManagementDetailPage = lazy(() => import('containers/CMS/PenggunaManagementDetails'));
 const PenggunaFormPage = lazy(() => import('containers/CMS/PenggunaManagement/tambahPengguna'));
+const RegistrasiMenuPengguna = lazy(() => import('containers/CMS/RegistrasiMenuPengguna'));
 const CMSSecurity = lazy(() => import('containers/CMS/Security'));
 const CMSSecurityEdit = lazy(() => import('containers/CMS/Security/CMSSecurityEdit'));
 const CMSKonfigurasiPortal = lazy(() => import('containers/CMS/KonfigurasiPortal'));
@@ -677,6 +678,21 @@ function CMSRoutes() {
         <PrivateRoute
           path="/cms/pendaftar-ahli"
           component={PendaftarAhli}
+          permissions={[
+            Roles.ADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
+          ]}
+        />
+        <PrivateRoute
+          path="/cms/registrasi-pengguna"
+          component={RegistrasiMenuPengguna}
           permissions={[
             Roles.ADMIN,
             Roles.CONTENT_CREATOR,

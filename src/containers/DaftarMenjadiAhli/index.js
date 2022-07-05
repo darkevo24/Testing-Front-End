@@ -1,26 +1,22 @@
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { Breadcrumbs } from 'components/Breadcrumb';
+import { bpmUrl } from 'utils/constants';
 
 const DaftarMenjadiAhli = (props) => {
-  const breadcrumbsList = [
-    {
-      path: '#',
-      label: 'Sandbox',
-    },
-    {
-      isActive: true,
-      label: 'Daftar Menjadi Ahli',
-    },
-  ];
-  const src = 'https://bpm.satudata.go.id/#/FormRequest';
+  const src = bpmUrl.concat('Registrasi');
   return (
     <div className="dashboard">
-      <Breadcrumbs breadcrumbsList={breadcrumbsList} />
-      <div className="p-0">
+      <div className="p-32">
         <Row>
           <Col>
-            <iframe frameBorder="0" seamless title="Daftar menjadi ahli" src={src}></iframe>
+            <iframe
+              frameBorder="0"
+              seamless
+              title="Daftar menjadi ahli"
+              height="100%"
+              scrolling="no"
+              width="100%"
+              src={src}></iframe>
           </Col>
         </Row>
       </div>

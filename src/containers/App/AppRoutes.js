@@ -48,6 +48,7 @@ const ChangePasswordUser = lazy(() => import('containers/ChangePasswordUser'));
 const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
 const KebijakanPrivasiPage = lazy(() => import('containers/KebijakanPrivasi'));
 const MetadataRegistryPage = lazy(() => import('containers/MetadataRegistry'));
+const RegistrasiHakAkses = lazy(() => import('containers/RegistrasiHakAkses'));
 
 function AppRoutes(props) {
   return (
@@ -70,6 +71,7 @@ function AppRoutes(props) {
             <Route exact path="/berita/perbulan/:date" component={BeritaPerBulan} />
             <Route exact path="/tentang" component={TentangPage} />
             <Route exact path="/daftar-menjadi-ahli" component={DaftarMenjadiAhli} />
+            <Route exact path="/registrasi-hak-akses" component={RegistrasiHakAkses} />
             {/*  <Route exact path="/api" component={ManagementApiPage} />
             <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
             <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
@@ -96,24 +98,11 @@ function AppRoutes(props) {
                 Roles.SEKRETARIANT_EDITOR,
               ]}
             />
-            {/* <PrivateRoute
-              exact
-              path="/forum-sdi"
-              component={ForumSDI}
-              permissions={[
-                Roles.MEMBER,
-                Roles.CONTENT_CREATOR,
-                Roles.CONTENT_EDITOR,
-                Roles.EKSEKUTIF,
-                Roles.SEKRETARIANT,
-                Roles.SEKRETARIANT_CREATOR,
-                Roles.SEKRETARIANT_EDITOR,
-              ]}
-            /> */}
             <PrivateRoute
               exact
               path="/forum-sdi"
-              component={ForumSDIIframe}
+              // component={ForumSDIIframe}
+              component={ForumSDI}
               permissions={[
                 Roles.MEMBER,
                 Roles.CONTENT_CREATOR,

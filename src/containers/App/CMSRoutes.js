@@ -58,6 +58,7 @@ const RegistrasiMenuPengguna = lazy(() => import('containers/CMS/RegistrasiMenuP
 const CMSSecurity = lazy(() => import('containers/CMS/Security'));
 const CMSSecurityEdit = lazy(() => import('containers/CMS/Security/CMSSecurityEdit'));
 const CMSKonfigurasiPortal = lazy(() => import('containers/CMS/KonfigurasiPortal'));
+const UserFeedback = lazy(() => import('containers/CMS/UserFeedback'));
 
 function CMSRoutes() {
   return (
@@ -693,6 +694,21 @@ function CMSRoutes() {
         <PrivateRoute
           path="/cms/registrasi-pengguna"
           component={RegistrasiMenuPengguna}
+          permissions={[
+            Roles.ADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
+          ]}
+        />
+        <PrivateRoute
+          path="/cms/user-feedback"
+          component={UserFeedback}
           permissions={[
             Roles.ADMIN,
             Roles.CONTENT_CREATOR,

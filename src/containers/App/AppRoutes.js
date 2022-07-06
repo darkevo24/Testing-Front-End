@@ -48,6 +48,7 @@ const ChangePasswordUser = lazy(() => import('containers/ChangePasswordUser'));
 const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
 const KebijakanPrivasiPage = lazy(() => import('containers/KebijakanPrivasi'));
 const MetadataRegistryPage = lazy(() => import('containers/MetadataRegistry'));
+const Glosarium = lazy(() => import('containers/Glosarium'));
 const RegistrasiHakAkses = lazy(() => import('containers/RegistrasiHakAkses'));
 const SDIWiki = lazy(() => import('containers/SDIWiki'));
 const FormFeedback = lazy(() => import('containers/FormFeedback'));
@@ -73,6 +74,7 @@ function AppRoutes(props) {
             <Route exact path="/berita/perbulan/:date" component={BeritaPerBulan} />
             <Route exact path="/tentang" component={TentangPage} />
             <Route exact path="/daftar-menjadi-ahli" component={DaftarMenjadiAhli} />
+            <Route exact path="/glosarium" component={Glosarium} />
             <Route exact path="/registrasi-hak-akses" component={RegistrasiHakAkses} />
             <Route exact path="/sdi-wiki" component={SDIWiki} />
             <Route exact path="/form-feedback" component={FormFeedback} />

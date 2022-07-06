@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
+import { bpmUrl } from 'utils/constants';
 
 const Glosarium = () => {
   const history = useHistory();
@@ -10,11 +10,11 @@ const Glosarium = () => {
     history.push('/cms/penambahan-atribut-cms/new-atribut-cms');
   };
   const user = useSelector(userSelector);
-  const src = 'https://bpm.satudata.go.id/#/PenambahanAtributCMS?userEmail=' + user?.email;
+  const src = bpmUrl.concat('Glosarium?userEmail=' + user?.email);
   return (
     <div className="py-40">
       <div className="pt-0">
-        <iframe frameBorder="0" width="100%" height="700px" seamless title="Penambahan Atribut CMS" src={src}></iframe>
+        <iframe frameBorder="0" width="100%" height="700px" seamless title="Glosarium" src={src}></iframe>
       </div>
     </div>
   );

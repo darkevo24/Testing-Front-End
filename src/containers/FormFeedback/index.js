@@ -2,8 +2,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { bpmUrl } from 'utils/constants';
 
-const DaftarMenjadiAhli = (props) => {
-  const src = bpmUrl.concat('Registrasi');
+const FormFeedback = (props) => {
+  let urlParams = window.location.search;
+  let queryString = new URLSearchParams(urlParams).toString();
+  const src = bpmUrl.concat('FeedbackUserCreate?' + queryString);
   return (
     <div className="dashboard">
       <div className="p-32">
@@ -12,7 +14,7 @@ const DaftarMenjadiAhli = (props) => {
             <iframe
               frameBorder="0"
               seamless
-              title="Daftar menjadi ahli"
+              title="Form Feedback"
               height="100%"
               scrolling="no"
               width="100%"
@@ -24,4 +26,4 @@ const DaftarMenjadiAhli = (props) => {
   );
 };
 
-export default DaftarMenjadiAhli;
+export default FormFeedback;

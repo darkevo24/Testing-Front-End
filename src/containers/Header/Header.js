@@ -123,6 +123,7 @@ export const Header = () => {
           { title: 'Komunitas Ahli', link: '/komunitas-ahli' },
           { title: 'Forum SDI', link: '/forum-sdi' },
           { title: 'Glosarium', link: '/Glosarium' },
+          { title: 'SDI Wiki', link: '/sdi-wiki' },
         ],
       },
       {

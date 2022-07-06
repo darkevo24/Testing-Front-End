@@ -54,10 +54,13 @@ const PendaftarAhli = lazy(() => import('containers/CMS/PendaftarAhli'));
 const PenggunaManagementPage = lazy(() => import('containers/CMS/PenggunaManagement'));
 const PenggunaManagementDetailPage = lazy(() => import('containers/CMS/PenggunaManagementDetails'));
 const PenggunaFormPage = lazy(() => import('containers/CMS/PenggunaManagement/tambahPengguna'));
+const RegistrasiMenuPengguna = lazy(() => import('containers/CMS/RegistrasiMenuPengguna'));
+const SDIWiki = lazy(() => import('containers/CMS/SDIWiki'));
 const CMSSecurity = lazy(() => import('containers/CMS/Security'));
 const CMSSecurityEdit = lazy(() => import('containers/CMS/Security/CMSSecurityEdit'));
 const CMSKonfigurasiPortal = lazy(() => import('containers/CMS/KonfigurasiPortal'));
 const Glosarium = lazy(() => import('containers/CMS/Glosarium'));
+const UserFeedback = lazy(() => import('containers/CMS/UserFeedback'));
 
 function CMSRoutes() {
   return (
@@ -252,6 +255,7 @@ function CMSRoutes() {
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
+            Roles.SUPERVISOR,
           ]}
         />
         <PrivateRoute
@@ -690,8 +694,39 @@ function CMSRoutes() {
           ]}
         />
         <PrivateRoute
-          path="/cms/Glosarium"
+          path="/cms/glosarium"
           component={Glosarium}
+          permissions={[
+            Roles.ADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
+          ]}
+        />
+        <PrivateRoute
+          path="/cms/registrasi-pengguna"
+          component={RegistrasiMenuPengguna}
+          permissions={[
+            Roles.ADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
+          ]}
+        />
+        <PrivateRoute exact path="/cms/sdi-wiki" component={SDIWiki} permissions={[Roles.ADMIN]} />
+        <PrivateRoute
+          path="/cms/user-feedback"
+          component={UserFeedback}
           permissions={[
             Roles.ADMIN,
             Roles.CONTENT_CREATOR,

@@ -50,6 +50,7 @@ const KebijakanPrivasiPage = lazy(() => import('containers/KebijakanPrivasi'));
 const MetadataRegistryPage = lazy(() => import('containers/MetadataRegistry'));
 const RegistrasiHakAkses = lazy(() => import('containers/RegistrasiHakAkses'));
 const SDIWiki = lazy(() => import('containers/SDIWiki'));
+const FormFeedback = lazy(() => import('containers/FormFeedback'));
 
 function AppRoutes(props) {
   return (
@@ -74,6 +75,7 @@ function AppRoutes(props) {
             <Route exact path="/daftar-menjadi-ahli" component={DaftarMenjadiAhli} />
             <Route exact path="/registrasi-hak-akses" component={RegistrasiHakAkses} />
             <Route exact path="/sdi-wiki" component={SDIWiki} />
+            <Route exact path="/form-feedback" component={FormFeedback} />
             {/*  <Route exact path="/api" component={ManagementApiPage} />
             <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
             <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />

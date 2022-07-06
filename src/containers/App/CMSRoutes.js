@@ -59,6 +59,7 @@ const SDIWiki = lazy(() => import('containers/CMS/SDIWiki'));
 const CMSSecurity = lazy(() => import('containers/CMS/Security'));
 const CMSSecurityEdit = lazy(() => import('containers/CMS/Security/CMSSecurityEdit'));
 const CMSKonfigurasiPortal = lazy(() => import('containers/CMS/KonfigurasiPortal'));
+const UserFeedback = lazy(() => import('containers/CMS/UserFeedback'));
 
 function CMSRoutes() {
   return (
@@ -707,6 +708,21 @@ function CMSRoutes() {
           ]}
         />
         <PrivateRoute exact path="/cms/sdi-wiki" component={SDIWiki} permissions={[Roles.ADMIN]} />
+        <PrivateRoute
+          path="/cms/user-feedback"
+          component={UserFeedback}
+          permissions={[
+            Roles.ADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
+          ]}
+        />
         <PrivateRoute exact path="/cms/pengguna-management" component={PenggunaManagementPage} permissions={[Roles.ADMIN]} />
         <PrivateRoute exact path="/cms/pengguna-management/add" component={PenggunaFormPage} permissions={[Roles.ADMIN]} />
         <PrivateRoute

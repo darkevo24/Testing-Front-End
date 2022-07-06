@@ -4,7 +4,14 @@ import { useHistory, useLocation } from 'react-router-dom';
 import Accordion from 'react-bootstrap/Accordion';
 import { getAnalyticsUrl, USER_ROLES } from 'utils/constants';
 
-import { SidebarApiIcon, SidebarConfigIcon, SidebarContentIcon, SidebarDataIcon, SidebarUserIcon } from 'assets/icons';
+import {
+  SidebarApiIcon,
+  SidebarConfigIcon,
+  SidebarContentIcon,
+  SidebarDataIcon,
+  SidebarFeedbackIcon,
+  SidebarUserIcon,
+} from 'assets/icons';
 import bn from 'utils/bemNames';
 import { ComponentAccessibility } from '../ComponentAccess';
 
@@ -68,6 +75,7 @@ export const CMSSidebar = () => {
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
+        <SidebarItem title="SDI WIki" pathname="/cms/sdi-wiki" />
         <SidebarItem title="Forum SDI" pathname="/cms/forum-sdi" />
         <Accordion defaultActiveKey="0">
           <Accordion.Item>
@@ -166,6 +174,13 @@ export const CMSSidebar = () => {
         <SidebarItem title="Aset" pathname="#" />
         <SidebarItem title="Media Sosial" pathname="/cms/media-sosial" />
         <SidebarItem title="Portal" pathname="/cms/konfigurasi-portal" />
+      </div>
+      <div className="mt-3">
+        <div className={bem.e('title')}>
+          <SidebarFeedbackIcon className="mr-10" />
+          FEEDBACK
+        </div>
+        <SidebarItem title="User Feedback" pathname="/cms/user-feedback" />
       </div>
     </div>
   );

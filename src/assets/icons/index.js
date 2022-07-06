@@ -24,3 +24,4 @@ export { ReactComponent as SidebarConfigIcon } from 'assets/icons/Sidebars/sideb
 export { ReactComponent as SidebarContentIcon } from 'assets/icons/Sidebars/sidebar-content-management.svg';
 export { ReactComponent as SidebarDataIcon } from 'assets/icons/Sidebars/sidebar-data-management.svg';
 export { ReactComponent as SidebarUserIcon } from 'assets/icons/Sidebars/sidebar-user-management.svg';
+export { ReactComponent as SidebarFeedbackIcon } from 'assets/icons/Sidebars/sidebar-feedback.svg';

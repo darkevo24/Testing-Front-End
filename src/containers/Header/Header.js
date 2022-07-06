@@ -122,6 +122,7 @@ export const Header = () => {
           { title: 'Bimtek', link: '/bimtek-summary' },
           { title: 'Komunitas Ahli', link: '/komunitas-ahli' },
           { title: 'Forum SDI', link: '/forum-sdi' },
+          { title: 'SDI Wiki', link: '/sdi-wiki' },
         ],
       },
       {

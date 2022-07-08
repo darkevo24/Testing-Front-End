@@ -124,6 +124,7 @@ export const Header = () => {
           { title: 'Forum SDI', link: '/forum-sdi' },
           { title: 'Glosarium', link: '/Glosarium' },
           { title: 'SDI Wiki', link: '/sdi-wiki' },
+          { title: 'Persetujuan Anggaran Biaya', link: '/permintaan-budget' },
         ],
       },
       {

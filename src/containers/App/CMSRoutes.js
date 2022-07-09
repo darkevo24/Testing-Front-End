@@ -61,6 +61,7 @@ const CMSSecurityEdit = lazy(() => import('containers/CMS/Security/CMSSecurityEd
 const CMSKonfigurasiPortal = lazy(() => import('containers/CMS/KonfigurasiPortal'));
 const Glosarium = lazy(() => import('containers/CMS/Glosarium'));
 const UserFeedback = lazy(() => import('containers/CMS/UserFeedback'));
+const ManajemenPerubahanDanRilis = lazy(() => import('containers/CMS/ManajemenPerubahanDanRilis'));
 
 function CMSRoutes() {
   return (
@@ -727,6 +728,21 @@ function CMSRoutes() {
         <PrivateRoute
           path="/cms/user-feedback"
           component={UserFeedback}
+          permissions={[
+            Roles.ADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
+          ]}
+        />
+        <PrivateRoute
+          path="/cms/versi-rilis"
+          component={ManajemenPerubahanDanRilis}
           permissions={[
             Roles.ADMIN,
             Roles.CONTENT_CREATOR,

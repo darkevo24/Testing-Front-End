@@ -2,6 +2,7 @@ import React, { lazy } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { CMSLayout, PrivateRoute } from 'layouts';
 import { Roles } from './config';
+import PermintaanForum from 'containers/CMS/PermintaanForum';
 const DashboardPage = lazy(() => import('containers/CMS/Dashboard'));
 const KomunitasAhliPage = lazy(() => import('containers/CMS/KomunitasAhli'));
 const KomunitasAhliDetailPage = lazy(() => import('containers/CMS/KomunitasAhli/KomunitasAhliDetail'));
@@ -61,6 +62,7 @@ const CMSSecurityEdit = lazy(() => import('containers/CMS/Security/CMSSecurityEd
 const CMSKonfigurasiPortal = lazy(() => import('containers/CMS/KonfigurasiPortal'));
 const Glosarium = lazy(() => import('containers/CMS/Glosarium'));
 const UserFeedback = lazy(() => import('containers/CMS/UserFeedback'));
+const PrmintaanForum = lazy(() => import('containers/CMS/PermintaanForum'));
 
 function CMSRoutes() {
   return (
@@ -727,6 +729,21 @@ function CMSRoutes() {
         <PrivateRoute
           path="/cms/user-feedback"
           component={UserFeedback}
+          permissions={[
+            Roles.ADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
+          ]}
+        />
+        <PrivateRoute
+          path="/cms/forum-permintaan"
+          component={PermintaanForum}
           permissions={[
             Roles.ADMIN,
             Roles.CONTENT_CREATOR,

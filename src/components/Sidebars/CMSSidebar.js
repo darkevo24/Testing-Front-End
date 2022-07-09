@@ -76,7 +76,20 @@ export const CMSSidebar = () => {
           </Accordion.Item>
         </Accordion>
         <SidebarItem title="SDI WIki" pathname="/cms/sdi-wiki" />
-        <SidebarItem title="Forum SDI" pathname="/cms/forum-sdi" />
+        <Accordion defaultActiveKey="0">
+          <Accordion.Item>
+            <Accordion.Header
+              className={cx('', {
+                selected: window.location.pathname.includes('/cms/forum'),
+              })}>
+              Forum
+            </Accordion.Header>
+            <Accordion.Body>
+              <SidebarItem title="Forum SDI" pathname="/cms/forum-sdi" />
+              <SidebarItem title="Permintaan Forum" pathname="/cms/forum-permintaan" />
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
         <Accordion defaultActiveKey="0">
           <Accordion.Item>
             <Accordion.Header
@@ -180,7 +193,7 @@ export const CMSSidebar = () => {
         <Accordion.Item>
           <Accordion.Header
             className={cx('', {
-              selected: window.location.pathname.includes('/cms/daftar'),
+              selected: window.location.pathname.includes('/cms/glosarium'),
             })}>
             Knowledge
           </Accordion.Header>

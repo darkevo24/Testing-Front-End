@@ -1,5 +1,6 @@
 import { Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+import { bpmUrl } from 'utils/constants';
 
 const NewPenambahanAtributCMS = () => {
   const history = useHistory();
@@ -7,6 +8,7 @@ const NewPenambahanAtributCMS = () => {
     e.preventDefault();
     history.push('/cms/penambahan-atribut-cms');
   };
+  const src = bpmUrl.concat('PenambahanAtributForm');
   return (
     <div className="py-40 px-10">
       <div className="px-30">
@@ -18,13 +20,7 @@ const NewPenambahanAtributCMS = () => {
         <div className="wrapper-right"></div>
       </div>
       <div className="pt-0">
-        <iframe
-          frameBorder="0"
-          width="100%"
-          height="700px"
-          seamless
-          title="Penambahan Atribut CMS"
-          src="https://bpm.satudata.go.id/#/PenambahanAtributForm"></iframe>
+        <iframe frameBorder="0" width="100%" height="700px" seamless title="Penambahan Atribut CMS" src={src}></iframe>
       </div>
     </div>
   );

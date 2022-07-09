@@ -1,9 +1,10 @@
 import { useSelector } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
+import { bpmUrl } from 'utils/constants';
 
 const PendaftarAhli = () => {
   const user = useSelector(userSelector);
-  const src = 'https://bpm.satudata.go.id/#/PendaftaranAhli?userEmail=' + user?.email;
+  const src = bpmUrl.concat('PendaftaranAhli?userEmail=' + user?.email);
   return (
     <div className="py-40 px-0">
       <div className="pt-0">

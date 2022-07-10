@@ -1,16 +1,16 @@
 import { useHistory } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
+import { bpmUrl } from 'utils/constants';
 
 const PenambahanAtributCMS = () => {
   const history = useHistory();
   const handleCreate = (e) => {
     e.preventDefault();
-    history.push('/cms/penambahan-atribut-cms/new-atribut-cms');
+    history.push('/cms/forum-permintaan');
   };
   const user = useSelector(userSelector);
-  const src = 'https://bpm.satudata.go.id/#/PenambahanAtributCMS?userEmail=' + user?.email;
+  const src = bpmUrl.concat('PenambahanAtributCMS?userEmail=' + user?.email);
   return (
     <div className="py-40">
       <div className="pt-0">

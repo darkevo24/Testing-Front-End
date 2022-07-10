@@ -1,6 +1,7 @@
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Breadcrumbs } from 'components/Breadcrumb';
+import { bpmUrl } from 'utils/constants';
 
 const RegistrasiHakAkses = (props) => {
   const breadcrumbsList = [
@@ -13,7 +14,7 @@ const RegistrasiHakAkses = (props) => {
       label: 'Registrasi Hak Akses',
     },
   ];
-  const src = 'https://bpm.satudata.go.id/#/FormRequest';
+  const src = bpmUrl.concat('FormRequest');
   return (
     <div className="dashboard">
       <Breadcrumbs breadcrumbsList={breadcrumbsList} />

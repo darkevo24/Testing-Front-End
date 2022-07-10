@@ -62,6 +62,8 @@ const CMSKonfigurasiPortal = lazy(() => import('containers/CMS/KonfigurasiPortal
 const Glosarium = lazy(() => import('containers/CMS/Glosarium'));
 const UserFeedback = lazy(() => import('containers/CMS/UserFeedback'));
 const ManajemenPerubahanDanRilis = lazy(() => import('containers/CMS/ManajemenPerubahanDanRilis'));
+const AnggaranPersetujuanBiaya = lazy(() => import('containers/CMS/AnggaranPersetujuanBiaya'));
+const UsulanAnggaranBiaya = lazy(() => import('containers/CMS/UsulanAnggaranBiaya'));
 
 function CMSRoutes() {
   return (
@@ -743,6 +745,36 @@ function CMSRoutes() {
         <PrivateRoute
           path="/cms/versi-rilis"
           component={ManajemenPerubahanDanRilis}
+          permissions={[
+            Roles.ADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
+          ]}
+        />
+        <PrivateRoute
+          path="/cms/persetujuan-anggaran"
+          component={AnggaranPersetujuanBiaya}
+          permissions={[
+            Roles.ADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
+          ]}
+        />
+        <PrivateRoute
+          path="/cms/usulan-anggaran"
+          component={UsulanAnggaranBiaya}
           permissions={[
             Roles.ADMIN,
             Roles.CONTENT_CREATOR,

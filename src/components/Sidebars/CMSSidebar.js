@@ -6,6 +6,7 @@ import { getAnalyticsUrl, USER_ROLES } from 'utils/constants';
 
 import {
   SidebarApiIcon,
+  SidebarBudgetIcon,
   SidebarConfigIcon,
   SidebarContentIcon,
   SidebarDataIcon,
@@ -208,6 +209,14 @@ export const CMSSidebar = () => {
           FEEDBACK
         </div>
         <SidebarItem title="User Feedback" pathname="/cms/user-feedback" />
+      </div>
+      <div className="mt-3">
+        <div className={bem.e('title')}>
+          <SidebarBudgetIcon className="mr-10" />
+          BUDGET
+        </div>
+        <SidebarItem title="Persetujuan Anggaran Biaya" pathname="/cms/persetujuan-anggaran" />
+        <SidebarItem title="Usulan Anggaran Biaya" pathname="/cms/usulan-anggaran" />
       </div>
     </div>
   );

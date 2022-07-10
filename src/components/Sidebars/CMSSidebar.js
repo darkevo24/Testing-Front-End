@@ -188,6 +188,7 @@ export const CMSSidebar = () => {
         <SidebarItem title="Aset" pathname="#" />
         <SidebarItem title="Media Sosial" pathname="/cms/media-sosial" />
         <SidebarItem title="Portal" pathname="/cms/konfigurasi-portal" />
+        <SidebarItem title="Manajemen Perubahan dan Rilis" pathname="/cms/versi-rilis" />
       </div>
 
       <Accordion defaultActiveKey="0">

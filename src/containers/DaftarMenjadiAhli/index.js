@@ -3,7 +3,7 @@ import Col from 'react-bootstrap/Col';
 import { bpmUrl } from 'utils/constants';
 
 const DaftarMenjadiAhli = (props) => {
-  const src = bpmUrl.concat('Registrasi');
+  const src = bpmUrl.concat('FormRequest');
   return (
     <div className="dashboard">
       <div className="p-32">

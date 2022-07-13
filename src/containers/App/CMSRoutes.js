@@ -701,17 +701,7 @@ function CMSRoutes() {
         <PrivateRoute
           path="/cms/glosarium"
           component={Glosarium}
-          permissions={[
-            Roles.ADMIN,
-            Roles.CONTENT_CREATOR,
-            Roles.CONTENT_EDITOR,
-            Roles.SEKRETARIANT,
-            Roles.SEKRETARIANT_CREATOR,
-            Roles.SEKRETARIANT_EDITOR,
-            Roles.PEMBINA_DATA,
-            Roles.PIC_SDGS,
-            Roles.PIC_BAPPENAS,
-          ]}
+          permissions={[Roles.ADMIN, Roles.SUPERADMIN, Roles.GLOSARIUM_CREATOR, Roles.GLOSARIUM_APPROVER, Roles.PPK]}
         />
         <PrivateRoute
           path="/cms/registrasi-pengguna"
@@ -732,31 +722,18 @@ function CMSRoutes() {
         <PrivateRoute
           path="/cms/user-feedback"
           component={UserFeedback}
-          permissions={[
-            Roles.ADMIN,
-            Roles.CONTENT_CREATOR,
-            Roles.CONTENT_EDITOR,
-            Roles.SEKRETARIANT,
-            Roles.SEKRETARIANT_CREATOR,
-            Roles.SEKRETARIANT_EDITOR,
-            Roles.PEMBINA_DATA,
-            Roles.PIC_SDGS,
-            Roles.PIC_BAPPENAS,
-          ]}
+          permissions={[Roles.ADMIN, Roles.SUPERADMIN, Roles.CONTENT_CREATOR, Roles.SEKRETARIANT_CREATOR]}
         />
         <PrivateRoute
           path="/cms/versi-rilis"
           component={ManajemenPerubahanDanRilis}
           permissions={[
             Roles.ADMIN,
+            Roles.SUPERADMIN,
             Roles.CONTENT_CREATOR,
-            Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
-            Roles.SEKRETARIANT_EDITOR,
-            Roles.PEMBINA_DATA,
-            Roles.PIC_SDGS,
-            Roles.PIC_BAPPENAS,
+            Roles.CR_APPROVER,
           ]}
         />
         <PrivateRoute

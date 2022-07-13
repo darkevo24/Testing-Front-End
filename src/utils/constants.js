@@ -16,6 +16,10 @@ import {
   DataManagementIcon,
   KonfigurasiIcon,
   UserManagementIcon,
+  KnowledgeIcon,
+  BudgetIcon,
+  ChangeAndReleaseIcon,
+  FeedbackIcon,
 } from 'assets/icons';
 import { SplitCircle } from 'components/Icons';
 
@@ -286,10 +290,38 @@ export const CMS_DASHBOARD = [
     link: '/cms/data-prioritas',
   },
   {
+    title: 'Knowledge',
+    description: 'Knowledge',
+    icon: <KnowledgeIcon />,
+    iconColor: 'bg-purple',
+    link: '/cms/glosarium',
+  },
+  {
+    title: 'Feedback',
+    description: 'Feedback',
+    icon: <FeedbackIcon />,
+    iconColor: 'bg-blue',
+    link: '/cms/user-feedback',
+  },
+  {
+    title: 'Budget',
+    description: 'Budget',
+    icon: <BudgetIcon />,
+    iconColor: 'bg-green',
+    link: '/cms/usulan-anggaran',
+  },
+  {
+    title: 'Change & Release',
+    description: 'Change & Release',
+    icon: <ChangeAndReleaseIcon />,
+    iconColor: 'bg-pink',
+    link: '/cms/versi-rilis',
+  },
+  {
     title: 'Application Monitoring',
     description: 'Application Monitoring',
     icon: <ApplicationMonitoring />,
-    iconColor: 'bg-purple',
+    iconColor: 'bg-brilliant-azure',
     link: '',
     externalLink: 'https://apm.satudata.go.id/',
   },

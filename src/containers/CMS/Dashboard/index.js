@@ -13,6 +13,17 @@ const Dashboard = () => {
   const history = useHistory();
   const user = useSelector(userSelector);
   const apmAllowedRole = [Roles.ADMIN, Roles.SUPERADMIN, Roles.SUPERVISOR];
+  const feedbackAllowedRole = [Roles.CONTENT_CREATOR, Roles.SEKRETARIANT_CREATOR, Roles.SUPERADMIN, Roles.ADMIN];
+  const budgetAllowedRole = [Roles.OPERASIONAL, Roles.PPK, Roles.SUPERADMIN, Roles.ADMIN];
+  const knowledgeAllowedRole = [Roles.GLOSARIUM_CREATOR, Roles.GLOSARIUM_APPROVER, Roles.SUPERADMIN, Roles.ADMIN];
+  const releaseAllowedRole = [
+    Roles.CONTENT_CREATOR,
+    Roles.SEKRETARIANT,
+    Roles.SEKRETARIANT_CREATOR,
+    Roles.CR_APPROVER,
+    Roles.SUPERADMIN,
+  ];
+
   const redirectToPage = (page) => {
     if (!page?.link) {
       window.location.replace(page.externalLink);
@@ -21,11 +32,43 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    const isRoleAllowedToOPenApm = apmAllowedRole.some((allowedRole) => allowedRole === user.roles);
-    if (!isRoleAllowedToOPenApm) {
+    const isRoleAllowedToOpenApm = apmAllowedRole.some((allowedRole) => allowedRole === user.roles);
+    if (!isRoleAllowedToOpenApm) {
       const apmDashboardIndex = CMS_DASHBOARD.findIndex((cms) => cms.title === 'Application Monitoring');
       if (apmDashboardIndex > -1) {
         CMS_DASHBOARD.splice(apmDashboardIndex, 1);
+      }
+    }
+
+    const isRoleAllowedToOpenFeedback = feedbackAllowedRole.some((allowedRole) => allowedRole === user.roles);
+    if (!isRoleAllowedToOpenFeedback) {
+      const feedbackDashboardIndex = CMS_DASHBOARD.findIndex((cms) => cms.title === 'Feedback');
+      if (feedbackDashboardIndex > -1) {
+        CMS_DASHBOARD.splice(feedbackDashboardIndex, 1);
+      }
+    }
+
+    const isRoleAllowedToOpenBudget = budgetAllowedRole.some((allowedRole) => allowedRole === user.roles);
+    if (!isRoleAllowedToOpenBudget) {
+      const budgetDashboardIndex = CMS_DASHBOARD.findIndex((cms) => cms.title === 'Budget');
+      if (budgetDashboardIndex > -1) {
+        CMS_DASHBOARD.splice(budgetDashboardIndex, 1);
+      }
+    }
+
+    const isRoleAllowedToOpenKnowledge = knowledgeAllowedRole.some((allowedRole) => allowedRole === user.roles);
+    if (!isRoleAllowedToOpenKnowledge) {
+      const knowledgeDashboardIndex = CMS_DASHBOARD.findIndex((cms) => cms.title === 'Knowledge');
+      if (knowledgeDashboardIndex > -1) {
+        CMS_DASHBOARD.splice(knowledgeDashboardIndex, 1);
+      }
+    }
+
+    const isRoleAllowedToOpenRelease = releaseAllowedRole.some((allowedRole) => allowedRole === user.roles);
+    if (!isRoleAllowedToOpenRelease) {
+      const changeAndReleaseDashboardIndex = CMS_DASHBOARD.findIndex((cms) => cms.title === 'Change & Release');
+      if (changeAndReleaseDashboardIndex > -1) {
+        CMS_DASHBOARD.splice(changeAndReleaseDashboardIndex, 1);
       }
     }
   }, []);

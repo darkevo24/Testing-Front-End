@@ -61,6 +61,7 @@ function AppRoutes(props) {
       <PublicRoute exact path="/forgot-password" component={ForgotPassword} />
       <PublicRoute exact path="/change-password" component={ChangePasswordLogin} />
       <PublicRoute exact path="/term-and-condition" component={TermAndCondition} />
+      <PublicRoute exact path="/registrasi-hak-akses" component={RegistrasiHakAkses} />
       <AppLayout>
         <Suspense fallback={<Loader fullscreen />}>
           <Switch>
@@ -76,7 +77,7 @@ function AppRoutes(props) {
             <Route exact path="/tentang" component={TentangPage} />
             <Route exact path="/daftar-menjadi-ahli" component={DaftarMenjadiAhli} />
             <Route exact path="/glosarium" component={Glosarium} />
-            <Route exact path="/registrasi-hak-akses" component={RegistrasiHakAkses} />
+            {/* <Route exact path="/registrasi-hak-akses" component={RegistrasiHakAkses} /> */}
             <Route exact path="/sdi-wiki" component={SDIWiki} />
             <Route exact path="/permintaan-budget" component={ApprovalBudget} />
             <Route exact path="/form-feedback" component={FormFeedback} />

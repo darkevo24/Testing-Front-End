@@ -110,8 +110,8 @@ function AppRoutes(props) {
             <PrivateRoute
               exact
               path="/forum-sdi"
-              // component={ForumSDIIframe}
-              component={ForumSDI}
+              component={ForumSDIIframe}
+              // component={ForumSDI}
               permissions={[
                 Roles.MEMBER,
                 Roles.CONTENT_CREATOR,

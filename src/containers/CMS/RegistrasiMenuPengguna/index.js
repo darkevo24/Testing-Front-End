@@ -1,10 +1,7 @@
-import { useSelector } from 'react-redux';
-import { userSelector } from 'containers/Login/reducer';
 import { bpmUrl } from 'utils/constants';
 
 const RegistrasiMenuPengguna = () => {
-  const user = useSelector(userSelector);
-  const src = bpmUrl.concat('PenambahanAtributCMS?userEmail=' + user?.email);
+  const src = bpmUrl.concat('RegistrasiPengguna');
   return (
     <div className="">
       <div className="pt-0">

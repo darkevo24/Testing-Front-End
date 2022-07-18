@@ -261,6 +261,11 @@ function CMSRoutes() {
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
             Roles.SUPERVISOR,
+            Roles.PPK,
+            Roles.GLOSARIUM_APPROVER,
+            Roles.GLOSARIUM_CREATOR,
+            Roles.OPERASIONAL,
+            Roles.CR_APPROVER,
           ]}
         />
         <PrivateRoute

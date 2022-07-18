@@ -88,6 +88,7 @@ export const CMSSidebar = () => {
             <Accordion.Body>
               <SidebarItem title="Forum SDI" pathname="/cms/forum-sdi" />
               <SidebarItem title="Permintaan Forum" pathname="/cms/forum-permintaan" />
+              <SidebarItem title="Diskusi Forum" pathname="/cms/forum-diskusi" />
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>

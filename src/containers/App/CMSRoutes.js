@@ -66,6 +66,7 @@ const ManajemenPerubahanDanRilis = lazy(() => import('containers/CMS/ManajemenPe
 const PrmintaanForum = lazy(() => import('containers/CMS/PermintaanForum'));
 const AnggaranPersetujuanBiaya = lazy(() => import('containers/CMS/AnggaranPersetujuanBiaya'));
 const UsulanAnggaranBiaya = lazy(() => import('containers/CMS/UsulanAnggaranBiaya'));
+const DiskusiForum = lazy(() => import('containers/CMS/DiskusiForum'));
 
 function CMSRoutes() {
   return (
@@ -613,6 +614,19 @@ function CMSRoutes() {
           exact
           path="/cms/forum-sdi"
           component={ForumSDIPage}
+          permissions={[
+            Roles.ADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+          ]}
+        />
+        <PrivateRoute
+          exact
+          path="/cms/forum-diskusi"
+          component={DiskusiForum}
           permissions={[
             Roles.ADMIN,
             Roles.CONTENT_CREATOR,

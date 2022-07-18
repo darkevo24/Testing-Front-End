@@ -5,16 +5,16 @@ import { bpmUrl } from 'utils/constants';
 const DaftarMenjadiAhli = (props) => {
   const src = bpmUrl.concat('FormRequest');
   return (
-    <div className="dashboard">
-      <div className="p-32">
+    <div>
+      <div className="pt-32">
         <Row>
-          <Col>
+          <Col sm={{ span: 10, offset: 1 }} md={{ span: 8, offset: 2 }}>
             <iframe
               frameBorder="0"
               seamless
               title="Daftar menjadi ahli"
-              height="100%"
-              scrolling="no"
+              height="2200px"
+              scrolling="yes"
               width="100%"
               src={src}></iframe>
           </Col>

@@ -1,8 +1,9 @@
 import { userSelector } from 'containers/Login/reducer';
+import { useSelector } from 'react-redux';
 import { bpmUrl } from 'utils/constants';
 
 const PermintaanForum = () => {
-  const user = userSelector(userSelector);
+  const user = useSelector(userSelector);
   const src = bpmUrl.concat('ForumRequestCMS?userEmail=' + user?.email);
   return (
     <div className="py-40">

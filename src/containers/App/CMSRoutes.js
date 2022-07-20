@@ -783,6 +783,8 @@ function CMSRoutes() {
             Roles.PEMBINA_DATA,
             Roles.PIC_SDGS,
             Roles.PIC_BAPPENAS,
+            Roles.OPERASIONAL,
+            Roles.PPK,
           ]}
         />
         <PrivateRoute
@@ -798,6 +800,8 @@ function CMSRoutes() {
             Roles.PEMBINA_DATA,
             Roles.PIC_SDGS,
             Roles.PIC_BAPPENAS,
+            Roles.OPERASIONAL,
+            Roles.PPK,
           ]}
         />
         <PrivateRoute exact path="/cms/pengguna-management" component={PenggunaManagementPage} permissions={[Roles.ADMIN]} />

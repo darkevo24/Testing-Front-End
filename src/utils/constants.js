@@ -39,6 +39,8 @@ export const bpmWaveMakerOnlineUrl = 'https://www.wavemakeronline.com/run-qhhqh8
 export const bpmStagingUrl = 'https://bpm.satudata.go.id/#/';
 export const bpmUrl = window.location.hostname === 'localhost' ? bpmWaveMakerOnlineUrl : bpmStagingUrl;
 
+export const apmUrl = isSdiProduction ? 'http://apm.data.go.id/' : 'http://apm.satudata.go.id/';
+
 export const apiUrl = `${backendUrl}/api-be`;
 export const dataUrl = `${katalogUrl}/api`;
 
@@ -323,7 +325,7 @@ export const CMS_DASHBOARD = [
     icon: <ApplicationMonitoring />,
     iconColor: 'bg-brilliant-azure',
     link: '',
-    externalLink: 'https://apm.satudata.go.id/',
+    externalLink: apmUrl,
   },
 ];
 

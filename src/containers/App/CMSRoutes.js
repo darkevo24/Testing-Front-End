@@ -737,7 +737,12 @@ function CMSRoutes() {
             Roles.PIC_BAPPENAS,
           ]}
         />
-        <PrivateRoute exact path="/cms/sdi-wiki" component={SDIWiki} permissions={[Roles.ADMIN]} />
+        <PrivateRoute
+          exact
+          path="/cms/sdi-wiki"
+          component={SDIWiki}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT_EDITOR, Roles.CONTENT_EDITOR]}
+        />
         <PrivateRoute
           path="/cms/user-feedback"
           component={UserFeedback}

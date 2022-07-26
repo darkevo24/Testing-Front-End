@@ -1,7 +1,10 @@
+import { userSelector } from 'containers/Login/reducer';
+import { useSelector } from 'react-redux';
 import { bpmUrl } from 'utils/constants';
 
 const SDIWiki = () => {
-  const src = bpmUrl.concat('Artikel');
+  const user = useSelector(userSelector);
+  const src = bpmUrl.concat('WikiCMS?userEmail=' + user?.email);
   return (
     <div className="py-40">
       <div className="pt-0">

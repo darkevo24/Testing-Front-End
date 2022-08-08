@@ -37,7 +37,7 @@ export const katalogUrl = isSdiProduction ? 'https://katalog.data.go.id' : 'http
 
 export const bpmWaveMakerOnlineUrl = 'https://www.wavemakeronline.com/run-qhhqh823yx/SDI_BPM_master/#/';
 export const bpmStagingUrl = 'https://bpm.satudata.go.id/#/';
-export const bpmProdUrl = 'https://bpm.data.go.id';
+export const bpmProdUrl = 'https://bpm.data.go.id/#/';
 export const bpmDevUrl = window.location.hostname === 'localhost' ? bpmWaveMakerOnlineUrl : bpmStagingUrl;
 export const bpmUrl = isSdiProduction ? bpmProdUrl : bpmDevUrl;
 

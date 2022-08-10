@@ -190,6 +190,7 @@ export const CMSSidebar = () => {
         <SidebarItem title="Media Sosial" pathname="/cms/media-sosial" />
         <SidebarItem title="Portal" pathname="/cms/konfigurasi-portal" />
         <SidebarItem title="Manajemen Perubahan dan Rilis" pathname="/cms/versi-rilis" />
+        <SidebarItem title="CR Approver Setting" pathname="/cms/cr-approver-setting" />
       </div>
 
       <Accordion defaultActiveKey="0">

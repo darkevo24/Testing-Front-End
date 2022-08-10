@@ -67,6 +67,7 @@ const PrmintaanForum = lazy(() => import('containers/CMS/PermintaanForum'));
 const AnggaranPersetujuanBiaya = lazy(() => import('containers/CMS/AnggaranPersetujuanBiaya'));
 const UsulanAnggaranBiaya = lazy(() => import('containers/CMS/UsulanAnggaranBiaya'));
 const DiskusiForum = lazy(() => import('containers/CMS/DiskusiForum'));
+const CRApproverSetting = lazy(() => import('containers/CMS/CRApproverSetting'));
 
 function CMSRoutes() {
   return (
@@ -751,6 +752,18 @@ function CMSRoutes() {
         <PrivateRoute
           path="/cms/versi-rilis"
           component={ManajemenPerubahanDanRilis}
+          permissions={[
+            Roles.ADMIN,
+            Roles.SUPERADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.CR_APPROVER,
+          ]}
+        />
+        <PrivateRoute
+          path="/cms/cr-approver-setting"
+          component={CRApproverSetting}
           permissions={[
             Roles.ADMIN,
             Roles.SUPERADMIN,

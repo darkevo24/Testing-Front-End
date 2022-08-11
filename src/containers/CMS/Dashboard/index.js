@@ -21,7 +21,7 @@ const Dashboard = () => {
     Roles.CONTENT_CREATOR,
     Roles.SEKRETARIANT,
     Roles.SEKRETARIANT_CREATOR,
-    Roles.CR_APPROVER,
+    Roles.APPROVER_CR,
     Roles.SUPERADMIN,
   ];
   const [cmsDashboard, setCmsDashboard] = useState(CMS_DASHBOARD);

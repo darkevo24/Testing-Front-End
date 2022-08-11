@@ -267,7 +267,7 @@ function CMSRoutes() {
             Roles.GLOSARIUM_APPROVER,
             Roles.GLOSARIUM_CREATOR,
             Roles.OPERASIONAL,
-            Roles.CR_APPROVER,
+            Roles.APPROVER_CR,
           ]}
         />
         <PrivateRoute
@@ -758,7 +758,7 @@ function CMSRoutes() {
             Roles.CONTENT_CREATOR,
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
-            Roles.CR_APPROVER,
+            Roles.APPROVER_CR,
           ]}
         />
         <PrivateRoute
@@ -770,7 +770,7 @@ function CMSRoutes() {
             Roles.CONTENT_CREATOR,
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
-            Roles.CR_APPROVER,
+            Roles.APPROVER_CR,
           ]}
         />
         <PrivateRoute

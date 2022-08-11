@@ -17,7 +17,7 @@ const roles = {
   GLOSARIUM_APPROVER: 'GLOSARIUM_APPROVER',
   OPERASIONAL: 'OPERASIONAL',
   PPK: 'PPK',
-  CR_APPROVER: 'CR_APPROVER',
+  APPROVER_CR: 'APPROVER_CR',
 };
 
 export default roles;

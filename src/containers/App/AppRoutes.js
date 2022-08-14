@@ -48,6 +48,11 @@ const ChangePasswordUser = lazy(() => import('containers/ChangePasswordUser'));
 const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
 const KebijakanPrivasiPage = lazy(() => import('containers/KebijakanPrivasi'));
 const MetadataRegistryPage = lazy(() => import('containers/MetadataRegistry'));
+const Glosarium = lazy(() => import('containers/Glosarium'));
+const RegistrasiHakAkses = lazy(() => import('containers/RegistrasiHakAkses'));
+const SDIWiki = lazy(() => import('containers/SDIWiki'));
+const ApprovalBudget = lazy(() => import('containers/ApprovalBudget'));
+const FormFeedback = lazy(() => import('containers/FormFeedback'));
 
 function AppRoutes(props) {
   return (
@@ -56,6 +61,7 @@ function AppRoutes(props) {
       <PublicRoute exact path="/forgot-password" component={ForgotPassword} />
       <PublicRoute exact path="/change-password" component={ChangePasswordLogin} />
       <PublicRoute exact path="/term-and-condition" component={TermAndCondition} />
+      <PublicRoute exact path="/registrasi-hak-akses" component={RegistrasiHakAkses} />
       <AppLayout>
         <Suspense fallback={<Loader fullscreen />}>
           <Switch>
@@ -70,6 +76,11 @@ function AppRoutes(props) {
             <Route exact path="/berita/perbulan/:date" component={BeritaPerBulan} />
             <Route exact path="/tentang" component={TentangPage} />
             <Route exact path="/daftar-menjadi-ahli" component={DaftarMenjadiAhli} />
+            <Route exact path="/glosarium" component={Glosarium} />
+            {/* <Route exact path="/registrasi-hak-akses" component={RegistrasiHakAkses} /> */}
+            <Route exact path="/sdi-wiki" component={SDIWiki} />
+            <Route exact path="/permintaan-budget" component={ApprovalBudget} />
+            <Route exact path="/form-feedback" component={FormFeedback} />
             {/*  <Route exact path="/api" component={ManagementApiPage} />
             <Route exact path="/api/edit/:id" component={ManagementApiUpdatePage} />
             <Route exact path="/api-detail/:id" component={ManagementApiDetailPage} />
@@ -99,8 +110,8 @@ function AppRoutes(props) {
             <PrivateRoute
               exact
               path="/forum-sdi"
-              // component={ForumSDIIframe}
-              component={ForumSDI}
+              component={ForumSDIIframe}
+              // component={ForumSDI}
               permissions={[
                 Roles.MEMBER,
                 Roles.CONTENT_CREATOR,

@@ -17,6 +17,14 @@ const BoxImage = styled.div`
   height: 310px;
 `;
 
+const ContainerContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+`;
+
 const LargeTitle = styled.p`
   font-weight: bold;
   font-size: 24px;
@@ -32,10 +40,13 @@ const MediumTitle = styled.p`
 `;
 
 const ImageBanner = styled.img`
-  position: absolute;
+  position: relative;
   z-index: 0;
-  bottom: 0;
   width: 100%;
+  height: 100%;
+  @media only screen and (max-width: 768px) {
+    width: 250%;
+  }
 `;
 
 export const BerandaTop = () => {
@@ -53,9 +64,13 @@ export const BerandaTop = () => {
 
   return (
     <BoxImage>
-      <LargeTitle>Data Indonesia, Dalam Satu Portal</LargeTitle>
-      <MediumTitle>Temukan data-data Pemerintah dengan mudah!</MediumTitle>
+      {/* <LargeTitle>Data Indonesia, Dalam Satu Portal</LargeTitle>
+      <MediumTitle>Temukan data-data Pemerintah dengan mudah!</MediumTitle> */}
       {/* <BerandaImage /> */}
+      <ContainerContent>
+        <LargeTitle>Data Indonesia, Dalam Satu Portal</LargeTitle>
+        <MediumTitle>Temukan data-data Pemerintah dengan mudah!</MediumTitle>
+      </ContainerContent>
       <ImageBanner src={banner} />
     </BoxImage>
   );

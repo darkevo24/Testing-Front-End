@@ -3,21 +3,22 @@ import { useSelector } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
 import { bpmUrl } from 'utils/constants';
 
-const PenambahanAtributCMS = () => {
+const DiskusiForum = () => {
   const history = useHistory();
   const handleCreate = (e) => {
     e.preventDefault();
-    history.push('/cms/forum-permintaan');
+    history.push('/cms/forum-diskusi');
   };
+
   const user = useSelector(userSelector);
-  const src = bpmUrl.concat('PenambahanAtributCMS?userEmail=' + user?.email);
+  const src = bpmUrl.concat('ForumDiskusiCMS?userEmail=' + user?.email);
   return (
     <div className="py-40">
       <div className="pt-0">
-        <iframe frameBorder="0" width="100%" height="700px" seamless title="Penambahan Atribut CMS" src={src}></iframe>
+        <iframe frameBorder="0" width="100%" height="700px" seamless title="Diskusi Forum" src={src}></iframe>
       </div>
     </div>
   );
 };
 
-export default PenambahanAtributCMS;
+export default DiskusiForum;

@@ -1,23 +1,24 @@
 import { useHistory } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
 import { bpmUrl } from 'utils/constants';
 
-const PenambahanAtributCMS = () => {
+const UsulanAnggaranBiaya = () => {
   const history = useHistory();
   const handleCreate = (e) => {
     e.preventDefault();
-    history.push('/cms/forum-permintaan');
+    history.push('/cms/usulan-anggaran');
   };
   const user = useSelector(userSelector);
-  const src = bpmUrl.concat('PenambahanAtributCMS?userEmail=' + user?.email);
+  const src = bpmUrl.concat('UsulanAnggaran?userEmail=' + user?.email);
   return (
     <div className="py-40">
       <div className="pt-0">
-        <iframe frameBorder="0" width="100%" height="700px" seamless title="Penambahan Atribut CMS" src={src}></iframe>
+        <iframe frameBorder="0" width="100%" height="700px" seamless title="Persetujuan Anggaran Biaya" src={src}></iframe>
       </div>
     </div>
   );
 };
 
-export default PenambahanAtributCMS;
+export default UsulanAnggaranBiaya;

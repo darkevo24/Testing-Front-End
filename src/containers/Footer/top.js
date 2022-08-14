@@ -95,6 +95,10 @@ export const Top = () => {
       title: 'Tentang',
       link: '/tentang',
     },
+    {
+      title: 'Glosarium',
+      link: '/glosarium',
+    },
   );
   const List = [
     {
@@ -124,6 +128,10 @@ export const Top = () => {
         {
           title: 'Daftar Menjadi Ahli',
           link: '/daftar-menjadi-ahli',
+        },
+        {
+          title: 'Registrasi Layanan Portal',
+          link: '/registrasi-hak-akses',
         },
       ],
     },

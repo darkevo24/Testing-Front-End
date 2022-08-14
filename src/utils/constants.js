@@ -16,6 +16,10 @@ import {
   DataManagementIcon,
   KonfigurasiIcon,
   UserManagementIcon,
+  KnowledgeIcon,
+  BudgetIcon,
+  ChangeAndReleaseIcon,
+  FeedbackIcon,
 } from 'assets/icons';
 import { SplitCircle } from 'components/Icons';
 
@@ -30,6 +34,14 @@ export const isRecaptchaEnabled = process.env.REACT_APP_IS_RECAPTCHA_DISABLED !=
 export const analyticsUrl = 'https://analitik.data.go.id';
 export const backendUrl = isSdiProduction ? 'https://data.go.id' : 'https://satudata.go.id';
 export const katalogUrl = isSdiProduction ? 'https://katalog.data.go.id' : 'https://katalog.satudata.go.id';
+
+export const bpmWaveMakerOnlineUrl = 'https://www.wavemakeronline.com/run-qhhqh823yx/SDI_BPM_master/#/';
+export const bpmStagingUrl = 'https://bpm.satudata.go.id/#/';
+export const bpmProdUrl = 'https://bpm.data.go.id/#/';
+export const bpmDevUrl = window.location.hostname === 'localhost' ? bpmWaveMakerOnlineUrl : bpmStagingUrl;
+export const bpmUrl = isSdiProduction ? bpmProdUrl : bpmDevUrl;
+
+export const apmUrl = isSdiProduction ? 'http://apm.data.go.id/' : 'http://apm.satudata.go.id/';
 
 export const apiUrl = `${backendUrl}/api-be`;
 export const dataUrl = `${katalogUrl}/api`;
@@ -282,12 +294,40 @@ export const CMS_DASHBOARD = [
     link: '/cms/data-prioritas',
   },
   {
+    title: 'Knowledge',
+    description: 'Knowledge',
+    icon: <KnowledgeIcon />,
+    iconColor: 'bg-purple',
+    link: '/cms/glosarium',
+  },
+  {
+    title: 'Feedback',
+    description: 'Feedback',
+    icon: <FeedbackIcon />,
+    iconColor: 'bg-blue',
+    link: '/cms/user-feedback',
+  },
+  {
+    title: 'Budget',
+    description: 'Budget',
+    icon: <BudgetIcon />,
+    iconColor: 'bg-green',
+    link: '/cms/usulan-anggaran',
+  },
+  {
+    title: 'Change & Release',
+    description: 'Change & Release',
+    icon: <ChangeAndReleaseIcon />,
+    iconColor: 'bg-pink',
+    link: '/cms/versi-rilis',
+  },
+  {
     title: 'Application Monitoring',
     description: 'Application Monitoring',
     icon: <ApplicationMonitoring />,
-    iconColor: 'bg-purple',
+    iconColor: 'bg-brilliant-azure',
     link: '',
-    externalLink: 'https://apm.satudata.go.id/',
+    externalLink: apmUrl,
   },
 ];
 

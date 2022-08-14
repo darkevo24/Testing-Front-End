@@ -4,7 +4,15 @@ import { useHistory, useLocation } from 'react-router-dom';
 import Accordion from 'react-bootstrap/Accordion';
 import { getAnalyticsUrl, USER_ROLES } from 'utils/constants';
 
-import { SidebarApiIcon, SidebarConfigIcon, SidebarContentIcon, SidebarDataIcon, SidebarUserIcon } from 'assets/icons';
+import {
+  SidebarApiIcon,
+  SidebarBudgetIcon,
+  SidebarConfigIcon,
+  SidebarContentIcon,
+  SidebarDataIcon,
+  SidebarFeedbackIcon,
+  SidebarUserIcon,
+} from 'assets/icons';
 import bn from 'utils/bemNames';
 import { ComponentAccessibility } from '../ComponentAccess';
 
@@ -68,7 +76,22 @@ export const CMSSidebar = () => {
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
-        <SidebarItem title="Forum SDI" pathname="/cms/forum-sdi" />
+        <SidebarItem title="SDI WIki" pathname="/cms/sdi-wiki" />
+        <Accordion defaultActiveKey="0">
+          <Accordion.Item>
+            <Accordion.Header
+              className={cx('', {
+                selected: window.location.pathname.includes('/cms/forum'),
+              })}>
+              Forum
+            </Accordion.Header>
+            <Accordion.Body>
+              <SidebarItem title="Forum SDI" pathname="/cms/forum-sdi" />
+              <SidebarItem title="Permintaan Forum" pathname="/cms/forum-permintaan" />
+              <SidebarItem title="Diskusi Forum" pathname="/cms/forum-diskusi" />
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
         <Accordion defaultActiveKey="0">
           <Accordion.Item>
             <Accordion.Header
@@ -154,6 +177,7 @@ export const CMSSidebar = () => {
         </div>
         <SidebarItem title="Instansi" pathname="/cms/instansi" />
         <SidebarItem title="Pengguna" pathname="/cms/pengguna-management" />
+        <SidebarItem title="Registrasi Pengguna" pathname="/cms/registrasi-pengguna" />
       </div>
       <div className="mt-3">
         <div className={bem.e('title')}>
@@ -165,6 +189,37 @@ export const CMSSidebar = () => {
         <SidebarItem title="Aset" pathname="#" />
         <SidebarItem title="Media Sosial" pathname="/cms/media-sosial" />
         <SidebarItem title="Portal" pathname="/cms/konfigurasi-portal" />
+        <SidebarItem title="Manajemen Perubahan dan Rilis" pathname="/cms/versi-rilis" />
+        <SidebarItem title="CR Approver Setting" pathname="/cms/cr-approver-setting" />
+      </div>
+
+      <Accordion defaultActiveKey="0">
+        <Accordion.Item>
+          <Accordion.Header
+            className={cx('', {
+              selected: window.location.pathname.includes('/cms/glosarium'),
+            })}>
+            Knowledge
+          </Accordion.Header>
+          <Accordion.Body>
+            <SidebarItem title="Glosarium" pathname="/cms/glosarium" />
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+      <div className="mt-3">
+        <div className={bem.e('title')}>
+          <SidebarFeedbackIcon className="mr-10" />
+          FEEDBACK
+        </div>
+        <SidebarItem title="User Feedback" pathname="/cms/user-feedback" />
+      </div>
+      <div className="mt-3">
+        <div className={bem.e('title')}>
+          <SidebarBudgetIcon className="mr-10" />
+          BUDGET
+        </div>
+        <SidebarItem title="Persetujuan Anggaran Biaya" pathname="/cms/persetujuan-anggaran" />
+        <SidebarItem title="Usulan Anggaran Biaya" pathname="/cms/usulan-anggaran" />
       </div>
     </div>
   );

@@ -122,6 +122,9 @@ export const Header = () => {
           { title: 'Bimtek', link: '/bimtek-summary' },
           { title: 'Komunitas Ahli', link: '/komunitas-ahli' },
           { title: 'Forum SDI', link: '/forum-sdi' },
+          // { title: 'Glosarium', link: '/Glosarium' },
+          { title: 'SDI Wiki', link: '/sdi-wiki' },
+          // { title: 'Persetujuan Anggaran Biaya', link: '/permintaan-budget' },
         ],
       },
       {
@@ -189,7 +192,7 @@ export const Header = () => {
   return (
     <Navbar bg="transparent" className="sdp-header">
       <Container className={cx('mw-100 h-100', { 'pr-24': !isLoggedIn })}>
-        <img src={logoHeader} alt="brand-logo" className="cursor-pointer" onClick={goTo('/home')} />
+        <img src={logoHeader} alt="brand-logo" className="cursor-pointer logo-header" onClick={goTo('/home')} />
         {isLoggedIn ? renderMemberNav() : renderPublicNav()}
       </Container>
     </Navbar>

@@ -2,6 +2,7 @@ import React, { lazy } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { CMSLayout, PrivateRoute } from 'layouts';
 import { Roles } from './config';
+import PermintaanForum from 'containers/CMS/PermintaanForum';
 const DashboardPage = lazy(() => import('containers/CMS/Dashboard'));
 const KomunitasAhliPage = lazy(() => import('containers/CMS/KomunitasAhli'));
 const KomunitasAhliDetailPage = lazy(() => import('containers/CMS/KomunitasAhli/KomunitasAhliDetail'));
@@ -54,9 +55,19 @@ const PendaftarAhli = lazy(() => import('containers/CMS/PendaftarAhli'));
 const PenggunaManagementPage = lazy(() => import('containers/CMS/PenggunaManagement'));
 const PenggunaManagementDetailPage = lazy(() => import('containers/CMS/PenggunaManagementDetails'));
 const PenggunaFormPage = lazy(() => import('containers/CMS/PenggunaManagement/tambahPengguna'));
+const RegistrasiMenuPengguna = lazy(() => import('containers/CMS/RegistrasiMenuPengguna'));
+const SDIWiki = lazy(() => import('containers/CMS/SDIWiki'));
 const CMSSecurity = lazy(() => import('containers/CMS/Security'));
 const CMSSecurityEdit = lazy(() => import('containers/CMS/Security/CMSSecurityEdit'));
 const CMSKonfigurasiPortal = lazy(() => import('containers/CMS/KonfigurasiPortal'));
+const Glosarium = lazy(() => import('containers/CMS/Glosarium'));
+const UserFeedback = lazy(() => import('containers/CMS/UserFeedback'));
+const ManajemenPerubahanDanRilis = lazy(() => import('containers/CMS/ManajemenPerubahanDanRilis'));
+const PrmintaanForum = lazy(() => import('containers/CMS/PermintaanForum'));
+const AnggaranPersetujuanBiaya = lazy(() => import('containers/CMS/AnggaranPersetujuanBiaya'));
+const UsulanAnggaranBiaya = lazy(() => import('containers/CMS/UsulanAnggaranBiaya'));
+const DiskusiForum = lazy(() => import('containers/CMS/DiskusiForum'));
+const CRApproverSetting = lazy(() => import('containers/CMS/CRApproverSetting'));
 
 function CMSRoutes() {
   return (
@@ -252,6 +263,11 @@ function CMSRoutes() {
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
             Roles.SUPERVISOR,
+            Roles.PPK,
+            Roles.GLOSARIUM_APPROVER,
+            Roles.GLOSARIUM_CREATOR,
+            Roles.OPERASIONAL,
+            Roles.APPROVER_CR,
           ]}
         />
         <PrivateRoute
@@ -608,6 +624,19 @@ function CMSRoutes() {
             Roles.SEKRETARIANT_EDITOR,
           ]}
         />
+        <PrivateRoute
+          exact
+          path="/cms/forum-diskusi"
+          component={DiskusiForum}
+          permissions={[
+            Roles.ADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+          ]}
+        />
         <PrivateRoute exact path="/cms/media-sosial" component={MediaSosialPage} permissions={[Roles.ADMIN]} />
         <PrivateRoute
           exact
@@ -687,6 +716,110 @@ function CMSRoutes() {
             Roles.PEMBINA_DATA,
             Roles.PIC_SDGS,
             Roles.PIC_BAPPENAS,
+          ]}
+        />
+        <PrivateRoute
+          path="/cms/glosarium"
+          component={Glosarium}
+          permissions={[Roles.ADMIN, Roles.SUPERADMIN, Roles.GLOSARIUM_CREATOR, Roles.GLOSARIUM_APPROVER, Roles.PPK]}
+        />
+        <PrivateRoute
+          path="/cms/registrasi-pengguna"
+          component={RegistrasiMenuPengguna}
+          permissions={[
+            Roles.ADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
+          ]}
+        />
+        <PrivateRoute
+          exact
+          path="/cms/sdi-wiki"
+          component={SDIWiki}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT_EDITOR, Roles.CONTENT_EDITOR]}
+        />
+        <PrivateRoute
+          path="/cms/user-feedback"
+          component={UserFeedback}
+          permissions={[Roles.ADMIN, Roles.SUPERADMIN, Roles.CONTENT_CREATOR, Roles.SEKRETARIANT_CREATOR]}
+        />
+        <PrivateRoute
+          path="/cms/versi-rilis"
+          component={ManajemenPerubahanDanRilis}
+          permissions={[
+            Roles.ADMIN,
+            Roles.SUPERADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.APPROVER_CR,
+          ]}
+        />
+        <PrivateRoute
+          path="/cms/cr-approver-setting"
+          component={CRApproverSetting}
+          permissions={[
+            Roles.ADMIN,
+            Roles.SUPERADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.APPROVER_CR,
+          ]}
+        />
+        <PrivateRoute
+          path="/cms/forum-permintaan"
+          component={PermintaanForum}
+          permissions={[
+            Roles.ADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
+          ]}
+        />
+        <PrivateRoute
+          path="/cms/persetujuan-anggaran"
+          component={AnggaranPersetujuanBiaya}
+          permissions={[
+            Roles.ADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
+            Roles.OPERASIONAL,
+            Roles.PPK,
+          ]}
+        />
+        <PrivateRoute
+          path="/cms/usulan-anggaran"
+          component={UsulanAnggaranBiaya}
+          permissions={[
+            Roles.ADMIN,
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+            Roles.PEMBINA_DATA,
+            Roles.PIC_SDGS,
+            Roles.PIC_BAPPENAS,
+            Roles.OPERASIONAL,
+            Roles.PPK,
           ]}
         />
         <PrivateRoute exact path="/cms/pengguna-management" component={PenggunaManagementPage} permissions={[Roles.ADMIN]} />

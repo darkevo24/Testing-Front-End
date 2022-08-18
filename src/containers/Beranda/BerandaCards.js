@@ -14,10 +14,10 @@ import { ReactComponent as BmkgSvg } from 'assets/bmkg.svg';
 import { CardWithDetail } from 'components/Cards/CardWithDetail';
 import { safeParse } from 'utils/helper';
 import {
-  getDatasetPopular,
-  getDatasetTrending,
-  datasetTrendingSelector,
-  datasetPopularSelector,
+  // getDatasetPopular,
+  // getDatasetTrending,
+  // datasetTrendingSelector,
+  // datasetPopularSelector,
   logHomeTrendingOrPopular,
 } from './reducer';
 
@@ -55,10 +55,10 @@ const TitleBox = styled.div`
 export const BerandaCards = ({ bem, isLoggedIn }) => {
   const linkToRedirect = isLoggedIn ? '/dataset' : '/topic-detail';
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getDatasetTrending('trending'));
-    dispatch(getDatasetPopular('populer'));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getDatasetTrending('trending'));
+  //   dispatch(getDatasetPopular('populer'));
+  // }, []);
 
   const logToTrendingAPI = useCallback(
     (param, dispatch) => () => {
@@ -102,8 +102,8 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
       </Col>
     );
   };
-  const { records: dataTrending } = useSelector(datasetTrendingSelector);
-  const { records: dataPopular } = useSelector(datasetPopularSelector);
+  // const { records: dataTrending } = useSelector(datasetTrendingSelector);
+  // const { records: dataPopular } = useSelector(datasetPopularSelector);
   return (
     <Box className={bem.e('cards-wrapper')}>
       <FlexBox className="px-16 d-none">
@@ -115,7 +115,7 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
           <RightBox>Lihat Semua</RightBox>
         </a>
       </FlexBox>
-      <Row className="d-none">{dataTrending.length > 0 && dataTrending.map(renderDataSet('trending'))}</Row>
+      {/* <Row className="d-none">{dataTrending.length > 0 && dataTrending.map(renderDataSet('trending'))}</Row> */}
       <FlexBox className="px-16 mt-40 d-none">
         <LeftBox>
           <PopulerSvg style={{ marginRight: '10px' }} />
@@ -125,7 +125,7 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
           <RightBox>Lihat Semua</RightBox>
         </a>
       </FlexBox>
-      <Row className="d-none">{dataPopular.length > 0 && dataPopular.map(renderDataSet('popular'))}</Row>
+      {/* <Row className="d-none">{dataPopular.length > 0 && dataPopular.map(renderDataSet('popular'))}</Row> */}
       <FlexBox className="px-16 mt-40 d-none">
         <LeftBox>
           <CovidSvg style={{ marginRight: '10px' }} />

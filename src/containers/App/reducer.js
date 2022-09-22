@@ -2,6 +2,7 @@ import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import find from 'lodash/find';
 import { dataOptionsMapperCurry, idKeteranganOptionsMapper, idNameOptionsMapper } from 'utils/helper';
 import { apiUrls, get, post } from 'utils/request';
+import jwt_decode from 'jwt-decode';
 
 const defaultNotification = {
   showClose: true,
@@ -109,7 +110,13 @@ export const uploadFoto = createAsyncThunk('cms/uploadFoto', async (formData) =>
 
 export const getGlobalData = createAsyncThunk('cms/beranda', async (formData) => {
   const response = await get(apiUrls.publicGlobalData, formData);
-  return response?.data?.content;
+  const token = response?.data?.content;
+  if (token) {
+    const decodedToken = jwt_decode(token);
+    return decodedToken?.data;
+  } else {
+    return token;
+  }
 });
 
 const AppSlice = createSlice({

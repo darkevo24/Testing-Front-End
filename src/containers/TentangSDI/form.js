@@ -49,7 +49,8 @@ const ContactUs = () => {
         nama: data.full_name,
         email: data.email,
         telepon: data.telephone,
-        pesan: data.message,
+        description: data.message,
+        summary: data.summary,
       }),
     ).then((result) => {
       if (!result.error) {
@@ -74,6 +75,7 @@ const ContactUs = () => {
     register('email');
     register('telephone');
     register('message');
+    register('summary');
   }, [register]);
 
   return (
@@ -111,6 +113,17 @@ const ContactUs = () => {
               }}
             />
             {errors?.telephone?.message && <div className={'error-message'}>{errors?.telephone?.message}</div>}
+          </Form.Group>
+          <Form.Group controlId="summary" className="mb-3">
+            <Form.Label>Ringkasan</Form.Label>
+            <Form.Control
+              isValid={false}
+              type="text"
+              onChange={(e) => {
+                setValue('summary', e.target.value);
+              }}
+            />
+            {errors?.summary?.message && <div className={'error-message'}>{errors?.summary?.message}</div>}
           </Form.Group>
           <Form.Group controlId="message" className="mb-3">
             <Form.Label>Pesan</Form.Label>

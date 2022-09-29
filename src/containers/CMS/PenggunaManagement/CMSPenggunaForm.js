@@ -70,7 +70,7 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data, onStatusChange = () => {} }
 
   const schema = yup
     .object({
-      employeeIdNumber: yup.number().positive().required('NIK/NIP is required field'),
+      employeeIdNumber: yup.string().required('NIK/NIP is required field'),
       employeeStatus: yup
         .object({
           label: yup.string().nullable().required(),
@@ -188,7 +188,7 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data, onStatusChange = () => {} }
         label="NIK/NIP"
         name="employeeIdNumber"
         control={control}
-        type="number"
+        type="text"
         error={errors.employeeIdNumber?.message}
       />
 

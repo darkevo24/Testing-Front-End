@@ -31,7 +31,7 @@ export const Bottom = () => {
 
   return (
     <div className="sdp-bottom-line w-100 d-flex justify-content-around align-items-center bg-gray">
-      <Anchor className="sdp-anchor">Copyright © 2021 Kementerian PPN/Bappenas.</Anchor>
+      <Anchor className="sdp-anchor">Copyright © 2021 Kementerian PPN/Bappenas</Anchor>
       <div>
         {socialLinks.map((item) => (
           <Anchor key={item.key} className="sdp-anchor justify-content-around" href={item.link} target="_blank">

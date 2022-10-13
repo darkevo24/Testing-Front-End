@@ -13,6 +13,7 @@ export const getTentang = createAsyncThunk('tentang/getTentang', async () => {
 
 // https://frozen-eyrie-20956.herokuapp.com/api/ticket
 export const postTentang = createAsyncThunk('tentang/postTentang', async (param) => {
+  // const response = await post(apiUrls.contactUs, param);
   const response = await post('http://localhost:4040/api/ticket', param);
   return response?.data?.content;
 });

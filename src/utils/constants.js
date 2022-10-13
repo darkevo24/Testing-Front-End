@@ -42,6 +42,7 @@ export const bpmDevUrl = window.location.hostname === 'localhost' ? bpmWaveMaker
 export const bpmUrl = isSdiProduction ? bpmProdUrl : bpmDevUrl;
 
 export const apmUrl = isSdiProduction ? 'http://apm.data.go.id/' : 'http://apm.satudata.go.id/';
+export const crmUrl = 'https://frozen-eyrie-20956.herokuapp.com';
 
 export const apiUrl = `${backendUrl}/api-be`;
 export const dataUrl = `${katalogUrl}/api`;
@@ -54,6 +55,7 @@ export const getV1Endpoint = (path) => `${apiUrl}/v1/${path}`;
 export const getCMSEndpoint = (path) => `${apiUrl}/cms/v1/${path}`;
 export const getPublicEndpoint = (path) => `${apiUrl}/public/${path}`;
 export const getPublicV1Endpoint = (path) => `${apiUrl}/public/v1/${path}`;
+export const getCrmApi = (path) => `${crmUrl}/api/${path}`;
 
 export const apiUrls = {
   login: getApiEndpoint('login'),
@@ -139,6 +141,7 @@ export const apiUrls = {
   cmsAnalitikData: getCMSEndpoint('analitik'),
   cmsManagementApi: getApiEndpoint('management-api'),
   publicGlobalData: getPublicEndpoint('site-setting'),
+  contactUs: getCrmApi('ticket'),
 };
 
 export const priorityOptions = [

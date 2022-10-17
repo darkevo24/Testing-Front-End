@@ -48,7 +48,10 @@ export const INSTANSI_DATA = 'INSTANSI_DATA';
 
 export const getInstansi = createAsyncThunk('instansi-data/list', async ({ page, q }) => {
   const params = { page: page + 1 };
-  if (q) params.q = q;
+  if (q) {
+    params.nama = q;
+    params.kode = q;
+  }
   const response = await get(`${apiUrls.cmsIntansiData}/`, {
     query: params,
   });

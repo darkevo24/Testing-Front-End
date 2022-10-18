@@ -68,9 +68,9 @@ const Populer = (props) => {
     dispatch(getOtherNews(size));
   }, [dispatch, size]);
 
-  const handleDetail = (event, title) => {
+  const handleDetail = (event, id, slug) => {
     event.preventDefault();
-    history.push(`/berita/${title}`);
+    history.push(`/berita/${id}/${slug}`);
   };
   const handletGetAll = (e) => {
     e.preventDefault();
@@ -83,14 +83,14 @@ const Populer = (props) => {
       <BeritaGrid columns={props.columns}>
         {records?.length
           ? records.map((record, i) => {
-              const { image, kategori, judul, id } = record;
+              const { image, kategori, judul, id, slug } = record;
               return (
                 <BeritaItem key={'populer' + i}>
                   <ImageWrapper>
                     <Image src={image} />
                     <Topik>{kategori}</Topik>
                   </ImageWrapper>
-                  <Title onClick={(event) => handleDetail(event, id)}>{judul}</Title>
+                  <Title onClick={(event) => handleDetail(event, id, slug)}>{judul}</Title>
                 </BeritaItem>
               );
             })

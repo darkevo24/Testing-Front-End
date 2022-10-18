@@ -7,6 +7,7 @@ import 'moment/locale/id';
 import parse from 'html-react-parser';
 import { useHistory } from 'react-router-dom';
 import { gethighlightedNews, highlightedNewsSelector } from './reducer';
+import { detailDataSelector } from 'containers/CMS/StrukturOrganisasi/reducer';
 
 const Wrapper = styled.div`
   margin-bottom: 80px;
@@ -41,15 +42,15 @@ const BeritaUtama = () => {
     if (status === 'idel') dispatch(gethighlightedNews('latest'));
   }, [dispatch, status]);
 
-  const handleDetail = (event, title) => {
+  const handleDetail = (event, id, slug) => {
     event.preventDefault();
-    history.push(`/berita/${title}`);
+    history.push(`/berita/${id}/${slug}`);
   };
   return (
     <Wrapper>
       {records.length > 0 &&
         records.map((value, index) => {
-          const { image, judul, partContent, tanggalPublis, id } = value;
+          const { image, judul, partContent, tanggalPublis, id, slug } = value;
           const truncatedParagrapData = truncate(partContent, {
             length: 250,
             separator: ' ',
@@ -58,7 +59,7 @@ const BeritaUtama = () => {
             <div key={index}>
               <ImageBerita src={image} />
               <Tanggal>{moment(tanggalPublis).fromNow()}</Tanggal>
-              <Judul onClick={(event) => handleDetail(event, id)}>{judul}</Judul>
+              <Judul onClick={(event) => handleDetail(event, id, slug)}>{judul}</Judul>
               {partContent.length > 250 ? (
                 <>
                   <div className="overview">{parse(truncatedParagrapData)}</div>

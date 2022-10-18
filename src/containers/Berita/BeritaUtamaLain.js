@@ -20,9 +20,9 @@ const BeritaUtamaLain = (props) => {
       dispatch(getLatestNews(3));
     }
   }, [dispatch, status]);
-  const handleDetail = (event, title) => {
+  const handleDetail = (event, id, slug) => {
     event.preventDefault();
-    history.push(`/berita/${title}`);
+    history.push(`/berita/${id}/${slug}`);
   };
 
   return (
@@ -31,14 +31,14 @@ const BeritaUtamaLain = (props) => {
       <BeritaGrid columns={props.columns}>
         {records.length
           ? records.map((value, i) => {
-              const { image, judul, id } = value;
+              const { image, judul, id, slug } = value;
               return (
                 <BeritaCard key={i}>
                   <BeritaCardImageWrapper>
                     <BeritaCardImage src={image} />
                   </BeritaCardImageWrapper>
                   <BeritaCardContent>
-                    <BeritaCardJudul onClick={(event) => handleDetail(event, id)}>{judul}</BeritaCardJudul>
+                    <BeritaCardJudul onClick={(event) => handleDetail(event, id, slug)}>{judul}</BeritaCardJudul>
                   </BeritaCardContent>
                 </BeritaCard>
               );

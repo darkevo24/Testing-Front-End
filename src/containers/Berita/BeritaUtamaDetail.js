@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import moment from 'moment';
 import { TwitterShareButton, TwitterIcon, FacebookIcon, FacebookShareButton } from 'react-share';
 import Loader from 'components/Loader';
@@ -37,16 +37,29 @@ const renderComp = (el) => {
 
 const BeritaUtamaDetail = (props) => {
   const { id } = useParams();
+  // const location = useLocation();
+  const pathname = window.location.pathname; //returns the current url minus the domain name
   const dispatch = useDispatch();
   const { record, isLoading } = useSelector(newsDetailSelector);
 
   const shareUrl = window.location.origin + window.location.pathname;
   const shareTitle = record.title;
 
+  // useEffect(() => {
+  //   if (!isLoading) {
+  //     dispatch(getNewsDetail(`${id}`));
+  //     //console.log get the title
+
+  //     // const slug = slugify(record.judul);
+  //     // console.log('+', slug);
+  //   }
+  // }, [dispatch, id]);
+
   useEffect(() => {
-    if (!isLoading) {
-      dispatch(getNewsDetail(`${id}`));
-    }
+    const fetchData = async () => {
+      await dispatch(getNewsDetail(`${id}`));
+    };
+    fetchData().catch(console.error);
   }, [dispatch, id]);
 
   const [kanan, setKanan] = useState([]);

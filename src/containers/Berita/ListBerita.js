@@ -66,16 +66,16 @@ const ListBerita = (props) => {
   const handleLoadMore = () => {
     setPage(page + 3);
   };
-  const handleDetail = (event, title) => {
+  const handleDetail = (event, id, slug) => {
     event.preventDefault();
-    history.push(`/berita/${title}`);
+    history.push(`/berita/${id}/${slug}`);
   };
   return (
     <Wrapper>
       <BeritaGrid columns={props.columns}>
         {records.length
           ? records.map((content, i) => {
-              const { judul, slug, image, kategori, id } = content;
+              const { judul, image, kategori, id, slug } = content;
               return (
                 <BeritaItem className="row" key={'lb' + i}>
                   <div className="col-lg-4" style={{ paddingRight: '24px' }}>
@@ -83,7 +83,7 @@ const ListBerita = (props) => {
                   </div>
                   <div className="col-lg-8">
                     <Topik>{kategori}</Topik>
-                    <Judul onClick={(event) => handleDetail(event, id)}>{judul}</Judul>
+                    <Judul onClick={(event) => handleDetail(event, id, slug)}>{judul}</Judul>
                     <Konten>{slug}</Konten>
                   </div>
                 </BeritaItem>

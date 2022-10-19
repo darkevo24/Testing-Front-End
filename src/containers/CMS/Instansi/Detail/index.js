@@ -61,7 +61,7 @@ const InstansiDetail = () => {
     return dispatch(getInstansiLogs(`logs/${id}`));
   };
   const fetchUnitKejira = () => {
-    return dispatch(getInstansiUnitKejira(`${id}/unit-kerja`));
+    return dispatch(getInstansiUnitKejira(`${id}/unit-kerja?size=-1`));
   };
 
   useEffect(() => {

@@ -20,6 +20,7 @@ import {
   BudgetIcon,
   ChangeAndReleaseIcon,
   FeedbackIcon,
+  CkanIcon,
 } from 'assets/icons';
 import { SplitCircle } from 'components/Icons';
 
@@ -328,6 +329,14 @@ export const CMS_DASHBOARD = [
     iconColor: 'bg-brilliant-azure',
     link: '',
     externalLink: apmUrl,
+  },
+  {
+    title: 'CKAN',
+    description: 'CKAN',
+    icon: <CkanIcon />,
+    iconColor: 'bg-brilliant-azure',
+    link: '',
+    externalLink: `${katalogUrl}/dashboard`,
   },
 ];
 

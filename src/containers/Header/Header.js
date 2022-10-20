@@ -125,7 +125,7 @@ export const Header = () => {
           { title: 'Forum SDI', link: '/forum-sdi' },
           // { title: 'Glosarium', link: '/Glosarium' },
           { title: 'SDI Wiki', link: '/sdi-wiki' },
-          { title: 'CKAN', link: `${katalogUrl}/${isLoggedIn ? 'dashboard' : 'login'}` },
+          { title: 'CKAN', link: `${katalogUrl}/${isLoggedIn ? 'dashboard' : 'user/saml2login'}` },
           // { title: 'Persetujuan Anggaran Biaya', link: '/permintaan-budget' },
         ],
       },

@@ -52,9 +52,9 @@ const TentangSDI = () => {
               height="500"
               title="sample"
               src={getYoutubeEmbed(dataset.video)}
-              frameborder="0"
+              frameBorder="0"
               allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen></iframe>
+              allowFullScreen></iframe>
             <div className="mt-24">
               <div className={cx(bem.e('title'), 'mb-3')}>{dataset.judul}</div>
               <p className={bem.e('description')} dangerouslySetInnerHTML={{ __html: unescape(dataset.isi) }}></p>
@@ -74,7 +74,7 @@ const TentangSDI = () => {
             </Col>
           </Row>
           {[1, 2].map((level) => (
-            <div className="text-center">
+            <div key={`level-${level}`} className="text-center">
               {records
                 .filter((item) => item.level === level)
                 .map((bidang) => {

@@ -6,8 +6,20 @@ export const getTentang = createAsyncThunk('tentang/getTentang', async () => {
   return response?.data?.content[0];
 });
 
+// export const postTentang = createAsyncThunk('tentang/postTentang', async (param) => {
+//   const response = await post(apiUrls.hubungiKami, param);
+//   return response?.data?.content;
+// });
+
+// https://frozen-eyrie-20956.herokuapp.com/api/ticket
 export const postTentang = createAsyncThunk('tentang/postTentang', async (param) => {
-  const response = await post(apiUrls.hubungiKami, param);
+  // const response = await post(apiUrls.contactUs, param);
+  const response = await post(apiUrls.contactUs, param);
+  return response?.data?.content;
+});
+
+export const postImage = createAsyncThunk('api/image', async (param) => {
+  const response = await post(apiUrls.crmImageApi, param);
   return response?.data?.content;
 });
 

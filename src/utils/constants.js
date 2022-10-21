@@ -21,6 +21,8 @@ import {
   ChangeAndReleaseIcon,
   FeedbackIcon,
   CkanIcon,
+  LmsIcon,
+  CrmIcon,
 } from 'assets/icons';
 import { SplitCircle } from 'components/Icons';
 
@@ -340,7 +342,23 @@ export const CMS_DASHBOARD = [
     icon: <CkanIcon />,
     iconColor: 'bg-brilliant-azure',
     link: '',
-    externalLink: `${katalogUrl}/dashboard`,
+    externalLink: `${katalogUrl}/user/saml2login`,
+  },
+  {
+    title: 'LMS',
+    description: 'LMS',
+    icon: <LmsIcon />,
+    iconColor: 'bg-blue',
+    link: '#',
+    externalLink: '',
+  },
+  {
+    title: 'CRM',
+    description: 'CRM',
+    icon: <CrmIcon />,
+    iconColor: 'bg-red',
+    link: isSdiProduction ? '#' : '',
+    externalLink: isSdiProduction ? '' : 'https://sengkuyung-crm-dev.vercel.app/',
   },
 ];
 

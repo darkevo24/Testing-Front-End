@@ -17,9 +17,6 @@ import { STATUS_DATA_BERITA } from 'utils/constants';
 import { USER_ROLES } from 'utils/constants';
 import { getListBerita, beritaCmsListSelector, setPreviewBerita, setStatusBerita } from '../BeritaBaru/reducer';
 import { FILTER_STATUS } from './constants';
-import cloneDeep from 'lodash/cloneDeep';
-import { usePrevious } from 'utils/hooks';
-import { filter } from 'lodash';
 
 const bem = bn('content-table');
 
@@ -31,8 +28,8 @@ const CMSBerita = ({ textSearch }) => {
   const [multiApprove, setMultiApprove] = useState(false);
   const [selectApprove, setSelectApprove] = useState([]);
   const [searchQuery, setSearch] = useState('');
-  const [sortBy, setSortBy] = useState(null);
-  // const prevTextSearch = usePrevious(textSearch);
+  const [sortBy, setSortBy] = useState({ id: 0, sortId: 0, desc: false });
+  const [filter, setFilter] = useState({ page: 1, size: 10, sortBy: 0, sortDirection: 'ASC', judul: '', status: '' });
   const { loading, totalPages, totalRecords, size, page, records } = useSelector(beritaCmsListSelector);
 
   const fetchData = (params) => {
@@ -40,19 +37,8 @@ const CMSBerita = ({ textSearch }) => {
   };
 
   useEffect(() => {
-    fetchData({
-      page: 1,
-      size: 10,
-      sortDirection: '',
-      sortBy: 0,
-    });
-  }, []);
-
-  // useEffect(() => {
-  //   // fetch data with page and judul and direction and sortBy
-  //   fetchData({ bodyParams: { page, judul: searchQuery } });
-  //   // console.log('bodyParams efecrt', params);
-  // }, [sortBy]);
+    fetchData({ filter });
+  }, [filter]);
 
   const redirectToDetail = (data) => {
     history.push(`/cms/berita-detail/${data.id}`);
@@ -60,7 +46,7 @@ const CMSBerita = ({ textSearch }) => {
 
   const handleSearch = (value = '') => {
     setSearch(value);
-    fetchData({ page: 1, judul: value });
+    setFilter({ ...filter, judul: value });
   };
 
   const handleCheckboxChange = (data) => {
@@ -96,14 +82,14 @@ const CMSBerita = ({ textSearch }) => {
         setStatusBerita({
           payload: { id: selectApprove, status: 3, note: '' },
         }),
-      ).then(() => fetchData({ page: 1, judul: searchQuery }));
+      ).then(() => setFilter({ ...filter }));
     }
 
     setModalConfirm(false);
   };
 
-  const handleStatusChange = (status) => {
-    fetchData({ page: 1, judul: searchQuery });
+  const handleStatusChange = (status, sortDirection, sortId) => {
+    setFilter({ ...filter, status: status });
   };
 
   const columns = useMemo(() => {
@@ -169,8 +155,8 @@ const CMSBerita = ({ textSearch }) => {
 
   const onSortChange = ({ id, sortId, isSortedDesc }) => {
     const desc = isSortedDesc === undefined ? false : !isSortedDesc;
+    setFilter({ ...filter, sortBy: sortId, sortDirection: desc ? 'DESC' : 'ASC' });
     setSortBy({ id, sortId, desc });
-    fetchData({ size: 10, page: 1, sortDirection: desc ? 'DESC' : 'ASC', sortBy: sortId });
   };
 
   const tableConfig = {
@@ -189,7 +175,7 @@ const CMSBerita = ({ textSearch }) => {
     manualPagination: true,
     onPageIndexChange: (currentPage) => {
       if (currentPage + 1 !== page) {
-        fetchData({ page: currentPage + 1, judul: searchQuery });
+        setFilter({ ...filter, page: currentPage + 1 });
       }
     },
   };

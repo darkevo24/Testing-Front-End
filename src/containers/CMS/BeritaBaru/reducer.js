@@ -2,14 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { apiUrls, defaultNumberOfRows, post, put, get, deleteRequest } from 'utils/request';
 
-// const defaultBeritaBodyParams = {
-//   size: '10',
-//   page: 1,
-//   judul: '',
-//   direction: 'DESC',
-//   sortBy: 0,
-// };
-
 export const initialState = {
   loading: false,
   dataset: {
@@ -21,9 +13,6 @@ export const initialState = {
     size: defaultNumberOfRows,
     totalRecords: 0,
     totalPages: 1,
-    // bodyParams: {
-    //   ...defaultBeritaBodyParams,
-    // },
   },
   detaildataSet: {
     loading: false,
@@ -42,23 +31,16 @@ export const initialState = {
 export const BERITA_CMS_SLICE = 'BERITA_CMS_SLICE';
 
 export const getListBerita = createAsyncThunk('cms/getListBerita', async (params) => {
-  const url = `${apiUrls.cmsBeritaData}/sortby`;
+  const url = new URL(`${apiUrls.cmsBeritaData}/list`);
 
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI1WktObnA1My1IbmNtdkRtWXVMM2ota1pkWG56cENpT0x5ZzlYRHpSZ2k4In0.eyJleHAiOjE2NjY0OTgyMzksImlhdCI6MTY2NjQ5MTA1MSwiYXV0aF90aW1lIjoxNjY2NDkxMDM5LCJqdGkiOiJjNWMzN2E4NS00Yzg3LTRmYWItODQ1ZC0zY2RmMTI4ZTI4YjIiLCJpc3MiOiJodHRwczovL3Nzby5kZWx0YWRhdGFtYW5kaXJpLmNvbS9hdXRoL3JlYWxtcy9zYXR1LWRhdGEtcG9ydGFsLXRlc3QiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNWE1MTBjNDktMjk5My00MzUyLTkzMDUtOTFhMDgyZDUyMGFlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoic2F0dS1kYXRhLXBvcnRhbC1jbGllbnQiLCJub25jZSI6Ijg1NTMwYzA4LTRiODctNGVmNi05YzZkLTU0MjE0MDJmNjY0YSIsInNlc3Npb25fc3RhdGUiOiJjYTA2ZDNlMy05Yjk3LTRlNzItOWM1Ni0xZjRmMTA3MmY5MmIiLCJhY3IiOiIwIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCIsImVtYWlsIjoiYnJpamVzaEBkZWx0YWRhdGFtYW5kaXJpLmNvbSJ9.RxwAtax6Q3uqOR18j3o1dmD4LKiTzoeqxIAtxlurifOBxL8Bw5qqy5xlGybsMtH_Tqqso2sz5YPA8YBNVHi06J1Uc4vkdlpDEO9g4crAIKOCsbICjtWxM1zT5O7vm_9muzM1vAJqrVTyt89dbd0KFB4gV6Fv6nX32_Usrm1iw8nNiZ2uBW2XsLaUl54w_uMnCCoizRJ_FTO5ajWhkYQg8BczF38Xev9wvf-llt_nkGqBKRiEisFUkCCqFPHDhb3JJt2gOz4UBib3rbYDCkdXrRbb29U7hhBwcfZzPsxGK3sOGr4jeOuzrfpoWvN7CcQXO_XNI12o4sE3KRjYFcj2Sw`,
-  };
-  const data = {
-    size: params.size,
-    page: params.page,
-    sortDirection: params.sortDirection,
-    sortBy: params.sortBy,
-  };
+  url.searchParams.append('size', params.filter.size);
+  url.searchParams.append('page', params.filter.page);
+  url.searchParams.append('sortDirection', params.filter.sortDirection);
+  url.searchParams.append('sortBy', params.filter.sortBy);
 
-  console.log('data', data);
-
-  const response = await post(url, data, headers);
-
+  const response = await post(url, {
+    judul: params.filter.judul,
+  });
   return response?.data?.content;
 });
 

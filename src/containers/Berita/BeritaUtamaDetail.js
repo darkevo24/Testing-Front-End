@@ -7,6 +7,7 @@ import Loader from 'components/Loader';
 import { beritaLayoutSelector, getBertaLayout } from 'containers/CMS/BeritaLayout/reducer';
 import userIcon from 'assets/user.svg';
 import clockIcon from 'assets/clock.svg';
+import viewIcon from 'assets/view.svg';
 import Search from './Search';
 import BeritaUtama from './BeritaUtama';
 import BeritaUtamaLain from './BeritaUtamaLain';
@@ -102,6 +103,10 @@ const BeritaUtamaDetail = (props) => {
               <img src={clockIcon} className="mx-8 w-16 h-16" alt="" />
               <div className="sdp-text-disable mb-24 fs-14">{formatDate(record?.tanggalPublis)}</div>
             </div>
+            <div className="d-flex pt-20" style={{ minWidth: '300px' }}>
+              <img src={viewIcon} className="mx-8 w-16 h-16" alt="" />
+              <div className="sdp-text-disable mb-24 fs-14">{formatNumber(record?.visitCounter)}</div>
+            </div>
             <div className="mr-8 my-12">
               <TwitterShareButton className="mx-4" url={shareUrl} title={shareTitle}>
                 <TwitterIcon size={32} round={true} />
@@ -118,6 +123,17 @@ const BeritaUtamaDetail = (props) => {
       <div className="col-lg-2">{kanan.length > 0 && kanan.map((el) => renderComp(el))}</div>
     </div>
   );
+};
+
+//function to turn 000 to K and 000000 to M
+const formatNumber = (num) => {
+  if (num > 999 && num < 1000000) {
+    return (num / 1000).toFixed(0) + 'K'; // convert to K for number from > 1000 < 1 million
+  } else if (num > 1000000) {
+    return (num / 1000000).toFixed(0) + 'M'; // convert to M for number from > 1 million
+  } else if (num < 900) {
+    return num; // if value < 1000, nothing to do
+  }
 };
 
 const formatDate = (date) => {

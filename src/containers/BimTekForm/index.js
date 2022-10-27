@@ -33,8 +33,10 @@ const BimTekForm = () => {
   const [peserta, setPeserta] = useState('');
   const [materiTagData, setMateriTagData] = useState([]);
   const [kotaData, setKotaData] = useState(null);
+  const [permintaanBimtekData, setPermintaanBimtekData] = useState(null);
   const [kotaError, setKotaError] = useState(true);
   const [ekspektasiError, setEkspektasiError] = useState(true);
+  const [permintaanBimtekError, setPermintaanBimtekError] = useState(true);
   const [materiError, setMateriError] = useState(true);
   const { control } = useForm({});
   useEffect(() => {
@@ -51,6 +53,16 @@ const BimTekForm = () => {
   const tagMateri = filterCategory.map((tags) => {
     return { label: tags, value: tags };
   });
+  const permintaanBimtekOptions = [
+    {
+      label: 'Daring',
+      value: 'Daring',
+    },
+    {
+      label: 'Luring',
+      value: 'Luring',
+    },
+  ];
 
   const createKategori = (data) => {
     setMateriTagData([
@@ -65,8 +77,10 @@ const BimTekForm = () => {
   useEffect(() => {
     peserta !== undefined && setEkspektasiError(true);
     kotaData !== undefined && setKotaError(true);
+    permintaanBimtekData !== undefined && setPermintaanBimtekError(true);
     materiTagData?.length > 0 && setMateriError(true);
-  }, [peserta, kotaData, materiTagData]);
+    console.log('permintaanBimtekError', permintaanBimtekData);
+  }, [peserta, kotaData, materiTagData, permintaanBimtekData]);
 
   const getFormulirData = async (e) => {
     e.preventDefault();
@@ -74,10 +88,14 @@ const BimTekForm = () => {
       kota: Number(kotaData),
       ekspektasiJumlahPeserta: Number(peserta),
       tagMateri: materiTagData && materiTagData.map((materiTags) => materiTags.value),
+      permintaanBimtek: permintaanBimtekData,
     };
-    if (!kotaData || !peserta || !params?.tagMateri || !params.tagMateri?.length) {
+    if (!kotaData || !peserta || !params?.tagMateri || !params.tagMateri?.length || !permintaanBimtekData) {
       if (!kotaData || kotaData === null) {
         setKotaError(false);
+      }
+      if (!permintaanBimtekData || permintaanBimtekData === null) {
+        setPermintaanBimtekData(false);
       }
       if (!peserta || peserta === '') {
         setEkspektasiError(false);
@@ -104,12 +122,16 @@ const BimTekForm = () => {
         });
       }
       setKotaData(null);
+      setPermintaanBimtekData(null);
       setPeserta('');
       setMateriTagData([]);
     }
   };
   const handleKotaChange = (e) => {
     setKotaData(e.value);
+  };
+  const handlePermintaanBimtekChange = (e) => {
+    setPermintaanBimtekData(e.value);
   };
   const onEkspektasiChange = (e) => {
     setPeserta(e.target.value);
@@ -137,7 +159,7 @@ const BimTekForm = () => {
               <Form.Group as={Col} controlId="domisili">
                 <ReadOnlyInputs
                   group
-                  label="Provinsi/Kab/Kota"
+                  label="Provinsi / Kab / Kota"
                   labelClass="sdp-form-label fw-normal"
                   type="text"
                   defaultValue={getPendaftaranData.provinsiName}
@@ -148,7 +170,7 @@ const BimTekForm = () => {
               <Form.Group as={Col} controlId="agency">
                 <ReadOnlyInputs
                   group
-                  label="Dinas Instansi"
+                  label="Dinas / Instansi"
                   labelClass="sdp-form-label fw-normal"
                   type="text"
                   defaultValue={getPendaftaranData.instansiName}
@@ -157,7 +179,7 @@ const BimTekForm = () => {
               <Form.Group as={Col} controlId="position">
                 <ReadOnlyInputs
                   group
-                  label="Unit Kerja"
+                  label="Jabatan / Peran Daftar"
                   labelClass="sdp-form-label fw-normal"
                   type="text"
                   defaultValue={getPendaftaranData.unitKerjaName}
@@ -168,7 +190,7 @@ const BimTekForm = () => {
               <Form.Group as={Col} controlId="phoneNumber">
                 <ReadOnlyInputs
                   group
-                  label="Nomor Handphon"
+                  label="Nomor Handphone"
                   labelClass="sdp-form-label fw-normal"
                   type="text"
                   defaultValue={getPendaftaranData.noHp}
@@ -213,23 +235,64 @@ const BimTekForm = () => {
                 </p>
               </Form.Group>
             </Row>
-            <Form.Group as={Col} controlId="materi" className={bem.e('pendaftaran-form-field', 'position-relative')}>
-              <Form.Label>Materi Bimtek</Form.Label>
-              <SingleSelectDropdown
-                data={tagMateri}
-                control={control}
-                placeholder="Pilih Materi"
-                isCreatable={true}
-                onCreateOption={createKategori}
-                name="tagMateri"
-                onChange={handleMateriChange}
-                value={materiTagData}
-                isMulti
-              />
-              <p hidden={materiError} className={bem.e('error-message')}>
-                Materi Bimtek is required.
-              </p>
-            </Form.Group>
+            <Row>
+              <Form.Group as={Col} controlId="tanggalPengajuan">
+                <ReadOnlyInputs
+                  group
+                  label="Tanggal Pengajuan"
+                  labelClass="sdp-form-label fw-normal"
+                  type="text"
+                  defaultValue={getPendaftaranData.tanggalPengajuan}
+                />
+              </Form.Group>
+              <Form.Group as={Col} controlId="jenisPermintaan">
+                <ReadOnlyInputs
+                  group
+                  label="Jenis Permintaan"
+                  labelClass="sdp-form-label fw-normal"
+                  type="text"
+                  defaultValue={getPendaftaranData.jenisPermintaan}
+                />
+              </Form.Group>
+            </Row>
+            <Row>
+              <Form.Group as={Col} controlId="city" className={bem.e('pendaftaran-form-field', 'position-relative')}>
+                <Form.Label>Jenis Permintaan Bimtek</Form.Label>
+                <SingleSelectDropdown
+                  data={permintaanBimtekOptions}
+                  control={control}
+                  placeholder="Pilih Jenis Permintaan Bimtek"
+                  name="tagMateri"
+                  value={
+                    permintaanBimtekData == null
+                      ? null
+                      : permintaanBimtekOptions.find((item) => item.value === permintaanBimtekData)
+                  }
+                  onChange={handlePermintaanBimtekChange}
+                />
+                <p hidden={kotaError} className={bem.e('error-message')}>
+                  Jenis Permintaan Bimtek is required
+                </p>
+              </Form.Group>
+              <Form.Group as={Col} controlId="materi" className={bem.e('pendaftaran-form-field', 'position-relative')}>
+                <Form.Label>Topik Bimtek</Form.Label>
+                <SingleSelectDropdown
+                  data={tagMateri}
+                  control={control}
+                  placeholder="Pilih Topik"
+                  isCreatable={true}
+                  onCreateOption={createKategori}
+                  name="tagMateri"
+                  onChange={handleMateriChange}
+                  value={materiTagData}
+                  isMulti
+                />
+                <p hidden={materiError} className={bem.e('error-message')}>
+                  Materi Bimtek is required.
+                </p>
+              </Form.Group>
+            </Row>
+
             <Button variant="info" type="submit" className="mt-28">
               Kirim Pengajuan
             </Button>

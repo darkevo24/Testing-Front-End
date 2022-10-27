@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import moment from 'moment';
 import { TwitterShareButton, TwitterIcon, FacebookIcon, FacebookShareButton } from 'react-share';
 import Loader from 'components/Loader';
 import { beritaLayoutSelector, getBertaLayout } from 'containers/CMS/BeritaLayout/reducer';
-import userIcon from 'assets/user.svg';
 import clockIcon from 'assets/clock.svg';
 import viewIcon from 'assets/view.svg';
 import Search from './Search';
@@ -19,6 +19,16 @@ import Populer from './Populer';
 import Tweets from './Tweets';
 import { newsDetailSelector, getNewsDetail } from './reducer';
 import { facebookAppId } from 'utils/constants';
+
+const Tag = styled.div`
+  font-size: 14px;
+  color: #515154;
+  background: #f5f6fa;
+  border-radius: 4px;
+  padding: 6px 12px;
+  display: inline-block;
+  margin: 0 8px 8px 0;
+`;
 
 const components = {
   search: Search,
@@ -38,23 +48,12 @@ const renderComp = (el) => {
 
 const BeritaUtamaDetail = (props) => {
   const { id } = useParams();
-  // const location = useLocation();
-  const pathname = window.location.pathname; //returns the current url minus the domain name
+
   const dispatch = useDispatch();
   const { record, isLoading } = useSelector(newsDetailSelector);
 
   const shareUrl = window.location.origin + window.location.pathname;
   const shareTitle = record.title;
-
-  // useEffect(() => {
-  //   if (!isLoading) {
-  //     dispatch(getNewsDetail(`${id}`));
-  //     //console.log get the title
-
-  //     // const slug = slugify(record.judul);
-  //     // console.log('+', slug);
-  //   }
-  // }, [dispatch, id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,8 +93,10 @@ const BeritaUtamaDetail = (props) => {
       <div className="col-lg-6 mr-16">
         <div>
           <div className="fs-32 fw-600 mb-24">{record?.judul}</div>
+          {record?.tagLine?.map((tag) => (
+            <Tag>{tag}</Tag>
+          ))}
           <div className="d-flex flex-row">
-            <img src={userIcon} alt="" />
             <span className="userProfile fs-16 mt-8">{record?.createBy}</span>
           </div>
           <div className="d-flex flex-row justify-content-between">

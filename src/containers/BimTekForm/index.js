@@ -23,7 +23,7 @@ import { useForm } from 'react-hook-form';
 import bn from 'utils/bemNames';
 import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
 import Notification from 'components/Notification';
-import { ReadOnlyInputs } from 'components';
+import { ReadOnlyInputs, DatePicker } from 'components';
 
 const bem = bn('bimtek-form');
 
@@ -63,6 +63,16 @@ const BimTekForm = () => {
       value: 'Luring',
     },
   ];
+  const permintaanOptions = [
+    {
+      label: 'Pengusulan Bimtek (K/L/D Sebagai Penyelenggara)',
+      value: 'Pengusulan Bimtek (K/L/D Sebagai Penyelenggara)',
+    },
+    {
+      label: 'Permintaan Bimtek (Sekretariat Sebagai Penyelenggara)',
+      value: 'Permintaan Bimtek (Sekretariat Sebagai Penyelenggara)',
+    },
+  ];
 
   const createKategori = (data) => {
     setMateriTagData([
@@ -78,8 +88,9 @@ const BimTekForm = () => {
     peserta !== undefined && setEkspektasiError(true);
     kotaData !== undefined && setKotaError(true);
     permintaanBimtekData !== undefined && setPermintaanBimtekError(true);
+    console.log('permintaanBimtekData', permintaanBimtekData);
     materiTagData?.length > 0 && setMateriError(true);
-    console.log('permintaanBimtekError', permintaanBimtekData);
+    console.log('materiTagData', materiTagData);
   }, [peserta, kotaData, materiTagData, permintaanBimtekData]);
 
   const getFormulirData = async (e) => {
@@ -96,12 +107,14 @@ const BimTekForm = () => {
       }
       if (!permintaanBimtekData || permintaanBimtekData === null) {
         setPermintaanBimtekData(false);
+        console.log('here permintaanBimtekData', permintaanBimtekData);
       }
       if (!peserta || peserta === '') {
         setEkspektasiError(false);
       }
       if (!params?.tagMateri || !params.tagMateri?.length) {
         setMateriError(false);
+        console.log('here materiTagData', materiTagData);
       }
     } else {
       try {
@@ -179,7 +192,7 @@ const BimTekForm = () => {
               <Form.Group as={Col} controlId="position">
                 <ReadOnlyInputs
                   group
-                  label="Jabatan / Peran Daftar"
+                  label="Unit Kerja"
                   labelClass="sdp-form-label fw-normal"
                   type="text"
                   defaultValue={getPendaftaranData.unitKerjaName}
@@ -237,13 +250,14 @@ const BimTekForm = () => {
             </Row>
             <Row>
               <Form.Group as={Col} controlId="tanggalPengajuan">
-                <ReadOnlyInputs
+                <DatePicker group label="Tanggal Mulai Pelaksanaan Disetujui" name="publishedDate" control={control} />
+                {/* <ReadOnlyInputs
                   group
                   label="Tanggal Pengajuan"
                   labelClass="sdp-form-label fw-normal"
                   type="text"
                   defaultValue={getPendaftaranData.tanggalPengajuan}
-                />
+                /> */}
               </Form.Group>
               <Form.Group as={Col} controlId="jenisPermintaan">
                 <ReadOnlyInputs

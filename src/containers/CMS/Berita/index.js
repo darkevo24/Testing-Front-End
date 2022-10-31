@@ -20,7 +20,7 @@ import { FILTER_STATUS } from './constants';
 
 const bem = bn('content-table');
 
-const CMSBerita = () => {
+const CMSBerita = ({ textSearch }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -28,17 +28,17 @@ const CMSBerita = () => {
   const [multiApprove, setMultiApprove] = useState(false);
   const [selectApprove, setSelectApprove] = useState([]);
   const [searchQuery, setSearch] = useState('');
+  const [sortBy, setSortBy] = useState({ id: 0, sortId: 0, desc: false });
+  const [filter, setFilter] = useState({ page: 1, size: 10, sortBy: 0, sortDirection: 'ASC', judul: '', status: '' });
   const { loading, totalPages, totalRecords, size, page, records } = useSelector(beritaCmsListSelector);
+
   const fetchData = (params) => {
     return dispatch(getListBerita(params));
   };
 
   useEffect(() => {
-    fetchData({
-      page: 1,
-      judul: searchQuery,
-    });
-  }, []);
+    fetchData({ filter });
+  }, [filter]);
 
   const redirectToDetail = (data) => {
     history.push(`/cms/berita-detail/${data.id}`);
@@ -46,7 +46,7 @@ const CMSBerita = () => {
 
   const handleSearch = (value = '') => {
     setSearch(value);
-    fetchData({ page: 1, judul: value });
+    setFilter({ ...filter, judul: value });
   };
 
   const handleCheckboxChange = (data) => {
@@ -82,14 +82,14 @@ const CMSBerita = () => {
         setStatusBerita({
           payload: { id: selectApprove, status: 3, note: '' },
         }),
-      ).then(() => fetchData({ page: 1, judul: searchQuery }));
+      ).then(() => setFilter({ ...filter }));
     }
 
     setModalConfirm(false);
   };
 
-  const handleStatusChange = (status) => {
-    fetchData({ page: 1, judul: searchQuery });
+  const handleStatusChange = (status, sortDirection, sortId) => {
+    setFilter({ ...filter, status: status });
   };
 
   const columns = useMemo(() => {
@@ -97,15 +97,18 @@ const CMSBerita = () => {
       {
         Header: 'Judul Berita',
         accessor: 'judul',
+        sortId: 0,
       },
       {
         Header: 'Tanggal Publish',
         accessor: 'publishDate',
+        sortId: 1,
         Cell: ({ cell }) => formatDate(cell.row.original.publishDate),
       },
       {
         Header: 'Status',
         accessor: 'status',
+        sortId: 2,
         Cell: ({ cell }) => {
           return (
             <span className={cx('sdp-log__status', STATUS_DATA_BERITA[cell.row.original.status].toLowerCase())}>
@@ -117,10 +120,12 @@ const CMSBerita = () => {
       {
         Header: 'Author',
         accessor: 'createBy',
+        disableSortBy: true,
       },
       {
         Header: 'Editor',
         accessor: 'editorBy',
+        disableSortBy: true,
       },
       {
         id: 'actions',
@@ -147,10 +152,19 @@ const CMSBerita = () => {
     }
     return items;
   }, [multiApprove, selectApprove]);
+
+  const onSortChange = ({ id, sortId, isSortedDesc }) => {
+    const desc = isSortedDesc === undefined ? false : !isSortedDesc;
+    setFilter({ ...filter, sortBy: sortId, sortDirection: desc ? 'DESC' : 'ASC' });
+    setSortBy({ id, sortId, desc });
+  };
+
   const tableConfig = {
     columns,
     data: records,
     title: '',
+    sortBy,
+    onSortChange,
     showSearch: false,
     onSearch: () => {},
     variant: 'spaced',
@@ -161,7 +175,7 @@ const CMSBerita = () => {
     manualPagination: true,
     onPageIndexChange: (currentPage) => {
       if (currentPage + 1 !== page) {
-        fetchData({ page: currentPage + 1, judul: searchQuery });
+        setFilter({ ...filter, page: currentPage + 1 });
       }
     },
   };

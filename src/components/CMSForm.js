@@ -176,7 +176,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
       <Input group label="Judul" name="judul" control={control} disabled={disabled} error={errors.judul?.message} />
       <Form.Group className="mb-3">
         <Form.Label>Kategori</Form.Label>
-        <SingleSelectDropdown
+        {/* <SingleSelectDropdown
           data={listKategori.map((kategori) => ({ id: kategori.id, value: kategori.id, label: kategori.keterangan }))}
           control={control}
           placeholder="Pilih Kategori"
@@ -185,7 +185,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
           name="kategori"
           isDisabled={disabled}
           error={errors.kategori?.message}
-        />
+        /> */}
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Tagline</Form.Label>

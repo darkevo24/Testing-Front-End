@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import moment from 'moment';
 
 import { BimtekLayout } from 'layouts/BimtekLayout';
 
@@ -23,7 +24,9 @@ import { useForm } from 'react-hook-form';
 import bn from 'utils/bemNames';
 import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
 import Notification from 'components/Notification';
-import { ReadOnlyInputs } from 'components';
+import { ReadOnlyInputs, DatePicker } from 'components';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 const bem = bn('bimtek-form');
 
@@ -33,15 +36,33 @@ const BimTekForm = () => {
   const [peserta, setPeserta] = useState('');
   const [materiTagData, setMateriTagData] = useState([]);
   const [kotaData, setKotaData] = useState(null);
+  const [tanggalData, setTanggalData] = useState(null);
+  const [permintaanData, setPermintaanData] = useState(null);
+  const [permintaanBimtekData, setPermintaanBimtekData] = useState(null);
   const [kotaError, setKotaError] = useState(true);
   const [ekspektasiError, setEkspektasiError] = useState(true);
+  const [tanggalError, setTanggalError] = useState(true);
+  const [permintaanError, setPermintaanError] = useState(true);
+  const [permintaanBimtekError, setPermintaanBimtekError] = useState(true);
   const [materiError, setMateriError] = useState(true);
-  const { control } = useForm({});
+
   useEffect(() => {
     dispatch(getBimtekJadwalTagsData());
     dispatch(getBimtekJadwalLocationsData());
     dispatch(getFormulirPendaftaranData());
   }, []);
+
+  const schema = yup
+    .object({
+      tanggalData: yup.string(),
+    })
+    .required();
+  const { control, watch } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const tanggalDataValue = watch('tanggalData');
+
   const filterCategory = useSelector(bimtekJadwalTagsDatasetSelector);
   const filterLocations = useSelector(bimtekJadwalLocationsDatasetSelector);
   const { records: getPendaftaranData } = useSelector(formulirPendaftaranDatasetSelector);
@@ -51,6 +72,26 @@ const BimTekForm = () => {
   const tagMateri = filterCategory.map((tags) => {
     return { label: tags, value: tags };
   });
+  const permintaanBimtekOptions = [
+    {
+      label: 'Daring',
+      value: 'Daring',
+    },
+    {
+      label: 'Luring',
+      value: 'Luring',
+    },
+  ];
+  const permintaanOptions = [
+    {
+      label: 'Pengusulan Bimtek (K/L/D Sebagai Penyelenggara)',
+      value: 'Pengusulan Bimtek (K/L/D Sebagai Penyelenggara)',
+    },
+    {
+      label: 'Permintaan Bimtek (Sekretariat Sebagai Penyelenggara)',
+      value: 'Permintaan Bimtek (Sekretariat Sebagai Penyelenggara)',
+    },
+  ];
 
   const createKategori = (data) => {
     setMateriTagData([
@@ -65,8 +106,13 @@ const BimTekForm = () => {
   useEffect(() => {
     peserta !== undefined && setEkspektasiError(true);
     kotaData !== undefined && setKotaError(true);
+    tanggalDataValue !== null && setTanggalError(true);
+    permintaanData !== undefined && setPermintaanError(true);
+    permintaanBimtekData !== undefined && setPermintaanBimtekError(true);
     materiTagData?.length > 0 && setMateriError(true);
-  }, [peserta, kotaData, materiTagData]);
+  }, [peserta, kotaData, materiTagData, tanggalDataValue, permintaanData, permintaanBimtekData]);
+
+  const formatDate = 'YYYY-MM-DD HH:mm:ss';
 
   const getFormulirData = async (e) => {
     e.preventDefault();
@@ -74,8 +120,19 @@ const BimTekForm = () => {
       kota: Number(kotaData),
       ekspektasiJumlahPeserta: Number(peserta),
       tagMateri: materiTagData && materiTagData.map((materiTags) => materiTags.value),
+      tanggalRequest: moment(tanggalDataValue).format(formatDate),
+      jenisPermintaan: permintaanBimtekData,
+      jenisPermintaanBimtek: permintaanBimtekData,
     };
-    if (!kotaData || !peserta || !params?.tagMateri || !params.tagMateri?.length) {
+    if (
+      !kotaData ||
+      !peserta ||
+      !params?.tagMateri ||
+      !params.tagMateri?.length ||
+      !tanggalDataValue ||
+      !permintaanData ||
+      !permintaanBimtekData
+    ) {
       if (!kotaData || kotaData === null) {
         setKotaError(false);
       }
@@ -84,6 +141,15 @@ const BimTekForm = () => {
       }
       if (!params?.tagMateri || !params.tagMateri?.length) {
         setMateriError(false);
+      }
+      if (!tanggalDataValue || tanggalDataValue === null) {
+        setTanggalError(false);
+      }
+      if (!permintaanData || permintaanData === null) {
+        setPermintaanError(false);
+      }
+      if (!permintaanBimtekData || permintaanBimtekData === null) {
+        setPermintaanBimtekError(false);
       }
     } else {
       try {
@@ -105,7 +171,10 @@ const BimTekForm = () => {
       }
       setKotaData(null);
       setPeserta('');
+      setTanggalData(null);
       setMateriTagData([]);
+      setPermintaanData(null);
+      setPermintaanBimtekData(null);
     }
   };
   const handleKotaChange = (e) => {
@@ -116,6 +185,12 @@ const BimTekForm = () => {
   };
   const handleMateriChange = (selected) => {
     setMateriTagData(selected);
+  };
+  const handlePermintaanChange = (e) => {
+    setPermintaanData(e.value);
+  };
+  const handlePermintaanBimtekChange = (e) => {
+    setPermintaanBimtekData(e.value);
   };
 
   return (
@@ -137,7 +212,7 @@ const BimTekForm = () => {
               <Form.Group as={Col} controlId="domisili">
                 <ReadOnlyInputs
                   group
-                  label="Provinsi/Kab/Kota"
+                  label="Provinsi / Kab / Kota"
                   labelClass="sdp-form-label fw-normal"
                   type="text"
                   defaultValue={getPendaftaranData.provinsiName}
@@ -148,7 +223,7 @@ const BimTekForm = () => {
               <Form.Group as={Col} controlId="agency">
                 <ReadOnlyInputs
                   group
-                  label="Dinas Instansi"
+                  label="Dinas / Instansi"
                   labelClass="sdp-form-label fw-normal"
                   type="text"
                   defaultValue={getPendaftaranData.instansiName}
@@ -168,7 +243,7 @@ const BimTekForm = () => {
               <Form.Group as={Col} controlId="phoneNumber">
                 <ReadOnlyInputs
                   group
-                  label="Nomor Handphon"
+                  label="Nomor Handphone"
                   labelClass="sdp-form-label fw-normal"
                   type="text"
                   defaultValue={getPendaftaranData.noHp}
@@ -191,7 +266,7 @@ const BimTekForm = () => {
                   data={kotaOptions}
                   control={control}
                   placeholder="Pilih Kota"
-                  name="tagMateri"
+                  name="kota"
                   value={kotaData == null ? null : kotaOptions.find((item) => item.value === kotaData)}
                   onChange={handleKotaChange}
                 />
@@ -213,23 +288,78 @@ const BimTekForm = () => {
                 </p>
               </Form.Group>
             </Row>
-            <Form.Group as={Col} controlId="materi" className={bem.e('pendaftaran-form-field', 'position-relative')}>
-              <Form.Label>Materi Bimtek</Form.Label>
-              <SingleSelectDropdown
-                data={tagMateri}
-                control={control}
-                placeholder="Pilih Materi"
-                isCreatable={true}
-                onCreateOption={createKategori}
-                name="tagMateri"
-                onChange={handleMateriChange}
-                value={materiTagData}
-                isMulti
-              />
-              <p hidden={materiError} className={bem.e('error-message')}>
-                Materi Bimtek is required.
-              </p>
-            </Form.Group>
+            <Row>
+              <Form.Group
+                as={Col}
+                controlId="tanggalPengajuan"
+                className={bem.e('pendaftaran-form-field', 'position-relative')}>
+                <DatePicker
+                  group
+                  label="Tanggal Mulai Pelaksanaan Disetujui"
+                  labelClass="sdp-form-label mb-0 fw-normal"
+                  name="tanggalData"
+                  control={control}
+                />
+                <p hidden={tanggalError} className={bem.e('error-message')}>
+                  Tanggal Mulai Pelaksanaan Disetujui is required.
+                </p>
+              </Form.Group>
+              <Form.Group as={Col} controlId="permintaan" className={bem.e('pendaftaran-form-field', 'position-relative')}>
+                <Form.Label>Jenis Permintaan </Form.Label>
+                <SingleSelectDropdown
+                  data={permintaanOptions}
+                  control={control}
+                  placeholder="Pilih Jenis Permintaan"
+                  name="jenisPermintaan"
+                  value={
+                    permintaanBimtekData == null
+                      ? null
+                      : permintaanBimtekOptions.find((item) => item.value === permintaanBimtekData)
+                  }
+                  onChange={handlePermintaanBimtekChange}
+                />
+                <p hidden={permintaanBimtekError} className={bem.e('error-message')}>
+                  Jenis Permintaan Bimtek is required
+                </p>
+              </Form.Group>
+            </Row>
+            <Row className="mt-14">
+              <Form.Group
+                as={Col}
+                controlId="permintaanBimtek"
+                className={bem.e('pendaftaran-form-field', 'position-relative')}>
+                <Form.Label>Jenis Permintaan Bimtek</Form.Label>
+                <SingleSelectDropdown
+                  data={permintaanBimtekOptions}
+                  control={control}
+                  placeholder="Pilih Jenis Permintaan Bimtek"
+                  name="jenisPermintaanBimtek"
+                  value={permintaanData == null ? null : permintaanOptions.find((item) => item.value === permintaanData)}
+                  onChange={handlePermintaanChange}
+                />
+                <p hidden={permintaanError} className={bem.e('error-message')}>
+                  Jenis Permintaan is required
+                </p>
+              </Form.Group>
+              <Form.Group as={Col} controlId="materi" className={bem.e('pendaftaran-form-field', 'position-relative')}>
+                <Form.Label>Topik Bimtek</Form.Label>
+                <SingleSelectDropdown
+                  data={tagMateri}
+                  control={control}
+                  placeholder="Pilih Topik"
+                  isCreatable={true}
+                  onCreateOption={createKategori}
+                  name="tagMateri"
+                  onChange={handleMateriChange}
+                  value={materiTagData}
+                  isMulti
+                />
+                <p hidden={materiError} className={bem.e('error-message')}>
+                  Materi Bimtek is required.
+                </p>
+              </Form.Group>
+            </Row>
+
             <Button variant="info" type="submit" className="mt-28">
               Kirim Pengajuan
             </Button>

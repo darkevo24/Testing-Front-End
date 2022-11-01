@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 import { postTentang } from './reducer';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,12 +12,14 @@ import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import Notification from '../../components/Notification';
 import axios from 'axios';
-import Attachment from './attachment';
 import { fileExtention } from 'utils/constants';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
+import { icons } from 'components/Icons';
+import { useKeycloak } from '@react-keycloak/web';
 
 const ContactUs = () => {
+  const { keycloak } = useKeycloak();
   const user = useSelector(userSelector);
   const [errorUploadFile, setErrorUploadFile] = useState('');
   const [data, setData] = useState({
@@ -59,6 +65,14 @@ const ContactUs = () => {
 
   const handleUploadFile = async (e) => {
     const file = e?.target?.files?.[0];
+
+    var totalSize = 0;
+    data.attachment.forEach((item) => {
+      totalSize += item.size;
+    });
+
+    totalSize += file.size;
+
     if (!file) {
       setErrorUploadFile('Please select a file!');
       return '';
@@ -71,6 +85,12 @@ const ContactUs = () => {
       setErrorUploadFile('File size must be under 5 Mb!');
       return '';
     }
+
+    if (totalSize >= 5000000) {
+      setErrorUploadFile('All File size must be under 5 Mb!');
+      return '';
+    }
+
     setErrorUploadFile('');
     const bodyFormData = new FormData();
     bodyFormData.append('file', file);
@@ -89,7 +109,13 @@ const ContactUs = () => {
     return '';
   };
 
+  const deleteAttachment = (e) => {
+    data.attachment = data.attachment.filter((item, index) => index !== e);
+    formControl('attachment', data.attachment);
+  };
+
   const handleReset = () => {
+    formControl('attachment', []);
     formRef.current.reset();
   };
 
@@ -138,11 +164,21 @@ const ContactUs = () => {
     <div id="tentang-form" className="contactus-container">
       <div className="contactus-wrapper">
         <div className="contactus-title mb-4">Hubungi Kami</div>
+        {user == null ? (
+          <p>
+            Sudah Miliki Akun? Silahkan&nbsp;
+            <a className="cursor-pointer text-bold" onClick={keycloak.login}>
+              Login
+            </a>
+          </p>
+        ) : (
+          <p></p>
+        )}
         <Form ref={formRef} onSubmit={handleSubmit(onSubmitProses)}>
           <Form.Group controlId="fullName" className="mb-3">
             <Form.Label>Nama Lengkap</Form.Label>
             <Form.Control
-              defaultValue={user?.nama}
+              value={user?.nama}
               isValid={false}
               type="text"
               onChange={(e) => {
@@ -154,7 +190,7 @@ const ContactUs = () => {
           <Form.Group controlId="email" className="mb-3">
             <Form.Label>Email</Form.Label>
             <Form.Control
-              defaultValue={user?.email}
+              value={user?.email}
               type="email"
               onChange={(e) => {
                 setValue('email', e.target.value);
@@ -173,7 +209,7 @@ const ContactUs = () => {
             {errors?.telephone?.message && <div className={'error-message'}>{errors?.telephone?.message}</div>}
           </Form.Group>
           <Form.Group controlId="summary" className="mb-3">
-            <Form.Label>Ringkasan</Form.Label>
+            <Form.Label>Summary</Form.Label>
             <Form.Control
               isValid={false}
               type="text"
@@ -184,7 +220,7 @@ const ContactUs = () => {
             {errors?.summary?.message && <div className={'error-message'}>{errors?.summary?.message}</div>}
           </Form.Group>
           <Form.Group controlId="message" className="mb-3">
-            <Form.Label>Pesan</Form.Label>
+            <Form.Label>Deskripsi</Form.Label>
             <Form.Control
               onChange={(e) => {
                 setValue('message', e.target.value);
@@ -210,7 +246,37 @@ const ContactUs = () => {
               </div>
             </label>
             <Form.Control onChange={handleUploadFile} type="file" hidden></Form.Control>
-            {data.attachment.length !== 0 && <Attachment fileData={data.attachment} />}
+            <Container>
+              <Row>
+                {data.attachment.length !== 0 &&
+                  data.attachment.map((attachmentFile, index) => (
+                    <Col xs lg="4" className="mb-5 mt-5">
+                      <div className="bg-gray rounded-lg" key={`file-${attachmentFile.type}-${index}`}>
+                        <Button
+                          className="absolute"
+                          style={{ 'border-radius': '50%', position: 'absolute' }}
+                          type="button"
+                          onClick={() => deleteAttachment(index)}>
+                          <icons.close props={'text-white'} />
+                        </Button>
+                        <div className="flex flex-col justify-center h-full p-1">
+                          {attachmentFile.type === 'application/pdf' ? (
+                            <div>
+                              <div className="flex justify-center">
+                                {/* <Icon.PdfSvg className="w-8" /> */}
+                                File PDF
+                              </div>
+                              <div className="text-center text-gray1 mt-3">{attachmentFile.name}</div>
+                            </div>
+                          ) : (
+                            <img className="image" src={attachmentFile.file} alt="file-data" />
+                          )}
+                        </div>
+                      </div>
+                    </Col>
+                  ))}
+              </Row>
+            </Container>
             {errorUploadFile && <div className="my-4 text-xs text-red1">{errorUploadFile}</div>}
           </Form.Group>
           <Button className="w-100" type="submit">

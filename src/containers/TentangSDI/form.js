@@ -18,6 +18,8 @@ import { userSelector } from 'containers/Login/reducer';
 import { icons } from 'components/Icons';
 import { useKeycloak } from '@react-keycloak/web';
 
+import Pdf from 'assets/icons/Tentang/pdf-svgrepo-com.svg';
+
 const ContactUs = () => {
   const { keycloak } = useKeycloak();
   const user = useSelector(userSelector);
@@ -253,8 +255,11 @@ const ContactUs = () => {
                     <Col xs lg="4" className="mb-5 mt-5">
                       <div className="bg-gray rounded-lg" key={`file-${attachmentFile.type}-${index}`}>
                         <Button
-                          className="absolute"
-                          style={{ 'border-radius': '50%', position: 'absolute' }}
+                          style={{
+                            'border-radius': '50%',
+                            float: 'right',
+                          }}
+                          className="float-right"
                           type="button"
                           onClick={() => deleteAttachment(index)}>
                           <icons.close props={'text-white'} />
@@ -262,10 +267,7 @@ const ContactUs = () => {
                         <div className="flex flex-col justify-center h-full p-1">
                           {attachmentFile.type === 'application/pdf' ? (
                             <div>
-                              <div className="flex justify-center">
-                                {/* <Icon.PdfSvg className="w-8" /> */}
-                                File PDF
-                              </div>
+                              <img src={Pdf} alt="" />
                               <div className="text-center text-gray1 mt-3">{attachmentFile.name}</div>
                             </div>
                           ) : (

@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { userSelector } from 'containers/Login/reducer';
-import { getAnalyticsUrl } from 'utils/constants';
+import { getAnalyticsUrl, katalogUrl } from 'utils/constants';
 
 import { removeAllCookie } from '../../utils/cookie';
 import { globalData } from '../App/reducer';
@@ -36,7 +36,8 @@ const getNavDropDown = (tab, pathname, goTo) => {
       {map(tab.links, (route) => (
         <NavDropdown.Item
           key={getPathnameFromRoute(route)}
-          onClick={route.link === '/dashboard-saya' ? loginSuperset : goTo(route.link)}>
+          href={route.link[0] !== '/' ? route.link : ''}
+          onClick={route.link === '/dashboard-saya' ? loginSuperset : route.link[0] !== '/' ? null : goTo(route.link)}>
           {route.title}
         </NavDropdown.Item>
       ))}
@@ -124,6 +125,7 @@ export const Header = () => {
           { title: 'Forum SDI', link: '/forum-sdi' },
           // { title: 'Glosarium', link: '/Glosarium' },
           { title: 'SDI Wiki', link: '/sdi-wiki' },
+          { title: 'CKAN', link: `${katalogUrl}/${isLoggedIn ? 'dashboard' : 'login'}` },
           // { title: 'Persetujuan Anggaran Biaya', link: '/permintaan-budget' },
         ],
       },

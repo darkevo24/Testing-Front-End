@@ -28,6 +28,7 @@ const ContactUs = () => {
     attachment: [],
   });
   const dispatch = useDispatch();
+  const isLoggedIn = !!keycloak.authenticated;
 
   const formControl = async (key, value) => {
     setData((oldData) => {
@@ -46,6 +47,7 @@ const ContactUs = () => {
         .matches(/^[0-9]*$/, 'Nomor Telefon hanya boleh angka')
         .min(8, 'Telepon minimal 8 karakter')
         .max(20, 'Telepon maksimal 20 karakter'),
+      summary: yup.string().required('Ringkasan Wajib Diisi'),
       message: yup
         .string()
         .required('Pesan Wajib Diisi')
@@ -61,6 +63,10 @@ const ContactUs = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      full_name: user?.nama,
+      email: user?.email,
+    },
   });
 
   const formRef = useRef(null);
@@ -186,6 +192,7 @@ const ContactUs = () => {
               onChange={(e) => {
                 setValue('full_name', e.target.value);
               }}
+              disabled={isLoggedIn}
             />
             {errors?.full_name?.message && <div className={'error-message'}>{errors?.full_name?.message}</div>}
           </Form.Group>
@@ -197,6 +204,7 @@ const ContactUs = () => {
               onChange={(e) => {
                 setValue('email', e.target.value);
               }}
+              disabled={isLoggedIn}
             />
             {errors?.email?.message && <div className={'error-message'}>{errors?.email?.message}</div>}
           </Form.Group>

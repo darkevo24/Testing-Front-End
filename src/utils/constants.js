@@ -142,6 +142,7 @@ export const apiUrls = {
   cmsManagementApi: getApiEndpoint('management-api'),
   publicGlobalData: getPublicEndpoint('site-setting'),
   contactUs: getCrmApi('ticket'),
+  crmImageApi: getCrmApi('image'),
 };
 
 export const priorityOptions = [
@@ -425,4 +426,4 @@ export const PORTAL_KONFIGURASI_CODE = {
   FOOTERLINK: 'FOOTER_LINK',
 };
 
-export const fileExtention = ['image/jpg', 'image/png', 'application/pdf'];
+export const fileExtention = ['image/jpg', 'image/png', 'application/pdf', 'image/jpeg'];

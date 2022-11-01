@@ -20,6 +20,9 @@ import {
   BudgetIcon,
   ChangeAndReleaseIcon,
   FeedbackIcon,
+  CkanIcon,
+  LmsIcon,
+  CrmIcon,
 } from 'assets/icons';
 import { SplitCircle } from 'components/Icons';
 
@@ -110,6 +113,7 @@ export const apiUrls = {
   userBeritaLatest: getPublicV1Endpoint('berita/latest'),
   userBeritaPopular: getPublicV1Endpoint('berita/populer'),
   homeDataSetEndPoint: getPublicV1Endpoint('dataset'),
+  userSubscribe: getPublicV1Endpoint('subscribe'),
   portalForumSDI: getPortalEndpoint('v1/forum-sdi'),
   cmsForumSDI: getCMSEndpoint('forum-sdi'),
   bimtekSummaryMateriTerdekat: getPortalEndpoint('v1/bimtek/materi-terdekat'),
@@ -332,6 +336,30 @@ export const CMS_DASHBOARD = [
     iconColor: 'bg-brilliant-azure',
     link: '',
     externalLink: apmUrl,
+  },
+  {
+    title: 'CKAN',
+    description: 'CKAN',
+    icon: <CkanIcon />,
+    iconColor: 'bg-brilliant-azure',
+    link: '',
+    externalLink: `${katalogUrl}/user/saml2login`,
+  },
+  {
+    title: 'LMS',
+    description: 'LMS',
+    icon: <LmsIcon />,
+    iconColor: 'bg-blue',
+    link: '#',
+    externalLink: '',
+  },
+  {
+    title: 'CRM',
+    description: 'CRM',
+    icon: <CrmIcon />,
+    iconColor: 'bg-red',
+    link: isSdiProduction ? '#' : '',
+    externalLink: isSdiProduction ? '' : 'https://sengkuyung-crm-dev.vercel.app/',
   },
 ];
 

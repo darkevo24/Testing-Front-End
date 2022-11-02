@@ -87,6 +87,7 @@ const CMSJadwalBaru = () => {
 
   const addFoto = async (e) => {
     let file = e.target.files[0];
+    // console.log(file.size);
     try {
       let fotoFormData = new FormData();
       fotoFormData.append('file', file);

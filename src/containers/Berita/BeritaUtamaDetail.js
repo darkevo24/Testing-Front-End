@@ -8,6 +8,7 @@ import Loader from 'components/Loader';
 import { beritaLayoutSelector, getBertaLayout } from 'containers/CMS/BeritaLayout/reducer';
 import clockIcon from 'assets/clock.svg';
 import viewIcon from 'assets/view.svg';
+import logoSDI from 'assets/logo-satu-data-id.png';
 import Search from './Search';
 import BeritaUtama from './BeritaUtama';
 import BeritaUtamaLain from './BeritaUtamaLain';
@@ -19,6 +20,19 @@ import Populer from './Populer';
 import Tweets from './Tweets';
 import { newsDetailSelector, getNewsDetail } from './reducer';
 import { facebookAppId } from 'utils/constants';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import { apiUrls, post } from 'utils/request';
+
+const Tag = styled.div`
+  font-size: 14px;
+  color: #515154;
+  background: #f5f6fa;
+  border-radius: 4px;
+  padding: 6px 12px;
+  display: inline-block;
+  margin: 0 8px 8px 0;
+`;
 
 const Tag = styled.div`
   font-size: 14px;
@@ -63,6 +77,9 @@ const BeritaUtamaDetail = (props) => {
   }, [dispatch, id]);
 
   const [kanan, setKanan] = useState([]);
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+  const [errorSubscribe, setErrorSubscribe] = useState(false);
 
   const beritaLayoutState = useSelector(beritaLayoutSelector);
   const { status } = beritaLayoutState;
@@ -85,6 +102,33 @@ const BeritaUtamaDetail = (props) => {
       }
     }
   }, [beritaLayoutState]);
+
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (email) {
+      sendEmail();
+      setErrorSubscribe(false);
+      setSubscribed(true);
+      setEmail('');
+    }
+  };
+
+  //try function to send email
+  const sendEmail = async () => {
+    try {
+      const response = await post(apiUrls.userSubscribe, { email: email });
+      if (response.status === 200) {
+        setSubscribed(true);
+      }
+    } catch (error) {
+      setErrorSubscribe(true);
+      setSubscribed(false);
+    }
+  };
 
   return (
     <div className="row mt-24">
@@ -119,6 +163,37 @@ const BeritaUtamaDetail = (props) => {
           </div>
           <img className="w-100" src={record.mainImage} alt="" />
           <div className="fs-18 mt-32 beritaDetailContent" dangerouslySetInnerHTML={{ __html: record?.content }}></div>
+        </div>
+        <div className="d-flex flex-column justify-content-between align-items-center mt-50 mb-50">
+          <hr
+            className="w-100 border-1"
+            style={{
+              position: 'relative',
+              top: '10px',
+            }}
+          />
+          <img style={{ width: '90px', position: 'absolute' }} src={logoSDI} alt="" />
+          <div className="fs-18 mt-50">
+            <p className="w-75 mx-auto text-center">
+              "Dapatkan informasi terkini dari
+              <span className="fs-18 fw-600 "> Satu Data Indonesia </span>
+              langsung lewat email Anda."
+            </p>
+            <Form onSubmit={handleSubscribe} className="d-flex justify-content-center">
+              <input
+                type="email"
+                placeholder="Email"
+                className="form-control w-50 d-inline"
+                onChange={handleEmail}
+                value={email}
+              />
+              <Button className="ml-10" variant="dark" style={{ width: '112px' }} type="submit">
+                Subscribe
+              </Button>
+            </Form>
+            {subscribed && !errorSubscribe && <p className="text-center mt-32">Terima kasih telah berlangganan</p>}
+            {errorSubscribe && <p className="text-center mt-32">Email sudah berlangganan, coba email lain.</p>}
+          </div>
         </div>
       </div>
       <div className="col-lg-2">{kanan.length > 0 && kanan.map((el) => renderComp(el))}</div>

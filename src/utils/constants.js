@@ -113,6 +113,7 @@ export const apiUrls = {
   userBeritaLatest: getPublicV1Endpoint('berita/latest'),
   userBeritaPopular: getPublicV1Endpoint('berita/populer'),
   homeDataSetEndPoint: getPublicV1Endpoint('dataset'),
+  userSubscribe: getPublicV1Endpoint('subscribe'),
   portalForumSDI: getPortalEndpoint('v1/forum-sdi'),
   cmsForumSDI: getCMSEndpoint('forum-sdi'),
   bimtekSummaryMateriTerdekat: getPortalEndpoint('v1/bimtek/materi-terdekat'),

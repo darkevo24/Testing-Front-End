@@ -94,7 +94,7 @@ const BimTekJadwal = () => {
           <Col xs={3}>
             <SingleSelectDropdown
               data={filterCategory.map((category) => ({ key: 'tag', value: category, label: category }))}
-              placeHolder="Kategori Bimtek"
+              placeHolder="Topik Bimtek"
               isLoading={false}
               noValue={true}
               onChange={handleFilterChange}

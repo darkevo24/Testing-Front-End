@@ -441,7 +441,7 @@ const CMSJadwalDetail = (props) => {
                   groupClass="mb-16"
                   isMulti
                   control={control}
-                  label="Kategori Bimtek"
+                  label="Topik Bimtek"
                   labelClass="sdp-form-label fw-normal"
                   placeholder=""
                   name="tags"
@@ -454,7 +454,7 @@ const CMSJadwalDetail = (props) => {
               </div>
             ) : (
               <Form.Group>
-                <label className="sdp-form-label mb-8">Kategori Bimtek</label>
+                <label className="sdp-form-label mb-8">Topik Bimtek</label>
                 <div className="tag-data d-flex align-items-center bg-gray-dark border-gray-stroke p-9 br-4">
                   {(records.tagMateri || []).map((elem, index) => (
                     <label className="sdp-text-blue mr-6 px-10 bg-light-blue" key={`tag-label-${index}`}>

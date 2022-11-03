@@ -34,6 +34,16 @@ const Tag = styled.div`
   margin: 0 8px 8px 0;
 `;
 
+const Tag = styled.div`
+  font-size: 14px;
+  color: #515154;
+  background: #f5f6fa;
+  border-radius: 4px;
+  padding: 6px 12px;
+  display: inline-block;
+  margin: 0 8px 8px 0;
+`;
+
 const components = {
   search: Search,
   beritaUtama: BeritaUtama,

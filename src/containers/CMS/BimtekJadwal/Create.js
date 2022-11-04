@@ -332,7 +332,7 @@ const CMSJadwalBaru = () => {
             groupClass="mb-16"
             isMulti
             control={controlCreate}
-            label="Kategori Bimtek"
+            label="Topik Bimtek"
             labelClass="sdp-form-label fw-normal"
             placeholder=""
             name="tags"

@@ -135,7 +135,7 @@ const ContactUs = () => {
         summary: post.summary,
         createdBy: post.email,
         attachment: data.attachment,
-        creatorDetail: {
+        creatorData: {
           nama: post.full_name,
           email: post.email,
           telepon: post.telephone,

@@ -45,6 +45,7 @@ const BimTekForm = () => {
   const [permintaanError, setPermintaanError] = useState(true);
   const [permintaanBimtekError, setPermintaanBimtekError] = useState(true);
   const [materiError, setMateriError] = useState(true);
+  const startDate = moment(new Date(), 'YYYY-MM-DD').add(5, 'days').format('YYYY-MM-DD');
 
   useEffect(() => {
     dispatch(getBimtekJadwalTagsData());
@@ -295,7 +296,8 @@ const BimTekForm = () => {
                 className={bem.e('pendaftaran-form-field', 'position-relative')}>
                 <DatePicker
                   group
-                  label="Tanggal Mulai Pelaksanaan Disetujui"
+                  min={startDate}
+                  label="Tanggal Pengajuan"
                   labelClass="sdp-form-label mb-0 fw-normal"
                   name="tanggalData"
                   control={control}

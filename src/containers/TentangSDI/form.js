@@ -102,7 +102,7 @@ const ContactUs = () => {
     setErrorUploadFile('');
     const bodyFormData = new FormData();
     bodyFormData.append('file', file);
-    const uploadedFile = await axios.post('http://localhost:4040/api/image', bodyFormData);
+    const uploadedFile = await axios.post(apiUrls.crmImageApi, bodyFormData);
     if (uploadedFile.status === 200) {
       const attachmentList = data.attachment;
       const newUploadedFile = {

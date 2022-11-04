@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import Notification from '../../components/Notification';
 import axios from 'axios';
-import { fileExtention } from 'utils/constants';
+import { apiUrls, fileExtention } from 'utils/constants';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
 import { icons } from 'components/Icons';

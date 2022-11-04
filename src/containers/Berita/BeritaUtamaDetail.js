@@ -8,7 +8,7 @@ import Loader from 'components/Loader';
 import { beritaLayoutSelector, getBertaLayout } from 'containers/CMS/BeritaLayout/reducer';
 import clockIcon from 'assets/clock.svg';
 import viewIcon from 'assets/view.svg';
-import logoSDI from 'assets/logo-satu-data-id.png';
+import logoSDI from 'assets/logo-satu-data-id.jpg';
 import Search from './Search';
 import BeritaUtama from './BeritaUtama';
 import BeritaUtamaLain from './BeritaUtamaLain';
@@ -159,10 +159,10 @@ const BeritaUtamaDetail = (props) => {
             className="w-100 border-1"
             style={{
               position: 'relative',
-              top: '10px',
+              top: '13px',
             }}
           />
-          <img style={{ width: '90px', position: 'absolute' }} src={logoSDI} alt="" />
+          <img style={{ width: '80px', position: 'absolute', border: '8px solid #FFF' }} src={logoSDI} alt="" />
           <div className="fs-18 mt-50">
             <p className="w-75 mx-auto text-center">
               "Dapatkan informasi terkini dari

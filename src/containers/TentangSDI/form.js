@@ -130,7 +130,7 @@ const ContactUs = () => {
   const onSubmitProses = (post) => {
     dispatch(
       postTentang({
-        status: 'RESPONSE',
+        status: 'OPEN',
         description: post.message,
         summary: post.summary,
         createdBy: post.email,

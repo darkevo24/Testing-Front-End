@@ -40,6 +40,7 @@ export const getListBerita = createAsyncThunk('cms/getListBerita', async (params
 
   const response = await post(url, {
     judul: params.filter.judul,
+    status: params.filter.status,
   });
   return response?.data?.content;
 });

@@ -110,13 +110,7 @@ export const uploadFoto = createAsyncThunk('cms/uploadFoto', async (formData) =>
 
 export const getGlobalData = createAsyncThunk('cms/beranda', async (formData) => {
   const response = await get(apiUrls.publicGlobalData, formData);
-  const token = response?.data?.content;
-  if (token) {
-    const decodedToken = jwt_decode(token);
-    return decodedToken?.data;
-  } else {
-    return token;
-  }
+  return response?.data?.content;
 });
 
 const AppSlice = createSlice({

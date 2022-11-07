@@ -402,6 +402,14 @@ export const prepareFormPayload = (data, fieldsMap) => {
       }
     });
   }
+  if (fieldsMap.stringify && isArray(fieldsMap.stringify)) {
+    map(fieldsMap.stringify, (field) => {
+      const fieldValue = get(payload, field);
+      if (!!fieldValue) {
+        set(payload, field, JSON.stringify(fieldValue));
+      }
+    });
+  }
   if (fieldsMap.dates && isArray(fieldsMap.dates)) {
     map(fieldsMap.dates, (field) => {
       const fieldValue = get(payload, field);

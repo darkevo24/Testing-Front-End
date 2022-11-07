@@ -48,6 +48,7 @@ const Daftar = (props) => {
     onPnRKPChange,
     onDownloadData,
     handleDaftarFromSubmit,
+    attributDinamis,
   } = props;
   const { t } = useTranslation();
   const [searchText, setSearchText] = useState('');
@@ -264,6 +265,7 @@ const Daftar = (props) => {
           { text: selectedRecord ? 'Simpan' : 'Tambah', onClick: submitDaftarForm, loading: daftarDataSubmit.loading },
         ]}>
         <DaftarForm
+          attributDinamis={attributDinamis}
           daftarId={selectedRecord?.id}
           instansiOptions={instansiOptions}
           rkpPNOptions={rkpPNOptions}

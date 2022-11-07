@@ -21,6 +21,8 @@ import {
   getDaftarDataDetailLog,
   getKatalogVariables,
   katalogVariableDataSelector,
+  getAttribut,
+  attributDinamisSelector,
 } from './reducer';
 import {
   dataindukOptionsSelector,
@@ -45,6 +47,7 @@ const DaftarDataProvider = ({ children }) => {
   const dataindukAllOptions = useSelector(dataindukAllOptionsSelector);
   const dataIndukOptions = useSelector(dataindukOptionsSelector);
   const instansiOptions = useSelector(instansiOptionsSelector);
+  const attributDinamis = useSelector(attributDinamisSelector);
   const sdgPillerOptions = useSelector(sdgPillerOptionsSelector);
   const rkpPNOptions = useSelector(rkpPNOptionsSelector);
 
@@ -61,7 +64,24 @@ const DaftarDataProvider = ({ children }) => {
     if (!dataindukAllOptions?.length) dispatch(getAllDatainduk());
     if (!sdgPillerOptions?.length) dispatch(getSDGPillers());
     if (!rkpPPOptions?.length) dispatch(getRKPpn());
+    dispatch(getAttribut());
   }, []);
+
+  const convertAtribut = () => {
+    let result = [];
+    let temp = [];
+    for (let i = 0; i < attributDinamis?.result?.length; i++) {
+      if ((i + 1) % 2 == 0) {
+        temp.push(attributDinamis?.result[i]);
+        result.push(temp);
+        temp = [];
+      } else temp.push(attributDinamis?.result[i]);
+      if (i == attributDinamis.result.length - 1 && temp.length < 2 && temp.length) {
+        result.push(temp);
+      }
+    }
+    return result;
+  };
 
   const getDafterDataById = (id) => {
     dispatch(getDaftarDataDetailById(id));
@@ -98,8 +118,10 @@ const DaftarDataProvider = ({ children }) => {
         'kodeTujuan',
         'format',
         'indukData',
+        'rujukan',
       ],
       toArray: ['indukData'],
+      stringify: ['rujukan', 'additionalData'],
       dates: ['tanggalDibuat', 'tanggalDiperbaharui'],
     });
     payload.format = isArray(payload.format) ? payload.format.join(', ') : payload.format;
@@ -132,7 +154,6 @@ const DaftarDataProvider = ({ children }) => {
       });
     });
   };
-
   const daftarProps = {
     bem,
     dataIndukOptions,
@@ -144,9 +165,12 @@ const DaftarDataProvider = ({ children }) => {
     sdgPillerOptions,
     tujuanSDGPillerOptions,
     dataindukAllOptions,
+    attributDinamisChanged: convertAtribut(),
+    dataindukEditOptions: dataindukAllOptions.filter((val) => val.value !== dafterDataWithId?.result?.id),
     rkpPNOptions,
     rkpPPOptions,
     dafterDataWithId,
+    attributDinamis,
     dafterLogDataWithId,
     getDafterDataById,
     getKatalogVariables,

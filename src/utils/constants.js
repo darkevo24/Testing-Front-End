@@ -56,6 +56,7 @@ export const getDataEndpoint = (path) => `${dataUrl}/${path}`;
 export const getPortalEndpoint = (path) => `${apiUrl}/portal/${path}`;
 export const getV1Endpoint = (path) => `${apiUrl}/v1/${path}`;
 export const getCMSEndpoint = (path) => `${apiUrl}/cms/v1/${path}`;
+export const getCMSEndpoint2 = (path) => `${apiUrl}/cms/${path}`;
 export const getPublicEndpoint = (path) => `${apiUrl}/public/${path}`;
 export const getPublicV1Endpoint = (path) => `${apiUrl}/public/v1/${path}`;
 export const getCrmApi = (path) => `${crmUrl}/api/${path}`;
@@ -83,6 +84,7 @@ export const apiUrls = {
   dataindukAllData: getV1Endpoint('katalog/all'),
   dataindukData: getV1Endpoint('katalog/datainduk'),
   katalogData: getV1Endpoint('katalog'),
+  attributDinamis: getCMSEndpoint2('atribut/data/list'),
   listPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
   detailPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
   variable: getV1Endpoint('variable'),

@@ -17,6 +17,7 @@ import { useSelector } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
 import { icons } from 'components/Icons';
 import { useKeycloak } from '@react-keycloak/web';
+import { apiUrls } from 'utils/request';
 
 import Pdf from 'assets/icons/Tentang/pdf-svgrepo-com.svg';
 
@@ -102,7 +103,8 @@ const ContactUs = () => {
     setErrorUploadFile('');
     const bodyFormData = new FormData();
     bodyFormData.append('file', file);
-    const uploadedFile = await axios.post('http://localhost:4040/api/image', bodyFormData);
+
+    const uploadedFile = await axios.post(apiUrls.crmImageApi, bodyFormData);
     if (uploadedFile.status === 200) {
       const attachmentList = data.attachment;
       const newUploadedFile = {

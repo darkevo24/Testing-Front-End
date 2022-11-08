@@ -46,7 +46,7 @@ const BimtekPermintaan = () => {
       accessor: 'namaBimtek',
     },
     {
-      Header: 'Kategori',
+      Header: 'Topik Bimtek',
       accessor: 'tagMateri',
     },
     {

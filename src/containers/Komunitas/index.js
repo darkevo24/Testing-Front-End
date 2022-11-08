@@ -16,6 +16,7 @@ import { useForm } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 import SingleSelectDropDown from 'components/DropDown/SingleSelectDropDown';
 import Spinner from 'react-bootstrap/Spinner';
+import bn from 'utils/bemNames';
 
 const KomunitasAhliPage = () => {
   const dispatch = useDispatch();
@@ -23,8 +24,10 @@ const KomunitasAhliPage = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [bidangKeahlianData, setBidangKeahlianData] = useState([]);
   const [daerahData, setDaerahData] = useState([]);
+  const [searchAutoFocus, setSearchAutoFocus] = useState(false);
   const ref = useRef();
   const instansiData = useSelector(instansiDataSelector);
+  const bem = bn('dataset');
 
   const { payload, size, loading, page, records, totalRecords } = useSelector(komunitasAhliDatasetSelector);
 
@@ -84,6 +87,10 @@ const KomunitasAhliPage = () => {
         q: value,
       },
     });
+
+    if (value) {
+      setSearchAutoFocus(true);
+    }
   };
 
   const handleFilterChange = (data) => {
@@ -207,9 +214,10 @@ const KomunitasAhliPage = () => {
     data: records,
     subTitle: 'Komunitas Ahli',
     search: true,
-    searchValue: payload.q,
+    searchValue: payload.q ?? '',
     searchThreshold: 300,
     searchPlaceholder: 'Cari Ahli Berdasarkan Nama',
+    searchAutoFocus: searchAutoFocus,
     searchRightComponent: (
       <>
         <Button
@@ -289,7 +297,7 @@ const KomunitasAhliPage = () => {
               </div>
             </>
           ) : (
-            <Table {...tableConfig} />
+            <Table className={bem.e('table')} {...tableConfig} />
           )}
         </Col>
       </Row>

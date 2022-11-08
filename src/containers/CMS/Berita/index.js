@@ -88,8 +88,14 @@ const CMSBerita = ({ textSearch }) => {
     setModalConfirm(false);
   };
 
-  const handleStatusChange = (status, sortDirection, sortId) => {
-    setFilter({ ...filter, status: status });
+  const handleStatusChange = (status) => {
+    let statusId = status.value;
+    if (status.value === -1) {
+      statusId = '';
+    } else {
+      statusId = status.value;
+    }
+    setFilter({ ...filter, status: statusId });
   };
 
   const columns = useMemo(() => {

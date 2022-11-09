@@ -352,8 +352,8 @@ export const CMS_DASHBOARD = [
     description: 'LMS',
     icon: <LmsIcon />,
     iconColor: 'bg-blue',
-    link: '#',
-    externalLink: '',
+    link: '',
+    externalLink: isSdiProduction ? 'https://lms.data.go.id' : 'https://lms.satudata.go.id',
   },
   {
     title: 'CRM',
@@ -361,7 +361,7 @@ export const CMS_DASHBOARD = [
     icon: <CrmIcon />,
     iconColor: 'bg-red',
     link: isSdiProduction ? '#' : '',
-    externalLink: isSdiProduction ? '' : 'https://sengkuyung-crm-dev.vercel.app/',
+    externalLink: isSdiProduction ? 'https://crm.data.go.id' : 'https://crm.satudata.go.id',
   },
 ];
 

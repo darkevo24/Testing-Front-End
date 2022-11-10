@@ -45,7 +45,7 @@ export const bpmDevUrl = window.location.hostname === 'localhost' ? bpmWaveMaker
 export const bpmUrl = isSdiProduction ? bpmProdUrl : bpmDevUrl;
 
 export const apmUrl = isSdiProduction ? 'http://apm.data.go.id/' : 'http://apm.satudata.go.id/';
-export const crmUrl = isSdiProduction ? 'https://crm.data.go.id/' : 'https://crm.satudata.go.id/';
+export const crmUrl = isSdiProduction ? 'https://crm.data.go.id/backend' : 'https://crm.satudata.go.id/backend';
 
 export const apiUrl = `${backendUrl}/api-be`;
 export const dataUrl = `${katalogUrl}/api`;
@@ -352,8 +352,8 @@ export const CMS_DASHBOARD = [
     description: 'LMS',
     icon: <LmsIcon />,
     iconColor: 'bg-blue',
-    link: '#',
-    externalLink: '',
+    link: '',
+    externalLink: isSdiProduction ? 'https://lms.data.go.id' : 'https://lms.satudata.go.id',
   },
   {
     title: 'CRM',
@@ -361,7 +361,7 @@ export const CMS_DASHBOARD = [
     icon: <CrmIcon />,
     iconColor: 'bg-red',
     link: isSdiProduction ? '#' : '',
-    externalLink: isSdiProduction ? '' : 'https://sengkuyung-crm-dev.vercel.app/',
+    externalLink: isSdiProduction ? 'https://crm.data.go.id' : 'https://crm.satudata.go.id',
   },
 ];
 

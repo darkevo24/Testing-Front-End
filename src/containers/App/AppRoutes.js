@@ -69,11 +69,11 @@ function AppRoutes(props) {
             <Route exact path="/home" component={BerandaPage} />
             <Route exact path="/topic-detail" component={TopicDetailPage} />
             <Route exact path="/berita" component={BeritaPage} />
+            <Route path="/berita/perbulan/:date" component={BeritaPerBulan} />
             <Route exact path="/berita/preview" component={BeritaPreviewPage} />
             <Route exact path="/berita-populer" component={BeritaPopular} />
             <Route exact path="/berita-topik/:id" component={BeritaByTopic} />
             <Route exact path="/berita/:id/:slug?" component={BeritaDetailPage} />
-            <Route exact path="/berita/perbulan/:date" component={BeritaPerBulan} />
             <Route exact path="/tentang" component={TentangPage} />
             <Route exact path="/daftar-menjadi-ahli" component={DaftarMenjadiAhli} />
             <Route exact path="/glosarium" component={Glosarium} />

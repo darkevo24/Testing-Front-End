@@ -20,6 +20,9 @@ import {
   BudgetIcon,
   ChangeAndReleaseIcon,
   FeedbackIcon,
+  CkanIcon,
+  LmsIcon,
+  CrmIcon,
 } from 'assets/icons';
 import { SplitCircle } from 'components/Icons';
 
@@ -53,6 +56,7 @@ export const getDataEndpoint = (path) => `${dataUrl}/${path}`;
 export const getPortalEndpoint = (path) => `${apiUrl}/portal/${path}`;
 export const getV1Endpoint = (path) => `${apiUrl}/v1/${path}`;
 export const getCMSEndpoint = (path) => `${apiUrl}/cms/v1/${path}`;
+export const getCMSEndpoint2 = (path) => `${apiUrl}/cms/${path}`;
 export const getPublicEndpoint = (path) => `${apiUrl}/public/${path}`;
 export const getPublicV1Endpoint = (path) => `${apiUrl}/public/v1/${path}`;
 export const getCrmApi = (path) => `${crmUrl}/api/${path}`;
@@ -80,6 +84,7 @@ export const apiUrls = {
   dataindukAllData: getV1Endpoint('katalog/all'),
   dataindukData: getV1Endpoint('katalog/datainduk'),
   katalogData: getV1Endpoint('katalog'),
+  attributDinamis: getCMSEndpoint2('atribut/data/list'),
   listPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
   detailPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
   variable: getV1Endpoint('variable'),
@@ -110,6 +115,7 @@ export const apiUrls = {
   userBeritaLatest: getPublicV1Endpoint('berita/latest'),
   userBeritaPopular: getPublicV1Endpoint('berita/populer'),
   homeDataSetEndPoint: getPublicV1Endpoint('dataset'),
+  userSubscribe: getPublicV1Endpoint('subscribe'),
   portalForumSDI: getPortalEndpoint('v1/forum-sdi'),
   cmsForumSDI: getCMSEndpoint('forum-sdi'),
   bimtekSummaryMateriTerdekat: getPortalEndpoint('v1/bimtek/materi-terdekat'),
@@ -332,6 +338,30 @@ export const CMS_DASHBOARD = [
     iconColor: 'bg-brilliant-azure',
     link: '',
     externalLink: apmUrl,
+  },
+  {
+    title: 'CKAN',
+    description: 'CKAN',
+    icon: <CkanIcon />,
+    iconColor: 'bg-brilliant-azure',
+    link: '',
+    externalLink: `${katalogUrl}/user/saml2login`,
+  },
+  {
+    title: 'LMS',
+    description: 'LMS',
+    icon: <LmsIcon />,
+    iconColor: 'bg-blue',
+    link: '',
+    externalLink: isSdiProduction ? 'https://lms.data.go.id' : 'https://lms.satudata.go.id',
+  },
+  {
+    title: 'CRM',
+    description: 'CRM',
+    icon: <CrmIcon />,
+    iconColor: 'bg-red',
+    link: isSdiProduction ? '#' : '',
+    externalLink: isSdiProduction ? 'https://crm.data.go.id' : 'https://crm.satudata.go.id',
   },
 ];
 

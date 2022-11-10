@@ -21,6 +21,8 @@ import { apiUrls } from 'utils/request';
 
 import Pdf from 'assets/icons/Tentang/pdf-svgrepo-com.svg';
 
+import Pdf from 'assets/icons/Tentang/pdf-svgrepo-com.svg';
+
 const ContactUs = () => {
   const { keycloak } = useKeycloak();
   const user = useSelector(userSelector);

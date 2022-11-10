@@ -1,10 +1,18 @@
-import React from 'react';
+import Re7 from 'react';
 import styled from 'styled-components';
 
 const Box = styled.div`
-  background: #ffffff;
+  background: 'transparent';
   border-radius: 4px;
   cursor: pointer;
+  //change on hover
+  &:hover {
+    background: #f5f6fa;
+    //svg icon color
+    path {
+      fill: #ed1c24;
+    }
+  }
 `;
 
 export const CardWithIconAndText = ({ item, onClick, id }) => (
@@ -14,8 +22,8 @@ export const CardWithIconAndText = ({ item, onClick, id }) => (
     style={{
       display: 'flex',
       flexDirection: 'column',
+      background: 'trasparent',
       padding: '5px',
-      background: '#FFFFFF',
       borderRadius: '4px',
       width: '237px',
       height: '61px',

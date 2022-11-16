@@ -41,6 +41,7 @@ import penggunaDataDetailReducer from 'containers/CMS/PenggunaManagementDetails/
 import cmsSecurity from 'containers/CMS/Security/reducer';
 import portalManagmentApiReducer from 'containers/ManagementApi/reducer';
 import konfigurasiPortalReducer from 'containers/CMS/KonfigurasiPortal/reducer';
+import chatReducer from 'containers/Chat/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -83,6 +84,7 @@ export default function createReducer(injectedReducers) {
     router: connectRouter(history),
     cmsDataAnalytic: dataAnalyticReducer,
     konfigurasiPortal: konfigurasiPortalReducer,
+    chat: chatReducer,
     ...injectedReducers,
   });
 }

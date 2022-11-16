@@ -147,6 +147,10 @@ export const apiUrls = {
   cmsAnalitikData: getCMSEndpoint('analitik'),
   cmsManagementApi: getApiEndpoint('management-api'),
   publicGlobalData: getPublicEndpoint('site-setting'),
+  crmChatSettings: getCrmApi('chatsettings'),
+  crmChatRequest: getCrmApi('chatrequest'),
+  crmChatStatus: getCrmApi('chatrequest/status'),
+  crmChatHistory: getCrmApi('chathistory'),
   contactUs: getCrmApi('ticket'),
   crmImageApi: getCrmApi('image'),
 };

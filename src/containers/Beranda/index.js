@@ -9,6 +9,7 @@ import { BerandaTop } from './BerandaTop';
 import { SearchBeranda } from './SearchBeranda';
 import { BerandaTopic } from './BerandaTopic';
 import { BerandaCards } from './BerandaCards';
+import { Chat } from 'containers/Chat';
 import bn from 'utils/bemNames';
 
 const bem = bn('beranda');
@@ -39,6 +40,7 @@ const BerandaPage = () => {
         <BerandaCards bem={bem} isLoggedIn={isLoggedIn} trendingData={trendingData} popularData={popularData} />
         {loading && <Loader fullscreen />}
       </Container>
+      <Chat />
     </>
   );
 };

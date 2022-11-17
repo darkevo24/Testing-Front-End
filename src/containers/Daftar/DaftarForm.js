@@ -74,13 +74,13 @@ const DaftarForm = ({
     daftar.tanggalDiperbaharui = new Date(daftar.tanggalDibuat);
     daftar.rujukan = findOption(dataindukAllOptions, daftar.rujukan ? JSON.parse(daftar.rujukan) : daftar.rujukan);
   }
-
+  console.log(daftar.additionalData, attributDinamis);
   useEffect(() => {
     const daftarAdditionalData = storeDaftar && JSON?.parse(daftar.additionalData);
     const obj = attributDinamis?.result?.reduce(
       (obj, item) =>
         Object.assign(obj, {
-          [item.name]: daftarAdditionalData?.filter((elm) => elm.key === item.name)[0].value || '',
+          [item.name]: daftarAdditionalData?.filter((elm) => elm.key === item.name)[0]?.value || '',
         }),
       {},
     );
@@ -330,7 +330,7 @@ const DaftarForm = ({
               <Form.Group className="mb-3">
                 <Form.Label>{attr.name}</Form.Label>
                 <RBDropdownButton title={dataDinamis[attr?.name] || 'Select'} variant="secondary">
-                  {emptyOptionPad(optionDropdown(JSON?.parse(attr.dropdownContent))).map((option, index) => (
+                  {emptyOptionPad(optionDropdown(attr.dropdownContent.split(', '))).map((option, index) => (
                     <RBDropdown.Item
                       key={`${index}-${option.value}`}
                       onClick={(e) => handleChangeAttributDinamis(option.value, attr.name)}

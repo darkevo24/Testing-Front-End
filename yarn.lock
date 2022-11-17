@@ -2167,6 +2167,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/invariant@^2.2.33":
+  version "2.2.35"
+  resolved "https://registry.npmjs.org/@types/invariant/-/invariant-2.2.35.tgz"
+  integrity sha512-DxX1V9P8zdJPYQat1gHyY0xj3efl8gnMVjiM9iCY6y27lj+PoQWkgjt8jDqmovPqULkKVpKRg8J36iQiA+EtEg==
+
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.4.tgz#8467d4b3c087805d63580480890791277ce35c44"
@@ -6445,11 +6450,6 @@ file-loader@6.1.1:
   dependencies:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
-
-file-saver@2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.5.tgz#d61cfe2ce059f414d899e9dd6d4107ee25670c38"
-  integrity sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==
 
 file-selector@^0.4.0:
   version "0.4.0"
@@ -11993,21 +11993,26 @@ react-base16-styling@^0.6.0:
     lodash.flow "^3.3.0"
     pure-color "^1.2.0"
 
-react-bootstrap@2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-2.5.0.tgz#e25e649e37f080d38eeb92ad5b4ed562a1d7de62"
-  integrity sha512-j/aLR+okzbYk61TM3eDOU1NqOqnUdwyVrF+ojoCRUxPdzc2R0xXvqyRsjSoyRoCo7n82Fs/LWjPCin/QJNdwvA==
+react-bootstrap@2.0.0-rc.1:
+  version "2.0.0-rc.1"
+  resolved "https://registry.npmjs.org/react-bootstrap/-/react-bootstrap-2.0.0-rc.1.tgz"
+  integrity sha512-iKKtbEZXBd6bZ5ES5yh1nl4/gykGktL8vXh/VP4fHUZRUjIKnpvQ4F5gR33FiDyEHRXlKIlE3LRtGMZosujRuQ==
   dependencies:
-    "@babel/runtime" "^7.17.2"
-    "@restart/hooks" "^0.4.6"
-    "@restart/ui" "^1.3.1"
-    "@types/react-transition-group" "^4.4.4"
+    "@babel/runtime" "^7.14.0"
+    "@restart/context" "^2.1.4"
+    "@restart/hooks" "^0.3.26"
+    "@restart/ui" "^0.2.3"
+    "@types/invariant" "^2.2.33"
+    "@types/prop-types" "^15.7.3"
+    "@types/react" ">=16.14.8"
+    "@types/react-transition-group" "^4.4.1"
+    "@types/warning" "^3.0.0"
     classnames "^2.3.1"
     dom-helpers "^5.2.1"
     invariant "^2.2.4"
-    prop-types "^15.8.1"
+    prop-types "^15.7.2"
     prop-types-extra "^1.1.0"
-    react-transition-group "^4.4.2"
+    react-transition-group "^4.4.1"
     uncontrollable "^7.2.1"
     warning "^4.0.3"
 
@@ -12402,6 +12407,16 @@ react-tippy@1.4.0:
     popper.js "^1.11.1"
 
 react-transition-group@^4.3.0, react-transition-group@^4.4.2:
+  version "4.4.5"
+  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.5.tgz#e53d4e3f3344da8521489fbef8f2581d42becdd1"
+  integrity sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    dom-helpers "^5.0.1"
+    loose-envify "^1.4.0"
+    prop-types "^15.6.2"
+
+react-transition-group@^4.4.2:
   version "4.4.5"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.5.tgz#e53d4e3f3344da8521489fbef8f2581d42becdd1"
   integrity sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==

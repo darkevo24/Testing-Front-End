@@ -16,6 +16,7 @@ import { ChatWaiting } from './ChatWaiting';
 import { ChatMinimized } from './ChatMinimized';
 import { userSelector } from 'containers/Login/reducer';
 import { ChatDialog } from './ChatDialog';
+import { ReviewChat } from './ReviewChat';
 
 const bem = bn('chat');
 
@@ -123,6 +124,8 @@ export const Chat = () => {
         setIsChatStarted(true);
         setChatStartStep('dialog');
         setChatHistoryList(chatStatus?.data?.history);
+      } else if (chatStatus.code === 'REVIEW') {
+        setChatNotStartStep('review');
       }
     }
   }, [chatStatus]);
@@ -156,6 +159,8 @@ export const Chat = () => {
       );
     } else if (isEnabled && chatNotStartStep === 'data-diri') {
       return <ChatDataDiri startChat={startChat} />;
+    } else if (isEnabled && chatNotStartStep === 'review') {
+      return <ReviewChat setIsOpen={setIsOpen} />;
     } else {
       return <Greeting />;
     }

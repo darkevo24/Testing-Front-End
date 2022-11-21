@@ -97,6 +97,42 @@
           text-align: center;
           height: 100%;
         }
+        
+        .desc-review {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          height: 100%;
+          width: 100%;
+
+          &-title {
+            font-weight: 600;
+            font-size: 18px;
+            color: #2e2d30;
+          }
+
+          &-desc {
+            font-weight: 400;
+            font-size: 14px;
+            color: #2e2d30;
+          }
+
+          &-text {
+            width: 100%;
+          }
+        }
+
+        #form-review {
+          width: 100%;
+          margin-top: 2rem;
+
+          textarea {
+            height: 120px;
+            width: 100%;
+          }
+        }
 
         .greetingoffservice {
           display: flex;
@@ -201,6 +237,11 @@
             color: #ff0000;
             cursor: pointer;
           }
+        }
+
+        .kirim {
+          background-color: #723DEC;
+          border-color: #723DEC;
         }
 
         .chat-message-wrapper {

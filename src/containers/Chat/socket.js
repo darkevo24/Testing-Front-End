@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
-const URL = 'http://localhost:4040';
+const URL = 'https://crm.satudata.go.id/backend';
 const socket = io(URL, { autoConnect: false });
 
 socket.onAny((event, ...args) => {

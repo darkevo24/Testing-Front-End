@@ -45,7 +45,7 @@ export const bpmDevUrl = window.location.hostname === 'localhost' ? bpmWaveMaker
 export const bpmUrl = isSdiProduction ? bpmProdUrl : bpmDevUrl;
 
 export const apmUrl = isSdiProduction ? 'http://apm.data.go.id/' : 'http://apm.satudata.go.id/';
-export const crmUrl = isSdiProduction ? 'https://crm.data.go.id/backend' : 'https://crm.satudata.go.id/backend';
+export const crmUrl = isSdiProduction ? 'https://crm.data.go.id/backend' : 'http://localhost:4040';
 
 export const apiUrl = `${backendUrl}/api-be`;
 export const dataUrl = `${katalogUrl}/api`;
@@ -153,6 +153,7 @@ export const apiUrls = {
   crmChatHistory: getCrmApi('chathistory'),
   contactUs: getCrmApi('ticket'),
   crmImageApi: getCrmApi('image'),
+  crmChatReview: getCrmApi('chatreview'),
 };
 
 export const priorityOptions = [

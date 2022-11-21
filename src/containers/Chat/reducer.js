@@ -72,6 +72,17 @@ export const createChatHistory = createAsyncThunk('portal/chatHistory', async (p
   return response?.data;
 });
 
+export const createChatReview = createAsyncThunk('portal/chatReview', async (params) => {
+  const { chatLogId, email, rating, description } = params;
+  const response = await post(apiUrls.crmChatReview, {
+    chatLogId,
+    email,
+    rating,
+    description,
+  });
+  return response?.data;
+});
+
 const chatSlice = createSlice({
   name: CHAT_REDUCER,
   initialState,

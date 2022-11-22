@@ -156,6 +156,7 @@ export const apiUrls = {
   contactUs: getCrmApi('ticket'),
   crmImageApi: getCrmApi('image'),
   crmChatReview: getCrmApi('chatreview'),
+  contactUsAdmin: getCrmApi('contacts'),
 };
 
 export const priorityOptions = [

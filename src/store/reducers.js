@@ -85,6 +85,7 @@ export default function createReducer(injectedReducers) {
     router: connectRouter(history),
     cmsDataAnalytic: dataAnalyticReducer,
     konfigurasiPortal: konfigurasiPortalReducer,
+    chat: chatReducer,
     managemenPengguna: managemenPenggunaReducer,
     ...injectedReducers,
   });

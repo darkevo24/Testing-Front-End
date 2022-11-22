@@ -142,6 +142,7 @@ export const apiUrls = {
   forgotPassword: getPublicEndpoint('forgot-password'),
   changeMyPassword: getPortalEndpoint('v1/change-my-password'),
   penggunaManagement: getApiEndpoint('sekretariat/user'),
+  listPengguna: getApiEndpoint('sekretariat/user/list-pengguna'),
   penggunaRoleList: getApiEndpoint('sekretariat/user/role-list'),
   penggunaStatusList: getApiEndpoint('sekretariat/user/status-list'),
   penggunaUpload: getApiEndpoint('sekretariat/user/bulk'),
@@ -155,6 +156,7 @@ export const apiUrls = {
   contactUs: getCrmApi('ticket'),
   crmImageApi: getCrmApi('image'),
   crmChatReview: getCrmApi('chatreview'),
+  contactUsAdmin: getCrmApi('contacts'),
 };
 
 export const priorityOptions = [

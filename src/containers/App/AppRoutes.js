@@ -8,6 +8,9 @@ import { Roles } from 'containers/App/config';
 
 const { Login, TermAndCondition } = lazily(() => import('containers/Login'));
 const BerandaPage = lazy(() => import('containers/Beranda'));
+const ManagemenPengguna = lazy(() => import('containers/ManagemenPengguna'));
+const PenggunaBaru = lazy(() => import('containers/ManagemenPengguna/PenggunaBaru'));
+const PenggunaDetail = lazy(() => import('containers/ManagemenPengguna/PenggunaDetail'));
 const TopicDetailPage = lazy(() => import('containers/Beranda/TopicDetails'));
 const DataSetPage = lazy(() => import('containers/Beranda/DataSet'));
 const { Perminataan } = lazily(() => import('containers/Perminataan'));
@@ -66,6 +69,7 @@ function AppRoutes(props) {
         <Suspense fallback={<Loader fullscreen />}>
           <Switch>
             <Route exact path="/policy" component={KebijakanPrivasiPage} />
+            <Route exact path="/pengguna-baru" component={PenggunaBaru} />
             <Route exact path="/home" component={BerandaPage} />
             <Route exact path="/topic-detail" component={TopicDetailPage} />
             <Route exact path="/berita" component={BeritaPage} />
@@ -336,6 +340,18 @@ function AppRoutes(props) {
               path="/sdmx"
               component={MetadataRegistryPage}
               permissions={[Roles.MEMBER, Roles.SEKRETARIANT, Roles.SEKRETARIANT_CREATOR, Roles.SEKRETARIANT_EDITOR]}
+            />
+            <PrivateRoute
+              exact
+              path="/managemen-pengguna"
+              component={ManagemenPengguna}
+              permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN, Roles.PEMBINA_DATA]}
+            />
+            <PrivateRoute
+              exact
+              path="/managemen-pengguna/:id"
+              component={PenggunaDetail}
+              permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN, Roles.PEMBINA_DATA]}
             />
           </Switch>
           {/* <Route exact path="/change-password" component={ChangePassword} /> */}

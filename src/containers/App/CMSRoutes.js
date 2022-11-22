@@ -11,6 +11,7 @@ const BeritaLayout = lazy(() => import('containers/CMS/BeritaLayout'));
 const BeritaPage = lazy(() => import('containers/CMS/Berita'));
 const BeritaBaruPage = lazy(() => import('containers/CMS/BeritaBaru'));
 const BeritaDetailPage = lazy(() => import('containers/CMS/BeritaDetail'));
+const SubscribersPage = lazy(() => import('containers/CMS/Subscribers'));
 const AboutUsPage = lazy(() => import('containers/CMS/AboutUs'));
 const StrukturOrganisasiPage = lazy(() => import('containers/CMS/StrukturOrganisasi'));
 const StrukturBaruPage = lazy(() => import('containers/CMS/StrukturOrganisasi/Create'));
@@ -323,6 +324,19 @@ function CMSRoutes() {
           path="/cms/struktur-detail/:id"
           component={StrukturDetailPage}
           permissions={[
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+          ]}
+        />
+        <PrivateRoute
+          exact
+          path="/cms/subscribers"
+          component={SubscribersPage}
+          permissions={[
+            Roles.ADMIN,
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,

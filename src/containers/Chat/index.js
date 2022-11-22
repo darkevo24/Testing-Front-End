@@ -2,7 +2,8 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import socket from './socket';
 import { useKeycloak } from '@react-keycloak/web';
-import { chatSettingsSelector, chatStatusSelector, createChatRequest, getChatSettings, getChatStatus } from './reducer';
+import { chatSettingsSelector, chatStatusSelector, getChatSettings, getChatStatus, createChatRequest } from './reducer';
+import { postContactUs } from '../TentangSDI/reducer';
 
 import chatBot from 'assets/chat-bot.png';
 import chatIcon from 'assets/customer-support.png';
@@ -132,6 +133,14 @@ export const Chat = () => {
 
   const startChat = (data) => {
     dispatch(createChatRequest({ isLoggedIn, data }));
+
+    dispatch(
+      postContactUs({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+      }),
+    );
   };
 
   const addToHistoryList = (data) => {

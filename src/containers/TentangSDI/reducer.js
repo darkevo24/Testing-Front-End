@@ -18,6 +18,11 @@ export const postTentang = createAsyncThunk('tentang/postTentang', async (param)
   return response?.data?.content;
 });
 
+export const postContactUs = createAsyncThunk('tentang/contactUs', async (param) => {
+  const response = await post(apiUrls.contactUsAdmin, param);
+  return response?.data?.content;
+});
+
 export const postImage = createAsyncThunk('api/image', async (param) => {
   const response = await post(apiUrls.crmImageApi, param);
   return response?.data?.content;

@@ -29,6 +29,7 @@ import userPortalBeritaReducer from 'containers/Berita/reducer';
 import bimtekSummaryReducer from 'containers/BimTekSummary/reducer';
 import bimtekJadwalReducer from 'containers/BimTekJadwal/reducer';
 import formulirPendaftaranReducer from 'containers/BimTekForm/reducer';
+import managemenPenggunaReducer from 'containers/ManagemenPengguna/reducer';
 import bimtekMateriReducer from 'containers/BimTekMateri/reducer';
 import bimtekDokumentasiReducer from 'containers/BimTekDokumentasi/reducer';
 import bimtekPermintaanReducer from 'containers/BimtekPermintaan/reducer';
@@ -84,7 +85,7 @@ export default function createReducer(injectedReducers) {
     router: connectRouter(history),
     cmsDataAnalytic: dataAnalyticReducer,
     konfigurasiPortal: konfigurasiPortalReducer,
-    chat: chatReducer,
+    managemenPengguna: managemenPenggunaReducer,
     ...injectedReducers,
   });
 }

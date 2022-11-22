@@ -26,6 +26,7 @@
   "header": {
     "userNav": {
       "changePassword": "Ubah Password",
+      "userManagement": "Managemen Pengguna",
       "cmsApplication": "Aplikasi Sekretariat",
       "sdiPortal": "Portal SDI",
       "privacyPolicy": "Kebijakan Privasi",

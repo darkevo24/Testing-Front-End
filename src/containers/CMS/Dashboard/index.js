@@ -13,10 +13,22 @@ import { useState } from 'react';
 const Dashboard = () => {
   const history = useHistory();
   const user = useSelector(userSelector);
-  const apmAllowedRole = [Roles.ADMIN, Roles.SUPERADMIN, Roles.SUPERVISOR];
-  const feedbackAllowedRole = [Roles.CONTENT_CREATOR, Roles.SEKRETARIANT_CREATOR, Roles.SUPERADMIN, Roles.ADMIN];
-  const budgetAllowedRole = [Roles.OPERASIONAL, Roles.PPK, Roles.SUPERADMIN, Roles.ADMIN];
-  const knowledgeAllowedRole = [Roles.GLOSARIUM_CREATOR, Roles.GLOSARIUM_APPROVER, Roles.SUPERADMIN, Roles.ADMIN];
+  const apmAllowedRole = [Roles.ADMIN, Roles.SUPERADMIN, Roles.SUPERVISOR, Roles.WALIDATA_ADMIN];
+  const feedbackAllowedRole = [
+    Roles.CONTENT_CREATOR,
+    Roles.SEKRETARIANT_CREATOR,
+    Roles.SUPERADMIN,
+    Roles.ADMIN,
+    Roles.WALIDATA_ADMIN,
+  ];
+  const budgetAllowedRole = [Roles.OPERASIONAL, Roles.PPK, Roles.SUPERADMIN, Roles.ADMIN, Roles.WALIDATA_ADMIN];
+  const knowledgeAllowedRole = [
+    Roles.GLOSARIUM_CREATOR,
+    Roles.GLOSARIUM_APPROVER,
+    Roles.SUPERADMIN,
+    Roles.ADMIN,
+    Roles.WALIDATA_ADMIN,
+  ];
   const releaseAllowedRole = [
     Roles.CONTENT_CREATOR,
     Roles.SEKRETARIANT,

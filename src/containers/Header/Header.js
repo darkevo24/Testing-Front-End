@@ -76,11 +76,7 @@ export const Header = () => {
 
   const showManageUser = useMemo(() => {
     if (user && user.roles) {
-      return (
-        user.roles.includes(Roles.ADMIN) ||
-        user.roles.includes(Roles.WALIDATA_ADMIN) ||
-        user.roles.includes(Roles.PEMBINA_DATA)
-      );
+      return user.roles.includes(Roles.WALIDATA_ADMIN) || user.roles.includes(Roles.PEMBINA_DATA);
     }
     return false;
   }, [user]);

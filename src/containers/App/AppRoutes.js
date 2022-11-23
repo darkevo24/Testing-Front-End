@@ -153,6 +153,7 @@ function AppRoutes(props) {
                 Roles.SEKRETARIANT_CREATOR,
                 Roles.SEKRETARIANT_EDITOR,
                 Roles.ADMIN,
+                Roles.WALIDATA_ADMIN,
                 Roles.REGISTERED_USER,
                 Roles.PEMBINA_DATA,
                 Roles.PIC_SDGS,
@@ -164,7 +165,14 @@ function AppRoutes(props) {
               exact
               path="/dataset"
               component={DataSetPage}
-              permissions={[Roles.ADMIN, Roles.EKSEKUTIF, Roles.REGISTERED_USER, Roles.MEMBER, Roles.SEKRETARIANT]}
+              permissions={[
+                Roles.ADMIN,
+                Roles.WALIDATA_ADMIN,
+                Roles.EKSEKUTIF,
+                Roles.REGISTERED_USER,
+                Roles.MEMBER,
+                Roles.SEKRETARIANT,
+              ]}
             />
             <PrivateRoute
               exact
@@ -333,7 +341,14 @@ function AppRoutes(props) {
               exact
               path="/dataprioritas"
               component={DataAnalytic}
-              permissions={[Roles.ADMIN, Roles.REGISTERED_USER, Roles.MEMBER, Roles.SEKRETARIANT, Roles.EKSEKUTIF]}
+              permissions={[
+                Roles.ADMIN,
+                Roles.WALIDATA_ADMIN,
+                Roles.REGISTERED_USER,
+                Roles.MEMBER,
+                Roles.SEKRETARIANT,
+                Roles.EKSEKUTIF,
+              ]}
             />
             <PrivateRoute
               exact
@@ -345,13 +360,13 @@ function AppRoutes(props) {
               exact
               path="/managemen-pengguna"
               component={ManagemenPengguna}
-              permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN, Roles.PEMBINA_DATA]}
+              permissions={[Roles.WALIDATA_ADMIN, Roles.PEMBINA_DATA]}
             />
             <PrivateRoute
               exact
               path="/managemen-pengguna/:id"
               component={PenggunaDetail}
-              permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN, Roles.PEMBINA_DATA]}
+              permissions={[Roles.WALIDATA_ADMIN, Roles.PEMBINA_DATA]}
             />
           </Switch>
           {/* <Route exact path="/change-password" component={ChangePassword} /> */}

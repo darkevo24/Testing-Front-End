@@ -55,7 +55,7 @@ const CMSSecurity = () => {
             {featureResult
               ? featureResult.map((data, index) => (
                   <div className={cx(bem.e('list-blokir'))} key={index}>
-                    <span>Batas waktu sejak login terakhir</span>
+                    <span>Batas Waktu Link Lupa Password</span>
                     <span className="fw-bold bg-gray p-10">{data.value + ' ' + data.type}</span>
                   </div>
                 ))

@@ -216,7 +216,7 @@ const CMSSecurityEdit = () => {
               ? featureResult.map((data, index) => (
                   <Row className="align-items-center mb-20" key={index}>
                     <Col md={6}>
-                      <span>Batas waktu sejak login terakhir</span>
+                      <span>Batas Waktu Link Lupa Password</span>
                     </Col>
                     <Col md={3}>
                       <SingleDropDown

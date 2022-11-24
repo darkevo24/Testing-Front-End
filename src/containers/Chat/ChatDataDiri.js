@@ -16,7 +16,7 @@ const schema = yup
     phone: yup
       .string()
       .required('Nomor Telepon Wajib Diisi')
-      .matches(/^[0-9]*$/, 'Nomor Telepon hanya boleh angka')
+      .matches(/^[\+]?[0-9]*$/, 'Nomor Telepon hanya boleh angka')
       .min(8, 'Telepon minimal 8 karakter')
       .max(20, 'Telepon maksimal 20 karakter'),
     summary: yup.string().required(),

@@ -151,7 +151,7 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
             frameBorder="0"
             seamless
             title="Dashboard Beranda - Dataset Terpopuler"
-            src="https://analitik.data.go.id/superset/dashboard/111/?native_filters=%28%29"></iframe>
+            src="http://103.170.104.187:8088/superset/dashboard/111/?native_filters=%28%29"></iframe>
         </Col>
       </Row>
       <FlexBox className="px-16 mt-40">
@@ -168,7 +168,7 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
             frameBorder="0"
             seamless
             title="Harga Komoditas Pangan"
-            src="https://analitik.data.go.id/superset/dashboard/105/?native_filters=%28%29"></iframe>
+            src="http://103.170.104.187:8088/superset/dashboard/105/?native_filters=%28%29"></iframe>
         </Col>
       </Row>
       <FlexBox className="px-16 mt-40">
@@ -185,7 +185,7 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
             frameBorder="0"
             seamless
             title="Perkiraan Cuaca"
-            src="https://analitik.data.go.id/superset/dashboard/106/?native_filters=%28%29"></iframe>
+            src="http://103.170.104.187:8088/superset/dashboard/106/?native_filters=%28%29"></iframe>
         </Col>
       </Row>
     </Box>

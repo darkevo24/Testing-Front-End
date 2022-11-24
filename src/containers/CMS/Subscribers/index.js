@@ -1,26 +1,18 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import cx from 'classnames';
-
-import Button from 'react-bootstrap/Button';
-import { CMSModal } from 'components';
+import { CSVLink } from 'react-csv';
+import { Notification } from 'components';
 import moment from 'moment';
 import { DatePicker } from 'components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Table, { FilterSearchInput } from 'components/Table';
-import { ComponentAccessibility } from 'components/ComponentAccess';
+import styled from 'styled-components';
 import TableLoader from 'components/Loader/TableLoader';
-import SingleDropDown from 'components/DropDown/SingleDropDown';
-
-import { ReactComponent as Plus } from 'assets/plus.svg';
 import bn from 'utils/bemNames';
-import { formatDate } from 'utils/helper';
-import { STATUS_DATA_BERITA } from 'utils/constants';
-import { USER_ROLES } from 'utils/constants';
-import { getListBerita, beritaCmsListSelector, setPreviewBerita, setStatusBerita } from '../BeritaBaru/reducer';
+import { getSubscribersData, subscriberSelector } from './reducer';
 
 const bem = bn('content-table');
 
@@ -32,71 +24,19 @@ const schema = yup
   })
   .required();
 
+const OptionWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+`;
+
 const Subscribers = ({ textSearch }) => {
   const dispatch = useDispatch();
-  const [modalConfirm, setModalConfirm] = useState(false);
-  const [multiApprove, setMultiApprove] = useState(false);
-  const [modal, setModal] = useState(false);
-  const [selectApprove, setSelectApprove] = useState([]);
   const [searchQuery, setSearch] = useState('');
-  const [sortBy, setSortBy] = useState({ id: 0, sortId: 0, desc: false });
-  const [filter, setFilter] = useState({ page: 1, size: 10, sortBy: 0, sortDirection: 'ASC', judul: '', status: '' });
-  const { loading, totalPages, totalRecords, size, page, records } = useSelector(beritaCmsListSelector);
-
-  // const fetchData = (params) => {
-  //   return dispatch(getListBerita(params));
-  // };
-
-  useEffect(() => {
-    // fetchData({ filter });
-
-    console.log('fetchData', filter);
-  }, [filter]);
-
-  const handleSearch = (value = '') => {
-    setSearch(value);
-    setFilter({ ...filter, judul: value });
-  };
-
-  const handleCheckboxChange = (data) => {
-    let selected = [...selectApprove];
-    if (selectApprove.includes(data.id)) {
-      // remove selection
-      selected = selected.filter((item) => item !== data.id);
-    } else {
-      // add into selection
-      selected.push(data.id);
-    }
-
-    setSelectApprove(selected);
-  };
-
-  const handleSelectAll = () => {
-    let currentArr = [...selectApprove];
-    const newArr = records.filter((item) => item.status === 2).map((item) => item.id);
-    if (currentArr.some((x) => newArr.includes(x))) {
-      // remove
-      currentArr = currentArr.filter((item) => !newArr.includes(item));
-    } else {
-      // add
-      currentArr = currentArr.concat(newArr);
-    }
-
-    setSelectApprove(currentArr);
-  };
-
-  const handleApproveAll = () => {
-    if (!selectApprove.length) {
-      dispatch(
-        setStatusBerita({
-          payload: { id: selectApprove, status: 3, note: '' },
-        }),
-      ).then(() => setFilter({ ...filter }));
-    }
-
-    setModalConfirm(false);
-  };
-
+  const [filter, setFilter] = useState({ page: 1, size: 10, startDate: '', endDate: '', email: '' });
+  const { loading, records, totalRecords, totalPages, size, page } = useSelector(subscriberSelector);
+  const [disable, setDisable] = useState(true);
   const {
     control,
     formState: { errors },
@@ -104,74 +44,78 @@ const Subscribers = ({ textSearch }) => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
   const startDateValue = watch('startDate');
   const endDateValue = watch('endDate');
+  const handleAPICall = () => {
+    return dispatch(getSubscribersData({ filter }));
+  };
+
+  useEffect(() => {
+    handleAPICall({ filter });
+  }, [filter]);
+
+  useEffect(() => {
+    setDisable(!(startDateValue && endDateValue));
+  }, [startDateValue, endDateValue]);
+
+  useEffect(() => {
+    if (startDateValue && endDateValue) {
+      setFilter({
+        ...filter,
+        startDate: moment(startDateValue).format('YYYY-MM-DD'),
+        endDate: moment(endDateValue).format('YYYY-MM-DD'),
+      });
+    }
+    if (startDateValue && !endDateValue) {
+      setFilter({
+        ...filter,
+        startDate: moment(startDateValue).format('YYYY-MM-DD'),
+        endDate: moment(Date.now()).format('YYYY-MM-DD'),
+      });
+    }
+    if (!startDateValue && endDateValue) {
+      setFilter({
+        ...filter,
+        startDate: moment(Date.now()).format('YYYY-MM-DD'),
+        endDate: moment(endDateValue).format('YYYY-MM-DD'),
+      });
+    }
+  }, [startDateValue, endDateValue]);
+
+  const handleSearch = (value = '') => {
+    setSearch(value);
+    setFilter({
+      ...filter,
+      email: value,
+    });
+  };
 
   const columns = useMemo(() => {
     const items = [
       {
         Header: 'No',
-        accessor: 'id',
+        Cell: ({ row }) => {
+          return <div>{row.index + 1}</div>;
+        },
         disableSortBy: true,
       },
       {
         Header: 'Alamat Email',
         accessor: 'email',
-        sortId: 0,
       },
       {
         Header: 'Tanggal Berlangganan',
-        accessor: 'startDate',
-        sortId: 1,
-        // Cell: ({ cell }) => formatDate(cell.row.original.publishDate),
+        accessor: 'dateAdded',
       },
     ];
-    if (multiApprove) {
-      items.unshift({
-        id: 'checkbox',
-        action: handleCheckboxChange,
-        isChecked: (row) => selectApprove.includes(row.id) && row.status === 2,
-        isDisabled: (row) => row.status !== 2,
-        label: '',
-        Cell: Table.CheckBox,
-      });
-    }
     return items;
-  }, [multiApprove, selectApprove]);
-
-  const onSortChange = ({ id, sortId, isSortedDesc }) => {
-    const desc = isSortedDesc === undefined ? false : !isSortedDesc;
-    setFilter({ ...filter, sortBy: sortId, sortDirection: desc ? 'DESC' : 'ASC' });
-    setSortBy({ id, sortId, desc });
-  };
-
-  const dummyData = [
-    {
-      id: 1,
-      email: 'email@gmai.com',
-      startDate: '2022-10-27',
-      endDate: '2022-10-28',
-    },
-    {
-      id: 2,
-      email: 'ee@gmail.com',
-      startDate: '2022-10-27',
-      endDate: '2022-10-28',
-    },
-  ];
-
-  const handleModalOpen = (e, actionType) => {
-    e.preventDefault();
-    setModal(true);
-  };
+  }, []);
 
   const tableConfig = {
     columns,
-    // data: records,
-    data: dummyData,
+    data: records,
     title: '',
-    sortBy,
-    onSortChange,
     showSearch: false,
     onSearch: () => {},
     variant: 'spaced',
@@ -182,7 +126,7 @@ const Subscribers = ({ textSearch }) => {
     manualPagination: true,
     onPageIndexChange: (currentPage) => {
       if (currentPage + 1 !== page) {
-        setFilter({ ...dummyData, page: currentPage + 1 });
+        setFilter({ ...filter, page: currentPage + 1 });
       }
     },
   };
@@ -190,56 +134,44 @@ const Subscribers = ({ textSearch }) => {
   return (
     <div className={bem.e('section')}>
       <div className={bem.e('header')}>
-        <div className={cx(bem.e('title'), 'mb-3')}>Berita</div>
-        <div className="d-flex justify-content-between h-50">
-          <Button className="" variant="info" onClick={(e) => handleModalOpen}>
+        <div className={cx(bem.e('title'), 'mb-3')}>Subscribers</div>
+        <OptionWrapper>
+          <CSVLink
+            id="download"
+            data={records}
+            filename="subscribers.csv"
+            disabled={disable}
+            className="btn btn-info"
+            style={{ width: '100px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            target="_blank">
             Download
-          </Button>
-          <div className="sdp-left-wrapper d-flex align-items-center justify-content-end">
-            <div className="date">
-              <p>Awal</p>
+          </CSVLink>
+          <div className="sdp-left-wrapper d-flex align-items-center">
+            <div className="d-flex mr-7">
               <DatePicker
-                className="cms-log-activity"
+                placeholderText="From"
+                className="mr-7 "
                 name="startDate"
                 control={control}
                 rules={{ required: false }}
                 error={errors.startDate?.message}
-                arrow={true}
-                max={moment().subtract(1, 'days').format('YYYY-MM-DD')}
               />
-            </div>
-            <div className="date">
-              <p>Akhir</p>
               <DatePicker
-                className="cms-log-activity"
+                placeholderText="To"
                 name="endDate"
                 control={control}
                 rules={{ required: false }}
                 error={errors.endDate?.message}
-                arrow={true}
                 min={startDateValue}
-                max={moment().subtract(1, 'days').format('YYYY-MM-DD')}
               />
             </div>
-            <FilterSearchInput searchPlaceholder="Cari Berita" setGlobalFilter={handleSearch} />
+            <FilterSearchInput searchPlaceholder="Cari Alamat Email" setGlobalFilter={handleSearch} />
           </div>
-        </div>
+        </OptionWrapper>
       </div>
       <div className={bem.e('body')}>
         {loading ? <TableLoader speed={2} width={'100%'} height={550} /> : <Table {...tableConfig} />}
       </div>
-      {modalConfirm ? (
-        <CMSModal
-          loader={false}
-          onClose={() => setModalConfirm(false)}
-          confirmButtonAction={handleApproveAll}
-          label={
-            <span>
-              Apakah anda yakin ingin <b className="sdp-text-blue">menyetujui</b> Berita?
-            </span>
-          }
-        />
-      ) : null}
     </div>
   );
 };

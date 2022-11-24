@@ -146,6 +146,7 @@ export const apiUrls = {
   penggunaRoleList: getApiEndpoint('sekretariat/user/role-list'),
   penggunaStatusList: getApiEndpoint('sekretariat/user/status-list'),
   penggunaUpload: getApiEndpoint('sekretariat/user/bulk'),
+  subcribers: getCMSEndpoint('subscribe'),
   cmsAnalitikData: getCMSEndpoint('analitik'),
   cmsManagementApi: getApiEndpoint('management-api'),
   publicGlobalData: getPublicEndpoint('site-setting'),

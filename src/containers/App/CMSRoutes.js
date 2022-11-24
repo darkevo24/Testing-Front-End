@@ -337,6 +337,7 @@ function CMSRoutes() {
           component={SubscribersPage}
           permissions={[
             Roles.ADMIN,
+            Roles.WALIDATA_ADMIN,
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,

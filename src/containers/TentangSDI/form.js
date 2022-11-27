@@ -18,13 +18,16 @@ import { userSelector } from 'containers/Login/reducer';
 import { icons } from 'components/Icons';
 import { useKeycloak } from '@react-keycloak/web';
 import { apiUrls } from 'utils/request';
+import { Modal } from 'components';
 
 import Pdf from 'assets/icons/Tentang/pdf-svgrepo-com.svg';
+import styled from 'styled-components';
 
 const ContactUs = () => {
   const { keycloak } = useKeycloak();
   const user = useSelector(userSelector);
   const [errorUploadFile, setErrorUploadFile] = useState('');
+  const [file, setFile] = useState(null);
   const [data, setData] = useState({
     attachment: [],
   });
@@ -37,6 +40,7 @@ const ContactUs = () => {
       return { ...oldData };
     });
   };
+  const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
   const schema = yup
     .object({
@@ -45,7 +49,7 @@ const ContactUs = () => {
       telephone: yup
         .string()
         .required('Nomor Telefon Wajib Diisi')
-        .matches(/^[0-9]*$/, 'Nomor Telefon hanya boleh angka')
+        .matches(phoneRegExp, 'Nomor Telefon hanya boleh angka')
         .min(8, 'Telepon minimal 8 karakter')
         .max(20, 'Telepon maksimal 20 karakter'),
       summary: yup.string().required('Ringkasan Wajib Diisi'),
@@ -103,7 +107,6 @@ const ContactUs = () => {
     setErrorUploadFile('');
     const bodyFormData = new FormData();
     bodyFormData.append('file', file);
-
     const uploadedFile = await axios.post(apiUrls.crmImageApi, bodyFormData);
     if (uploadedFile.status === 200) {
       const attachmentList = data.attachment;
@@ -161,6 +164,25 @@ const ContactUs = () => {
     });
   };
 
+  const getPdf = async (url) =>
+    axios
+      .post(
+        url,
+        {},
+        {
+          responseType: 'arraybuffer',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/pdf',
+          },
+        },
+      )
+      .then((response) => {
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        return window.URL.createObjectURL(blob);
+      })
+      .catch((error) => console.log(error));
+
   useEffect(() => {
     register('full_name');
     register('email');
@@ -170,6 +192,13 @@ const ContactUs = () => {
     register('files');
   }, [register]);
 
+  const ContainerContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  `;
+
   return (
     <div id="tentang-form" className="contactus-container">
       <div className="contactus-wrapper">
@@ -177,7 +206,11 @@ const ContactUs = () => {
         {user == null ? (
           <p>
             Sudah Miliki Akun? Silahkan&nbsp;
-            <a className="cursor-pointer text-bold" onClick={keycloak.login}>
+            <a
+              className="cursor-pointer text-bold"
+              onClick={() => {
+                return keycloak.login({ redirectUri: 'http://127.0.0.1:3000/tentang' });
+              }}>
               Login
             </a>
           </p>
@@ -265,25 +298,28 @@ const ContactUs = () => {
                     <Col xs lg="4" className="mb-5 mt-5">
                       <div className="bg-gray rounded-lg" key={`file-${attachmentFile.type}-${index}`}>
                         <Button
-                          style={{
-                            'border-radius': '50%',
-                            float: 'right',
-                          }}
+                          style={{ 'border-radius': '50%', float: 'right' }}
                           className="float-right"
                           type="button"
                           onClick={() => deleteAttachment(index)}>
-                          <icons.close props={'text-white'} />
+                          <icons.close variant="white" />
                         </Button>
-                        <div className="flex flex-col justify-center h-full p-1">
+                        <div
+                          style={{ maxHeight: '150px', maxWidth: '150px' }}
+                          className="flex flex-col justify-center h-full p-1">
                           {attachmentFile.type === 'application/pdf' ? (
-                            <div>
+                            <div onClick={async () => setFile({ file: await getPdf(attachmentFile.file), type: 'pdf' })}>
                               <img src={Pdf} alt="" />
-                              <div className="text-center text-gray1 mt-3">{attachmentFile.name}</div>
                             </div>
                           ) : (
-                            <img className="image" src={attachmentFile.file} alt="file-data" />
+                            <img
+                              className="image"
+                              src={attachmentFile.file}
+                              alt="file-data"
+                              onClick={() => setFile({ file: attachmentFile.file, type: 'image' })}></img>
                           )}
                         </div>
+                        <div className="text-center text-gray1 mt-3">{attachmentFile.name}</div>
                       </div>
                     </Col>
                   ))}
@@ -296,6 +332,21 @@ const ContactUs = () => {
           </Button>
         </Form>
       </div>
+      {file && (
+        <Modal size="lg" showHeader={true} title="Detail File" visible={true} onClose={() => setFile(null)}>
+          {file?.type === 'image' && (
+            <ContainerContent>
+              <img style={{ width: '70%' }} src={file?.file} alt="file-data" />
+            </ContainerContent>
+          )}
+
+          {file?.type === 'pdf' && (
+            <ContainerContent>
+              <iframe width="100%" height="700px" src={file?.file} title="W3Schools Free Online Web Tutorials" />
+            </ContainerContent>
+          )}
+        </Modal>
+      )}
     </div>
   );
 };

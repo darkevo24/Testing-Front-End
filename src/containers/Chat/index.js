@@ -67,7 +67,7 @@ export const Chat = () => {
   }, [email]);
 
   React.useEffect(() => {
-    socket.connect();
+    //socket.connect();
     socket.on('connect_error', (err) => {
       console.error(err);
     });

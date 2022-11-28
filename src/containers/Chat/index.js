@@ -131,8 +131,8 @@ export const Chat = () => {
     }
   }, [chatStatus]);
 
-  const startChat = (data) => {
-    dispatch(createChatRequest({ isLoggedIn, data }));
+  const startChat = async (data) => {
+    await dispatch(createChatRequest({ isLoggedIn, data }));
 
     dispatch(
       postContactUs({
@@ -141,6 +141,8 @@ export const Chat = () => {
         phone: data.phone,
       }),
     );
+
+    socket.emit('chat request');
   };
 
   const addToHistoryList = (data) => {

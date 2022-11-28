@@ -9,16 +9,17 @@
 import React, { useEffect, lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Redirect, Route, Switch, useHistory, withRouter } from 'react-router-dom';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import GlobalStyle from 'global-styles';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
 import keycloak, { initOptions } from 'Keycloak';
 import 'react-tippy/dist/tippy.css';
 
-import { fetchLoggedInUserInfo } from 'containers/Login/reducer';
+import { fetchLoggedInUserInfo, userSelector } from 'containers/Login/reducer';
 import Notify, { Notification } from 'components/Notification';
 import { getCookieByName, cookieKeys, removeAllCookie } from 'utils/cookie';
 import { getGlobalData } from './reducer';
+import socket from 'containers/Chat/socket';
 
 const AdminRoutes = lazy(() => import('./AdminRoutes'));
 const AppRoutes = lazy(() => import('./AppRoutes'));
@@ -70,6 +71,27 @@ function App(props) {
       history.push('/home');
     }
   };
+
+  const user = useSelector(userSelector);
+  const email = React.useMemo(() => {
+    if (user) {
+      return user?.email;
+    } else {
+      const chatCredentials = localStorage.getItem('sdi_chat_credentials');
+      try {
+        const credentialObj = JSON.parse(chatCredentials);
+        if (!credentialObj.email) throw 'No email';
+        return credentialObj.email;
+      } catch (e) {
+        return null;
+      }
+    }
+  }, []);
+
+  React.useEffect(() => {
+    socket.auth = { email };
+    socket.disconnect().connect();
+  }, [email]);
 
   return (
     <ReactKeycloakProvider authClient={keycloak} initOptions={initOptions} onTokens={handleOnTokens} onEvent={handleOnEvent}>

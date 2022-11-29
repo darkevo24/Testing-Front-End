@@ -45,7 +45,20 @@ const Button = styled.div`
   cursor: pointer;
 `;
 
-const BimTekJadwalItem = ({ title, startDate, endDate, city, location, speaker, id, materi }) => {
+const nonSDI = 'Pengusulan Bimtek (K/L/D Sebagai Penyelenggara)';
+
+const BimTekJadwalItem = ({
+  title,
+  startDate,
+  endDate,
+  city,
+  location,
+  speaker,
+  id,
+  materi,
+  jenisPermintaan,
+  namaInstansi,
+}) => {
   const [collapse, setCollapse] = useState(false);
   const downloadMateri = async (file) => {
     try {
@@ -78,6 +91,10 @@ const BimTekJadwalItem = ({ title, startDate, endDate, city, location, speaker, 
         <Accordion.Collapse eventKey="0" className="mt-3">
           <div>
             <div className="mb-3">{location}</div>
+            <div className="mb-3">
+              <div className="bimtek-jadwal-title">Penyelenggara</div>
+              <div className="mt-2">{jenisPermintaan === nonSDI ? namaInstansi : 'Sekretariat SDI'}</div>
+            </div>
             <div className="mb-3">
               <div className="bimtek-jadwal-title">Pembicara</div>
               <div>

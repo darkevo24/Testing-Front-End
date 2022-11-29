@@ -88,7 +88,7 @@ export const Header = () => {
   const showAppSec = useMemo(() => {
     if (!user) return false;
     const { roles = null } = user;
-    return ![Roles.MEMBER, Roles.REGISTERED_USER, Roles.EKSEKUTIF].includes(roles);
+    return ![Roles.MEMBER, Roles.REGISTERED_USER, Roles.EKSEKUTIF, Roles.WALIDATA_ADMIN].includes(roles);
   }, [user]);
 
   useEffect(() => {

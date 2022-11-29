@@ -15,3 +15,6 @@ export const getPerminataanInfo = (data) => [
   { data: data?.['instansi']?.nama || '', title: 'Produsen Data' },
   { data: data?.['jenisData'] || '', title: 'Jenis Data' },
 ];
+export const getPerminataanInfoOfficialMemo = (data) => [
+  { data: data?.['officialMemo']?.location, title: 'Surat Permintaan Data', name: data?.['officialMemo']?.fileName },
+];

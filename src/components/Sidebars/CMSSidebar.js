@@ -73,6 +73,7 @@ export const CMSSidebar = () => {
             <Accordion.Body>
               <SidebarItem title="Konten Berita" pathname="/cms/berita-konten" />
               <SidebarItem title="Layout Berita" pathname="/cms/berita-layout" />
+              <SidebarItem title="Subscribers" pathname="/cms/subscribers" />
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
@@ -102,7 +103,13 @@ export const CMSSidebar = () => {
             </Accordion.Header>
             <Accordion.Body>
               <ComponentAccessibility
-                roles={[USER_ROLES.CONTENT_EDITOR, USER_ROLES.CONTENT_CREATOR, USER_ROLES.ADMIN, USER_ROLES.SEKRETARIAT]}>
+                roles={[
+                  USER_ROLES.CONTENT_EDITOR,
+                  USER_ROLES.CONTENT_CREATOR,
+                  USER_ROLES.ADMIN,
+                  USER_ROLES.WALIDATA_ADMIN,
+                  USER_ROLES.SEKRETARIAT,
+                ]}>
                 <SidebarItem title="Komunitas Ahli" pathname="/cms/komunitas-ahli" />
               </ComponentAccessibility>
               <SidebarItem title="Pendaftar Ahli" pathname="/cms/pendaftar-ahli" />

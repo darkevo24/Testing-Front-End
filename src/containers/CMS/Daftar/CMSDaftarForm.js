@@ -647,7 +647,7 @@ const CMSDaftarPage = ({ ...props }) => {
                           <Select
                             closeMenuOnSelect={true}
                             value={dataDinamis ? dataDinamis[val?.name] : ''}
-                            options={optionDropdown(JSON.parse(val.dropdownContent))}
+                            options={optionDropdown(val.dropdownContent.split(', '))}
                             onChange={(e) => handleChangeAttributDinamis(e, val.name)}
                             className="basic-single"
                             classNamePrefix="select"

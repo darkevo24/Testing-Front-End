@@ -6,16 +6,23 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
-import { getListConfigSecurity, configSecurityListSelector } from './reducer';
+import {
+  getListConfigSecurity,
+  configSecurityListSelector,
+  getListConfigFeature,
+  configListFeatureSelector,
+} from './reducer';
 
 const bem = bn('content-create');
 
 const CMSSecurity = () => {
   const dispatch = useDispatch();
-  const { configResult, configLoading } = useSelector(configSecurityListSelector);
+  const { configResult } = useSelector(configSecurityListSelector);
+  const { featureResult } = useSelector(configListFeatureSelector);
 
   const initialCall = () => {
     dispatch(getListConfigSecurity());
+    dispatch(getListConfigFeature());
   };
 
   useEffect(() => {
@@ -37,12 +44,19 @@ const CMSSecurity = () => {
       <div className={bem.e('body')}>
         <Row className="justify-content-between">
           <Col xs={4}>
-            <div className="mb-15">Pemblokiran akun</div>
             {configResult
               ? configResult.map((data, index) => (
                   <div className={cx(bem.e('list-blokir'))} key={index}>
                     <span>{data.label}</span>
                     <span className="fw-bold bg-gray p-10">{data.value + ' ' + data.unit}</span>
+                  </div>
+                ))
+              : 'Gagal Menampilkan Data'}
+            {featureResult
+              ? featureResult.map((data, index) => (
+                  <div className={cx(bem.e('list-blokir'))} key={index}>
+                    <span>Batas Waktu Link Lupa Password</span>
+                    <span className="fw-bold bg-gray p-10">{data.value + ' ' + data.type}</span>
                   </div>
                 ))
               : 'Gagal Menampilkan Data'}

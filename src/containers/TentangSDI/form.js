@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import { postTentang } from './reducer';
+import { postTentang, postContactUs } from './reducer';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch } from 'react-redux';
@@ -162,6 +162,14 @@ const ContactUs = () => {
         });
       }
     });
+
+    dispatch(
+      postContactUs({
+        name: post.full_name,
+        email: post.email,
+        phone: post.telephone,
+      }),
+    );
   };
 
   const getPdf = async (url) =>

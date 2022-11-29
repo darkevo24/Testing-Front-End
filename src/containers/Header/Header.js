@@ -74,6 +74,13 @@ export const Header = () => {
   const { t } = useTranslation();
   const fromLogin = _.get(history, 'location.params.login', false);
 
+  const showManageUser = useMemo(() => {
+    if (user && user.roles) {
+      return user.roles.includes(Roles.WALIDATA_ADMIN) || user.roles.includes(Roles.PEMBINA_DATA);
+    }
+    return false;
+  }, [user]);
+
   const showAppSec = useMemo(() => {
     if (!user) return false;
     const { roles = null } = user;
@@ -177,6 +184,9 @@ export const Header = () => {
         {getNavLinks(MEMBER_ROUTES, location.pathname, goTo)}
         <NavDropdown title={user?.nama || 'Achmad Adam'} id="user-nav-dropdown" className="user-nav h-100">
           <NavDropdown.Item onClick={goTo('/change-user-password')}>{t('header.userNav.changePassword')}</NavDropdown.Item>
+          {showManageUser && (
+            <NavDropdown.Item onClick={goTo('/managemen-pengguna')}>{t('header.userNav.userManagement')}</NavDropdown.Item>
+          )}
           {showAppSec && <NavDropdown.Item onClick={goTo('/cms')}>{t('header.userNav.cmsApplication')}</NavDropdown.Item>}
           <NavDropdown.Item onClick={goTo('/policy')}>{t('header.userNav.privacyPolicy')}</NavDropdown.Item>
           <NavDropdown.Item

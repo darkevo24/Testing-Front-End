@@ -79,6 +79,7 @@ const Table = ({
   showSearch = true,
   variant = 'default',
   highlightOnHover,
+  hoverPengguna,
   sortBy = null,
   onSortChange = () => null,
   manualPagination = false,
@@ -173,6 +174,7 @@ const Table = ({
   const tableWrapperClasses = {
     [bem.m('highlight')]: highlightOnHover,
     [bem.m('cms')]: cms,
+    [bem.m('hoverpengguna')]: hoverPengguna,
   };
 
   const handleRowClick = (data) => {

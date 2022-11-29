@@ -132,6 +132,18 @@ export const Header = () => {
     () => [
       ...COMMON_ROUTES,
       {
+        title: 'Katalog Data Nasional',
+        links: [
+          { title: 'Kode Referensi', link: '/#' },
+          { title: 'Data Induk', link: '/#' },
+          { title: 'Code List', link: '/#' },
+          { title: 'Daftar Data', link: '/#' },
+          { title: 'Data Browser', link: '/#' },
+          { title: 'Manajemen Persetujuan', link: '/#' },
+        ],
+      },
+      { title: 'Master Data', link: '/#' },
+      {
         title: 'Layanan',
         links: [
           { title: 'Permintaan Data', link: '/permintaan-data' },
@@ -140,7 +152,7 @@ export const Header = () => {
           { title: 'Forum SDI', link: '/forum-sdi' },
           // { title: 'Glosarium', link: '/Glosarium' },
           { title: 'SDI Wiki', link: '/sdi-wiki' },
-          { title: 'CKAN', link: `${katalogUrl}/user/saml2login` },
+          { title: 'Learning Management', link: 'https://lms.satudata.go.id/#/homeLearning' },
           // { title: 'Persetujuan Anggaran Biaya', link: '/permintaan-budget' },
         ],
       },
@@ -151,6 +163,7 @@ export const Header = () => {
           { title: 'Eksekutif', link: '/dashboard-eksekutif' },
           { title: 'Data Prioritas', link: '/dataprioritas' },
           { title: 'Dashboard Saya', link: '/dashboard-saya' },
+          { title: 'Analitika Data', link: 'http://103.225.242.87/' },
         ],
       },
       {
@@ -160,7 +173,13 @@ export const Header = () => {
           { title: 'Metadata Registry', link: '/sdmx' },
         ],
       },
-      { title: 'Berita', link: '/berita' },
+      {
+        title: 'Media',
+        links: [
+          { title: 'Berita', link: '/berita' },
+          { title: 'Webinar', link: `https://lms.satudata.go.id/#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
+        ],
+      },
       { title: 'Tentang', link: '/tentang' },
       // { title: 'API', link: '/api' },
     ],
@@ -195,7 +214,12 @@ export const Header = () => {
           {showManageUser && (
             <NavDropdown.Item onClick={goTo('/managemen-pengguna')}>{t('header.userNav.userManagement')}</NavDropdown.Item>
           )}
-          {showAppSec && <NavDropdown.Item onClick={goTo('/cms')}>{t('header.userNav.cmsApplication')}</NavDropdown.Item>}
+          {showAppSec && (
+            <>
+              <NavDropdown.Item onClick={goTo('/cms')}>{t('header.userNav.cmsApplication')}</NavDropdown.Item>
+              <NavDropdown.Item href={`${katalogUrl}/user/saml2login `}>{t('header.userNav.openData')}</NavDropdown.Item>
+            </>
+          )}
           <NavDropdown.Item onClick={goTo('/policy')}>{t('header.userNav.privacyPolicy')}</NavDropdown.Item>
           <NavDropdown.Item
             onClick={() => {

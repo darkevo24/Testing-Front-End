@@ -7,8 +7,10 @@ import './chat.scss';
 
 import chatBot from 'assets/chat-bot.png';
 import { createChatHistory } from './reducer';
+import { icons } from 'components/Icons';
+import { getPdf } from 'utils/helper';
 
-export const ChatDialog = ({ chatHistoryList, addToHistoryList }) => {
+export const ChatDialog = ({ chatHistoryList, addToHistoryList, setFile }) => {
   const [messageToSend, setMessageToSend] = React.useState('');
 
   const dispatch = useDispatch();
@@ -33,7 +35,31 @@ export const ChatDialog = ({ chatHistoryList, addToHistoryList }) => {
             height={32}
             style={{ visibility: prevMessage?.isSentByAdmin ? 'hidden' : 'visible' }}
           />
-          <div>{message?.message}</div>
+          <div>
+            {message?.attachment && message?.attachment.length > 0 ? (
+              <div className="flex flex-col justify-center h-full p-3 relative overflow-y-hidden">
+                {message?.attachment[0].type === 'application/pdf' ? (
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={async () => setFile({ file: await getPdf(message?.attachment[0].file), type: 'pdf' })}>
+                    <div className="flex justify-center">
+                      <icons.pdfSvg className="w-8" />
+                    </div>
+                    <div className="text-center text-gray1 mt-3 max-h-5">{message?.attachment[0].name}</div>
+                  </div>
+                ) : (
+                  <img
+                    src={message?.attachment[0].file}
+                    alt="file-data"
+                    onClick={() => setFile({ file: message?.attachment[0].file, type: 'image' })}
+                  />
+                )}
+              </div>
+            ) : (
+              message?.message
+            )}
+          </div>
         </div>
         {(nextMessage === null || messageTime !== nextMessageTime) && <div className="chat-time">{messageTime}</div>}
       </>
@@ -45,7 +71,31 @@ export const ChatDialog = ({ chatHistoryList, addToHistoryList }) => {
     const nextMessageTime = moment(nextMessage?.sentAt).format('HH:mm');
     return (
       <>
-        <div className="chat-content-user">{message?.message}</div>
+        <div className="chat-content-user">
+          {message?.attachment && message?.attachment.length > 0 ? (
+            <div className="flex flex-col justify-center h-full p-3 relative overflow-y-hidden">
+              {message?.attachment[0].type === 'application/pdf' ? (
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={async () => setFile({ file: await getPdf(message?.attachment[0].file), type: 'pdf' })}>
+                  <div className="flex justify-center">
+                    <icons.pdfSvg className="w-8" />
+                  </div>
+                  <div className="text-center text-gray1 mt-3 max-h-5">{message?.attachment[0].name}</div>
+                </div>
+              ) : (
+                <img
+                  src={message?.attachment[0].file}
+                  alt="file-data"
+                  onClick={() => setFile({ file: message?.attachment[0].file, type: 'image' })}
+                />
+              )}
+            </div>
+          ) : (
+            message?.message
+          )}
+        </div>
         {(nextMessage === null || messageTime !== nextMessageTime) && <div className="chat-time">{messageTime}</div>}
       </>
     );

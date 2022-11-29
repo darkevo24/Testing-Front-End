@@ -32,6 +32,7 @@ export const Chat = () => {
   const [chatStartStep, setChatStartStep] = React.useState(null); //waiting, dialog, review
   const [chatSettings, setChatSettings] = React.useState(null);
   const [chatHistoryList, setChatHistoryList] = React.useState([]);
+  const [file, setFile] = React.useState('');
 
   const dispatch = useDispatch();
   const { record } = useSelector(chatSettingsSelector);
@@ -67,7 +68,7 @@ export const Chat = () => {
   }, [email]);
 
   React.useEffect(() => {
-    socket.connect();
+    //socket.connect();
     socket.on('connect_error', (err) => {
       console.error(err);
     });
@@ -76,6 +77,10 @@ export const Chat = () => {
     });
 
     socket.on('chat message', (msg) => {
+      dispatch(getChatStatus({ email }));
+    });
+
+    socket.on('chat end', (msg) => {
       dispatch(getChatStatus({ email }));
     });
 
@@ -94,6 +99,8 @@ export const Chat = () => {
       socket.off('isEnabled changed');
       socket.off('chat request processed');
       socket.off('chat message');
+      socket.off('chat request');
+      socket.off('chat end');
     };
   }, []);
 
@@ -131,8 +138,8 @@ export const Chat = () => {
     }
   }, [chatStatus]);
 
-  const startChat = (data) => {
-    dispatch(createChatRequest({ isLoggedIn, data }));
+  const startChat = async (data) => {
+    await dispatch(createChatRequest({ isLoggedIn, data }));
 
     dispatch(
       postContactUs({
@@ -141,6 +148,8 @@ export const Chat = () => {
         phone: data.phone,
       }),
     );
+
+    socket.emit('chat request');
   };
 
   const addToHistoryList = (data) => {
@@ -179,7 +188,7 @@ export const Chat = () => {
     if (chatStartStep === 'waiting') {
       return <ChatWaiting />;
     } else if (chatStartStep === 'dialog') {
-      return <ChatDialog chatHistoryList={chatHistoryList} addToHistoryList={addToHistoryList} />;
+      return <ChatDialog chatHistoryList={chatHistoryList} addToHistoryList={addToHistoryList} setFile={setFile} />;
     } else {
       return <div>None</div>;
     }

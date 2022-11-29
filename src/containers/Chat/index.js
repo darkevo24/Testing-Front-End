@@ -32,6 +32,7 @@ export const Chat = () => {
   const [chatStartStep, setChatStartStep] = React.useState(null); //waiting, dialog, review
   const [chatSettings, setChatSettings] = React.useState(null);
   const [chatHistoryList, setChatHistoryList] = React.useState([]);
+  const [file, setFile] = React.useState('');
 
   const dispatch = useDispatch();
   const { record } = useSelector(chatSettingsSelector);
@@ -79,6 +80,10 @@ export const Chat = () => {
       dispatch(getChatStatus({ email }));
     });
 
+    socket.on('chat end', (msg) => {
+      dispatch(getChatStatus({ email }));
+    });
+
     socket.on('chat request processed', (msg) => {
       if (msg === 'approved') {
         setChatStartStep('dialog');
@@ -94,6 +99,8 @@ export const Chat = () => {
       socket.off('isEnabled changed');
       socket.off('chat request processed');
       socket.off('chat message');
+      socket.off('chat request');
+      socket.off('chat end');
     };
   }, []);
 
@@ -181,7 +188,7 @@ export const Chat = () => {
     if (chatStartStep === 'waiting') {
       return <ChatWaiting />;
     } else if (chatStartStep === 'dialog') {
-      return <ChatDialog chatHistoryList={chatHistoryList} addToHistoryList={addToHistoryList} />;
+      return <ChatDialog chatHistoryList={chatHistoryList} addToHistoryList={addToHistoryList} setFile={setFile} />;
     } else {
       return <div>None</div>;
     }

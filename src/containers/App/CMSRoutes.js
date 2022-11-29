@@ -74,26 +74,15 @@ function CMSRoutes() {
   return (
     <CMSLayout>
       <Switch>
-        <PrivateRoute
-          exact
-          path="/cms/security/edit"
-          component={CMSSecurityEdit}
-          permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN]}
-        />
-        <PrivateRoute exact path="/cms/security" component={CMSSecurity} permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN]} />
-        <PrivateRoute
-          exact
-          path="/cms/log-activity"
-          component={LogActivity}
-          permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN]}
-        />
+        <PrivateRoute exact path="/cms/security/edit" component={CMSSecurityEdit} permissions={[Roles.ADMIN]} />
+        <PrivateRoute exact path="/cms/security" component={CMSSecurity} permissions={[Roles.ADMIN]} />
+        <PrivateRoute exact path="/cms/log-activity" component={LogActivity} permissions={[Roles.ADMIN]} />
         <PrivateRoute
           exact
           path="/cms/instansi/:id/edit-unit-kerja/:unitId"
           component={EditUnitKerja}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
@@ -108,7 +97,7 @@ function CMSRoutes() {
           component={NewUnitKerja}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
@@ -122,7 +111,6 @@ function CMSRoutes() {
           path="/cms/instansi/edit/:id"
           component={EditInstansi}
           permissions={[
-            Roles.WALIDATA_ADMIN,
             Roles.ADMIN,
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
@@ -138,7 +126,7 @@ function CMSRoutes() {
           component={NewInstansi}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
@@ -153,7 +141,7 @@ function CMSRoutes() {
           component={InstansiDetail}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
@@ -168,7 +156,7 @@ function CMSRoutes() {
           component={Instansi}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
@@ -183,6 +171,7 @@ function CMSRoutes() {
           component={ManageKomunitasAhliPage}
           permissions={[
             Roles.MEMBER,
+            Roles.WALIDATA_ADMIN,
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -196,6 +185,7 @@ function CMSRoutes() {
           component={ManageKomunitasAhliPage}
           permissions={[
             Roles.MEMBER,
+            Roles.WALIDATA_ADMIN,
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -207,38 +197,34 @@ function CMSRoutes() {
           exact
           path="/cms/api-edit/:instansiId/:id?"
           component={ManagementApiCreateEdit}
-          permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN, Roles.SEKRETARIANT]}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT]}
         />
         <PrivateRoute
           exact
           path="/cms/api-create/:instansiId/"
           component={ManagementApiCreateEdit}
-          permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN, Roles.SEKRETARIANT]}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT]}
         />
         <PrivateRoute
           exact
           path="/cms/api-detail/:id"
           component={ManagementApiDetail}
-          permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN, Roles.SEKRETARIANT]}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT]}
         />
         <PrivateRoute
           exact
           path="/cms/api-baru/:id"
           component={ManagementApiBaru}
-          permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN, Roles.SEKRETARIANT]}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT]}
         />
-        <PrivateRoute
-          exact
-          path="/cms/api"
-          component={ManagementApi}
-          permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN, Roles.SEKRETARIANT]}
-        />
+        <PrivateRoute exact path="/cms/api" component={ManagementApi} permissions={[Roles.ADMIN, Roles.SEKRETARIANT]} />
         <PrivateRoute
           exact
           path="/cms/manage-komunitas-ahli"
           component={ManageKomunitasAhliPage}
           permissions={[
             Roles.MEMBER,
+            Roles.WALIDATA_ADMIN,
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -252,6 +238,7 @@ function CMSRoutes() {
           component={KomunitasAhliDetailPage}
           permissions={[
             Roles.MEMBER,
+            Roles.WALIDATA_ADMIN,
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -265,6 +252,7 @@ function CMSRoutes() {
           component={KomunitasAhliPage}
           permissions={[
             Roles.MEMBER,
+            Roles.WALIDATA_ADMIN,
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -278,7 +266,6 @@ function CMSRoutes() {
           component={DashboardPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
             Roles.REGISTERED_USER,
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
@@ -359,7 +346,6 @@ function CMSRoutes() {
           component={SubscribersPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -373,7 +359,7 @@ function CMSRoutes() {
           component={BeritaLayout}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -387,7 +373,7 @@ function CMSRoutes() {
           component={BeritaPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -401,7 +387,7 @@ function CMSRoutes() {
           component={BeritaBaruPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -415,7 +401,7 @@ function CMSRoutes() {
           component={BeritaDetailPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -441,7 +427,7 @@ function CMSRoutes() {
           component={BimtekJadwalPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT_CREATOR,
@@ -454,7 +440,7 @@ function CMSRoutes() {
           component={BimtekJadwalBaruPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -468,7 +454,7 @@ function CMSRoutes() {
           component={BimtekJadwalDetailPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -482,7 +468,7 @@ function CMSRoutes() {
           component={BimtekDokumentasiPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT_CREATOR,
@@ -495,7 +481,7 @@ function CMSRoutes() {
           component={BimtekDokumentasiBaruPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -509,7 +495,7 @@ function CMSRoutes() {
           component={BimtekDokumentasiDetailPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -550,13 +536,7 @@ function CMSRoutes() {
           exact
           path="/cms/data-prioritas"
           component={DataAnalyticPage}
-          permissions={[
-            Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
-            Roles.SEKRETARIANT,
-            Roles.SEKRETARIANT_CREATOR,
-            Roles.SEKRETARIANT_EDITOR,
-          ]}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT, Roles.SEKRETARIANT_CREATOR, Roles.SEKRETARIANT_EDITOR]}
         />
         <PrivateRoute
           exact
@@ -564,7 +544,7 @@ function CMSRoutes() {
           component={DaftarFormPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
@@ -579,7 +559,7 @@ function CMSRoutes() {
           component={DaftarFormPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
@@ -594,7 +574,7 @@ function CMSRoutes() {
           component={DaftarDetailPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
@@ -609,7 +589,7 @@ function CMSRoutes() {
           component={CMSDaftarPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
@@ -622,13 +602,13 @@ function CMSRoutes() {
           exact
           path="/cms/permintaan-data"
           component={PermintaanData}
-          permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN, Roles.SEKRETARIANT]}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT]}
         />
         <PrivateRoute
           exact
           path="/cms/permintaan-data/:id"
           component={PermintaanDataDetail}
-          permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN, Roles.SEKRETARIANT]}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT]}
         />
         <PrivateRoute
           exact
@@ -636,7 +616,7 @@ function CMSRoutes() {
           component={ForumSDIFormPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -650,7 +630,7 @@ function CMSRoutes() {
           component={ForumSDIFormPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -664,7 +644,7 @@ function CMSRoutes() {
           component={CMSForumSDIDetailPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -678,7 +658,7 @@ function CMSRoutes() {
           component={ForumSDIPage}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -692,7 +672,7 @@ function CMSRoutes() {
           component={DiskusiForum}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -700,12 +680,7 @@ function CMSRoutes() {
             Roles.SEKRETARIANT_EDITOR,
           ]}
         />
-        <PrivateRoute
-          exact
-          path="/cms/media-sosial"
-          component={MediaSosialPage}
-          permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN]}
-        />
+        <PrivateRoute exact path="/cms/media-sosial" component={MediaSosialPage} permissions={[Roles.ADMIN]} />
         <PrivateRoute
           exact
           path="/cms/contact-us"
@@ -736,7 +711,7 @@ function CMSRoutes() {
           component={CMSKonfigurasiPortal}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -750,7 +725,7 @@ function CMSRoutes() {
           component={PenambahanAtributCMS}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
@@ -765,7 +740,7 @@ function CMSRoutes() {
           component={NewAtributCMS}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.SEKRETARIANT,
             Roles.SEKRETARIANT_CREATOR,
             Roles.SEKRETARIANT_EDITOR,
@@ -779,7 +754,7 @@ function CMSRoutes() {
           component={PendaftarAhli}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -793,21 +768,14 @@ function CMSRoutes() {
         <PrivateRoute
           path="/cms/glosarium"
           component={Glosarium}
-          permissions={[
-            Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
-            Roles.SUPERADMIN,
-            Roles.GLOSARIUM_CREATOR,
-            Roles.GLOSARIUM_APPROVER,
-            Roles.PPK,
-          ]}
+          permissions={[Roles.ADMIN, Roles.SUPERADMIN, Roles.GLOSARIUM_CREATOR, Roles.GLOSARIUM_APPROVER, Roles.PPK]}
         />
         <PrivateRoute
           path="/cms/registrasi-pengguna"
           component={RegistrasiMenuPengguna}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -822,25 +790,19 @@ function CMSRoutes() {
           exact
           path="/cms/sdi-wiki"
           component={SDIWiki}
-          permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN, Roles.SEKRETARIANT_EDITOR, Roles.CONTENT_EDITOR]}
+          permissions={[Roles.ADMIN, Roles.SEKRETARIANT_EDITOR, Roles.CONTENT_EDITOR]}
         />
         <PrivateRoute
           path="/cms/user-feedback"
           component={UserFeedback}
-          permissions={[
-            Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
-            Roles.SUPERADMIN,
-            Roles.CONTENT_CREATOR,
-            Roles.SEKRETARIANT_CREATOR,
-          ]}
+          permissions={[Roles.ADMIN, Roles.SUPERADMIN, Roles.CONTENT_CREATOR, Roles.SEKRETARIANT_CREATOR]}
         />
         <PrivateRoute
           path="/cms/versi-rilis"
           component={ManajemenPerubahanDanRilis}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.SUPERADMIN,
             Roles.CONTENT_CREATOR,
             Roles.SEKRETARIANT,
@@ -853,7 +815,7 @@ function CMSRoutes() {
           component={CRApproverSetting}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.SUPERADMIN,
             Roles.CONTENT_CREATOR,
             Roles.SEKRETARIANT,
@@ -866,7 +828,7 @@ function CMSRoutes() {
           component={PermintaanForum}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -882,7 +844,7 @@ function CMSRoutes() {
           component={AnggaranPersetujuanBiaya}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -900,7 +862,7 @@ function CMSRoutes() {
           component={UsulanAnggaranBiaya}
           permissions={[
             Roles.ADMIN,
-            Roles.WALIDATA_ADMIN,
+
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -913,23 +875,13 @@ function CMSRoutes() {
             Roles.PPK,
           ]}
         />
-        <PrivateRoute
-          exact
-          path="/cms/pengguna-management"
-          component={PenggunaManagementPage}
-          permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN]}
-        />
-        <PrivateRoute
-          exact
-          path="/cms/pengguna-management/add"
-          component={PenggunaFormPage}
-          permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN]}
-        />
+        <PrivateRoute exact path="/cms/pengguna-management" component={PenggunaManagementPage} permissions={[Roles.ADMIN]} />
+        <PrivateRoute exact path="/cms/pengguna-management/add" component={PenggunaFormPage} permissions={[Roles.ADMIN]} />
         <PrivateRoute
           exact
           path="/cms/pengguna-management/:id"
           component={PenggunaManagementDetailPage}
-          permissions={[Roles.ADMIN, Roles.WALIDATA_ADMIN]}
+          permissions={[Roles.ADMIN]}
         />
         <Route exact path="/cms" render={() => <Redirect to="/cms/dashboard" />} />
       </Switch>

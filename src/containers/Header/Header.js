@@ -76,11 +76,7 @@ export const Header = () => {
 
   const showManageUser = useMemo(() => {
     if (user && user.roles) {
-      return (
-        user.roles.includes(Roles.ADMIN) ||
-        user.roles.includes(Roles.WALIDATA_ADMIN) ||
-        user.roles.includes(Roles.PEMBINA_DATA)
-      );
+      return user.roles.includes(Roles.WALIDATA_ADMIN) || user.roles.includes(Roles.PEMBINA_DATA_ADMIN);
     }
     return false;
   }, [user]);
@@ -88,7 +84,15 @@ export const Header = () => {
   const showAppSec = useMemo(() => {
     if (!user) return false;
     const { roles = null } = user;
-    return ![Roles.MEMBER, Roles.REGISTERED_USER, Roles.EKSEKUTIF, Roles.WALIDATA_ADMIN].includes(roles);
+    return ![
+      Roles.MEMBER,
+      Roles.REGISTERED_USER,
+      Roles.EKSEKUTIF,
+      Roles.WALIDATA_ADMIN,
+      Roles.PEMBINA_DATA,
+      Roles.PEMBINA_DATA_ADMIN,
+      Roles.PENELITI,
+    ].includes(roles);
   }, [user]);
 
   useEffect(() => {

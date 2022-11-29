@@ -46,6 +46,7 @@ export const bpmUrl = isSdiProduction ? bpmProdUrl : bpmDevUrl;
 
 export const apmUrl = isSdiProduction ? 'http://apm.data.go.id/' : 'http://apm.satudata.go.id/';
 export const crmUrl = isSdiProduction ? 'https://crm.data.go.id/backend' : 'https://crm.satudata.go.id/backend';
+export const socketUrl = isSdiProduction ? 'https://crm.data.go.id/' : 'https://crm.satudata.go.id/';
 
 export const apiUrl = `${backendUrl}/api-be`;
 export const dataUrl = `${katalogUrl}/api`;
@@ -146,6 +147,7 @@ export const apiUrls = {
   penggunaRoleList: getApiEndpoint('sekretariat/user/role-list'),
   penggunaStatusList: getApiEndpoint('sekretariat/user/status-list'),
   penggunaUpload: getApiEndpoint('sekretariat/user/bulk'),
+  subcribers: getCMSEndpoint('subscribe'),
   cmsAnalitikData: getCMSEndpoint('analitik'),
   cmsManagementApi: getApiEndpoint('management-api'),
   publicGlobalData: getPublicEndpoint('site-setting'),
@@ -435,6 +437,7 @@ export const USER_ROLES = {
   ADMIN: 'ADMIN',
   SEKRETARIAT: 'SEKRETARIAT',
   WALIDATA: 'WALIDATA',
+  WALIDATA_ADMIN: 'WALIDATA_ADMIN',
   EKSEKUTIF: 'EKSEKUTIF',
   USER: 'USER',
   PIC_SDGS: 'PIC_SDGS',
@@ -464,7 +467,7 @@ export const PORTAL_KONFIGURASI_CODE = {
   FOOTERLINK: 'FOOTER_LINK',
 };
 
-export const fileExtention = ['image/jpg', 'image/png', 'application/pdf', 'image/jpeg'];
+export const fileExtention = ['image/jpg', 'image/png', 'application/pdf'];
 
 export const timeExpired = [
   { value: 1, label: '1' },

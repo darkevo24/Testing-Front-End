@@ -426,4 +426,4 @@ export const PORTAL_KONFIGURASI_CODE = {
   FOOTERLINK: 'FOOTER_LINK',
 };
 
-export const fileExtention = ['image/jpg', 'image/png', 'application/pdf', 'image/jpeg'];
+export const fileExtention = ['image/jpg', 'image/png', 'application/pdf'];

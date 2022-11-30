@@ -28,6 +28,7 @@ const schema = yup
 
 const ChangePassword = () => {
   const [loading, setLoading] = useState(false);
+  const [expired, setExpired] = useState(false);
   const search = useLocation().search;
   const key = new URLSearchParams(search).get('key');
   const history = useHistory();
@@ -38,7 +39,8 @@ const ChangePassword = () => {
 
   useEffect(() => {
     if (!key) goBack();
-  }, []);
+    handleAPIKey('CHECK_EXPIRED');
+  }, [key]);
 
   const handleNotification = (type, message, icon) => {
     Notification.show({
@@ -46,6 +48,17 @@ const ChangePassword = () => {
       message,
       icon,
     });
+  };
+
+  const handleAPIKey = async (type) => {
+    try {
+      await post(apiUrls.checkForgotPassword, { key, type }, {});
+      type !== 'CHECK_EXPIRED' && handleNotification('secondary', 'Berhasil Mengirim Ulang Link Verifikasi', 'check');
+      setLoading(false);
+    } catch (e) {
+      type === 'CHECK_EXPIRED' ? setExpired(true) : handleNotification('secondary', e?.data?.message, 'cross');
+      setLoading(false);
+    }
   };
 
   const handleAPICall = async (method, url, params, callBack) => {
@@ -73,38 +86,57 @@ const ChangePassword = () => {
     handleAPICall(post, apiUrls.forgotPassword, { data: { key, ...data } }, goBack);
   };
 
+  const handleResendCode = () => {
+    setLoading(true);
+    handleAPIKey('RESEND_CODE');
+  };
+
   return (
     <Row className="change-password relative">
       <button className="back-chevron" onClick={goBack}>
         <LeftChevron />
       </button>
       <Col md={4} className="form-change-password">
-        <div className="sdp-heading pb-30">Ganti Password</div>
-        <Form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <Input
-            group
-            label="Password Baru"
-            name="newPassword"
-            control={control}
-            rules={{ required: true }}
-            type="password"
-            error={errors.newPassword?.message}
-            className="mt-0"
-          />
-          <Input
-            group
-            label="Konfirmasi Password Baru"
-            name="confirmNewPassword"
-            control={control}
-            rules={{ required: true }}
-            type="password"
-            error={errors.confirmNewPassword?.message}
-            className="mt-0"
-          />
-          <Button loading={loading} type="submit" className="change-btn">
-            Ubah
-          </Button>
-        </Form>
+        {!expired ? (
+          <>
+            <div className="sdp-heading pb-30">Ganti Password</div>
+            <Form onSubmit={handleSubmit(onSubmit)} noValidate>
+              <Input
+                group
+                label="Password Baru"
+                name="newPassword"
+                control={control}
+                rules={{ required: true }}
+                type="password"
+                error={errors.newPassword?.message}
+                className="mt-0"
+              />
+              <Input
+                group
+                label="Konfirmasi Password Baru"
+                name="confirmNewPassword"
+                control={control}
+                rules={{ required: true }}
+                type="password"
+                error={errors.confirmNewPassword?.message}
+                className="mt-0"
+              />
+              <Button loading={loading} type="submit" className="change-btn">
+                Ubah
+              </Button>
+            </Form>
+          </>
+        ) : (
+          <>
+            <div className="sdp-heading pb-8">Expired</div>
+            <label className="pb-32">
+              Link verifikasi yang anda gunakan sudah kedaluwarsa, mohon lakukan permintaan baru.
+            </label>
+            <Button loading={loading} className="change-btn" onClick={handleResendCode}>
+              Kirim ulang
+            </Button>
+          </>
+        )}
       </Col>
       <Col md={8} className="background-login">
         <img src={BackgroundBatik} alt="background" />

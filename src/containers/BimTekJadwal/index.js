@@ -69,6 +69,8 @@ const BimTekJadwal = () => {
               location={item.tempat}
               speaker={item.pembicara}
               materi={item.materi}
+              jenisPermintaan={item.jenisPermintaan}
+              namaInstansi={item.namaInstansi}
               id={item.id}
             />
           );

@@ -251,6 +251,7 @@ const CMSJadwalDetail = (props) => {
   useEffect(() => {
     setValue('namaBimtek', records.namaBimtek);
     setValue('tempat', records.tempat);
+    setValue('jenisPermintaan', records?.jenisPermintaan);
     setValue(
       'tags',
       (records.tagMateri || []).map((elem) => ({ value: elem, label: elem })),
@@ -565,6 +566,19 @@ const CMSJadwalDetail = (props) => {
                 group
                 label="Tempat"
                 name="tempat"
+                control={control}
+                error={errors.tempat?.message}
+                rules={{ required: true }}
+              />
+            )}
+            {loadingJadwalDetail ? (
+              <RowLoader />
+            ) : (
+              <Input
+                readOnly={true}
+                group
+                label="Jenis Permintaan"
+                name="jenisPermintaan"
                 control={control}
                 error={errors.tempat?.message}
                 rules={{ required: true }}

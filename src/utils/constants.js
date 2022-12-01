@@ -141,6 +141,7 @@ export const apiUrls = {
   cmsContactUs: getCMSEndpoint('hubungi-kami-setting'),
   requestForgotPassword: getPublicEndpoint('request-forgot-password'),
   forgotPassword: getPublicEndpoint('forgot-password'),
+  checkForgotPassword: getPublicEndpoint('check-expired/forgot-password'),
   changeMyPassword: getPortalEndpoint('v1/change-my-password'),
   penggunaManagement: getApiEndpoint('sekretariat/user'),
   listPengguna: getApiEndpoint('sekretariat/user/list-pengguna'),
@@ -363,7 +364,9 @@ export const CMS_DASHBOARD = [
     icon: <LmsIcon />,
     iconColor: 'bg-blue',
     link: '',
-    externalLink: isSdiProduction ? 'https://lms.data.go.id' : 'https://lms.satudata.go.id',
+    externalLink: isSdiProduction
+      ? 'https://lms.data.go.id/#/manageModulsNew'
+      : 'https://lms.satudata.go.id/#/manageModulsNew',
   },
   {
     title: 'CRM',

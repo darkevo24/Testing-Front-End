@@ -92,8 +92,6 @@ export const Input = ({
                 type={inputType}
                 value={field.value || ''}
                 className={className}
-                onChange={onChange}
-                defaultValue={defaultValue}
               />
               {RightIconNode && (
                 <InputGroup.Text

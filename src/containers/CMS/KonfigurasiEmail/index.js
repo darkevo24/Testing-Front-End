@@ -1,23 +1,16 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { Loader } from 'components';
-import * as yup from 'yup';
 import Form from 'react-bootstrap/Form';
-import Input from 'components/Input';
+// import Input from 'components/Input';
+import Input from 'react-bootstrap/InputGroup';
 import { useForm } from 'react-hook-form';
-import { post } from 'utils/request';
-import { apiUrls } from 'utils/constants';
 import bn from 'utils/bemNames';
-import cx from 'classnames';
-
 import LogStatus from 'components/LogStatus';
 import Modal from 'components/Modal';
-import Notification from 'components/Notification';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import { FormGroup } from 'react-bootstrap';
 
 const bem = bn('content-create');
 // const schema = yup
@@ -139,20 +132,15 @@ const CMSKonfigurasiEmail = () => {
         </div>
         <Form className="sdp-form" onSubmit={handleSubmit(onSubmit)}>
           {types.map((item) => (
-            <Input
-              disabled={disableForm}
-              key={item.label}
-              group
-              label={item.label}
-              name="email"
-              control={control}
-              error={errors.email?.message}
-              value={item.value}
-              onChange={(e) => {
-                handleTypesChange(item.label, e.target.value);
-                setValue(e.target.value);
-              }}
-            />
+            <Form.Group className="mb-24">
+              <Form.Label className="sdp-text-grey-dark">{item.label}</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder={`Masukkan email ${item.label}`}
+                disabled={disableForm}
+                onChange={(e) => handleTypesChange(item.label, e.target.value)}
+              />
+            </Form.Group>
           ))}
         </Form>
       </div>

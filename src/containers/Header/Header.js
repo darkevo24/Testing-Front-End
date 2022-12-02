@@ -214,12 +214,8 @@ export const Header = () => {
           {showManageUser && (
             <NavDropdown.Item onClick={goTo('/managemen-pengguna')}>{t('header.userNav.userManagement')}</NavDropdown.Item>
           )}
-          {showAppSec && (
-            <>
-              <NavDropdown.Item onClick={goTo('/cms')}>{t('header.userNav.cmsApplication')}</NavDropdown.Item>
-              <NavDropdown.Item href={`${katalogUrl}/user/saml2login `}>{t('header.userNav.openData')}</NavDropdown.Item>
-            </>
-          )}
+          {showAppSec && <NavDropdown.Item onClick={goTo('/cms')}>{t('header.userNav.cmsApplication')}</NavDropdown.Item>}
+          <NavDropdown.Item href={`${katalogUrl}/user/saml2login `}>{t('header.userNav.openData')}</NavDropdown.Item>
           <NavDropdown.Item onClick={goTo('/policy')}>{t('header.userNav.privacyPolicy')}</NavDropdown.Item>
           <NavDropdown.Item
             onClick={() => {

@@ -470,7 +470,7 @@ export const PORTAL_KONFIGURASI_CODE = {
   FOOTERLINK: 'FOOTER_LINK',
 };
 
-export const fileExtention = ['image/jpg', 'image/png', 'application/pdf'];
+export const fileExtention = ['image/jpeg', 'image/png', 'application/pdf'];
 
 export const timeExpired = [
   { value: 1, label: '1' },

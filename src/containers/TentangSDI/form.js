@@ -90,7 +90,10 @@ const ContactUs = () => {
       setErrorUploadFile('Please select a file!');
       return '';
     }
-    if (!fileExtention.includes(file.type)) {
+    if (
+      !fileExtention.includes(file.type) ||
+      (!file.name.endsWith('.jpg') && !file.name.endsWith('.png') && !file.name.endsWith('.pdf'))
+    ) {
       setErrorUploadFile('Please select a file with jpg, png, or pdf extension!');
       return '';
     }
@@ -119,6 +122,10 @@ const ContactUs = () => {
       attachmentList.push(newUploadedFile);
       formControl('attachment', attachmentList);
     }
+
+    // Reset input file
+    e.target.value = '';
+
     return '';
   };
 
@@ -303,10 +310,10 @@ const ContactUs = () => {
               <Row>
                 {data.attachment.length !== 0 &&
                   data.attachment.map((attachmentFile, index) => (
-                    <Col xs lg="4" className="mb-5 mt-5">
+                    <Col key={`file-${index}`} xs lg="4" className="mb-5 mt-5">
                       <div className="bg-gray rounded-lg" key={`file-${attachmentFile.type}-${index}`}>
                         <Button
-                          style={{ 'border-radius': '50%', float: 'right' }}
+                          style={{ borderRadius: '50%', float: 'right' }}
                           className="float-right"
                           type="button"
                           onClick={() => deleteAttachment(index)}>

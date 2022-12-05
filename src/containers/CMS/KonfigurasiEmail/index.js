@@ -1,23 +1,23 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
-// import Input from 'components/Input';
-import Input from 'react-bootstrap/InputGroup';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import bn from 'utils/bemNames';
 import LogStatus from 'components/LogStatus';
 import Modal from 'components/Modal';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
-
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormGroup } from 'react-bootstrap';
+import * as yup from 'yup';
+import { isEmpty } from 'lodash';
+import { apiUrls, post } from 'utils/request';
+import { getCMSLogAktifitasEmailData, cmsLogAktifitasDataSelector, getEmailData, cmsEmailDataSelector } from './reducer';
 
 const bem = bn('content-create');
-// const schema = yup
-//   .object({
-//     email: yup.string().email().required(),
-//   })
-//   .required();
+const schema = yup
+  .object({
+    email: yup.string().email().required(),
+  })
+  .required();
 
 const Title = styled.div`
   font-size: 22px;
@@ -25,7 +25,9 @@ const Title = styled.div`
 `;
 
 const CMSKonfigurasiEmail = () => {
-  // const { loading, record } = useSelector(konfiguasiPortalCmsListSelector);
+  const dispatch = useDispatch();
+  const { records: logData } = useSelector(cmsLogAktifitasDataSelector);
+  const { records: emailData } = useSelector(cmsEmailDataSelector);
   const {
     control,
     reset,
@@ -55,13 +57,18 @@ const CMSKonfigurasiEmail = () => {
     },
   ]);
 
-  const logData = [
-    {
-      status: 'ACTIVE',
-      remark: 'Email konfigurasi berhasil diubah',
-      createdAt: '2021-07-01T07:00:00.000Z',
-    },
-  ];
+  useEffect(() => {
+    // if (emailData && !isEmpty(emailData)) {
+    //   emailData.map((item) => {
+    //     types.map((type) => {
+    //       if (type.label === item.type) {
+    //         type.value = item.email;
+    //       }
+    //     });
+    //   });
+    //   setTypes(types);
+    // }
+  }, []);
 
   const handleBack = () => {
     reset();
@@ -76,19 +83,39 @@ const CMSKonfigurasiEmail = () => {
   };
 
   useEffect(() => {
+    dispatch(getCMSLogAktifitasEmailData());
+    dispatch(getEmailData());
+    console.log('++++', emailData);
+  }, []);
+
+  useEffect(() => {
     setDisableForm(editable);
   }, [editable]);
 
-  const onSubmit = async (inputData) => {
-    console.log(types);
-    // const addData = {
-    //   ...inputData,
-    //   name: 'test frontend',
-    //   email: inputData.email,
-    //   type: 'PERMINTAAN DATA',
-    // };
+  const onSubmit = async () => {
+    types.forEach((type) => {
+      if (type.value !== '') {
+        const addData = {
+          name: 'test frontend',
+          email: type.value,
+          type: type.label,
+        };
+        if (addData.value !== '' && types.email === undefined) {
+          // const response = await post(apiUrls.cmsKonfigurasiEmail, addData);
+          console.log('post new', addData);
+        }
+        //if value not empty before and now not empty
+        else if (addData.value !== '' && emailData.email !== '') {
+          // const response = await post(apiUrls.email, addData);
+          console.log('post update', addData);
+        }
+      }
+    });
+
     // try {
-    //   await post(apiUrls.cmsKonfigurasiEmail, addData);
+    //   const response = await post(apiUrls.konfigurasiEmail, addData);
+    //   // await post(apiUrls.cmsKonfigurasiEmail, addData);
+    //   console.log('aa', response);
     //   Notification.show({
     //     type: 'secondary',
     //     message: 'Email Added Successfully',
@@ -101,6 +128,7 @@ const CMSKonfigurasiEmail = () => {
     //     icon: 'cross',
     //   });
     // }
+    setEditable(true);
     setShowModal(false);
   };
 
@@ -130,19 +158,24 @@ const CMSKonfigurasiEmail = () => {
             )}
           </div>
         </div>
-        <Form className="sdp-form" onSubmit={handleSubmit(onSubmit)}>
-          {types.map((item) => (
-            <Form.Group className="mb-24">
-              <Form.Label className="sdp-text-grey-dark">{item.label}</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder={`Masukkan email ${item.label}`}
-                disabled={disableForm}
-                onChange={(e) => handleTypesChange(item.label, e.target.value)}
-              />
-            </Form.Group>
-          ))}
-        </Form>
+        {emailData.length > 0 && (
+          <Form className="sdp-form" onSubmit={handleSubmit(onSubmit)}>
+            {/* {types.map((item) => (
+              <Form.Group className="mb-24">
+                <Form.Label className="sdp-text-grey-dark">{item.label}</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder={`Masukkan email ${item.label}`}
+                  disabled={disableForm}
+                  onChange={(e) => handleTypesChange(item.label, e.target.value)}
+                />
+              </Form.Group>
+            ))} */}
+            {/* {emailData.map((item) => (
+              <h1>{item.id}</h1>
+            ))} */}
+          </Form>
+        )}
       </div>
       <Modal visible={showModal} onClose={() => setShowModal(false)} title="" showHeader={false}>
         <label className="mt-12 ml-8 fs-16">

@@ -9,8 +9,9 @@ import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import * as yup from 'yup';
 import { isEmpty } from 'lodash';
-import { apiUrls, post } from 'utils/request';
+import { apiUrls, post, put } from 'utils/request';
 import { getCMSLogAktifitasEmailData, cmsLogAktifitasDataSelector, getEmailData, cmsEmailDataSelector } from './reducer';
+import { update } from 'lodash';
 
 const bem = bn('content-create');
 const schema = yup
@@ -57,19 +58,6 @@ const CMSKonfigurasiEmail = () => {
     },
   ]);
 
-  useEffect(() => {
-    // if (emailData && !isEmpty(emailData)) {
-    //   emailData.map((item) => {
-    //     types.map((type) => {
-    //       if (type.label === item.type) {
-    //         type.value = item.email;
-    //       }
-    //     });
-    //   });
-    //   setTypes(types);
-    // }
-  }, []);
-
   const handleBack = () => {
     reset();
   };
@@ -85,7 +73,6 @@ const CMSKonfigurasiEmail = () => {
   useEffect(() => {
     dispatch(getCMSLogAktifitasEmailData());
     dispatch(getEmailData());
-    console.log('++++', emailData);
   }, []);
 
   useEffect(() => {
@@ -93,49 +80,75 @@ const CMSKonfigurasiEmail = () => {
   }, [editable]);
 
   const onSubmit = async () => {
-    types.forEach((type) => {
-      if (type.value !== '') {
-        const addData = {
-          name: 'test frontend',
-          email: type.value,
-          type: type.label,
-        };
-        if (addData.value !== '' && types.email === undefined) {
-          // const response = await post(apiUrls.cmsKonfigurasiEmail, addData);
-          console.log('post new', addData);
+    emailData.forEach((item) => {
+      types.forEach((type) => {
+        if (type.label === item.label) {
+          const addData = {
+            email: type.value,
+            type: type.label,
+          };
+          if (addData.email !== '' && item.value === '') {
+            postData(addData);
+          } else if (addData.email !== '' && item.value !== '') {
+            updateData(addData, item.id);
+          }
         }
-        //if value not empty before and now not empty
-        else if (addData.value !== '' && emailData.email !== '') {
-          // const response = await post(apiUrls.email, addData);
-          console.log('post update', addData);
-        }
-      }
+      });
     });
-
-    // try {
-    //   const response = await post(apiUrls.konfigurasiEmail, addData);
-    //   // await post(apiUrls.cmsKonfigurasiEmail, addData);
-    //   console.log('aa', response);
-    //   Notification.show({
-    //     type: 'secondary',
-    //     message: 'Email Added Successfully',
-    //     icon: 'check',
-    //   });
-    // } catch (err) {
-    //   Notification.show({
-    //     type: 'warning',
-    //     message: err.data.message,
-    //     icon: 'cross',
-    //   });
-    // }
     setEditable(true);
     setShowModal(false);
+  };
+
+  const postData = async (addData) => {
+    try {
+      await post(apiUrls.cmsKonfigurasiEmail, addData);
+      Notification.show({
+        type: 'secondary',
+        message: 'Email Added Successfully',
+        icon: 'check',
+      });
+    } catch (err) {
+      Notification.show({
+        type: 'warning',
+        message: err.data.message,
+        icon: 'cross',
+      });
+    }
+  };
+
+  const updateData = async (data, id) => {
+    const updateData = {
+      id: id,
+      email: data.email,
+      type: data.type,
+    };
+    try {
+      await put(apiUrls.cmsKonfigurasiEmail, updateData);
+      Notification.show({
+        type: 'secondary',
+        message: 'Email Added Successfully',
+        icon: 'check',
+      });
+    } catch (err) {
+      Notification.show({
+        type: 'warning',
+        message: err.data.message,
+        icon: 'cross',
+      });
+    }
   };
 
   return (
     <div className="d-flex row mt-32 justify-content-center">
       <div className="col-lg-6 mr-20">
-        <div style={{ fontSize: '24px', fontWeight: '700', marginBottom: '10px' }}>
+        <div
+          style={{
+            fontSize: '32px',
+            fontWeight: '700',
+            marginBottom: '20px',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}>
           <div>Konfigurasi Email</div>
           <div>
             {!editable ? (
@@ -160,20 +173,18 @@ const CMSKonfigurasiEmail = () => {
         </div>
         {emailData.length > 0 && (
           <Form className="sdp-form" onSubmit={handleSubmit(onSubmit)}>
-            {/* {types.map((item) => (
+            {emailData.map((item) => (
               <Form.Group className="mb-24">
                 <Form.Label className="sdp-text-grey-dark">{item.label}</Form.Label>
                 <Form.Control
                   type="email"
                   placeholder={`Masukkan email ${item.label}`}
                   disabled={disableForm}
+                  defaultValue={item.value}
                   onChange={(e) => handleTypesChange(item.label, e.target.value)}
                 />
               </Form.Group>
-            ))} */}
-            {/* {emailData.map((item) => (
-              <h1>{item.id}</h1>
-            ))} */}
+            ))}
           </Form>
         )}
       </div>

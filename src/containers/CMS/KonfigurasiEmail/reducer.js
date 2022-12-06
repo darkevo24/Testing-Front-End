@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { apiUrls, get } from 'utils/request';
-import { isEmpty } from 'lodash';
 
 export const initialState = {
   loading: false,
@@ -10,14 +9,17 @@ export const initialState = {
   data: {
     records: [
       {
+        id: '',
         label: 'Hubungi Kami',
         value: '',
       },
       {
+        id: '',
         label: 'Permintaan Bimtek',
         value: '',
       },
       {
+        id: '',
         label: 'Permintaan Data',
         value: '',
       },
@@ -53,7 +55,7 @@ const cmsLogAktifitasEmailSlice = createSlice({
         action.payload.forEach((item) => {
           if (record.label === item.type) {
             if (item.email !== '') {
-              record = { ...record, value: item.email };
+              record = { ...record, value: item.email, id: item.id };
               newRecords.push(record);
             }
           }

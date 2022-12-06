@@ -13,77 +13,50 @@ import { ReactComponent as Plus } from 'assets/plus.svg';
 import { useHistory } from 'react-router-dom';
 import bn from 'utils/bemNames';
 import cx from 'classnames';
+import styled from 'styled-components';
 
 const bem = bn('content-table');
 
+const Wrapper = styled.div`
+  width: 100%;
+  margin: 40px;
+`;
+
 const CMSStrukturOrganisasi = () => {
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const [page, setPage] = useState(1);
-  const { loading, totalPages, records } = useSelector(strukturDatasetSelector);
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const fetchData = (params) => {
-    return dispatch(getStrukturOrganisasi(params));
+  const addStruktur = () => {
+    console.log('add struktur');
   };
-
-  useEffect(() => {
-    fetchData({
-      page: 1,
-      q: searchQuery,
-    });
-  }, [searchQuery]);
-
-  useEffect(() => {
-    fetchData({
-      page: page,
-      q: searchQuery,
-    });
-  }, [page]);
-
   return (
-    <div className={bem.e('section')}>
-      <div className={bem.e('header')}>
-        <div className={cx(bem.e('title'), 'mb-3')}>Struktur Organisasi</div>
-        <Row className="justify-content-between">
-          <Col xs={2}>
+    <Wrapper>
+      <Row>
+        <Col xs={3} clasName="p-5">
+          <div className={cx(bem.e('title'), 'mb-16')}>Struktur Organisasi</div>
+          <div className="w-100 d-flex justify-content-between mb-3">
             <Button
-              variant="info"
-              className="text-center"
-              onClick={() => dispatch(setPreviewBidang({})).then(() => history.push('/cms/struktur-form'))}>
-              <Plus /> Buat Bidang
+              onClick={() => addStruktur(false)}
+              className="bg-white sdp-text-grey-dark border-gray-stroke"
+              style={{ width: '15%' }}
+              variant="secondary">
+              -
             </Button>
-          </Col>
-          <Col xs={4}>
-            <InputGroup>
-              <Form.Control
-                onChange={(e) => setSearchQuery(e.target.value)}
-                variant="normal"
-                type="text"
-                placeholder="Cari Bidang"
-              />
-              <Search />
-            </InputGroup>
-          </Col>
-        </Row>
-      </div>
-      {!loading ? (
-        <CMSTable
-          customWidth={[20, 30, 20, 23, 7]}
-          header={['Kode', 'Nama', 'Level', 'Status']}
-          data={records.map((item) => {
-            let value = {
-              data: [item.kode, item.nama, item.level, item.status],
-              action: '/cms/struktur-detail/' + item.id,
-              classValue: [null, null, null, item.status.toLowerCase()],
-            };
-            return value;
-          })}
-          pagination={{ page: page, totalPages: totalPages }}
-          handlePageChange={setPage}
-        />
-      ) : null}
-    </div>
+            <Button
+              onClick={() => addStruktur(false)}
+              className="bg-white sdp-text-grey-dark border-gray-stroke"
+              variant="secondary"
+              style={{ width: '80%' }}>
+              Sekretariat SDI Tingkat Pusat
+            </Button>
+          </div>
+          <Button className="mx-auto" variant="success" onClick={addStruktur}>
+            <Plus width="16" />
+            Tambah
+          </Button>
+        </Col>
+        <Col xs={9}>
+          <div>ttt</div>
+        </Col>
+      </Row>
+    </Wrapper>
   );
 };
 

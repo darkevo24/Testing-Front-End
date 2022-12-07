@@ -17,6 +17,8 @@ export const Input = ({
   error,
   label,
   group,
+  value,
+  defaultValue,
   labelClass,
   groupClass = 'mb-3',
   groupProps,
@@ -30,6 +32,7 @@ export const Input = ({
   maxLength = '800',
   prefixText = '',
   infoIcon = '',
+  onChange,
   ...rest
 }) => {
   let { as: inputAs } = rest;

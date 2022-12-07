@@ -19,6 +19,7 @@ import permintaanDataDetailReducer from 'containers/CMS/PermintaanDataForm/reduc
 import beritaCmsReducer from 'containers/CMS/BeritaBaru/reducer';
 import cmsKomunitasAhliReducer from 'containers/CMS/KomunitasAhli/reducer';
 import cmsLogActifitiasReducer from 'containers/CMS/LogAktifitas/reducer';
+import KonfigurasiEmailReducer from 'containers/CMS/KonfigurasiEmail/reducer';
 import cmsBimtekPermintaanDataReducer from 'containers/CMS/BimtekPermintaan/reducer';
 import cmsBimtekDokumentasiReducer from 'containers/CMS/BimtekDokumentasi/reducer';
 import cmsBimtekJadwalReducer from 'containers/CMS/BimtekJadwal/reducer';
@@ -66,6 +67,7 @@ export default function createReducer(injectedReducers) {
     cmsBerita: beritaCmsReducer,
     cmsKomunitasAhli: cmsKomunitasAhliReducer,
     cmsLogActifitias: cmsLogActifitiasReducer,
+    cmsKonfigurasiLogEmail: KonfigurasiEmailReducer,
     cmsInstansi: cmsInstansiReducer,
     cmsBimtekPermintaan: cmsBimtekPermintaanDataReducer,
     cmsBimtekDokumentasi: cmsBimtekDokumentasiReducer,

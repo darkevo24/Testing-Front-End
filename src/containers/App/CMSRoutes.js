@@ -61,6 +61,7 @@ const SDIWiki = lazy(() => import('containers/CMS/SDIWiki'));
 const CMSSecurity = lazy(() => import('containers/CMS/Security'));
 const CMSSecurityEdit = lazy(() => import('containers/CMS/Security/CMSSecurityEdit'));
 const CMSKonfigurasiPortal = lazy(() => import('containers/CMS/KonfigurasiPortal'));
+const CMSKonfigurasiEmail = lazy(() => import('containers/CMS/KonfigurasiEmail'));
 const Glosarium = lazy(() => import('containers/CMS/Glosarium'));
 const UserFeedback = lazy(() => import('containers/CMS/UserFeedback'));
 const ManajemenPerubahanDanRilis = lazy(() => import('containers/CMS/ManajemenPerubahanDanRilis'));
@@ -711,7 +712,6 @@ function CMSRoutes() {
           component={CMSKonfigurasiPortal}
           permissions={[
             Roles.ADMIN,
-
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -719,6 +719,7 @@ function CMSRoutes() {
             Roles.SEKRETARIANT_EDITOR,
           ]}
         />
+        <PrivateRoute exact path="/cms/konfigurasi-email" component={CMSKonfigurasiEmail} permissions={[Roles.ADMIN]} />
         <PrivateRoute
           exact
           path="/cms/penambahan-atribut-cms"

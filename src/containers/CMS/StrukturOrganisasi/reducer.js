@@ -32,7 +32,7 @@ export const initialState = {
 export const STRUKTUR_ORGANISASI_SLICE = 'STRUKTUR_ORGANISASI_SLICE';
 
 export const getStrukturOrganisasi = createAsyncThunk('cms/getStrukturOrganisasi', async (params) => {
-  const response = await get(apiUrls.strukturData, { query: { q: params.q, page: params.page, rows: 10 } });
+  const response = await get(apiUrls.cmsOrganization);
   return response?.data?.content;
 });
 
@@ -94,10 +94,7 @@ const strukturOrganisasiSlice = createSlice({
     });
     builder.addCase(getStrukturOrganisasi.fulfilled, (state, action) => {
       state.dataset.loading = false;
-      state.dataset.records = action.payload.records;
-      state.dataset.totalRecords = action.payload.totalRecords;
-      state.dataset.totalPages = action.payload.totalPages;
-      state.dataset.page = action.payload.page;
+      state.dataset.records = action.payload;
     });
     builder.addCase(getStrukturOrganisasi.rejected, (state) => {
       state.dataset.loading = false;

@@ -111,6 +111,7 @@ export const apiUrls = {
   cmsBimtekDokumentasi: getCMSEndpoint('bimtek/dokumentasi'),
   cmsBimtekLogs: getCMSEndpoint('bimtek/logs'),
   cmsAboutUs: getCMSEndpoint('tentang'),
+  cmsOrganization: getCMSEndpoint2('organization'),
   aboutUs: getApiEndpoint('public/tentang'),
   hubungiKami: getApiEndpoint('public/hubungi-kami'),
   userBeritaPortal: getPublicV1Endpoint('berita'),

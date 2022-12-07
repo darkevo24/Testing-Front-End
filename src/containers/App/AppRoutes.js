@@ -396,13 +396,13 @@ function AppRoutes(props) {
               exact
               path="/managemen-pengguna"
               component={ManagemenPengguna}
-              permissions={[Roles.WALIDATA_ADMIN, Roles.PEMBINA_DATA]}
+              permissions={[Roles.WALIDATA_ADMIN, Roles.PEMBINA_DATA_ADMIN]}
             />
             <PrivateRoute
               exact
               path="/managemen-pengguna/:id"
               component={PenggunaDetail}
-              permissions={[Roles.WALIDATA_ADMIN, Roles.PEMBINA_DATA]}
+              permissions={[Roles.WALIDATA_ADMIN, Roles.PEMBINA_DATA_ADMIN]}
             />
           </Switch>
           {/* <Route exact path="/change-password" component={ChangePassword} /> */}

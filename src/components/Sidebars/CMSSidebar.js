@@ -189,6 +189,7 @@ export const CMSSidebar = () => {
         <SidebarItem title="Sekuriti" pathname="/cms/security" />
         <SidebarItem title="Media Sosial" pathname="/cms/media-sosial" />
         <SidebarItem title="Portal" pathname="/cms/konfigurasi-portal" />
+        <SidebarItem title="Email" pathname="/cms/konfigurasi-email" />
         <SidebarItem title="Manajemen Perubahan dan Rilis" pathname="/cms/versi-rilis" />
         <SidebarItem title="CR Approver Setting" pathname="/cms/cr-approver-setting" />
       </div>

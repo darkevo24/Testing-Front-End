@@ -44,7 +44,7 @@ const ContactUs = () => {
 
   const schema = yup
     .object({
-      full_name: yup.string().required('Nama Lengkap Wajib Diisi').min(5, 'Nama lengkap minimal 5 karakter'),
+      full_name: yup.string().required('Nama Lengkap Wajib Diisi').min(3, 'Nama lengkap minimal 3 karakter'),
       email: yup.string().required('Email Wajib Diisi').email('Format email tidak valid'),
       telephone: yup
         .string()
@@ -224,7 +224,7 @@ const ContactUs = () => {
             <a
               className="cursor-pointer text-bold"
               onClick={() => {
-                return keycloak.login({ redirectUri: 'http://127.0.0.1:3000/tentang' });
+                return keycloak.login({ redirectUri: `${window.location.origin}/tentang` });
               }}>
               Login
             </a>

@@ -178,7 +178,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
           name="mainImage"
           control={control}
           error={errors.mainImage?.message}
-          uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
+          uploadInfo="Upload Image (format .png, .jpeg, .jpg maxdfdsfs. 512KB)"
           handleOnChange={handleFoto}
         />
       )}

@@ -10,7 +10,6 @@ import SingleDropDown from 'components/DropDown/SingleDropDown';
 import styled from 'styled-components';
 import bn from 'utils/bemNames';
 import { getUserListData, userlistSelector, getRoleData, rolelistSelector } from './reducer';
-import TambahPengguna from 'containers/CMS/PenggunaManagement/tambahPengguna';
 
 const bem = bn('content-table');
 const Container = styled.div`
@@ -32,8 +31,14 @@ const ManagementPengguna = ({ textSearch }) => {
 
   useEffect(() => {
     fetchDataset({ filter });
-    dispatch(getRoleData());
   }, [filter]);
+
+  useEffect(() => {
+    //only getting data if Role is empty
+    if (roles.length === 0) {
+      dispatch(getRoleData());
+    }
+  }, []);
 
   const handleSearch = (value = '') => {
     setSearch(value);
@@ -146,7 +151,7 @@ const ManagementPengguna = ({ textSearch }) => {
           </div>
         </div>
         <div className={bem.e('body')}>
-          <Table {...tableConfig} onClick={() => console.log('hi')} />
+          <Table {...tableConfig} />
         </div>
       </div>
     </Container>

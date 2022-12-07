@@ -4,15 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import Notification from 'components/Notification';
 import LogStatus from './LogStatus';
-import bn from 'utils/bemNames';
 import { apiUrls } from 'utils/constants';
 import { ReactComponent as Edit } from 'assets/edit.svg';
 import { put } from 'utils/request';
 import PenggunaForm, { submitpenggunaForm } from './PenggunaForm';
-import moment from 'moment/moment.js';
 import { getPenggunaDetails, getPenggunaLogs, penggunanDataDetailSelector, penggunanLogsSelector } from './reducer';
 import styled from 'styled-components';
-import { date } from 'yup/lib/locale';
+import { BackArrow } from 'components/Icons';
 
 const Title = styled.div`
   font-size: 22px;
@@ -25,13 +23,12 @@ const PenggunaDetail = () => {
   const history = useHistory();
 
   const [editable, setEditable] = useState(true);
-  //   const [notes, setNotes] = useState('');
-  //   const [isNotesModalVisible, setIsNotesModalVisible] = useState(false);
   const { records: penggunaDetailsData } = useSelector(penggunanDataDetailSelector);
-  //   const [changeStatus, setChangeStatus] = useState('');
   const { records: logData } = useSelector(penggunanLogsSelector);
-  //   const user = useSelector(userSelector);
-  //   const isRecordCreator = penggunaDetailsData?.createdBy?.id === user.id;
+
+  const goBack = () => {
+    history.push('/managemen-pengguna');
+  };
 
   useEffect(() => {
     dispatch(getPenggunaLogs(id));
@@ -63,7 +60,7 @@ const PenggunaDetail = () => {
       endActiveDate: data.endActiveDate,
     };
     try {
-      const response = await put(`${apiUrls.penggunaManagement}/${data.id}`, editData);
+      await put(`${apiUrls.penggunaManagement}/${data.id}`, editData);
       Notification.show({
         type: 'secondary',
         message: 'User Updated Successfully',
@@ -82,8 +79,13 @@ const PenggunaDetail = () => {
   return (
     <div className="d-flex row mt-32 justify-content-center">
       <div className="col-lg-6 mr-20">
-        <div style={{ fontSize: '24px', fontWeight: '700', marginBottom: '10px' }}>
-          <span style={{ color: 'gray' }}>{penggunaDetailsData.name}</span> - {penggunaDetailsData.roles}
+        <div style={{ fontSize: '24px', fontWeight: '700', marginBottom: '15px' }}>
+          <div className="mb-5">
+            <div className="align-items-center cursor-pointer d-inline mr-10" onClick={goBack}>
+              <BackArrow onClick={goBack} />
+            </div>{' '}
+            <span style={{ color: 'gray' }}>{penggunaDetailsData.name}</span> - {penggunaDetailsData.roles}
+          </div>
           <div>
             {!editable ? (
               <>

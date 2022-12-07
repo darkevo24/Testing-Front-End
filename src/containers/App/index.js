@@ -58,7 +58,7 @@ function App(props) {
     if (!tokens?.token) return false;
     dispatch(fetchLoggedInUserInfo(tokens.token));
     const currentPath = history.location.pathname;
-    const termsAndConditionsPath = '/term-and-condition';
+    const termsAndConditionsPath = `/term-and-condition${currentPath === '/tentang' ? '?redirectTo=tentang' : ''}`;
     if (!isTermAndConditionAccepted && currentPath !== termsAndConditionsPath) {
       history.push(termsAndConditionsPath);
     }

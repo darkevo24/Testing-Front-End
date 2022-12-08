@@ -11,6 +11,7 @@ import intersection from 'lodash/intersection';
 import { getCookieByName, cookieKeys } from './cookie';
 
 import moment from 'moment';
+import axios from 'axios';
 import { katalogUrl } from './constants';
 
 export const safeParse = (value) => {
@@ -402,6 +403,14 @@ export const prepareFormPayload = (data, fieldsMap) => {
       }
     });
   }
+  if (fieldsMap.stringify && isArray(fieldsMap.stringify)) {
+    map(fieldsMap.stringify, (field) => {
+      const fieldValue = get(payload, field);
+      if (!!fieldValue) {
+        set(payload, field, JSON.stringify(fieldValue));
+      }
+    });
+  }
   if (fieldsMap.dates && isArray(fieldsMap.dates)) {
     map(fieldsMap.dates, (field) => {
       const fieldValue = get(payload, field);
@@ -512,3 +521,22 @@ export const penggunaStatuses = {
   suspended: 'SUSPENDED',
   inactive: 'INACTIVE',
 };
+
+export const getPdf = async (url) =>
+  axios
+    .post(
+      url,
+      {},
+      {
+        responseType: 'arraybuffer',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/pdf',
+        },
+      },
+    )
+    .then((response) => {
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      return window.URL.createObjectURL(blob);
+    })
+    .catch((error) => console.log(error));

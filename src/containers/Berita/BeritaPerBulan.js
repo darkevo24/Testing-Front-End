@@ -17,6 +17,7 @@ import Tweets from './Tweets';
 import { beritaLayoutSelector, getBertaLayout } from 'containers/CMS/BeritaLayout/reducer';
 import { newsByMonthSelector, getNewsByMonth } from './reducer';
 import { SectionTitle } from '.';
+import styled from 'styled-components';
 
 const components = {
   search: Search,
@@ -29,6 +30,25 @@ const components = {
   populer: Populer,
   tweets: Tweets,
 };
+
+const BeritaContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #e1e2ea;
+  height: 130px;
+`;
+
+const ImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  width: 200px;
+  height: 80%;
+  padding-right: 20px;
+  column: 4;
+`;
+
 const renderComp = (el) => {
   return React.createElement(components[el.component], { ...el.props, key: el.component });
 };
@@ -56,6 +76,7 @@ const BeritaPerBulan = () => {
   useEffect(() => {
     const parmaValue = date.replace('-', '/');
     dispatch(getNewsByMonth(`perbulan/${parmaValue}?size=${size}`));
+    // console.log('records', dispatch(getNewsByMonth(`perbulan/${parmaValue}?size=${size}`)));
   }, [dispatch, date, size]);
 
   useEffect(() => {
@@ -105,13 +126,15 @@ const BeritaPerBulan = () => {
                 separator: ' ',
               });
               return (
-                <div key={i}>
-                  <div className="row my-20 border-bottom pb-10 ">
-                    <div className="col-lg-4 pr-24">
-                      <img className="image w-100" src={image} alt="" />
-                    </div>
+                <div key={i} style={{ marginRight: '60px', marginTop: '20px' }}>
+                  <BeritaContainer>
+                    <ImageContainer>
+                      <div>
+                        <img style={{ maxWidth: '100%', maxHeight: '100%' }} src={image} alt="" />
+                      </div>
+                    </ImageContainer>
                     <div className="col-lg-8">
-                      <strong className="topik">{kategori}</strong>
+                      <span className="topik">{kategori}</span>
                       <div className="judul" onClick={(e) => handleDetail(e, id)}>
                         {judul}
                       </div>
@@ -128,7 +151,7 @@ const BeritaPerBulan = () => {
                         <div className="konten">{slug}</div>
                       )}
                     </div>
-                  </div>
+                  </BeritaContainer>
                 </div>
               );
             })

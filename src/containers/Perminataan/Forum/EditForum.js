@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import Modal from 'components/Modal';
@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Input from 'components/Input';
-import { DatePicker } from 'components';
+import { DatePicker, FileInput } from 'components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema, DROPDOWN_LIST } from './index';
@@ -16,6 +16,8 @@ import { getInstansiData, instansiDataSelector } from 'containers/App/reducer';
 import isEmpty from 'lodash/isEmpty';
 import { usePrevious } from 'utils/hooks';
 import moment from 'moment';
+import { post } from 'utils/request';
+import { apiUrls } from 'utils/constants';
 import { SingleSelectDropdown } from 'components/DropDown/SingleSelectDropDown';
 
 export const EditForum = ({ onClose, data, initialCall }) => {
@@ -23,12 +25,16 @@ export const EditForum = ({ onClose, data, initialCall }) => {
   const { newRecord, records, loading } = useSelector(perminataanDatasetSelector);
   const instansiDetail = useSelector(instansiDataSelector);
   const apiError = useSelector(perminataanForumErrorSelector);
+  const [fileErr, setFileErr] = useState(false);
+  const [file, setFile] = useState('');
+  const [notPDF, setNotPDF] = useState(false);
   const prevRecord = usePrevious(newRecord) || {};
   const {
     control,
     formState: { errors },
     handleSubmit,
     watch,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -38,6 +44,10 @@ export const EditForum = ({ onClose, data, initialCall }) => {
       tipeDataText: data?.tipeData,
       tipeData: { value: data?.jenisData || '', label: data?.jenisData || '' },
       instansiSumber: { value: data?.instansi?.id || '', label: data?.instansi?.nama || '' },
+      officialMemo: {
+        location: data?.officialMemo?.location || '',
+        fileName: data?.officialMemo?.fileName || '',
+      },
     },
   });
 
@@ -45,6 +55,11 @@ export const EditForum = ({ onClose, data, initialCall }) => {
 
   useEffect(() => {
     if (!instansiDetail?.result?.length) dispatch(getInstansiData());
+    if (data?.officialMemo?.fileName) {
+      setFile(data?.officialMemo?.fileName);
+    } else {
+      setFile('');
+    }
   }, []);
 
   useEffect(() => {
@@ -55,6 +70,23 @@ export const EditForum = ({ onClose, data, initialCall }) => {
       onClose();
     }
   }, [newRecord]);
+
+  const uploadMemo = async (fileData) => {
+    const fileFormData = new FormData();
+    fileFormData.append('file', fileData);
+    //check if file is pdf
+    if (fileData.type === 'application/pdf') {
+      try {
+        const res = await post(apiUrls.publicFileUpload, fileFormData, { headers: { 'Content-Type': '' } });
+        setValue('officialMemo', res.data, { shouldValidate: true });
+        setFileErr(true);
+        setNotPDF(false);
+        setFile(fileData.name);
+      } catch (error) {}
+    } else {
+      setNotPDF(true);
+    }
+  };
 
   const onSubmit = (detail) => {
     if (loading) return;
@@ -68,6 +100,7 @@ export const EditForum = ({ onClose, data, initialCall }) => {
           id: detail?.instansiSumber.value,
         },
         jenisData: detail?.tipeData?.value !== 'Lainnya' ? detail?.tipeData.value : detail.tipeDataText,
+        officialMemo: detail.officialMemo,
       }),
     ).then((e) => {
       if (e?.error?.message) return;
@@ -132,7 +165,6 @@ export const EditForum = ({ onClose, data, initialCall }) => {
               name="instansiSumber"
             />
           </Form.Group>
-
           <DatePicker
             group
             label="Target Waktu"
@@ -142,7 +174,16 @@ export const EditForum = ({ onClose, data, initialCall }) => {
             error={errors?.tanggalTarget ? 'Target Waktu is required' : ''}
             rules={{ required: true }}
           />
-
+          <FileInput
+            label="Surat Permintaan Data"
+            group
+            name="officialMemo"
+            control={control}
+            uploadInfo="Upload File (format .pdf max. 15MB)"
+            handleOnChange={uploadMemo}
+          />
+          <div>{file !== '' ? `${file} is selected` : 'no file selected'}</div>
+          {notPDF && 'File harus berformat PDF'}
           {apiError ? (
             <Form.Group as={Col} md="12" className="mb-16">
               <label className="sdp-text-red">{apiError}</label>

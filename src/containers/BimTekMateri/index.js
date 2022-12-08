@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-
+import { saveAs } from 'file-saver';
 import { BimtekLayout } from 'layouts/BimtekLayout';
 import { useForm } from 'react-hook-form';
 import { DatePicker, Dropdown } from 'components';
@@ -83,7 +83,7 @@ const BimtekMateri = () => {
 const MateriItem = ({ namaFile, namaBimtek, tanggal, lokasi, urlFile }) => {
   const downloadMateri = async (id) => {
     try {
-      await get(`${apiUrls.bimtekMateriTerdekatDownload}/${id}`);
+      saveAs(`${apiUrls.bimtekMateriTerdekatDownload}/${id}`, 'image.jpg');
     } catch (e) {}
   };
 

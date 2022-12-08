@@ -65,8 +65,9 @@ const schema = yup
   .object({
     judul: yup.string().required(),
     kategori: yup.mixed().required(),
+    taglineId: yup.array().min(1, 'min 1 tagline is required').required(),
     mainImage: yup.mixed().required(),
-    content: yup.mixed().required(),
+    content: yup.string().min(10, 'too short for content').required(),
   })
   .required();
 
@@ -158,6 +159,14 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
     }
   }, [foto]);
 
+  useEffect(() => {
+    console.log(getValues('taglineId'));
+  }, [getValues('taglineId')]);
+
+  const handleInputChange = (data) => {
+    console.log('hi');
+  };
+
   return (
     <Form id={beritaFormId} className="sdp-form" onSubmit={handleSubmit(onSubmit)} style={style}>
       {disabled ? (
@@ -165,17 +174,17 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
       ) : (
         <FileInput
           group
-          label="Thumbnail"
+          label="Thumbnail *"
           name="mainImage"
           control={control}
           error={errors.mainImage?.message}
-          uploadInfo="Upload Image (format .png, .jpeg, .jpg max. 512KB)"
+          uploadInfo="Upload Image (format .png, .jpeg, .jpg maxdfdsfs. 512KB)"
           handleOnChange={handleFoto}
         />
       )}
       <Input group label="Judul" name="judul" control={control} disabled={disabled} error={errors.judul?.message} />
       <Form.Group className="mb-3">
-        <Form.Label>Kategori</Form.Label>
+        <Form.Label>Kategori *</Form.Label>
         <SingleSelectDropdown
           data={listKategori.map((kategori) => ({ id: kategori.id, value: kategori.id, label: kategori.keterangan }))}
           control={control}
@@ -188,7 +197,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
         />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Tagline</Form.Label>
+        <Form.Label>Tagline *</Form.Label>
         <MultiSelectDropDown
           data={taglineRecords?.map((tagline) => ({ label: tagline.keterangan, value: tagline.id }))}
           control={control}
@@ -197,11 +206,12 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
           onCreateOption={createTagline}
           name="taglineId"
           disabled={disabled}
+          value={data}
           error={errors.taglineId?.message}
         />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Isi Berita</Form.Label>
+        <Form.Label>Isi Berita *</Form.Label>
         <TextEditor disabled={disabled} defaultValue={data.content} onChange={(e) => setValue('content', e)} />
         <div className="sdp-error">{errors.content?.message}</div>
       </Form.Group>

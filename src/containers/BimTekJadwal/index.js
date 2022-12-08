@@ -69,6 +69,8 @@ const BimTekJadwal = () => {
               location={item.tempat}
               speaker={item.pembicara}
               materi={item.materi}
+              jenisPermintaan={item.jenisPermintaan}
+              namaInstansi={item.namaInstansi}
               id={item.id}
             />
           );
@@ -94,7 +96,7 @@ const BimTekJadwal = () => {
           <Col xs={3}>
             <SingleSelectDropdown
               data={filterCategory.map((category) => ({ key: 'tag', value: category, label: category }))}
-              placeHolder="Kategori Bimtek"
+              placeHolder="Topik Bimtek"
               isLoading={false}
               noValue={true}
               onChange={handleFilterChange}

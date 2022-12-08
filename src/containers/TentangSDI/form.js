@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import { postTentang } from './reducer';
+import { postTentang, postContactUs } from './reducer';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch } from 'react-redux';
@@ -44,7 +44,7 @@ const ContactUs = () => {
 
   const schema = yup
     .object({
-      full_name: yup.string().required('Nama Lengkap Wajib Diisi').min(5, 'Nama lengkap minimal 5 karakter'),
+      full_name: yup.string().required('Nama Lengkap Wajib Diisi').min(3, 'Nama lengkap minimal 3 karakter'),
       email: yup.string().required('Email Wajib Diisi').email('Format email tidak valid'),
       telephone: yup
         .string()
@@ -90,7 +90,10 @@ const ContactUs = () => {
       setErrorUploadFile('Please select a file!');
       return '';
     }
-    if (!fileExtention.includes(file.type)) {
+    if (
+      !fileExtention.includes(file.type) ||
+      (!file.name.endsWith('.jpg') && !file.name.endsWith('.png') && !file.name.endsWith('.pdf'))
+    ) {
       setErrorUploadFile('Please select a file with jpg, png, or pdf extension!');
       return '';
     }
@@ -119,6 +122,10 @@ const ContactUs = () => {
       attachmentList.push(newUploadedFile);
       formControl('attachment', attachmentList);
     }
+
+    // Reset input file
+    e.target.value = '';
+
     return '';
   };
 
@@ -162,6 +169,14 @@ const ContactUs = () => {
         });
       }
     });
+
+    dispatch(
+      postContactUs({
+        name: post.full_name,
+        email: post.email,
+        phone: post.telephone,
+      }),
+    );
   };
 
   const getPdf = async (url) =>
@@ -209,7 +224,7 @@ const ContactUs = () => {
             <a
               className="cursor-pointer text-bold"
               onClick={() => {
-                return keycloak.login({ redirectUri: 'http://127.0.0.1:3000/tentang' });
+                return keycloak.login({ redirectUri: `${window.location.origin}/tentang` });
               }}>
               Login
             </a>
@@ -297,10 +312,10 @@ const ContactUs = () => {
               <Row>
                 {data.attachment.length !== 0 &&
                   data.attachment.map((attachmentFile, index) => (
-                    <Col xs lg="4" className="mb-5 mt-5">
+                    <Col key={`file-${index}`} xs lg="4" className="mb-5 mt-5">
                       <div className="bg-gray rounded-lg" key={`file-${attachmentFile.type}-${index}`}>
                         <Button
-                          style={{ 'border-radius': '50%', float: 'right' }}
+                          style={{ borderRadius: '50%', float: 'right' }}
                           className="float-right"
                           type="button"
                           onClick={() => deleteAttachment(index)}>

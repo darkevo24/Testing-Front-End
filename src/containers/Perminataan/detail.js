@@ -18,7 +18,7 @@ import {
   getPerminataanData,
 } from './reducer';
 import { BackArrow, PencilSvg } from 'components/Icons';
-import { getPerminataanInfo, getUserInfo } from './constant';
+import { getPerminataanInfo, getUserInfo, getPerminataanInfoOfficialMemo } from './constant';
 import { prefixID, getStatusClass } from 'utils/helper';
 import { userSelector } from '../Login/reducer';
 import { Loader, ReadOnlyInputs } from 'components';
@@ -52,6 +52,11 @@ export const PerminataanDetail = () => {
     dispatch(getPerminataanLogDataById(id));
   };
 
+  const fileDownload = (url) => {
+    //goes to the url
+    window.open(url, '_blank');
+  };
+
   const confirmSubmit = () => {
     if (kirimLoading) return;
     if (!catatan.trim()) {
@@ -82,7 +87,7 @@ export const PerminataanDetail = () => {
                 </div>
 
                 <span className="sdp-text-grey-dark mr-12"> / </span>
-                <spn className="sdp-text-black-dark">{prefixID(id, 'PD')}</spn>
+                <span className="sdp-text-black-dark">{prefixID(id, 'PD')}</span>
               </div>
               {status === 'draft' && (
                 <div className="d-flex">
@@ -128,6 +133,20 @@ export const PerminataanDetail = () => {
                   <div className="d-flex justify-content-between mb-16" key={`permintaan-data-${index}`}>
                     <span className="fs-14 lh-17 sdp-text-black-dark">{item.title}</span>
                     <span className="fs-14 lh-17 sdp-text-black-dark">{item.data}</span>
+                  </div>
+                ))}
+                {getPerminataanInfoOfficialMemo(record).map((item, index) => (
+                  <div className="d-flex justify-content-between mb-16 " key={`permintaan-data-${index}`}>
+                    <span className="fs-14 lh-17 sdp-text-black-dark w-50">{item.title}</span>
+                    <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {item.data ? (
+                        <span role="button" className="fs-14 lh-17 sdp-text-blue" onClick={() => fileDownload(item.data)}>
+                          {item.name}
+                        </span>
+                      ) : (
+                        '-'
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>

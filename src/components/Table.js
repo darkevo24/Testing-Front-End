@@ -24,6 +24,7 @@ export const FilterSearchInput = ({
   manualPagination = false,
   highlightSearchInput = false,
   searchThreshold = 300,
+  autoFocus = false,
 }) => {
   const [value, setValue] = useState(globalFilter);
   const onSearchChange = useAsyncDebounce((value) => {
@@ -43,6 +44,7 @@ export const FilterSearchInput = ({
   return (
     <InputGroup className={cx({ 'highlight-search-input': highlightSearchInput })}>
       <Form.Control
+        autoFocus={autoFocus}
         variant="normal"
         type="text"
         placeholder={searchPlaceholder}
@@ -66,6 +68,7 @@ const Table = ({
   subTitle,
   search,
   // paginate,
+  searchAutoFocus = false,
   searchPlaceholder = 'Search',
   searchButtonText = 'Search',
   searchLeftComponent,
@@ -76,6 +79,7 @@ const Table = ({
   showSearch = true,
   variant = 'default',
   highlightOnHover,
+  hoverPengguna,
   sortBy = null,
   onSortChange = () => null,
   manualPagination = false,
@@ -170,6 +174,7 @@ const Table = ({
   const tableWrapperClasses = {
     [bem.m('highlight')]: highlightOnHover,
     [bem.m('cms')]: cms,
+    [bem.m('hoverpengguna')]: hoverPengguna,
   };
 
   const handleRowClick = (data) => {
@@ -205,6 +210,7 @@ const Table = ({
             searchValue={searchValue}
             highlightSearchInput={highlightSearchInput}
             searchThreshold={searchThreshold}
+            autoFocus={searchAutoFocus}
           />
           {searchRightComponent ? (
             searchRightComponent

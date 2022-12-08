@@ -74,7 +74,7 @@ export const ModalCreateMateri = ({
       }
     }
     const elmButton = document.getElementById(id);
-    elmButton.click();
+    elmButton.click(addFile);
   };
 
   const addFile = async (e) => {
@@ -105,11 +105,20 @@ export const ModalCreateMateri = ({
       nama: data.namaMateri,
       id: (Math.random() + 1).toString(36).substring(7),
     }));
-    setDataMateri([...dataMateri, newMateri[0]]);
-    setValueMateri('namaMateri', '');
-    visible();
-    setListMateri([]);
-    return handleNotification('secondary', 'Berhasil Menambahkan Materi', 'check');
+    let totalSize = 0;
+    newMateri.forEach((item) => {
+      totalSize += item.size;
+    });
+    if (totalSize > 15000000) {
+      visible();
+      return handleNotification('secondary', 'Total Ukuran Gambar Dokumentasi Melebihi 15 MB', 'cross');
+    } else {
+      setDataMateri([...dataMateri, newMateri[0]]);
+      setValueMateri('namaMateri', '');
+      visible();
+      setListMateri([]);
+      return handleNotification('secondary', 'Berhasil Menambahkan Materi', 'check');
+    }
   };
 
   const onEditMateri = (data) => {
@@ -129,6 +138,7 @@ export const ModalCreateMateri = ({
       fileType: item.fileType,
       size: item.size,
     }));
+    console.log(obj);
     let newDataMateri = dataMateri.filter((x) => x.id !== idMateri);
     setDataMateri([...newDataMateri, obj[0]]);
     visible();

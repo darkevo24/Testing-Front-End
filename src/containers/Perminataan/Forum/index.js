@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
@@ -7,10 +7,12 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import * as yup from 'yup';
+import { post } from 'utils/request';
+import { apiUrls } from 'utils/constants';
 import { BackArrow } from 'components/Icons';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { DatePicker, ReadOnlyInputs } from 'components';
+import { DatePicker, ReadOnlyInputs, FileInput } from 'components';
 import { useSelector, useDispatch } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
 import Input from 'components/Input';
@@ -33,6 +35,7 @@ export const schema = yup.object({
       }),
     then: yup.string().required('Tipe Data is required').typeError('Tipe Data is required'),
   }),
+  officialMemo: yup.mixed().nullable().required(),
 });
 
 export const DROPDOWN_LIST = ['Statistik', 'Keuangan', 'Spasial', 'Lainnya'];
@@ -44,6 +47,8 @@ const Forum = () => {
   const { loading } = useSelector(perminataanDatasetSelector);
   const instansiDetail = useSelector(instansiDataSelector);
   const apiError = useSelector(perminataanForumErrorSelector);
+  const [fileErr, setFileErr] = useState(false);
+  const [notPDF, setNotPDF] = useState(false);
   const startDate = moment(new Date(), 'YYYY-MM-DD').add(5, 'days').format('YYYY-MM-DD');
 
   const handleBackButton = () => {
@@ -55,6 +60,7 @@ const Forum = () => {
     formState: { errors },
     handleSubmit,
     watch,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -74,11 +80,27 @@ const Forum = () => {
           id: detail.instansiSumber.value,
         },
         jenisData: detail.tipeData?.value !== 'Lainnya' ? detail.tipeData.value : detail.tipeDataText,
+        officialMemo: detail.officialMemo,
       }),
     ).then((e) => {
       if (e?.error?.message) return;
       handleBackButton();
     });
+  };
+
+  const uploadMemo = async (fileData) => {
+    const fileFormData = new FormData();
+    fileFormData.append('file', fileData);
+    //check if file is pdf
+    if (fileData.type === 'application/pdf') {
+      try {
+        const res = await post(apiUrls.publicFileUpload, fileFormData, { headers: { 'Content-Type': '' } });
+        setValue('officialMemo', res.data, { shouldValidate: true });
+        setFileErr(true);
+      } catch (error) {}
+    } else {
+      setNotPDF(true);
+    }
   };
 
   const readOnlyFields = [
@@ -190,6 +212,20 @@ const Forum = () => {
                 error={errors?.tanggalTarget?.message ? 'Target Waktu is required' : ''}
                 rules={{ required: true }}
               />
+            </Form.Group>
+            <Form.Group as={Col} md="6" className="mb-16">
+              <FileInput
+                label="Surat Permintaan Data"
+                group
+                name="officialMemo"
+                control={control}
+                uploadInfo="Upload File (format .pdf max. 15MB)"
+                handleOnChange={uploadMemo}
+              />
+              <div className="sdp-error" hidden={fileErr}>
+                {errors?.officialMemo?.message ? 'Surat Permintaan Datais required' : ''}
+                {notPDF && 'File harus berformat PDF'}
+              </div>
             </Form.Group>
 
             {apiError ? (

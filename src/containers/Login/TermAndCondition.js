@@ -44,7 +44,11 @@ const TermAndCondition = () => {
         dispatch(validateReCaptcha({ payload: data })).then((res) => {
           if (res?.payload?.status === 'SUCCESS') {
             dispatch(acceptTermAndCondition());
-            history.push('/');
+            if (history.location.search === '?redirectTo=tentang') {
+              history.push('/tentang');
+            } else {
+              history.push('/');
+            }
           } else {
             Notification.show({
               type: 'secondary',
@@ -57,7 +61,11 @@ const TermAndCondition = () => {
     } else {
       if (agree) {
         dispatch(acceptTermAndCondition());
-        history.push('/');
+        if (history.location.search === '?redirectTo=tentang') {
+          history.push('/tentang');
+        } else {
+          history.push('/');
+        }
       }
     }
   };

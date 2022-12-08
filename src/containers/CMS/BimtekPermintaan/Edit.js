@@ -70,6 +70,7 @@ const CMSBimtekPermintaanEdit = (props) => {
       default: data,
       namaBimbinganTeknis: data.namaBimtek,
       tempatBimbinganTeknis: data.tempat,
+      jenisPermintaan: data.jenisPermintaan,
       jamMulaiDisetujuiUpdate: !data.tanggalMulaiDisetujui ? '' : moment(data.tanggalMulaiDisetujui).format('hh:mm'),
       jamSelesaiDisetujuiUpdate: !data.tanggalSelesaiDisetujui ? '' : moment(data.tanggalSelesaiDisetujui).format('hh:mm'),
       tanggalMulaiDisetujuiUpdate: !data.tanggalMulaiDisetujui
@@ -235,6 +236,14 @@ const CMSBimtekPermintaanEdit = (props) => {
                 name="tempatBimbinganTeknis"
                 control={control}
                 error={errors.tempatBimbinganTeknis?.message}
+              />
+              <Input
+                group
+                readOnly={true}
+                label="Jenis Permintaan"
+                name="jenisPermintaan"
+                control={control}
+                error={errors.jenisPermintaan?.message}
               />
               <Row className="align-items-end">
                 <Col>

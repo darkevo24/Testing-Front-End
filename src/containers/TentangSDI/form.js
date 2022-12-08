@@ -246,10 +246,12 @@ const ContactUs = () => {
           <Form.Group controlId="phoneNumber" className="mb-3">
             <Form.Label>Nomor Telefon</Form.Label>
             <Form.Control
+              value={user?.noHp ?? ''}
               type="phone"
               onChange={(e) => {
                 setValue('telephone', e.target.value);
               }}
+              disabled={isLoggedIn}
             />
             {errors?.telephone?.message && <div className={'error-message'}>{errors?.telephone?.message}</div>}
           </Form.Group>

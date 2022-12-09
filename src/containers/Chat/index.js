@@ -133,6 +133,7 @@ export const Chat = () => {
         setChatStartStep('dialog');
         setChatHistoryList(chatStatus?.data?.history);
       } else if (chatStatus.code === 'REVIEW') {
+        setIsChatStarted(false);
         setChatNotStartStep('review');
       }
     }

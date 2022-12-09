@@ -266,7 +266,7 @@ const ContactUs = () => {
               onChange={(e) => {
                 setValue('telephone', e.target.value);
               }}
-              disabled={isLoggedIn}
+              disabled={isLoggedIn && user?.noHp}
             />
             {errors?.telephone?.message && <div className={'error-message'}>{errors?.telephone?.message}</div>}
           </Form.Group>

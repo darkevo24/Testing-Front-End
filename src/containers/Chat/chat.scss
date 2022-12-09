@@ -97,7 +97,7 @@
           text-align: center;
           height: 100%;
         }
-        
+
         .desc-review {
           display: flex;
           flex-direction: column;
@@ -121,6 +121,12 @@
 
           &-text {
             width: 100%;
+          }
+
+          &-error {
+            padding-top: 8px;
+            text-align: left;
+            color: red;
           }
         }
 
@@ -240,8 +246,8 @@
         }
 
         .kirim {
-          background-color: #723DEC;
-          border-color: #723DEC;
+          background-color: #723dec;
+          border-color: #723dec;
         }
 
         .chat-message-wrapper {

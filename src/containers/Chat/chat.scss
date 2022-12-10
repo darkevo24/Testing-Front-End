@@ -41,6 +41,19 @@
       border-radius: 12px 12px 0px 0px;
       border-bottom: 1px solid #e1e2ea;
 
+      &.review {
+        display: flex;
+        justify-content: space-between;
+
+        .download-chat {
+          background: #f5f6fa;
+          border-radius: 8px;
+          color: #2e2d30;
+          box-shadow: none;
+          border: 0;
+        }
+      }
+
       .botpicture {
         width: 30px;
         height: 30px;

@@ -57,6 +57,7 @@
   "dependencies": {
     "@hookform/resolvers": "2.8.2",
     "@react-keycloak/web": "3.4.0",
+    "@react-pdf/renderer": "3.0.1",
     "@reduxjs/toolkit": "1.6.0",
     "@stripe/react-stripe-js": "^1.6.0",
     "@stripe/stripe-js": "^1.19.1",
@@ -151,5 +152,9 @@
     ">0.2%",
     "not dead",
     "not op_mini all"
-  ]
+  ],
+  "resolutions": {
+    "@react-pdf/font": "2.2.1",
+    "@react-pdf/pdfkit": "2.1.0"
+  }
 }

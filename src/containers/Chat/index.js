@@ -18,6 +18,9 @@ import { ChatMinimized } from './ChatMinimized';
 import { userSelector } from 'containers/Login/reducer';
 import { ChatDialog } from './ChatDialog';
 import { ReviewChat } from './ReviewChat';
+import { Button } from 'components';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import ChatPdf from './ChatPdf';
 
 const bem = bn('chat');
 
@@ -199,7 +202,7 @@ export const Chat = () => {
     <div className={bem.b()}>
       {isOpen ? (
         <div className={bem.e('opened', 'parent')}>
-          <div className="header">
+          <div className={`header ${chatNotStartStep === 'review' ? 'review' : ''}`}>
             {isChatStarted && chatStartStep === 'dialog' ? (
               <>
                 <img src={chatBot} alt="chatbot" className="botpicture" />
@@ -211,6 +214,10 @@ export const Chat = () => {
                   </div>
                 </div>
               </>
+            ) : isChatStarted === false && chatNotStartStep === 'review' ? (
+              <PDFDownloadLink document={<ChatPdf chatStatus={chatStatus} />} fileName="Chat History.pdf">
+                {() => <Button className="download-chat">Unduh percakapan</Button>}
+              </PDFDownloadLink>
             ) : (
               <>
                 <img src={chatIcon} alt="chatIcon" className="botpicture" />

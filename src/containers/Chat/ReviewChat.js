@@ -62,7 +62,7 @@ export const ReviewChat = ({ setIsOpen }) => {
       </div>
       <div className="bottom">
         <Button
-          className="kirim w-100 br-8"
+          className="w-100 br-8"
           onClick={() => {
             setIsSendClicked(true);
             onSubmitForm();

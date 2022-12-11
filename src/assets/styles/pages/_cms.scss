@@ -46,6 +46,19 @@
       height: 40px;
     }
 
+    &__strukturButton {
+      background-color: white;
+      color: grey-dark;
+      border: 1px solid #d1d5da;
+      width: 80%;
+      height: 35px;
+      font-size: 14px;
+      &:hover {
+        background-color: white;
+        border: 1px solid red;
+      }
+    }
+
 
     &__body {
       padding: 32px;

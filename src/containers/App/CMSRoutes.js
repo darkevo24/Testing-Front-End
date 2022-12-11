@@ -307,6 +307,7 @@ function CMSRoutes() {
           path="/cms/struktur"
           component={StrukturOrganisasiPage}
           permissions={[
+            Roles.ADMIN,
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -314,30 +315,6 @@ function CMSRoutes() {
             Roles.SEKRETARIANT_EDITOR,
           ]}
         />
-        {/* <PrivateRoute
-          exact
-          path="/cms/struktur-form"
-          component={StrukturBaruPage}
-          permissions={[
-            Roles.CONTENT_CREATOR,
-            Roles.CONTENT_EDITOR,
-            Roles.SEKRETARIANT,
-            Roles.SEKRETARIANT_CREATOR,
-            Roles.SEKRETARIANT_EDITOR,
-          ]}
-        />
-        <PrivateRoute
-          exact
-          path="/cms/struktur-detail/:id"
-          component={StrukturDetailPage}
-          permissions={[
-            Roles.CONTENT_CREATOR,
-            Roles.CONTENT_EDITOR,
-            Roles.SEKRETARIANT,
-            Roles.SEKRETARIANT_CREATOR,
-            Roles.SEKRETARIANT_EDITOR,
-          ]}
-        /> */}
         <PrivateRoute
           exact
           path="/cms/subscribers"

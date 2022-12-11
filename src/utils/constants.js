@@ -105,6 +105,7 @@ export const apiUrls = {
   rkpPN: getV1Endpoint('settings/key/RKP'),
   strukturData: getCMSEndpoint('bidang'),
   strukturDataPublic: getApiEndpoint('public/bidang'),
+  strukturOrganisasi: getPublicEndpoint('organization'),
   cmsBeritaData: getCMSEndpoint('berita'),
   cmsBimtekJadwal: getCMSEndpoint('bimtek'),
   cmsBimtekPermintaanData: getCMSEndpoint('bimtek/permintaan'),

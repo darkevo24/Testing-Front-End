@@ -194,13 +194,6 @@ const CMSStrukturOrganisasi = () => {
     uploadFoto(newFile);
   };
 
-  const handleFoto = (file) => {
-    // eslint-disable-next-line
-    let fileName = file.name.replace(/[&/\\#, +()$~%'":*?<>{}]/g, '');
-    let newFile = new File([file], fileName, { type: 'image/png' });
-    uploadFoto(newFile);
-  };
-
   const uploadFoto = async (file) => {
     try {
       let fotoFormData = new FormData();
@@ -303,7 +296,7 @@ const CMSStrukturOrganisasi = () => {
   return (
     <Wrapper>
       <Row>
-        <Col xs={3} className="p-5">
+        <Col xs={3} className="p-5 " style={{ borderRight: '1px solid #bfc6cd', height: '100vh' }}>
           <div className={cx(bem.e('title-small'), 'mb-16')}>Struktur Organisasi</div>
           <div style={{ marginBottom: '25px' }}>
             {organizations.map((org) => (
@@ -345,7 +338,7 @@ const CMSStrukturOrganisasi = () => {
             <Plus width="14" /> Tambah
           </AddButton>
         </Col>
-        <Col xs={9}>
+        <Col xs={9} className="pl-32">
           {opentab && (
             <DetailWrapper>
               <Form onSubmit={handleSubmit(onSubmit, onError)}>
@@ -360,7 +353,7 @@ const CMSStrukturOrganisasi = () => {
 
                 {formType === 'edit' && (
                   <>
-                    <Form.Group className="mb-24">
+                    <Form.Group>
                       <Form.Label>Gambar</Form.Label>
                     </Form.Group>
                     {!selectedOrganization?.officialMemo?.location ? (

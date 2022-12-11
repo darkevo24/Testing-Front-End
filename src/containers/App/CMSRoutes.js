@@ -307,7 +307,6 @@ function CMSRoutes() {
           path="/cms/struktur"
           component={StrukturOrganisasiPage}
           permissions={[
-            Roles.ADMIN,
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,

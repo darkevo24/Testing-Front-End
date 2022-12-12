@@ -14,8 +14,6 @@ const BeritaDetailPage = lazy(() => import('containers/CMS/BeritaDetail'));
 const SubscribersPage = lazy(() => import('containers/CMS/Subscribers'));
 const AboutUsPage = lazy(() => import('containers/CMS/AboutUs'));
 const StrukturOrganisasiPage = lazy(() => import('containers/CMS/StrukturOrganisasi'));
-const StrukturBaruPage = lazy(() => import('containers/CMS/StrukturOrganisasi/Create'));
-const StrukturDetailPage = lazy(() => import('containers/CMS/StrukturOrganisasi/Detail'));
 const AboutUsEditPage = lazy(() => import('containers/CMS/AboutUsEdit'));
 const BimtekPermintaanPage = lazy(() => import('containers/CMS/BimtekPermintaan'));
 const BimtekPermintaanEditPage = lazy(() => import('containers/CMS/BimtekPermintaan/Edit'));
@@ -309,30 +307,6 @@ function CMSRoutes() {
           exact
           path="/cms/struktur"
           component={StrukturOrganisasiPage}
-          permissions={[
-            Roles.CONTENT_CREATOR,
-            Roles.CONTENT_EDITOR,
-            Roles.SEKRETARIANT,
-            Roles.SEKRETARIANT_CREATOR,
-            Roles.SEKRETARIANT_EDITOR,
-          ]}
-        />
-        <PrivateRoute
-          exact
-          path="/cms/struktur-form"
-          component={StrukturBaruPage}
-          permissions={[
-            Roles.CONTENT_CREATOR,
-            Roles.CONTENT_EDITOR,
-            Roles.SEKRETARIANT,
-            Roles.SEKRETARIANT_CREATOR,
-            Roles.SEKRETARIANT_EDITOR,
-          ]}
-        />
-        <PrivateRoute
-          exact
-          path="/cms/struktur-detail/:id"
-          component={StrukturDetailPage}
           permissions={[
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,

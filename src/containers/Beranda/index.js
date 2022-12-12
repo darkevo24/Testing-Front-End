@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import take from 'lodash/take';
@@ -10,6 +10,7 @@ import { SearchBeranda } from './SearchBeranda';
 import { BerandaTopic } from './BerandaTopic';
 import { BerandaCards } from './BerandaCards';
 import { Chat } from 'containers/Chat';
+import TicketModal from 'containers/Chat/TicketModal';
 import bn from 'utils/bemNames';
 
 const bem = bn('beranda');
@@ -23,10 +24,12 @@ const BerandaPage = () => {
   const { /* error, */ loading, result } = useSelector(datasetSelector);
   const { keycloak } = useKeycloak();
   const isLoggedIn = !!keycloak.authenticated;
+  const [file, setFile] = React.useState('');
 
   useEffect(() => {
     dispatch(getDataSet(getInitialParams()));
-  }, []);
+    console.log({ file });
+  }, [file]);
 
   const data = useMemo(() => result?.results || [], [result]);
   const trendingData = take(data, 4);
@@ -40,7 +43,22 @@ const BerandaPage = () => {
         <BerandaCards bem={bem} isLoggedIn={isLoggedIn} trendingData={trendingData} popularData={popularData} />
         {loading && <Loader fullscreen />}
       </Container>
-      <Chat />
+      <Chat setFile={setFile} />
+      {file && (
+        <TicketModal backgroundColor="#FFF" width="w-75">
+          <div className="p-16">
+            <div className="d-flex justify-content-end cursor-pointer" onClick={() => setFile(null)}>
+              &#x2715;
+            </div>
+            {file?.type === 'image' && <img className="w-100" src={file?.file} alt="file-data" />}
+            {file?.type === 'pdf' && (
+              <div className="w-100">
+                <iframe className="w-100 min-vh-100" src={file?.file} title="pdf file" />
+              </div>
+            )}
+          </div>
+        </TicketModal>
+      )}
     </>
   );
 };

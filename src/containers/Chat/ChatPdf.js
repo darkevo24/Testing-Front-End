@@ -62,7 +62,7 @@ export const ChatPdf = ({ chatStatus }) => {
         <View style={{ padding: 16, flexDirection: 'row', backgroundColor: 'white' }}>
           <View style={styles.headerItem}>
             <Text style={styles.headerTitle}>Ticket ID</Text>
-            <Text style={styles.headerValueTicket}>{log.ticketId}</Text>
+            <Text style={styles.headerValueTicket}>{log.ticketId?.ticketId}</Text>
           </View>
           <View style={styles.headerItem}>
             <Text style={styles.headerTitle}>Chat by</Text>

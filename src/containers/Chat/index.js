@@ -88,6 +88,7 @@ export const Chat = ({ setFile }) => {
 
     socket.on('chat request processed', (msg) => {
       if (msg === 'approved') {
+        setIsChatStarted(true);
         setChatStartStep('dialog');
         dispatch(getChatStatus(email));
       } else if (msg === 'rejected') {
@@ -215,7 +216,9 @@ export const Chat = ({ setFile }) => {
                   </div>
                 </>
               ) : isChatStarted === false && chatNotStartStep === 'review' ? (
-                <PDFDownloadLink document={<ChatPdf chatStatus={chatStatus} />} fileName="Chat History.pdf">
+                <PDFDownloadLink
+                  document={<ChatPdf chatStatus={chatStatus} />}
+                  fileName={`chathistory-${chatStatus?.data?.log?.ticketId?.ticketId}.pdf`}>
                   {() => <Button className="download-chat">Unduh percakapan</Button>}
                 </PDFDownloadLink>
               ) : (

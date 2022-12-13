@@ -202,7 +202,7 @@ export const Chat = ({ setFile }) => {
       <div className={bem.b()}>
         {isOpen ? (
           <div className={bem.e('opened', 'parent')}>
-            <div className="header">
+            <div className={`header ${chatNotStartStep === 'review' ? 'review' : ''}`}>
               {isChatStarted && chatStartStep === 'dialog' ? (
                 <>
                   <img src={chatBot} alt="chatbot" className="botpicture" />
@@ -214,6 +214,10 @@ export const Chat = ({ setFile }) => {
                     </div>
                   </div>
                 </>
+              ) : isChatStarted === false && chatNotStartStep === 'review' ? (
+                <PDFDownloadLink document={<ChatPdf chatStatus={chatStatus} />} fileName="Chat History.pdf">
+                  {() => <Button className="download-chat">Unduh percakapan</Button>}
+                </PDFDownloadLink>
               ) : (
                 <>
                   <img src={chatIcon} alt="chatIcon" className="botpicture" />

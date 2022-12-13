@@ -101,7 +101,6 @@ export const Chat = ({ setFile }) => {
       socket.off('isEnabled changed');
       socket.off('chat request processed');
       socket.off('chat message');
-      socket.off('chat request');
       socket.off('chat end');
     };
   }, []);
@@ -151,8 +150,6 @@ export const Chat = ({ setFile }) => {
         phone: data.phone,
       }),
     );
-
-    socket.emit('chat request');
   };
 
   const addToHistoryList = (data) => {

@@ -152,14 +152,6 @@ export const Chat = ({ setFile }) => {
     );
   };
 
-  const addToHistoryList = (data) => {
-    dispatch(getChatStatus({ email }));
-    data.isSentByUser = true;
-    data.isSentByAdmin = false;
-
-    socket.emit('chat message', data);
-  };
-
   const Greeting = () => {
     return !chatSettings ? (
       ''
@@ -188,7 +180,7 @@ export const Chat = ({ setFile }) => {
     if (chatStartStep === 'waiting') {
       return <ChatWaiting />;
     } else if (chatStartStep === 'dialog') {
-      return <ChatDialog chatHistoryList={chatHistoryList} addToHistoryList={addToHistoryList} setFile={setFile} />;
+      return <ChatDialog chatHistoryList={chatHistoryList} email={email} setFile={setFile} />;
     } else {
       return <div>None</div>;
     }

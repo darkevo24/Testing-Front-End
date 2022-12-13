@@ -6,11 +6,11 @@ import { Button } from 'components';
 import './chat.scss';
 
 import chatBot from 'assets/chat-bot.png';
-import { createChatHistory } from './reducer';
+import { createChatHistory, getChatStatus } from './reducer';
 import { icons } from 'components/Icons';
 import { getPdf } from 'utils/helper';
 
-export const ChatDialog = ({ chatHistoryList, addToHistoryList, setFile }) => {
+export const ChatDialog = ({ chatHistoryList, email, setFile }) => {
   const [messageToSend, setMessageToSend] = React.useState('');
 
   const dispatch = useDispatch();
@@ -138,10 +138,7 @@ export const ChatDialog = ({ chatHistoryList, addToHistoryList, setFile }) => {
           message: messageToSend,
         }),
       );
-      addToHistoryList({
-        chatLogsId: chatHistoryList?.[0]?.chatLogsId,
-        message: messageToSend,
-      });
+      dispatch(getChatStatus({ email }));
       setMessageToSend('');
       setTimeout(() => {
         document.getElementById('chat-input').focus();

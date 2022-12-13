@@ -41,6 +41,19 @@
       border-radius: 12px 12px 0px 0px;
       border-bottom: 1px solid #e1e2ea;
 
+      &.review {
+        display: flex;
+        justify-content: space-between;
+
+        .download-chat {
+          background: #f5f6fa;
+          border-radius: 8px;
+          color: #2e2d30;
+          box-shadow: none;
+          border: 0;
+        }
+      }
+
       .botpicture {
         width: 30px;
         height: 30px;
@@ -97,7 +110,7 @@
           text-align: center;
           height: 100%;
         }
-        
+
         .desc-review {
           display: flex;
           flex-direction: column;
@@ -121,6 +134,12 @@
 
           &-text {
             width: 100%;
+          }
+
+          &-error {
+            padding-top: 8px;
+            text-align: left;
+            color: red;
           }
         }
 
@@ -240,8 +259,8 @@
         }
 
         .kirim {
-          background-color: #723DEC;
-          border-color: #723DEC;
+          background-color: #723dec;
+          border-color: #723dec;
         }
 
         .chat-message-wrapper {

@@ -11,10 +11,13 @@ export const ReviewChat = ({ setIsOpen }) => {
   const [rating, setRating] = useState(0);
   const [desc, setDesc] = useState('');
   const { record: chatStatus } = useSelector(chatStatusSelector);
+  const [isSendClicked, setIsSendClicked] = useState(false);
 
   const formRef = React.useRef(null);
 
   const onSubmitForm = async () => {
+    if (!desc || !rating) return;
+
     await dispatch(
       createChatReview({
         chatLogId: chatStatus?.data?.log?._id,
@@ -43,6 +46,7 @@ export const ReviewChat = ({ setIsOpen }) => {
             starRatedColor="rgb(244, 213, 43)"
             numberOfStars={5}
           />
+          {!rating && isSendClicked && <p className="desc-review-error">Isilah rating percakapan</p>}
           <Form id="form-review" ref={formRef}>
             <Form.Group controlId="description" className="desc-review-text">
               <Form.Control
@@ -51,12 +55,18 @@ export const ReviewChat = ({ setIsOpen }) => {
                   setDesc(e.target.value);
                 }}
               />
+              {!desc && isSendClicked && <p className="desc-review-error">Isilah komentar dan saran Anda</p>}
             </Form.Group>
           </Form>
         </div>
       </div>
       <div className="bottom">
-        <Button className="kirim w-100 br-8" onClick={onSubmitForm}>
+        <Button
+          className="w-100 br-8"
+          onClick={() => {
+            setIsSendClicked(true);
+            onSubmitForm();
+          }}>
           Kirim
         </Button>
       </div>

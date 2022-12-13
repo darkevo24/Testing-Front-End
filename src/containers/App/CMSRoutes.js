@@ -14,8 +14,6 @@ const BeritaDetailPage = lazy(() => import('containers/CMS/BeritaDetail'));
 const SubscribersPage = lazy(() => import('containers/CMS/Subscribers'));
 const AboutUsPage = lazy(() => import('containers/CMS/AboutUs'));
 const StrukturOrganisasiPage = lazy(() => import('containers/CMS/StrukturOrganisasi'));
-const StrukturBaruPage = lazy(() => import('containers/CMS/StrukturOrganisasi/Create'));
-const StrukturDetailPage = lazy(() => import('containers/CMS/StrukturOrganisasi/Detail'));
 const AboutUsEditPage = lazy(() => import('containers/CMS/AboutUsEdit'));
 const BimtekPermintaanPage = lazy(() => import('containers/CMS/BimtekPermintaan'));
 const BimtekPermintaanEditPage = lazy(() => import('containers/CMS/BimtekPermintaan/Edit'));
@@ -61,6 +59,7 @@ const SDIWiki = lazy(() => import('containers/CMS/SDIWiki'));
 const CMSSecurity = lazy(() => import('containers/CMS/Security'));
 const CMSSecurityEdit = lazy(() => import('containers/CMS/Security/CMSSecurityEdit'));
 const CMSKonfigurasiPortal = lazy(() => import('containers/CMS/KonfigurasiPortal'));
+const CMSKonfigurasiEmail = lazy(() => import('containers/CMS/KonfigurasiEmail'));
 const Glosarium = lazy(() => import('containers/CMS/Glosarium'));
 const UserFeedback = lazy(() => import('containers/CMS/UserFeedback'));
 const ManajemenPerubahanDanRilis = lazy(() => import('containers/CMS/ManajemenPerubahanDanRilis'));
@@ -308,30 +307,6 @@ function CMSRoutes() {
           exact
           path="/cms/struktur"
           component={StrukturOrganisasiPage}
-          permissions={[
-            Roles.CONTENT_CREATOR,
-            Roles.CONTENT_EDITOR,
-            Roles.SEKRETARIANT,
-            Roles.SEKRETARIANT_CREATOR,
-            Roles.SEKRETARIANT_EDITOR,
-          ]}
-        />
-        <PrivateRoute
-          exact
-          path="/cms/struktur-form"
-          component={StrukturBaruPage}
-          permissions={[
-            Roles.CONTENT_CREATOR,
-            Roles.CONTENT_EDITOR,
-            Roles.SEKRETARIANT,
-            Roles.SEKRETARIANT_CREATOR,
-            Roles.SEKRETARIANT_EDITOR,
-          ]}
-        />
-        <PrivateRoute
-          exact
-          path="/cms/struktur-detail/:id"
-          component={StrukturDetailPage}
           permissions={[
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
@@ -711,7 +686,6 @@ function CMSRoutes() {
           component={CMSKonfigurasiPortal}
           permissions={[
             Roles.ADMIN,
-
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -719,6 +693,7 @@ function CMSRoutes() {
             Roles.SEKRETARIANT_EDITOR,
           ]}
         />
+        <PrivateRoute exact path="/cms/konfigurasi-email" component={CMSKonfigurasiEmail} permissions={[Roles.ADMIN]} />
         <PrivateRoute
           exact
           path="/cms/penambahan-atribut-cms"

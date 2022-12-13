@@ -105,14 +105,17 @@ export const apiUrls = {
   rkpPN: getV1Endpoint('settings/key/RKP'),
   strukturData: getCMSEndpoint('bidang'),
   strukturDataPublic: getApiEndpoint('public/bidang'),
+  strukturOrganisasi: getPublicEndpoint('organization'),
   cmsBeritaData: getCMSEndpoint('berita'),
   cmsBimtekJadwal: getCMSEndpoint('bimtek'),
   cmsBimtekPermintaanData: getCMSEndpoint('bimtek/permintaan'),
   cmsBimtekDokumentasi: getCMSEndpoint('bimtek/dokumentasi'),
   cmsBimtekLogs: getCMSEndpoint('bimtek/logs'),
   cmsAboutUs: getCMSEndpoint('tentang'),
+  cmsOrganization: getCMSEndpoint2('organization'),
   aboutUs: getApiEndpoint('public/tentang'),
   hubungiKami: getApiEndpoint('public/hubungi-kami'),
+  cmsKonfigurasiEmail: getCMSEndpoint('/hubungi-kami'),
   userBeritaPortal: getPublicV1Endpoint('berita'),
   userBeritaLatest: getPublicV1Endpoint('berita/latest'),
   userBeritaPopular: getPublicV1Endpoint('berita/populer'),
@@ -470,7 +473,7 @@ export const PORTAL_KONFIGURASI_CODE = {
   FOOTERLINK: 'FOOTER_LINK',
 };
 
-export const fileExtention = ['image/jpg', 'image/png', 'application/pdf'];
+export const fileExtention = ['image/jpeg', 'image/png', 'application/pdf'];
 
 export const timeExpired = [
   { value: 1, label: '1' },

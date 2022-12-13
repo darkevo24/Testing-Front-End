@@ -29,8 +29,13 @@ export const postImage = createAsyncThunk('api/image', async (param) => {
 });
 
 export const getStruktur = createAsyncThunk('tentang/getStruktur', async () => {
-  const response = await get(apiUrls.strukturDataPublic, {});
+  const response = await get(apiUrls.strukturOrganisasi);
   return response?.data;
+});
+
+export const getStrukturOrganisasiById = createAsyncThunk('cms/getStrukturOrganisasiById', async (id) => {
+  const response = await get(`${apiUrls.strukturOrganisasi}/${id}`);
+  return response?.data?.content;
 });
 
 const REDUCER_NAME = 'tentang';
@@ -48,8 +53,14 @@ const INITIAL_STATE = {
   },
   strukturData: {
     records: [],
+    loading: true,
+    error: '',
+    initialData: {},
+  },
+  detaildataSet: {
     loading: false,
     error: '',
+    record: {},
   },
 };
 
@@ -90,16 +101,29 @@ const SLICE_OBJ = createSlice({
     });
     builder.addCase(getStruktur.fulfilled, (state, action) => {
       state.strukturData.loading = false;
-      state.strukturData.records = action.payload;
+      state.strukturData.initialData = action.payload.content?.[0];
+      state.strukturData.records = action.payload.content;
     });
     builder.addCase(getStruktur.rejected, (state, action) => {
       state.strukturData.loading = false;
       state.strukturData.error = action.error.message;
     });
+    builder.addCase(getStrukturOrganisasiById.pending, (state, action) => {
+      state.detaildataSet.loading = true;
+    });
+    builder.addCase(getStrukturOrganisasiById.fulfilled, (state, action) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.record = action.payload;
+    });
+    builder.addCase(getStrukturOrganisasiById.rejected, (state) => {
+      state.detaildataSet.loading = false;
+      state.detaildataSet.error = 'Error in fetching detail struktur data!';
+    });
   },
 });
 
 export const tentangPublicSelector = (state) => state.tentang;
+export const detailDataSelector = (state) => state.struktur?.detaildataSet;
 export const strukturPublicSelector = (state) => state.tentang?.strukturData;
 export const { updateResult } = SLICE_OBJ.actions;
 export default SLICE_OBJ.reducer;

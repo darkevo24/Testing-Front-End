@@ -120,14 +120,16 @@ const managemenPenggunaSlice = createSlice({
     builder.addCase(getRoleData.fulfilled, (state, action) => {
       state.dataset.loading = false;
       state.dataset.roleData = action.payload.content;
-      state.dataset.roles.push({ value: '', label: 'SEMUA' });
-      action.payload.content.map((role, index) => {
-        const roleObj = {
-          value: index,
-          label: role,
-        };
-        state.dataset.roles.push(roleObj);
-      });
+      if (state.dataset.roles.length === 0) {
+        state.dataset.roles.push({ value: '', label: 'SEMUA' });
+        action.payload.content.map((role, index) => {
+          const roleObj = {
+            value: index,
+            label: role,
+          };
+          state.dataset.roles.push(roleObj);
+        });
+      }
     });
     builder.addCase(getRoleData.rejected, (state, action) => {
       state.dataset.loading = false;

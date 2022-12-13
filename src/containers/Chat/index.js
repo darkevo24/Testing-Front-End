@@ -18,10 +18,13 @@ import { ChatMinimized } from './ChatMinimized';
 import { userSelector } from 'containers/Login/reducer';
 import { ChatDialog } from './ChatDialog';
 import { ReviewChat } from './ReviewChat';
+import { Button } from 'components';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import ChatPdf from './ChatPdf';
 
 const bem = bn('chat');
 
-export const Chat = () => {
+export const Chat = ({ setFile }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isEnabled, setIsEnabled] = React.useState(false);
 
@@ -32,7 +35,6 @@ export const Chat = () => {
   const [chatStartStep, setChatStartStep] = React.useState(null); //waiting, dialog, review
   const [chatSettings, setChatSettings] = React.useState(null);
   const [chatHistoryList, setChatHistoryList] = React.useState([]);
-  const [file, setFile] = React.useState('');
 
   const dispatch = useDispatch();
   const { record } = useSelector(chatSettingsSelector);
@@ -68,7 +70,6 @@ export const Chat = () => {
   }, [email]);
 
   React.useEffect(() => {
-    //socket.connect();
     socket.on('connect_error', (err) => {
       console.error(err);
     });
@@ -86,8 +87,9 @@ export const Chat = () => {
 
     socket.on('chat request processed', (msg) => {
       if (msg === 'approved') {
+        setIsChatStarted(true);
         setChatStartStep('dialog');
-        dispatch(getChatStatus(email));
+        dispatch(getChatStatus({ email }));
       } else if (msg === 'rejected') {
         setIsChatStarted(false);
         setChatNotStartStep('rejected');
@@ -133,6 +135,7 @@ export const Chat = () => {
         setChatStartStep('dialog');
         setChatHistoryList(chatStatus?.data?.history);
       } else if (chatStatus.code === 'REVIEW') {
+        setIsChatStarted(false);
         setChatNotStartStep('review');
       }
     }
@@ -195,36 +198,44 @@ export const Chat = () => {
   };
 
   return (
-    <div className={bem.b()}>
-      {isOpen ? (
-        <div className={bem.e('opened', 'parent')}>
-          <div className="header">
-            {isChatStarted && chatStartStep === 'dialog' ? (
-              <>
-                <img src={chatBot} alt="chatbot" className="botpicture" />
-                <div>
-                  <div className="botname">{chatStatus?.data?.log?.customerServiceName || 'Customer Service'}</div>
-                  <div className="botstatus">
-                    <span className={isEnabled ? 'on' : 'off'} />
-                    {isEnabled ? 'connected' : 'disconnected'}
+    <>
+      <div className={bem.b()}>
+        {isOpen ? (
+          <div className={bem.e('opened', 'parent')}>
+            <div className={`header ${chatNotStartStep === 'review' ? 'review' : ''}`}>
+              {isChatStarted && chatStartStep === 'dialog' ? (
+                <>
+                  <img src={chatBot} alt="chatbot" className="botpicture" />
+                  <div>
+                    <div className="botname">{chatStatus?.data?.log?.customerServiceName || 'Customer Service'}</div>
+                    <div className="botstatus">
+                      <span className={isEnabled ? 'on' : 'off'} />
+                      {isEnabled ? 'connected' : 'disconnected'}
+                    </div>
                   </div>
-                </div>
-              </>
-            ) : (
-              <>
-                <img src={chatIcon} alt="chatIcon" className="botpicture" />
-                <div className="botname">Customer Service</div>
-              </>
-            )}
-            <div className="close" onClick={() => setIsOpen(false)}>
-              <MinusIcon />
+                </>
+              ) : isChatStarted === false && chatNotStartStep === 'review' ? (
+                <PDFDownloadLink
+                  document={<ChatPdf chatStatus={chatStatus} />}
+                  fileName={`chathistory-${chatStatus?.data?.log?.ticketId?.ticketId}.pdf`}>
+                  {() => <Button className="download-chat">Unduh percakapan</Button>}
+                </PDFDownloadLink>
+              ) : (
+                <>
+                  <img src={chatIcon} alt="chatIcon" className="botpicture" />
+                  <div className="botname">Customer Service</div>
+                </>
+              )}
+              <div className="close" onClick={() => setIsOpen(false)}>
+                <MinusIcon />
+              </div>
             </div>
+            <div className="body">{isChatStarted ? <ChatStart /> : <ChatNotStart />}</div>
           </div>
-          <div className="body">{isChatStarted ? <ChatStart /> : <ChatNotStart />}</div>
-        </div>
-      ) : (
-        <ChatMinimized handleClick={() => setIsOpen(true)} />
-      )}
-    </div>
+        ) : (
+          <ChatMinimized handleClick={() => setIsOpen(true)} />
+        )}
+      </div>
+    </>
   );
 };

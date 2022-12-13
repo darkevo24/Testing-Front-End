@@ -134,12 +134,12 @@ export const ChatDialog = ({ chatHistoryList, addToHistoryList, setFile }) => {
     try {
       await dispatch(
         createChatHistory({
-          chatLogsId: chatHistoryList[0].chatLogsId,
+          chatLogsId: chatHistoryList?.[0]?.chatLogsId,
           message: messageToSend,
         }),
       );
       addToHistoryList({
-        chatLogsId: chatHistoryList[0].chatLogsId,
+        chatLogsId: chatHistoryList?.[0]?.chatLogsId,
         message: messageToSend,
       });
       setMessageToSend('');

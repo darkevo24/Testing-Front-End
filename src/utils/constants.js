@@ -261,7 +261,7 @@ export const TOPIC_LIST = [
       'Komunikasi',
       'Perencanaan Pembangunan Nasional',
       'Aparatur Negara',
-      'Kessekretariatan Negara',
+      'Kesekretariatan Negara',
       'Pertanahan',
       'Kependudukan',
     ],

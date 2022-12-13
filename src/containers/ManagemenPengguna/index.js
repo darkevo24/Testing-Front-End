@@ -9,7 +9,14 @@ import TableLoader from 'components/Loader/TableLoader';
 import SingleDropDown from 'components/DropDown/SingleDropDown';
 import styled from 'styled-components';
 import bn from 'utils/bemNames';
-import { getUserListData, userlistSelector, getRoleData, rolelistSelector } from './reducer';
+import {
+  getUserListData,
+  userlistSelector,
+  getRoleData,
+  rolelistSelector,
+  instansiSelector,
+  getInstansiData,
+} from './reducer';
 
 const bem = bn('content-table');
 const Container = styled.div`
@@ -24,7 +31,7 @@ const ManagementPengguna = ({ textSearch }) => {
   const [filter, setFilter] = useState({ page: 1, size: 10, roles: '', status: '', q: '' });
   const { totalPages, totalRecords, size, page, records } = useSelector(userlistSelector);
   const { roles } = useSelector(rolelistSelector);
-
+  const { nama: namaInstansi } = useSelector(instansiSelector);
   const fetchDataset = (params) => {
     return dispatch(getUserListData({ filter }));
   };
@@ -38,6 +45,7 @@ const ManagementPengguna = ({ textSearch }) => {
     if (roles.length === 0) {
       dispatch(getRoleData());
     }
+    dispatch(getInstansiData());
   }, []);
 
   const handleSearch = (value = '') => {
@@ -135,7 +143,9 @@ const ManagementPengguna = ({ textSearch }) => {
     <Container>
       <div className={bem.e('section')}>
         <div className={(bem.e('header'), 'mb-32')}>
-          <div style={{ fontSize: '24px', fontWeight: '700', marginBottom: '10px' }}>Managemen Pengguna</div>
+          <div style={{ fontSize: '24px', fontWeight: '700', marginBottom: '10px' }}>
+            Managemen Pengguna <span style={{ color: 'gray' }}> - {namaInstansi}</span>
+          </div>
           <div className="d-flex justify-content-between">
             <Button
               style={{ background: '#ED1C24', fontSize: '14px' }}

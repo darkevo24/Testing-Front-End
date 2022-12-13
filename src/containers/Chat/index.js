@@ -70,7 +70,6 @@ export const Chat = ({ setFile }) => {
   }, [email]);
 
   React.useEffect(() => {
-    //socket.connect();
     socket.on('connect_error', (err) => {
       console.error(err);
     });
@@ -88,8 +87,9 @@ export const Chat = ({ setFile }) => {
 
     socket.on('chat request processed', (msg) => {
       if (msg === 'approved') {
+        setIsChatStarted(true);
         setChatStartStep('dialog');
-        dispatch(getChatStatus(email));
+        dispatch(getChatStatus({ email }));
       } else if (msg === 'rejected') {
         setIsChatStarted(false);
         setChatNotStartStep('rejected');
@@ -101,7 +101,6 @@ export const Chat = ({ setFile }) => {
       socket.off('isEnabled changed');
       socket.off('chat request processed');
       socket.off('chat message');
-      socket.off('chat request');
       socket.off('chat end');
     };
   }, []);
@@ -151,16 +150,6 @@ export const Chat = ({ setFile }) => {
         phone: data.phone,
       }),
     );
-
-    socket.emit('chat request');
-  };
-
-  const addToHistoryList = (data) => {
-    dispatch(getChatStatus({ email }));
-    data.isSentByUser = true;
-    data.isSentByAdmin = false;
-
-    socket.emit('chat message', data);
   };
 
   const Greeting = () => {
@@ -191,7 +180,7 @@ export const Chat = ({ setFile }) => {
     if (chatStartStep === 'waiting') {
       return <ChatWaiting />;
     } else if (chatStartStep === 'dialog') {
-      return <ChatDialog chatHistoryList={chatHistoryList} addToHistoryList={addToHistoryList} setFile={setFile} />;
+      return <ChatDialog chatHistoryList={chatHistoryList} email={email} setFile={setFile} />;
     } else {
       return <div>None</div>;
     }
@@ -202,7 +191,7 @@ export const Chat = ({ setFile }) => {
       <div className={bem.b()}>
         {isOpen ? (
           <div className={bem.e('opened', 'parent')}>
-            <div className="header">
+            <div className={`header ${chatNotStartStep === 'review' ? 'review' : ''}`}>
               {isChatStarted && chatStartStep === 'dialog' ? (
                 <>
                   <img src={chatBot} alt="chatbot" className="botpicture" />
@@ -214,6 +203,12 @@ export const Chat = ({ setFile }) => {
                     </div>
                   </div>
                 </>
+              ) : isChatStarted === false && chatNotStartStep === 'review' ? (
+                <PDFDownloadLink
+                  document={<ChatPdf chatStatus={chatStatus} />}
+                  fileName={`chathistory-${chatStatus?.data?.log?.ticketId?.ticketId}.pdf`}>
+                  {() => <Button className="download-chat">Unduh percakapan</Button>}
+                </PDFDownloadLink>
               ) : (
                 <>
                   <img src={chatIcon} alt="chatIcon" className="botpicture" />

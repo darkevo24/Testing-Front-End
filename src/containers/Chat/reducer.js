@@ -22,6 +22,15 @@ export const getChatSettings = createAsyncThunk('portal/chatSettings', async () 
 });
 
 export const getChatStatus = createAsyncThunk('portal/chatStatus', async (params) => {
+  // If params doesn't have email, get from local storage
+  if (!params.email) {
+    const chatCredentials = localStorage.getItem('sdi_chat_credentials');
+    try {
+      const credentialObj = JSON.parse(chatCredentials);
+      if (credentialObj.email) params.email = credentialObj.email;
+    } catch (e) {}
+  }
+
   if (!params.email) {
     return {
       code: 'CAN_START_NEW',

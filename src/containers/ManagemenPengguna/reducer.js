@@ -72,6 +72,7 @@ export const INITIAL_STATE = {
     logData: [],
     roles: [],
     loading: false,
+    nama: '',
   },
   userdata: {
     loading: false,
@@ -141,6 +142,7 @@ const managemenPenggunaSlice = createSlice({
     builder.addCase(getInstansiData.fulfilled, (state, action) => {
       state.dataset.loading = false;
       state.dataset.records = action.payload.content;
+      state.dataset.nama = action.payload.content?.instansiName;
     });
     builder.addCase(getInstansiData.rejected, (state, action) => {
       state.dataset.loading = false;

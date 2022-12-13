@@ -70,7 +70,6 @@ export const Chat = ({ setFile }) => {
   }, [email]);
 
   React.useEffect(() => {
-    //socket.connect();
     socket.on('connect_error', (err) => {
       console.error(err);
     });
@@ -90,7 +89,7 @@ export const Chat = ({ setFile }) => {
       if (msg === 'approved') {
         setIsChatStarted(true);
         setChatStartStep('dialog');
-        dispatch(getChatStatus(email));
+        dispatch(getChatStatus({ email }));
       } else if (msg === 'rejected') {
         setIsChatStarted(false);
         setChatNotStartStep('rejected');

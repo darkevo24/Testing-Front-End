@@ -143,6 +143,9 @@ export const ChatDialog = ({ chatHistoryList, addToHistoryList, setFile }) => {
         message: messageToSend,
       });
       setMessageToSend('');
+      setTimeout(() => {
+        document.getElementById('chat-input').focus();
+      }, 500);
     } catch (e) {
       console.error(e);
     }
@@ -156,9 +159,13 @@ export const ChatDialog = ({ chatHistoryList, addToHistoryList, setFile }) => {
       <div className="bottom">
         <div className="chat-message-wrapper">
           <input
+            id="chat-input"
             className="input"
             value={messageToSend}
             onChange={(e) => setMessageToSend(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && messageToSend) sendMessage();
+            }}
             placeholder="Type a message"
           />
           <Button disabled={!messageToSend} onClick={sendMessage} className="br-8">

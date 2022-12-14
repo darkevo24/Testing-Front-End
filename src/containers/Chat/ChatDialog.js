@@ -10,7 +10,7 @@ import { createChatHistory, getChatStatus } from './reducer';
 import { icons } from 'components/Icons';
 import { getPdf } from 'utils/helper';
 
-export const ChatDialog = ({ chatHistoryList, email, setFile }) => {
+export const ChatDialog = ({ chatHistoryList, setFile }) => {
   const [messageToSend, setMessageToSend] = React.useState('');
 
   const dispatch = useDispatch();
@@ -138,7 +138,7 @@ export const ChatDialog = ({ chatHistoryList, email, setFile }) => {
           message: messageToSend,
         }),
       );
-      dispatch(getChatStatus({ email }));
+      dispatch(getChatStatus());
       setMessageToSend('');
       setTimeout(() => {
         document.getElementById('chat-input').focus();

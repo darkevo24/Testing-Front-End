@@ -6,11 +6,11 @@ import { Button } from 'components';
 import './chat.scss';
 
 import chatBot from 'assets/chat-bot.png';
-import { createChatHistory } from './reducer';
+import { createChatHistory, getChatStatus } from './reducer';
 import { icons } from 'components/Icons';
 import { getPdf } from 'utils/helper';
 
-export const ChatDialog = ({ chatHistoryList, addToHistoryList, setFile }) => {
+export const ChatDialog = ({ chatHistoryList, setFile }) => {
   const [messageToSend, setMessageToSend] = React.useState('');
 
   const dispatch = useDispatch();
@@ -138,11 +138,11 @@ export const ChatDialog = ({ chatHistoryList, addToHistoryList, setFile }) => {
           message: messageToSend,
         }),
       );
-      addToHistoryList({
-        chatLogsId: chatHistoryList?.[0]?.chatLogsId,
-        message: messageToSend,
-      });
+      dispatch(getChatStatus());
       setMessageToSend('');
+      setTimeout(() => {
+        document.getElementById('chat-input').focus();
+      }, 500);
     } catch (e) {
       console.error(e);
     }
@@ -156,9 +156,13 @@ export const ChatDialog = ({ chatHistoryList, addToHistoryList, setFile }) => {
       <div className="bottom">
         <div className="chat-message-wrapper">
           <input
+            id="chat-input"
             className="input"
             value={messageToSend}
             onChange={(e) => setMessageToSend(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && messageToSend) sendMessage();
+            }}
             placeholder="Type a message"
           />
           <Button disabled={!messageToSend} onClick={sendMessage} className="br-8">

@@ -22,21 +22,21 @@ export const getChatSettings = createAsyncThunk('portal/chatSettings', async () 
 });
 
 export const getChatStatus = createAsyncThunk('portal/chatStatus', async (params) => {
+  let email = '';
+
   // If params doesn't have email, get from local storage
-  if (!params.email) {
-    const chatCredentials = localStorage.getItem('sdi_chat_credentials');
-    try {
-      const credentialObj = JSON.parse(chatCredentials);
-      if (credentialObj.email) params.email = credentialObj.email;
-    } catch (e) {}
+  if (!params?.email) {
+    email = localStorage.getItem('sdi_chat_email');
   }
 
-  if (!params.email) {
+  if (!params?.email && !email) {
     return {
       code: 'CAN_START_NEW',
     };
   } else {
-    const response = await post(apiUrls.crmChatStatus, params);
+    const response = await post(apiUrls.crmChatStatus, {
+      email: params?.email || email,
+    });
     return response?.data;
   }
 });

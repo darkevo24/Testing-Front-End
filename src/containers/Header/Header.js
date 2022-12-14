@@ -124,7 +124,17 @@ export const Header = () => {
   );
 
   const PUBLIC_ROUTES = useMemo(
-    () => [...COMMON_ROUTES, { title: 'Berita', link: '/berita' }, { title: 'Tentang', link: '/tentang' }],
+    () => [
+      ...COMMON_ROUTES,
+      {
+        title: 'Media',
+        links: [
+          { title: 'Berita', link: '/berita' },
+          { title: 'Webinar', link: `https://lms.satudata.go.id/#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
+        ],
+      },
+      { title: 'Tentang', link: '/tentang' },
+    ],
     [],
   );
 

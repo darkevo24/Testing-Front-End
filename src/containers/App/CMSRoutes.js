@@ -7,6 +7,7 @@ const DashboardPage = lazy(() => import('containers/CMS/Dashboard'));
 const KomunitasAhliPage = lazy(() => import('containers/CMS/KomunitasAhli'));
 const KomunitasAhliDetailPage = lazy(() => import('containers/CMS/KomunitasAhli/KomunitasAhliDetail'));
 const ManageKomunitasAhliPage = lazy(() => import('containers/CMS/KomunitasAhli/ManageKomunitasAhli'));
+const BeritaKategori = lazy(() => import('containers/CMS/BeritaKategori'));
 const BeritaLayout = lazy(() => import('containers/CMS/BeritaLayout'));
 const BeritaPage = lazy(() => import('containers/CMS/Berita'));
 const BeritaBaruPage = lazy(() => import('containers/CMS/BeritaBaru'));
@@ -332,6 +333,20 @@ function CMSRoutes() {
           exact
           path="/cms/berita-layout"
           component={BeritaLayout}
+          permissions={[
+            Roles.ADMIN,
+
+            Roles.CONTENT_CREATOR,
+            Roles.CONTENT_EDITOR,
+            Roles.SEKRETARIANT,
+            Roles.SEKRETARIANT_CREATOR,
+            Roles.SEKRETARIANT_EDITOR,
+          ]}
+        />
+        <PrivateRoute
+          exact
+          path="/cms/berita-kategori"
+          component={BeritaKategori}
           permissions={[
             Roles.ADMIN,
 

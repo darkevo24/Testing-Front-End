@@ -134,6 +134,7 @@ export const apiUrls = {
   bimtekMateriDownload: getPortalEndpoint('v1/bimtek/download-zip'),
   bimtekMateriTerdekatDownload: getApiEndpoint('file/public-download'),
   beritaLayout: getPublicV1Endpoint('layout'),
+  beritaKategori: getCMSEndpoint('berita/category'),
   updateKiriLayout: getPublicV1Endpoint('layout/code/kiri'),
   bimtekDokumentasi: getPortalEndpoint('v1/bimtek/dokumentasi'),
   bimteklatestDokumentasi: getPortalEndpoint('v1/bimtek/dokumentasi-latest'),

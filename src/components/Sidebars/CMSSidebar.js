@@ -71,6 +71,7 @@ export const CMSSidebar = () => {
               Berita
             </Accordion.Header>
             <Accordion.Body>
+              <SidebarItem title="Kategori Berita" pathname="/cms/berita-kategori" />
               <SidebarItem title="Konten Berita" pathname="/cms/berita-konten" />
               <SidebarItem title="Layout Berita" pathname="/cms/berita-layout" />
               <SidebarItem title="Subscribers" pathname="/cms/subscribers" />

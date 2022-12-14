@@ -44,15 +44,17 @@ export const Chat = ({ setFile }) => {
   const isLoggedIn = !!keycloak.authenticated;
   const user = useSelector(userSelector);
 
-  const email = React.useMemo(() => {
-    if (user) {
-      return user?.email;
-    } else {
-      const chatCredentials = localStorage.getItem('sdi_chat_credentials');
+  React.useEffect(() => {
+    dispatch(getChatSettings());
+
+    const chatCredentials = localStorage.getItem('sdi_chat_credentials');
+    if (chatCredentials) {
       try {
         const credentialObj = JSON.parse(chatCredentials);
-        if (!credentialObj.email) throw 'No email';
-        return credentialObj.email;
+        if (credentialObj.email) {
+          localStorage.setItem('sdi_chat_email', credentialObj.email);
+          reconnectSocket(credentialObj.email);
+        }
       } catch (e) {
         return null;
       }
@@ -60,14 +62,11 @@ export const Chat = ({ setFile }) => {
   }, []);
 
   React.useEffect(() => {
-    dispatch(getChatSettings());
-  }, []);
-
-  React.useEffect(() => {
-    dispatch(getChatStatus({ email }));
-    socket.auth = { email };
-    socket.disconnect().connect();
-  }, [email]);
+    if (user) {
+      localStorage.setItem('sdi_chat_email', user?.email);
+      reconnectSocket(user?.email);
+    }
+  }, [user]);
 
   React.useEffect(() => {
     socket.on('connect_error', (err) => {
@@ -78,18 +77,18 @@ export const Chat = ({ setFile }) => {
     });
 
     socket.on('chat message', (msg) => {
-      dispatch(getChatStatus({ email }));
+      dispatch(getChatStatus());
     });
 
     socket.on('chat end', (msg) => {
-      dispatch(getChatStatus({ email }));
+      dispatch(getChatStatus());
     });
 
     socket.on('chat request processed', (msg) => {
       if (msg === 'approved') {
         setIsChatStarted(true);
         setChatStartStep('dialog');
-        dispatch(getChatStatus({ email }));
+        dispatch(getChatStatus());
       } else if (msg === 'rejected') {
         setIsChatStarted(false);
         setChatNotStartStep('rejected');
@@ -123,8 +122,8 @@ export const Chat = ({ setFile }) => {
 
         // When create Chat Request for the first time, add auth to socket
         if (chatStatus.email) {
-          socket.auth = { email: chatStatus.email };
-          socket.disconnect().connect();
+          reconnectSocket(chatStatus.email, false);
+          localStorage.setItem('sdi_chat_email', chatStatus.email);
         }
       } else if (chatStatus.code === 'REJECTED') {
         setIsChatStarted(false);
@@ -139,6 +138,12 @@ export const Chat = ({ setFile }) => {
       }
     }
   }, [chatStatus]);
+
+  const reconnectSocket = (email, getStatus = true) => {
+    if (getStatus) dispatch(getChatStatus());
+    socket.auth = { email };
+    socket.disconnect().connect();
+  };
 
   const startChat = async (data) => {
     await dispatch(createChatRequest({ isLoggedIn, data }));
@@ -180,7 +185,7 @@ export const Chat = ({ setFile }) => {
     if (chatStartStep === 'waiting') {
       return <ChatWaiting />;
     } else if (chatStartStep === 'dialog') {
-      return <ChatDialog chatHistoryList={chatHistoryList} email={email} setFile={setFile} />;
+      return <ChatDialog chatHistoryList={chatHistoryList} setFile={setFile} />;
     } else {
       return <div>None</div>;
     }

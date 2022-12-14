@@ -71,6 +71,7 @@ const ContactUs = () => {
     defaultValues: {
       full_name: user?.nama,
       email: user?.email,
+      telephone: user?.noHp,
     },
   });
 
@@ -261,7 +262,7 @@ const ContactUs = () => {
           <Form.Group controlId="phoneNumber" className="mb-3">
             <Form.Label>Nomor Telefon</Form.Label>
             <Form.Control
-              defaultValue={user?.noHp ?? ''}
+              value={user?.noHp ?? null}
               type="phone"
               onChange={(e) => {
                 setValue('telephone', e.target.value);

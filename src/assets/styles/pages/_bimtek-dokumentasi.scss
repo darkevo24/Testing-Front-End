@@ -48,7 +48,7 @@
 
   &__modal {
     width: 90%;
-    max-width: 800px !important;
+    max-width: 1000px !important;
 
     &-header {
       height: 400px;
@@ -109,9 +109,6 @@
   &__scroll-img {
     max-width: 100%;
     width: 100%;
-    img {
-      height: 660px;
-    }
   }
   &__detail-close {
     position: absolute;

@@ -95,10 +95,10 @@ const Subscribers = ({ textSearch }) => {
     const items = [
       {
         Header: 'No',
+        //count number of data
         Cell: ({ row }) => {
-          return <div>{row.index + 1}</div>;
+          return row.index + 1 + (filter.page - 1) * filter.size;
         },
-        disableSortBy: true,
       },
       {
         Header: 'Alamat Email',
@@ -110,7 +110,7 @@ const Subscribers = ({ textSearch }) => {
       },
     ];
     return items;
-  }, []);
+  }, [page]);
 
   const tableConfig = {
     columns,

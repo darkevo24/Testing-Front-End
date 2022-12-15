@@ -366,7 +366,7 @@ const CMSStrukturOrganisasi = () => {
                       </>
                     ) : (
                       <>
-                        <img src={selectedOrganization?.officialMemo?.location} alt="foto" style={{ maxWidth: '500px' }} />
+                        <img src={selectedOrganization?.officialMemo?.location} alt="foto" style={{ maxWidth: '100vh' }} />
                         <div>
                           <UploadButton className="mt-3" onClick={() => openUploadForm('sdp-upload-dokumentasi')}>
                             Ubah Gambar

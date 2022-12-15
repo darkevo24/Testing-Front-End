@@ -121,6 +121,7 @@ const CMSForumSDIForm = () => {
       if (flag) return;
       const isValid = isValidFile(524288, file, 'lampiran', 'Only File with Max 512KB');
       if (!isValid) flag = true;
+      console.log('++', file);
     });
     if (!flag) setLampiran(Object.values(files));
   };

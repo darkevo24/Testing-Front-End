@@ -112,7 +112,7 @@ const TentangSDI = () => {
             </div>
           </Col>
           <Col xs={9} style={{ marginTop: '60px' }}>
-            {openTab && <img className={bem.e('photo')} src={detailData?.photo} alt="" style={{ maxWidth: '500px' }} />}
+            {openTab && <img className={bem.e('photo')} src={detailData?.photo} alt="" style={{ maxWidth: '100vw' }} />}
           </Col>
         </Row>
       </div>

@@ -45,7 +45,7 @@ export const bpmDevUrl = window.location.hostname === 'localhost' ? bpmWaveMaker
 export const bpmUrl = isSdiProduction ? bpmProdUrl : bpmDevUrl;
 
 export const apmUrl = isSdiProduction ? 'http://apm.data.go.id/' : 'http://apm.satudata.go.id/';
-export const crmUrl = isSdiProduction ? 'https://crm.data.go.id/backend' : 'http://localhost:4040';
+export const crmUrl = isSdiProduction ? 'https://crm.data.go.id/backend' : 'https://crm.data.go.id/backend';
 export const socketUrl = isSdiProduction ? 'https://crm.data.go.id/' : 'https://crm.satudata.go.id/';
 
 export const apiUrl = `${backendUrl}/api-be`;

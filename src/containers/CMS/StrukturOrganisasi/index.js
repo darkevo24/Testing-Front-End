@@ -307,7 +307,7 @@ const CMSStrukturOrganisasi = () => {
                 <StrukturButton onClick={() => openTab('edit', org.id)} variant="secondary">
                   <Row>
                     <Col xs={10} className="d-flex flex-start">
-                      {org.organizationName}
+                      <div className="text-truncate d-inline-block">{org.organizationName}</div>
                     </Col>
                     <Col xs={2}>
                       <Arrow />
@@ -366,7 +366,7 @@ const CMSStrukturOrganisasi = () => {
                       </>
                     ) : (
                       <>
-                        <img src={selectedOrganization?.officialMemo?.location} alt="foto" style={{ maxWidth: '500px' }} />
+                        <img src={selectedOrganization?.officialMemo?.location} alt="foto" style={{ maxWidth: '100vh' }} />
                         <div>
                           <UploadButton className="mt-3" onClick={() => openUploadForm('sdp-upload-dokumentasi')}>
                             Ubah Gambar

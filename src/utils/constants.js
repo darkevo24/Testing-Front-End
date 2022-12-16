@@ -44,6 +44,8 @@ export const bpmProdUrl = 'https://bpm.data.go.id/#/';
 export const bpmDevUrl = window.location.hostname === 'localhost' ? bpmWaveMakerOnlineUrl : bpmStagingUrl;
 export const bpmUrl = isSdiProduction ? bpmProdUrl : bpmDevUrl;
 
+export const lmsUrl = isSdiProduction ? 'https://lms.data.go.id/' : 'https://lms.satudata.go.id/';
+
 export const apmUrl = isSdiProduction ? 'http://apm.data.go.id/' : 'http://apm.satudata.go.id/';
 export const crmUrl = isSdiProduction ? 'https://crm.data.go.id/backend' : 'https://crm.satudata.go.id/backend';
 export const socketUrl = isSdiProduction ? 'https://crm.data.go.id/' : 'https://crm.satudata.go.id/';
@@ -368,9 +370,7 @@ export const CMS_DASHBOARD = [
     icon: <LmsIcon />,
     iconColor: 'bg-blue',
     link: '',
-    externalLink: isSdiProduction
-      ? 'https://lms.data.go.id/#/manageModulsNew'
-      : 'https://lms.satudata.go.id/#/manageModulsNew',
+    externalLink: `${lmsUrl}#/manageModulsNew`,
   },
   {
     title: 'CRM',

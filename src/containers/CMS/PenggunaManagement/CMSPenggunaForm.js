@@ -27,7 +27,7 @@ import Switch from 'components/Switch';
 export const penggunaFormId = 'pengguna-form-id';
 export const submitpenggunaForm = submitForm(penggunaFormId);
 
-const CMSpenggunaForm = ({ disabled, onSubmit, data, onStatusChange = () => {} }) => {
+const CMSpenggunaForm = ({ disabled, onSubmit, data, onStatusChange = () => {}, editing }) => {
   const [disableForm, setDisableForm] = useState(false);
   const [penggunaDetails, setPenggunaDetails] = useState({});
   const [instansiErr, setInstansiErr] = useState(false);
@@ -228,7 +228,7 @@ const CMSpenggunaForm = ({ disabled, onSubmit, data, onStatusChange = () => {} }
       <div className="sdp-error">{errors.unitKerja?.value?.message}</div>
       <Input
         group
-        disabled={disableForm}
+        disabled={editing || disableForm ? true : false}
         label="Email"
         name="email"
         control={control}

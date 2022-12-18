@@ -591,7 +591,6 @@ function CMSRoutes() {
           component={ForumSDIFormPage}
           permissions={[
             Roles.ADMIN,
-
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,
@@ -604,8 +603,6 @@ function CMSRoutes() {
           path="/cms/forum-sdi/manage-forum-sdi"
           component={ForumSDIFormPage}
           permissions={[
-            Roles.ADMIN,
-
             Roles.CONTENT_CREATOR,
             Roles.CONTENT_EDITOR,
             Roles.SEKRETARIANT,

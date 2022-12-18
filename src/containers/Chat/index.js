@@ -59,6 +59,9 @@ export const Chat = ({ setFile }) => {
         return null;
       }
     }
+
+    //clear previous chat
+    localStorage.removeItem('sdi_chat_message');
   }, []);
 
   React.useEffect(() => {

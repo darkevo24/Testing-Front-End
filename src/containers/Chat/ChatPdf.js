@@ -1,4 +1,4 @@
-import { Document, Page, Text, View, StyleSheet, PDFViewer } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import moment from 'moment';
 import React from 'react';
 
@@ -85,14 +85,22 @@ export const ChatPdf = ({ chatStatus }) => {
                 {message.isSentByAdmin && (
                   <View style={styles.chatAdmin}>
                     <Text style={{ marginBottom: 4 }}>{log.customerServiceName}</Text>
-                    <Text style={{ marginBottom: 4 }}>{message.message}</Text>
+                    {message.attachment.length ? (
+                      message.attachment.map((item) => <Text style={{ marginBottom: 4 }}>{item.name}</Text>)
+                    ) : (
+                      <Text style={{ marginBottom: 4 }}>{message.message}</Text>
+                    )}
                     <Text>{messageTime}</Text>
                   </View>
                 )}
                 {message.isSentByUser && (
                   <View style={styles.chatUser}>
                     <Text style={{ marginBottom: 4 }}>{log.name}</Text>
-                    <Text style={{ marginBottom: 4 }}>{message.message}</Text>
+                    {message.attachment.length ? (
+                      message.attachment.map((item) => <Text style={{ marginBottom: 4 }}>{item.name}</Text>)
+                    ) : (
+                      <Text style={{ marginBottom: 4 }}>{message.message}</Text>
+                    )}
                     <Text>{messageTime}</Text>
                   </View>
                 )}

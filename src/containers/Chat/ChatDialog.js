@@ -48,12 +48,13 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
                     <div className="flex justify-center">
                       <icons.pdfSvg className="w-8" />
                     </div>
-                    <div className="text-center text-gray1 mt-3 max-h-5">{message?.attachment[0].name}</div>
+                    <div className="text-center text-gray1 mt-3 max-h-5 max-w-30">{message?.attachment[0].name}</div>
                   </div>
                 ) : (
                   <img
                     src={message?.attachment[0].file}
                     alt="file-data"
+                    className="w-100"
                     onClick={() => setFile({ file: message?.attachment[0].file, type: 'image' })}
                   />
                 )}
@@ -89,6 +90,7 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
               ) : (
                 <img
                   src={message?.attachment[0].file}
+                  className="w-100"
                   alt="file-data"
                   onClick={() => setFile({ file: message?.attachment[0].file, type: 'image' })}
                 />

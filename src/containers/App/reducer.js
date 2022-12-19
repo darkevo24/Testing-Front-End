@@ -89,7 +89,12 @@ export const getRKPpn = createAsyncThunk('portal/getRKPpn', async () => {
 });
 
 export const getListKategori = createAsyncThunk('cms/getListKategori', async () => {
-  const response = await get(apiUrls.kategoriData);
+  const response = await get(`${apiUrls.cmsBeritaData}/category/list/all`);
+  return response?.data?.content;
+});
+
+export const setNewCategory = createAsyncThunk('cms/setNewCategory', async (body) => {
+  const response = await post(`${apiUrls.cmsBeritaData}/category/add`, body);
   return response?.data?.content;
 });
 
@@ -190,6 +195,17 @@ const AppSlice = createSlice({
     builder.addCase(getListKategori.rejected, (state) => {
       state.kategori.loading = false;
       state.kategori.error = 'Error in fetching kategori!';
+    });
+    builder.addCase(setNewCategory.pending, (state) => {
+      state.kategori.loading = true;
+    });
+    builder.addCase(setNewCategory.fulfilled, (state, action) => {
+      state.kategori.loading = false;
+      state.kategori.records = action.payload.records;
+    });
+    builder.addCase(setNewCategory.rejected, (state) => {
+      state.kategori.loading = false;
+      state.kategori.error = 'Error in create tagline!';
     });
 
     builder.addCase(getListTagline.pending, (state) => {

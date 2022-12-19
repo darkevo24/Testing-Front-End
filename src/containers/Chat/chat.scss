@@ -219,6 +219,11 @@
               width: fit-content;
               max-width: 15vw;
             }
+
+            .max-w-30 {
+              max-width: 120px;
+              overflow: scroll;
+            }
           }
           .chat-content-user {
             background: #f5f6fa;

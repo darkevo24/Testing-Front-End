@@ -81,6 +81,18 @@ export const Header = () => {
     return false;
   }, [user]);
 
+  const showDade = useMemo(() => {
+    if (!user) return false;
+    const { roles = null } = user;
+    return [
+      Roles.SEKRETARIANT,
+      Roles.SEKRETARIANT_CREATOR,
+      Roles.SEKRETARIAT_EDITOR,
+      Roles.EKSEKUTIF,
+      Roles.PENELITI,
+    ].includes(roles);
+  }, [user]);
+
   const showAppSec = useMemo(() => {
     if (!user) return false;
     const { roles = null } = user;
@@ -173,7 +185,7 @@ export const Header = () => {
           { title: 'Eksekutif', link: '/dashboard-eksekutif' },
           { title: 'Data Prioritas', link: '/dataprioritas' },
           { title: 'Dashboard Saya', link: '/dashboard-saya' },
-          { title: 'Analitika Data', link: 'http://103.225.242.87/' },
+          showDade ? { title: 'Analitika Data', link: 'https://dadectrl.data.go.id' } : { title: '', link: '' }, //this doesnt work
         ],
       },
       {

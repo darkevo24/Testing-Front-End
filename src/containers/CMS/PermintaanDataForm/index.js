@@ -191,7 +191,7 @@ const CMSPermintaanDataView = () => {
               <Input disabled group label="Produsen Data" name="instansi.nama" control={control} />
               <Input disabled group label="Jenis Data" name="jenisData" control={control} />
               <Input disabled group isLink label="URL Dataset" name="urlDataset" control={control} />
-              <Input disabled group label="Surat Permintaan Data" name="officialMemoName" control={control} />
+              <Input disabled isDownloadable group label="Surat Permintaan Data" name="officialMemoName" control={control} />
             </Form>
             <div>
               <h5 className="fw-bold mb-3 border-bottom-gray-stroke py-2">Informasi Peminta Data</h5>

@@ -144,7 +144,7 @@ const ManagementPengguna = ({ textSearch }) => {
       <div className={bem.e('section')}>
         <div className={(bem.e('header'), 'mb-32')}>
           <div style={{ fontSize: '24px', fontWeight: '700', marginBottom: '10px' }}>
-            Managemen Pengguna <span style={{ color: 'gray' }}> - {namaInstansi}</span>
+            Manajemen Pengguna <span style={{ color: 'gray' }}> - {namaInstansi}</span>
           </div>
           <div className="d-flex justify-content-between">
             <Button

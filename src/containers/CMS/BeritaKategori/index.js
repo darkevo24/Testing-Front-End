@@ -194,6 +194,16 @@ const CMSBeritaKategori = () => {
     pageSize: size,
     currentPage: page - 1,
     manualPagination: true,
+    // onPageIndexChange: (currentPage) => {
+    //   if (currentPage + 1 !== page) {
+    //     setFilter({ ...filter, page: currentPage + 1 });
+    //   }
+    // },
+    // onPageSizeChange: (pageSize) => {
+    //   if (pageSize !== size) {
+    //     setFilter({ ...filter, size: pageSize, page: 1 });
+    //   }
+    // },
     onPageIndexChange: (currentPage) => {
       if (currentPage + 1 !== page) {
         setFilter({ ...filter, page: currentPage + 1 });

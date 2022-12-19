@@ -14,7 +14,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { apiUrls, post } from 'utils/request';
 import { ComponentAccessibility } from 'components/ComponentAccess';
 import { USER_ROLES } from 'utils/constants';
-import { getListKategori, getListTagline, setNewTagline, kategoriSelector, taglineSelector } from 'containers/App/reducer';
+import {
+  getListKategori,
+  setNewCategory,
+  getListTagline,
+  setNewTagline,
+  kategoriSelector,
+  taglineSelector,
+} from 'containers/App/reducer';
 
 export const beritaFormId = 'berita-form-id';
 export const submitBeritaForm = submitForm(beritaFormId);
@@ -73,23 +80,21 @@ const schema = yup
 
 const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
   const dispatch = useDispatch();
-  const [listKategori, setListKategori] = useState([]);
-  const { records: kategoriRecords } = useSelector(kategoriSelector);
+  const { records: kategoriRecords } = useSelector((state) => state.global?.kategori);
   const { records: taglineRecords } = useSelector(taglineSelector);
 
-  useEffect(() => {
-    setListKategori(kategoriRecords);
-  }, [kategoriRecords]);
-
   const createKategori = (data) => {
-    setValue('kategori', { id: 'new', value: 'new', label: data });
-    setListKategori([
-      ...listKategori,
-      {
-        id: 'new',
-        keterangan: data,
-      },
-    ]);
+    dispatch(setNewCategory({ categoryName: data }))
+      .then((res) => {
+        setValue('kategori', { value: res.payload.id, label: res.payload.categoryName });
+        dispatch(getListKategori('BERITA'));
+      })
+      .then(() => {
+        setValue('kategori', {
+          value: kategoriRecords?.find((kategori) => kategori.categoryName === data)?.id,
+          label: data,
+        });
+      });
   };
 
   const createTagline = (data) => {
@@ -109,6 +114,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
     setValue,
     getValues,
     setError,
+    register,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -119,7 +125,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
         ? data.kategori
         : {
             value: data.kategori,
-            label: kategoriRecords.find((kategori) => kategori.id === data.kategori)?.keterangan,
+            label: kategoriRecords?.find((kategori) => kategori.id === data.kategori)?.categoryName,
           },
       taglineId: data.tagLineList?.map((tagline) => ({ label: tagline.keterangan, value: tagline.id })),
     },
@@ -159,12 +165,11 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
     }
   }, [foto]);
 
-  useEffect(() => {
-    console.log(getValues('taglineId'));
-  }, [getValues('taglineId')]);
-
-  const handleInputChange = (data) => {
-    console.log('hi');
+  const handleKategoriChange = (value) => {
+    setValue('kategori', {
+      value: value.value,
+      label: kategoriRecords?.find((kategori) => kategori.id === value.value)?.categoryName,
+    });
   };
 
   return (
@@ -186,11 +191,12 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
       <Form.Group className="mb-3">
         <Form.Label>Kategori *</Form.Label>
         <SingleSelectDropdown
-          data={listKategori.map((kategori) => ({ id: kategori.id, value: kategori.id, label: kategori.keterangan }))}
+          data={kategoriRecords?.map((kategori) => ({ id: kategori.id, value: kategori.id, label: kategori.categoryName }))}
           control={control}
           placeholder="Pilih Kategori"
           isCreatable={true}
           onCreateOption={createKategori}
+          onChange={handleKategoriChange}
           name="kategori"
           isDisabled={disabled}
           error={errors.kategori?.message}

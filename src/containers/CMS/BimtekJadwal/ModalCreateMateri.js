@@ -168,7 +168,7 @@ export const ModalCreateMateri = ({
           <div className="wrapper-lampiran">
             <div className="wrapper-lampiran-header" onClick={() => openUploadForm('sdp-upload-materi')}>
               <span className="upload"> Upload </span>
-              <span className="cta"> Upload Image (format .png, .jpeg, .jpg max. 512KB) </span>
+              <span className="cta"> Total Upload Maksimum 15MB </span>
             </div>
             <div className="wrapper-lampiran-file">
               {listMateri.map((data, index) => {

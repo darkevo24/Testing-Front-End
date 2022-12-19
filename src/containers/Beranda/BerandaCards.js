@@ -248,7 +248,9 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
             frameBorder="0"
             seamless
             title="Perkiraan Cuaca"
-            src="http://103.170.104.187:8088/superset/dashboard/106/?native_filters=%28%29"></iframe>
+            src="https://analitik.data.go.id/superset/dashboard/106/?native_filters=%28%29"
+            // src="http://103.170.104.187:8088/superset/dashboard/106/?native_filters=%28%29"
+          ></iframe>
         </Col>
       </Row>
     </Box>

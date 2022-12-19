@@ -38,9 +38,9 @@ const TopikPopuler = () => {
   }, []);
   const { records: dataPopularTopic } = useSelector(popularTopicSelector);
 
-  const handleClick = (e, id) => {
+  const handleClick = (e, id, keterangan) => {
     e.preventDefault();
-    hisotry.push(`/berita-topik/${id}`);
+    hisotry.push(`/berita-topik/${id}/${keterangan}`);
   };
 
   return (
@@ -55,7 +55,7 @@ const TopikPopuler = () => {
             <TopikItem className="child" key={index}>
               <span>{value.keterangan}</span>
               <span className="cursor-pointer">
-                <ArrowRightRed onClick={(e) => handleClick(e, value.id)} />
+                <ArrowRightRed onClick={(e) => handleClick(e, value.id, value.keterangan)} />
               </span>
             </TopikItem>
           );

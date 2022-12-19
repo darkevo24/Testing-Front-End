@@ -76,7 +76,7 @@ function AppRoutes(props) {
             <Route path="/berita/perbulan/:date" component={BeritaPerBulan} />
             <Route exact path="/berita/preview" component={BeritaPreviewPage} />
             <Route exact path="/berita-populer" component={BeritaPopular} />
-            <Route exact path="/berita-topik/:id" component={BeritaByTopic} />
+            <Route exact path="/berita-topik/:id/:keterangan?" component={BeritaByTopic} />
             <Route exact path="/berita/:id/:slug?" component={BeritaDetailPage} />
             <Route exact path="/tentang" component={TentangPage} />
             <Route exact path="/daftar-menjadi-ahli" component={DaftarMenjadiAhli} />

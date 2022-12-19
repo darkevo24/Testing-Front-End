@@ -73,9 +73,9 @@ const BeritaByTopik = () => {
     }
   }, [beritaLayoutState]);
 
-  const handleDetail = (e, id) => {
+  const handleDetail = (e, id, slug) => {
     e.preventDefault();
-    history.push(`/berita/${id}`);
+    history.push(`/berita/${id}/${slug}`);
   };
 
   const handleLoadMore = () => {
@@ -107,7 +107,7 @@ const BeritaByTopik = () => {
                     </div>
                     <div className="col-lg-8">
                       <div className="topik">{record.kategori}</div>
-                      <div className="judul" onClick={(e) => handleDetail(e, record.id)}>
+                      <div className="judul" onClick={(e) => handleDetail(e, record.id, record.slug)}>
                         {record.judul}
                       </div>
                       <div className="konten">{record.slug}</div>

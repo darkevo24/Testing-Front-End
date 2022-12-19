@@ -94,9 +94,10 @@ const BeritaPerBulan = () => {
     }
   }, [beritaLayoutState]);
 
-  const handleDetail = (e, id) => {
-    e.preventDefault();
-    history.push(`/berita/${id}`);
+  const handleDetail = (event, id, slug) => {
+    event.preventDefault();
+    history.push(`/berita/${id}/${slug}`);
+    console.log('++', records);
   };
 
   const handleLoadMore = () => {
@@ -135,7 +136,7 @@ const BeritaPerBulan = () => {
                     </ImageContainer>
                     <div className="col-lg-8">
                       <span className="topik">{kategori}</span>
-                      <div className="judul" onClick={(e) => handleDetail(e, id)}>
+                      <div className="judul" onClick={(e) => handleDetail(e, id, slug)}>
                         {judul}
                       </div>
                       {slug.length > 250 ? (

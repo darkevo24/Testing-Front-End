@@ -80,22 +80,21 @@ const schema = yup
 
 const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
   const dispatch = useDispatch();
-  const [listKategori, setListKategori] = useState([]);
-  const { records: kategoriRecords } = useSelector(kategoriSelector);
+  const { records: kategoriRecords } = useSelector((state) => state.global?.kategori);
   const { records: taglineRecords } = useSelector(taglineSelector);
 
-  // useEffect(() => {
-  //   setListKategori(kategoriRecords);
-  // }, [kategoriRecords]);
-
   const createKategori = (data) => {
-    // dispatch(setNewCategory({ categoryName: data })).then((res) => {
-    // let currentKategori = getValues('kategori') || [];
-    // currentKategori.push({ id: res.payload.id, value: res.payload.id, label: res.payload.categoryName });
-    // setValue('kategori', currentKategori);
-    // console.log('++', currentKategori);
-    // });
-    // .then(() => dispatch(getListKategori()));
+    dispatch(setNewCategory({ categoryName: data }))
+      .then((res) => {
+        setValue('kategori', { value: res.payload.id, label: res.payload.categoryName });
+        dispatch(getListKategori('BERITA'));
+      })
+      .then(() => {
+        setValue('kategori', {
+          value: kategoriRecords?.find((kategori) => kategori.categoryName === data)?.id,
+          label: data,
+        });
+      });
   };
 
   const createTagline = (data) => {
@@ -104,7 +103,6 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
         let currentTag = getValues('taglineId') || [];
         currentTag.push({ value: res.payload.id, label: res.payload.keterangan });
         setValue('taglineId', currentTag);
-        console.log('++', currentTag);
       })
       .then(() => dispatch(getListTagline()));
   };
@@ -116,6 +114,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
     setValue,
     getValues,
     setError,
+    register,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -126,7 +125,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
         ? data.kategori
         : {
             value: data.kategori,
-            label: kategoriRecords.find((kategori) => kategori.id === data.kategori)?.categoryName,
+            label: kategoriRecords?.find((kategori) => kategori.id === data.kategori)?.categoryName,
           },
       taglineId: data.tagLineList?.map((tagline) => ({ label: tagline.keterangan, value: tagline.id })),
     },
@@ -166,10 +165,11 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
     }
   }, [foto]);
 
-  useEffect(() => {}, [getValues('taglineId')]);
-
-  const handleInputChange = (data) => {
-    console.log('hi');
+  const handleKategoriChange = (value) => {
+    setValue('kategori', {
+      value: value.value,
+      label: kategoriRecords?.find((kategori) => kategori.id === value.value)?.categoryName,
+    });
   };
 
   return (
@@ -191,11 +191,12 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
       <Form.Group className="mb-3">
         <Form.Label>Kategori *</Form.Label>
         <SingleSelectDropdown
-          data={kategoriRecords.map((kategori) => ({ id: kategori.id, value: kategori.id, label: kategori.categoryName }))}
+          data={kategoriRecords?.map((kategori) => ({ id: kategori.id, value: kategori.id, label: kategori.categoryName }))}
           control={control}
           placeholder="Pilih Kategori"
           isCreatable={true}
           onCreateOption={createKategori}
+          onChange={handleKategoriChange}
           name="kategori"
           isDisabled={disabled}
           error={errors.kategori?.message}

@@ -14,7 +14,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { apiUrls, post } from 'utils/request';
 import { ComponentAccessibility } from 'components/ComponentAccess';
 import { USER_ROLES } from 'utils/constants';
-import { getListKategori, getListTagline, setNewTagline, kategoriSelector, taglineSelector } from 'containers/App/reducer';
+import {
+  getListKategori,
+  setNewCategory,
+  getListTagline,
+  setNewTagline,
+  kategoriSelector,
+  taglineSelector,
+} from 'containers/App/reducer';
 
 export const beritaFormId = 'berita-form-id';
 export const submitBeritaForm = submitForm(beritaFormId);
@@ -77,19 +84,18 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
   const { records: kategoriRecords } = useSelector(kategoriSelector);
   const { records: taglineRecords } = useSelector(taglineSelector);
 
-  useEffect(() => {
-    setListKategori(kategoriRecords);
-  }, [kategoriRecords]);
+  // useEffect(() => {
+  //   setListKategori(kategoriRecords);
+  // }, [kategoriRecords]);
 
   const createKategori = (data) => {
-    setValue('kategori', { id: 'new', value: 'new', label: data });
-    setListKategori([
-      ...listKategori,
-      {
-        id: 'new',
-        keterangan: data,
-      },
-    ]);
+    // dispatch(setNewCategory({ categoryName: data })).then((res) => {
+    // let currentKategori = getValues('kategori') || [];
+    // currentKategori.push({ id: res.payload.id, value: res.payload.id, label: res.payload.categoryName });
+    // setValue('kategori', currentKategori);
+    // console.log('++', currentKategori);
+    // });
+    // .then(() => dispatch(getListKategori()));
   };
 
   const createTagline = (data) => {
@@ -98,6 +104,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
         let currentTag = getValues('taglineId') || [];
         currentTag.push({ value: res.payload.id, label: res.payload.keterangan });
         setValue('taglineId', currentTag);
+        console.log('++', currentTag);
       })
       .then(() => dispatch(getListTagline()));
   };
@@ -119,7 +126,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
         ? data.kategori
         : {
             value: data.kategori,
-            label: kategoriRecords.find((kategori) => kategori.id === data.kategori)?.keterangan,
+            label: kategoriRecords.find((kategori) => kategori.id === data.kategori)?.categoryName,
           },
       taglineId: data.tagLineList?.map((tagline) => ({ label: tagline.keterangan, value: tagline.id })),
     },
@@ -159,9 +166,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
     }
   }, [foto]);
 
-  useEffect(() => {
-    console.log(getValues('taglineId'));
-  }, [getValues('taglineId')]);
+  useEffect(() => {}, [getValues('taglineId')]);
 
   const handleInputChange = (data) => {
     console.log('hi');
@@ -186,7 +191,7 @@ const CMSForm = ({ data, style, onSubmit, disabled = false }) => {
       <Form.Group className="mb-3">
         <Form.Label>Kategori *</Form.Label>
         <SingleSelectDropdown
-          data={listKategori.map((kategori) => ({ id: kategori.id, value: kategori.id, label: kategori.keterangan }))}
+          data={kategoriRecords.map((kategori) => ({ id: kategori.id, value: kategori.id, label: kategori.categoryName }))}
           control={control}
           placeholder="Pilih Kategori"
           isCreatable={true}

@@ -54,6 +54,8 @@ const SLICE_OBJ = createSlice({
       state.kategoriBerita.page = action.payload.page;
       state.kategoriBerita.size = action.payload.size;
       state.kategoriBerita.records = action.payload.records;
+      state.kategoriBerita.totalRecords = action.payload.totalRecords;
+      state.kategoriBerita.totalPages = action.payload.totalPages;
     });
     builder.addCase(getBeritaListKategori.rejected, (state, action) => {
       state.kategoriBerita.loading = false;

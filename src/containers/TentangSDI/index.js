@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -6,24 +6,57 @@ import cx from 'classnames';
 
 import Logo from 'assets/logo-satu-data-id.png';
 import bn from 'utils/bemNames';
-
+import Button from 'components/Button.js';
 import ContactUs from './form.js';
 import TentangProfile from './profile.js';
-import { getTentang, tentangPublicSelector, getStruktur, strukturPublicSelector } from './reducer';
+import {
+  getTentang,
+  tentangPublicSelector,
+  getStruktur,
+  strukturPublicSelector,
+  getStrukturOrganisasiById,
+  detailDataSelector,
+} from './reducer';
+import styled from 'styled-components';
+import { BooleanSchema } from 'yup';
+import { Box } from 'containers/Footer/top.js';
 
 const bem = bn('tentang');
 
 const TentangSDI = () => {
   let dispatch = useDispatch();
   const { dataset, error } = useSelector(tentangPublicSelector);
-  const { records } = useSelector(strukturPublicSelector);
+  const { records: organizations, loading: strukturDataLoading } = useSelector(strukturPublicSelector);
+  const [openTab, setOpenTab] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState(null);
+  const { record: detailData } = useSelector(detailDataSelector);
 
-  const fetchData = () => {
-    dispatch(getTentang());
-    dispatch(getStruktur());
+  const handleOpenTab = (id) => {
+    setSelectedProfile(id);
+    setOpenTab(true);
   };
 
-  useEffect(() => fetchData(), []);
+  useEffect(() => {
+    dispatch(getTentang());
+    dispatch(getStruktur());
+  }, []);
+
+  useEffect(() => {
+    if (selectedProfile) {
+      document.getElementById('buttonOrg').classList.remove('sdp-tentang__strukturButton__first');
+      dispatch(getStrukturOrganisasiById(selectedProfile));
+      if (!openTab) {
+        setOpenTab(true);
+        document.getElementById('buttonOrg').classList.add('sdp-tentang__strukturButton__first');
+      }
+    }
+  }, [selectedProfile]);
+
+  useEffect(() => {
+    if (!selectedProfile && organizations.length > 0) {
+      setSelectedProfile(organizations[0]?.id);
+    }
+  }, [organizations]);
 
   const getYoutubeEmbed = (url) => {
     // eslint-disable-next-line
@@ -52,61 +85,38 @@ const TentangSDI = () => {
               height="500"
               title="sample"
               src={getYoutubeEmbed(dataset.video)}
-              frameborder="0"
+              frameBorder="0"
               allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen></iframe>
+              allowFullScreen></iframe>
             <div className="mt-24">
               <div className={cx(bem.e('title'), 'mb-3')}>{dataset.judul}</div>
               <p className={bem.e('description')} dangerouslySetInnerHTML={{ __html: unescape(dataset.isi) }}></p>
             </div>
           </div>
         )}
-        <div className="mt-100">
-          <Row className="align-items-center mb-3">
-            <Col>
-              <div className={bem.e('red-line')}></div>
-            </Col>
-            <Col>
-              <div className={cx(bem.e('title'), 'text-center')}>Struktur Organisasi</div>
-            </Col>
-            <Col>
-              <div className={bem.e('red-line')}></div>
-            </Col>
-          </Row>
-          {[1, 2].map((level) => (
-            <div className="text-center">
-              {records
-                .filter((item) => item.level === level)
-                .map((bidang) => {
-                  return bidang.profil.map((profil, key) => (
-                    <TentangProfile key={key} name={profil.nama} position={bidang.nama} urlPhoto={profil.foto} />
-                  ));
-                })}
-            </div>
-          ))}
-        </div>
-        <div className="mt-3">
-          <Row className="align-items-center mb-3">
-            <Col xs={3}>
-              <div className={bem.e('title-sm')}>Bidang Operational</div>
-            </Col>
-            <Col>
-              <div className={bem.e('grey-line')}></div>
-            </Col>
-          </Row>
-          <div className="d-flex flex-wrap">
-            {records
-              .filter((item) => item.level !== 1 && item.level !== 2)
-              .sort((a, b) => a.level - b.level)
-              .map((item, key) => (
-                <div key={key}>
-                  <div className={bem.e('card-top')}></div>
-                  <div className={bem.e('card')}>{item.nama}</div>
+        <Row className="mt-40 mr-3">
+          <Col xs={3} className="p-5">
+            <div className={cx(bem.e('title-sm'), 'mb-16')}>Struktur Organisasi</div>
+            <div>
+              {organizations.map((org) => (
+                <div key={org.id}>
+                  <Button
+                    id="buttonOrg"
+                    className={bem.e('strukturButton')}
+                    onClick={() => handleOpenTab(org.id)}
+                    variant="secondary">
+                    {org.organizationName}
+                  </Button>
                 </div>
               ))}
-          </div>
-        </div>
+            </div>
+          </Col>
+          <Col xs={9} style={{ marginTop: '60px' }}>
+            {openTab && <img className={bem.e('photo')} src={detailData?.photo} alt="" style={{ maxWidth: '100vw' }} />}
+          </Col>
+        </Row>
       </div>
+
       <ContactUs />
     </div>
   );

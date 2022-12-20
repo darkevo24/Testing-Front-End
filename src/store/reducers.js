@@ -19,6 +19,7 @@ import permintaanDataDetailReducer from 'containers/CMS/PermintaanDataForm/reduc
 import beritaCmsReducer from 'containers/CMS/BeritaBaru/reducer';
 import cmsKomunitasAhliReducer from 'containers/CMS/KomunitasAhli/reducer';
 import cmsLogActifitiasReducer from 'containers/CMS/LogAktifitas/reducer';
+import KonfigurasiEmailReducer from 'containers/CMS/KonfigurasiEmail/reducer';
 import cmsBimtekPermintaanDataReducer from 'containers/CMS/BimtekPermintaan/reducer';
 import cmsBimtekDokumentasiReducer from 'containers/CMS/BimtekDokumentasi/reducer';
 import cmsBimtekJadwalReducer from 'containers/CMS/BimtekJadwal/reducer';
@@ -29,6 +30,8 @@ import userPortalBeritaReducer from 'containers/Berita/reducer';
 import bimtekSummaryReducer from 'containers/BimTekSummary/reducer';
 import bimtekJadwalReducer from 'containers/BimTekJadwal/reducer';
 import formulirPendaftaranReducer from 'containers/BimTekForm/reducer';
+import managemenPenggunaReducer from 'containers/ManagemenPengguna/reducer';
+import subscribersReducer from 'containers/CMS/Subscribers/reducer';
 import bimtekMateriReducer from 'containers/BimTekMateri/reducer';
 import bimtekDokumentasiReducer from 'containers/BimTekDokumentasi/reducer';
 import bimtekPermintaanReducer from 'containers/BimtekPermintaan/reducer';
@@ -41,6 +44,7 @@ import penggunaDataDetailReducer from 'containers/CMS/PenggunaManagementDetails/
 import cmsSecurity from 'containers/CMS/Security/reducer';
 import portalManagmentApiReducer from 'containers/ManagementApi/reducer';
 import konfigurasiPortalReducer from 'containers/CMS/KonfigurasiPortal/reducer';
+import chatReducer from 'containers/Chat/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -63,6 +67,7 @@ export default function createReducer(injectedReducers) {
     cmsBerita: beritaCmsReducer,
     cmsKomunitasAhli: cmsKomunitasAhliReducer,
     cmsLogActifitias: cmsLogActifitiasReducer,
+    cmsKonfigurasiLogEmail: KonfigurasiEmailReducer,
     cmsInstansi: cmsInstansiReducer,
     cmsBimtekPermintaan: cmsBimtekPermintaanDataReducer,
     cmsBimtekDokumentasi: cmsBimtekDokumentasiReducer,
@@ -83,6 +88,9 @@ export default function createReducer(injectedReducers) {
     router: connectRouter(history),
     cmsDataAnalytic: dataAnalyticReducer,
     konfigurasiPortal: konfigurasiPortalReducer,
+    chat: chatReducer,
+    managemenPengguna: managemenPenggunaReducer,
+    subscribersList: subscribersReducer,
     ...injectedReducers,
   });
 }

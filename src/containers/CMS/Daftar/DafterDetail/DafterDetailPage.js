@@ -17,14 +17,15 @@ import { getStatusClass, prefixID } from 'utils/helper';
 import { apiUrls, deleteRequest, put } from 'utils/request';
 import { jadwalPermutakhiranOptions } from 'utils/constants';
 import { resetDaftarData } from 'containers/Daftar/reducer';
+
 export const DaftarDetailPage = ({ ...props }) => {
   const [showModal, setModal] = useState('');
   const [loader, setLoader] = useState(false);
   const [apiError, setAPIError] = useState('');
-
+  const { dataindukAllOptions } = props;
   const { loading, result, error } = props.dafterDataWithId;
+  const { result: attributDinamis } = props.attributDinamis;
   const { loading: logLoading, result: logRecord } = props.dafterLogDataWithId;
-
   const history = useHistory();
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -87,80 +88,108 @@ export const DaftarDetailPage = ({ ...props }) => {
     setLoader(false);
     setModal('');
   };
+  const rujukanDataStr = result?.rujukan ? result.rujukan : '[21,22]';
+  const rujukanDataArr = JSON.parse(rujukanDataStr);
+  const rujukan = dataindukAllOptions
+    .map((val) => {
+      for (let i = 0; i < rujukanDataArr.length; i++) {
+        if (val.value == rujukanDataArr[i]) return { ...val, toString: () => val.label };
+      }
+    })
+    .filter(Boolean);
 
-  const list = [
-    {
-      label: 'Instansi',
-      value: result?.instansi || '',
-    },
-    {
-      label: 'Nama Data',
-      value: result?.nama || '',
-    },
-    {
-      label: 'ID Konsep',
-      value: result?.idKonsep || '',
-    },
-    {
-      label: 'Jadwal Pemutakhiran',
-      value: jadwalPermutakhiranOptions?.[result?.jadwalPemutakhiran]?.label || '',
-    },
-    {
-      label: 'Definisi',
-      value: result?.definisi || '',
-      rows: 3,
-      as: 'textarea',
-    },
-    {
-      label: 'Sumber Definisi',
-      value: result?.sumberDefinisi || '',
-      rows: 3,
-      as: 'textarea',
-    },
-    {
-      label: 'Dibuat',
-      value: moment(result?.tanggalDibuat).format('DD-MM-YYYY'),
-      leftIcon: 'calender',
-    },
-    {
-      label: 'Diperbarui',
-      value: moment(result?.tanggalDiperbaharui).format('DD-MM-YYYY'),
-      leftIcon: 'calender',
-    },
-    {
-      label: 'Produsen Data',
-      value: result?.produsenData || '',
-    },
-    {
-      label: 'Data Induk',
-      value: Object.values(result?.indukData || {})?.[0] || '',
-    },
-    {
-      label: 'Format',
-      value: result?.format || '',
-    },
-    {
-      label: 'Link Akses',
-      value: result?.linkAkses || '',
-      rightIcon: 'copy',
-    },
-    {
-      label: 'Pilar SDGs',
-      value: result?.kodePilarDeskripsi || '',
-    },
-    {
-      label: 'Tujuan SDGs',
-      value: result?.kodeTujuanDeskripsi || '',
-    },
-    {
-      label: 'PN RKP',
-      value: result?.kodePNRKPDeskripsi || '',
-    },
-    {
-      label: 'PP RKP',
-      value: result?.kodePPRKPDeskripsi || '',
-    },
-  ];
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    const additionalData = result && JSON.parse(result?.additionalData);
+    const attributList =
+      attributDinamis?.map((element) => {
+        return {
+          label: element.name,
+          value: additionalData?.filter((elm) => elm.key === element.name)[0].value || '',
+          as: element.type === 'textarea' ? 'textarea' : 'input',
+          rows: element.type === 'textarea' ? 3 : 200,
+        };
+      }) || [];
+    setList([
+      {
+        label: 'Instansi',
+        value: result?.instansi || '',
+      },
+      {
+        label: 'Nama Data',
+        value: result?.nama || '',
+      },
+      {
+        label: 'ID Konsep',
+        value: result?.idKonsep || '',
+      },
+      {
+        label: 'Jadwal Pemutakhiran',
+        value: jadwalPermutakhiranOptions?.[result?.jadwalPemutakhiran]?.label || '',
+      },
+      {
+        label: 'Definisi',
+        value: result?.definisi || '',
+        rows: 3,
+        as: 'textarea',
+      },
+      {
+        label: 'Sumber Definisi',
+        value: result?.sumberDefinisi || '',
+        rows: 3,
+        as: 'textarea',
+      },
+      {
+        label: 'Dibuat',
+        value: moment(result?.tanggalDibuat).format('DD-MM-YYYY'),
+        leftIcon: 'calender',
+      },
+      {
+        label: 'Diperbarui',
+        value: moment(result?.tanggalDiperbaharui).format('DD-MM-YYYY'),
+        leftIcon: 'calender',
+      },
+      {
+        label: 'Produsen Data',
+        value: result?.produsenData || '',
+      },
+      {
+        label: 'Data Induk',
+        value: Object.values(result?.indukData || {})?.[0] || '',
+      },
+      {
+        label: 'Format',
+        value: result?.format || '',
+      },
+      {
+        label: 'Link Akses',
+        value: result?.linkAkses || '',
+        rightIcon: 'copy',
+      },
+      {
+        label: 'Pilar SDGs',
+        value: result?.kodePilarDeskripsi || '',
+      },
+      {
+        label: 'Tujuan SDGs',
+        value: result?.kodeTujuanDeskripsi || '',
+      },
+      {
+        label: 'PN RKP',
+        value: result?.kodePNRKPDeskripsi || '',
+      },
+      {
+        label: 'PP RKP',
+        value: result?.kodePPRKPDeskripsi || '',
+      },
+      {
+        label: 'Rujukan',
+        value: rujukan.join(', ') || '',
+      },
+      ...attributList,
+    ]);
+  }, [attributDinamis, result, loading]);
 
   const isEnable = result?.kodePNRKP || result?.kodePPRKP || result?.kodeTujuan || result?.kodePilar;
   const isVerified = result?.status === 1;

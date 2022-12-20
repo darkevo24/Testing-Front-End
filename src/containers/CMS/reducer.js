@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import aboutUsReducer from './AboutUs/reducer';
 import aboutUsDetailReducer from './AboutUsEdit/reducer';
 import beritaReducer from './Berita/reducer';
+import beritaKategoriReducer from './BeritaKategori/reducer';
 import forumSdiReducer from './ForumSDI/reducer';
 import bertaLayoutReducer from './BeritaLayout/reducer';
 import apiManagementReducer from './ManagementApi/reducer';
@@ -14,4 +15,5 @@ export default combineReducers({
   cmsForumSdi: forumSdiReducer,
   bertaLayout: bertaLayoutReducer,
   apiManagement: apiManagementReducer,
+  beritaKategori: beritaKategoriReducer,
 });

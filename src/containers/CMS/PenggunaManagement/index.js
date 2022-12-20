@@ -55,7 +55,7 @@ const CMSPenggunaManagement = () => {
   };
 
   useEffect(() => {
-    fetchDataset({ page: page || 0 });
+    fetchDataset({ page: 0 });
   }, [query, instansiId, roles, status]);
 
   const updateQuery = debounce((val) => {

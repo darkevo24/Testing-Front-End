@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 import { apiUrls, defaultNumberOfRows, post, put, get, deleteRequest } from 'utils/request';
 
 export const initialState = {
@@ -30,8 +31,16 @@ export const initialState = {
 export const BERITA_CMS_SLICE = 'BERITA_CMS_SLICE';
 
 export const getListBerita = createAsyncThunk('cms/getListBerita', async (params) => {
-  const response = await post(`${apiUrls.cmsBeritaData}/list?size=10&page=${params.page}&sortDirection=DESC`, {
-    judul: params.judul,
+  const url = new URL(`${apiUrls.cmsBeritaData}/list`);
+
+  url.searchParams.append('size', params.filter.size);
+  url.searchParams.append('page', params.filter.page);
+  url.searchParams.append('sortDirection', params.filter.sortDirection);
+  url.searchParams.append('sortBy', params.filter.sortBy);
+
+  const response = await post(url, {
+    judul: params.filter.judul,
+    status: params.filter.status,
   });
   return response?.data?.content;
 });

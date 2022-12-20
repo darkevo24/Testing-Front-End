@@ -188,6 +188,11 @@ export const initialState = {
     loading: false,
     error: null,
   },
+  attributDinamis: {
+    loading: false,
+    error: null,
+    result: null,
+  },
   loading: false,
   error: null,
 };
@@ -197,6 +202,11 @@ export const DAFTAR_REDUCER = 'DAFTAR_REDUCER';
 export const getProduen = createAsyncThunk('daftar/getProduen', async () => {
   const response = await get(apiUrls.produenData);
   return response?.data?.content?.records;
+});
+
+export const getAttribut = createAsyncThunk('daftar/getAttribut', async () => {
+  const response = await get(apiUrls.attributDinamis);
+  return response?.data?.content;
 });
 
 export const getDaftarDataSummary = createAsyncThunk('daftar/getDaftarDataSummary', async (filters = {}) => {
@@ -378,6 +388,17 @@ const daftarSlice = createSlice({
     builder.addCase(getDaftarDataSummary.rejected, (state) => {
       state.daftarDataSummary.loading = false;
       state.daftarDataSummary.error = 'Error in fetching daftar data summary details!';
+    });
+    builder.addCase(getAttribut.pending, (state) => {
+      state.attributDinamis.loading = true;
+    });
+    builder.addCase(getAttribut.fulfilled, (state, action) => {
+      state.attributDinamis.loading = false;
+      state.attributDinamis.result = action.payload;
+    });
+    builder.addCase(getAttribut.rejected, (state) => {
+      state.attributDinamis.loading = false;
+      state.attributDinamis.error = 'Error in fetching daftar data summary details!';
     });
     builder.addCase(getDataHarvestSummary.pending, (state) => {
       state.dataHarvestSummary.loading = true;
@@ -679,6 +700,7 @@ export const dafterDataWithIdSelector = (state) => state.daftar.dafterDataWithId
 export const dafterLogDataWithIdSelector = (state) => state.daftar.dafterDataLogWithId;
 export const katalogVariableDataSelector = (state) => state.daftar.katalogVariableData;
 export const kodeReferensiSelector = (state) => state.daftar.kodeReferensi;
+export const attributDinamisSelector = (state) => state.daftar.attributDinamis;
 
 export const produenOptionsSelector = createSelector(produenDataSelector, dataToOptionsMapper);
 export const tujuanSDGPillerOptionsSelector = createSelector(

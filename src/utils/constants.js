@@ -20,6 +20,9 @@ import {
   BudgetIcon,
   ChangeAndReleaseIcon,
   FeedbackIcon,
+  CkanIcon,
+  LmsIcon,
+  CrmIcon,
 } from 'assets/icons';
 import { SplitCircle } from 'components/Icons';
 
@@ -41,7 +44,11 @@ export const bpmProdUrl = 'https://bpm.data.go.id/#/';
 export const bpmDevUrl = window.location.hostname === 'localhost' ? bpmWaveMakerOnlineUrl : bpmStagingUrl;
 export const bpmUrl = isSdiProduction ? bpmProdUrl : bpmDevUrl;
 
+export const lmsUrl = isSdiProduction ? 'https://lms.data.go.id/' : 'https://lms.satudata.go.id/';
+
 export const apmUrl = isSdiProduction ? 'http://apm.data.go.id/' : 'http://apm.satudata.go.id/';
+export const crmUrl = isSdiProduction ? 'https://crm.data.go.id/backend' : 'https://crm.satudata.go.id/backend';
+export const socketUrl = isSdiProduction ? 'https://crm.data.go.id/' : 'https://crm.satudata.go.id/';
 
 export const apiUrl = `${backendUrl}/api-be`;
 export const dataUrl = `${katalogUrl}/api`;
@@ -52,8 +59,10 @@ export const getDataEndpoint = (path) => `${dataUrl}/${path}`;
 export const getPortalEndpoint = (path) => `${apiUrl}/portal/${path}`;
 export const getV1Endpoint = (path) => `${apiUrl}/v1/${path}`;
 export const getCMSEndpoint = (path) => `${apiUrl}/cms/v1/${path}`;
+export const getCMSEndpoint2 = (path) => `${apiUrl}/cms/${path}`;
 export const getPublicEndpoint = (path) => `${apiUrl}/public/${path}`;
 export const getPublicV1Endpoint = (path) => `${apiUrl}/public/v1/${path}`;
+export const getCrmApi = (path) => `${crmUrl}/api/${path}`;
 
 export const apiUrls = {
   login: getApiEndpoint('login'),
@@ -65,6 +74,7 @@ export const apiUrls = {
   instansiData: getV1Endpoint('instansi'),
   cmsIntansiData: getCMSEndpoint('instansi'),
   cmsConfigSecurity: getCMSEndpoint('configuration/security'),
+  cmsConfigFeature: getCMSEndpoint('configuration/feature'),
   cmsKomunitasAhliData: getCMSEndpoint('komunitas-ahli'),
   portalKomunitasAhliData: getPortalEndpoint('komunitas-ahli'),
   cmsAuditTrialData: getCMSEndpoint('audit-trail'),
@@ -78,6 +88,7 @@ export const apiUrls = {
   dataindukAllData: getV1Endpoint('katalog/all'),
   dataindukData: getV1Endpoint('katalog/datainduk'),
   katalogData: getV1Endpoint('katalog'),
+  attributDinamis: getCMSEndpoint2('atribut/data/list'),
   listPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
   detailPermintaanData: getApiEndpoint('sekretariat/permintaan-data'),
   variable: getV1Endpoint('variable'),
@@ -96,18 +107,22 @@ export const apiUrls = {
   rkpPN: getV1Endpoint('settings/key/RKP'),
   strukturData: getCMSEndpoint('bidang'),
   strukturDataPublic: getApiEndpoint('public/bidang'),
+  strukturOrganisasi: getPublicEndpoint('organization'),
   cmsBeritaData: getCMSEndpoint('berita'),
   cmsBimtekJadwal: getCMSEndpoint('bimtek'),
   cmsBimtekPermintaanData: getCMSEndpoint('bimtek/permintaan'),
   cmsBimtekDokumentasi: getCMSEndpoint('bimtek/dokumentasi'),
   cmsBimtekLogs: getCMSEndpoint('bimtek/logs'),
   cmsAboutUs: getCMSEndpoint('tentang'),
+  cmsOrganization: getCMSEndpoint2('organization'),
   aboutUs: getApiEndpoint('public/tentang'),
   hubungiKami: getApiEndpoint('public/hubungi-kami'),
+  cmsKonfigurasiEmail: getCMSEndpoint('/hubungi-kami'),
   userBeritaPortal: getPublicV1Endpoint('berita'),
   userBeritaLatest: getPublicV1Endpoint('berita/latest'),
   userBeritaPopular: getPublicV1Endpoint('berita/populer'),
   homeDataSetEndPoint: getPublicV1Endpoint('dataset'),
+  userSubscribe: getPublicV1Endpoint('subscribe'),
   portalForumSDI: getPortalEndpoint('v1/forum-sdi'),
   cmsForumSDI: getCMSEndpoint('forum-sdi'),
   bimtekSummaryMateriTerdekat: getPortalEndpoint('v1/bimtek/materi-terdekat'),
@@ -121,6 +136,7 @@ export const apiUrls = {
   bimtekMateriDownload: getPortalEndpoint('v1/bimtek/download-zip'),
   bimtekMateriTerdekatDownload: getApiEndpoint('file/public-download'),
   beritaLayout: getPublicV1Endpoint('layout'),
+  beritaKategori: getCMSEndpoint('berita/category'),
   updateKiriLayout: getPublicV1Endpoint('layout/code/kiri'),
   bimtekDokumentasi: getPortalEndpoint('v1/bimtek/dokumentasi'),
   bimteklatestDokumentasi: getPortalEndpoint('v1/bimtek/dokumentasi-latest'),
@@ -131,14 +147,25 @@ export const apiUrls = {
   cmsContactUs: getCMSEndpoint('hubungi-kami-setting'),
   requestForgotPassword: getPublicEndpoint('request-forgot-password'),
   forgotPassword: getPublicEndpoint('forgot-password'),
+  checkForgotPassword: getPublicEndpoint('check-expired/forgot-password'),
   changeMyPassword: getPortalEndpoint('v1/change-my-password'),
   penggunaManagement: getApiEndpoint('sekretariat/user'),
+  listPengguna: getApiEndpoint('sekretariat/user/list-pengguna'),
   penggunaRoleList: getApiEndpoint('sekretariat/user/role-list'),
   penggunaStatusList: getApiEndpoint('sekretariat/user/status-list'),
   penggunaUpload: getApiEndpoint('sekretariat/user/bulk'),
+  subcribers: getCMSEndpoint('subscribe'),
   cmsAnalitikData: getCMSEndpoint('analitik'),
   cmsManagementApi: getApiEndpoint('management-api'),
   publicGlobalData: getPublicEndpoint('site-setting'),
+  crmChatSettings: getCrmApi('chatsettings'),
+  crmChatRequest: getCrmApi('chatrequest'),
+  crmChatStatus: getCrmApi('chatrequest/status'),
+  crmChatHistory: getCrmApi('chathistory'),
+  contactUs: getCrmApi('ticket/sdi'),
+  crmImageApi: getCrmApi('image'),
+  crmChatReview: getCrmApi('chatreview'),
+  contactUsAdmin: getCrmApi('contacts'),
 };
 
 export const priorityOptions = [
@@ -237,7 +264,7 @@ export const TOPIC_LIST = [
       'Komunikasi',
       'Perencanaan Pembangunan Nasional',
       'Aparatur Negara',
-      'Kessekretariatan Negara',
+      'Kesekretariatan Negara',
       'Pertanahan',
       'Kependudukan',
     ],
@@ -329,6 +356,30 @@ export const CMS_DASHBOARD = [
     link: '',
     externalLink: apmUrl,
   },
+  {
+    title: 'CKAN',
+    description: 'CKAN',
+    icon: <CkanIcon />,
+    iconColor: 'bg-brilliant-azure',
+    link: '',
+    externalLink: `${katalogUrl}/user/saml2login`,
+  },
+  {
+    title: 'LMS',
+    description: 'LMS',
+    icon: <LmsIcon />,
+    iconColor: 'bg-blue',
+    link: '',
+    externalLink: `${lmsUrl}#/manageModulsNew`,
+  },
+  {
+    title: 'CRM',
+    description: 'CRM',
+    icon: <CrmIcon />,
+    iconColor: 'bg-red',
+    link: isSdiProduction ? '#' : '',
+    externalLink: isSdiProduction ? 'https://crm.data.go.id' : 'https://crm.satudata.go.id',
+  },
 ];
 
 export const Social_Media_Prefix_Links = {
@@ -393,6 +444,7 @@ export const USER_ROLES = {
   ADMIN: 'ADMIN',
   SEKRETARIAT: 'SEKRETARIAT',
   WALIDATA: 'WALIDATA',
+  WALIDATA_ADMIN: 'WALIDATA_ADMIN',
   EKSEKUTIF: 'EKSEKUTIF',
   USER: 'USER',
   PIC_SDGS: 'PIC_SDGS',
@@ -421,3 +473,38 @@ export const PORTAL_KONFIGURASI_CODE = {
   BANNER: 'BANNER',
   FOOTERLINK: 'FOOTER_LINK',
 };
+
+export const fileExtention = ['image/jpeg', 'image/png', 'application/pdf'];
+
+export const timeExpired = [
+  { value: 1, label: '1' },
+  { value: 2, label: '2' },
+  { value: 3, label: '3' },
+  { value: 4, label: '4' },
+  { value: 5, label: '5' },
+  { value: 6, label: '6' },
+  { value: 7, label: '7' },
+  { value: 8, label: '8' },
+  { value: 9, label: '9' },
+  { value: 10, label: '10' },
+  { value: 11, label: '11' },
+  { value: 12, label: '12' },
+  { value: 13, label: '13' },
+  { value: 14, label: '14' },
+  { value: 15, label: '15' },
+  { value: 16, label: '16' },
+  { value: 17, label: '17' },
+  { value: 18, label: '18' },
+  { value: 19, label: '19' },
+  { value: 20, label: '20' },
+  { value: 21, label: '21' },
+  { value: 22, label: '22' },
+  { value: 23, label: '23' },
+  { value: 24, label: '24' },
+  { value: 25, label: '25' },
+  { value: 26, label: '26' },
+  { value: 27, label: '27' },
+  { value: 28, label: '28' },
+  { value: 29, label: '29' },
+  { value: 30, label: '30' },
+];

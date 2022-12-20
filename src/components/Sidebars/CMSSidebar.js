@@ -71,8 +71,10 @@ export const CMSSidebar = () => {
               Berita
             </Accordion.Header>
             <Accordion.Body>
+              <SidebarItem title="Kategori Berita" pathname="/cms/berita-kategori" />
               <SidebarItem title="Konten Berita" pathname="/cms/berita-konten" />
               <SidebarItem title="Layout Berita" pathname="/cms/berita-layout" />
+              <SidebarItem title="Subscribers" pathname="/cms/subscribers" />
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
@@ -186,9 +188,9 @@ export const CMSSidebar = () => {
         </div>
         <SidebarItem title="Log Aktivitas" pathname="/cms/log-activity" />
         <SidebarItem title="Sekuriti" pathname="/cms/security" />
-        <SidebarItem title="Aset" pathname="#" />
         <SidebarItem title="Media Sosial" pathname="/cms/media-sosial" />
         <SidebarItem title="Portal" pathname="/cms/konfigurasi-portal" />
+        <SidebarItem title="Email" pathname="/cms/konfigurasi-email" />
         <SidebarItem title="Manajemen Perubahan dan Rilis" pathname="/cms/versi-rilis" />
         <SidebarItem title="CR Approver Setting" pathname="/cms/cr-approver-setting" />
       </div>

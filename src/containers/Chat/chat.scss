@@ -1,0 +1,296 @@
+.sdp-chat {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  z-index: 2;
+  border-radius: 12px;
+
+  &__minimized {
+    background-color: white;
+    border-radius: 12px 12px 0px 12px;
+    padding: 16px 24px;
+    width: 20vw;
+    font-weight: 600;
+    font-size: 16px;
+    color: #2e2d30;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .icon {
+      width: 28.6px;
+      height: 24px;
+      margin-right: 16px;
+    }
+  }
+
+  &__opened {
+    &.parent {
+      background-color: #ffffff;
+      border-radius: 12px;
+      width: 20vw;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 30px 1fr 14px;
+      column-gap: 16px;
+      align-items: center;
+      padding: 16px;
+      border-radius: 12px 12px 0px 0px;
+      border-bottom: 1px solid #e1e2ea;
+
+      &.review {
+        display: flex;
+        justify-content: space-between;
+
+        .download-chat {
+          background: #f5f6fa;
+          border-radius: 8px;
+          color: #2e2d30;
+          box-shadow: none;
+          border: 0;
+        }
+      }
+
+      .botpicture {
+        width: 30px;
+        height: 30px;
+      }
+
+      .botname {
+        font-size: 14px;
+        font-weight: 600;
+        color: #2e2d30;
+      }
+
+      .botstatus {
+        font-size: 12px;
+        color: #6f697e;
+
+        span {
+          width: 6px;
+          height: 6px;
+          margin-right: 5px;
+          display: inline-block;
+          border-radius: 50%;
+
+          &.on {
+            background-color: #23bd73;
+          }
+
+          &.off {
+            background-color: #ff0000;
+          }
+        }
+      }
+
+      .close {
+        cursor: pointer;
+      }
+    }
+
+    .body {
+      border-top: 4px solid #f5f6fa;
+      border-radius: 0px 0px 12px 12px;
+
+      .content {
+        padding: 16px;
+        height: 50vh;
+        overflow-y: scroll;
+
+        .greeting {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 18px;
+          color: #2e2d30;
+          text-align: center;
+          height: 100%;
+        }
+
+        .desc-review {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          height: 100%;
+          width: 100%;
+
+          &-title {
+            font-weight: 600;
+            font-size: 18px;
+            color: #2e2d30;
+          }
+
+          &-desc {
+            font-weight: 400;
+            font-size: 14px;
+            color: #2e2d30;
+          }
+
+          &-text {
+            width: 100%;
+          }
+
+          &-error {
+            padding-top: 8px;
+            text-align: left;
+            color: red;
+          }
+        }
+
+        #form-review {
+          width: 100%;
+          margin-top: 2rem;
+
+          textarea {
+            height: 120px;
+            width: 100%;
+          }
+        }
+
+        .greetingoffservice {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          height: 100%;
+
+          .heading {
+            font-weight: 700;
+            font-size: 24px;
+            color: #2e2d30;
+            margin-top: 24px;
+            margin-bottom: 8px;
+          }
+
+          .greetingcontent {
+            font-size: 16px;
+            line-height: 150%;
+            color: #2e2d30;
+            text-align: center;
+          }
+        }
+
+        #form-data-diri {
+          .form-label {
+            font-weight: 400;
+            font-size: 14px;
+            color: #2e2d30;
+          }
+
+          textarea {
+            height: 80px;
+          }
+        }
+
+        &.chat-message-list {
+          .chat-date-wrapper {
+            text-align: center;
+          }
+          .chat-date {
+            font-weight: 600;
+            font-size: 12px;
+            color: #2f2b34;
+            padding: 4px 16px;
+            background: #ffffff;
+            border: 1px solid #e1e2ea;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 16px;
+          }
+          .chat-content {
+            display: grid;
+            grid-template-columns: 32px 1fr;
+            column-gap: 8px;
+            margin-bottom: 8px;
+
+            & > div {
+              background: #ffffff;
+              border: 1px solid #e1e2ea;
+              border-radius: 12px 12px 12px 0px;
+              padding: 8px;
+              font-size: 14px;
+              color: #2e2d30;
+              width: fit-content;
+              max-width: 15vw;
+            }
+
+            .max-w-30 {
+              max-width: 120px;
+              overflow: scroll;
+            }
+          }
+          .chat-content-user {
+            background: #f5f6fa;
+            border-radius: 12px 12px 0px 12px;
+            padding: 8px;
+            font-size: 14px;
+            color: #2e2d30;
+            width: fit-content;
+            margin-left: auto;
+            margin-bottom: 8px;
+
+            & + .chat-time {
+              width: fit-content;
+              margin-left: auto;
+            }
+          }
+          .chat-time {
+            font-size: 12px;
+            color: #8d85a0;
+            padding-left: 40px;
+            margin-bottom: 8px;
+          }
+        }
+      }
+
+      .bottom {
+        padding: 16px;
+
+        .silahkan-login {
+          text-align: center;
+          font-size: 14px;
+          color: #6f697e;
+          margin-bottom: 32px;
+
+          span {
+            color: #ff0000;
+            cursor: pointer;
+          }
+        }
+
+        .kirim {
+          background-color: #723dec;
+          border-color: #723dec;
+        }
+
+        .chat-message-wrapper {
+          background: #f1f2f6;
+          border-radius: 8px;
+          padding: 8px;
+          display: flex;
+
+          .input {
+            border: 0 !important;
+            outline: 0 !important;
+            font-size: 14px;
+            flex-grow: 1;
+            background-color: transparent;
+          }
+
+          .btn {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 7px 12px;
+            margin-left: 8px;
+          }
+        }
+      }
+    }
+  }
+}

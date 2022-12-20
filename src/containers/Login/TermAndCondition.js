@@ -44,7 +44,11 @@ const TermAndCondition = () => {
         dispatch(validateReCaptcha({ payload: data })).then((res) => {
           if (res?.payload?.status === 'SUCCESS') {
             dispatch(acceptTermAndCondition());
-            history.push('/');
+            if (history.location.search === '?redirectTo=tentang') {
+              history.push('/tentang');
+            } else {
+              history.push('/');
+            }
           } else {
             Notification.show({
               type: 'secondary',
@@ -57,7 +61,11 @@ const TermAndCondition = () => {
     } else {
       if (agree) {
         dispatch(acceptTermAndCondition());
-        history.push('/');
+        if (history.location.search === '?redirectTo=tentang') {
+          history.push('/tentang');
+        } else {
+          history.push('/');
+        }
       }
     }
   };
@@ -117,13 +125,13 @@ const TermAndCondition = () => {
 
         <Modal.Body>
           {TermAndConditionData.map((termAndContion, index) => (
-            <secion key={index}>
+            <section key={index}>
               <div>
                 <strong>{`${index + 1}. ${termAndContion.title}`}</strong>
                 <p>{termAndContion.description}</p>
                 {termAndContion.list && displayListItem(termAndContion.list)}
               </div>
-            </secion>
+            </section>
           ))}
         </Modal.Body>
         <Modal.Footer>

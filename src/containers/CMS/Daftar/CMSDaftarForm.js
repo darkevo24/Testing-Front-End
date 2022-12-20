@@ -5,15 +5,18 @@ import moment from 'moment';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
+import Select from 'react-select';
+import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 // import isEmpty from 'lodash/isEmpty';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { DatePicker, Input, RequiredFilledLabel } from 'components';
+import { DatePicker, Input, RequiredFilledLabel, Dropdown } from 'components';
 import TambahFormModal from './CMSDaftarTambahForm';
 import SingleSelectDropdown from 'components/DropDown/SingleSelectDropDown';
+import MultiSelectDropdown from 'components/DropDown/MultiSelectDropDown';
 import DaftarDataProvider from 'containers/Daftar/DaftarDataProvider';
 import DataVariableTable from 'containers/DataVariable/DataVariableTable';
 import { formatOptions, jadwalPermutakhiranOptions } from 'utils/constants';
@@ -41,6 +44,7 @@ const CMSDaftarPage = ({ ...props }) => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState({});
   const [tableData, setTableData] = useState([]);
+  const [dataDinamis, setDataDinamis] = useState({});
   const [apiError, setAPIError] = useState('');
 
   const dispatch = useDispatch();
@@ -49,12 +53,14 @@ const CMSDaftarPage = ({ ...props }) => {
   const { result: daftar, error } = props.dafterDataWithId;
   const instansiOptions = props.instansiOptions;
   const dataindukAllOptions = props.dataindukAllOptions;
+  const dataindukEditOptions = props.dataindukEditOptions;
+  const { result: attributDinamis } = props.attributDinamis;
+  const attributDinamisChanged = props.attributDinamisChanged;
   const sdgPillerOptions = props.sdgPillerOptions;
   const rkpPNOptions = props.rkpPNOptions;
   const tujuanSDGPillerOptions = useSelector(addTujuanSDGPillerOptionsSelector);
   const rkpPPOptions = useSelector(addRkpPPOptionsSelector);
   const { pageSize, params, bodyParams, result: katalogResult } = useSelector(katalogVariableDataSelector);
-
   const {
     control,
     formState: { errors },
@@ -77,6 +83,8 @@ const CMSDaftarPage = ({ ...props }) => {
       indukData: null,
       format: null,
       linkAkses: '',
+      rujukan: null,
+      additionalData: [],
     },
   });
 
@@ -100,6 +108,35 @@ const CMSDaftarPage = ({ ...props }) => {
   };
 
   useEffect(() => {
+    const daftarAdditionalData = daftar && JSON.parse(daftar.additionalData);
+    const obj = attributDinamis?.reduce(
+      (obj, item) =>
+        Object.assign(obj, {
+          [item.name]:
+            item.type !== 'dropdown'
+              ? daftarAdditionalData?.filter((elm) => elm.key === item.name)[0].value || ''
+              : Object.assign(
+                  {},
+                  {
+                    label: daftarAdditionalData?.filter((elm) => elm.key === item.name)[0].value,
+                    value: daftarAdditionalData?.filter((elm) => elm.key === item.name)[0].value,
+                  },
+                ) || '',
+        }),
+      {},
+    );
+    setDataDinamis(obj);
+  }, [attributDinamis]);
+
+  const optionDropdown = (options) => {
+    const result = [];
+    options.forEach((item) => {
+      result.push({ label: item, value: item });
+    });
+    return result;
+  };
+
+  useEffect(() => {
     if (id) {
       fetchKatalogVariableData();
       props.getDafterDataById(id);
@@ -114,6 +151,14 @@ const CMSDaftarPage = ({ ...props }) => {
 
   useEffect(async () => {
     if (!id) return;
+    const rujukanArr = daftar?.rujukan?.replace(/\[|\]/g, '').split(',');
+    const rujukan = dataindukAllOptions
+      .map((val) => {
+        for (let i = 0; i < rujukanArr?.length; i++) {
+          if (val.value == rujukanArr[i]) return { ...val };
+        }
+      })
+      .filter(Boolean);
     const [indukDataObjectKey] = Object.keys(daftar?.indukData || {});
     reset({
       instansi: { value: daftar?.instansiId, label: daftar?.instansi } || {},
@@ -133,9 +178,10 @@ const CMSDaftarPage = ({ ...props }) => {
       kodeTujuan: { value: daftar?.kodeTujuan, label: daftar?.kodeTujuanDeskripsi } || {},
       kodePNRKP: { value: daftar?.kodePNRKP, label: daftar?.kodePNRKPDeskripsi } || {},
       kodePPRKP: { value: daftar?.kodePPRKP, label: daftar?.kodePPRKPDeskripsi } || {},
+      rujukan: rujukan || [],
+      additionalData: daftar?.additionalData || '',
     });
   }, [daftar, id]);
-
   const goBack = () => {
     if (id) history.push(`/cms/daftar/${id}`);
     else history.push('/cms/daftar/');
@@ -224,9 +270,20 @@ const CMSDaftarPage = ({ ...props }) => {
   const handleDaftarFormSubmit = async (daftarFormData) => {
     if (id) daftarFormData.id = id;
     if (!id) daftarFormData['status'] = 0;
+    const arr = [];
+    attributDinamis?.forEach((elm) => {
+      arr.push({
+        key: elm.name,
+        value: typeof dataDinamis[elm.name] == 'object' ? dataDinamis[elm.name].value : dataDinamis[elm.name],
+      });
+    });
+    daftarFormData['additionalData'] = [...arr];
     props.handleDaftarFromSubmit(daftarFormData, handleSubmitCallBack, true);
   };
 
+  const handleChangeAttributDinamis = (value, name) => {
+    setDataDinamis((prev) => ({ ...prev, [name]: value }));
+  };
   const watchKodePilar = watch('kodePilar', false);
   const watchKodePNRKP = watch('kodePNRKP', false);
 
@@ -442,7 +499,7 @@ const CMSDaftarPage = ({ ...props }) => {
                     label="Data Induk"
                     labelClass="sdp-form-label  fw-normal"
                     placeholder=""
-                    data={dataindukAllOptions}
+                    data={id ? dataindukEditOptions : dataindukAllOptions}
                     name="indukData"
                     isLoading={false}
                     control={control}
@@ -561,6 +618,60 @@ const CMSDaftarPage = ({ ...props }) => {
                   />
                 </Col>
               </Row>
+              <Row className="mb-16">
+                <Col xs="6">
+                  <MultiSelectDropdown
+                    group
+                    label="Rujukan"
+                    labelClass="sdp-form-label  fw-normal"
+                    name="rujukan"
+                    noValue={true}
+                    groupClass="mb-16"
+                    groupProps={{
+                      md: 12,
+                      as: Col,
+                    }}
+                    control={control}
+                    placeholder=""
+                    data={id ? dataindukEditOptions : dataindukAllOptions}
+                  />
+                </Col>
+              </Row>
+              {attributDinamisChanged.map((value) => (
+                <Row className="mb-16">
+                  {value.map((val) => (
+                    <Col xs="6">
+                      {val.type == 'dropdown' ? (
+                        <>
+                          <Form.Label className="sdp-form-label  fw-normal">{val.name}</Form.Label>
+                          <Select
+                            closeMenuOnSelect={true}
+                            value={dataDinamis ? dataDinamis[val?.name] : ''}
+                            options={optionDropdown(val.dropdownContent.split(', '))}
+                            onChange={(e) => handleChangeAttributDinamis(e, val.name)}
+                            className="basic-single"
+                            classNamePrefix="select"
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <Form.Label className="sdp-form-label  fw-normal">{val.name}</Form.Label>
+                          <div className="sdp-input-main-container">
+                            <InputGroup className="sdp-input-wrapper">
+                              <Form.Control
+                                as={val.type === 'textarea' ? 'textarea' : 'input'}
+                                onChange={(e) => handleChangeAttributDinamis(e.target.value, val.name)}
+                                type={val.type}
+                                value={dataDinamis ? dataDinamis[val?.name] : ''}
+                              />
+                            </InputGroup>
+                          </div>
+                        </>
+                      )}
+                    </Col>
+                  ))}
+                </Row>
+              ))}
             </div>
             <div className="pl-32 pt-32 pb-42 pr-32">
               <DataVariableTable

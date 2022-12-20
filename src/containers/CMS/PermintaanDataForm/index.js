@@ -96,6 +96,7 @@ const CMSPermintaanDataView = () => {
     setValue('tanggalTarget', moment(data?.tanggalTarget).format('DD/MM/YYYY'));
     setValue('jenisData', data?.jenisData);
     setValue('urlDataset', data?.urlDataset);
+    setValue('officialMemoName', data?.officialMemo?.fileName);
   }, [data]);
 
   const handleCloseModal = () => {
@@ -190,6 +191,7 @@ const CMSPermintaanDataView = () => {
               <Input disabled group label="Produsen Data" name="instansi.nama" control={control} />
               <Input disabled group label="Jenis Data" name="jenisData" control={control} />
               <Input disabled group isLink label="URL Dataset" name="urlDataset" control={control} />
+              <Input disabled isDownloadable group label="Surat Permintaan Data" name="officialMemoName" control={control} />
             </Form>
             <div>
               <h5 className="fw-bold mb-3 border-bottom-gray-stroke py-2">Informasi Peminta Data</h5>
@@ -199,7 +201,7 @@ const CMSPermintaanDataView = () => {
                     <p className="fw-bold">Nama Lengkap</p>
                   </div>
                   <div className="col-2">
-                    <p className="fw-light">{data.user?.nama}</p>
+                    <p className="fw-light">{data.user?.name}</p>
                   </div>
                 </div>
                 <div className="d-flex flex-row">
@@ -207,7 +209,7 @@ const CMSPermintaanDataView = () => {
                     <p className="fw-bold">NIP/NIK</p>
                   </div>
                   <div className="col-2">
-                    <p className="fw-light">{data?.user?.nik}</p>
+                    <p className="fw-light">{data?.user?.employeeIdNumber}</p>
                   </div>
                 </div>
                 <div className="d-flex flex-row">

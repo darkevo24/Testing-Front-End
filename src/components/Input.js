@@ -8,6 +8,7 @@ import { copyToClipboard } from 'utils/helper';
 import { icons } from './Icons';
 import { ReactComponent as Union } from '../assets/union.svg';
 import { Tooltip } from 'react-tippy';
+import { apiUrls, get } from 'utils/request';
 
 export const Input = ({
   name,
@@ -17,6 +18,8 @@ export const Input = ({
   error,
   label,
   group,
+  value,
+  defaultValue,
   labelClass,
   groupClass = 'mb-3',
   groupProps,
@@ -27,9 +30,11 @@ export const Input = ({
   leftIcon,
   rightIcon,
   isLink,
+  isDownloadable,
   maxLength = '800',
   prefixText = '',
   infoIcon = '',
+  onChange,
   ...rest
 }) => {
   let { as: inputAs } = rest;
@@ -39,6 +44,9 @@ export const Input = ({
   if (isLink && !rightIcon) {
     rightIcon = 'copy';
   }
+  if (isDownloadable && !rightIcon) {
+    rightIcon = 'download';
+  }
   const [inputType, setInputType] = React.useState(type);
   const [rightIconName, setRightIconName] = React.useState(() => {
     if ((rightIcon === 'eye' || rightIcon === 'eyeOff') && type === 'password') {
@@ -47,11 +55,20 @@ export const Input = ({
     return rightIcon;
   });
   const handleIconClick = (field) => {
+    console.log('++', field.value);
     if (rightIconName === 'copy') {
       copyToClipboard(field.value);
       Notification.show({
         type: 'secondary',
         message: <div> Link berhasil dicopy </div>,
+        icon: 'check',
+      });
+    } else if (rightIconName === 'download') {
+      const url = `${apiUrls.bimtekMateriTerdekatDownload}/${field.value}`;
+      window.open(url, '_blank');
+      Notification.show({
+        type: 'secondary',
+        message: <div> Berhasil didownload </div>,
         icon: 'check',
       });
     } else if (rightIconName === 'eye') {

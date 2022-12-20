@@ -87,6 +87,7 @@ const CMSJadwalBaru = () => {
 
   const addFoto = async (e) => {
     let file = e.target.files[0];
+    // console.log(file.size);
     try {
       let fotoFormData = new FormData();
       fotoFormData.append('file', file);
@@ -182,24 +183,37 @@ const CMSJadwalBaru = () => {
       urlVidio,
       images: fotoDokumentasi,
     };
-    dispatch(postImageDokumentasi(obj)).then((res) => {
-      res.payload
-        ? Notification.show({
-            type: 'secondary',
-            message: <div> Berhasil Menambahkan Dokumentasi </div>,
-            icon: 'check',
-          })
-        : Notification.show({
-            type: 'secondary',
-            message: <div> Gagal Menambahkan Dokumentasi </div>,
-            icon: 'cross',
-          });
-      if (res.payload) {
-        setTimeout(() => {
-          history.push(`/cms/bimtek-dokumentasi`);
-        }, 1000);
-      }
+    //count obj.img.size reduce
+    let totalSize = 0;
+    fotoDokumentasi.forEach((item) => {
+      totalSize += item.size;
     });
+    if (totalSize > 15000000) {
+      Notification.show({
+        type: 'secondary',
+        message: <div> Total Ukuran Gambar Dokumentasi Melebihi 15 MB </div>,
+        icon: 'cross',
+      });
+    } else {
+      dispatch(postImageDokumentasi(obj)).then((res) => {
+        res.payload
+          ? Notification.show({
+              type: 'secondary',
+              message: <div> Berhasil Menambahkan Dokumentasi </div>,
+              icon: 'check',
+            })
+          : Notification.show({
+              type: 'secondary',
+              message: <div> Gagal Menambahkan Dokumentasi </div>,
+              icon: 'cross',
+            });
+        if (res.payload) {
+          setTimeout(() => {
+            history.push(`/cms/bimtek-dokumentasi`);
+          }, 1000);
+        }
+      });
+    }
     setCreateDokumentasi(false);
   };
   const listBimtek = (dataListBimtek || [])?.map((data) => ({ value: data.id, label: data.namaBimtek }));

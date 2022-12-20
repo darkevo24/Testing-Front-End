@@ -1,6 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
+import RBDropdown from 'react-bootstrap/Dropdown';
+import RBDropdownButton from 'react-bootstrap/DropdownButton';
+import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,12 +45,14 @@ const DaftarForm = ({
   instansiOptions = [],
   sdgPillerOptions = [],
   rkpPNOptions = [],
+  attributDinamis,
 }) => {
   const dispatch = useDispatch();
   const tujuanSDGPillerOptions = useSelector(addTujuanSDGPillerOptionsSelector);
   const rkpPPOptions = useSelector(addRkpPPOptionsSelector);
   const daftarDetails = useSelector(daftarDetailsDataSelector);
   const storeDaftar = daftarDetails?.result[daftarId];
+  const [dataDinamis, setDataDinamis] = useState({});
 
   useEffect(() => {
     if (daftarId && !storeDaftar) {
@@ -67,7 +72,21 @@ const DaftarForm = ({
     daftar.kodePPRKP = findOption(rkpPPOptions, daftar.kodePPRKP);
     daftar.tanggalDibuat = new Date(daftar.tanggalDibuat);
     daftar.tanggalDiperbaharui = new Date(daftar.tanggalDibuat);
+    daftar.rujukan = findOption(dataindukAllOptions, daftar.rujukan ? JSON.parse(daftar.rujukan) : daftar.rujukan);
   }
+  console.log(daftar.additionalData, attributDinamis);
+  useEffect(() => {
+    const daftarAdditionalData = storeDaftar && JSON?.parse(daftar.additionalData);
+    const obj = attributDinamis?.result?.reduce(
+      (obj, item) =>
+        Object.assign(obj, {
+          [item.name]: daftarAdditionalData?.filter((elm) => elm.key === item.name)[0]?.value || '',
+        }),
+      {},
+    );
+    setDataDinamis(obj);
+  }, [attributDinamis, daftarDetails]);
+
   const {
     control,
     formState: { errors },
@@ -79,6 +98,17 @@ const DaftarForm = ({
     resolver: yupResolver(schema),
     defaultValues: { ...daftar },
   });
+  const handleSubmitData = (daftarFormData) => {
+    const arr = [];
+    attributDinamis?.result?.forEach((elm) => {
+      arr.push({
+        key: elm.name,
+        value: typeof dataDinamis[elm.name] == 'object' ? dataDinamis[elm.name].value : dataDinamis[elm.name],
+      });
+    });
+    daftarFormData['additionalData'] = [...arr];
+    onSubmit(daftarFormData);
+  };
 
   const watchKodePilar = watch('kodePilar', false);
   const watchKodePNRKP = watch('kodePNRKP', false);
@@ -94,6 +124,18 @@ const DaftarForm = ({
   useEffect(() => {
     reset(daftar);
   }, [storeDaftar]);
+
+  const optionDropdown = (options) => {
+    const result = [];
+    options.forEach((item) => {
+      result.push({ label: item, value: item });
+    });
+    return result;
+  };
+
+  const handleChangeAttributDinamis = (value, name) => {
+    setDataDinamis((prev) => ({ ...prev, [name]: value }));
+  };
 
   useEffect(() => {
     const ppOption = findOption(rkpPPOptions, get(daftar, 'kodePPRKP.value', daftar.kodePPRKP));
@@ -112,7 +154,7 @@ const DaftarForm = ({
   return (
     <div className="daftar-form">
       <Row>
-        <Form id={daftarFormId} onSubmit={handleSubmit(onSubmit)} noValidate>
+        <Form id={daftarFormId} onSubmit={handleSubmit(handleSubmitData)} noValidate>
           <Dropdown
             group
             label={<RequiredFilledLabel label={'Instansi'} />}
@@ -162,7 +204,7 @@ const DaftarForm = ({
             label="Sumber Definisi"
             name="sumberDefinisi"
             control={control}
-            rules={{ required: true }}
+            rules={{ required: false }}
             error={errors.sumberDefinisi?.message}
           />
           <Dropdown
@@ -188,7 +230,7 @@ const DaftarForm = ({
             label="Diperbarui"
             name="tanggalDiperbaharui"
             control={control}
-            rules={{ required: true }}
+            rules={{ required: false }}
             error={errors.tanggalDiperbaharui?.message}
           />
           <Input
@@ -204,7 +246,7 @@ const DaftarForm = ({
             label="Data Induk"
             name="indukData"
             control={control}
-            rules={{ required: true }}
+            rules={{ required: false }}
             placeholder="Select"
             options={emptyOptionPad(dataindukAllOptions)}
             error={errors.indukData?.message}
@@ -237,7 +279,7 @@ const DaftarForm = ({
             label="Pilar SDGs"
             name="kodePilar"
             control={control}
-            rules={{ required: true }}
+            rules={{ required: false }}
             placeholder="Select"
             options={emptyOptionPad(sdgPillerOptions)}
             error={errors.kodePilar?.message}
@@ -247,7 +289,7 @@ const DaftarForm = ({
             label="Tujuan SDGs"
             name="kodeTujuan"
             control={control}
-            rules={{ required: true }}
+            rules={{ required: false }}
             placeholder="Select"
             options={emptyOptionPad(tujuanSDGPillerOptions)}
             error={errors.kodeTujuan?.message}
@@ -257,7 +299,7 @@ const DaftarForm = ({
             label="PN RKP"
             name="kodePNRKP"
             control={control}
-            rules={{ required: true }}
+            rules={{ required: false }}
             placeholder="Select"
             options={emptyOptionPad(rkpPNOptions)}
             error={errors.kodePNRKP?.message}
@@ -267,11 +309,53 @@ const DaftarForm = ({
             label="PP RKP"
             name="kodePPRKP"
             control={control}
-            rules={{ required: true }}
+            rules={{ required: false }}
             placeholder="Select"
             options={emptyOptionPad(rkpPPOptions)}
             error={errors.kodePPRKP?.message}
           />
+          <Dropdown
+            group
+            label="Rujukan"
+            name="rujukan"
+            multi
+            control={control}
+            rules={{ required: false }}
+            placeholder="Select"
+            options={emptyOptionPad(dataindukAllOptions)}
+            error={errors.rujukan?.message}
+          />
+          {attributDinamis?.result?.map((attr) =>
+            attr.type === 'dropdown' ? (
+              <Form.Group className="mb-3">
+                <Form.Label>{attr.name}</Form.Label>
+                <RBDropdownButton title={dataDinamis[attr?.name] || 'Select'} variant="secondary">
+                  {emptyOptionPad(optionDropdown(attr.dropdownContent.split(', '))).map((option, index) => (
+                    <RBDropdown.Item
+                      key={`${index}-${option.value}`}
+                      onClick={(e) => handleChangeAttributDinamis(option.value, attr.name)}
+                      active={dataDinamis[attr.name] === option.value}>
+                      {option.label}
+                    </RBDropdown.Item>
+                  ))}
+                </RBDropdownButton>
+              </Form.Group>
+            ) : (
+              <Form.Group className="mb-3">
+                <Form.Label>{attr.name}</Form.Label>
+                <div className="sdp-input-main-container">
+                  <InputGroup className="sdp-input-wrapper">
+                    <Form.Control
+                      as={attr.type === 'textarea' ? 'textarea' : 'input'}
+                      onChange={(e) => handleChangeAttributDinamis(e.target.value, attr.name)}
+                      type={attr.type}
+                      value={dataDinamis ? dataDinamis[attr?.name] : ''}
+                    />
+                  </InputGroup>
+                </div>
+              </Form.Group>
+            ),
+          )}
           <Button className="invisible" type="submit" />
         </Form>
       </Row>

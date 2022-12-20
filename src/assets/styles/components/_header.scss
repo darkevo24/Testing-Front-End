@@ -4,6 +4,9 @@
   border-bottom: 1px solid $stroke;
   .nav-link {
     color: $black-dark-10 !important;
+    &:hover {
+      color: $hover-primary !important;
+    }
   }
   .active {
     color: $primary !important;

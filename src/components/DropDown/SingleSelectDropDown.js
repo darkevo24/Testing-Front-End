@@ -45,6 +45,7 @@ export const SingleSelectDropdown = ({
   data,
   onInputChange,
   isCreatable = false,
+  onCreateOption,
   ...rest
 }) => {
   const dropdownNode = (
@@ -72,6 +73,7 @@ export const SingleSelectDropdown = ({
               classNamePrefix="select"
               components={{ Option: IconOption, Control }}
               onInputChange={handleInputChange}
+              onCreateOption={onCreateOption}
               {...rest}
             />
           );

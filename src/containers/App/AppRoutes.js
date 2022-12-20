@@ -8,6 +8,9 @@ import { Roles } from 'containers/App/config';
 
 const { Login, TermAndCondition } = lazily(() => import('containers/Login'));
 const BerandaPage = lazy(() => import('containers/Beranda'));
+const ManagemenPengguna = lazy(() => import('containers/ManagemenPengguna'));
+const PenggunaBaru = lazy(() => import('containers/ManagemenPengguna/PenggunaBaru'));
+const PenggunaDetail = lazy(() => import('containers/ManagemenPengguna/PenggunaDetail'));
 const TopicDetailPage = lazy(() => import('containers/Beranda/TopicDetails'));
 const DataSetPage = lazy(() => import('containers/Beranda/DataSet'));
 const { Perminataan } = lazily(() => import('containers/Perminataan'));
@@ -66,14 +69,15 @@ function AppRoutes(props) {
         <Suspense fallback={<Loader fullscreen />}>
           <Switch>
             <Route exact path="/policy" component={KebijakanPrivasiPage} />
+            <Route exact path="/pengguna-baru" component={PenggunaBaru} />
             <Route exact path="/home" component={BerandaPage} />
             <Route exact path="/topic-detail" component={TopicDetailPage} />
             <Route exact path="/berita" component={BeritaPage} />
+            <Route path="/berita/perbulan/:date" component={BeritaPerBulan} />
             <Route exact path="/berita/preview" component={BeritaPreviewPage} />
             <Route exact path="/berita-populer" component={BeritaPopular} />
-            <Route exact path="/berita-topik/:id" component={BeritaByTopic} />
+            <Route exact path="/berita-topik/:id/:keterangan?" component={BeritaByTopic} />
             <Route exact path="/berita/:id/:slug?" component={BeritaDetailPage} />
-            <Route exact path="/berita/perbulan/:date" component={BeritaPerBulan} />
             <Route exact path="/tentang" component={TentangPage} />
             <Route exact path="/daftar-menjadi-ahli" component={DaftarMenjadiAhli} />
             <Route exact path="/glosarium" component={Glosarium} />
@@ -90,15 +94,21 @@ function AppRoutes(props) {
               exact
               path="/permintaan-data-detail/:id"
               component={PerminataanDetail}
-              permissions={[Roles.MEMBER]}
+              permissions={[Roles.MEMBER, Roles.WALIDATA_ADMIN]}
             />
-            <PrivateRoute exact path="/permintaan-data" component={Perminataan} permissions={[Roles.MEMBER]} />
+            <PrivateRoute
+              exact
+              path="/permintaan-data"
+              component={Perminataan}
+              permissions={[Roles.MEMBER, Roles.WALIDATA_ADMIN]}
+            />
             <PrivateRoute
               exact
               path="/forum-sdi/:id"
               component={ForumSDIDetail}
               permissions={[
                 Roles.MEMBER,
+                Roles.WALIDATA_ADMIN,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
                 Roles.EKSEKUTIF,
@@ -114,6 +124,7 @@ function AppRoutes(props) {
               // component={ForumSDI}
               permissions={[
                 Roles.MEMBER,
+                Roles.WALIDATA_ADMIN,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
                 Roles.EKSEKUTIF,
@@ -128,6 +139,7 @@ function AppRoutes(props) {
               component={PerminataanForumPage}
               permissions={[
                 Roles.MEMBER,
+                Roles.WALIDATA_ADMIN,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
                 Roles.EKSEKUTIF,
@@ -149,6 +161,7 @@ function AppRoutes(props) {
                 Roles.SEKRETARIANT_CREATOR,
                 Roles.SEKRETARIANT_EDITOR,
                 Roles.ADMIN,
+                Roles.WALIDATA_ADMIN,
                 Roles.REGISTERED_USER,
                 Roles.PEMBINA_DATA,
                 Roles.PIC_SDGS,
@@ -160,19 +173,38 @@ function AppRoutes(props) {
               exact
               path="/dataset"
               component={DataSetPage}
-              permissions={[Roles.ADMIN, Roles.EKSEKUTIF, Roles.REGISTERED_USER, Roles.MEMBER, Roles.SEKRETARIANT]}
+              permissions={[
+                Roles.ADMIN,
+                Roles.WALIDATA_ADMIN,
+                Roles.EKSEKUTIF,
+                Roles.REGISTERED_USER,
+                Roles.MEMBER,
+                Roles.SEKRETARIANT,
+              ]}
             />
             <PrivateRoute
               exact
               path="/daftar"
               component={DaftarPage}
-              permissions={[Roles.MEMBER, Roles.SEKRETARIANT, Roles.SEKRETARIANT_CREATOR, Roles.SEKRETARIANT_EDITOR]}
+              permissions={[
+                Roles.MEMBER,
+                Roles.WALIDATA_ADMIN,
+                Roles.SEKRETARIANT,
+                Roles.SEKRETARIANT_CREATOR,
+                Roles.SEKRETARIANT_EDITOR,
+              ]}
             />
             <PrivateRoute
               exact
               path="/daftar/:daftarId/variable"
               component={DataVariablePage}
-              permissions={[Roles.MEMBER, Roles.SEKRETARIANT, Roles.SEKRETARIANT_CREATOR, Roles.SEKRETARIANT_EDITOR]}
+              permissions={[
+                Roles.MEMBER,
+                Roles.WALIDATA_ADMIN,
+                Roles.SEKRETARIANT,
+                Roles.SEKRETARIANT_CREATOR,
+                Roles.SEKRETARIANT_EDITOR,
+              ]}
             />
             <PrivateRoute
               exact
@@ -180,6 +212,7 @@ function AppRoutes(props) {
               component={KomunitasPage}
               permissions={[
                 Roles.MEMBER,
+                Roles.WALIDATA_ADMIN,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
                 Roles.SEKRETARIANT,
@@ -193,6 +226,7 @@ function AppRoutes(props) {
               component={BimTekSummaryPage}
               permissions={[
                 Roles.MEMBER,
+                Roles.WALIDATA_ADMIN,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
                 Roles.SEKRETARIANT,
@@ -206,6 +240,7 @@ function AppRoutes(props) {
               component={BimTekFormPage}
               permissions={[
                 Roles.MEMBER,
+                Roles.WALIDATA_ADMIN,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
                 Roles.SEKRETARIANT_CREATOR,
@@ -218,6 +253,7 @@ function AppRoutes(props) {
               component={BimTekJadwalPage}
               permissions={[
                 Roles.MEMBER,
+                Roles.WALIDATA_ADMIN,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
                 Roles.SEKRETARIANT_CREATOR,
@@ -230,6 +266,7 @@ function AppRoutes(props) {
               component={BimTekMateriPage}
               permissions={[
                 Roles.MEMBER,
+                Roles.WALIDATA_ADMIN,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
                 Roles.SEKRETARIANT_CREATOR,
@@ -242,6 +279,7 @@ function AppRoutes(props) {
               component={BimTekPermintaanPage}
               permissions={[
                 Roles.MEMBER,
+                Roles.WALIDATA_ADMIN,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
                 Roles.SEKRETARIANT_CREATOR,
@@ -254,6 +292,7 @@ function AppRoutes(props) {
               component={BimTekPermintaanDetailPage}
               permissions={[
                 Roles.MEMBER,
+                Roles.WALIDATA_ADMIN,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
                 Roles.SEKRETARIANT_CREATOR,
@@ -266,6 +305,7 @@ function AppRoutes(props) {
               component={BimTekKotaPage}
               permissions={[
                 Roles.MEMBER,
+                Roles.WALIDATA_ADMIN,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
                 Roles.SEKRETARIANT_CREATOR,
@@ -278,6 +318,7 @@ function AppRoutes(props) {
               component={BimTekDokumentasiPage}
               permissions={[
                 Roles.MEMBER,
+                Roles.WALIDATA_ADMIN,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
                 Roles.SEKRETARIANT_CREATOR,
@@ -291,6 +332,7 @@ function AppRoutes(props) {
               permissions={[
                 Roles.REGISTERED_USER,
                 Roles.MEMBER,
+                Roles.WALIDATA_ADMIN,
                 Roles.EKSEKUTIF,
                 Roles.CONTENT_CREATOR,
                 Roles.CONTENT_EDITOR,
@@ -329,13 +371,38 @@ function AppRoutes(props) {
               exact
               path="/dataprioritas"
               component={DataAnalytic}
-              permissions={[Roles.ADMIN, Roles.REGISTERED_USER, Roles.MEMBER, Roles.SEKRETARIANT, Roles.EKSEKUTIF]}
+              permissions={[
+                Roles.ADMIN,
+                Roles.WALIDATA_ADMIN,
+                Roles.REGISTERED_USER,
+                Roles.MEMBER,
+                Roles.SEKRETARIANT,
+                Roles.EKSEKUTIF,
+              ]}
             />
             <PrivateRoute
               exact
               path="/sdmx"
               component={MetadataRegistryPage}
-              permissions={[Roles.MEMBER, Roles.SEKRETARIANT, Roles.SEKRETARIANT_CREATOR, Roles.SEKRETARIANT_EDITOR]}
+              permissions={[
+                Roles.MEMBER,
+                Roles.WALIDATA_ADMIN,
+                Roles.SEKRETARIANT,
+                Roles.SEKRETARIANT_CREATOR,
+                Roles.SEKRETARIANT_EDITOR,
+              ]}
+            />
+            <PrivateRoute
+              exact
+              path="/managemen-pengguna"
+              component={ManagemenPengguna}
+              permissions={[Roles.WALIDATA_ADMIN, Roles.PEMBINA_DATA_ADMIN]}
+            />
+            <PrivateRoute
+              exact
+              path="/managemen-pengguna/:id"
+              component={PenggunaDetail}
+              permissions={[Roles.WALIDATA_ADMIN, Roles.PEMBINA_DATA_ADMIN]}
             />
           </Switch>
           {/* <Route exact path="/change-password" component={ChangePassword} /> */}

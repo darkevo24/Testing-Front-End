@@ -57,19 +57,23 @@
   "dependencies": {
     "@hookform/resolvers": "2.8.2",
     "@react-keycloak/web": "3.4.0",
+    "@react-pdf/renderer": "3.0.1",
     "@reduxjs/toolkit": "1.6.0",
     "@stripe/react-stripe-js": "^1.6.0",
     "@stripe/stripe-js": "^1.19.1",
     "@testing-library/jest-dom": "5.14.1",
     "@testing-library/react": "12.0.0",
     "@tinymce/tinymce-react": "3.13.0",
+    "axios": "0.26.1",
     "bootstrap": "5.1.1",
     "classnames": "2.3.1",
     "connected-react-router": "6.9.1",
     "cross-env": "7.0.3",
     "csv": "^5.5.3",
+    "date-fns": "2.29.3",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-prettier": "3.4.0",
+    "file-saver": "2.0.5",
     "formik": "2.2.9",
     "framer-motion": "^4",
     "history": "4.10.1",
@@ -92,8 +96,9 @@
     "node-sass": "6.0.1",
     "prettier": "2.3.2",
     "react": "17.0.2",
-    "react-bootstrap": "2.0.0-rc.1",
+    "react-bootstrap": "2.5.0",
     "react-content-loader": "6.0.3",
+    "react-csv": "2.2.2",
     "react-datepicker": "4.3.0",
     "react-dom": "17.0.2",
     "react-drag-drop-container": "6.1.1",
@@ -106,6 +111,7 @@
     "react-leaflet": "3.2.2",
     "react-number-format": "4.8.0",
     "react-paginate": "8.0.2",
+    "react-pdf": "6.2.0",
     "react-redux": "7.2.4",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.3",
@@ -123,6 +129,7 @@
     "shelljs": "0.8.4",
     "shortid": "2.2.16",
     "slick-carousel": "1.8.1",
+    "socket.io-client": "4.5.2",
     "styled-components": "5.3.1",
     "stylelint": "13.13.1",
     "stylelint-config-recommended": "5.0.0",
@@ -147,5 +154,9 @@
     ">0.2%",
     "not dead",
     "not op_mini all"
-  ]
+  ],
+  "resolutions": {
+    "@react-pdf/font": "2.2.1",
+    "@react-pdf/pdfkit": "2.1.0"
+  }
 }

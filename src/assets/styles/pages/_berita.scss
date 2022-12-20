@@ -24,7 +24,7 @@
 }
 
 .beritaDetailContent {
-  p {
+  p, li{
     font-size: 16px;
     line-height: 24px;
     color: $gray-dark;
@@ -42,11 +42,11 @@
 }
 
 .topik {
-  font-size: 14px;
-  color: blue;
+  font-size: 9px;
+  color: #007AFF;
   background: rgba(0, 122, 255, 0.12);
   border-radius: 4px;
-  padding: 8px 12px;
+  padding: 6px 8px;
   display: inline-block;
 }
 
@@ -54,12 +54,12 @@
   font-weight: 600;
   font-size: 16px;
   color: $black-dark;
-  margin: 12px 0;
+  margin-top: 5px;
   cursor: pointer;
 }
 
 .kontent {
-  font-size: 14px;
+  font-size: 12px;
   line-height: 21px;
   color: $gray-dark;
 }

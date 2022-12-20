@@ -22,8 +22,9 @@ $gray-bg: #F5F6FA;
 $bright-gray: #F5F6FA;
 $gray-bg-dark: #e9ecef;
 $gray-dark: #515154;
-$gray-light: #b9b9b9;
 $gray-lighter: #fafafa;
+$gray-lighter2: #ebebeb;
+$gray-light: #b9b9b9;
 $gray: #858a8f;
 $green-dark: #357d38;
 $green-gold: #9fb65f;
@@ -41,6 +42,7 @@ $red-dark: #e91d28;
 $red-extra-dark: #c02828;
 $red-light: #ffeeee;
 $red: #ff0000;
+$red-light: #EB656A;
 $shadow: rgba(0, 0, 0, 0.16);
 $violet: #a016a3;
 $white: #ffffff;
@@ -58,6 +60,7 @@ $scrollbar: #d9dadf;
 $border-color: $stroke;
 
 $outline-primary: $red;
+$hover-primary: $red-light;
 
 :root {
   --black-dark-10: #2d2627;

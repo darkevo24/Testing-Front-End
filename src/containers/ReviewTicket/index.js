@@ -23,9 +23,14 @@ const ReviewTicket = () => {
 
   const formRef = useRef(null);
 
+  const fetchData = () => {
+    dispatch(getTicket({ id })).then((result) => {
+      setData(result.payload[0]);
+    });
+  };
+
   const onSubmitProses = () => {
     if (!desc || !rating) return;
-    console.log({ data });
     if (data != null) {
       if (data.isReviewed) {
         Notification.show({
@@ -37,7 +42,7 @@ const ReviewTicket = () => {
         dispatch(
           postTicketReview({
             ticketId: data.ticketId,
-            email: data.creatorData.email,
+            email: data?.creatorData?.email,
             rating,
             description: desc,
           }),
@@ -48,6 +53,7 @@ const ReviewTicket = () => {
               message: <div> Review Berhasil Dikirim </div>,
               icon: 'check',
             });
+            fetchData();
           } else {
             Notification.show({
               type: 'secondary',
@@ -68,9 +74,7 @@ const ReviewTicket = () => {
 
   useEffect(async () => {
     if (id) {
-      dispatch(getTicket({ id })).then((result) => {
-        setData(result.payload[0]);
-      });
+      fetchData();
     }
   }, [id]);
 

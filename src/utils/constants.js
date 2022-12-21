@@ -163,6 +163,8 @@ export const apiUrls = {
   crmChatStatus: getCrmApi('chatrequest/status'),
   crmChatHistory: getCrmApi('chathistory'),
   contactUs: getCrmApi('ticket/sdi'),
+  crmTicketDetail: getCrmApi('ticket'),
+  crmTicketReview: getCrmApi('ticketreview'),
   crmImageApi: getCrmApi('image'),
   crmChatReview: getCrmApi('chatreview'),
   contactUsAdmin: getCrmApi('contacts'),

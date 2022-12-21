@@ -160,7 +160,7 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
       <FlexBox className="px-16 mt-40">
         <LeftBox>
           <CovidSvg style={{ marginRight: '10px' }} />
-          <TitleBox>Kemenkes</TitleBox>
+          <TitleBox>Kementrian Kesehatan</TitleBox>
         </LeftBox>
       </FlexBox>
       <Row style={{ marginBottom: '100px' }}>
@@ -180,7 +180,7 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
       <FlexBox className="px-16 mt-40 mb-40">
         <LeftBox>
           <RoadSvg style={{ marginRight: '10px' }} />
-          <TitleBox>PUPR</TitleBox>
+          <TitleBox>Pekerjaan Umum dan Perumahan Rakyat Republik Indonesia</TitleBox>
         </LeftBox>
       </FlexBox>
       {/* <Row className="mb-12">

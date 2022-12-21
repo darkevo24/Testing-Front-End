@@ -118,22 +118,30 @@ const CMSForumSDIForm = () => {
 
   const handleFiles = (files) => {
     let flag = false;
+    const fileList = [];
     Object.values(files).forEach((file) => {
       if (flag) return;
       const isValid = isValidFile(524288, file, 'lampiran', 'Only File with Max 512KB');
       if (!isValid) flag = true;
     });
     if (!flag) {
-      fileLists.push(Object.values(files));
+      fileList.push(Object.values(files));
       // setLampiran(Object.values(files));
     }
-    setLampiran(Object.values(fileLists));
+    setLampiran(Object.values(fileList));
   };
 
   useEffect(() => {
     if (lampiran) {
-      console.log(`++lampiran`, lampiran);
+      // console.log(`++lampiran`, lampiran);
+      // console.log('++', lampiran.length);
+      lampiran.forEach((files) => {
+        files.forEach((file) => {
+          setFileLists((prev) => [...prev, file.name]);
+        });
+      });
     }
+    console.log('++fileLists', fileLists);
   }, [lampiran]);
 
   const uplodFile = async () => {
@@ -143,35 +151,15 @@ const CMSForumSDIForm = () => {
       lampiran.forEach((files) => {
         files.forEach((file) => {
           formData.append('files', file);
-          console.log('++file', file);
         });
       });
       const response = await post(`${apiUrls.multipleFileUpload}`, formData, {
         headers: { 'Content-Type': undefined },
       });
       return response?.data || [{}];
-
-      // //lampiran file yang diupload
-      // let fileFormData = new FormData();
-      // lampiran.forEach((file) => {
-      //   // fileFormData.append('files', file);
-      //   // console.log('++file', file);
-      //   post(`${apiUrls.multipleFileUpload}`, file, {
-      //     headers: { 'Content-Type': undefined },
-      //   });
-      // });
-      // const response = await post(`${apiUrls.multipleFileUpload}`, fileFormData, {
-      //   headers: { 'Content-Type': undefined },
-      // });
-      // return response?.data || [{}];
     } catch (e) {
       setAPIError(e.message);
     }
-  };
-
-  const openUploadForm = (id) => {
-    const elmButton = document.getElementById(id);
-    elmButton.click();
   };
 
   const goBack = () => {
@@ -316,7 +304,7 @@ const CMSForumSDIForm = () => {
                 as: Col,
               }}
             />
-            {!id ? (
+            {id ? (
               <Form.Group as={Col} className="cms-forum-sdi-input mt-5 mb-10" md="8">
                 <label className="sdp-form-label mb-8">Lampiran</label>
                 <div className="input-data d-flex align-items-center bg-gray border-gray-stroke p-9 br-4">
@@ -327,7 +315,19 @@ const CMSForumSDIForm = () => {
                 </div>
               </Form.Group>
             ) : null}
-            {/* {lampiran.length > 0 && <p>{lampiran}</p>} */}
+            {fileLists?.length > 0 ? (
+              <Form.Group as={Col} className="cms-forum-sdi-input mt-5 mb-10" md="8">
+                <label className="sdp-form-label mb-8">Lampiran</label>
+                <div className="input-data d-flex align-items-center bg-gray border-gray-stroke p-9 br-4">
+                  <label className="sdp-text-blue bg-light-blue mr-10">{fileLists}</label>
+                </div>
+              </Form.Group>
+            ) : null}
+            {/* {lampiran?.length > 0 ? (
+              <Form.Group as={Col} className="cms-forum-sdi-input mt-5 mb-10" md="8">
+                <label className="sdp-form-label mb-8">Lampiran</label>
+              </Form.Group>
+            ) : null} */}
             {showUploadFile && (
               <FileInput
                 error={errorInfo?.lampiran}

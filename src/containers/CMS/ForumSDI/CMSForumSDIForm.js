@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import * as yup from 'yup';
+import ReactPDF from '@react-pdf/renderer';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
+import { ReactComponent as Plus } from 'assets/plus.svg';
+import Notification from 'components/Notification';
 import isEmpty from 'lodash/isEmpty';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -24,6 +27,8 @@ import {
   cmsForumSDIGetTagsSelector,
 } from './reducer';
 
+import bn from 'utils/bemNames';
+
 const schema = yup
   .object({
     judul: yup.string().required('Judul is required'),
@@ -34,13 +39,13 @@ const schema = yup
   .required();
 
 const CMSForumSDIForm = () => {
-  const [lampiran, setLampiran] = useState(null);
   const [errorInfo, setErrorInfo] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [loader, setLoader] = useState(false);
   const [showUploadFile, setShowUploadFile] = useState(false);
+  const [countFile, setCountFile] = useState(0);
   const [formData, setFormData] = useState({});
-  const [fileLists, setFileLists] = useState([]);
+  const [fotoDokumentasi, setFotoDokumentasi] = useState([]);
   const [apiError, setAPIError] = useState('');
   const { id } = useParams();
   const history = useHistory();
@@ -49,7 +54,6 @@ const CMSForumSDIForm = () => {
   const { detailResult, detailError } = useSelector(cmsForumSDIGetDetailSelector);
   const { topikResult, topikLoading } = useSelector(cmsForumSDIGetTopikSelector);
   const { tagsResult, tagsLoading } = useSelector(cmsForumSDIGetTagsSelector);
-
   const {
     control,
     formState: { errors },
@@ -116,50 +120,45 @@ const CMSForumSDIForm = () => {
     return true;
   };
 
-  const handleFiles = (files) => {
-    let flag = false;
-    const fileList = [];
-    Object.values(files).forEach((file) => {
-      if (flag) return;
-      const isValid = isValidFile(524288, file, 'lampiran', 'Only File with Max 512KB');
-      if (!isValid) flag = true;
-    });
-    if (!flag) {
-      fileList.push(Object.values(files));
-      // setLampiran(Object.values(files));
-    }
-    setLampiran(Object.values(fileList));
+  const openUploadForm = (id) => {
+    const elmButton = document.getElementById(id);
+    elmButton.click();
   };
 
-  useEffect(() => {
-    if (lampiran) {
-      // console.log(`++lampiran`, lampiran);
-      // console.log('++', lampiran.length);
-      lampiran.forEach((files) => {
-        files.forEach((file) => {
-          setFileLists((prev) => [...prev, file.name]);
+  const addFoto = async (e) => {
+    let file = e.target.files[0];
+    if (countFile < 5) {
+      try {
+        let fotoFormData = new FormData();
+        fotoFormData.append('file', file);
+        await post(apiUrls.uploadFoto, fotoFormData, { headers: { 'Content-Type': undefined } }).then((res) => {
+          Notification.show({
+            type: 'secondary',
+            message: <div> Berhasil Upload Gambar Dokumentasi </div>,
+            icon: 'check',
+          });
+          setFotoDokumentasi([...fotoDokumentasi, res.data]);
+          setCountFile(countFile + 1);
         });
+      } catch (e) {
+        Notification.show({
+          type: 'secondary',
+          message: <div> Gagal Upload Gambar Dokumentasi </div>,
+          icon: 'cross',
+        });
+      }
+    } else {
+      Notification.show({
+        type: 'secondary',
+        message: <div> Maksimal Upload Gambar Dokumentasi 5 </div>,
+        icon: 'cross',
       });
     }
-    console.log('++fileLists', fileLists);
-  }, [lampiran]);
+  };
 
-  const uplodFile = async () => {
-    try {
-      const formData = new FormData();
-
-      lampiran.forEach((files) => {
-        files.forEach((file) => {
-          formData.append('files', file);
-        });
-      });
-      const response = await post(`${apiUrls.multipleFileUpload}`, formData, {
-        headers: { 'Content-Type': undefined },
-      });
-      return response?.data || [{}];
-    } catch (e) {
-      setAPIError(e.message);
-    }
+  const deleteFotoDokumentasi = (e) => {
+    const filter = fotoDokumentasi.filter((item, index) => index !== e);
+    setFotoDokumentasi(filter);
   };
 
   const goBack = () => {
@@ -172,27 +171,25 @@ const CMSForumSDIForm = () => {
 
   const handleDataSubmit = (data) => {
     const clone = { ...errorInfo };
-    if ((!id && !lampiran) || (id && !detailResult?.lampiran?.length && !lampiran)) {
-      clone['lampiran'] = 'lampiran is required';
-    }
     if (!isEmpty(clone)) {
       setErrorInfo(clone);
       return;
     }
+    data = {
+      ...data,
+      lampiran: fotoDokumentasi,
+    };
     setShowModal(true);
     setFormData(data);
   };
 
   const onSubmit = async () => {
-    setLoader(true);
-    let fileLink;
-    if (!id || (id && lampiran)) {
-      fileLink = await uplodFile();
-    }
-    if (lampiran && !fileLink) {
-      setShowModal(false);
-      setLoader(false);
-    } else {
+    let totalSize = 0;
+    formData.lampiran.forEach((item) => {
+      totalSize += item.size;
+    });
+    if (totalSize < 15000000) {
+      setLoader(true);
       try {
         const method = id ? put : post;
         const url = id ? `${apiUrls.cmsForumSDI}/${id}` : apiUrls.cmsForumSDI;
@@ -202,7 +199,7 @@ const CMSForumSDIForm = () => {
           topik: !topikResID ? 0 : formData?.topik?.value || null,
           tags: formData.tags.map((elem) => elem.label) || [],
           isi: formData?.isi || '',
-          lampiran: fileLink || [{}],
+          lampiran: formData?.lampiran || [{}],
         };
         if (topikResID === -1) {
           params['topikName'] = formData?.topik?.value;
@@ -214,6 +211,13 @@ const CMSForumSDIForm = () => {
         setShowModal(false);
         setAPIError(e.message);
       }
+    } else {
+      Notification.show({
+        type: 'secondary',
+        message: <div> Maksimal Upload Total Lampiran 15 MB </div>,
+        icon: 'cross',
+      });
+      setShowModal(false);
     }
   };
   return (
@@ -315,20 +319,43 @@ const CMSForumSDIForm = () => {
                 </div>
               </Form.Group>
             ) : null}
-            {fileLists?.length > 0 ? (
-              <Form.Group as={Col} className="cms-forum-sdi-input mt-5 mb-10" md="8">
-                <label className="sdp-form-label mb-8">Lampiran</label>
-                <div className="input-data d-flex align-items-center bg-gray border-gray-stroke p-9 br-4">
-                  <label className="sdp-text-blue bg-light-blue mr-10">{fileLists}</label>
+            <div className="wrapper-upload">
+              <div className="wrapper-title">
+                <span className="mb-10 d-block"> Lampiran </span>
+                <div className="text-danger d-flex icon" onClick={() => openUploadForm('sdp-upload-dokumentasi')}>
+                  <Plus width="20px" /> Upload File Lampiran
                 </div>
-              </Form.Group>
-            ) : null}
-            {/* {lampiran?.length > 0 ? (
-              <Form.Group as={Col} className="cms-forum-sdi-input mt-5 mb-10" md="8">
-                <label className="sdp-form-label mb-8">Lampiran</label>
-              </Form.Group>
-            ) : null} */}
-            {showUploadFile && (
+              </div>
+              <Row className="mt-20">
+                {fotoDokumentasi.map((foto, index) => {
+                  return (
+                    <Col key={index} sm={4} style={{ margin: '4px' }}>
+                      <div className="doc-foto">
+                        {foto.fileType !== 'application/pdf' ? (
+                          <img src={foto.location} alt={foto.fileName} />
+                        ) : (
+                          <embed
+                            src="https://satudata.go.id/api-be/file/public-view/testpdf_20221221165516.pdf"
+                            width="800px"
+                            height="2100px"
+                          />
+                          // <object data={foto.location} type="application/pdf" width="100%" height="100%">
+                          //   <p>
+                          //     <a href={foto.location}>{foto.fileName}</a>
+                          //   </p>
+                          // </object>
+                        )}
+                        <Button onClick={() => deleteFotoDokumentasi(index)}>
+                          <span> Remove Lampiran</span>
+                        </Button>
+                      </div>
+                    </Col>
+                  );
+                })}
+              </Row>
+              <input id="sdp-upload-dokumentasi" type="file" style={{ display: 'none' }} onChange={addFoto} />
+            </div>
+            {/* {showUploadFile && (
               <FileInput
                 error={errorInfo?.lampiran}
                 group
@@ -347,7 +374,7 @@ const CMSForumSDIForm = () => {
                 className="h-100"
                 multiple
               />
-            )}
+            )} */}
           </Row>
         </div>
       </Form>

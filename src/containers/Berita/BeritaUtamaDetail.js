@@ -52,6 +52,7 @@ const renderComp = (el) => {
 
 const BeritaUtamaDetail = (props) => {
   const { id } = useParams();
+
   const dispatch = useDispatch();
   const { record, isLoading } = useSelector(newsDetailSelector);
 

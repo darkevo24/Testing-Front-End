@@ -100,23 +100,6 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
     );
   };
 
-  // useEffect(() => {
-  //   const divElement = document.getElementById('viz1671172435542');
-  //   const vizElement = divElement.getElementsByTagName('object')[0];
-  //   if (divElement.offsetWidth > 800) {
-  //     vizElement.style.width = '1250px';
-  //     vizElement.style.height = '705px';
-  //   } else if (divElement.offsetWidth > 500) {
-  //     vizElement.style.width = '1250px';
-  //     vizElement.style.height = '705px';
-  //   } else {
-  //     vizElement.style.width = '100%';
-  //     vizElement.style.height = '2400px';
-  //   }
-  //   const scriptElement = document.createElement('script');
-  //   scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-  //   vizElement.parentNode.insertBefore(scriptElement, vizElement);
-  // }, []);
   return (
     <Box className={bem.e('cards-wrapper')}>
       <FlexBox className="px-16 d-none">
@@ -198,40 +181,11 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
         <Col>
           <iframe
             width="100%"
-            height="680px"
+            height="685px"
             frameBorder="0"
             seamless
             title="Harga Komoditas Pangan"
             src="https://public.tableau.com/views/NeracaDataset_KemantapanJalanNasional_16445845632100/D_KemantapanNAS?:language=en-US&:display_count=n&:origin=viz_share_link9:showVizHome=no&:embed=true"></iframe>
-          {/* <div class="tableauPlaceholder" id="viz1671172435542" style={{ position: 'relative' }}>
-            <noscript>
-              <a href="#">
-                <img
-                  alt=" "
-                  src="https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ne&#47;NeracaProgramSejutaRumah_16445880332060&#47;Capaian2021&#47;1_rss.png"
-                  style={{ border: 'none' }}
-                />
-              </a>
-            </noscript>
-            <object class="tableauViz" style={{ display: 'none' }}>
-              <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F" />
-              <param name="embed_code_version" value="3" />
-              <param name="site_root" value="" />
-              <param name="name" value="NeracaProgramSejutaRumah_16445880332060&#47;Capaian2021" />
-              <param name="tabs" value="yes" />
-              <param name="toolbar" value="yes" />
-              <param
-                name="static_image"
-                value="https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ne&#47;NeracaProgramSejutaRumah_16445880332060&#47;Capaian2021&#47;1.png"
-              />
-              <param name="animate_transition" value="yes" />
-              <param name="display_static_image" value="yes" />
-              <param name="display_spinner" value="yes" />
-              <param name="display_overlay" value="yes" />
-              <param name="display_count" value="yes" />
-              <param name="language" value="en-US" />
-            </object>
-          </div> */}
         </Col>
       </Row>
       <FlexBox className="px-16 mt-40">
@@ -244,7 +198,7 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
         <Col>
           <iframe
             width="100%"
-            height="650px"
+            height="790px"
             frameBorder="0"
             seamless
             title="Perkiraan Cuaca"

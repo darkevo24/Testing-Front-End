@@ -145,7 +145,7 @@ const CMSForumSDIDetail = () => {
                     label="Topik"
                     labelClass="sdp-form-label fw-normal"
                     type="text"
-                    value={detailResult?.topik}
+                    value={detailResult?.topik?.nama}
                   />
                 )}
                 {detailLoading ? (

@@ -40,7 +40,6 @@ const ContactUs = () => {
       return { ...oldData };
     });
   };
-  const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
   const schema = yup
     .object({
@@ -49,9 +48,7 @@ const ContactUs = () => {
       telephone: yup
         .string()
         .required('Nomor Telefon Wajib Diisi')
-        .matches(phoneRegExp, 'Nomor Telefon hanya boleh angka')
-        .min(8, 'Telepon minimal 8 karakter')
-        .max(20, 'Telepon maksimal 20 karakter'),
+        .matches(/^(\+)?\d{7,13}$/, 'Format Nomor Telefon tidak valid.'),
       summary: yup.string().required('Ringkasan Wajib Diisi'),
       message: yup
         .string()

@@ -45,15 +45,15 @@ const CMSKonfigurasiEmail = () => {
   const [editable, setEditable] = useState(true);
   const [types, setTypes] = useState([
     {
-      label: 'Hubungi Kami',
+      label: 'HUBUNGI_KAMI',
       value: '',
     },
     {
-      label: 'Permintaan Bimtek',
+      label: 'PERMINTAAN_BIMTEK',
       value: '',
     },
     {
-      label: 'Permintaan Data',
+      label: 'PERMINTAAN_DATA',
       value: '',
     },
   ]);
@@ -160,7 +160,11 @@ const CMSKonfigurasiEmail = () => {
                   onClick={() => setEditable(true)}>
                   Batal
                 </Button>
-                <Button variant="info" className="mr-16 br-4 px-40 py-13" onClick={() => setShowModal(true)}>
+                <Button
+                  variant="info"
+                  className="mr-16 br-4 px-40 py-13"
+                  style={{ height: '50px' }}
+                  onClick={() => setShowModal(true)}>
                   Simpan
                 </Button>
               </>
@@ -198,7 +202,7 @@ const CMSKonfigurasiEmail = () => {
           <Button className="br-4 mr-8 px-57 py-13 bg-transparent" variant="light" onClick={() => setShowModal(false)}>
             Batal
           </Button>
-          <Button className="br-4 px-39 py-13" variant="info" onClick={onSubmit}>
+          <Button className="br-4 px-39 py-13" style={{ height: '50px' }} variant="info" onClick={onSubmit}>
             Konfirmasi
           </Button>
         </div>

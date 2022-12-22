@@ -47,19 +47,6 @@ export const Chat = ({ setFile }) => {
   React.useEffect(() => {
     dispatch(getChatSettings());
 
-    const chatCredentials = localStorage.getItem('sdi_chat_credentials');
-    if (chatCredentials) {
-      try {
-        const credentialObj = JSON.parse(chatCredentials);
-        if (credentialObj.email) {
-          localStorage.setItem('sdi_chat_email', credentialObj.email);
-          reconnectSocket(credentialObj.email);
-        }
-      } catch (e) {
-        return null;
-      }
-    }
-
     //clear previous chat
     localStorage.removeItem('sdi_chat_message');
   }, []);
@@ -68,6 +55,19 @@ export const Chat = ({ setFile }) => {
     if (user) {
       localStorage.setItem('sdi_chat_email', user?.email);
       reconnectSocket(user?.email);
+    } else {
+      const chatCredentials = localStorage.getItem('sdi_chat_credentials');
+      if (chatCredentials) {
+        try {
+          const credentialObj = JSON.parse(chatCredentials);
+          if (credentialObj.email) {
+            localStorage.setItem('sdi_chat_email', credentialObj.email);
+            reconnectSocket(credentialObj.email);
+          }
+        } catch (e) {
+          return null;
+        }
+      }
     }
   }, [user]);
 
@@ -158,7 +158,7 @@ export const Chat = ({ setFile }) => {
   };
 
   const startChat = async (data) => {
-    await dispatch(createChatRequest({ isLoggedIn, data }));
+    await dispatch(createChatRequest({ isLoggedIn, data, user }));
 
     dispatch(
       postContactUs({

@@ -10,17 +10,17 @@ export const initialState = {
     records: [
       {
         id: '',
-        label: 'Hubungi Kami',
+        label: 'HUBUNGI_KAMI',
         value: '',
       },
       {
         id: '',
-        label: 'Permintaan Bimtek',
+        label: 'PERMINTAAN_BIMTEK',
         value: '',
       },
       {
         id: '',
-        label: 'Permintaan Data',
+        label: 'PERMINTAAN_DATA',
         value: '',
       },
     ],

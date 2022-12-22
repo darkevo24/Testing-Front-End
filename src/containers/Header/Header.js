@@ -142,7 +142,7 @@ export const Header = () => {
         title: 'Media',
         links: [
           { title: 'Berita', link: '/berita' },
-          { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
+          // { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
         ],
       },
       { title: 'Tentang', link: '/tentang' },

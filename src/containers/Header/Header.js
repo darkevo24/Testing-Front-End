@@ -165,19 +165,19 @@ export const Header = () => {
       //   ],
       // },
       // { title: 'Master Data', link: '/#' },
-      {
-        title: 'Layanan',
-        links: [
-          { title: 'Permintaan Data', link: '/permintaan-data' },
-          { title: 'Bimtek', link: '/bimtek-summary' },
-          { title: 'Komunitas Ahli', link: '/komunitas-ahli' },
-          { title: 'Forum SDI', link: '/forum-sdi' },
-          // { title: 'Glosarium', link: '/Glosarium' },
-          { title: 'SDI Wiki', link: '/sdi-wiki' },
-          { title: 'Learning Management', link: `${lmsUrl}#/homeLearning` },
-          // { title: 'Persetujuan Anggaran Biaya', link: '/permintaan-budget' },
-        ],
-      },
+      // {
+      //   title: 'Layanan',
+      //   links: [
+      //     { title: 'Permintaan Data', link: '/permintaan-data' },
+      //     { title: 'Bimtek', link: '/bimtek-summary' },
+      //     { title: 'Komunitas Ahli', link: '/komunitas-ahli' },
+      //     { title: 'Forum SDI', link: '/forum-sdi' },
+      //     // { title: 'Glosarium', link: '/Glosarium' },
+      //     { title: 'SDI Wiki', link: '/sdi-wiki' },
+      //     { title: 'Learning Management', link: `${lmsUrl}#/homeLearning` },
+      //     // { title: 'Persetujuan Anggaran Biaya', link: '/permintaan-budget' },
+      //   ],
+      // },
       {
         title: 'Dashboard',
         links: [
@@ -199,7 +199,7 @@ export const Header = () => {
         title: 'Media',
         links: [
           { title: 'Berita', link: '/berita' },
-          { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
+          // { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
         ],
       },
       { title: 'Tentang', link: '/tentang' },

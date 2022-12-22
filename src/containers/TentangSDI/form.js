@@ -65,6 +65,7 @@ const ContactUs = () => {
     handleSubmit,
     setValue,
     register,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -157,6 +158,7 @@ const ContactUs = () => {
     ).then((result) => {
       if (!result.error) {
         handleReset();
+        reset();
         Notification.show({
           type: 'secondary',
           message: <div> Pesan Berhasil Terkirim </div>,
@@ -241,7 +243,7 @@ const ContactUs = () => {
               isValid={false}
               type="text"
               onChange={(e) => {
-                setValue('full_name', e.target.value);
+                setValue('full_name', e.target.value, { shouldValidate: true });
               }}
               disabled={isLoggedIn}
             />
@@ -253,7 +255,7 @@ const ContactUs = () => {
               value={user?.email}
               type="email"
               onChange={(e) => {
-                setValue('email', e.target.value);
+                setValue('email', e.target.value, { shouldValidate: true });
               }}
               disabled={isLoggedIn}
             />
@@ -265,7 +267,7 @@ const ContactUs = () => {
               value={user?.noHp ?? null}
               type="phone"
               onChange={(e) => {
-                setValue('telephone', e.target.value);
+                setValue('telephone', e.target.value, { shouldValidate: true });
               }}
               disabled={isLoggedIn && user?.noHp}
             />
@@ -277,7 +279,7 @@ const ContactUs = () => {
               isValid={false}
               type="text"
               onChange={(e) => {
-                setValue('summary', e.target.value);
+                setValue('summary', e.target.value, { shouldValidate: true });
               }}
             />
             {errors?.summary?.message && <div className={'error-message'}>{errors?.summary?.message}</div>}
@@ -286,7 +288,7 @@ const ContactUs = () => {
             <Form.Label>Deskripsi</Form.Label>
             <Form.Control
               onChange={(e) => {
-                setValue('message', e.target.value);
+                setValue('message', e.target.value, { shouldValidate: true });
               }}
               as="textarea"
               rows={3}

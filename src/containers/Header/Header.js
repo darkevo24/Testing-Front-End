@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { userSelector } from 'containers/Login/reducer';
-import { getAnalyticsUrl, katalogUrl } from 'utils/constants';
+import { getAnalyticsUrl, katalogUrl, lmsUrl } from 'utils/constants';
 
 import { removeAllCookie } from '../../utils/cookie';
 import { globalData } from '../App/reducer';
@@ -81,6 +81,18 @@ export const Header = () => {
     return false;
   }, [user]);
 
+  const showDade = useMemo(() => {
+    if (!user) return false;
+    const { roles = null } = user;
+    return [
+      Roles.SEKRETARIANT,
+      Roles.SEKRETARIANT_CREATOR,
+      Roles.SEKRETARIAT_EDITOR,
+      Roles.EKSEKUTIF,
+      Roles.PENELITI,
+    ].includes(roles);
+  }, [user]);
+
   const showAppSec = useMemo(() => {
     if (!user) return false;
     const { roles = null } = user;
@@ -124,7 +136,17 @@ export const Header = () => {
   );
 
   const PUBLIC_ROUTES = useMemo(
-    () => [...COMMON_ROUTES, { title: 'Berita', link: '/berita' }, { title: 'Tentang', link: '/tentang' }],
+    () => [
+      ...COMMON_ROUTES,
+      {
+        title: 'Media',
+        links: [
+          { title: 'Berita', link: '/berita' },
+          { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
+        ],
+      },
+      { title: 'Tentang', link: '/tentang' },
+    ],
     [],
   );
 
@@ -152,7 +174,7 @@ export const Header = () => {
           { title: 'Forum SDI', link: '/forum-sdi' },
           // { title: 'Glosarium', link: '/Glosarium' },
           { title: 'SDI Wiki', link: '/sdi-wiki' },
-          { title: 'Learning Management', link: 'https://lms.satudata.go.id/#/homeLearning' },
+          { title: 'Learning Management', link: `${lmsUrl}#/homeLearning` },
           // { title: 'Persetujuan Anggaran Biaya', link: '/permintaan-budget' },
         ],
       },
@@ -163,7 +185,7 @@ export const Header = () => {
           { title: 'Eksekutif', link: '/dashboard-eksekutif' },
           { title: 'Data Prioritas', link: '/dataprioritas' },
           { title: 'Dashboard Saya', link: '/dashboard-saya' },
-          { title: 'Analitika Data', link: 'http://103.225.242.87/' },
+          showDade ? { title: 'Analitika Data', link: 'https://dadectrl.data.go.id' } : { title: '', link: '' }, //this doesnt work
         ],
       },
       {
@@ -177,7 +199,7 @@ export const Header = () => {
         title: 'Media',
         links: [
           { title: 'Berita', link: '/berita' },
-          { title: 'Webinar', link: `https://lms.satudata.go.id/#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
+          { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
         ],
       },
       { title: 'Tentang', link: '/tentang' },

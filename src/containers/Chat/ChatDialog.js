@@ -11,8 +11,10 @@ import { icons } from 'components/Icons';
 import { getPdf } from 'utils/helper';
 
 export const ChatDialog = ({ chatHistoryList, setFile }) => {
-  const [messageToSend, setMessageToSend] = React.useState('');
-
+  const [messageToSend, setMessageToSend] = React.useState(() => {
+    const storageMessage = localStorage.getItem('sdi_chat_message');
+    return storageMessage || '';
+  });
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -37,7 +39,7 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
           />
           <div>
             {message?.attachment && message?.attachment.length > 0 ? (
-              <div className="flex flex-col justify-center h-full p-3 relative overflow-y-hidden">
+              <div className="flex flex-col justify-center h-full p-8 relative overflow-y-hidden">
                 {message?.attachment[0].type === 'application/pdf' ? (
                   <div
                     role="button"
@@ -46,12 +48,13 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
                     <div className="flex justify-center">
                       <icons.pdfSvg className="w-8" />
                     </div>
-                    <div className="text-center text-gray1 mt-3 max-h-5">{message?.attachment[0].name}</div>
+                    <div className="text-center text-gray1 mt-3 max-h-5 max-w-30">{message?.attachment[0].name}</div>
                   </div>
                 ) : (
                   <img
                     src={message?.attachment[0].file}
                     alt="file-data"
+                    className="w-100"
                     onClick={() => setFile({ file: message?.attachment[0].file, type: 'image' })}
                   />
                 )}
@@ -87,6 +90,7 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
               ) : (
                 <img
                   src={message?.attachment[0].file}
+                  className="w-100"
                   alt="file-data"
                   onClick={() => setFile({ file: message?.attachment[0].file, type: 'image' })}
                 />
@@ -130,6 +134,11 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
     });
   };
 
+  const setMessageInput = (message) => {
+    setMessageToSend(message);
+    localStorage.setItem('sdi_chat_message', message);
+  };
+
   const sendMessage = async () => {
     try {
       await dispatch(
@@ -139,10 +148,10 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
         }),
       );
       dispatch(getChatStatus());
-      setMessageToSend('');
+      setMessageInput('');
       setTimeout(() => {
         document.getElementById('chat-input').focus();
-      }, 500);
+      }, 200);
     } catch (e) {
       console.error(e);
     }
@@ -159,7 +168,7 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
             id="chat-input"
             className="input"
             value={messageToSend}
-            onChange={(e) => setMessageToSend(e.target.value)}
+            onChange={(e) => setMessageInput(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && messageToSend) sendMessage();
             }}

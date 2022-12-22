@@ -209,7 +209,7 @@
             column-gap: 8px;
             margin-bottom: 8px;
 
-            div {
+            & > div {
               background: #ffffff;
               border: 1px solid #e1e2ea;
               border-radius: 12px 12px 12px 0px;
@@ -217,6 +217,12 @@
               font-size: 14px;
               color: #2e2d30;
               width: fit-content;
+              max-width: 15vw;
+            }
+
+            .max-w-30 {
+              max-width: 120px;
+              overflow: scroll;
             }
           }
           .chat-content-user {
@@ -287,4 +293,11 @@
       }
     }
   }
+}
+
+.ticket-modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+  right: 0;
+  left: 0;
 }

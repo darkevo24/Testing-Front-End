@@ -56,6 +56,7 @@ const RegistrasiHakAkses = lazy(() => import('containers/RegistrasiHakAkses'));
 const SDIWiki = lazy(() => import('containers/SDIWiki'));
 const ApprovalBudget = lazy(() => import('containers/ApprovalBudget'));
 const FormFeedback = lazy(() => import('containers/FormFeedback'));
+const ReviewTicket = lazy(() => import('containers/ReviewTicket'));
 
 function AppRoutes(props) {
   return (
@@ -65,6 +66,7 @@ function AppRoutes(props) {
       <PublicRoute exact path="/change-password" component={ChangePasswordLogin} />
       <PublicRoute exact path="/term-and-condition" component={TermAndCondition} />
       <PublicRoute exact path="/registrasi-hak-akses" component={RegistrasiHakAkses} />
+      <PublicRoute exact path="/review-ticket/:id" component={ReviewTicket} />
       <AppLayout>
         <Suspense fallback={<Loader fullscreen />}>
           <Switch>
@@ -76,7 +78,7 @@ function AppRoutes(props) {
             <Route path="/berita/perbulan/:date" component={BeritaPerBulan} />
             <Route exact path="/berita/preview" component={BeritaPreviewPage} />
             <Route exact path="/berita-populer" component={BeritaPopular} />
-            <Route exact path="/berita-topik/:id" component={BeritaByTopic} />
+            <Route exact path="/berita-topik/:id/:keterangan?" component={BeritaByTopic} />
             <Route exact path="/berita/:id/:slug?" component={BeritaDetailPage} />
             <Route exact path="/tentang" component={TentangPage} />
             <Route exact path="/daftar-menjadi-ahli" component={DaftarMenjadiAhli} />

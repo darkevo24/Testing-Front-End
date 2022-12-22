@@ -45,7 +45,7 @@ const BerandaPage = () => {
       </Container>
       <Chat setFile={setFile} />
       {file && (
-        <TicketModal backgroundColor="#FFF" width="w-75">
+        <TicketModal backgroundColor="#FFF" width="w-75 h-100">
           <div className="p-16">
             <div className="d-flex justify-content-end cursor-pointer" onClick={() => setFile(null)}>
               &#x2715;

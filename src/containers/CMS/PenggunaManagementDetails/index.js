@@ -263,6 +263,7 @@ const CMSPenggunaManagementView = () => {
               </div>
             </div>
             <CMSpenggunaForm
+              editing={!editable}
               disabled={editable}
               data={id}
               onSubmit={submitData}

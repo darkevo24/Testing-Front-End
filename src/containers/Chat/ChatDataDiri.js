@@ -122,7 +122,17 @@ export const ChatDataDiri = ({ startChat }) => {
       <div className="bottom">
         {!isLoggedIn && (
           <div className="silahkan-login">
-            Silahkan <span onClick={keycloak.login}>login</span> jika sudah memiliki akun SDI
+            Silahkan{' '}
+            <span
+              onClick={() => {
+                localStorage.setItem('sdi_chat_opendatadiri', 'yes');
+                setTimeout(() => {
+                  keycloak.login();
+                }, 200);
+              }}>
+              login
+            </span>{' '}
+            jika sudah memiliki akun SDI
           </div>
         )}
         <Button form="form-data-diri" type="submit" className="w-100 br-8">

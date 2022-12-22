@@ -59,6 +59,9 @@ export const Chat = ({ setFile }) => {
         return null;
       }
     }
+
+    //clear previous chat
+    localStorage.removeItem('sdi_chat_message');
   }, []);
 
   React.useEffect(() => {
@@ -115,7 +118,16 @@ export const Chat = ({ setFile }) => {
     if (chatStatus?.code) {
       if (chatStatus.code === 'CAN_START_NEW') {
         setIsChatStarted(false);
-        setChatNotStartStep('greeting');
+        //open chat directly, if from login chat data diri
+        if (localStorage.getItem('sdi_chat_opendatadiri')) {
+          setIsOpen(true);
+          setChatNotStartStep('data-diri');
+          setTimeout(() => {
+            localStorage.removeItem('sdi_chat_opendatadiri');
+          }, 5000);
+        } else {
+          setChatNotStartStep('greeting');
+        }
       } else if (chatStatus.code === 'WAITING_RESPONSE') {
         setIsChatStarted(true);
         setChatStartStep('waiting');

@@ -163,6 +163,8 @@ export const apiUrls = {
   crmChatStatus: getCrmApi('chatrequest/status'),
   crmChatHistory: getCrmApi('chathistory'),
   contactUs: getCrmApi('ticket/sdi'),
+  crmTicketDetail: getCrmApi('ticket'),
+  crmTicketReview: getCrmApi('ticketreview'),
   crmImageApi: getCrmApi('image'),
   crmChatReview: getCrmApi('chatreview'),
   contactUsAdmin: getCrmApi('contacts'),
@@ -377,7 +379,7 @@ export const CMS_DASHBOARD = [
     description: 'CRM',
     icon: <CrmIcon />,
     iconColor: 'bg-red',
-    link: isSdiProduction ? '#' : '',
+    link: '',
     externalLink: isSdiProduction ? 'https://crm.data.go.id' : 'https://crm.satudata.go.id',
   },
 ];

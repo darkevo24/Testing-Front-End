@@ -59,6 +59,16 @@ const BeritaUtamaDetail = (props) => {
   const shareUrl = window.location.origin + window.location.pathname;
   const shareTitle = record.title;
 
+  // useEffect(() => {
+  //   if (!isLoading) {
+  //     dispatch(getNewsDetail(`${id}`));
+  //     //console.log get the title
+
+  //     // const slug = slugify(record.judul);
+  //     // console.log('+', slug);
+  //   }
+  // }, [dispatch, id]);
+
   useEffect(() => {
     const fetchData = async () => {
       await dispatch(getNewsDetail(`${id}`));

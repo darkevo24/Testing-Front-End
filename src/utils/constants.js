@@ -379,7 +379,7 @@ export const CMS_DASHBOARD = [
     description: 'CRM',
     icon: <CrmIcon />,
     iconColor: 'bg-red',
-    link: isSdiProduction ? '#' : '',
+    link: '',
     externalLink: isSdiProduction ? 'https://crm.data.go.id' : 'https://crm.satudata.go.id',
   },
 ];

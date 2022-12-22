@@ -108,10 +108,16 @@ a {
 
 .sdp-text-grey-dark {
   color: var(--gray-dark);
+  &:hover {
+    color: var(--red);
+  }
 }
 
 .sdp-text-disable {
   color: var(--gray);
+  &:hover {
+    color: var(--red);
+  }
 }
 
 .sdp-text-teal {

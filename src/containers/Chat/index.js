@@ -158,7 +158,7 @@ export const Chat = ({ setFile }) => {
   };
 
   const startChat = async (data) => {
-    await dispatch(createChatRequest({ isLoggedIn, data }));
+    await dispatch(createChatRequest({ isLoggedIn, data, user }));
 
     dispatch(
       postContactUs({

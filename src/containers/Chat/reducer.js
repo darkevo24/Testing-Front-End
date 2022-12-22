@@ -42,11 +42,12 @@ export const getChatStatus = createAsyncThunk('portal/chatStatus', async (params
 });
 
 export const createChatRequest = createAsyncThunk('portal/chatRequest', async (params) => {
-  const { isLoggedIn, data } = params;
+  const { isLoggedIn, data, user } = params;
   try {
     await post(apiUrls.crmChatRequest, {
       ...data,
       isRegisteredUser: isLoggedIn,
+      userData: user || null,
     });
 
     const { email, name } = data;

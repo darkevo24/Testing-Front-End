@@ -165,19 +165,19 @@ export const Header = () => {
       //   ],
       // },
       // { title: 'Master Data', link: '/#' },
-      // {
-      //   title: 'Layanan',
-      //   links: [
-      //     { title: 'Permintaan Data', link: '/permintaan-data' },
-      //     { title: 'Bimtek', link: '/bimtek-summary' },
-      //     { title: 'Komunitas Ahli', link: '/komunitas-ahli' },
-      //     { title: 'Forum SDI', link: '/forum-sdi' },
-      //     // { title: 'Glosarium', link: '/Glosarium' },
-      //     { title: 'SDI Wiki', link: '/sdi-wiki' },
-      //     { title: 'Learning Management', link: `${lmsUrl}#/homeLearning` },
-      //     // { title: 'Persetujuan Anggaran Biaya', link: '/permintaan-budget' },
-      //   ],
-      // },
+      {
+        title: 'Layanan',
+        links: [
+          { title: 'Permintaan Data', link: '/permintaan-data' },
+          { title: 'Bimtek', link: '/bimtek-summary' },
+          { title: 'Komunitas Ahli', link: '/komunitas-ahli' },
+          { title: 'Forum SDI', link: '/forum-sdi' },
+          // { title: 'Glosarium', link: '/Glosarium' },
+          { title: 'SDI Wiki', link: '/sdi-wiki' },
+          // { title: 'Learning Management', link: `${lmsUrl}#/homeLearning` },
+          // { title: 'Persetujuan Anggaran Biaya', link: '/permintaan-budget' },
+        ],
+      },
       {
         title: 'Dashboard',
         links: [

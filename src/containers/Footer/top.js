@@ -116,11 +116,11 @@ export const Top = () => {
           title: 'Kebijakan Privasi',
           link: '/policy',
         },
-        {
-          title: 'FAQ',
-          link: '',
-          disabled: true,
-        },
+        // {
+        //   title: 'FAQ',
+        //   link: '',
+        //   disabled: true,
+        // },
         {
           title: 'Permintaan Akses',
           link: 'http://link.bappenas.go.id/aksesportalsdi',

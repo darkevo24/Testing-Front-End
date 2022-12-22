@@ -27,8 +27,6 @@ import {
   cmsForumSDIGetTagsSelector,
 } from './reducer';
 
-import bn from 'utils/bemNames';
-
 const schema = yup
   .object({
     judul: yup.string().required('Judul is required'),
@@ -329,21 +327,23 @@ const CMSForumSDIForm = () => {
               <Row className="mt-20">
                 {fotoDokumentasi.map((foto, index) => {
                   return (
-                    <Col key={index} sm={4} style={{ margin: '4px' }}>
+                    <Col key={index} sm={2}>
                       <div className="doc-foto">
                         {foto.fileType !== 'application/pdf' ? (
                           <img src={foto.location} alt={foto.fileName} />
                         ) : (
-                          <embed
-                            src="https://satudata.go.id/api-be/file/public-view/testpdf_20221221165516.pdf"
-                            width="800px"
-                            height="2100px"
-                          />
-                          // <object data={foto.location} type="application/pdf" width="100%" height="100%">
-                          //   <p>
-                          //     <a href={foto.location}>{foto.fileName}</a>
-                          //   </p>
-                          // </object>
+                          <object
+                            className="d-flex justify-content-center align-items-center"
+                            data={foto.location}
+                            type="application/pdf"
+                            width="100%"
+                            height="100%">
+                            <p>
+                              <a href={foto.location} className="sdp-text-blue bg-light-blue mr-10">
+                                {foto.fileName}
+                              </a>
+                            </p>
+                          </object>
                         )}
                         <Button onClick={() => deleteFotoDokumentasi(index)}>
                           <span> Remove Lampiran</span>

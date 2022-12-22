@@ -153,18 +153,18 @@ export const Header = () => {
   const MEMBER_ROUTES = useMemo(
     () => [
       ...COMMON_ROUTES,
-      {
-        title: 'Katalog Data Nasional',
-        links: [
-          { title: 'Kode Referensi', link: '/#' },
-          { title: 'Data Induk', link: '/#' },
-          { title: 'Code List', link: '/#' },
-          { title: 'Daftar Data', link: '/#' },
-          { title: 'Data Browser', link: '/#' },
-          { title: 'Manajemen Persetujuan', link: '/#' },
-        ],
-      },
-      { title: 'Master Data', link: '/#' },
+      // {
+      //   title: 'Katalog Data Nasional',
+      //   links: [
+      //     { title: 'Kode Referensi', link: '/#' },
+      //     { title: 'Data Induk', link: '/#' },
+      //     { title: 'Code List', link: '/#' },
+      //     { title: 'Daftar Data', link: '/#' },
+      //     { title: 'Data Browser', link: '/#' },
+      //     { title: 'Manajemen Persetujuan', link: '/#' },
+      //   ],
+      // },
+      // { title: 'Master Data', link: '/#' },
       {
         title: 'Layanan',
         links: [
@@ -184,17 +184,17 @@ export const Header = () => {
           { title: 'Kesiapan SDI', link: '/kesiapan-sdi' },
           { title: 'Eksekutif', link: '/dashboard-eksekutif' },
           { title: 'Data Prioritas', link: '/dataprioritas' },
-          { title: 'Dashboard Saya', link: '/dashboard-saya' },
+          // { title: 'Dashboard Saya', link: '/dashboard-saya' },
           showDade ? { title: 'Analitika Data', link: 'https://dadectrl.data.go.id' } : { title: '', link: '' }, //this doesnt work
         ],
       },
-      {
-        title: 'Sandbox',
-        links: [
-          { title: 'Daftar Data', link: '/daftar' },
-          { title: 'Metadata Registry', link: '/sdmx' },
-        ],
-      },
+      // {
+      //   title: 'Sandbox',
+      //   links: [
+      //     { title: 'Daftar Data', link: '/daftar' },
+      //     { title: 'Metadata Registry', link: '/sdmx' },
+      //   ],
+      // },
       {
         title: 'Media',
         links: [

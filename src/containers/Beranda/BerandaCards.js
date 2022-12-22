@@ -180,7 +180,7 @@ export const BerandaCards = ({ bem, isLoggedIn }) => {
       <FlexBox className="px-16 mt-40 mb-40">
         <LeftBox>
           <RoadSvg style={{ marginRight: '10px' }} />
-          <TitleBox>Pekerjaan Umum dan Perumahan Rakyat Republik Indonesia</TitleBox>
+          <TitleBox>Kementerian Pekerjaan Umum dan Perumahan Rakyat Republik Indonesia</TitleBox>
         </LeftBox>
       </FlexBox>
       {/* <Row className="mb-12">

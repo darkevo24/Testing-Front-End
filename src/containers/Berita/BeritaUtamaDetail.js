@@ -8,6 +8,8 @@ import Loader from 'components/Loader';
 import { beritaLayoutSelector, getBertaLayout } from 'containers/CMS/BeritaLayout/reducer';
 import clockIcon from 'assets/clock.svg';
 import viewIcon from 'assets/view.svg';
+import { ReactComponent as ArrowSmall } from 'assets/arrow-small.svg';
+import { ReactComponent as Stripe } from 'assets/stripe.svg';
 import logoSDI from 'assets/logo-satu-data-id.jpg';
 import Search from './Search';
 import BeritaUtama from './BeritaUtama';
@@ -136,6 +138,19 @@ const BeritaUtamaDetail = (props) => {
       <div className="col-lg-2"></div>
       <div className="col-lg-6 mr-16">
         <div>
+          <div className="d-flex align-items-center mb-24 mt-24">
+            <a href="/" className=" text-decoration-none sdp-text-disable fs-14 text-decoration-none fw-500">
+              Beranda
+            </a>
+            <ArrowSmall className="mx-8" />
+            <a href="/berita" className="sdp-text-disable fs-14 text-decoration-none fw-500">
+              Berita
+            </a>
+            <Stripe className="mx-8 sdp-text-grey-dark" style={{ marginBotttom: '3px' }} />
+            <a href={window.location.href} className="sdp-text-grey-dark fs-14 fw-500 text-decoration-none">
+              {record?.judul}
+            </a>
+          </div>
           <div className="fs-32 fw-600 mb-24">{record?.judul}</div>
           {record?.tagLine?.map((tag) => (
             <Tag>{tag}</Tag>

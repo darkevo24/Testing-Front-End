@@ -57,12 +57,15 @@ export const getDataSet = createAsyncThunk('beranda/getDataset', async (params) 
   if (!isLoggedIn) {
     data.q = [data.q];
     if (data.kategori?.length) {
-      data.kategori.forEach(({ id }) => data.q.push(`kategori:${id}`));
+      data.kategori.forEach(({ id }) => {
+        id = id.replace('-', '*');
+        data.q.push(`kategori:${id}`);
+      });
     }
     delete data.kategori;
     data.q = data.q.filter(Boolean).join('&');
   } else if (data.kategori?.length) {
-    data.kategori = data.kategori.map(({ id }) => ({ id: id.replace(/ /g, '*') }));
+    data.kategori = data.kategori.map(({ id }) => ({ id: id.replace(/-/g, '*') }));
   }
   data = mapParamsToJsonString(data, ['facet.field']);
   data = mapParamsToOrString(data, facetFields);

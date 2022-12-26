@@ -142,7 +142,7 @@ export const Header = () => {
         title: 'Media',
         links: [
           { title: 'Berita', link: '/berita' },
-          // { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
+          { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
         ],
       },
       { title: 'Tentang', link: '/tentang' },
@@ -153,18 +153,18 @@ export const Header = () => {
   const MEMBER_ROUTES = useMemo(
     () => [
       ...COMMON_ROUTES,
-      // {
-      //   title: 'Katalog Data Nasional',
-      //   links: [
-      //     { title: 'Kode Referensi', link: '/#' },
-      //     { title: 'Data Induk', link: '/#' },
-      //     { title: 'Code List', link: '/#' },
-      //     { title: 'Daftar Data', link: '/#' },
-      //     { title: 'Data Browser', link: '/#' },
-      //     { title: 'Manajemen Persetujuan', link: '/#' },
-      //   ],
-      // },
-      // { title: 'Master Data', link: '/#' },
+      {
+        title: 'Katalog Data Nasional',
+        links: [
+          { title: 'Kode Referensi', link: 'http://10.42.0.62:3000/daftar-kode-referensi' },
+          { title: 'Data Induk', link: 'http://10.42.0.62:3000/daftar-data-induk' },
+          { title: 'Code List', link: 'http://10.42.0.62:3000/daftar-kode' },
+          { title: 'Daftar Data', link: 'http://10.42.0.62:3000/daftar-data' },
+          { title: 'Data Browser', link: 'http://10.42.0.62:3000/data-browser' },
+          { title: 'Manajemen Persetujuan', link: 'http://10.42.0.62:3000/manajemen-persetujuan' },
+        ],
+      },
+      { title: 'Master Data', link: 'http://10.42.0.62:3000/katalog-data' },
       {
         title: 'Layanan',
         links: [
@@ -174,7 +174,7 @@ export const Header = () => {
           { title: 'Forum SDI', link: '/forum-sdi' },
           // { title: 'Glosarium', link: '/Glosarium' },
           { title: 'SDI Wiki', link: '/sdi-wiki' },
-          // { title: 'Learning Management', link: `${lmsUrl}#/homeLearning` },
+          { title: 'Learning Management', link: `${lmsUrl}#/homeLearning` },
           // { title: 'Persetujuan Anggaran Biaya', link: '/permintaan-budget' },
         ],
       },
@@ -199,7 +199,7 @@ export const Header = () => {
         title: 'Media',
         links: [
           { title: 'Berita', link: '/berita' },
-          // { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
+          { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
         ],
       },
       { title: 'Tentang', link: '/tentang' },

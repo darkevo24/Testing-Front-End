@@ -1,6 +1,8 @@
 import moment from 'moment';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { apiUrls } from 'utils/request';
 
 import { Button } from 'components';
 import './chat.scss';
@@ -9,12 +11,16 @@ import chatBot from 'assets/chat-bot.png';
 import { createChatHistory, getChatStatus } from './reducer';
 import { icons } from 'components/Icons';
 import { getPdf } from 'utils/helper';
+import Attachment from './Attachment';
+import AttachmentSvg from 'assets/attachment.svg';
 
 export const ChatDialog = ({ chatHistoryList, setFile }) => {
   const [messageToSend, setMessageToSend] = React.useState(() => {
     const storageMessage = localStorage.getItem('sdi_chat_message');
     return storageMessage || '';
   });
+  const [errorUploadFile, setErrorUploadFile] = React.useState('');
+  const [attachments, setAttachments] = React.useState([]);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -68,6 +74,14 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
       </>
     );
   };
+
+  useEffect(() => {
+    const localStorageAttachment = localStorage.getItem('attachments');
+    const localAttachments = localStorageAttachment ? JSON.parse(localStorageAttachment) : [];
+    if (localStorageAttachment && attachments.length === 0) {
+      setAttachments(localAttachments);
+    }
+  }, [attachments]);
 
   const UserChat = ({ message, nextMessage }) => {
     const messageTime = moment(message.sentAt).format('HH:mm');
@@ -139,14 +153,39 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
     localStorage.setItem('sdi_chat_message', message);
   };
 
-  const sendMessage = async () => {
+  const sendAttachmentChat = async () => {
     try {
-      await dispatch(
-        createChatHistory({
-          chatLogsId: chatHistoryList?.[0]?.chatLogsId,
-          message: messageToSend,
-        }),
-      );
+      let count = 0;
+      attachments.forEach((attachment) => {
+        dispatch(
+          createChatHistory({
+            chatLogsId: chatHistoryList?.[0]?.chatLogsId,
+            attachment: [attachment],
+          }),
+        );
+        count += 1;
+      });
+      if (count === attachments.length) {
+        localStorage.removeItem('attachments');
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const sendMessage = async () => {
+    if (attachments.length !== 0) {
+      sendAttachmentChat();
+    }
+    try {
+      if (messageToSend) {
+        await dispatch(
+          createChatHistory({
+            chatLogsId: chatHistoryList?.[0]?.chatLogsId,
+            message: messageToSend,
+          }),
+        );
+      }
       dispatch(getChatStatus());
       setMessageInput('');
       setTimeout(() => {
@@ -157,27 +196,77 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
     }
   };
 
+  const fileExtention = ['image/jpg', 'image/jpeg', 'image/png', 'application/pdf'];
+
+  const handleUploadFile = async (e) => {
+    const file = e?.target?.files?.[0];
+    if (!file) {
+      setErrorUploadFile('Please select a file!');
+      return '';
+    }
+    if (!fileExtention.includes(file.type)) {
+      setErrorUploadFile('Please select a file with jpg, png, or pdf extension!');
+      return '';
+    }
+    if (file.size >= 1000000) {
+      setErrorUploadFile('File size must be under 1 Mb!');
+      return '';
+    }
+    setErrorUploadFile('');
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    const uploadedFile = await axios.post(apiUrls.crmImageApi, bodyFormData);
+    if (uploadedFile.status === 200) {
+      const attachmentData = [...attachments];
+      attachmentData.push({
+        file: uploadedFile?.data?.imageUrl,
+        type: file.type,
+        size: file.size,
+        name: file.name,
+      });
+      localStorage.setItem('attachments', JSON.stringify(attachmentData));
+      setAttachments(attachmentData);
+    }
+    return '';
+  };
+
+  const handleAttachment = (key, data) => {
+    localStorage.setItem('attachments', JSON.stringify(data));
+    setAttachments(data);
+  };
+
   return (
     <>
       <div className="content chat-message-list">
         <MessageList />
       </div>
       <div className="bottom">
-        <div className="chat-message-wrapper">
-          <input
-            id="chat-input"
-            className="input"
-            value={messageToSend}
-            onChange={(e) => setMessageInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && messageToSend) sendMessage();
-            }}
-            placeholder="Type a message"
-          />
-          <Button disabled={!messageToSend} onClick={sendMessage} className="br-8">
-            Send
-          </Button>
+        <div className="d-flex">
+          <div className="d-flex flex-column justify-content-center">
+            <label htmlFor="inputFile">
+              <div className="bg-white pe-3 py-2 rounded-lg text-sm font-semibold h-auto cursor-pointer">
+                <img alt="attachment" src={AttachmentSvg} />
+              </div>
+            </label>
+            <input onChange={handleUploadFile} className="d-none" id="inputFile" type="file" />
+          </div>
+          <div className="chat-message-wrapper">
+            <input
+              id="chat-input"
+              className="input"
+              value={messageToSend}
+              onChange={(e) => setMessageInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && messageToSend) sendMessage();
+              }}
+              placeholder="Type a message"
+            />
+            <Button disabled={!messageToSend && attachments.length === 0} onClick={sendMessage} className="br-8">
+              Send
+            </Button>
+          </div>
         </div>
+        <Attachment fileData={attachments} setFile={setFile} handleAttachment={handleAttachment} />
       </div>
     </>
   );

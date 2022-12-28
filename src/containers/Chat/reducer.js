@@ -72,13 +72,19 @@ export const createChatRequest = createAsyncThunk('portal/chatRequest', async (p
 });
 
 export const createChatHistory = createAsyncThunk('portal/chatHistory', async (params) => {
-  const { chatLogsId, message } = params;
-  const response = await post(apiUrls.crmChatHistory, {
+  const { chatLogsId, message, attachment } = params;
+  const data = {
     chatLogsId,
-    message,
     isSentByUser: true,
     isSentByAdmin: false,
-  });
+  };
+  if (message) {
+    data.message = message;
+  }
+  if (attachment) {
+    data.attachment = attachment;
+  }
+  const response = await post(apiUrls.crmChatHistory, data);
   return response?.data;
 });
 

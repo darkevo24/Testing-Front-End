@@ -28,7 +28,6 @@ const BerandaPage = () => {
 
   useEffect(() => {
     dispatch(getDataSet(getInitialParams()));
-    console.log({ file });
   }, [file]);
 
   const data = useMemo(() => result?.results || [], [result]);

@@ -266,6 +266,7 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
             </Button>
           </div>
         </div>
+        {errorUploadFile && <div className="my-2 text-xs text-red1">{errorUploadFile}</div>}
         <Attachment fileData={attachments} setFile={setFile} handleAttachment={handleAttachment} />
       </div>
     </>

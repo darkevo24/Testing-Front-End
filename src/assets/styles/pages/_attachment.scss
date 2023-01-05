@@ -1,0 +1,44 @@
+.attachment {
+    .max-w-fit {
+        max-width: fit-content;
+    }
+    .overflow-x-auto {
+        overflow-x: auto !important;
+    }
+    .overflow-y-hidden {
+        overflow-x: hidden;
+    }
+    .flex-wrap {
+        flex-wrap: nowrap !important;
+    }
+    .w-fit {
+        width: fit-content;
+    }
+    .h-100px {
+        height: 100px;
+    }  
+    .w-100px {
+        width: 100px;
+    }
+    .position-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        width: 100px;
+    }
+    .top-1 {
+        top: 4px
+    } 
+    .right-1 {
+        right: 4px;
+    }
+    .bg-grayBg {
+        background-color: #F5F6FA;
+    }
+    .rounded-lg {
+        border-radius: 16px;
+    }
+}

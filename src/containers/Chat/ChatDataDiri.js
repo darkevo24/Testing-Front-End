@@ -54,7 +54,7 @@ export const ChatDataDiri = ({ startChat }) => {
   React.useEffect(() => {
     if (user?.nama) setValue('name', user?.nama);
     if (user?.email) setValue('email', user?.email);
-    if (user?.noHp) setValue('phone', user?.noHp);
+    if (user?.phoneNumber) setValue('phone', user?.phoneNumber);
   }, [user]);
 
   return (
@@ -89,8 +89,8 @@ export const ChatDataDiri = ({ startChat }) => {
             <Form.Label>No Telepon</Form.Label>
             <Form.Control
               type="phone"
-              defaultValue={user?.noHp}
-              disabled={isLoggedIn && user?.noHp}
+              defaultValue={user?.phoneNumber}
+              disabled={isLoggedIn && user?.phoneNumber}
               isInvalid={errors?.phone?.message}
               onChange={(e) => {
                 setValue('phone', e.target.value);

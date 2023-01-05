@@ -69,7 +69,7 @@ const ContactUs = () => {
     defaultValues: {
       full_name: user?.nama,
       email: user?.email,
-      telephone: user?.noHp,
+      telephone: user?.phoneNumber,
     },
   });
 
@@ -261,12 +261,12 @@ const ContactUs = () => {
           <Form.Group controlId="phoneNumber" className="mb-3">
             <Form.Label>Nomor Telefon</Form.Label>
             <Form.Control
-              value={user?.noHp ?? null}
+              value={user?.phoneNumber ?? null}
               type="phone"
               onChange={(e) => {
                 setValue('telephone', e.target.value, { shouldValidate: true });
               }}
-              disabled={isLoggedIn && user?.noHp}
+              disabled={isLoggedIn && user?.phoneNumber}
             />
             {errors?.telephone?.message && <div className={'error-message'}>{errors?.telephone?.message}</div>}
           </Form.Group>

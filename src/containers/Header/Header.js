@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { userSelector } from 'containers/Login/reducer';
-import { getAnalyticsUrl, katalogUrl, lmsUrl } from 'utils/constants';
+import { getAnalyticsUrl, isSdiProduction, katalogUrl, lmsUrl } from 'utils/constants';
 
 import { removeAllCookie } from '../../utils/cookie';
 import { globalData } from '../App/reducer';
@@ -151,60 +151,63 @@ export const Header = () => {
   );
 
   const MEMBER_ROUTES = useMemo(
-    () => [
-      ...COMMON_ROUTES,
-      {
-        title: 'Katalog Data Nasional',
-        links: [
-          { title: 'Kode Referensi', link: 'http://10.42.0.62:3000/daftar-kode-referensi' },
-          { title: 'Data Induk', link: 'http://10.42.0.62:3000/daftar-data-induk' },
-          { title: 'Code List', link: 'http://10.42.0.62:3000/daftar-kode' },
-          { title: 'Daftar Data', link: 'http://10.42.0.62:3000/daftar-data' },
-          { title: 'Data Browser', link: 'http://10.42.0.62:3000/data-browser' },
-          { title: 'Manajemen Persetujuan', link: 'http://10.42.0.62:3000/manajemen-persetujuan' },
-        ],
-      },
-      { title: 'Master Data', link: 'http://10.42.0.62:3000/katalog-data' },
-      {
-        title: 'Layanan',
-        links: [
-          { title: 'Permintaan Data', link: '/permintaan-data' },
-          { title: 'Bimtek', link: '/bimtek-summary' },
-          { title: 'Komunitas Ahli', link: '/komunitas-ahli' },
-          { title: 'Forum SDI', link: '/forum-sdi' },
-          // { title: 'Glosarium', link: '/Glosarium' },
-          { title: 'SDI Wiki', link: '/sdi-wiki' },
-          // { title: 'Learning Management', link: `${lmsUrl}#/homeLearning` },
-          // { title: 'Persetujuan Anggaran Biaya', link: '/permintaan-budget' },
-        ],
-      },
-      {
-        title: 'Dashboard',
-        links: [
-          { title: 'Kesiapan SDI', link: '/kesiapan-sdi' },
-          { title: 'Eksekutif', link: '/dashboard-eksekutif' },
-          { title: 'Data Prioritas', link: '/dataprioritas' },
-          // { title: 'Dashboard Saya', link: '/dashboard-saya' },
-          showDade ? { title: 'Analitika Data', link: 'https://dadectrl.data.go.id' } : { title: '', link: '' }, //this doesnt work
-        ],
-      },
-      // {
-      //   title: 'Sandbox',
-      //   links: [
-      //     { title: 'Daftar Data', link: '/daftar' },
-      //     { title: 'Metadata Registry', link: '/sdmx' },
-      //   ],
-      // },
-      {
-        title: 'Media',
-        links: [
-          { title: 'Berita', link: '/berita' },
-          // { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
-        ],
-      },
-      { title: 'Tentang', link: '/tentang' },
-      // { title: 'API', link: '/api' },
-    ],
+    () =>
+      [
+        ...COMMON_ROUTES,
+        isSdiProduction
+          ? null
+          : {
+              title: 'Katalog Data Nasional',
+              links: [
+                { title: 'Kode Referensi', link: 'http://10.42.0.62:3000/daftar-kode-referensi' },
+                { title: 'Data Induk', link: 'http://10.42.0.62:3000/daftar-data-induk' },
+                { title: 'Code List', link: 'http://10.42.0.62:3000/daftar-kode' },
+                { title: 'Daftar Data', link: 'http://10.42.0.62:3000/daftar-data' },
+                { title: 'Data Browser', link: 'http://10.42.0.62:3000/data-browser' },
+                { title: 'Manajemen Persetujuan', link: 'http://10.42.0.62:3000/manajemen-persetujuan' },
+              ],
+            },
+        isSdiProduction ? null : { title: 'Master Data', link: 'http://10.42.0.62:3000/katalog-data' },
+        {
+          title: 'Layanan',
+          links: [
+            { title: 'Permintaan Data', link: '/permintaan-data' },
+            { title: 'Bimtek', link: '/bimtek-summary' },
+            { title: 'Komunitas Ahli', link: '/komunitas-ahli' },
+            { title: 'Forum SDI', link: '/forum-sdi' },
+            // { title: 'Glosarium', link: '/Glosarium' },
+            { title: 'SDI Wiki', link: '/sdi-wiki' },
+            { title: 'Learning Management', link: `${lmsUrl}#/homeLearning` },
+            // { title: 'Persetujuan Anggaran Biaya', link: '/permintaan-budget' },
+          ],
+        },
+        {
+          title: 'Dashboard',
+          links: [
+            { title: 'Kesiapan SDI', link: '/kesiapan-sdi' },
+            { title: 'Eksekutif', link: '/dashboard-eksekutif' },
+            { title: 'Data Prioritas', link: '/dataprioritas' },
+            // { title: 'Dashboard Saya', link: '/dashboard-saya' },
+            showDade ? { title: 'Analitika Data', link: 'https://dadectrl.data.go.id' } : { title: '', link: '' }, //this doesnt work
+          ],
+        },
+        // {
+        //   title: 'Sandbox',
+        //   links: [
+        //     { title: 'Daftar Data', link: '/daftar' },
+        //     { title: 'Metadata Registry', link: '/sdmx' },
+        //   ],
+        // },
+        {
+          title: 'Media',
+          links: [
+            { title: 'Berita', link: '/berita' },
+            { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
+          ],
+        },
+        { title: 'Tentang', link: '/tentang' },
+        // { title: 'API', link: '/api' },
+      ].filter(Boolean),
     [isLoggedIn],
   );
 

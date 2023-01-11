@@ -12,7 +12,6 @@ import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import Notification from '../../components/Notification';
 import axios from 'axios';
-import { fileExtention } from 'utils/constants';
 import { useSelector } from 'react-redux';
 import { userSelector } from 'containers/Login/reducer';
 import { icons } from 'components/Icons';
@@ -89,10 +88,7 @@ const ContactUs = () => {
       setErrorUploadFile('Please select a file!');
       return '';
     }
-    if (
-      !fileExtention.includes(file.type) ||
-      (!file.name.endsWith('.jpg') && !file.name.endsWith('.png') && !file.name.endsWith('.pdf'))
-    ) {
+    if (!file.name.endsWith('.jpg') && !file.name.endsWith('.png') && !file.name.endsWith('.pdf')) {
       setErrorUploadFile('Please select a file with jpg, png, or pdf extension!');
       return '';
     }

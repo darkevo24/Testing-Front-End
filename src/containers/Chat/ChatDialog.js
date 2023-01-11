@@ -196,7 +196,7 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
     }
   };
 
-  const fileExtention = ['image/jpg', 'image/jpeg', 'image/png', 'application/pdf'];
+  const fileTypeExt = ['jpg', 'png', 'pdf'];
 
   const handleUploadFile = async (e) => {
     const file = e?.target?.files?.[0];
@@ -204,7 +204,9 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
       setErrorUploadFile('Please select a file!');
       return '';
     }
-    if (!fileExtention.includes(file.type)) {
+    const fileSplit = file?.name?.split('.');
+    const fileTypeSplit = fileSplit[fileSplit.length - 1];
+    if (!fileTypeExt.includes(fileTypeSplit)) {
       setErrorUploadFile('Please select a file with jpg, png, or pdf extension!');
       return '';
     }

@@ -157,19 +157,29 @@ export const Header = () => {
       [
         ...COMMON_ROUTES,
         isSdiProduction
-          ? null
+          ? {
+              title: 'Katalog Data Nasional',
+              links: [
+                { title: 'Kode Referensi', link: 'https://skdn.data.go.id/daftar-kode-referensi' },
+                { title: 'Data Induk', link: 'https://skdn.data.go.id/daftar-data-induk' },
+                { title: 'Code List', link: 'https://skdn.data.go.id/daftar-kode' },
+                { title: 'Daftar Data', link: 'https://skdn.data.go.id/daftar-data' },
+                { title: 'Data Browser', link: 'https://skdn.data.go.id/data-browser' },
+                { title: 'Manajemen Persetujuan', link: 'https://skdn.data.go.id/manajemen-persetujuan' },
+              ],
+            }
           : {
               title: 'Katalog Data Nasional',
               links: [
-                { title: 'Kode Referensi', link: 'http://10.42.0.62:3000/daftar-kode-referensi' },
-                { title: 'Data Induk', link: 'http://10.42.0.62:3000/daftar-data-induk' },
-                { title: 'Code List', link: 'http://10.42.0.62:3000/daftar-kode' },
-                { title: 'Daftar Data', link: 'http://10.42.0.62:3000/daftar-data' },
-                { title: 'Data Browser', link: 'http://10.42.0.62:3000/data-browser' },
-                { title: 'Manajemen Persetujuan', link: 'http://10.42.0.62:3000/manajemen-persetujuan' },
+                { title: 'Kode Referensi', link: 'https://skdn.satudata.go.id/daftar-kode-referensi' },
+                { title: 'Data Induk', link: 'https://skdn.satudata.go.id/daftar-data-induk' },
+                { title: 'Code List', link: 'https://skdn.satudata.go.id/daftar-kode' },
+                { title: 'Daftar Data', link: 'https://skdn.satudata.go.id/daftar-data' },
+                { title: 'Data Browser', link: 'https://skdn.satudata.go.id/data-browser' },
+                { title: 'Manajemen Persetujuan', link: 'https://skdn.satudata.go.id/manajemen-persetujuan' },
               ],
             },
-        isSdiProduction ? null : { title: 'Master Data', link: 'http://10.42.0.62:3000/katalog-data' },
+        isSdiProduction ? null : { title: 'Master Data', link: 'https://skdn.data.go.id/katalog-data' },
         {
           title: 'Layanan',
           links: [

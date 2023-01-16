@@ -45,7 +45,7 @@ const getNavDropDown = (tab, pathname, goTo) => {
   );
 };
 
-const getNavLinks = (list, pathname, goTo) => {
+const getNavLinks = (list, pathname, goTo, goToLink) => {
   return list.map((tab) => {
     if (tab.links && isArray(tab.links)) {
       return getNavDropDown(tab, pathname, goTo);
@@ -57,7 +57,8 @@ const getNavLinks = (list, pathname, goTo) => {
           active: pathname === currentPathname,
         })}
         key={currentPathname}
-        onClick={goTo(tab.link)}>
+        // onClick={goTo(tab.link)}>
+        onClick={tab.title === 'Master Data' ? goToLink(tab.link) : goTo(tab.link)}>
         {tab.title}
       </Nav.Link>
     );
@@ -120,6 +121,10 @@ export const Header = () => {
 
   const goTo = (params) => () => history.push(params);
 
+  const goToLink = (link) => () => {
+    window.open(link);
+  };
+
   const COMMON_ROUTES = useMemo(
     () => [
       { title: 'Beranda', link: '/home' },
@@ -179,7 +184,9 @@ export const Header = () => {
                 { title: 'Manajemen Persetujuan', link: 'https://skdn.satudata.go.id/manajemen-persetujuan' },
               ],
             },
-        isSdiProduction ? null : { title: 'Master Data', link: 'https://skdn.data.go.id/katalog-data' },
+        isSdiProduction
+          ? { title: 'Master Data', link: 'https://skdn.data.go.id/katalog-data' }
+          : { title: 'Master Data', link: 'https://skdn.satudata.go.id/katalog-data' },
         {
           title: 'Layanan',
           links: [
@@ -200,7 +207,7 @@ export const Header = () => {
             { title: 'Eksekutif', link: '/dashboard-eksekutif' },
             { title: 'Data Prioritas', link: '/dataprioritas' },
             // { title: 'Dashboard Saya', link: '/dashboard-saya' },
-            showDade ? { title: 'Analitika Data', link: 'https://dadectrl.data.go.id' } : { title: '', link: '' }, //this doesnt work
+            showDade ? { title: 'Analitika Data', link: 'https://dadectrl.data.go.id' } : { title: '', link: '' },
           ],
         },
         // {
@@ -247,7 +254,7 @@ export const Header = () => {
   const renderMemberNav = () => {
     return (
       <Nav className="h-100 d-flex align-items-center">
-        {getNavLinks(MEMBER_ROUTES, location.pathname, goTo)}
+        {getNavLinks(MEMBER_ROUTES, location.pathname, goTo, goToLink)}
         <NavDropdown title={user?.nama || 'Achmad Adam'} id="user-nav-dropdown" className="user-nav h-100">
           <NavDropdown.Item onClick={goTo('/change-user-password')}>{t('header.userNav.changePassword')}</NavDropdown.Item>
           {showManageUser && (

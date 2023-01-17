@@ -13,3 +13,8 @@
   width: 50px;
   height: 50px;
 }
+
+.max-h-screen {
+  max-height: 98vh;
+  overflow-y: auto;
+}

@@ -186,7 +186,6 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
           }),
         );
       }
-      dispatch(getChatStatus());
       setMessageInput('');
       setTimeout(() => {
         document.getElementById('chat-input').focus();

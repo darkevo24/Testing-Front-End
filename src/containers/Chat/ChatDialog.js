@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { apiUrls } from 'utils/request';
@@ -75,13 +75,13 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
     );
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     const localStorageAttachment = localStorage.getItem('attachments');
     const localAttachments = localStorageAttachment ? JSON.parse(localStorageAttachment) : [];
     if (localStorageAttachment && attachments.length === 0) {
       setAttachments(localAttachments);
     }
-  }, [attachments]);
+  }, []);
 
   const UserChat = ({ message, nextMessage }) => {
     const messageTime = moment(message.sentAt).format('HH:mm');
@@ -186,7 +186,6 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
           }),
         );
       }
-      dispatch(getChatStatus());
       setMessageInput('');
       setTimeout(() => {
         document.getElementById('chat-input').focus();
@@ -233,7 +232,11 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
   };
 
   const handleAttachment = (key, data) => {
-    localStorage.setItem('attachments', JSON.stringify(data));
+    if (data.length !== 0) {
+      localStorage.setItem('attachments', JSON.stringify(data));
+    } else {
+      localStorage.removeItem('attachments');
+    }
     setAttachments(data);
   };
 

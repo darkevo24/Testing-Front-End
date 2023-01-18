@@ -262,7 +262,7 @@ export const ChatDialog = ({ chatHistoryList, setFile }) => {
               value={messageToSend}
               onChange={(e) => setMessageInput(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' && messageToSend) sendMessage();
+                if (e.key === 'Enter' && (messageToSend || attachments.length !== 0)) sendMessage();
               }}
               placeholder="Type a message"
             />

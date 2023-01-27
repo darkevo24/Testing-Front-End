@@ -7,7 +7,7 @@ export const GreetingOffService = ({ text, startChat }) => {
       <div className="content">
         <div className="greetingoffservice">
           <ChatOffServiceIcon />
-          <div className="heading">Oops, Maaf</div>
+          {/* <div className="heading">Oops, Maaf</div> */}
           <div className="greetingcontent">{text}</div>
         </div>
       </div>

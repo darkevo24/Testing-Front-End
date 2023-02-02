@@ -115,12 +115,17 @@ const TopicDetail = () => {
   }, [location.state]); //eslint-disable-line
 
   useEffect(() => {
+    const params = parseQueryString();
     const id = generateSlug(selectedGroup);
     if (id) {
       const kategori = id.toLowerCase() === 'all' ? [] : [{ id }];
       fetchDataset({ kategori, resetFilter: true }, true);
     } else if (topic === get(TOPIC_LIST, '0.title')) {
-      fetchDataset({ kategori: [], resetFilter: true }, true);
+      if (params.q) {
+        fetchDataset({ q: params.q, resetFilter: false }, true);
+      } else {
+        fetchDataset({ resetFilter: true }, true);
+      }
     }
   }, [selectedGroup]);
 
@@ -154,7 +159,10 @@ const TopicDetail = () => {
     const newValue = isArray(orginization) ? [...orginization] : [...instansiFilterItem];
     setSelectedOrginization(newValue);
     closeFilterModal();
-    fetchDataset({ organization: newValue }, true);
+    if (newValue.length > 0) {
+      fetchDataset({ organization: newValue }, true);
+    }
+    // fetchDataset({ organization: newValue }, true);
   };
 
   useOnClickOutside(ref, closeFilterModal);

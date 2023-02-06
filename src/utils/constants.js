@@ -278,6 +278,30 @@ export const TOPIC_LIST = [
     icon: <PertahananSvg />,
   },
 ];
+export const TOPIC_DASHBOARD = [
+  { title: 'Semua', items: [], icon: <SplitCircle /> },
+  { title: 'Pertumbuhan Ekonomi', icon: <KetertibanSvg /> },
+  {
+    title: 'Pertumubuhan Ekonomi',
+    items: [
+      'Dalam Negeri',
+      'Keuangan',
+      'Informasi',
+      'Komunikasi',
+      'Perencanaan Pembangunan Nasional',
+      'Aparatur Negara',
+      'Kesekretariatan Negara',
+      'Pertanahan',
+      'Kependudukan',
+    ],
+    icon: <KetertibanSvg />,
+  },
+  {
+    title: 'Pendukung Umum',
+    items: ['Kebijakan Pemerintah', 'Manajemen Kegiatan', 'Kewilayahan', 'Data Dukung Lainnya'],
+    icon: <PertahananSvg />,
+  },
+];
 
 export const CMS_DASHBOARD = [
   {

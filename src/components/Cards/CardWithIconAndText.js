@@ -1,4 +1,3 @@
-import Re7 from 'react';
 import styled from 'styled-components';
 
 const Box = styled.div`

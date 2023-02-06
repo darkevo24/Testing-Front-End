@@ -12,6 +12,7 @@ const ManagemenPengguna = lazy(() => import('containers/ManagemenPengguna'));
 const PenggunaBaru = lazy(() => import('containers/ManagemenPengguna/PenggunaBaru'));
 const PenggunaDetail = lazy(() => import('containers/ManagemenPengguna/PenggunaDetail'));
 const TopicDetailPage = lazy(() => import('containers/Beranda/TopicDetails'));
+const DashboardLainPage = lazy(() => import('containers/Beranda/DashboardLain'));
 const DataSetPage = lazy(() => import('containers/Beranda/DataSet'));
 const { Perminataan } = lazily(() => import('containers/Perminataan'));
 const { PerminataanDetail } = lazily(() => import('containers/Perminataan/detail'));
@@ -74,6 +75,7 @@ function AppRoutes(props) {
             <Route exact path="/pengguna-baru" component={PenggunaBaru} />
             <Route exact path="/home" component={BerandaPage} />
             <Route exact path="/topic-detail" component={TopicDetailPage} />
+            <Route exact path="/dashboard-lain" component={DashboardLainPage} />
             <Route exact path="/berita" component={BeritaPage} />
             <Route path="/berita/perbulan/:date" component={BeritaPerBulan} />
             <Route exact path="/berita/preview" component={BeritaPreviewPage} />

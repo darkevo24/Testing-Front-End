@@ -1,7 +1,4 @@
 import { useEffect, useState } from 'react';
-
-// import TableauReport from 'tableau-react';
-
 import BerandaTop from './BerandaTop';
 import { TopikDashboard } from '../TopikDashboard';
 import styled from 'styled-components';
@@ -12,6 +9,7 @@ const TitleBox = styled.div`
   font-size: 18px;
   margin-top: 50px;
   line-height: 23px;
+  width: 100%;
 `;
 
 const Container = styled.div`
@@ -26,13 +24,14 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   margin-bottom: 60px;
+  align-items: center;
 `;
 
 const WrapperTopik = styled.div`
   position: relative;
   z-index: 2;
   margin-top: -30px;
-  width: 100%;
+  width: 1100px;
   height: 140px;
   display: flex;
   flex-direction: row;
@@ -54,21 +53,25 @@ const Dashboard = styled.div`
 const TOPIK_DASHBOARD = [
   {
     title: 'Pertumbuhan Ekonomi',
+    banner: 'PertumbuhanEkonomiBanner',
     content:
       'https://public.tableau.com/views/pertumbuhan_ekonomi/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
   },
   {
     title: 'Tingkat Kemiskinan',
+    banner: 'TingkatKemiskinanBanner',
     content:
       'https://public.tableau.com/views/Tingkat_kemiskinan/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
   },
   {
     title: 'Tingkat Pengangguran Terbuka',
+    banner: 'TingkatPengangguranTerbukaBanner',
     content:
       'https://public.tableau.com/views/tingkat_pengangguran_terbuka/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
   },
   {
     title: 'Rasio Gini',
+    banner: 'RasioGiniBanner',
     content:
       'https://public.tableau.com/views/gini_rasio/GiniRasio2022?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
   },
@@ -111,8 +114,8 @@ const DashboardLain = (item) => {
 
   return (
     <>
-      <BerandaTop />
       <Container>
+        <BerandaTop dashboard={dashboard} />
         <Wrapper>
           <WrapperTopik>
             <TopikDashboard clickedActive={active} />

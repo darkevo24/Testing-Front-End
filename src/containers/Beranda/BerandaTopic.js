@@ -6,7 +6,6 @@ import { CardWithIconAndText } from 'components/Cards/CardWithIconAndText';
 import { TOPIC_LIST } from 'utils/constants';
 
 const Box = styled.div`
-  // margin-top: 0;
   display: flex;
   justify-content: space-between;
   flex-direction: column;

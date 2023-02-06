@@ -40,17 +40,13 @@ const Section = styled.div`
 const BerandaPage = () => {
   const dispatch = useDispatch();
   const { /* error, */ loading, result } = useSelector(datasetSelector);
-  // const { keycloak } = useKeycloak();
-  // const isLoggedIn = !!keycloak.authenticated;
+
   const [file, setFile] = React.useState('');
 
   useEffect(() => {
     dispatch(getDataSet(getInitialParams()));
   }, [file]);
 
-  // const data = useMemo(() => result?.results || [], [result]);
-  // const trendingData = take(data, 4);
-  // const popularData = take(data, 4);
   return (
     <>
       <BerandaTop />

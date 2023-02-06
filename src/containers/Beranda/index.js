@@ -8,7 +8,7 @@ import { datasetSelector, getDataSet, getInitialParams } from './reducer';
 import { BerandaTop } from './BerandaTop';
 import { SearchBeranda } from './SearchBeranda';
 import { BerandaTopic } from './BerandaTopic';
-import { BerandaCards } from './BerandaCards';
+import { TopikDashboard } from './TopikDashboard';
 import { Chat } from 'containers/Chat';
 import TicketModal from 'containers/Chat/TicketModal';
 import bn from 'utils/bemNames';
@@ -17,30 +17,53 @@ const bem = bn('beranda');
 
 const Container = styled.div`
   width: 1280px;
+  height: 100%;
   margin: 0 auto;
 `;
+
+const TitleBox = styled.div`
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 23px;
+`;
+const Wrapper = styled.div`
+  padding: 0 20px;
+  margin-top: 50px;
+  height: 60vh;
+`;
+
+const Section = styled.div`
+  margin: 30px 0px;
+`;
+
 const BerandaPage = () => {
   const dispatch = useDispatch();
   const { /* error, */ loading, result } = useSelector(datasetSelector);
-  const { keycloak } = useKeycloak();
-  const isLoggedIn = !!keycloak.authenticated;
+
   const [file, setFile] = React.useState('');
 
   useEffect(() => {
     dispatch(getDataSet(getInitialParams()));
   }, [file]);
 
-  const data = useMemo(() => result?.results || [], [result]);
-  const trendingData = take(data, 4);
-  const popularData = take(data, 4);
   return (
     <>
       <BerandaTop />
       <Container className={bem.b()}>
         <SearchBeranda />
-        <BerandaTopic />
-        <BerandaCards bem={bem} isLoggedIn={isLoggedIn} trendingData={trendingData} popularData={popularData} />
-        {loading && <Loader fullscreen />}
+        <Wrapper>
+          <Section>
+            <TitleBox className="mt-6 mb-10">Topik Data</TitleBox>
+            <BerandaTopic />
+          </Section>
+
+          <Section>
+            <TitleBox className="mt-6 mb-10">Topik Dashboard</TitleBox>
+            <TopikDashboard />
+          </Section>
+          {loading && <Loader fullscreen />}
+        </Wrapper>
       </Container>
       <Chat setFile={setFile} />
       {file && (

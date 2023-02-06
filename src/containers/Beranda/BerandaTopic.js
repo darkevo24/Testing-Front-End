@@ -6,26 +6,9 @@ import { CardWithIconAndText } from 'components/Cards/CardWithIconAndText';
 import { TOPIC_LIST } from 'utils/constants';
 
 const Box = styled.div`
-  margin-top: 0;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-`;
-
-const BoxTopic = styled.div`
-  background: #ff0000;
-  color: #fff;
-  width: 43px;
-  text-orientation: upright;
-  writing-mode: vertical-lr;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 16px;
-  font-weight: bold;
-  height: 160px;
-  font-size: 16px;
-  line-height: 22px;
 `;
 
 const BoxFlex = styled.div`
@@ -35,7 +18,7 @@ const BoxFlex = styled.div`
 export const BerandaTopic = () => {
   const topicList = [...TOPIC_LIST];
   topicList.shift(); // Removing the first element (Semua Entry)
-  const list = chunk(topicList, 5);
+  const list = chunk(topicList, 10);
   const history = useHistory();
 
   const handleGoNext = (item) => {
@@ -49,8 +32,7 @@ export const BerandaTopic = () => {
   };
 
   return (
-    <BoxFlex style={{ margin: '44px 0' }}>
-      <BoxTopic>Topik</BoxTopic>
+    <BoxFlex>
       <Box>
         {list.map((subList, index) => (
           <BoxFlex key={index}>

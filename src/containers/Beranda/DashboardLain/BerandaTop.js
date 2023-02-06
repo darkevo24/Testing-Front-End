@@ -15,9 +15,6 @@ const BoxImage = styled.div`
   flex-direction: row;
   width: 100%;
   height: 350px;
-
-  // background-image fit screen
-  // background-image: url(${img});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

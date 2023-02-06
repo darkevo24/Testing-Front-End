@@ -17,7 +17,7 @@ const bem = bn('beranda');
 
 const Container = styled.div`
   width: 1280px;
-  height: 60vh;
+  height: 100%;
   margin: 0 auto;
 `;
 
@@ -29,7 +29,14 @@ const TitleBox = styled.div`
 `;
 const Wrapper = styled.div`
   padding: 0 20px;
+  margin-top: 50px;
+  height: 60vh;
 `;
+
+const Section = styled.div`
+  margin: 30px 0px;
+`;
+
 const BerandaPage = () => {
   const dispatch = useDispatch();
   const { /* error, */ loading, result } = useSelector(datasetSelector);
@@ -50,9 +57,15 @@ const BerandaPage = () => {
       <Container className={bem.b()}>
         <SearchBeranda />
         <Wrapper>
-          <BerandaTopic />
-          <TitleBox className="mt-4">Topik Dashboard</TitleBox>
-          <TopikDashboard />
+          <Section>
+            <TitleBox className="mt-6 mb-10">Topik Data</TitleBox>
+            <BerandaTopic />
+          </Section>
+
+          <Section>
+            <TitleBox className="mt-6 mb-10">Topik Dashboard</TitleBox>
+            <TopikDashboard />
+          </Section>
           {loading && <Loader fullscreen />}
         </Wrapper>
       </Container>

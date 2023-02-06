@@ -9,7 +9,6 @@ export { ReactComponent as PendukungSvg } from 'assets/icons/Topics/pendukung.sv
 export { ReactComponent as KetertibanSvg } from 'assets/icons/Topics/ketertiban.svg';
 export { ReactComponent as PembangunanSvg } from 'assets/icons/Topics/pembangunan.svg';
 export { ReactComponent as PertahananSvg } from 'assets/icons/Topics/pertahanan.svg';
-
 //CMS
 export { ReactComponent as APIManagementIcon } from 'assets/icons/CMS/APIManagement.svg';
 export { ReactComponent as ApplicationMonitoring } from 'assets/icons/CMS/ApplicationMonitoring.svg';

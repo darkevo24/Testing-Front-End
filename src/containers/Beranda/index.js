@@ -31,6 +31,7 @@ const Wrapper = styled.div`
   padding: 0 20px;
   margin-top: 50px;
   height: 60vh;
+  min-height: 500px;
 `;
 
 const Section = styled.div`
@@ -59,7 +60,7 @@ const BerandaPage = () => {
           </Section>
 
           <Section>
-            <TitleBox className="mt-6 mb-10">Topik Dashboard</TitleBox>
+            <TitleBox className="mt-6 mb-10">Dashboard Indikator Sasaran Pembangunan</TitleBox>
             <TopikDashboard />
           </Section>
           {loading && <Loader fullscreen />}

@@ -147,9 +147,7 @@ export const Header = () => {
         title: 'Media',
         links: [
           { title: 'Berita', link: '/berita' },
-          isSdiProduction
-            ? null
-            : { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
+          { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
         ].filter(Boolean),
       },
       { title: 'Tentang', link: '/tentang' },
@@ -196,7 +194,7 @@ export const Header = () => {
             { title: 'Forum SDI', link: '/forum-sdi' },
             // { title: 'Glosarium', link: '/Glosarium' },
             { title: 'SDI Wiki', link: '/sdi-wiki' },
-            isSdiProduction ? null : { title: 'Learning Management', link: `${lmsUrl}#/homeLearning` },
+            { title: 'Learning Management', link: `${lmsUrl}#/homeLearning` },
             // { title: 'Persetujuan Anggaran Biaya', link: '/permintaan-budget' },
           ].filter(Boolean),
         },
@@ -221,9 +219,7 @@ export const Header = () => {
           title: 'Media',
           links: [
             { title: 'Berita', link: '/berita' },
-            isSdiProduction
-              ? null
-              : { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
+            { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
           ].filter(Boolean),
         },
         { title: 'Tentang', link: '/tentang' },

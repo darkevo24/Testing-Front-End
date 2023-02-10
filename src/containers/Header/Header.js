@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { userSelector } from 'containers/Login/reducer';
-import { getAnalyticsUrl, isSdiProduction, katalogUrl, lmsUrl } from 'utils/constants';
+import { getAnalyticsUrl, isSdiProduction, katalogUrl, lmsUrl, socketUrl } from 'utils/constants';
 
 import { removeAllCookie } from '../../utils/cookie';
 import { globalData } from '../App/reducer';
@@ -106,6 +106,12 @@ export const Header = () => {
       Roles.PEMBINA_DATA_ADMIN,
       Roles.PENELITI,
     ].includes(roles);
+  }, [user]);
+
+  const showCrm = useMemo(() => {
+    if (!user) return false;
+    const { roles = null } = user;
+    return [Roles.EKSEKUTIF].includes(roles);
   }, [user]);
 
   useEffect(() => {
@@ -257,6 +263,7 @@ export const Header = () => {
             <NavDropdown.Item onClick={goTo('/managemen-pengguna')}>{t('header.userNav.userManagement')}</NavDropdown.Item>
           )}
           {showAppSec && <NavDropdown.Item onClick={goTo('/cms')}>{t('header.userNav.cmsApplication')}</NavDropdown.Item>}
+          {showCrm && <NavDropdown.Item onClick={goToLink(socketUrl)}>{t('header.userNav.crm')}</NavDropdown.Item>}
           <NavDropdown.Item href={`${katalogUrl}/user/saml2login `}>{t('header.userNav.openData')}</NavDropdown.Item>
           <NavDropdown.Item onClick={goTo('/policy')}>{t('header.userNav.privacyPolicy')}</NavDropdown.Item>
           <NavDropdown.Item

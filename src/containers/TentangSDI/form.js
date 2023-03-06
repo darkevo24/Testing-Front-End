@@ -140,13 +140,15 @@ const ContactUs = () => {
         status: 'OPEN',
         description: post.message,
         summary: post.summary,
-        createdBy: post.email,
+        createdBy: post.full_name,
         attachment: data.attachment,
-        creatorData: {
-          nama: post.full_name,
-          email: post.email,
-          telepon: post.telephone,
-        },
+        creatorData: isLoggedIn
+          ? user
+          : {
+              nama: post.full_name,
+              email: post.email,
+              telepon: post.telephone,
+            },
         source: 'contact',
       }),
     ).then((result) => {

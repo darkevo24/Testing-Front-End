@@ -1,34 +1,49 @@
-import { React } from 'react';
+import { React, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import BerandaBanner from './BerandaTop.svg';
 import Bendera from './Bendera.svg';
+import { useSelector } from 'react-redux';
+import { globalData } from '../App/reducer';
+import _ from 'lodash';
+
+import { ReactComponent as BerandaImage } from './BerandaImage.svg';
+import { isSdiProduction } from 'utils/constants';
 
 const BoxImage = styled.div`
-  justify-content: center;
-  background: #fef8f5;
   display: flex;
-  flex-direction: row;
+  justify-content: center;
+  ${isSdiProduction
+    ? `flex-direction: column;
+    align-items: center;
+    background: #f5f6fa;
+  position: relative;
+  height: 310px;`
+    : `background: #fef8f5;
+  flex-direction: row;`}
 `;
 
 const ContainerContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  ${isSdiProduction &&
+  `align-items: center;
+  position: absolute;`}
 `;
 
 const LargeTitle = styled.p`
   font-weight: bold;
-  font-size: 40px;
+  font-size: ${isSdiProduction ? '24px' : '40px'};
   line-height: 30px;
   z-index: 1;
 `;
 
 const MediumTitle = styled.p`
   font-weight: normal;
-  font-size: 18px;
+  font-size: ${isSdiProduction ? '14px' : '18px'};
   line-height: 17px;
-  margin-bottom: 0;
   z-index: 1;
+  ${!isSdiProduction && 'margin-bottom: 0;'}
 `;
 
 const MediumWrapper = styled.div`
@@ -49,26 +64,51 @@ const ImageBanner = styled.img`
 `;
 
 export const BerandaTop = () => {
-  // const [banner, setBanner] = useState(null);
+  const { records } = useSelector(globalData);
+  const [banner, setBanner] = useState(null);
+
+  useEffect(() => {
+    if (!_.isEmpty(records)) {
+      let data = _.groupBy(records, 'code');
+      if (!_.isEmpty(data.BANNER[0])) {
+        setBanner(data.BANNER[0]?.content?.url);
+      }
+    }
+  }, [records]);
 
   return (
     <BoxImage>
       <ContainerContent>
-        <LargeTitle>
-          Data <span style={{ color: '#ed1c24' }}>Indonesia,</span>
-        </LargeTitle>
-        <LargeTitle>
-          Dalam Satu <span style={{ color: '#ed1c24' }}>Portal</span>
-        </LargeTitle>
-        <MediumWrapper>
-          <img src={Bendera} style={{ width: '30px', marginRight: '10px' }} />
-          <MediumTitle>Temukan data-data Pemerintah dengan mudah!</MediumTitle>
-        </MediumWrapper>
+        {isSdiProduction ? (
+          <>
+            <LargeTitle>Data Indonesia, Dalam Satu Portal</LargeTitle>
+            <MediumTitle>Temukan data-data Pemerintah dengan mudah!</MediumTitle>
+          </>
+        ) : (
+          <>
+            <LargeTitle>
+              Data <span style={{ color: '#ed1c24' }}>Indonesia,</span>
+            </LargeTitle>
+            <LargeTitle>
+              Dalam Satu <span style={{ color: '#ed1c24' }}>Portal</span>
+            </LargeTitle>
+            <MediumWrapper>
+              <img src={Bendera} style={{ width: '30px', marginRight: '10px' }} />
+              <MediumTitle>Temukan data-data Pemerintah dengan mudah!</MediumTitle>
+            </MediumWrapper>
+          </>
+        )}
       </ContainerContent>
-      <div></div>
-      <div>
-        <ImageBanner src={BerandaBanner} />
-      </div>
+      {isSdiProduction ? (
+        <ImageBanner src={banner} />
+      ) : (
+        <>
+          <div></div>
+          <div>
+            <ImageBanner src={BerandaBanner} />
+          </div>
+        </>
+      )}
     </BoxImage>
   );
 };

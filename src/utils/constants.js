@@ -30,7 +30,7 @@ export const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
 export const recaptchaSiteKey = process.env.REACT_APP_GOOGLE_RECAPTCHA_SITE_KEY;
 
 export const sdiEnv = process.env.REACT_APP_SDI_ENV || 'dev';
-export const isSdiProduction = sdiEnv.toLowerCase() === 'production';
+export const isSdiProduction = true; //sdiEnv.toLowerCase() === 'production';
 
 export const isRecaptchaEnabled = process.env.REACT_APP_IS_RECAPTCHA_DISABLED !== 'true';
 

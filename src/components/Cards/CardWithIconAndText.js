@@ -1,15 +1,25 @@
 import styled from 'styled-components';
+import { isSdiProduction } from 'utils/constants';
 
 const Box = styled.div`
   background: 'transparent';
-  align-items: center;
   border-radius: 4px;
   cursor: pointer;
+  ${!isSdiProduction &&
+  `align-items: center;
   width: 120px;
   text-align: center;
   margin: 0 2px;
   display: flex;
-  flex-direction: column;
+  flex-direction: column;`}
+  ${isSdiProduction &&
+  `&:hover {
+    background: #f5f6fa;
+    //svg icon color
+    path {
+      fill: #ed1c24;
+    }
+  }`}
 `;
 
 const Icon = styled.div`
@@ -40,10 +50,21 @@ export const CardWithIconAndText = ({ item, onClick, id }) => (
       flexDirection: 'column',
       padding: '5px',
       borderRadius: '4px',
-      // opacity: item.disabled ? 0.5 : 1,
       cursor: 'pointer',
+      opacity: item.disabled ? 0.5 : 1,
+      ...(isSdiProduction
+        ? {
+            background: 'trasparent',
+            width: '237px',
+            height: '61px',
+          }
+        : []),
     }}>
-    <Icon>{item.icon}</Icon>
+    {isSdiProduction ? (
+      <Box style={{ height: '16px', width: '16px', marginBottom: '5px' }}>{item.icon}</Box>
+    ) : (
+      <Icon>{item.icon}</Icon>
+    )}
     <Box
       style={{
         color: '#515154',
@@ -52,7 +73,7 @@ export const CardWithIconAndText = ({ item, onClick, id }) => (
         fontSize: '14px',
         lineHeight: '17px',
         margin: '10px 0px',
-        width: '110px',
+        width: isSdiProduction ? 'auto' : '110px',
       }}>
       {item.title}
     </Box>

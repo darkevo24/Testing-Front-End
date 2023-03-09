@@ -8,10 +8,12 @@ import { datasetSelector, getDataSet, getInitialParams } from './reducer';
 import { BerandaTop } from './BerandaTop';
 import { SearchBeranda } from './SearchBeranda';
 import { BerandaTopic } from './BerandaTopic';
+import { BerandaCards } from './BerandaCards';
 import { TopikDashboard } from './TopikDashboard';
 import { Chat } from 'containers/Chat';
 import TicketModal from 'containers/Chat/TicketModal';
 import bn from 'utils/bemNames';
+import { isSdiProduction } from 'utils/constants';
 
 const bem = bn('beranda');
 
@@ -41,6 +43,8 @@ const Section = styled.div`
 const BerandaPage = () => {
   const dispatch = useDispatch();
   const { /* error, */ loading, result } = useSelector(datasetSelector);
+  const { keycloak } = useKeycloak();
+  const isLoggedIn = !!keycloak.authenticated;
 
   const [file, setFile] = React.useState('');
 
@@ -48,23 +52,34 @@ const BerandaPage = () => {
     dispatch(getDataSet(getInitialParams()));
   }, [file]);
 
+  const data = useMemo(() => result?.results || [], [result]);
+  const trendingData = take(data, 4);
+  const popularData = take(data, 4);
   return (
     <>
       <BerandaTop />
       <Container className={bem.b()}>
         <SearchBeranda />
-        <Wrapper>
-          <Section>
-            <TitleBox className="mt-6 mb-10">Topik Data</TitleBox>
+        {isSdiProduction ? (
+          <>
             <BerandaTopic />
-          </Section>
+            <BerandaCards bem={bem} isLoggedIn={isLoggedIn} trendingData={trendingData} popularData={popularData} />
+            {loading && <Loader fullscreen />}
+          </>
+        ) : (
+          <Wrapper>
+            <Section>
+              <TitleBox className="mt-6 mb-10">Topik Data</TitleBox>
+              <BerandaTopic />
+            </Section>
 
-          <Section>
-            <TitleBox className="mt-6 mb-10">Dashboard Indikator Sasaran Pembangunan</TitleBox>
-            <TopikDashboard />
-          </Section>
-          {loading && <Loader fullscreen />}
-        </Wrapper>
+            <Section>
+              <TitleBox className="mt-6 mb-10">Dashboard Indikator Sasaran Pembangunan</TitleBox>
+              <TopikDashboard />
+            </Section>
+            {loading && <Loader fullscreen />}
+          </Wrapper>
+        )}
       </Container>
       <Chat setFile={setFile} />
       {file && (

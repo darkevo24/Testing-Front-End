@@ -4,6 +4,9 @@ import PertumbuhanEkonomiBanner from 'assets/icons/Dashboard/PertumbuhanEkonomiB
 import TingkatKemiskinanBanner from 'assets/icons/Dashboard/TingkatKemiskinanBanner.png';
 import TingkatPengangguranBanner from 'assets/icons/Dashboard/TingkatPengangguranBanner.png';
 import RasioGiniBanner from 'assets/icons/Dashboard/RasioGiniBanner.png';
+import IndeksPembangunanManusiaBanner from 'assets/icons/Dashboard/IndeksPembangunanManusiaBanner.jpg';
+import NilaiTukarPetaniBanner from 'assets/icons/Dashboard/NilaiTukarPetaniBanner.jpg';
+import NilaiTukarNelayanBanner from 'assets/icons/Dashboard/NilaiTukarNelayanBanner.jpg';
 
 let img = PertumbuhanEkonomiBanner;
 let color = '#000';
@@ -38,36 +41,35 @@ const LargeTitle = styled.p`
 `;
 
 export const BerandaTop = ({ dashboard }) => {
-  if (!dashboard.title) {
-    return (dashboard.title = 'Pertumbuhan Ekonomi');
+  //checking if dashboard.title have more than 2 word
+  const first = dashboard?.title?.split(' ')[0];
+  const second = dashboard?.title?.split(' ')[1];
+
+  const count = dashboard?.title?.split(' ').length;
+  let title;
+  if (count === 2) {
+    title = (
+      <div>
+        <span style={{ color: dashboard.color, marginRight: '10px' }}>{first}</span>
+        {second}
+      </div>
+    );
+  } else {
+    const third = dashboard?.title?.split(' ')[2];
+    title = (
+      <div>
+        <div style={{ color: dashboard.color, marginBottom: '15px' }}>{first}</div>
+        <div>
+          {second} {third}
+        </div>
+      </div>
+    );
   }
 
-  if (dashboard.title === 'Pertumbuhan Ekonomi') {
-    img = PertumbuhanEkonomiBanner;
-    color = '#000';
-  }
-
-  if (dashboard.title === 'Tingkat Kemiskinan') {
-    img = TingkatKemiskinanBanner;
-    color = '#fff';
-  }
-  if (dashboard.title === 'Tingkat Pengangguran Terbuka') {
-    img = TingkatPengangguranBanner;
-    color = '#000';
-  }
-  if (dashboard.title === 'Rasio Gini') {
-    img = RasioGiniBanner;
-    color = '#fff';
-  }
-  const first = dashboard.title.split(' ')[0];
-  const second = dashboard.title.split(' ')[1];
   return (
-    <BoxImage style={{ backgroundImage: `url(${img})` }}>
+    <BoxImage style={{ backgroundImage: `url(${dashboard.banner})` }}>
       <ContainerContent>
-        <LargeTitle>
-          <span style={{ color, marginRight: '10px' }}>{first}</span>
-          {second}
-        </LargeTitle>
+        <LargeTitle> {title}</LargeTitle>
       </ContainerContent>
     </BoxImage>
   );

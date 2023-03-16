@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import BerandaTop from './BerandaTop';
-import { TopikDashboard } from '../TopikDashboard';
+import CarouselTopik from './CarouselTopik';
 import styled from 'styled-components';
+import { TOPIC_DASHBOARD } from './constants';
 
 const TitleBox = styled.div`
   font-style: normal;
@@ -43,6 +44,7 @@ const WrapperTopik = styled.div`
 
 const Dashboard = styled.div`
   margin: 16px;
+  margin-top: 30px;
   width: 100%;
   height: 100%;
   display: flex;
@@ -50,65 +52,18 @@ const Dashboard = styled.div`
   justify-content: center;
 `;
 
-const TOPIK_DASHBOARD = [
-  {
-    title: 'Pertumbuhan Ekonomi',
-    banner: 'PertumbuhanEkonomiBanner',
-    content:
-      'https://public.tableau.com/views/pertumbuhan_ekonomi/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-  },
-  {
-    title: 'Tingkat Kemiskinan',
-    banner: 'TingkatKemiskinanBanner',
-    content:
-      'https://public.tableau.com/views/Tingkat_kemiskinan/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-  },
-  {
-    title: 'Tingkat Pengangguran Terbuka',
-    banner: 'TingkatPengangguranTerbukaBanner',
-    content:
-      'https://public.tableau.com/views/tingkat_pengangguran_terbuka/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-  },
-  {
-    title: 'Rasio Gini',
-    banner: 'RasioGiniBanner',
-    content:
-      'https://public.tableau.com/views/gini_rasio/GiniRasio2022?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
-  },
-];
-
-// get item from TopikDashboard
 const DashboardLain = (item) => {
-  let width;
-  let height;
   const [dashboard, setDashboard] = useState({});
   const [active, setActive] = useState('');
 
-  if (dashboard.title === 'Pertumbuhan Ekonomi') {
-    width = '1010px';
-    height = '830px';
-  }
-  if (dashboard.title === 'Tingkat Kemiskinan') {
-    width = '1105px';
-    height = '835px';
-  }
-  if (dashboard.title === 'Tingkat Pengangguran Terbuka') {
-    width = '1210px';
-    height = '935px';
-  }
-  if (dashboard.title === 'Rasio Gini') {
-    width = '1205px';
-    height = '835px';
-  }
-
   useEffect(() => {
     if (item.location.state) {
-      const dash = TOPIK_DASHBOARD.find((dash) => dash.title === item.location.state);
+      const dash = TOPIC_DASHBOARD.find((dash) => dash.title === item.location.state);
       setDashboard(dash);
       setActive(item.location.state);
     } else {
-      setDashboard(TOPIK_DASHBOARD[0]);
-      setActive(TOPIK_DASHBOARD[0].title);
+      setDashboard(TOPIC_DASHBOARD[0]);
+      setActive(TOPIC_DASHBOARD[0].title);
     }
   }, [item]);
 
@@ -117,12 +72,10 @@ const DashboardLain = (item) => {
       <Container>
         <BerandaTop dashboard={dashboard} />
         <Wrapper>
-          <WrapperTopik>
-            <TopikDashboard clickedActive={active} />
-          </WrapperTopik>
-          <TitleBox>{dashboard.title}</TitleBox>
+          <CarouselTopik clickedActive={active} />
+
           <Dashboard>
-            <div style={{ width: width, height: height }}>
+            <div style={{ width: dashboard.width, height: dashboard.height }}>
               <iframe
                 width="100%"
                 height="100%"

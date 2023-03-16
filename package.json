@@ -55,6 +55,8 @@
     "commitlint.config.js"
   ],
   "dependencies": {
+    "@babel/core": "7.21.3",
+    "@babel/preset-env": "7.20.2",
     "@hookform/resolvers": "2.8.2",
     "@react-keycloak/web": "3.4.0",
     "@react-pdf/renderer": "3.0.1",
@@ -107,6 +109,7 @@
     "react-helmet-async": "1.0.9",
     "react-hook-form": "7.17.5",
     "react-i18next": "11.13.0",
+    "react-icons": "4.8.0",
     "react-json-view": "1.21.3",
     "react-leaflet": "3.2.2",
     "react-number-format": "4.8.0",

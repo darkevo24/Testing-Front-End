@@ -29,7 +29,7 @@ export const TOPIC_DASHBOARD = [
     title: 'Tingkat Kemiskinan',
     banner: TingkatKemiskinanBanner,
     content:
-      'https://public.tableau.com/views/tingkat_kemiskinan/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      'https://dashboard.layanan.go.id/views/Tingkat_kemiskinan/Dashboard1?:showAppBanner=false&:display_count=n&:showVizHome=n&:origin=viz_share_link&:embed=true',
     items: ['Kemiskinan'],
     width: '1105px',
     height: '835px',

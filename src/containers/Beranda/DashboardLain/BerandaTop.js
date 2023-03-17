@@ -1,15 +1,5 @@
 import { React } from 'react';
 import styled from 'styled-components';
-import PertumbuhanEkonomiBanner from 'assets/icons/Dashboard/PertumbuhanEkonomiBanner.png';
-import TingkatKemiskinanBanner from 'assets/icons/Dashboard/TingkatKemiskinanBanner.png';
-import TingkatPengangguranBanner from 'assets/icons/Dashboard/TingkatPengangguranBanner.png';
-import RasioGiniBanner from 'assets/icons/Dashboard/RasioGiniBanner.png';
-import IndeksPembangunanManusiaBanner from 'assets/icons/Dashboard/IndeksPembangunanManusiaBanner.jpg';
-import NilaiTukarPetaniBanner from 'assets/icons/Dashboard/NilaiTukarPetaniBanner.jpg';
-import NilaiTukarNelayanBanner from 'assets/icons/Dashboard/NilaiTukarNelayanBanner.jpg';
-
-let img = PertumbuhanEkonomiBanner;
-let color = '#000';
 
 const BoxImage = styled.div`
   justify-content: center;
@@ -41,7 +31,6 @@ const LargeTitle = styled.p`
 `;
 
 export const BerandaTop = ({ dashboard }) => {
-  //checking if dashboard.title have more than 2 word
   const first = dashboard?.title?.split(' ')[0];
   const second = dashboard?.title?.split(' ')[1];
 

@@ -73,7 +73,7 @@ const DashboardLain = (item) => {
         <BerandaTop dashboard={dashboard} />
         <Wrapper>
           <CarouselTopik clickedActive={active} />
-
+          <TitleBox>{dashboard.title}</TitleBox>
           <Dashboard>
             <div style={{ width: dashboard.width, height: dashboard.height }}>
               <iframe

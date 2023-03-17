@@ -4,6 +4,9 @@ import CardTopikDashboardLain from 'components/Cards/CardTopikDashboardLain';
 import { useHistory } from 'react-router-dom';
 import Slider from 'react-slick';
 import styled from 'styled-components';
+//import arrow from react-icons
+import { IoIosArrowBack } from 'react-icons/io';
+import { IoIosArrowForward } from 'react-icons/io';
 
 const Wrapper = styled.div`
   .slick-list {
@@ -39,11 +42,13 @@ const SampleNextArrow = (props) => {
         justifyContent: 'center',
         alignItems: 'center',
 
-        boxShadow: '0px 0px 12px rgba(0, 0, 0, 0.12)',
-        background: white ? 'white' : '#F5F6FA',
+        boxShadow: '0px 0px 12px rgba(0, 0, 0, 0.1)',
+        background: white ? 'white' : '#ecedf3',
       }}
       onClick={onClick}>
-      <span style={{ fontSize: '15px', color: '#3C3E4D' }}>></span>
+      <span style={{ fontSize: '15px', color: '#3C3E4D' }}>
+        <IoIosArrowForward />
+      </span>
     </div>
   );
 };
@@ -56,18 +61,22 @@ function SamplePrevArrow(props) {
       className={className}
       style={{
         ...style,
+
         display: 'flex',
         borderRadius: '50%',
         width: '36px',
         height: '36px',
-        right: '-20px',
+        left: '-22px',
+        zIndex: '1',
         justifyContent: 'center',
         alignItems: 'center',
-        boxShadow: '0px 0px 12px rgba(0, 0, 0, 0.12)',
-        background: white ? 'white' : '#F5F6FA',
+        boxShadow: '0px 0px 12px rgba(0, 0, 0, 0.1)',
+        background: white ? 'white' : '#ecedf3',
       }}
       onClick={onClick}>
-      <span style={{ fontSize: '15px', color: '#3C3E4D' }}>a</span>
+      <span style={{ fontSize: '15px', color: '#3C3E4D' }}>
+        <IoIosArrowBack />
+      </span>
     </div>
   );
 }
@@ -86,27 +95,44 @@ const CarouselTopik = ({ clickedActive }) => {
   }, [clickedActive]);
 
   useEffect(() => {
-    if (checkIndex === 0 && clickedActive === 'Pertumbuhan Ekonomi') {
-      setWhitePrev(false);
+    if (clickedActive === 'Pertumbuhan Ekonomi') {
+      if (checkIndex === 0) {
+        setWhitePrev(false);
+        setWhiteNext(true);
+      }
+      if (checkIndex === 3) {
+        setWhitePrev(true);
+        setWhiteNext(true);
+      }
+    }
+    if (clickedActive === 'Nilai Tukar Nelayan') {
+      if (checkIndex === 0) {
+        setWhitePrev(true);
+        setWhiteNext(true);
+      }
+      if (checkIndex === 3) {
+        setWhitePrev(true);
+        setWhiteNext(false);
+      }
+    }
+    if (clickedActive === 'Gini Rasio') {
+      if (checkIndex === 0) {
+        setWhitePrev(true);
+        setWhiteNext(false);
+      } else {
+        setWhitePrev(false);
+        setWhiteNext(true);
+      }
+    }
+    if (
+      clickedActive !== 'Gini Rasio' &&
+      clickedActive !== 'Nilai Tukar Nelayan' &&
+      clickedActive !== 'Pertumbuhan Ekonomi'
+    ) {
+      setWhitePrev(true);
       setWhiteNext(true);
     }
-    if (checkIndex === 3 && clickedActive === 'Pertumbuhan Ekonomi') {
-      setWhitePrev(true);
-      setWhiteNext(false);
-    }
-    if (checkIndex === 0 && clickedActive === 'Gini Rasio') {
-      setWhiteNext(false);
-      setWhitePrev(true);
-    }
-    if (checkIndex === 3 && clickedActive === 'Gini Rasio') {
-      setWhitePrev(false);
-      setWhiteNext(true);
-    }
-    if (checkIndex === 3 && clickedActive === 'Nilai Tukar Nelayan') {
-      setWhiteNext(false);
-      setWhitePrev(true);
-    }
-  }, [checkIndex]);
+  }, [checkIndex, clickedActive]);
 
   const handleGoNext = (item) => {
     history.push({

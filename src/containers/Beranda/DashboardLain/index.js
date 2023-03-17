@@ -19,27 +19,13 @@ const Container = styled.div`
   justify-content: center;
 `;
 const Wrapper = styled.div`
-  margin: 0 auto;
+  margin: 40px auto 0 auto;
   padding: 0 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin-bottom: 60px;
   align-items: center;
-`;
-
-const WrapperTopik = styled.div`
-  position: relative;
-  z-index: 2;
-  margin-top: -30px;
-  width: 1100px;
-  height: 140px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  background: #ffffff;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
-  border-radius: 16px;
 `;
 
 const Dashboard = styled.div`

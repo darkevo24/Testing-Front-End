@@ -151,10 +151,9 @@ export const Header = () => {
       ...COMMON_ROUTES,
       {
         title: 'Media',
-        links: [
-          { title: 'Berita', link: '/berita' },
-          { title: 'Webinar', link: `${lmsUrl}#/homeLearning?wm_state=('ws'~('tabs1'~'tabpane4'))` },
-        ].filter(Boolean),
+        links: [{ title: 'Berita', link: '/berita' }, isSdiProduction ? null : { title: 'Webinar', link: '/home' }].filter(
+          Boolean,
+        ),
       },
       { title: 'Tentang', link: '/tentang' },
     ],

@@ -151,9 +151,10 @@ export const Header = () => {
       ...COMMON_ROUTES,
       {
         title: 'Media',
-        links: [{ title: 'Berita', link: '/berita' }, isSdiProduction ? null : { title: 'Webinar', link: '/home' }].filter(
-          Boolean,
-        ),
+        links: [
+          { title: 'Berita', link: '/berita' },
+          isSdiProduction ? null : { title: 'Webinar', link: `${lmsUrl}#/home` },
+        ].filter(Boolean),
       },
       { title: 'Tentang', link: '/tentang' },
     ],

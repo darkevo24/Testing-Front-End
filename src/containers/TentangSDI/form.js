@@ -48,12 +48,12 @@ const ContactUs = () => {
         .string()
         .required('Nomor Telefon Wajib Diisi')
         .matches(/^(\+)?\d{7,13}$/, 'Format Nomor Telefon tidak valid.'),
-      summary: yup.string().required('Ringkasan Wajib Diisi'),
+      summary: yup.string().required('Subject Wajib Diisi'),
       message: yup
         .string()
-        .required('Pesan Wajib Diisi')
-        .min(10, 'Pesan minimal 10 karakter')
-        .max(300, 'Pesan maksimal 300 karakter'),
+        .required('Deskripsi Wajib Diisi')
+        .min(10, 'Deskripsi minimal 10 karakter')
+        .max(300, 'Deskripsi maksimal 300 karakter'),
     })
     .required();
 
@@ -270,7 +270,7 @@ const ContactUs = () => {
             {errors?.telephone?.message && <div className={'error-message'}>{errors?.telephone?.message}</div>}
           </Form.Group>
           <Form.Group controlId="summary" className="mb-3">
-            <Form.Label>Summary</Form.Label>
+            <Form.Label>Subject</Form.Label>
             <Form.Control
               isValid={false}
               type="text"

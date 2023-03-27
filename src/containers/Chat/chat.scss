@@ -181,6 +181,11 @@
             font-weight: 400;
             font-size: 14px;
             color: #2e2d30;
+
+            &:after {
+              content: '*';
+              color: red;
+            }
           }
 
           textarea {
@@ -306,5 +311,5 @@
 }
 
 .text-red1 {
-  color: #FF0C2B;
+  color: #ff0c2b;
 }

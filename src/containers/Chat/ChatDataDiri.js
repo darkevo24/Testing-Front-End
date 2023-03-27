@@ -98,7 +98,7 @@ export const ChatDataDiri = ({ startChat }) => {
             />
           </Form.Group>
           <Form.Group controlId="summary" className="mb-3">
-            <Form.Label>Summary</Form.Label>
+            <Form.Label>Subject</Form.Label>
             <Form.Control
               isInvalid={errors?.summary?.message}
               type="text"

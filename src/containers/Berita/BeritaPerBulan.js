@@ -97,7 +97,6 @@ const BeritaPerBulan = () => {
   const handleDetail = (event, id, slug) => {
     event.preventDefault();
     history.push(`/berita/${id}/${slug}`);
-    console.log('++', records);
   };
 
   const handleLoadMore = () => {
@@ -139,7 +138,7 @@ const BeritaPerBulan = () => {
                       <div className="judul" onClick={(e) => handleDetail(e, id, slug)}>
                         {judul}
                       </div>
-                      {slug.length > 250 ? (
+                      {/* {slug.length > 250 ? (
                         <>
                           <div className="konten">{truncatedParagrapData}</div>
                           <button
@@ -150,7 +149,7 @@ const BeritaPerBulan = () => {
                         </>
                       ) : (
                         <div className="konten">{slug}</div>
-                      )}
+                      )} */}
                     </div>
                   </BeritaContainer>
                 </div>

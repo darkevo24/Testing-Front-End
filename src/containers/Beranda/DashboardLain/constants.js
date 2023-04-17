@@ -18,10 +18,10 @@ export const TOPIC_DASHBOARD = [
     title: 'Pertumbuhan Ekonomi',
     banner: PertumbuhanEkonomiBanner,
     content:
-      'https://public.tableau.com/views/pertumbuhan_ekonomi/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link:showVizHome=no&:embed=true',
+      'https://dashboard.layanan.go.id/views/PDRBSektor/color?:showAppBanner=false&:display_count=n&:showVizHome=n&:origin=viz_share_link:embed=true',
     items: ['Ekonomi'],
-    width: '1010px',
-    height: '830px',
+    width: '1125px',
+    height: '2000px',
     color: '#000',
     icon: <img style={{ width: '50px' }} src={PertumbuhanEkonomi} alt="Pertumbuhan Ekonomi" />,
   },

@@ -9,10 +9,6 @@ const Box = styled.div`
   display: inline-flex;
 `;
 
-const BoxFlex = styled.div`
-  display: flex;
-`;
-
 export const TopikDashboard = ({ clickedActive }) => {
   const [selectedTopik, setSelectedTopik] = useState('');
   const history = useHistory();

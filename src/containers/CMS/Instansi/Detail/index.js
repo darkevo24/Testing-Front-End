@@ -173,7 +173,7 @@ const InstansiDetail = () => {
         return (
           <div className="mt-20 mb-20">
             <p className="font-weight-bold mb-0">
-              Anda yakin until
+              Anda yakin untuk
               <span className="text-info"> menyetujui</span>
               Instansi ini?
             </p>
@@ -183,7 +183,7 @@ const InstansiDetail = () => {
         return (
           <div className="mt-20 mb-20">
             <p className="font-weight-bold mb-0">
-              Anda yakin until
+              Anda yakin untuk
               <span className="text-danger"> tidak setuju </span>
               Instansi ini?
             </p>
@@ -228,21 +228,25 @@ const InstansiDetail = () => {
                       alt="edit"
                       onClick={(e) => handleUnitKejira(`edit/${id}`)}
                     />
-                    <Button
-                      className="mx-4"
-                      variant="outline-secondary"
-                      onClick={(e) => handModalOpen(INSTANSI_STATUS.rejected)}>
-                      Tolak
-                    </Button>
-                    <Button
-                      className="mx-4"
-                      variant="info"
-                      disabled={isOwner}
-                      onClick={(e) =>
-                        handModalOpen(status === 'DRAFT' ? INSTANSI_STATUS.waiting_approval : INSTANSI_STATUS.accepted)
-                      }>
-                      Setuju
-                    </Button>
+                    {status === 'APPROVED' && (
+                      <div className="d-flex flex-row">
+                        <Button
+                          className="mx-4"
+                          variant="outline-secondary"
+                          onClick={(e) => handModalOpen(INSTANSI_STATUS.rejected)}>
+                          Tolak
+                        </Button>
+                        <Button
+                          className="mx-4"
+                          variant="info"
+                          disabled={isOwner}
+                          onClick={(e) =>
+                            handModalOpen(status === 'DRAFT' ? INSTANSI_STATUS.waiting_approval : INSTANSI_STATUS.accepted)
+                          }>
+                          Setuju
+                        </Button>
+                      </div>
+                    )}
                   </>
                 ) : (
                   <>

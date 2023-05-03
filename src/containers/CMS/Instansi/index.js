@@ -38,7 +38,7 @@ const Instansi = () => {
   const columns = [
     {
       Header: 'Kode Instansi',
-      accessor: 'id',
+      accessor: 'kode',
     },
     {
       Header: 'Nama Instansi',

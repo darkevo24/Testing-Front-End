@@ -91,16 +91,19 @@ const EditInstansi = () => {
   };
 
   const handleEdit = async (data) => {
-    const { kode, nama, logo } = data;
+    // const { kode, nama, logo } = data;
+    console.log(data);
+    console.log(data.kode);
     const obj = {
       id,
       payload: {
-        kode,
-        nama,
-        logo,
-        level: data.level.value,
+        kode: data.kode,
+        nama: data.nama,
+        logo: data.logo,
+        level: data.level,
       },
     };
+    console.log(obj);
     setLoading(true);
     dispatch(updateInstansi(obj)).then((res) => {
       if (res.payload) {

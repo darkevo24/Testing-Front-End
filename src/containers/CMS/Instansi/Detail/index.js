@@ -228,8 +228,9 @@ const InstansiDetail = () => {
                       alt="edit"
                       onClick={(e) => handleUnitKejira(`edit/${id}`)}
                     />
+
                     {status === 'APPROVED' && (
-                      <div className="d-flex flex-row">
+                      <>
                         <Button
                           className="mx-4"
                           variant="outline-secondary"
@@ -245,7 +246,7 @@ const InstansiDetail = () => {
                           }>
                           Setuju
                         </Button>
-                      </div>
+                      </>
                     )}
                   </>
                 ) : (
@@ -256,9 +257,12 @@ const InstansiDetail = () => {
                       alt="delete"
                       onClick={(e) => handModalOpen(INSTANSI_STATUS.deleted)}
                     />
-                    <Button className="mx-4" variant="outline-secondary" onClick={(e) => handleUnitKejira(`edit/${id}`)}>
-                      Edit
-                    </Button>
+                    <img
+                      className="mx-4 cursor-pointer"
+                      src={EditIcon}
+                      alt="edit"
+                      onClick={(e) => handleUnitKejira(`edit/${id}`)}
+                    />
                     {status === 'DRAFT' && (
                       <Button key="Kirim" variant="info" className="mr-16 br-4 px-40 py-13" onClick={handleInstansiKirim}>
                         Kirim
